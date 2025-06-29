@@ -33,21 +33,44 @@ body {
 
 /* --- Header --- */
 .header {
-  text-align: center;
   margin-bottom: 2rem;
 }
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .header h1 {
-  font-size: 2.25rem; /* 36px */
+  font-size: 1.5rem; /* 24px */
   font-weight: 800;
   letter-spacing: -0.025em;
+  margin: 0;
 }
 .header h1 span {
   color: var(--accent-color);
 }
-.header p {
-  color: var(--text-muted-color);
-  margin-top: 0.5rem;
+
+@media (max-width: 640px) {
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
+
+.nav-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 9999px;
+}
+.nav-link:hover {
+  color: var(--text-color);
+  background-color: var(--accent-color);
+}
+
 
 /* --- Filter & Target BPM Bars --- */
 .target-bpm-bar, .filter-bar {

@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Multiplier from './Multiplier';
+import './App.css';
 
 // --- Data Structure ---
 const ddrDanData = {
@@ -383,10 +385,22 @@ const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
 );
 
 // --- Main App Component with Embedded CSS ---
-export default function App() {
+function App() {
+  const [targetBPM, setTargetBPM] = useState(300);
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+        <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+      </Routes>
+    </Router>
+  );
+}
+
+function MainPage({ targetBPM, setTargetBPM }) {
   const [playMode, setPlayMode] = useState('single');
   const [activeDan, setActiveDan] = useState('All');
-  const [targetBPM, setTargetBPM] = useState(300);
 
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
@@ -415,10 +429,14 @@ export default function App() {
       `}</style>
       <div className="app-container">
         <header className="header">
-          <h1>
-            DDR A3 <span>Dan Courses</span>
-          </h1>
-          <p>Browse courses and set your target scroll speed.</p>
+          <div className="header-content">
+            <h1>
+              DDR A3 <span>Dan Courses</span>
+            </h1>
+            <nav>
+              <Link to="/multiplier" className="nav-link">Multiplier Calculator</Link>
+            </nav>
+          </div>
         </header>
 
         <main>
@@ -462,3 +480,5 @@ export default function App() {
     </>
   );
 }
+
+export default App;

@@ -1,0 +1,66 @@
+.multiplier-content {
+  background-color: #1F2937;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text-muted-color);
+  text-align: center;
+}
+
+.bpm-input {
+  width: 100%;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.bpm-input:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+.result {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.result h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-muted-color);
+  margin-bottom: 1rem;
+}
+
+.modifier {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--cyan-color);
+  line-height: 1;
+}
+
+.speed {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green-color);
+  margin-top: 0.5rem;
+}
