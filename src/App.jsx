@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import './app.css'
+import './App.css'
 
 // --- Data Structure ---
 const ddrDanData = {
