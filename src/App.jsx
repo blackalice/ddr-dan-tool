@@ -639,7 +639,7 @@ export default function App() {
       <div className="app-container">
         <header className="header">
           <h1>
-            DDR A20+ / A3 <span>Dan Courses</span>
+            DDR A3 <span>Dan Courses</span>
           </h1>
           <p>Browse courses and set your target scroll speed.</p>
         </header>
@@ -678,8 +678,8 @@ export default function App() {
         </main>
 
         <footer className="footer">
-            <p>Data based on DDR A20 PLUS / A3 Dan courses. All song titles are properties of their respective owners.</p>
-            <p>Built with React.</p>
+            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> </p>
+
         </footer>
       </div>
     </>
