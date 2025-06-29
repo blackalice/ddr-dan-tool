@@ -49,7 +49,7 @@ const ddrDanData = {
       songs: [
         { title: "aftershock!!", level: 13, bpm: "157", difficulty: "expert" },
         { title: "mythomane", level: 13, bpm: "140-180", difficulty: "expert" },
-        { title: "DestRUciVe FoRcE", level: 13, bpm: "89-177", difficulty: "expert" },
+        { title: "DeStRuCtIvE FoRcE", level: 13, bpm: "89-177", difficulty: "expert" },
         { title: "London EVOLVED ver.C", level: 14, bpm: "43-340", difficulty: "expert" },
       ],
     },
@@ -248,27 +248,37 @@ const difficultyMapDouble = {
     challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
 };
 
-const getMaxBpm = (bpm) => {
-  if (typeof bpm !== 'string') return 0;
+const getBpmRange = (bpm) => {
+  if (typeof bpm !== 'string') return { min: 0, max: 0 };
   const parts = bpm.split('-').map(Number);
-  return Math.max(...parts);
+  if (parts.length === 1) {
+    return { min: parts[0], max: parts[0] };
+  }
+  return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
 // --- React Components ---
 
 const SongCard = ({ song, targetBPM, playMode }) => {
   const calculation = useMemo(() => {
-    const maxBpm = getMaxBpm(song.bpm);
-    // Coerce targetBPM to a number for calculation, treating empty string as 0.
     const numericTarget = Number(targetBPM) || 0;
-    if (maxBpm === 0) return { speed: 'N/A', modifier: 'N/A' };
-    const idealMultiplier = numericTarget / maxBpm;
+    const bpmRange = getBpmRange(song.bpm);
+    
+    if (bpmRange.max === 0) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
+
+    const idealMultiplier = numericTarget / bpmRange.max;
     const closestMultiplier = multipliers.reduce((prev, curr) => 
       Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
     );
+
+    const minSpeed = (bpmRange.min * closestMultiplier).toFixed(0);
+    const maxSpeed = (bpmRange.max * closestMultiplier).toFixed(0);
+
     return {
-      speed: (maxBpm * closestMultiplier).toFixed(0),
-      modifier: closestMultiplier
+      modifier: closestMultiplier,
+      minSpeed: minSpeed,
+      maxSpeed: maxSpeed,
+      isRange: bpmRange.min !== bpmRange.max
     };
   }, [song.bpm, targetBPM]);
 
@@ -281,7 +291,11 @@ const SongCard = ({ song, targetBPM, playMode }) => {
         <div>
           <span className="song-bpm">BPM: {song.bpm}</span>
           <div className="song-calculation">
-            <span className="song-speed">~{calculation.speed}</span>
+            {calculation.isRange ? (
+              <span className="song-speed">~{calculation.minSpeed}-{calculation.maxSpeed}</span>
+            ) : (
+              <span className="song-speed">~{calculation.maxSpeed}</span>
+            )}
             <span className="song-modifier">{calculation.modifier}x</span>
           </div>
         </div>
