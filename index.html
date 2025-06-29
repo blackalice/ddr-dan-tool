@@ -1,0 +1,446 @@
+import React, { useState, useMemo } from 'react';
+
+// --- Data Structure ---
+// Data now includes a 'difficulty' property for each song.
+const ddrDanData = {
+  single: [
+    {
+      dan: "1st Dan (初段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "Love You More", level: 9, bpm: "175", difficulty: "basic" },
+        { title: "Starry Sky", level: 9, bpm: "150", difficulty: "difficult" },
+        { title: "Bang Pad Werk Mix", level: 9, bpm: "180", difficulty: "difficult" },
+        { title: "LEVEL UP", level: 10, bpm: "180", difficulty: "difficult" },
+      ],
+    },
+    {
+      dan: "2nd Dan (二段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "Electric Dance System Music", level: 10, bpm: "190", difficulty: "difficult" },
+        { title: "十二星座の翼", level: 10, bpm: "164", difficulty: "difficult" },
+        { title: "Liberate", level: 10, bpm: "128", difficulty: "difficult" },
+        { title: "Show Me Your Moves", level: 11, bpm: "155", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "3rd Dan (三段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "This Beat is...", level: 11, bpm: "128", difficulty: "expert" },
+        { title: "Starlight in the Snow", level: 11, bpm: "150", difficulty: "difficult" },
+        { title: "Stay 4 Ever", level: 11, bpm: "140", difficulty: "expert" },
+        { title: "Astrogazer", level: 12, bpm: "154", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "4th Dan (四段)",
+      color: "#46aadc",
+      songs: [
+        { title: "out of focus", level: 12, bpm: "84-167", difficulty: "difficult" },
+        { title: "SODA GALAXY", level: 12, bpm: "178", difficulty: "expert" },
+        { title: "In the Past", level: 12, bpm: "81-162", difficulty: "difficult" },
+        { title: "Deadlock -out of reach-", level: 13, bpm: "205", difficulty: "difficult" },
+      ],
+    },
+    {
+      dan: "5th Dan (五段)",
+      color: "#46aadc",
+      songs: [
+        { title: "aftershock!!", level: 13, bpm: "157", difficulty: "expert" },
+        { title: "mythomane", level: 13, bpm: "140-180", difficulty: "expert" },
+        { title: "DestRUciVe FoRcE", level: 13, bpm: "89-177", difficulty: "expert" },
+        { title: "London EVOLVED ver.C", level: 14, bpm: "43-340", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "6th Dan (六段)",
+      color: "#e6413a",
+      songs: [
+        { title: "Dead Heat", level: 14, bpm: "177", difficulty: "expert" },
+        { title: "IRON HEART", level: 14, bpm: "155", difficulty: "expert" },
+        { title: "STEP MACHINE", level: 14, bpm: "160", difficulty: "expert" },
+        { title: "MAX 300", level: 15, bpm: "100-200", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "7th Dan (七段)",
+      color: "#e6413a",
+      songs: [
+        { title: "Neverland", level: 15, bpm: "160", difficulty: "expert" },
+        { title: "Next Phase", level: 15, bpm: "174", difficulty: "expert" },
+        { title: "Last Card", level: 15, bpm: "85-170", difficulty: "expert" },
+        { title: "Cosy Catastrophe", level: 16, bpm: "90-360", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "8th Dan (八段)",
+      color: "#e6413a",
+      songs: [
+        { title: "Rave Accelerator", level: 16, bpm: "170", difficulty: "expert" },
+        { title: "Golden Arrow", level: 16, bpm: "170", difficulty: "expert" },
+        { title: "Splash Gold", level: 16, bpm: "75-300", difficulty: "expert" },
+        { title: "The History of the Future", level: 17, bpm: "100-200", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "9th Dan (九段)",
+      color: "#c846a6",
+      songs: [
+        { title: "DIGITALIZER", level: 17, bpm: "180", difficulty: "expert" },
+        { title: "東京神話", level: 17, bpm: "96-196", difficulty: "expert" },
+        { title: "Avenger", level: 17, bpm: "100-400", difficulty: "expert" },
+        { title: "EGOISM440", level: 18, bpm: "55-879", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "10th Dan (十段)",
+      color: "#c846a6",
+      songs: [
+        { title: "び", level: 18, bpm: "169", difficulty: "challenge" },
+        { title: "HyperTwist", level: 18, bpm: "190", difficulty: "challenge" },
+        { title: "Neutrino", level: 18, bpm: "75-300", difficulty: "challenge" },
+        { title: "PARANOiA Revolution", level: 19, bpm: "180-360", difficulty: "challenge" },
+      ],
+    },
+    {
+      dan: "Kaiden (皆伝)",
+      color: "#f8d45a",
+      songs: [
+        { title: "Lachryma《Re:Queen'M》", level: 19, bpm: "236", difficulty: "challenge" },
+        { title: "Over the “Period”", level: 19, bpm: "25-838", difficulty: "challenge" },
+        { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
+        { title: "ENDYMION", level: 19, bpm: "110-880", difficulty: "challenge" },
+      ],
+    },
+  ],
+  double: [
+    {
+      dan: "1st Dan (初段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "さよならトリップ ～夏陽 EDM edition～", level: 9, bpm: "135", difficulty: "difficult" },
+        { title: "Second Heaven", level: 9, bpm: "149", difficulty: "difficult" },
+        { title: "Snow prism", level: 9, bpm: "196", difficulty: "difficult" },
+        { title: "TRIP MACHINE", level: 10, bpm: "160", difficulty: "difficult" },
+      ],
+    },
+    {
+      dan: "2nd Dan (二段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "bass 2 bass", level: 10, bpm: "140", difficulty: "difficult" },
+        { title: "Anthurium", level: 10, bpm: "142", difficulty: "difficult" },
+        { title: "SEXY PLANET", level: 10, bpm: "180", difficulty: "expert" },
+        { title: "sakura storm", level: 11, bpm: "184", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "3rd Dan (三段)",
+      color: "#6fbe44",
+      songs: [
+        { title: "starmine", level: 11, bpm: "182", difficulty: "difficult" },
+        { title: "The Lonely Streets", level: 11, bpm: "115", difficulty: "expert" },
+        { title: "SUNKISS♡DROP", level: 11, bpm: "185", difficulty: "expert" },
+        { title: "Dance Dance Revolution", level: 12, bpm: "150", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "4th Dan (四段)",
+      color: "#46aadc",
+      songs: [
+        { title: "Private Eye", level: 12, bpm: "160", difficulty: "expert" },
+        { title: "CENTAUR", level: 12, bpm: "140", difficulty: "expert" },
+        { title: "DOLL", level: 12, bpm: "170", difficulty: "expert" },
+        { title: "MARS WAR 3", level: 13, bpm: "200", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "5th Dan (五段)",
+      color: "#46aadc",
+      songs: [
+        { title: "TECH-NOID", level: 13, bpm: "146", difficulty: "expert" },
+        { title: "exotic ethnic", level: 13, bpm: "190", difficulty: "expert" },
+        { title: "デッドボヲルde Ishtar", level: 13, bpm: "145", difficulty: "expert" },
+        { title: "UNBELIEVABLE (Sparky remix)", level: 14, bpm: "155", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "6th Dan (六段)",
+      color: "#e6413a",
+      songs: [
+        { title: "oh the bounce", level: 14, bpm: "150", difficulty: "expert" },
+        { title: "Let's DANCE aROUND!!", level: 14, bpm: "155", difficulty: "expert" },
+        { title: "Pierce The Sky", level: 14, bpm: "85-173", difficulty: "expert" },
+        { title: "PARANOiA survivor", level: 15, bpm: "135-270", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "7th Dan (七段)",
+      color: "#e6413a",
+      songs: [
+        { title: "Going Hypersonic", level: 15, bpm: "156", difficulty: "expert" },
+        { title: "out of focus", level: 15, bpm: "84-167", difficulty: "expert" },
+        { title: "Skywalking", level: 15, bpm: "90-180", difficulty: "expert" },
+        { title: "UNBELIEVABLE (Sparky remix)", level: 16, bpm: "88-175", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "8th Dan (八段)",
+      color: "#e6413a",
+      songs: [
+        { title: "Sand Blow", level: 16, bpm: "83-165", difficulty: "expert" },
+        { title: "Helios", level: 16, bpm: "182", difficulty: "expert" },
+        { title: "KIMONO♡PRINCESS", level: 16, bpm: "95-190", difficulty: "expert" },
+        { title: "The legend of MAX(X-Special)", level: 17, bpm: "83-333", difficulty: "challenge" },
+      ],
+    },
+    {
+      dan: "9th Dan (九段)",
+      color: "#c846a6",
+      songs: [
+        { title: "New Era", level: 17, bpm: "98-346", difficulty: "expert" },
+        { title: "Fascination ~eternal love mix~", level: 17, bpm: "100-400", difficulty: "challenge" },
+        { title: "RISING FIRE HAWK", level: 17, bpm: "180", difficulty: "challenge" },
+        { title: "PARANOiA Rebirth", level: 18, bpm: "180-360", difficulty: "expert" },
+      ],
+    },
+    {
+      dan: "10th Dan (十段)",
+      color: "#c846a6",
+      songs: [
+        { title: "Spanish Snowy Dance", level: 18, bpm: "180", difficulty: "challenge" },
+        { title: "Astrogazer", level: 18, bpm: "154", difficulty: "challenge" },
+        { title: "New Decade", level: 18, bpm: "100-400", difficulty: "challenge" },
+        { title: "PARANOIA -HADES-", level: 18, bpm: "75-300", difficulty: "challenge" },
+      ],
+    },
+    {
+      dan: "Kaiden (皆伝)",
+      color: "#f8d45a",
+      songs: [
+        { title: "Show My Mind", level: 18, bpm: "95-380", difficulty: "challenge" },
+        { title: "Tohoku EVOLVED", level: 18, bpm: "42-1021", difficulty: "challenge" },
+        { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
+        { title: "POSSESSION", level: 19, bpm: "183-370", difficulty: "challenge" },
+      ],
+    },
+  ],
+};
+
+
+// --- Helper Functions & Constants ---
+// Corrected multipliers array to include 4.0x
+const multipliers = [
+  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
+  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
+];
+
+const difficultyMap = {
+    basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
+    difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
+    expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
+    challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
+};
+const difficultyMapDouble = {
+    basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
+    difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
+    expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
+    challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
+};
+
+const getMaxBpm = (bpm) => {
+  if (typeof bpm !== 'string') return 0;
+  const parts = bpm.split('-').map(Number);
+  return Math.max(...parts);
+};
+
+// --- React Components ---
+
+const SongCard = ({ song, targetBPM, playMode }) => {
+  const calculation = useMemo(() => {
+    const maxBpm = getMaxBpm(song.bpm);
+    if (maxBpm === 0) return { speed: 'N/A', modifier: 'N/A' };
+    const idealMultiplier = targetBPM / maxBpm;
+    const closestMultiplier = multipliers.reduce((prev, curr) => 
+      Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
+    );
+    return {
+      speed: (maxBpm * closestMultiplier).toFixed(0),
+      modifier: closestMultiplier
+    };
+  }, [song.bpm, targetBPM]);
+
+  const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
+
+  return (
+    <div className="flex-grow flex flex-col justify-between p-3 rounded-lg text-white shadow-md bg-gray-700 transition-colors hover:bg-gray-600">
+      <h3 className="font-bold text-sm md:text-base leading-tight mb-2">{song.title}</h3>
+      <div className="flex justify-between items-end mt-auto">
+        <div>
+          <span className="block text-xs font-semibold opacity-80">BPM: {song.bpm}</span>
+          <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-lg font-bold text-cyan-300" title={`Resulting scroll speed for ${targetBPM} target`}>~{calculation.speed}</span>
+            <span className="text-sm font-bold text-green-400">{calculation.modifier}x</span>
+          </div>
+        </div>
+        <div className="text-right">
+            <span className="block text-lg font-bold">Lv.{song.level}</span>
+            {difficultyInfo && (
+                 <span 
+                    className="px-2 py-0.5 mt-1 inline-block rounded text-xs font-bold" 
+                    style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                >
+                    {difficultyInfo.name}
+                </span>
+            )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const DanSection = ({ danCourse, targetBPM, playMode }) => (
+  <section className="mb-8">
+    <h2
+      className="text-2xl font-bold text-white p-3 rounded-t-lg shadow-lg"
+      style={{ backgroundColor: danCourse.color }}
+    >
+      {danCourse.dan}
+    </h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-gray-800 rounded-b-lg">
+      {danCourse.songs.map((song) => (
+        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} />
+      ))}
+    </div>
+  </section>
+);
+
+const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
+  <div className="bg-gray-900 p-4 rounded-xl shadow-lg mb-8">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      {/* Play Mode Toggle */}
+      <div className="flex bg-gray-700 rounded-full p-1">
+        <button
+          onClick={() => setMode('single')}
+          className={`px-6 py-2 text-sm font-bold rounded-full transition-colors ${
+            activeMode === 'single' ? 'bg-pink-500 text-white' : 'text-gray-300 hover:bg-gray-600'
+          }`}
+        >
+          Single
+        </button>
+        <button
+          onClick={() => setMode('double')}
+          className={`px-6 py-2 text-sm font-bold rounded-full transition-colors ${
+            activeMode === 'double' ? 'bg-blue-500 text-white' : 'text-gray-300 hover:bg-gray-600'
+          }`}
+        >
+          Double
+        </button>
+      </div>
+
+      {/* Dan Level Filter */}
+      <div className="relative">
+         <select
+            value={activeDan}
+            onChange={(e) => setDan(e.target.value)}
+            className="appearance-none bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-auto"
+        >
+            <option value="All">All Dan Levels</option>
+            {danLevels.map(dan => (
+                <option key={dan} value={dan}>{dan}</option>
+            ))}
+        </select>
+         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
+    <div className="bg-gray-900 p-4 rounded-xl shadow-lg mb-8 sticky top-4 z-10">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            <label htmlFor="targetBPM" className="block text-lg font-medium text-gray-200">
+                Your Target Scroll Speed:
+            </label>
+            <input
+                id="targetBPM"
+                type="number"
+                value={targetBPM}
+                onChange={(e) => setTargetBPM(Number(e.target.value))}
+                className="w-full sm:w-40 bg-gray-700 text-white p-2 rounded-lg border-2 border-transparent text-center text-xl font-bold focus:border-purple-500 focus:outline-none focus:ring-0 transition"
+                placeholder="e.g. 300"
+            />
+        </div>
+    </div>
+);
+
+
+export default function App() {
+  const [playMode, setPlayMode] = useState('single');
+  const [activeDan, setActiveDan] = useState('All');
+  const [targetBPM, setTargetBPM] = useState(300);
+
+  const coursesToShow = useMemo(() => {
+    const courses = ddrDanData[playMode];
+    if (activeDan === 'All') return courses;
+    return courses.filter(course => course.dan === activeDan);
+  }, [playMode, activeDan]);
+  
+  const danLevels = useMemo(() => ddrDanData[playMode].map(d => d.dan), [playMode]);
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white font-sans p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+            DDR A20+ / A3 <span className="text-purple-400">Dan Courses</span>
+          </h1>
+          <p className="text-gray-400 mt-2">Browse courses and set your target scroll speed.</p>
+        </header>
+
+        <main>
+          <TargetBPMInput 
+              targetBPM={targetBPM} 
+              setTargetBPM={setTargetBPM} 
+          />
+
+          <FilterBar 
+            activeMode={playMode} 
+            setMode={(mode) => {
+              setPlayMode(mode);
+              setActiveDan('All');
+            }}
+            activeDan={activeDan}
+            setDan={setActiveDan}
+            danLevels={danLevels}
+          />
+          
+          {coursesToShow.length > 0 ? (
+             coursesToShow.map((course) => (
+                <DanSection 
+                  key={course.dan} 
+                  danCourse={course} 
+                  targetBPM={targetBPM}
+                  playMode={playMode}
+                />
+            ))
+          ) : (
+            <div className="text-center py-16">
+              <p className="text-gray-500">No courses found for this filter.</p>
+            </div>
+          )}
+        </main>
+
+        <footer className="text-center mt-12 text-gray-500 text-sm">
+            <p>Data based on DDR A20 PLUS / A3 Dan courses. All song titles are properties of their respective owners.</p>
+            <p>Built with React & Tailwind CSS.</p>
+        </footer>
+      </div>
+    </div>
+  );
+}
