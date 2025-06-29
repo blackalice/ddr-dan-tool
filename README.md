@@ -1,13 +1,11 @@
 DDR A3 Dan Course Visualizer & BPM Tool
 =======================================
 
-(Replace the URL above with a link to a screenshot of your finished application)
+![screenshot](screenshot.png)
 
 A clean, fast, and mobile-friendly web application designed to help DanceDanceRevolution players visualize the A3 Dan (Class) mode courses and calculate their ideal scroll speed.
 
 [➡️ Live Demo Link Here](https://ddr-dan-tool.rtfoy.co.uk/ "null")
-
-(Replace this with your actual Cloudflare Pages deployment URL)
 
 Features
 --------
