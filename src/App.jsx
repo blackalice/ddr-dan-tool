@@ -161,8 +161,8 @@ const ddrDanData = {
       songs: [
         { title: "TECH-NOID", level: 13, bpm: "146", difficulty: "expert" },
         { title: "exotic ethnic", level: 13, bpm: "190", difficulty: "expert" },
-        { title: "デッドボヲルde Ishtar", level: 13, bpm: "145", difficulty: "expert" },
-        { title: "UNBELIEVABLE (Sparky remix)", level: 14, bpm: "155", difficulty: "expert" },
+        { title: "デッドボヲルdeホームラン", level: 13, bpm: "145", difficulty: "expert" },
+        { title: "Ishtar", level: 14, bpm: "156", difficulty: "expert" },
       ],
     },
     {
@@ -212,7 +212,7 @@ const ddrDanData = {
         { title: "Spanish Snowy Dance", level: 18, bpm: "180", difficulty: "challenge" },
         { title: "Astrogazer", level: 18, bpm: "154", difficulty: "challenge" },
         { title: "New Decade", level: 18, bpm: "100-400", difficulty: "challenge" },
-        { title: "PARANOIA -HADES-", level: 18, bpm: "75-300", difficulty: "challenge" },
+        { title: "PARANOIA ~HADES~", level: 18, bpm: "75-300", difficulty: "challenge" },
       ],
     },
     {
