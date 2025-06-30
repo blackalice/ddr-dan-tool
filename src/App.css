@@ -250,7 +250,7 @@ body {
   color: var(--cyan-color);
 }
 .song-modifier {
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--green-color);
 }
