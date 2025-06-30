@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Chart from 'chart.js/auto';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import './BPMTool.css';
@@ -299,7 +302,58 @@ const BPMTool = () => {
                         <p>{songMeta.artist}</p>
                     </div>
                     <div className="chart-container">
-                        <canvas ref={chartRef}></canvas>
+                        {chartData && (
+                            <Line
+                                data={{
+                                    datasets: [{
+                                        label: 'BPM',
+                                        data: chartData,
+                                        borderColor: 'rgba(59, 130, 246, 1)',
+                                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                        stepped: true,
+                                        fill: true,
+                                        pointRadius: 4,
+                                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                        pointBorderColor: '#fff',
+                                        pointHoverRadius: 7,
+                                        borderWidth: 2.5
+                                    }]
+                                }}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        x: {
+                                            type: 'linear',
+                                            title: { display: true, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                            ticks: { color: '#9CA3AF' },
+                                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                                        },
+                                        y: {
+                                            title: { display: true, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                            ticks: { color: '#9CA3AF', stepSize: 10 },
+                                            grid: { color: 'rgba(255, 255, 255,.1)' }
+                                        }
+                                    },
+                                    plugins: {
+                                        legend: { display: false },
+                                        tooltip: {
+                                            mode: 'index',
+                                            intersect: false,
+                                            callbacks: {
+                                                title: (tooltipItems) => `Time: ${tooltipItems[0].parsed.x.toFixed(2)}s`,
+                                                label: (context) => `BPM: ${context.parsed.y}`
+                                            }
+                                        }
+                                    },
+                                    interaction: {
+                                      mode: 'nearest',
+                                      axis: 'x',
+                                      intersect: false
+                                    }
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             )}
