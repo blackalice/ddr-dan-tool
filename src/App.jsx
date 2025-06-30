@@ -1,7 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Multiplier from './Multiplier';
+import BPMTool from './BPMTool';
+import Tabs from './Tabs';
 import './App.css';
+import './Tabs.css';
 
 // --- Data Structure ---
 const ddrDanData = {
@@ -383,20 +386,6 @@ const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
     </div>
 );
 
-// --- Main App Component with Embedded CSS ---
-function App() {
-  const [targetBPM, setTargetBPM] = useState(300);
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-        <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-      </Routes>
-    </Router>
-  );
-}
-
 function MainPage({ targetBPM, setTargetBPM }) {
   const [playMode, setPlayMode] = useState('single');
   const [activeDan, setActiveDan] = useState('All');
@@ -411,33 +400,8 @@ function MainPage({ targetBPM, setTargetBPM }) {
 
   return (
     <>
-      <style>{`
-        @media (max-width: 640px) {
-          .filter-group {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0.75rem;
-          }
-          .play-mode-toggle {
-            display: flex;
-          }
-          .play-mode-toggle button {
-            flex-grow: 1;
-          }
-        }
-      `}</style>
+      
       <div className="app-container">
-        <header className="header">
-          <div className="header-content">
-            <h1>
-              DDR A3 <span>Dan Courses</span>
-            </h1>
-            <nav>
-              <Link to="/multiplier" className="nav-link">Multiplier Calculator</Link>
-            </nav>
-          </div>
-        </header>
-
         <main>
           <TargetBPMInput 
               targetBPM={targetBPM} 
@@ -478,6 +442,23 @@ function MainPage({ targetBPM, setTargetBPM }) {
         </footer>
       </div>
     </>
+  );
+}
+
+function App() {
+  const [targetBPM, setTargetBPM] = useState(300);
+
+  return (
+    <Router>
+      <div className="app-container">
+        <Tabs />
+        <Routes>
+          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+          <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+          <Route path="/bpm" element={<BPMTool />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

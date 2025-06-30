@@ -1,0 +1,134 @@
+.bpm-tool-container {
+    max-width: 1152px; /* 72rem */
+    margin: 0 auto;
+    padding: 0 0.75rem;
+    background-color: #111827;
+    color: #FFFFFF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.bpm-tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.bpm-tool-header h1 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+
+.bpm-tool-header h1 span {
+    color: #A78BFA;
+}
+
+.selection-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.selection-container h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.selection-container p {
+    font-size: 1.125rem;
+    color: #9CA3AF;
+    margin-bottom: 1.5rem;
+}
+
+.controls-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: stretch; /* Align items to stretch to the same height */
+}
+
+.game-select, .song-select-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game-select, .song-select {
+    background-color: #374151;
+    border: 1px solid #4B5563;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #FFFFFF;
+    font-size: 1rem;
+    height: 100%; /* Make sure it fills the container height */
+}
+
+.game-select {
+    width: 33.333333%;
+}
+
+.song-select-container {
+    width: 66.666667%;
+}
+
+.chart-section {
+    background-color: #1F2937;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.chart-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.chart-header h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.chart-header p {
+    font-size: 1.125rem;
+    color: #9CA3AF;
+}
+
+.chart-container {
+    position: relative;
+    height: 60vh;
+    width: 100%;
+}
+
+.song-select .react-select__control {
+    height: 100%;
+}
+
+@media (max-width: 640px) {
+    .controls-container {
+        flex-direction: column;
+    }
+    .game-select, .song-select-container {
+        width: 100%;
+    }
+    .chart-container {
+        height: 45vh;
+    }
+    .chart-header h2 {
+        font-size: 1.5rem;
+    }
+    .chart-header p {
+        font-size: 1rem;
+    }
+    .selection-container h1 {
+        font-size: 1.875rem;
+    }
+    .selection-container p {
+        font-size: 1rem;
+    }
+    .bpm-tool-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

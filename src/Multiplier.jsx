@@ -30,18 +30,7 @@ function Multiplier({ targetBPM, setTargetBPM }) {
   }, [songBPM, targetBPM]);
 
   return (
-    <div className="app-container">
-      <header className="header">
-        <div className="header-content">
-          <h1>
-            Multiplier <span>Calculator</span>
-          </h1>
-          <nav>
-            <Link to="/" className="nav-link">Return to Dan Courses</Link>
-          </nav>
-        </div>
-      </header>
-      <main>
+    <main>
         <div className="multiplier-content">
           <div className="input-group">
             <label htmlFor="targetBPM">Your Target Scroll Speed</label>
@@ -72,7 +61,6 @@ function Multiplier({ targetBPM, setTargetBPM }) {
           </div>
         </div>
       </main>
-    </div>
   );
 }
 
