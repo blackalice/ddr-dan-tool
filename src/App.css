@@ -254,6 +254,10 @@ body {
   font-weight: 700;
   color: var(--green-color);
 }
+.song-separator {
+  color: var(--text-muted-color);
+  margin: 0 0.25rem;
+}
 .song-level-container {
   text-align: right;
 }

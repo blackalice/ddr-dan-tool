@@ -294,11 +294,10 @@ const SongCard = ({ song, targetBPM, playMode }) => {
         <div>
           <span className="song-bpm">BPM: {song.bpm}</span>
           <div className="song-calculation">
-            {calculation.isRange ? (
-              <span className="song-speed">~{calculation.minSpeed}-{calculation.maxSpeed}</span>
-            ) : (
-              <span className="song-speed">~{calculation.maxSpeed}</span>
-            )}
+            <span className="song-speed">
+              {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
+            </span>
+            <span className="song-separator">@</span>
             <span className="song-modifier">{calculation.modifier}x</span>
           </div>
         </div>

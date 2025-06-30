@@ -68,7 +68,7 @@ function Multiplier({ targetBPM, setTargetBPM }) {
           <div className="result">
             <h2>Recommended Multiplier</h2>
             <p className="modifier">{calculation.modifier}x</p>
-            <p className="speed">~{calculation.speed} scroll speed</p>
+            <p className="speed">{calculation.speed} scroll speed</p>
           </div>
         </div>
       </main>
