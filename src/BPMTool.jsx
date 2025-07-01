@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -200,6 +199,8 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
+import Camera from './Camera';
+
 const BPMTool = () => {
     const [smData, setSmData] = useState({ games: [], files: [] });
     const [selectedGame, setSelectedGame] = useState('all');
@@ -209,12 +210,17 @@ const BPMTool = () => {
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
-    const [isCameraOpen, setIsCameraOpen] = useState(false);
-    const [capturedImage, setCapturedImage] = useState(null);
-    const videoRef = useRef(null);
     const [inputValue, setInputValue] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+
+    const handleCapture = (imageDataUrl) => {
+        if (!apiKey) {
+            setShowApiKeyModal(true);
+            return;
+        }
+        sendToGemini(imageDataUrl);
+    };
 
     const renderDifficulties = (difficulties, playStyle) => {
         return difficultyLevels.map(levelName => {
@@ -385,46 +391,6 @@ const BPMTool = () => {
         input: (styles) => ({ ...styles, color: 'white' }),
     };
 
-    const openCamera = () => {
-        if (!apiKey) {
-            setShowApiKeyModal(true);
-            return;
-        }
-        setCapturedImage(null);
-        setIsCameraOpen(true);
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(stream => {
-                videoRef.current.srcObject = stream;
-            })
-            .catch(err => {
-                console.error("Error accessing rear camera, trying front camera: ", err);
-                // Fallback to any camera if the rear one is not available
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(stream => {
-                        videoRef.current.srcObject = stream;
-                    })
-                    .catch(err2 => console.error("Error accessing any camera: ", err2));
-            });
-    };
-
-    const closeCamera = () => {
-        if (videoRef.current && videoRef.current.srcObject) {
-            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-        }
-        setIsCameraOpen(false);
-    };
-
-    const takePicture = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-        const imageDataUrl = canvas.toDataURL('image/jpeg');
-        setCapturedImage(imageDataUrl);
-        closeCamera();
-        sendToGemini(imageDataUrl);
-    };
-
     async function sendToGemini(imageDataUrl) {
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
@@ -494,7 +460,7 @@ const BPMTool = () => {
                             }}
                         />
                     </div>
-                    <button onClick={openCamera} className="camera-button">📷</button>
+                    <Camera onCapture={handleCapture} />
                     <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
                 </div>
             </div>
@@ -514,16 +480,6 @@ const BPMTool = () => {
                         />
                         <button onClick={() => handleApiKeySave(document.querySelector('.api-key-modal-content input').value)}>Save</button>
                         <button onClick={() => setShowApiKeyModal(false)}>Close</button>
-                    </div>
-                </div>
-            )}
-
-            {isCameraOpen && (
-                <div className="camera-modal">
-                    <div className="camera-modal-content">
-                        <video ref={videoRef} autoPlay playsInline></video>
-                        <button onClick={takePicture}>Take Picture</button>
-                        <button onClick={closeCamera}>Close</button>
                     </div>
                 </div>
             )}
