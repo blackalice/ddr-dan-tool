@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { useLocation } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
@@ -256,7 +257,12 @@ const multipliers = [
   ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
 ];
 
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+}
+
 const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame, targetBPM }) => {
+    const query = useQuery();
     const [smData, setSmData] = useState({ games: [], files: [] });
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
@@ -268,6 +274,20 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
+
+    useEffect(() => {
+        const songTitle = query.get('song');
+        if (songTitle && songOptions.length > 0) {
+            const matchedSong = songOptions.find(option =>
+                option.title.toLowerCase() === songTitle.toLowerCase() ||
+                (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
+            );
+            if (matchedSong) {
+                setSelectedSong(matchedSong);
+            }
+        }
+    }, [query, songOptions, setSelectedSong]);
+
 
     const calculation = useMemo(() => {
         if (!targetBPM || !songMeta.bpmDisplay || songMeta.bpmDisplay === 'N/A') return null;

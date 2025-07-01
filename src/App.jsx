@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
@@ -24,7 +24,7 @@ const ddrDanData = {
       color: "#6fbe44",
       songs: [
         { title: "Electric Dance System Music", level: 10, bpm: "190", difficulty: "difficult" },
-        { title: "十二星座の翼", level: 10, bpm: "164", difficulty: "difficult" },
+        { title: "十二星座の聖域", level: 10, bpm: "164", difficulty: "difficult" },
         { title: "Liberate", level: 10, bpm: "128", difficulty: "difficult" },
         { title: "Show Me Your Moves", level: 11, bpm: "155", difficulty: "expert" },
       ],
@@ -113,7 +113,7 @@ const ddrDanData = {
       dan: "Kaiden (皆伝)",
       color: "#f8d45a",
       songs: [
-        { title: "Lachryma《Re:Queen'M》", level: 19, bpm: "236", difficulty: "challenge" },
+        { title: "Lachryma《Re:Queen’M》", level: 19, bpm: "236", difficulty: "challenge" },
         { title: "Over the “Period”", level: 19, bpm: "25-838", difficulty: "challenge" },
         { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
         { title: "ENDYMION", level: 19, bpm: "110-880", difficulty: "challenge" },
@@ -291,32 +291,34 @@ const SongCard = ({ song, targetBPM, playMode }) => {
   const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
 
   return (
-    <div className="song-card">
-      <h3 className="song-title">{song.title}</h3>
-      <div className="song-details">
-        <div>
-          <span className="song-bpm">BPM: {song.bpm}</span>
-          <div className="song-calculation">
-            <span className="song-speed">
-              {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
-            </span>
-            <span className="song-separator">@</span>
-            <span className="song-modifier">{calculation.modifier}x</span>
+    <Link to={`/bpm?song=${encodeURIComponent(song.title)}`} className="song-card-link">
+      <div className="song-card">
+        <h3 className="song-title">{song.title}</h3>
+        <div className="song-details">
+          <div>
+            <span className="song-bpm">BPM: {song.bpm}</span>
+            <div className="song-calculation">
+              <span className="song-speed">
+                {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
+              </span>
+              <span className="song-separator">@</span>
+              <span className="song-modifier">{calculation.modifier}x</span>
+            </div>
+          </div>
+          <div className="song-level-container">
+              <span className="song-level">Lv.{song.level}</span>
+              {difficultyInfo && (
+                   <span 
+                      className="difficulty-badge"
+                      style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                  >
+                      {difficultyInfo.name}
+                  </span>
+              )}
           </div>
         </div>
-        <div className="song-level-container">
-            <span className="song-level">Lv.{song.level}</span>
-            {difficultyInfo && (
-                 <span 
-                    className="difficulty-badge"
-                    style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
-                >
-                    {difficultyInfo.name}
-                </span>
-            )}
-        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -386,10 +388,7 @@ const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
     </div>
 );
 
-function MainPage({ targetBPM, setTargetBPM }) {
-  const [playMode, setPlayMode] = useState('single');
-  const [activeDan, setActiveDan] = useState('All');
-
+function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan }) {
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
     if (activeDan === 'All') return courses;
@@ -452,17 +451,31 @@ function App() {
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
+  const [playMode, setPlayMode] = useState(() => {
+    return localStorage.getItem('playMode') || 'single';
+  });
+  const [activeDan, setActiveDan] = useState(() => {
+    return localStorage.getItem('activeDan') || 'All';
+  });
 
   useEffect(() => {
     localStorage.setItem('targetBPM', targetBPM);
   }, [targetBPM]);
+
+  useEffect(() => {
+    localStorage.setItem('playMode', playMode);
+  }, [playMode]);
+
+  useEffect(() => {
+    localStorage.setItem('activeDan', activeDan);
+  }, [activeDan]);
 
   return (
     <Router>
       <div className="app-container">
         <Tabs />
         <Routes>
-          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} />} />
           <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
           <Route path="/bpm" element={<BPMTool selectedSong={selectedSong} setSelectedSong={setSelectedSong} selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
         </Routes>
