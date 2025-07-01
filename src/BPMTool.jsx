@@ -329,7 +329,7 @@ const BPMTool = () => {
         setIsProcessing(true);
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
-        const prompt = "What is the name of the song in the image? Return ONLY the song name, no other text. If you cannot identify the song, return 'Unknown'.";
+        const prompt = "From the attached image of a rhythm game screen, identify the song title. Return only the song title and nothing else. If the title is not visible, return 'Unknown'.";
         
         const image = {
             inlineData: {
