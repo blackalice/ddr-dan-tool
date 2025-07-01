@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
@@ -208,6 +209,12 @@ const BPMTool = () => {
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [capturedImage, setCapturedImage] = useState(null);
+    const videoRef = useRef(null);
+    const [inputValue, setInputValue] = useState('');
+    const [apiKey, setApiKey] = useState('');
+    const [showApiKeyModal, setShowApiKeyModal] = useState(false);
 
     const renderDifficulties = (difficulties, playStyle) => {
         return difficultyLevels.map(levelName => {
@@ -223,6 +230,13 @@ const BPMTool = () => {
             return <DifficultyMeter key={`${playStyle}-${levelName}`} level={level || 'X'} difficultyName={levelName} isMissing={!level} />;
         });
     };
+
+    useEffect(() => {
+        const storedApiKey = localStorage.getItem('geminiApiKey');
+        if (storedApiKey) {
+            setApiKey(storedApiKey);
+        }
+    }, []);
 
     useEffect(() => {
         fetch('/sm-files.json')
@@ -371,6 +385,67 @@ const BPMTool = () => {
         input: (styles) => ({ ...styles, color: 'white' }),
     };
 
+    const openCamera = () => {
+        if (!apiKey) {
+            setShowApiKeyModal(true);
+            return;
+        }
+        setCapturedImage(null);
+        setIsCameraOpen(true);
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                videoRef.current.srcObject = stream;
+            })
+            .catch(err => console.error("Error accessing camera: ", err));
+    };
+
+    const closeCamera = () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+        }
+        setIsCameraOpen(false);
+    };
+
+    const takePicture = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+        const imageDataUrl = canvas.toDataURL('image/jpeg');
+        setCapturedImage(imageDataUrl);
+        closeCamera();
+        sendToGemini(imageDataUrl);
+    };
+
+    async function sendToGemini(imageDataUrl) {
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
+        const prompt = "What is the name of the song in the image? Return ONLY the song name, no other text. If you cannot identify the song, return 'Unknown'.";
+        
+        const image = {
+            inlineData: {
+              data: imageDataUrl.split(',')[1],
+              mimeType: "image/jpeg"
+            },
+        };
+
+        try {
+            const result = await model.generateContent([prompt, image]);
+            const response = await result.response;
+            const text = response.text();
+            setInputValue(text);
+        } catch (error) {
+            console.error("Error with Gemini API:", error);
+            setInputValue("Error identifying song.");
+        }
+    }
+
+    const handleApiKeySave = (newApiKey) => {
+        setApiKey(newApiKey);
+        localStorage.setItem('geminiApiKey', newApiKey);
+        setShowApiKeyModal(false);
+    };
+
     return (
         <div className="bpm-tool-container">
             <div className="selection-container">
@@ -399,6 +474,8 @@ const BPMTool = () => {
                             placeholder="Search for a song..."
                             isClearable
                             components={{ MenuList }}
+                            inputValue={inputValue}
+                            onInputChange={setInputValue}
                             filterOption={(option, rawInput) => {
                                 const { label, data } = option;
                                 const { title, titleTranslit } = data;
@@ -409,8 +486,39 @@ const BPMTool = () => {
                             }}
                         />
                     </div>
+                    <button onClick={openCamera} className="camera-button">📷</button>
+                    <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
                 </div>
             </div>
+
+            {showApiKeyModal && (
+                <div className="api-key-modal">
+                    <div className="api-key-modal-content">
+                        <h3>Enter your Google AI Studio API Key</h3>
+                        <input
+                            type="password"
+                            defaultValue={apiKey}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleApiKeySave(e.target.value);
+                                }
+                            }}
+                        />
+                        <button onClick={() => handleApiKeySave(document.querySelector('.api-key-modal-content input').value)}>Save</button>
+                        <button onClick={() => setShowApiKeyModal(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+
+            {isCameraOpen && (
+                <div className="camera-modal">
+                    <div className="camera-modal-content">
+                        <video ref={videoRef} autoPlay playsInline></video>
+                        <button onClick={takePicture}>Take Picture</button>
+                        <button onClick={closeCamera}>Close</button>
+                    </div>
+                </div>
+            )}
 
             {chartData && (
                 <div className="chart-section">
