@@ -17,9 +17,15 @@ function findSmFiles(dir, baseDir) {
         if (stat.isDirectory()) {
             files = files.concat(findSmFiles(fullPath, baseDir));
         } else if (path.extname(fullPath) === '.sm') {
-            // Make path relative to the public directory
             const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
-            files.push(relativePath);
+            const content = fs.readFileSync(fullPath, 'utf-8');
+            const title = content.match(/#TITLE:([^;]+);/)?.[1] || 'Unknown Title';
+            const titleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1] || '';
+            files.push({
+                path: relativePath,
+                title: title.trim(),
+                titleTranslit: titleTranslit.trim()
+            });
         }
     }
     return files;

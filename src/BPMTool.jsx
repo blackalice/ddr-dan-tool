@@ -253,22 +253,17 @@ const BPMTool = () => {
     useEffect(() => {
         let filteredFiles = smData.files;
         if (selectedGame !== 'all') {
-            filteredFiles = smData.files.filter(file => file.startsWith(`sm/${selectedGame}/`));
+            filteredFiles = smData.files.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
         
-        const optionsPromises = filteredFiles.map(file => 
-            fetch(encodeURI(file))
-                .then(response => response.text())
-                .then(content => {
-                    const { title, titleTranslit } = parseSmFile(content);
-                    const fileName = file.split('/').pop().replace('.sm', '');
-                    return { value: file, label: fileName, title, titleTranslit };
-                })
-        );
+        const options = filteredFiles.map(file => ({
+            value: file.path,
+            label: file.title,
+            title: file.title,
+            titleTranslit: file.titleTranslit
+        }));
 
-        Promise.all(optionsPromises).then(options => {
-            setSongOptions(options);
-        });
+        setSongOptions(options);
     }, [selectedGame, smData]);
 
     useEffect(() => {
