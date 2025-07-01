@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const Camera = ({ onCapture }) => {
+const Camera = ({ onCapture, isProcessing }) => {
   const fileInputRef = useRef(null);
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -10,7 +10,28 @@ const Camera = ({ onCapture }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        onCapture(e.target.result);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_PIXELS = 2000000;
+          let width = img.width;
+          let height = img.height;
+
+          if (width * height > MAX_PIXELS) {
+            const ratio = Math.sqrt((width * height) / MAX_PIXELS);
+            width = Math.floor(width / ratio);
+            height = Math.floor(height / ratio);
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          onCapture(dataUrl);
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
@@ -44,7 +65,9 @@ const Camera = ({ onCapture }) => {
           }}
         />
       )}
-      <button onClick={openFileDialog} className="camera-button">📷</button>
+      <button onClick={openFileDialog} className="camera-button" disabled={isProcessing}>
+        {isProcessing ? '...' : '📷'}
+      </button>
     </div>
   );
 };

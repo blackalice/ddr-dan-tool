@@ -213,6 +213,7 @@ const BPMTool = () => {
     const [inputValue, setInputValue] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const handleCapture = (imageDataUrl) => {
         if (!apiKey) {
@@ -392,6 +393,7 @@ const BPMTool = () => {
     };
 
     async function sendToGemini(imageDataUrl) {
+        setIsProcessing(true);
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
         const prompt = "What is the name of the song in the image? Return ONLY the song name, no other text. If you cannot identify the song, return 'Unknown'.";
@@ -408,9 +410,20 @@ const BPMTool = () => {
             const response = await result.response;
             const text = response.text();
             setInputValue(text);
+
+            const matchedSong = songOptions.find(option =>
+                option.title.toLowerCase() === text.toLowerCase() ||
+                (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase())
+            );
+
+            if (matchedSong) {
+                setSelectedSong(matchedSong);
+            }
         } catch (error) {
             console.error("Error with Gemini API:", error);
             setInputValue("Error identifying song.");
+        } finally {
+            setIsProcessing(false);
         }
     }
 
@@ -460,7 +473,7 @@ const BPMTool = () => {
                             }}
                         />
                     </div>
-                    <Camera onCapture={handleCapture} />
+                    <Camera onCapture={handleCapture} isProcessing={isProcessing} />
                     <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
                 </div>
             </div>
