@@ -9,25 +9,62 @@ const multipliers = [
 
 function Multiplier({ targetBPM, setTargetBPM }) {
   const [songBPM, setSongBPM] = useState(150);
+  const [showAlternative, setShowAlternative] = useState(false);
 
   const calculation = useMemo(() => {
     const numericTarget = Number(targetBPM) || 0;
     const numericSongBPM = Number(songBPM) || 0;
     
-    if (numericSongBPM === 0) return { modifier: 'N/A', speed: 'N/A' };
+    if (numericSongBPM === 0 || numericTarget === 0) return null;
 
     const idealMultiplier = numericTarget / numericSongBPM;
+    
     const closestMultiplier = multipliers.reduce((prev, curr) => 
       Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
     );
+    
+    const closestIndex = multipliers.indexOf(closestMultiplier);
+    const primarySpeed = (numericSongBPM * closestMultiplier).toFixed(0);
 
-    const speed = (numericSongBPM * closestMultiplier).toFixed(0);
+    let alternativeMultiplier = null;
+    if (primarySpeed > numericTarget) {
+      if (closestIndex > 0) {
+        alternativeMultiplier = multipliers[closestIndex - 1];
+      }
+    } else {
+      if (closestIndex < multipliers.length - 1) {
+        alternativeMultiplier = multipliers[closestIndex + 1];
+      }
+    }
 
-    return {
-      modifier: closestMultiplier,
-      speed: speed,
+    const result = {
+      primary: {
+        modifier: closestMultiplier,
+        speed: primarySpeed,
+      },
+      alternative: null,
     };
+
+    if (alternativeMultiplier) {
+      const alternativeSpeed = (numericSongBPM * alternativeMultiplier).toFixed(0);
+      result.alternative = {
+        modifier: alternativeMultiplier,
+        speed: alternativeSpeed,
+        direction: alternativeSpeed > primarySpeed ? 'up' : 'down',
+      };
+    }
+    
+    // If the primary and alternative are the same, there's no real alternative.
+    if (result.alternative && result.primary.speed === result.alternative.speed) {
+        result.alternative = null;
+    }
+
+
+    return result;
   }, [songBPM, targetBPM]);
+
+  const currentDisplay = calculation ? (showAlternative && calculation.alternative ? calculation.alternative : calculation.primary) : { modifier: 'N/A', speed: 'N/A' };
+
 
   return (
     <main>
@@ -56,8 +93,16 @@ function Multiplier({ targetBPM, setTargetBPM }) {
           </div>
           <div className="result">
             <h2>Recommended Multiplier</h2>
-            <p className="modifier">{calculation.modifier}x</p>
-            <p className="speed">{calculation.speed} scroll speed</p>
+            <p className="modifier">{currentDisplay.modifier}x</p>
+            <p className="speed">{currentDisplay.speed} scroll speed</p>
+            {calculation && calculation.alternative && (
+              <button 
+                className={`toggle-button ${showAlternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                onClick={() => setShowAlternative(!showAlternative)}
+              >
+                <i className="fa-solid fa-rotate"></i>
+              </button>
+            )}
           </div>
         </div>
       </main>

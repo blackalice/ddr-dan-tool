@@ -183,6 +183,47 @@ const calculateChartData = (bpmChanges, songLastBeat) => {
     return dataPoints;
 };
 
+const calculateCoreBpm = (bpmChanges, songLastBeat) => {
+    if (bpmChanges.length === 0) return null;
+    if (bpmChanges.length === 1) return bpmChanges[0].bpm;
+
+    const bpmDurations = new Map();
+    let lastBeat = 0;
+    let currentBpm = bpmChanges[0].bpm;
+
+    for (let i = 1; i < bpmChanges.length; i++) {
+        const change = bpmChanges[i];
+        const beatsElapsed = change.beat - lastBeat;
+        
+        if (currentBpm > 0) {
+            const duration = (beatsElapsed / currentBpm) * 60;
+            bpmDurations.set(currentBpm, (bpmDurations.get(currentBpm) || 0) + duration);
+        }
+        
+        currentBpm = change.bpm;
+        lastBeat = change.beat;
+    }
+
+    const beatsRemaining = songLastBeat - lastBeat;
+    if (currentBpm > 0 && beatsRemaining > 0) {
+        const finalSegmentDuration = (beatsRemaining / currentBpm) * 60;
+        bpmDurations.set(currentBpm, (bpmDurations.get(currentBpm) || 0) + finalSegmentDuration);
+    }
+
+    if (bpmDurations.size === 0) return null;
+
+    let maxDuration = 0;
+    let coreBpm = null;
+    for (const [bpm, duration] of bpmDurations.entries()) {
+        if (duration > maxDuration) {
+            maxDuration = duration;
+            coreBpm = bpm;
+        }
+    }
+
+    return coreBpm;
+};
+
 const MenuList = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
     const initialOffset = options.indexOf(value) * 35;
@@ -210,15 +251,23 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
+const multipliers = [
+  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
+  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
+];
+
 const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame, targetBPM }) => {
     const [smData, setSmData] = useState({ games: [], files: [] });
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
+    const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
     const [inputValue, setInputValue] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [showAltBpm, setShowAltBpm] = useState(false);
+    const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !songMeta.bpmDisplay || songMeta.bpmDisplay === 'N/A') return null;
@@ -229,24 +278,92 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
         if (bpmRange.max === 0) return null;
 
         const idealMultiplier = numericTarget / bpmRange.max;
-        const multipliers = [
-            ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25),
-            ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),
-        ];
+        
         const closestMultiplier = multipliers.reduce((prev, curr) => 
           Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
         );
 
-        const minSpeed = (bpmRange.min * closestMultiplier).toFixed(0);
-        const maxSpeed = (bpmRange.max * closestMultiplier).toFixed(0);
+        const closestIndex = multipliers.indexOf(closestMultiplier);
+        const primarySpeed = (bpmRange.max * closestMultiplier);
 
-        return {
-            modifier: closestMultiplier,
-            minSpeed: minSpeed,
-            maxSpeed: maxSpeed,
-            isRange: bpmRange.min !== bpmRange.max
+        let alternativeMultiplier = null;
+        if (primarySpeed > numericTarget) {
+            if (closestIndex > 0) alternativeMultiplier = multipliers[closestIndex - 1];
+        } else {
+            if (closestIndex < multipliers.length - 1) alternativeMultiplier = multipliers[closestIndex + 1];
+        }
+
+        const result = {
+            primary: {
+                modifier: closestMultiplier,
+                minSpeed: (bpmRange.min * closestMultiplier).toFixed(0),
+                maxSpeed: primarySpeed.toFixed(0),
+                isRange: bpmRange.min !== bpmRange.max
+            },
+            alternative: null
         };
+
+        if (alternativeMultiplier) {
+            const altMaxSpeed = (bpmRange.max * alternativeMultiplier);
+            result.alternative = {
+                modifier: alternativeMultiplier,
+                minSpeed: (bpmRange.min * alternativeMultiplier).toFixed(0),
+                maxSpeed: altMaxSpeed.toFixed(0),
+                isRange: bpmRange.min !== bpmRange.max,
+                direction: altMaxSpeed > primarySpeed ? 'up' : 'down'
+            };
+        }
+        
+        if (result.alternative && result.primary.maxSpeed === result.alternative.maxSpeed) {
+            result.alternative = null;
+        }
+
+        return result;
     }, [targetBPM, songMeta.bpmDisplay]);
+
+    const coreCalculation = useMemo(() => {
+        if (!targetBPM || !songMeta.coreBpm) return null;
+
+        const numericTarget = Number(targetBPM) || 0;
+        const idealMultiplier = numericTarget / songMeta.coreBpm;
+
+        const closestMultiplier = multipliers.reduce((prev, curr) => 
+          Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
+        );
+
+        const closestIndex = multipliers.indexOf(closestMultiplier);
+        const primarySpeed = (songMeta.coreBpm * closestMultiplier);
+
+        let alternativeMultiplier = null;
+        if (primarySpeed > numericTarget) {
+            if (closestIndex > 0) alternativeMultiplier = multipliers[closestIndex - 1];
+        } else {
+            if (closestIndex < multipliers.length - 1) alternativeMultiplier = multipliers[closestIndex + 1];
+        }
+
+        const result = {
+            primary: {
+                modifier: closestMultiplier,
+                speed: primarySpeed.toFixed(0),
+            },
+            alternative: null
+        };
+
+        if (alternativeMultiplier) {
+            const altSpeed = (songMeta.coreBpm * alternativeMultiplier);
+            result.alternative = {
+                modifier: alternativeMultiplier,
+                speed: altSpeed.toFixed(0),
+                direction: altSpeed > primarySpeed ? 'up' : 'down'
+            };
+        }
+        
+        if (result.alternative && result.primary.speed === result.alternative.speed) {
+            result.alternative = null;
+        }
+
+        return result;
+    }, [targetBPM, songMeta.coreBpm]);
 
     const handleCapture = (imageDataUrl) => {
         if (!apiKey) {
@@ -326,11 +443,14 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                         }
                     }
 
+                    const coreBpm = calculateCoreBpm(bpmChanges, lastBeat);
+
                     setSongMeta({ 
                         title: metadata.title, 
                         artist: metadata.artist, 
                         difficulties: metadata.difficulties,
-                        bpmDisplay: bpmDisplay
+                        bpmDisplay: bpmDisplay,
+                        coreBpm: coreBpm
                     });
 
                     const data = calculateChartData(bpmChanges, lastBeat);
@@ -468,32 +588,76 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
             )}
 
             {chartData && (
-                <div className="chart-section">
+                <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
                     <div className="song-info-bar">
-                        <h2 className="song-title">{songMeta.title} - {songMeta.artist}</h2>
-                        <div className="details-bar">
-                            <div className="difficulties-display">
-                                <span className="play-style">SP</span>
-                                {renderDifficulties(songMeta.difficulties.singles, 'sp')}
-                            </div>
-                            <div className="difficulties-display">
-                                <span className="play-style">DP</span>
-                                {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
-                            </div>
-                            <div className="bpm-display">
-                                <span className="bpm-label">BPM:</span>
-                                <span className="bpm-value">{songMeta.bpmDisplay}</span>
-                                {calculation && (
-                                    <div className="song-calculation">
-                                        <span className="song-speed">
-                                          {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
-                                        </span>
-                                        <span className="song-separator">@</span>
-                                        <span className="song-modifier">{calculation.modifier}x</span>
-                                    </div>
-                                )}
-                            </div>
+                        <div className="song-title-container">
+                            <h2 className="song-title">{songMeta.title} - {songMeta.artist}</h2>
+                            <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                                <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                            </button>
                         </div>
+                        {!isCollapsed && (
+                            <div className="details-grid bpm-tool-grid">
+                                <div className="grid-item grid-item-sp">
+                                    <span className="play-style">SP</span>
+                                    <div className="difficulty-meters-container">
+                                        {renderDifficulties(songMeta.difficulties.singles, 'sp')}
+                                    </div>
+                                </div>
+                                <div className="grid-item grid-item-bpm">
+                                    <span className="bpm-label">BPM:</span>
+                                    <div className="bpm-value-container">
+                                        <span className="bpm-value">{songMeta.bpmDisplay}</span>
+                                        {calculation && (
+                                            <div className="song-calculation">
+                                                <span className="song-speed">
+                                                  {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
+                                                </span>
+                                                <span className="song-separator">@</span>
+                                                <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
+                                            </div>
+                                        )}
+                                        {calculation && calculation.alternative && (
+                                            <button 
+                                                className={`toggle-button ${showAltBpm ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                                onClick={() => setShowAltBpm(!showAltBpm)}
+                                            >
+                                                <i className="fa-solid fa-rotate"></i>
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="grid-item grid-item-dp">
+                                    <span className="play-style">DP</span>
+                                    <div className="difficulty-meters-container">
+                                        {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
+                                    </div>
+                                </div>
+                                <div className="grid-item grid-item-core">
+                                    <span className="core-bpm-label">CORE:</span>
+                                    <div className="core-bpm-value-container">
+                                        <span className="core-bpm-value">{songMeta.coreBpm ? songMeta.coreBpm.toFixed(0) : 'N/A'}</span>
+                                        {coreCalculation && (
+                                             <div className="song-calculation">
+                                                <span className="song-speed">
+                                                  {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
+                                                </span>
+                                                <span className="song-separator">@</span>
+                                                <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
+                                            </div>
+                                        )}
+                                        {coreCalculation && coreCalculation.alternative && (
+                                            <button 
+                                                className={`toggle-button ${showAltCoreBpm ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                                onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
+                                            >
+                                                <i className="fa-solid fa-rotate"></i>
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     
                     <div className="chart-container">
