@@ -392,11 +392,19 @@ const BPMTool = () => {
         }
         setCapturedImage(null);
         setIsCameraOpen(true);
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(stream => {
                 videoRef.current.srcObject = stream;
             })
-            .catch(err => console.error("Error accessing camera: ", err));
+            .catch(err => {
+                console.error("Error accessing rear camera, trying front camera: ", err);
+                // Fallback to any camera if the rear one is not available
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        videoRef.current.srcObject = stream;
+                    })
+                    .catch(err2 => console.error("Error accessing any camera: ", err2));
+            });
     };
 
     const closeCamera = () => {
