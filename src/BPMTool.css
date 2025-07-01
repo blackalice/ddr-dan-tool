@@ -210,7 +210,7 @@ appearance: none;
     justify-items: start;
 }
 
-.bpm-tool-grid .grid-item {
+.grid-item {
     display: flex;
     align-items: center;
     gap: 1rem;

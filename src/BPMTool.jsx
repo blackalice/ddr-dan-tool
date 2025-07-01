@@ -296,8 +296,8 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
         const result = {
             primary: {
                 modifier: closestMultiplier,
-                minSpeed: (bpmRange.min * closestMultiplier).toFixed(0),
-                maxSpeed: primarySpeed.toFixed(0),
+                minSpeed: Math.round(bpmRange.min * closestMultiplier),
+                maxSpeed: Math.round(primarySpeed),
                 isRange: bpmRange.min !== bpmRange.max
             },
             alternative: null
@@ -307,8 +307,8 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
             const altMaxSpeed = (bpmRange.max * alternativeMultiplier);
             result.alternative = {
                 modifier: alternativeMultiplier,
-                minSpeed: (bpmRange.min * alternativeMultiplier).toFixed(0),
-                maxSpeed: altMaxSpeed.toFixed(0),
+                minSpeed: Math.round(bpmRange.min * alternativeMultiplier),
+                maxSpeed: Math.round(altMaxSpeed),
                 isRange: bpmRange.min !== bpmRange.max,
                 direction: altMaxSpeed > primarySpeed ? 'up' : 'down'
             };
@@ -344,7 +344,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
         const result = {
             primary: {
                 modifier: closestMultiplier,
-                speed: primarySpeed.toFixed(0),
+                speed: Math.round(primarySpeed),
             },
             alternative: null
         };
@@ -353,7 +353,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
             const altSpeed = (songMeta.coreBpm * alternativeMultiplier);
             result.alternative = {
                 modifier: alternativeMultiplier,
-                speed: altSpeed.toFixed(0),
+                speed: Math.round(altSpeed),
                 direction: altSpeed > primarySpeed ? 'up' : 'down'
             };
         }
@@ -435,10 +435,10 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                         if (bpms.length === 0) {
                             bpmDisplay = 'N/A';
                         } else if (bpms.length === 1) {
-                            bpmDisplay = String(bpms[0]);
+                            bpmDisplay = String(Math.round(bpms[0]));
                         } else {
-                            const minBpm = Math.min(...bpms);
-                            const maxBpm = Math.max(...bpms);
+                            const minBpm = Math.round(Math.min(...bpms));
+                            const maxBpm = Math.round(Math.max(...bpms));
                             bpmDisplay = minBpm === maxBpm ? String(minBpm) : `${minBpm}-${maxBpm}`;
                         }
                     }

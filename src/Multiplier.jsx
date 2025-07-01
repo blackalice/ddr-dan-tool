@@ -40,16 +40,16 @@ function Multiplier({ targetBPM, setTargetBPM }) {
     const result = {
       primary: {
         modifier: closestMultiplier,
-        speed: primarySpeed,
+        speed: Math.round(primarySpeed),
       },
       alternative: null,
     };
 
     if (alternativeMultiplier) {
-      const alternativeSpeed = (numericSongBPM * alternativeMultiplier).toFixed(0);
+      const alternativeSpeed = (numericSongBPM * alternativeMultiplier);
       result.alternative = {
         modifier: alternativeMultiplier,
-        speed: alternativeSpeed,
+        speed: Math.round(alternativeSpeed),
         direction: alternativeSpeed > primarySpeed ? 'up' : 'down',
       };
     }
