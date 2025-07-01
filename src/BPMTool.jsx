@@ -208,8 +208,6 @@ const BPMTool = () => {
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
-    const chartRef = useRef(null);
-    const chartInstanceRef = useRef(null);
     const [inputValue, setInputValue] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
@@ -311,68 +309,8 @@ const BPMTool = () => {
         }
     }, [selectedSong]);
 
-    useEffect(() => {
-        if (chartData && chartRef.current) {
-            if (chartInstanceRef.current) {
-                chartInstanceRef.current.destroy();
-            }
-            const ctx = chartRef.current.getContext('2d');
-            chartInstanceRef.current = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'BPM',
-                        data: chartData,
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        stepped: true,
-                        fill: true,
-                        pointRadius: 4,
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverRadius: 7,
-                        borderWidth: 2.5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                            ticks: { color: '#9CA3AF' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                        },
-                        y: {
-                            title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                            ticks: { color: '#9CA3AF', stepSize: 10 },
-                            grid: { color: 'rgba(255, 255, 255,.1)' }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                title: (tooltipItems) => `Time: ${tooltipItems[0].parsed.x.toFixed(2)}s`,
-                                label: (context) => `BPM: ${context.parsed.y}`
-                            }
-                        }
-                    },
-                    interaction: {
-                      mode: 'nearest',
-                      axis: 'x',
-                      intersect: false
-                    }
-                }
-            });
-        }
-    }, [chartData]);
-
     const selectStyles = {
-        control: (styles) => ({ ...styles, backgroundColor: '#374151', border: '1px solid #4B5563', color: 'white' }),
+        control: (styles) => ({ ...styles, backgroundColor: '#374151', border: '1px solid #4B5563', color: 'white', padding: '0.3rem', borderRadius: '0.5rem' }),
         menu: (styles) => ({ ...styles, backgroundColor: '#1F2937' }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
@@ -434,7 +372,7 @@ const BPMTool = () => {
     };
 
     return (
-        <div className="bpm-tool-container">
+        <div className="app-container">
             <div className="selection-container">
                 <div className="controls-container">
                     <select 
@@ -451,30 +389,31 @@ const BPMTool = () => {
                             <option key={game} value={game}>{game}</option>
                         ))}
                     </select>
-                    <div className="song-select-container">
-                        <Select
-                            className="song-select"
-                            options={songOptions}
-                            value={selectedSong}
-                            onChange={setSelectedSong}
-                            styles={selectStyles}
-                            placeholder="Search for a song..."
-                            isClearable
-                            components={{ MenuList }}
-                            inputValue={inputValue}
-                            onInputChange={setInputValue}
-                            filterOption={(option, rawInput) => {
-                                const { label, data } = option;
-                                const { title, titleTranslit } = data;
-                                const input = rawInput.toLowerCase();
-                                return label.toLowerCase().includes(input) || 
-                                       title.toLowerCase().includes(input) || 
-                                       (titleTranslit && titleTranslit.toLowerCase().includes(input));
-                            }}
-                        />
+                    <div className="song-search-row">
+                        <div className="song-select-container">
+                            <Select
+                                className="song-select"
+                                options={songOptions}
+                                value={selectedSong}
+                                onChange={setSelectedSong}
+                                styles={selectStyles}
+                                placeholder="Search for a song..."
+                                isClearable
+                                components={{ MenuList }}
+                                inputValue={inputValue}
+                                onInputChange={setInputValue}
+                                filterOption={(option, rawInput) => {
+                                    const { label, data } = option;
+                                    const { title, titleTranslit } = data;
+                                    const input = rawInput.toLowerCase();
+                                    return label.toLowerCase().includes(input) || 
+                                           title.toLowerCase().includes(input) || 
+                                           (titleTranslit && titleTranslit.toLowerCase().includes(input));
+                                }}
+                            />
+                        </div>
+                        <Camera onCapture={handleCapture} isProcessing={isProcessing} />
                     </div>
-                    <Camera onCapture={handleCapture} isProcessing={isProcessing} />
-                    <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
                 </div>
             </div>
 
@@ -543,12 +482,15 @@ const BPMTool = () => {
                                             type: 'linear',
                                             title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                                             ticks: { color: '#9CA3AF' },
-                                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                            min: 0,
+                                            max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0
                                         },
                                         y: {
                                             title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                                             ticks: { color: '#9CA3AF', stepSize: 10 },
-                                            grid: { color: 'rgba(255, 255, 255,.1)' }
+                                            grid: { color: 'rgba(255, 255, 255,.1)' },
+                                            min: 0
                                         }
                                     },
                                     plugins: {
@@ -573,6 +515,9 @@ const BPMTool = () => {
                     </div>
                 </div>
             )}
+            <footer className="api-key-footer">
+                <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
+            </footer>
         </div>
     );
 };

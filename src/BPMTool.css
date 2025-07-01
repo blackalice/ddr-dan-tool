@@ -6,7 +6,8 @@
 }
 
 .selection-container {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    
 }
 
 .controls-container {
@@ -24,16 +25,28 @@
 }
 
 .game-select {
-    padding: 0.5rem 1rem;
-    background-color: #374151;
-    border: 1px solid #4B5563;
-    color: white;
-    border-radius: 0.375rem;
+appearance: none;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);*/
+}
+
+
+.song-search-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+     flex-grow: 1;
 }
 
 .song-select-container {
     flex-grow: 1;
 }
+
 
 .api-key-modal {
     position: fixed;
@@ -58,11 +71,21 @@
 
 .api-key-button {
     background-color: #374151;
-    border: 1px solid #4B5563;
-    color: white;
+    border: 0px solid #4B5563;
+    color: white; 
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     cursor: pointer;
+    padding: 1rem;
+}
+.camera-button{
+    background-color: #374151;
+    border: 0px solid #4B5563;
+    color: white; 
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    padding: 1rem;
 }
 
 
@@ -73,6 +96,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,7 +137,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
@@ -130,8 +154,8 @@
 }
 
 .difficulty-meter {
-    width: 36px;
-    height: 36px;
+    padding: 0.3rem 0.5rem;
+    width:22px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,10 +179,10 @@
 
 .bpm-value {
     background-color: #4A5568;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.5rem;
     border-radius: 0.375rem;
     font-weight: bold;
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: white;
 }
 
@@ -166,4 +190,10 @@
     height: 500px;
     position: relative;
     margin-top: 2rem;
+}
+
+.api-key-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
 }
