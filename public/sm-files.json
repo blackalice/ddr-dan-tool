@@ -2,12 +2,20 @@
   "games": [
     "2013",
     "2014",
+    "2ndMix",
+    "3rdMix",
+    "4thMix Plus",
+    "5thMix",
+    "6thMix",
+    "7thMix",
     "A",
     "A20",
     "A20 Plus",
     "A3",
     "DDR",
-    "DDR 2nd Mix",
+    "Extreme",
+    "Supernova",
+    "Supernova 2",
     "World",
     "X",
     "X2",
@@ -1078,6 +1086,951 @@
       "path": "sm/2014/Yamato nadenade Kaguya-hime.sm",
       "title": "ヤマトなでなで♡かぐや姫",
       "titleTranslit": "Yamato nadenade Kaguya-hime"
+    },
+    {
+      "path": "sm/3rdMix/20,NOVEMBER (D.D.R. version).sm",
+      "title": "20,NOVEMBER (D.D.R. version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/AFRONOVA.sm",
+      "title": "AFRONOVA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/BEATS LIKE THIS.sm",
+      "title": "BEATS LIKE THIS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/BOOM BOOM DOLLAR (K.O.G G3 MIX).sm",
+      "title": "BOOM BOOM DOLLAR (K.O.G G3 MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/butterfly (UPSWING MIX).sm",
+      "title": "butterfly (UPSWING MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/CAN'T TAKE MY EYES OFF YOU (70'S Remix).sm",
+      "title": "CAN'T TAKE MY EYES OFF YOU (70's Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/CAPTAIN JACK (GRANDALE REMIX).sm",
+      "title": "CAPTAIN JACK (GRANDALE REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/DAM DARIRAM.sm",
+      "title": "DAM DARIRAM",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/DEAD END.sm",
+      "title": "DEAD END",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/DO IT ALL NIGHT.sm",
+      "title": "DO IT ALL NIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/DYNAMITE RAVE.sm",
+      "title": "DYNAMITE RAVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/END OF THE CENTURY.sm",
+      "title": "END OF THE CENTURY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/FLASHDANCE (WHAT A FEELING).sm",
+      "title": "FLASHDANCE (WHAT A FEELING)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/FOLLOW THE SUN (90 IN THE SHADE MIX).sm",
+      "title": "FOLLOW THE SUN (90 IN THE SHADE MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/gentle stress (AMD SEXUAL MIX).sm",
+      "title": "gentle stress (AMD SEXUAL MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/GET UP (BEFORE THE NIGHT IS OVER).sm",
+      "title": "GET UP (BEFORE THE NIGHT IS OVER)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/GET UP AND DANCE.sm",
+      "title": "GET UP AND DANCE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/GRADIUSIC CYBER ~AMD G5 MIX~.sm",
+      "title": "GRADIUSIC CYBER ～AMD G5 MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/HOLIDAY.sm",
+      "title": "HOLIDAY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/IF YOU CAN SAY GOODBYE.sm",
+      "title": "IF YOU CAN SAY GOODBYE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/IN THE NAVY '99 (XXL Disaster Remix).sm",
+      "title": "IN THE NAVY '99 (XXL Disaster Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/IT ONLY TAKES A MINUTE (Extended Remix).sm",
+      "title": "IT ONLY TAKES A MINUTE (Extended Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/Jam Jam Reggae.sm",
+      "title": "Jam Jam Reggae",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/KEEP ON MOVIN'.sm",
+      "title": "KEEP ON MOVIN'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/La Senorita.sm",
+      "title": "La Señorita",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/LET THEM MOVE.sm",
+      "title": "LET THEM MOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/LUV TO ME (AMD MIX).sm",
+      "title": "LUV TO ME (AMD MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/MR. WONDERFUL.sm",
+      "title": "MR. WONDERFUL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/OH NICK PLEASE NOT SO QUICK.sm",
+      "title": "OH NICK PLEASE NOT SO QUICK",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/OPERATOR.sm",
+      "title": "OPERATOR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/PARANOiA Rebirth.sm",
+      "title": "PARANOiA Rebirth",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/ROCK BEAT.sm",
+      "title": "ROCK BEAT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/Silent Hill.sm",
+      "title": "Silent Hill",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/SO MANY MEN.sm",
+      "title": "SO MANY MEN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/THE RACE.sm",
+      "title": "THE RACE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/TURN ME ON (HEAVENLY MIX).sm",
+      "title": "TURN ME ON (HEAVENLY MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/UPSIDE DOWN.sm",
+      "title": "UPSIDE DOWN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/VOL.4.sm",
+      "title": "VOL.4",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/WONDERLAND (UKS MIX).sm",
+      "title": "WONDERLAND (UKS MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/3rdMix/XANADU.sm",
+      "title": "XANADU",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/CAFE.sm",
+      "title": "CAFE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/CAT'S EYE (Ventura Mix).sm",
+      "title": "CAT'S EYE (Ventura Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/CONGA FEELING.sm",
+      "title": "CONGA FEELING",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/DO ME (H.I.G.E.O. MIX).sm",
+      "title": "DO ME (H.I.G.E.O. MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/LIVIN' LA VIDA LOCA.sm",
+      "title": "LIVIN' LA VIDA LOCA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/Lupin the 3rd '78.sm",
+      "title": "Lupin the 3rd '78",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/NA-NA.sm",
+      "title": "NA-NA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/PETIT LOVE.sm",
+      "title": "PETIT LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/RHYTHM AND POLICE (K.O.G G3 Mix).sm",
+      "title": "RHYTHM AND POLICE (K.O.G G3 Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/SKY HIGH.sm",
+      "title": "SKY HIGH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/SYNCHRONIZED LOVE (Red Monster Hyper Mix).sm",
+      "title": "SYNCHRONIZED LOVE (Red Monster Hyper Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/THEME FROM ENTER THE DRAGON (notorious mix).sm",
+      "title": "THEME FROM ENTER THE DRAGON (notorious mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/WONDA (SPEED K MIX).sm",
+      "title": "WONDA (SPEED K MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix Plus/YOUR LOVE.sm",
+      "title": "YOUR LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/17SAI.sm",
+      "title": "17才",
+      "titleTranslit": "17SAI"
+    },
+    {
+      "path": "sm/5thMix/ABSOLUTE.sm",
+      "title": "ABSOLUTE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Abyss.sm",
+      "title": "Abyss",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/AFRONOVA PRIMEVAL.sm",
+      "title": "AFRONOVA PRIMEVAL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/AGAINST ALL ODDS (Definitive MIX).sm",
+      "title": "AGAINST ALL ODDS (Definitive MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/B4U glorious style.sm",
+      "title": "B4U glorious style",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/BE TOGETHER.sm",
+      "title": "BE TOGETHER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/BROKEN MY HEART.sm",
+      "title": "BROKEN MY HEART",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/CAN'T STOP FALLIN' IN LOVE ~SPEED MIX~.sm",
+      "title": "CAN'T STOP FALLIN' IN LOVE ～SPEED MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/DANCING ALL ALONE.sm",
+      "title": "DANCING ALL ALONE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/DIVE.sm",
+      "title": "DIVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/DXY!.sm",
+      "title": "DXY!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/DYNAMITE RAVE(Long ver.).sm",
+      "title": "DYNAMITE RAVE(Long ver.)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/ECSTASY.sm",
+      "title": "ECSTASY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Electro Tuned ( the SubS Mix ).sm",
+      "title": "Electro Tuned ( the SubS Mix )",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Healing Vision.sm",
+      "title": "Healing Vision",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/HOT LIMIT.sm",
+      "title": "HOT LIMIT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/I Was The One.sm",
+      "title": "I Was The One",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/INSERTiON.sm",
+      "title": "INSERTiON",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/MATSURI JAPAN.sm",
+      "title": "祭 JAPAN",
+      "titleTranslit": "MATSURI JAPAN"
+    },
+    {
+      "path": "sm/5thMix/MOONLIGHT SHADOW (New Vocal Version).sm",
+      "title": "MOONLIGHT SHADOW (New Vocal Version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/MOVIN ON (Extended Moon Mix).sm",
+      "title": "MOVIN ON (Extended Moon Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Mr.T. (take me higher).sm",
+      "title": "Mr.T. (take me higher)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/MY GENERATION (Fat Beat Mix).sm",
+      "title": "MY GENERATION (Fat Beat Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/NEVER ENDING STORY (Power Club Vocal Mix).sm",
+      "title": "NEVER ENDING STORY (Power Club Vocal Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/NO LIMIT (RM Remix).sm",
+      "title": "NO LIMIT (RM Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/ODORU PONPOKOLIN.sm",
+      "title": "おどるポンポコリン",
+      "titleTranslit": "ODORU PONPOKOLIN"
+    },
+    {
+      "path": "sm/5thMix/OOPS!...I DID IT AGAIN (Fired Up MIX).sm",
+      "title": "OOPS!...I DID IT AGAIN (Fired Up MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/PARANOiA ETERNAL.sm",
+      "title": "PARANOiA ETERNAL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Radical Faith.sm",
+      "title": "Radical Faith",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/Remember You.sm",
+      "title": "Remember You",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/RIGHT NOW.sm",
+      "title": "RIGHT NOW",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/ROMANCE NO KAMISAMA.sm",
+      "title": "ロマンスの神様",
+      "titleTranslit": "ROMANCE NO KAMISAMA"
+    },
+    {
+      "path": "sm/5thMix/SANA MOLLETE NE ENTE.sm",
+      "title": "サナ・モレッテ・ネ・エンテ",
+      "titleTranslit": "SANA MOLLETE NE ENTE"
+    },
+    {
+      "path": "sm/5thMix/STILL IN MY HEART.sm",
+      "title": "STILL IN MY HEART",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/SWING IT.sm",
+      "title": "SWING IT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/TEST MY BEST.sm",
+      "title": "TEST MY BEST",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/THE CUBE.sm",
+      "title": "THE CUBE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/THE TWIST (Double Pump MIX).sm",
+      "title": "THE TWIST (Double Pump MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/5thMix/TRIBAL DANCE (ALMIGHTY MIX).sm",
+      "title": "TRIBAL DANCE (ALMIGHTY MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/BYE BYE BABY BALLOON.sm",
+      "title": "BYE BYE BABY BALLOON",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/CANDY STAR.sm",
+      "title": "CANDY☆",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/COW GIRL.sm",
+      "title": "COW GIRL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/DIVE(more deep & deeper style).sm",
+      "title": "DIVE(more deep & deeper style)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Do It Right.sm",
+      "title": "Do It Right",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/DO YOU REMEMBER ME.sm",
+      "title": "DO YOU REMEMBER ME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/exotic ethnic.sm",
+      "title": "exotic ethnic",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/FANTASY.sm",
+      "title": "FANTASY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Firefly.sm",
+      "title": "Firefly",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/FLASH IN THE NIGHT.sm",
+      "title": "FLASH IN THE NIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/FOLLOW ME.sm",
+      "title": "FOLLOW ME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/GHOSTS (VINCENT DE MOOR REMIX).sm",
+      "title": "GHOSTS (VINCENT DE MOOR REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Groove 2001.sm",
+      "title": "Groove 2001",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Groove.sm",
+      "title": "Groove",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Healing Vision~Angelic mix~.sm",
+      "title": "Healing Vision～Angelic mix～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/HIGHS OFF U (Scorccio XY Mix).sm",
+      "title": "HIGHS OFF U (Scorccio XY Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/I'M IN THE MOOD FOR DANCING.sm",
+      "title": "I'M IN THE MOOD FOR DANCING",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/JUSTIFY MY LOVE.sm",
+      "title": "JUSTIFY MY LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Let the beat hit em!(CLASSIC R&B STYLE).sm",
+      "title": "Let the beat hit em!(CLASSIC R&B STYLE)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/LET'S GROOVE.sm",
+      "title": "LET'S GROOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Look To The Sky.sm",
+      "title": "Look To The Sky",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/LOVIN' YOU (ROB SEARLE CLUB MIX).sm",
+      "title": "LOVIN' YOU (ROB SEARLE CLUB MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/MAX 300.sm",
+      "title": "MAX 300",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Midnite Blaze.sm",
+      "title": "Midnite Blaze",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/MIRACLE.sm",
+      "title": "MIRACLE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/MY SWEET DARLIN'.sm",
+      "title": "MY SWEET DARLIN'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/NORI NORI NORI.sm",
+      "title": "NORI NORI NORI",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/ON THE JAZZ.sm",
+      "title": "ON THE JAZZ",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/ORDINARY WORLD.sm",
+      "title": "ORDINARY WORLD",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/ORION.78~civilization mix~.sm",
+      "title": "ORION.78～civilization mix～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Share My Love.sm",
+      "title": "Share My Love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/SO DEEP (PERFECT SPHERE REMIX).sm",
+      "title": "SO DEEP (PERFECT SPHERE REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/Sobakasu FRECKLES (KCP Re-Edit).sm",
+      "title": "そばかす FRECKLES (KCP Re-Edit)",
+      "titleTranslit": "Sobakasu FRECKLES (KCP Re-Edit)"
+    },
+    {
+      "path": "sm/6thMix/SOMEWHERE OVER THE RAINBOW.sm",
+      "title": "SOMEWHERE OVER THE RAINBOW",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/TELEPHONE OPERATOR (Club MIX).sm",
+      "title": "TELEPHONE OPERATOR (Club MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/The Centre Of The Heart (STONEBRIDGE CLUBMIX).sm",
+      "title": "The Centre Of The Heart (STONEBRIDGE CLUBMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/true...(radio edit).sm",
+      "title": "true...(radio edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/true...(Trance Sunrise Mix).sm",
+      "title": "true...(Trance Sunrise Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/TWILIGHT ZONE (R-C Extended Club MIX).sm",
+      "title": "TWILIGHT ZONE (R-C Extended Club MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/WITCH DOCTOR (GIANTS TOONS VERSION).sm",
+      "title": "WITCH DOCTOR (GIANTS TOONS VERSION)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/WWW.BLONDE GIRL (MOMO MIX).sm",
+      "title": "WWW.BLONDE GIRL (MOMO MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/6thMix/YOZORA NO MUKO.sm",
+      "title": "夜空ノムコウ",
+      "titleTranslit": "YOZORA NO MUKO"
+    },
+    {
+      "path": "sm/7thMix/A MINUTE (EXTENDED MIX).sm",
+      "title": "A MINUTE (EXTENDED MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/AFRONOVA(FROM NONSTOP MEGAMIX).sm",
+      "title": "AFRONOVA(FROM NONSTOP MEGAMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/AM-3P (AM EAST mix).sm",
+      "title": "AM-3P (AM EAST mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/B4U(B4 ZA BEAT MIX).sm",
+      "title": "B4U(B4 ZA BEAT MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/BABY LOVE ME.sm",
+      "title": "BABY LOVE ME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/BREAK DOWN!.sm",
+      "title": "BRE∀K DOWN!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/BRILLIANT 2U(K.O.G G3 MIX).sm",
+      "title": "BRILLIANT 2U(K.O.G G3 MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/BURNIN' THE FLOOR (BLUE FIRE mix).sm",
+      "title": "BURNIN' THE FLOOR (BLUE FIRE mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/BURNING HEAT! (3 Option MIX).sm",
+      "title": "BURNING HEAT! (3 Option MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/CANDY HEART.sm",
+      "title": "CANDY♥",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/CELEBRATE NITE(EURO TRANCE STYLE).sm",
+      "title": "CELEBRATE NITE(EURO TRANCE STYLE)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/D2R.sm",
+      "title": "D2R",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/DESTINY.sm",
+      "title": "DESTINY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/DIVE TO THE NIGHT.sm",
+      "title": "DIVE TO THE NIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/DRIFTING AWAY.sm",
+      "title": "DRIFTING AWAY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/DROP OUT(FROM NONSTOP MEGAMIX).sm",
+      "title": "DROP OUT(FROM NONSTOP MEGAMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/DYNAMITE RAVE (B4 ZA BEAT MIX).sm",
+      "title": "DYNAMITE RAVE (B4 ZA BEAT MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/ECSTASY (midnight blue mix).sm",
+      "title": "ECSTASY (midnight blue mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/ever snow.sm",
+      "title": "ever snow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/FANTASY.sm",
+      "title": "FANTASY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/HIGHER (next morning mix).sm",
+      "title": "HIGHER (next morning mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/HYSTERIA 2001.sm",
+      "title": "HYSTERIA 2001",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/i feel.sm",
+      "title": "i feel...",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/IT'S RAINING MEN (Almighty Mix).sm",
+      "title": "IT'S RAINING MEN (Almighty Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/KAKUMEI.sm",
+      "title": "革命",
+      "titleTranslit": "KAKUMEI"
+    },
+    {
+      "path": "sm/7thMix/LITTLE BOY (BOY ON BOY MIX).sm",
+      "title": "LITTLE BOY(BOY ON BOY MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/LIVING IN AMERICA.sm",
+      "title": "LIVING IN AMERICA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/LONG TRAIN RUNNIN'.sm",
+      "title": "LONG TRAIN RUNNIN'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/LOOK AT US (Daddy DJ Remix).sm",
+      "title": "LOOK AT US (Daddy DJ Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/MATSURI JAPAN (FROM NONSTOP MEGAMIX).sm",
+      "title": "祭 JAPAN (FROM NONSTOP MEGAMIX)",
+      "titleTranslit": "MATSURI JAPAN (FROM NONSTOP MEGAMIX)"
+    },
+    {
+      "path": "sm/7thMix/MAXIMUM OVERDRIVE (KC Club Mix).sm",
+      "title": "MAXIMUM OVERDRIVE (KC Club Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/MAXX UNLIMITED.sm",
+      "title": "MAXX UNLIMITED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/MORE THAN I NEEDED TO KNOW.sm",
+      "title": "MORE THAN I NEEDED TO KNOW",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/MY SUMMER LOVE(TOMMY'S SMILE MIX).sm",
+      "title": "MY SUMMER LOVE(TOMMY'S SMILE MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/NOTHING GONNA STOP (Dance Mania Mix).sm",
+      "title": "NOTHING GONNA STOP (Dance Mania Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/rain of sorrow.sm",
+      "title": "rain of sorrow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/Secret Rendez-vous.sm",
+      "title": "Secret Rendez-vous",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/SEXY PLANET(FROM NONSTOP MEGAMIX).sm",
+      "title": "SEXY PLANET(FROM NONSTOP MEGAMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/Silent Hill (3rd christmas mix).sm",
+      "title": "Silent Hill (3rd christmas mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/SO FABULOUS SO FIERCE (FREAK OUT).sm",
+      "title": "SO FABULOUS SO FIERCE (FREAK OUT)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/Spin the disc.sm",
+      "title": "Spin the disc",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/STAY.sm",
+      "title": "STAY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/STILL IN MY HEART (MOMO MIX).sm",
+      "title": "STILL IN MY HEART (MOMO MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/SUPER STAR(FROM NONSTOP MEGAMIX).sm",
+      "title": "SUPER STAR(FROM NONSTOP MEGAMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/Sweet Sweet Love Magic.sm",
+      "title": "Sweet Sweet ♥ Magic",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/THE REFLEX.sm",
+      "title": "THE REFLEX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/THE WHISTLE SONG (Blow My Whistle Bitch).sm",
+      "title": "THE WHISTLE SONG (Blow My Whistle Bitch)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/THERE YOU'LL BE.sm",
+      "title": "THERE YOU'LL BE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).sm",
+      "title": "TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/TSUGARU(APPLE MIX).sm",
+      "title": "TSUGARU (APPLE MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/TSUGARU.sm",
+      "title": "TSUGARU",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/WAKA LAKA.sm",
+      "title": "WAKA LAKA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/7thMix/WILD RUSH(FROM NONSTOP MEGAMIX).sm",
+      "title": "WILD RUSH(FROM NONSTOP MEGAMIX)",
+      "titleTranslit": ""
     },
     {
       "path": "sm/A/39.sm",
@@ -4042,6 +4995,3276 @@
     {
       "path": "sm/DDR/TRIP MACHINE.sm",
       "title": "TRIP MACHINE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/1998.sm",
+      "title": "1998",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/321STARS.sm",
+      "title": "321STARS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/A.sm",
+      "title": "A",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Across the nightmare.sm",
+      "title": "Across the nightmare",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/air.sm",
+      "title": "air",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/AM-3P -303 BASS MIX-.sm",
+      "title": "AM-3P -303 BASS MIX-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Aoi shoudou ~for EXTREME~.sm",
+      "title": "蒼い衝動 ～for EXTREME～",
+      "titleTranslit": "Aoi shoudou ~for EXTREME~"
+    },
+    {
+      "path": "sm/Extreme/bag.sm",
+      "title": "bag",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/BE LOVIN.sm",
+      "title": "BE LOVIN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/BURNIN' THE FLOOR (MOMO MIX).sm",
+      "title": "BURNIN' THE FLOOR (MOMO MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/CARTOON HEROES (Speedy Mix).sm",
+      "title": "CARTOON HEROES (Speedy Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Colors ~for EXTREME~.sm",
+      "title": "Colors ～for EXTREME～",
+      "titleTranslit": "Colors ~for EXTREME~"
+    },
+    {
+      "path": "sm/Extreme/CRASH!.sm",
+      "title": "CRASH!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/CUTIE CHASER(MORNING MIX).sm",
+      "title": "CUTIE CHASER(MORNING MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/DAIKENKAI.sm",
+      "title": "大見解",
+      "titleTranslit": "DAIKENKAI"
+    },
+    {
+      "path": "sm/Extreme/Dance Dance Revolution.sm",
+      "title": "Dance Dance Revolution",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Destiny lovers.sm",
+      "title": "Destiny lovers",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Do It Right(Harmonized 2Step Mix).sm",
+      "title": "Do It Right(Harmonized 2Step Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/DROP THE BOMB(SyS.F. Mix).sm",
+      "title": "DROP THE BOMB(SyS.F. Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/DYNAMITE RAVE(Down Bird SOTA Mix).sm",
+      "title": "DYNAMITE RAVE(Down Bird SOTA Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/feeling of love.sm",
+      "title": "feeling of love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Frozen Ray(for EXTREME).sm",
+      "title": "Frozen Ray ～for EXTREME～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Gamelan de Couple.sm",
+      "title": "Gamelan de Couple",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/GRADUATION.sm",
+      "title": "GRADUATION ～それぞれの明日～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Happy Wedding.sm",
+      "title": "Happy Wedding",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Heaven is a '57 metallic gray ~gimmix~.sm",
+      "title": "Heaven is a '57 metallic gray ～gimmix～",
+      "titleTranslit": "Heaven is a '57 metallic gray ~gimmix~"
+    },
+    {
+      "path": "sm/Extreme/HOLD ON ME.sm",
+      "title": "HOLD ON ME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/HYPER EUROBEAT.sm",
+      "title": "HYPER EUROBEAT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/I DO I DO I DO.sm",
+      "title": "I DO I DO I DO",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/I'm gonna get you!.sm",
+      "title": "I'm gonna get you!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/IRRESISTIBLEMENT.sm",
+      "title": "IRRESISTIBLEMENT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/jane jana.sm",
+      "title": "jane jana",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/JET WORLD.sm",
+      "title": "JET WORLD",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Kind Lady.sm",
+      "title": "Kind Lady",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/KISS KISS KISS.sm",
+      "title": "KISS KISS KISS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Kiss me all night long.sm",
+      "title": "Kiss me all night long",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/L'amour et la liberte(DDR Ver.).sm",
+      "title": "L'amour et la liberté(DDR Ver.)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/LA BAMBA.sm",
+      "title": "LA BAMBA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/LA COPA DE LA VIDA.sm",
+      "title": "LA COPA DE LA VIDA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Last Message.sm",
+      "title": "Last Message",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Look To The Sky(True Color Mix).sm",
+      "title": "Look To The Sky(True Color Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/LOVE LOVE SHINE.sm",
+      "title": "LOVE♥SHINE",
+      "titleTranslit": "LOVE LOVE SHINE"
+    },
+    {
+      "path": "sm/Extreme/LOVE LOVE SUGAR.sm",
+      "title": "♥LOVE²シュガ→♥",
+      "titleTranslit": "LOVE LOVE SUGAR"
+    },
+    {
+      "path": "sm/Extreme/Mahou no tobira(SPACE MACO no theme).sm",
+      "title": "魔法の扉(スペース☆マコのテーマ)",
+      "titleTranslit": "Mahou no tobira(SPACE MACO no theme)"
+    },
+    {
+      "path": "sm/Extreme/MEMORIES.sm",
+      "title": "MEMORIES",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Mikeneko rock.sm",
+      "title": "三毛猫ロック",
+      "titleTranslit": "Mikeneko rock"
+    },
+    {
+      "path": "sm/Extreme/Miracle Moon ~L.E.D.LIGHT STYLE MIX~.sm",
+      "title": "Miracle Moon ～L.E.D.LIGHT STYLE MIX～",
+      "titleTranslit": "Miracle Moon ~L.E.D.LIGHT STYLE MIX~"
+    },
+    {
+      "path": "sm/Extreme/MOBO MOGA.sm",
+      "title": "MOBO★MOGA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/PARANOIA survivor MAX.sm",
+      "title": "PARANOIA survivor MAX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/PARANOIA survivor.sm",
+      "title": "PARANOIA survivor",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Pink Rose.sm",
+      "title": "Pink Rose",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/SAKURA.sm",
+      "title": "桜",
+      "titleTranslit": "SAKURA"
+    },
+    {
+      "path": "sm/Extreme/SENORITA(Speedy Mix).sm",
+      "title": "SENORITA(Speedy Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/SO IN LOVE.sm",
+      "title": "SO IN LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/SPEED OVER BEETHOVEN.sm",
+      "title": "SPEED OVER BEETHOVEN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/STAY (Organic house Version).sm",
+      "title": "STAY (Organic house Version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/stoic (EXTREME version).sm",
+      "title": "stoic (EXTREME version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/sync (EXTREME version).sm",
+      "title": "sync (EXTREME version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/TEARS.sm",
+      "title": "TEARS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/The Least 100sec.sm",
+      "title": "The Least 100sec",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/The legend of MAX.sm",
+      "title": "The legend of MAX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/TRIP MACHINE survivor.sm",
+      "title": "TRIP MACHINE survivor",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/Twin Bee -Generation X-.sm",
+      "title": "Twin Bee -Generation X-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/V ~for EXTREME~.sm",
+      "title": "V ～for EXTREME～",
+      "titleTranslit": "V ~for EXTREME~"
+    },
+    {
+      "path": "sm/Extreme/VANITY ANGEL.sm",
+      "title": "VANITY ANGEL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/WE ARE THE CHAMPIONS (Factory Team Remix).sm",
+      "title": "WE ARE THE CHAMPIONS (Factory Team Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/WE WILL ROCK YOU.sm",
+      "title": "WE WILL ROCK YOU",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/White Lovers.sm",
+      "title": "White Lovers",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Extreme/xenon.sm",
+      "title": "xenon",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/A LOVE LIKE THIS.sm",
+      "title": "A LOVE LIKE THIS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/A Stupid Barber.sm",
+      "title": "A Stupid Barber",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/AA.sm",
+      "title": "AA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Baby's Tears.sm",
+      "title": "Baby's Tears",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Bad Routine.sm",
+      "title": "Bad Routine",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/BAILA! BAILA!.sm",
+      "title": "BAILA! BAILA!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Baile Le Samba.sm",
+      "title": "Baile Le Samba",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/BALALAIKA,CARRIED WITH THE WIND.sm",
+      "title": "BALALAIKA,CARRIED WITH THE WIND",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/BALLAD FOR YOU~omoi no ame~.sm",
+      "title": "BALLAD FOR YOU ～想いの雨～",
+      "titleTranslit": "BALLAD FOR YOU~omoi no ame~"
+    },
+    {
+      "path": "sm/Supernova/Beautiful Life.sm",
+      "title": "Beautiful Life",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Brazilian Anthem.sm",
+      "title": "Brazilian Anthem",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Brilliant R.E.D.sm",
+      "title": "Brilliant R・E・D",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/cachaca.sm",
+      "title": "cachaca",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Can Be Real.sm",
+      "title": "Can Be Real",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/CAN'T STOP FALLIN' IN LOVE -super euro version-.sm",
+      "title": "CAN'T STOP FALLIN' IN LOVE -super euro version-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/CENTAUR.sm",
+      "title": "CENTAUR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/CENTERFOLD(130BPM move it remix).sm",
+      "title": "CENTERFOLD(130BPM move it remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/CHAOS.sm",
+      "title": "CHAOS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/CHIKARA.sm",
+      "title": "チカラ",
+      "titleTranslit": "CHIKARA"
+    },
+    {
+      "path": "sm/Supernova/CURUS.sm",
+      "title": "CURUS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/DA CAPO.sm",
+      "title": "DA CAPO",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Dandandou.sm",
+      "title": "男々道",
+      "titleTranslit": "Dandandou"
+    },
+    {
+      "path": "sm/Supernova/DOESN'T REALLY MATTER.sm",
+      "title": "DOESN'T REALLY MATTER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/DoLL.sm",
+      "title": "DoLL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Dragon Blade.sm",
+      "title": "Dragon Blade",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Drivin'.sm",
+      "title": "Drivin'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/DYNAMITE RAVE-super euro version-.sm",
+      "title": "DYNAMITE RAVE-super euro version-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Fascination MAXX.sm",
+      "title": "Fascination MAXX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Fascination ~eternal love mix~.sm",
+      "title": "Fascination ～eternal love mix～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/FEELS JUST LIKE IT SHOULD.sm",
+      "title": "FEELS JUST LIKE IT SHOULD",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Flow (True Style).sm",
+      "title": "Flow (True Style)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Flow.sm",
+      "title": "Flow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Fly away.sm",
+      "title": "Fly away",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Forever Sunshine.sm",
+      "title": "Forever Sunshine",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Freedom.sm",
+      "title": "Freedom",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Funk Boogie.sm",
+      "title": "Funk Boogie",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Gekkou chou.sm",
+      "title": "月光蝶",
+      "titleTranslit": "gekkou chou"
+    },
+    {
+      "path": "sm/Supernova/GIRL IN A DAYDREAM.sm",
+      "title": "GIRL IN A DAYDREAM",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/GIVE ME UP.sm",
+      "title": "GIVE ME UP",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/GOLDEN SKY.sm",
+      "title": "GOLDEN SKY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/GORGEOUS 2012.sm",
+      "title": "GORGEOUS 2012",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Hana Ranman -Flowers-.sm",
+      "title": "華爛漫 -Flowers-",
+      "titleTranslit": "Hana Ranman -Flowers-"
+    },
+    {
+      "path": "sm/Supernova/HAPPY ANGEL.sm",
+      "title": "HAPPY☆ANGEL",
+      "titleTranslit": "HAPPY ANGEL"
+    },
+    {
+      "path": "sm/Supernova/Healing-D-Vision.sm",
+      "title": "Healing-D-Vision",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Himawari.sm",
+      "title": "ヒマワリ",
+      "titleTranslit": "Himawari"
+    },
+    {
+      "path": "sm/Supernova/HONEY PUNCH.sm",
+      "title": "HONEY♂PUNCH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Hunting for you.sm",
+      "title": "Hunting for you",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/I Need You.sm",
+      "title": "I Need You",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/I'll Make Love To You.sm",
+      "title": "I'll Make Love To You",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/I'M FOR REAL.sm",
+      "title": "I'M FOR REAL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/iFUTURELIST(DDR VERSION).sm",
+      "title": "iFUTURELIST(DDR VERSION)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Ikareru ookina shiroi uma.sm",
+      "title": "怒れる大きな白い馬",
+      "titleTranslit": "Ikarerku ookina shiroi uma"
+    },
+    {
+      "path": "sm/Supernova/INNOCENCE OF SILENCE.sm",
+      "title": "INNOCENCE OF SILENCE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/INSERTiON(Machine Gun Kelly Mix).sm",
+      "title": "INSERTION(Machine Gun Kelly Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/INSIDE YOUR HEART.sm",
+      "title": "INSIDE YOUR HEART",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Jam & Marmalade.sm",
+      "title": "Jam & Marmalade",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/JERK IT OUT.sm",
+      "title": "JERK IT OUT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Kagerou.sm",
+      "title": "カゲロウ",
+      "titleTranslit": "Kagerou"
+    },
+    {
+      "path": "sm/Supernova/Keep On Liftin'.sm",
+      "title": "Keep On Liftin'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/KEEP ON MOVIN' ~DMX MIX~.sm",
+      "title": "KEEP ON MOVIN' ～DMX MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/KI SE KI (DDR EDIT).sm",
+      "title": "KI・SE・KI (DDR edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Knock Out Regrets.sm",
+      "title": "Knock Out Regrets",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Konoko no nanatsu no oiwaini.sm",
+      "title": "この子の七つのお祝いに",
+      "titleTranslit": "Konoko no nanatsu no oiwaini"
+    },
+    {
+      "path": "sm/Supernova/La Bamba.sm",
+      "title": "La Bamba",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/LOGICAL DASH.sm",
+      "title": "LOGICAL DASH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/LONG TRAIN RUNNIN'.sm",
+      "title": "LONG TRAIN RUNNIN'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/LOVE AT FIRSTSIGHT(TwinMasterplan Mix).sm",
+      "title": "LOVE AT FIRSTSIGHT(TwinMasterplan Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/LOVE IS ORANGE.sm",
+      "title": "LOVE IS ORANGE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Make A Difference.sm",
+      "title": "Make A Difference",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MARIA(I believe...).sm",
+      "title": "MARIA(I believe...)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MATSURI (J-SUMMER MIX).sm",
+      "title": "祭 (J-SUMMER MIX)",
+      "titleTranslit": "MATSURI (J-SUMMER MIX)"
+    },
+    {
+      "path": "sm/Supernova/MAX 300 (Super-Max-Me Mix).sm",
+      "title": "MAX 300 (Super-Max-Me Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MAXIMIZER.sm",
+      "title": "MAXIMIZER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MIDNIGHT SPECIAL.sm",
+      "title": "MIDNIGHT SPECIAL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Mind Parasite.sm",
+      "title": "Mind Parasite",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MODERN GIRL.sm",
+      "title": "MODERN GIRL",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MONDO STREET.sm",
+      "title": "MONDO STREET",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Monkey Punk.sm",
+      "title": "Monkey Punk",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MOON.sm",
+      "title": "MOON",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Morning Glory.sm",
+      "title": "Morning Glory",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/MR.DABADA (Groove Wonder Remix).sm",
+      "title": "MR.DABADA (Groove Wonder Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Mugen.sm",
+      "title": "夢幻ノ光",
+      "titleTranslit": "Mugen"
+    },
+    {
+      "path": "sm/Supernova/murmur twins.sm",
+      "title": "murmur twins",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/My Only Shining Star.sm",
+      "title": "My Only Shining Star",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/NIJIIRO.sm",
+      "title": "虹色",
+      "titleTranslit": "NIJIIRO"
+    },
+    {
+      "path": "sm/Supernova/No.13.sm",
+      "title": "No.13",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/PARANOiA-Respect-.sm",
+      "title": "PARANOiA-Respect-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/PASSION OF LOVE.sm",
+      "title": "PASSION OF LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/PEACE(^^)v.sm",
+      "title": "PEACE(^^)v",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/peace-out.sm",
+      "title": "peace-out",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Polovtsian Dances And Chorus.sm",
+      "title": "Polovtsian Dances And Chorus",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/PUT YOUR FAITH IN ME ~SATURDAY NIGHT MIX~.sm",
+      "title": "PUT YOUR FAITH IN ME ～SATURDAY NIGHT MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Quick Master.sm",
+      "title": "Quick Master",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Quickening.sm",
+      "title": "Quickening",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/rainbow flyer.sm",
+      "title": "rainbow flyer",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/rainbow rainbow.sm",
+      "title": "rainbow rainbow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/RED ZONE.sm",
+      "title": "RED ZONE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Saturday Night Love.sm",
+      "title": "Saturday Night Love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Scorching Moon.sm",
+      "title": "Scorching Moon",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/SEDUCTION(Vocal Remix).sm",
+      "title": "SEDUCTION(Vocal Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/SEDUCTION.sm",
+      "title": "SEDUCTION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Ska Ska No.3.sm",
+      "title": "Ska Ska No.3",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Star Gate Heaven.sm",
+      "title": "Star Gate Heaven",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/STARS (2nd NAOKI's style).sm",
+      "title": "STARS☆☆☆(2nd NAOKI's style)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/SURRENDER(YOUR LOVE).sm",
+      "title": "SURRENDER(YOUR LOVE)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/THE SHINING POLARIS.sm",
+      "title": "THE SHINING POLARIS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/TIERRA BUENA.sm",
+      "title": "TIERRA BUENA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Tomorrow Perfume.sm",
+      "title": "Tomorrow Perfume",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/TOMORROW.sm",
+      "title": "TOMORROW",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/TOXIC (FT company Edit).sm",
+      "title": "TOXIC (FT company Edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/TRUE LOVE.sm",
+      "title": "TRUE♥LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Try 2 Luv. U.sm",
+      "title": "Try 2 Luv. U",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/un deux trois.sm",
+      "title": "un deux trois",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Under the Sky.sm",
+      "title": "Under the Sky",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/WHAT A WONDERFUL WORLD.sm",
+      "title": "WHAT A WONDERFUL WORLD",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/WOOKIE WOOKIE.sm",
+      "title": "WOOKIE WOOKIE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Xepher.sm",
+      "title": "Xepher",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/You gotta move it (feat. Julie Rugaard).sm",
+      "title": "You gotta move it (feat. Julie Rugaard)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/You're Not Here.sm",
+      "title": "You're Not Here",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova/Your Rain(RAGE MIX).sm",
+      "title": "Your Rain(RAGE MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/A thing called LOVE.sm",
+      "title": "A thing called LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/AIN'T NO MOUNTAIN HIGH ENOUGH.sm",
+      "title": "AIN'T NO MOUNTAIN HIGH ENOUGH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/AM-3P (CHAOS Special).sm",
+      "title": "AM-3P (\"CHAOS\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/ANGELUS.sm",
+      "title": "ANGELUS-アンジェラス-",
+      "titleTranslit": "ANGELUS"
+    },
+    {
+      "path": "sm/Supernova 2/Arrabbiata.sm",
+      "title": "Arrabbiata",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/B4U (VOLTAGE Special).sm",
+      "title": "B4U (\"VOLTAGE\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Baby's Tears (SKY GIRLS opening theme).sm",
+      "title": "Baby's Tears (スカイガールズ　オープニングテーマ)",
+      "titleTranslit": "Baby's Tears (SKY GIRLS opening theme)"
+    },
+    {
+      "path": "sm/Supernova 2/Blind Justice ~Torn souls Hurt Faiths~.sm",
+      "title": "Blind Justice ～Torn souls, Hurt Faiths～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Bloody Tears(IIDX EDITION).sm",
+      "title": "Bloody Tears(IIDX EDITION)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/BRILLIANT 2U (STREAM Special).sm",
+      "title": "BRILLIANT 2U (\"STREAM\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Burn Baby Burn.sm",
+      "title": "Burn Baby Burn",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/CaptivAte~CHIKAI~.sm",
+      "title": "CaptivAte～誓い～",
+      "titleTranslit": "CaptivAte~CHIKAI~"
+    },
+    {
+      "path": "sm/Supernova 2/COME CLEAN.sm",
+      "title": "COME CLEAN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/D2R (FREEZE Special).sm",
+      "title": "D2R (\"FREEZE\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/DEAD END (GROOVE RADAR Special).sm",
+      "title": "DEAD END (\"GROOVE RADAR\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/dream of love.sm",
+      "title": "dream of love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/DYNAMITE RAVE (AIR Special).sm",
+      "title": "DYNAMITE RAVE (\"AIR\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Electrified.sm",
+      "title": "Electrified",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Every Day, Every Night (NM STYLE).sm",
+      "title": "Every Day, Every Night (NM STYLE)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/FAINT.sm",
+      "title": "FAINT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Feelings Won't Fade(Extend Trance Mix).sm",
+      "title": "Feelings Won't Fade(Extend Trance Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/FIRE.sm",
+      "title": "FIRE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Flow (Jammin' Ragga Mix).sm",
+      "title": "Flow (Jammin' Ragga Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Fly away -mix del matador-.sm",
+      "title": "Fly away -mix del matador-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Freeway Shuffle.sm",
+      "title": "Freeway Shuffle",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/GIRIGILI monzen jakura.sm",
+      "title": "GIRIGILI門前雀羅",
+      "titleTranslit": "GIRIGILI monzen jakura"
+    },
+    {
+      "path": "sm/Supernova 2/L'amour et la liberte(Darwin & DJ Silver remix).sm",
+      "title": "L'amour et la liberté(Darwin & DJ Silver remix)",
+      "titleTranslit": "L'amour et la liberte(Darwin & DJ Silver remix)"
+    },
+    {
+      "path": "sm/Supernova 2/MARS WAR 3.sm",
+      "title": "MARS WAR 3",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/ME AGAINST THE MUSIC.sm",
+      "title": "ME AGAINST THE MUSIC",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Mokusei~kumikyoku Wakusei yori.sm",
+      "title": "木星～組曲『惑星』より",
+      "titleTranslit": "Mokusei~kumikyoku \"Wakusei\" yori"
+    },
+    {
+      "path": "sm/Supernova 2/MOONSTER.sm",
+      "title": "MOONSTER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Music In The Rhythm.sm",
+      "title": "Music In The Rhythm",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/My Favorite Things.sm",
+      "title": "My Favorite Things",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/NGO.sm",
+      "title": "NGO",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/PARANOiA ~HADES~.sm",
+      "title": "PARANOiA ～HADES～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Pluto Relinquish.sm",
+      "title": "Pluto Relinquish",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Pluto.sm",
+      "title": "Pluto",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Poseidon.sm",
+      "title": "Poseidon",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Raspberry Heart (English version).sm",
+      "title": "Raspberry♥Heart (English version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Saturn.sm",
+      "title": "Saturn",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Shades of Grey.sm",
+      "title": "Shades of Grey",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Silver Platform - I wanna get your heart -.sm",
+      "title": "Silver Platform - I wanna get your heart -",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/SOUL CRASH.sm",
+      "title": "SOUL CRASH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Star Gate Heaven (FUTURE LOVE Mix).sm",
+      "title": "Star Gate Heaven (FUTURE LOVE Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/STARS (Re-tuned by HAL) - DDR EDITION -.sm",
+      "title": "STARS☆☆☆ (Re-tuned by HΛL) - DDR EDITION -",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/stealth.sm",
+      "title": "stealth",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/SUNKiSS DROP~Alison Side~.sm",
+      "title": "SUNKiSS♥DROP",
+      "titleTranslit": "SUNKiSS DROP"
+    },
+    {
+      "path": "sm/Supernova 2/SUNKiSS DROP~jun Side~.sm",
+      "title": "SUNKiSS♥DROP",
+      "titleTranslit": "SUNKiSS DROP"
+    },
+    {
+      "path": "sm/Supernova 2/SUNRISE(JASON NEVINS REMIX).sm",
+      "title": "SUNRISE(JASON NEVINS REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/switch.sm",
+      "title": "switch",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Trim.sm",
+      "title": "Trim",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/TRIP MACHINE PhoeniX.sm",
+      "title": "TRIP MACHINE PhoeniX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Trust -DanceDanceRevolution mix-.sm",
+      "title": "Trust -DanceDanceRevolution mix-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Two Months Off.sm",
+      "title": "Two Months Off",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Unbelievable.sm",
+      "title": "Unbelievable",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Unreal.sm",
+      "title": "Unreal",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Uranus.sm",
+      "title": "Uranus",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Vem brincar.sm",
+      "title": "Vem brincar",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Venus.sm",
+      "title": "Venus",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/volcano.sm",
+      "title": "volcano",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Votum stellarum -forest #25 DDR RMX-.sm",
+      "title": "Votum stellarum -forest #25 DDR RMX-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/WAITING FOR TONIGHT.sm",
+      "title": "WAITING FOR TONIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/Supernova 2/Why not.sm",
+      "title": "Why not",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/1116.sm",
+      "title": "1116",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/access super [hyper] focus.sm",
+      "title": "access super [hyper] focus",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Ai-shi AI sare.sm",
+      "title": "愛氏AIされ",
+      "titleTranslit": "Ai-shi AI sare"
+    },
+    {
+      "path": "sm/World/Akatsuki.sm",
+      "title": "Akatsuki",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Amazing Bomberman.sm",
+      "title": "Amazing Bomberman",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/ARACHNE.sm",
+      "title": "ARACHNE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Arcadia.sm",
+      "title": "Arcadia",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/BabeL ~Next Story~.sm",
+      "title": "BabeL ～Next Story～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Bad Maniacs.sm",
+      "title": "Bad Maniacs",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Bad youth awake.sm",
+      "title": "バッドユース・アウェイク",
+      "titleTranslit": "Bad youth awake"
+    },
+    {
+      "path": "sm/World/Beyond The Earth.sm",
+      "title": "Beyond The Earth",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Blizzard of Arrows.sm",
+      "title": "Blizzard of Arrows",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Bloody Concerto.sm",
+      "title": "Blφφdy Cφncertφ",
+      "titleTranslit": "Bloody Concerto"
+    },
+    {
+      "path": "sm/World/blue anthem.sm",
+      "title": "blue anthem",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/BREAK DOWN! (World Version).sm",
+      "title": "BRE∀K DOWN! (World Version)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Buta thunder.sm",
+      "title": "ブタサンダー",
+      "titleTranslit": "Buta thunder"
+    },
+    {
+      "path": "sm/World/Catharsis no tsuki.sm",
+      "title": "カタルシスの月",
+      "titleTranslit": "Catharsis no tsuki"
+    },
+    {
+      "path": "sm/World/Cheerleader.sm",
+      "title": "Cheerleader",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Chocolate Planet.sm",
+      "title": "Chocolate Planet",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/COSMIC V3LOCITY.sm",
+      "title": "COSMIC V3LOCITY",
+      "titleTranslit": "COSMIC VELOCITY"
+    },
+    {
+      "path": "sm/World/Couleur=Blanche.sm",
+      "title": "Couleur=Blanche",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Dance and Death.sm",
+      "title": "Dance and Death",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Dance With Me.sm",
+      "title": "Dance With Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Dance wiz the Rhythm.sm",
+      "title": "Dance wiz the Rhythm",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Danmaku shinkou.sm",
+      "title": "弾幕信仰",
+      "titleTranslit": "Danmaku shinkou"
+    },
+    {
+      "path": "sm/World/DanRevoAthlon.sm",
+      "title": "DanRevoAthlon",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Dense Flyer.sm",
+      "title": "Dense Flyer",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/DIAVOLO.sm",
+      "title": "DIAVOLO",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Don't Stop The HYPERCORE.sm",
+      "title": "Don't Stop The HYPERCORE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Douwa kairou.sm",
+      "title": "童話回廊",
+      "titleTranslit": "Douwa kairou"
+    },
+    {
+      "path": "sm/World/Dozen Flower.sm",
+      "title": "Dozen Flower",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/EBONY & IVORY.sm",
+      "title": "EBONY & IVORY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Eira.sm",
+      "title": "Eira",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/El ritmo te controla.sm",
+      "title": "El ritmo te controla",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/ESPRIT ONE.sm",
+      "title": "ESPRIT ONE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/First Action.sm",
+      "title": "First Action",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/fluctus.sm",
+      "title": "fluctus",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Fly Like You.sm",
+      "title": "Fly Like You",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Four Leaves.sm",
+      "title": "Four Leaves",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Funky Flux Fusion.sm",
+      "title": "Funky Flux Fusion",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Gale Rider.sm",
+      "title": "Gale Rider",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Ganymede -reborn-.sm",
+      "title": "Ganymede -re\\:born-",
+      "titleTranslit": "Ganymede -reborn-"
+    },
+    {
+      "path": "sm/World/Get Into The Groove feat.WaMi.sm",
+      "title": "Get Into The Groove feat.WaMi",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Gravity Collapse.sm",
+      "title": "Gravity Collapse",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Hajimari no eyes ft. Rintaru.sm",
+      "title": "ハジマリノアイズ ft. りんたる",
+      "titleTranslit": "Hajimari no eyes ft. Rintaru"
+    },
+    {
+      "path": "sm/World/Hakujitsu to gengetsu.sm",
+      "title": "白日と幻月",
+      "titleTranslit": "Hakujitsu to gengetsu"
+    },
+    {
+      "path": "sm/World/Happy Dance Day 2 U.sm",
+      "title": "Happy Dance Day 2 U",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Heavy Rain.sm",
+      "title": "Heavy Rain",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Heisokuteki flation.sm",
+      "title": "閉塞的フレーション",
+      "titleTranslit": "Heisokuteki flation"
+    },
+    {
+      "path": "sm/World/Hi-tech Tokio.sm",
+      "title": "ハイテックトキオ",
+      "titleTranslit": "Hi-tech Tokio"
+    },
+    {
+      "path": "sm/World/Hito mania.sm",
+      "title": "人マニア",
+      "titleTranslit": "Hito mania"
+    },
+    {
+      "path": "sm/World/Hollywood Galaxy.sm",
+      "title": "Hollywood Galaxy",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/HYPER OVERR DANCEFLOORRR.sm",
+      "title": "HYPER OVERR DANCEFLOORRR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/HyperNOAH.sm",
+      "title": "HyperNOAH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Igaku.sm",
+      "title": "イガク",
+      "titleTranslit": "Igaku"
+    },
+    {
+      "path": "sm/World/Ima koko! Kono shunkan.sm",
+      "title": "イマココ！この瞬間",
+      "titleTranslit": "Ima koko! Kono shunkan"
+    },
+    {
+      "path": "sm/World/Is this dance a Hakken.sm",
+      "title": "Is this dance a Hakken?",
+      "titleTranslit": "Is this dance a Hakken"
+    },
+    {
+      "path": "sm/World/Kagachi.sm",
+      "title": "蛇神",
+      "titleTranslit": "Kagachi"
+    },
+    {
+      "path": "sm/World/Kirakira universe.sm",
+      "title": "きらきら☆ユニバース",
+      "titleTranslit": "Kirakira universe"
+    },
+    {
+      "path": "sm/World/Knock Yourself Out XD.sm",
+      "title": "Knock Yourself Out XD",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Koiuta shippuu! Karuta queen Iroha.sm",
+      "title": "恋歌疾風！かるたクイーンいろは",
+      "titleTranslit": "Koiuta shippuu! Karuta queen Iroha"
+    },
+    {
+      "path": "sm/World/Komainu Adventure!.sm",
+      "title": "Komainu Adventure!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Konran shoujo Soflan-chan!!.sm",
+      "title": "混乱少女♥そふらんちゃん!!",
+      "titleTranslit": "Konran shoujo Soflan-chan!!"
+    },
+    {
+      "path": "sm/World/Kyokuchi daishougeki.sm",
+      "title": "極地大衝撃",
+      "titleTranslit": "Kyokuchi daishougeki"
+    },
+    {
+      "path": "sm/World/Kyoufuu all back.sm",
+      "title": "強風オールバック",
+      "titleTranslit": "Kyoufuu all back"
+    },
+    {
+      "path": "sm/World/Kyu-kurarin.sm",
+      "title": "きゅうくらりん",
+      "titleTranslit": "Kyu-kurarin"
+    },
+    {
+      "path": "sm/World/Liar Girl.sm",
+      "title": "Liar×Girl",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Lichtsaule.sm",
+      "title": "Lichtsäule",
+      "titleTranslit": "Lichtsaule"
+    },
+    {
+      "path": "sm/World/Love You.sm",
+      "title": "Love You",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Many mania--.sm",
+      "title": "まにぃまにあ××",
+      "titleTranslit": "Many mania--"
+    },
+    {
+      "path": "sm/World/Meikyoushisui.sm",
+      "title": "明鏡止水",
+      "titleTranslit": "Meikyoushisui"
+    },
+    {
+      "path": "sm/World/Mesmerizer.sm",
+      "title": "メズマライザー",
+      "titleTranslit": "Mesmerizer"
+    },
+    {
+      "path": "sm/World/Meteor.sm",
+      "title": "Meteor",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Meteora -meteor-.sm",
+      "title": "メテオラ-meteor-",
+      "titleTranslit": "Meteora -meteor-"
+    },
+    {
+      "path": "sm/World/Mighty Beat Monsterz.sm",
+      "title": "Mighty Beat Monsterz",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Move On.sm",
+      "title": "Move On",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Moving On.sm",
+      "title": "Moving On",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Murasaki guruma.sm",
+      "title": "ムラサキグルマ",
+      "titleTranslit": "Murasaki guruma"
+    },
+    {
+      "path": "sm/World/MVP.sm",
+      "title": "MVP",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Neoki yashi no ki.sm",
+      "title": "寝起きヤシの木",
+      "titleTranslit": "Neoki yashi no ki"
+    },
+    {
+      "path": "sm/World/Niji no Sekai.sm",
+      "title": "Niji no Sekai",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/No Matter What.sm",
+      "title": "No Matter What",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/No More Love.sm",
+      "title": "No More Love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Odore!! Virtual animal!!.sm",
+      "title": "踊れ！！バーチャルアニマル！！",
+      "titleTranslit": "Odore!! Virtual animal!!"
+    },
+    {
+      "path": "sm/World/Odyssey.sm",
+      "title": "Ødyssey",
+      "titleTranslit": "Odyssey"
+    },
+    {
+      "path": "sm/World/Ohisashi chuukagai!.sm",
+      "title": "おひさし中華街！",
+      "titleTranslit": "Ohisashi chuukagai!"
+    },
+    {
+      "path": "sm/World/Ongaku (STARDOM Remix).sm",
+      "title": "音楽 (STARDOM Remix)",
+      "titleTranslit": "Ongaku (STARDOM Remix)"
+    },
+    {
+      "path": "sm/World/Origin Pulsation.sm",
+      "title": "Origin Pulsation",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/OROCHI STRIKE.sm",
+      "title": "OROCHI STRIKE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Pochiko no shiawasena nichijou.sm",
+      "title": "ポチコの幸せな日常",
+      "titleTranslit": "Pochiko no shiawasena nichijou"
+    },
+    {
+      "path": "sm/World/quaver.sm",
+      "title": "quaver♪",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Red. by Full Metal Jacket.sm",
+      "title": "Red. by Full Metal Jacket",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/REINCARNATION.sm",
+      "title": "REINCARNATION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Remember remember.sm",
+      "title": "リメンバーリメンバー",
+      "titleTranslit": "Remember remember"
+    },
+    {
+      "path": "sm/World/ReRHYZE.sm",
+      "title": "Re\\:RHYZE",
+      "titleTranslit": "ReRHYZE"
+    },
+    {
+      "path": "sm/World/Robot Footwork.sm",
+      "title": "Robot Footwork",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Roche Limit.sm",
+      "title": "Roche Limit",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Roman.sm",
+      "title": "路男",
+      "titleTranslit": "Roman"
+    },
+    {
+      "path": "sm/World/Romancing escape.sm",
+      "title": "ロマンシングエスケープ",
+      "titleTranslit": "Romancing escape"
+    },
+    {
+      "path": "sm/World/Ryoushi no umi no Lindwurm (STARDOM Remix).sm",
+      "title": "量子の海のリントヴルム (STARDOM Remix)",
+      "titleTranslit": "Ryoushi no umi no Lindwurm (STARDOM Remix)"
+    },
+    {
+      "path": "sm/World/S.O.D.sm",
+      "title": "S.O.D",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Sahara.sm",
+      "title": "Sahara",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Sakazuki.sm",
+      "title": "逆月",
+      "titleTranslit": "Sakazuki"
+    },
+    {
+      "path": "sm/World/Setsujou danka.sm",
+      "title": "雪上断火",
+      "titleTranslit": "Setsujou danka"
+    },
+    {
+      "path": "sm/World/Show.sm",
+      "title": "唱",
+      "titleTranslit": "Show"
+    },
+    {
+      "path": "sm/World/Sign wa B -New Arrange Ver.-.sm",
+      "title": "サインはB -New Arrange Ver.-",
+      "titleTranslit": "Sign wa B -New Arrange Ver.-"
+    },
+    {
+      "path": "sm/World/So What.sm",
+      "title": "So What",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Steps to the Star.sm",
+      "title": "Steps to the Star",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/STOMP!!.sm",
+      "title": "STOMP!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/SUPER HEROINE!!.sm",
+      "title": "SUPER HEROINE!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Sweetin' Fruity.sm",
+      "title": "Sweetin' Fruity",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/The 88's Instigation.sm",
+      "title": "The 88's Instigation",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/The Ashes of Boreas.sm",
+      "title": "The Ashes of Boreas",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/THE SAFARI (STARDOM Remix).sm",
+      "title": "THE SAFARI (STARDOM Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Thunderstorm.sm",
+      "title": "Thunderstorm",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/THUNDERSTRIKE.sm",
+      "title": "THUNDERSTRIKE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Time to HYPERDRIVE.sm",
+      "title": "Time to HYPERDRIVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Timepiece phase II.sm",
+      "title": "Timepiece phase Ⅱ",
+      "titleTranslit": "Timepiece phase II"
+    },
+    {
+      "path": "sm/World/Tokumei M.sm",
+      "title": "匿名M",
+      "titleTranslit": "Tokumei M"
+    },
+    {
+      "path": "sm/World/Trauma saimin shoujo Satori!.sm",
+      "title": "トラウマ催眠少女さとり！",
+      "titleTranslit": "Trauma saimin shoujo Satori!"
+    },
+    {
+      "path": "sm/World/Tsuki ni murakumo hana ni kaze.sm",
+      "title": "月に叢雲華に風",
+      "titleTranslit": "Tsuki ni murakumo hana ni kaze"
+    },
+    {
+      "path": "sm/World/Tsumi to batsu.sm",
+      "title": "罪と罰",
+      "titleTranslit": "Tsumi to batsu"
+    },
+    {
+      "path": "sm/World/TYCOON.sm",
+      "title": "TYCOON",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Vampire.sm",
+      "title": "ヴァンパイア",
+      "titleTranslit": "Vampire"
+    },
+    {
+      "path": "sm/World/Warera kanzen muteki no idol!!.sm",
+      "title": "我ら完全無敵のアイドル!!",
+      "titleTranslit": "Warera kanzen muteki no idol!!"
+    },
+    {
+      "path": "sm/World/Wizards!.sm",
+      "title": "Wizards!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/WONDER COASTER.sm",
+      "title": "WONDER COASTER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Zanzou ni tsunagareta tsuioku no HIDEAWAY.sm",
+      "title": "残像ニ繋ガレタ追憶ノHIDEAWAY",
+      "titleTranslit": "Zanzou ni tsunagareta tsuioku no HIDEAWAY"
+    },
+    {
+      "path": "sm/World/Zettaireido.sm",
+      "title": "絶対零度",
+      "titleTranslit": "Zettaireido"
+    },
+    {
+      "path": "sm/X/30 Lives (Up-Up-Down-Dance Mix).sm",
+      "title": "30 Lives (Up-Up-Down-Dance Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/A Geisha's Dream.sm",
+      "title": "A Geisha's Dream",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/AFRONOVA(X-Special).sm",
+      "title": "AFRONOVA(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Always on My Mind.sm",
+      "title": "Always on My Mind",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Beautiful Inside (Cube Hard Mix).sm",
+      "title": "Beautiful Inside (Cube∷Hard Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Big Girls Don't Cry.sm",
+      "title": "Big Girls Don't Cry",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Blue Rain.sm",
+      "title": "Blue Rain",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Boys (2008 X-edit).sm",
+      "title": "Boys (2008 X-edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Butterfly (2008 X-edit).sm",
+      "title": "Butterfly (2008 X-edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/CANDY(X-Special).sm",
+      "title": "CANDY☆(X-Special)",
+      "titleTranslit": "CANDY(X-Special)"
+    },
+    {
+      "path": "sm/X/Chance and Dice.sm",
+      "title": "Chance and Dice",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Dance Celebration (System 7 Remix).sm",
+      "title": "Dance Celebration (System 7 Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Dance Celebration.sm",
+      "title": "Dance Celebration",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Dance Dance Revolution(X-Special).sm",
+      "title": "Dance Dance Revolution(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Dance Floor.sm",
+      "title": "Dance Floor",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/dazzle.sm",
+      "title": "dazzle",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Dream Machine.sm",
+      "title": "Dream Machine",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/DUB-I-DUB (2008 X-edit).sm",
+      "title": "DUB-I-DUB (2008 X-edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/DYNAMITE RAVE (AIR Special).sm",
+      "title": "DYNAMITE RAVE (\"AIR\" Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/DYNAMITE RAVE.sm",
+      "title": "DYNAMITE RAVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Feel.sm",
+      "title": "Feel",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Flight of the Phoenix.sm",
+      "title": "Flight of the Phoenix",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Flourish.sm",
+      "title": "Flourish",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/GET UP'N MOVE (2008 X-edit).sm",
+      "title": "GET UP'N MOVE (2008 X-edit)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Ghetto Blasta Deluxe.sm",
+      "title": "Ghetto Blasta Deluxe",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Happy.sm",
+      "title": "Happy",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Healing Vision(X-Special).sm",
+      "title": "Healing Vision(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Here It Goes Again.sm",
+      "title": "Here It Goes Again",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Horatio.sm",
+      "title": "Horatio",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/HOW TO PLAY (English).sm",
+      "title": "HOW TO PLAY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/HOW TO PLAY.sm",
+      "title": "HOW TO PLAY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Inspiration.sm",
+      "title": "Inspiration",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/INTO YOUR HEART (Ruffage remix).sm",
+      "title": "INTO YOUR HEART (Ruffage remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/KAKUMEI(X-Special).sm",
+      "title": "革命(X-Special)",
+      "titleTranslit": "KAKUMEI(X-Special)"
+    },
+    {
+      "path": "sm/X/Koko Soko.sm",
+      "title": "Koko Soko",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Lift You Up.sm",
+      "title": "Lift You Up",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/LOVING YOU (Epidemik remix).sm",
+      "title": "LOVING YOU (Epidemik remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Make Me Cry.sm",
+      "title": "Make Me Cry",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Malacca.sm",
+      "title": "Malacca",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/MAX 300(X-Special).sm",
+      "title": "MAX 300(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/MAXX UNLIMITED(X-Special).sm",
+      "title": "MAXX UNLIMITED(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/on the bounce.sm",
+      "title": "on the bounce",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/On The Break.sm",
+      "title": "On The Break",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PARANOiA ETERNAL(X-Special).sm",
+      "title": "PARANOiA ETERNAL(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PARANOiA EVOLUTION(X-Special).sm",
+      "title": "PARANOIA EVOLUTION(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PARANOiA MAX~DIRTY MIX~(X-Special).sm",
+      "title": "PARANOiA MAX～DIRTY MIX～(X-Special)",
+      "titleTranslit": "PARANOiA MAX~DIRTY MIX~(X-Special)"
+    },
+    {
+      "path": "sm/X/PARANOiA MAX~DIRTY MIX~in roulette(X-Special).sm",
+      "title": "PARANOiA MAX~DIRTY MIX~in roulette(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PARANOiA Rebirth(X-Special).sm",
+      "title": "PARANOiA Rebirth(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PARANOiA(X-Special).sm",
+      "title": "PARANOiA(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Party Lights.sm",
+      "title": "Party Lights",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Playa (Original Mix).sm",
+      "title": "Playa (Original Mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/PORIRIZUMU.sm",
+      "title": "ポリリズム",
+      "titleTranslit": "PORIRIZUMU"
+    },
+    {
+      "path": "sm/X/Put 'Em Up.sm",
+      "title": "Put 'Em Up",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/puzzle.sm",
+      "title": "puzzle",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Reach Up.sm",
+      "title": "Reach Up",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Rin To Shite Saku Hana No Gotoku.sm",
+      "title": "凛として咲く花の如く",
+      "titleTranslit": "Rin To Shite Saku Hana No Gotoku"
+    },
+    {
+      "path": "sm/X/SABER WING (Akira Ishihara Headshot mix).sm",
+      "title": "SABER WING (Akira Ishihara Headshot mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/SABER WING.sm",
+      "title": "SABER WING",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/SAGA.sm",
+      "title": "S・A・G・A",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/SEKAI HA ODORU.sm",
+      "title": "世界は踊る",
+      "titleTranslit": "SEKAI HA ODORU"
+    },
+    {
+      "path": "sm/X/Slip Out (bounce in beat mix).sm",
+      "title": "Slip Out (bounce in beat mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Slip Out.sm",
+      "title": "Slip Out",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/SP-TRIP MACHINE~JUNGLE MIX~(X-Special).sm",
+      "title": "SP-TRIP MACHINE～JUNGLE MIX～(X-Special)",
+      "titleTranslit": "SP-TRIP MACHINE~JUNGLE MIX~(X-Special)"
+    },
+    {
+      "path": "sm/X/Suki Melo.sm",
+      "title": "スキ☆メロ",
+      "titleTranslit": "Suki Melo"
+    },
+    {
+      "path": "sm/X/SUPER SAMURAI.sm",
+      "title": "SUPER SAMURAI",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Swingin'.sm",
+      "title": "Swingin'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Tabibito.sm",
+      "title": "旅人",
+      "titleTranslit": "Tabibito"
+    },
+    {
+      "path": "sm/X/Taj He Spitz (Tommie Sunshine's Brooklyn Fire Re-Touch).sm",
+      "title": "Taj He Spitz (Tommie Sunshine's Brooklyn Fire Re-Touch)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Taj He Spitz.sm",
+      "title": "Taj He Spitz",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Take A Chance.sm",
+      "title": "Take A Chance",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/The flower in your smile.sm",
+      "title": "The flower in your smile",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/The legend of MAX(X-Special).sm",
+      "title": "The legend of MAX(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Ticket To Bombay.sm",
+      "title": "Ticket to Bombay",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Till the lonely's gone.sm",
+      "title": "Till the lonely's gone",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/TimeHollow.sm",
+      "title": "TimeHollow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Tracers (4Beat Remix).sm",
+      "title": "Tracers (4Beat Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Trickster.sm",
+      "title": "Trickster",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Trigger.sm",
+      "title": "Trigger",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/TRIP MACHINE CLIMAX(X-Special).sm",
+      "title": "TRIP MACHINE CLIMAX(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/TRIP MACHINE(X-Special).sm",
+      "title": "TRIP MACHINE(X-Special)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/U Can't Touch This.sm",
+      "title": "U Can't Touch This",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Ubertreffen.sm",
+      "title": "Übertreffen",
+      "titleTranslit": "Ubertreffen"
+    },
+    {
+      "path": "sm/X/Waiting 4 u.sm",
+      "title": "Waiting 4 u",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/We Come Alive.sm",
+      "title": "We Come Alive",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/We've Got To Make It Tonight.sm",
+      "title": "We've Got To Make It Tonight",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/will.sm",
+      "title": "will",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Xmix1 (Midnight Dawn).sm",
+      "title": "Xmix1 (Midnight Dawn)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Xmix2 (Beats 'n Bangs).sm",
+      "title": "Xmix2 (Beats 'n Bangs)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Xmix3 (Stomp Dem Groove).sm",
+      "title": "Xmix3 (Stomp Dem Groove)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Xmix4 (Linear Momentum).sm",
+      "title": "Xmix4 (Linear Momentum)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/Xmix5 (Overcrush).sm",
+      "title": "Xmix5 (Overcrush)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X/ZERO.sm",
+      "title": "零 - ZERO -",
+      "titleTranslit": "ZERO"
+    },
+    {
+      "path": "sm/X2/888.sm",
+      "title": "888",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/A Brighter Day.sm",
+      "title": "A Brighter Day",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/aftershock!!.sm",
+      "title": "aftershock!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/All My Love.sm",
+      "title": "All My Love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Anti-Matter.sm",
+      "title": "Anti-Matter",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/BALLAD THE FEATHERS (Chinese).sm",
+      "title": "羽之谣",
+      "titleTranslit": "BALLAD THE FEATHERS"
+    },
+    {
+      "path": "sm/X2/BALLAD THE FEATHERS.sm",
+      "title": "BALLAD THE FEATHERS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Be your wings.sm",
+      "title": "Be your wings",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Bonafied Lovin'.sm",
+      "title": "Bonafied Lovin'",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/CAPTAIN JACK (GRANDALE REMIX).sm",
+      "title": "CAPTAIN JACK (GRANDALE REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/CG Project.sm",
+      "title": "CG Project",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Crazy Control.sm",
+      "title": "Crazy Control",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/DAFT PUNK IS PLAYING AT MY HOUSE.sm",
+      "title": "DAFT PUNK IS PLAYING AT MY HOUSE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/DAM DARIRAM.sm",
+      "title": "DAM DARIRAM",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Dazzlin' Darlin-Akiba koubou mix-.sm",
+      "title": "Dazzlin' Darlin-秋葉工房mix-",
+      "titleTranslit": "Dazzlin' Darlin-Akiba koubou mix-"
+    },
+    {
+      "path": "sm/X2/Dazzlin' Darlin.sm",
+      "title": "Dazzlin' Darlin",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Decade.sm",
+      "title": "Decade",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/deltaMAX.sm",
+      "title": "ΔMAX",
+      "titleTranslit": "deltaMAX"
+    },
+    {
+      "path": "sm/X2/dirty digital.sm",
+      "title": "dirty digital",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/DROP.sm",
+      "title": "DROP",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Dummy.sm",
+      "title": "Dummy",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/ETERNITY.sm",
+      "title": "ETERNITY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Everytime We Touch.sm",
+      "title": "Everytime We Touch",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/EZ DO DANCE.sm",
+      "title": "EZ DO DANCE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Feel Good Inc.sm",
+      "title": "Feel Good Inc.",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/FIRE FIRE.sm",
+      "title": "FIRE FIRE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Freeze.sm",
+      "title": "Freeze",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Fuchinkan CANDY.sm",
+      "title": "不沈艦CANDY",
+      "titleTranslit": "Fuchinkan CANDY"
+    },
+    {
+      "path": "sm/X2/going up (Chinese).sm",
+      "title": "going up (Chinese)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/going up.sm",
+      "title": "going up",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/GOLD RUSH (AC).sm",
+      "title": "GOLD RUSH (AC)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/GOLD RUSH (CS).sm",
+      "title": "GOLD RUSH (CS)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/GOLD RUSH.sm",
+      "title": "GOLD RUSH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Gotta Dance.sm",
+      "title": "Gotta Dance",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Heatstroke.sm",
+      "title": "Heatstroke",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/HERO.sm",
+      "title": "HERO",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Hide-away.sm",
+      "title": "Hide-away",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/I'm so Happy.sm",
+      "title": "I'm so Happy",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/ICE ICE BABY.sm",
+      "title": "ICE ICE BABY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/IF YOU WERE HERE(L.E.D.-G STYLE REMIX).sm",
+      "title": "IF YOU WERE HERE(L.E.D.-G STYLE REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/IF YOU WERE HERE.sm",
+      "title": "IF YOU WERE HERE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/iFUTURELIST (Chinese).sm",
+      "title": "不帅之歌(DDR VERSION)",
+      "titleTranslit": "Bu Shuai Zhi Ge"
+    },
+    {
+      "path": "sm/X2/in love wit you.sm",
+      "title": "in love wit you",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/KIMONO PRINCESS.sm",
+      "title": "KIMONO♥PRINCESS",
+      "titleTranslit": "KIMONO PRINCESS"
+    },
+    {
+      "path": "sm/X2/KISS KISS KISS Akiba koubou MIX.sm",
+      "title": "KISS KISS KISS 秋葉工房 MIX",
+      "titleTranslit": "KISS KISS KISS Akiba koubou MIX"
+    },
+    {
+      "path": "sm/X2/La libertad.sm",
+      "title": "La libertad",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/La receta.sm",
+      "title": "La receta",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Leaving... (Chinese).sm",
+      "title": "Leaving...",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Leaving.sm",
+      "title": "Leaving...",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Love Again.sm",
+      "title": "Love Again",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/MAX LOVE (Chinese).sm",
+      "title": "功夫LOVE",
+      "titleTranslit": "Kung Fu LOVE"
+    },
+    {
+      "path": "sm/X2/MAX LOVE.sm",
+      "title": "MAX LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Mei.sm",
+      "title": "冥",
+      "titleTranslit": "Mei"
+    },
+    {
+      "path": "sm/X2/Melody Life (Chinese).sm",
+      "title": "Melody Life",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Melody Life.sm",
+      "title": "Melody Life",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/more more more.sm",
+      "title": "more more more",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/New Decade.sm",
+      "title": "New Decade",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/NIJIIRO (Chinese).sm",
+      "title": "虹色",
+      "titleTranslit": "NIJIIRO"
+    },
+    {
+      "path": "sm/X2/oarfish.sm",
+      "title": "oarfish",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/only my railgun.sm",
+      "title": "only my railgun",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Pierce The Sky.sm",
+      "title": "Pierce The Sky",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Pluto The First.sm",
+      "title": "Pluto The First",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Poseidon(kors k mix).sm",
+      "title": "Poseidon(kors k mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/POSSESSION.sm",
+      "title": "POSSESSION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/real-high-SPEED.sm",
+      "title": "real-high-SPEED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/resonance.sm",
+      "title": "resonance",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. A.sm",
+      "title": "roppongi EVOLVED ver. A",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. B.sm",
+      "title": "roppongi EVOLVED ver. B",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. C.sm",
+      "title": "roppongi EVOLVED ver. C",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. D.sm",
+      "title": "roppongi EVOLVED ver. D",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Sacred Oath.sm",
+      "title": "Sacred Oath",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/sakura storm.sm",
+      "title": "sakura storm",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Sakura Sunrise.sm",
+      "title": "Sakura Sunrise",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Second Heaven.sm",
+      "title": "Second Heaven",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/She is my wife.sm",
+      "title": "She is my wife",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Shine.sm",
+      "title": "Shine",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/shining.sm",
+      "title": "☆shining☆",
+      "titleTranslit": "shining"
+    },
+    {
+      "path": "sm/X2/Shiny World.sm",
+      "title": "Shiny World",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Sky Is The Limit.sm",
+      "title": "Sky Is The Limit",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/smooooch.sm",
+      "title": "smooooch・∀・",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/someday.sm",
+      "title": "someday...",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Super Driver.sm",
+      "title": "Super Driver",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/SUPER EUROBEAT (GOLD MIX).sm",
+      "title": "SUPER EUROBEAT <GOLD MIX>",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Taking It To The Sky.sm",
+      "title": "Taking It To The Sky",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/TENSHI.sm",
+      "title": "TENSHI",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Theory of Eternity.sm",
+      "title": "Theory of Eternity",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/THIS NIGHT.sm",
+      "title": "THIS NIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Time After Time.sm",
+      "title": "Time After Time",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Valkyrie dimension.sm",
+      "title": "Valkyrie dimension",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/VANESSA.sm",
+      "title": "VANESSA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/WH1TE RO5E.sm",
+      "title": "WH1TE RO5E",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/What Will Come of Me.sm",
+      "title": "What Will Come of Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/You are a Star.sm",
+      "title": "You are a Star",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/Your Angel.sm",
+      "title": "Your Angel",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X2/ZETA~sosuu no sekai to chouetsusha~.sm",
+      "title": "ZETA～素数の世界と超越者～",
+      "titleTranslit": "ZETA~sosuu no sekai to chouetsusha~"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Alstroemeria (walk with you remix).sm",
+      "title": "アルストロメリア (walk with you remix)",
+      "titleTranslit": "Alstroemeria (walk with you remix)"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Amalgamation.sm",
+      "title": "Amalgamation",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Beautiful Receipt.sm",
+      "title": "ビューティフル レシート",
+      "titleTranslit": "Beautiful Receipt"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/BRILLIANT 2U (AKBK MIX).sm",
+      "title": "BRILLIANT 2U (AKBK MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Chronos.sm",
+      "title": "Chronos",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/COME BACK TO MY HEART.sm",
+      "title": "COME BACK TO MY HEART",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Connect.sm",
+      "title": "コネクト",
+      "titleTranslit": "Connect"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Cosmic Hurricane.sm",
+      "title": "Cosmic Hurricane",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/CRAZY LOVE.sm",
+      "title": "CRAZY♥LOVE",
+      "titleTranslit": "CRAZY LOVE"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Diamond Dust.sm",
+      "title": "Diamond Dust",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/dreaming can make a wish come true.sm",
+      "title": "dreaming can make a wish come true",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/ever snow.sm",
+      "title": "ever snow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Fever.sm",
+      "title": "Fever",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Find You Again.sm",
+      "title": "Find You Again",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/FLOWER.sm",
+      "title": "FLOWER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/future gazer.sm",
+      "title": "future gazer",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Get Back Up!.sm",
+      "title": "Get Back Up!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Go For The Top.sm",
+      "title": "Go For The Top",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Haunted Rhapsody.sm",
+      "title": "Haunted Rhapsody",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/HEART BEAT FORMULA.sm",
+      "title": "HEART BEAT FORMULA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/HEARTBREAK (Sound Selektaz remix).sm",
+      "title": "HEARTBREAK (Sound Selektaz remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Heavy Rotation.sm",
+      "title": "ヘビーローテーション",
+      "titleTranslit": "Heavy Rotation"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/I-O.sm",
+      "title": "I/O",
+      "titleTranslit": "IO"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/In The Air.sm",
+      "title": "In The Air",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/IN THE ZONE.sm",
+      "title": "IN THE ZONE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/KEEP ON MOVIN' (Y&Co. DJ BOSS remix).sm",
+      "title": "KEEP ON MOVIN' (Y&Co. DJ BOSS remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Kouen.sm",
+      "title": "紅焔",
+      "titleTranslit": "Kouen"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Let's Get Away.sm",
+      "title": "Let's Get Away",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/London EVOLVED ver.A.sm",
+      "title": "London EVOLVED ver.A",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/London EVOLVED ver.B.sm",
+      "title": "London EVOLVED ver.B",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/London EVOLVED ver.C.sm",
+      "title": "London EVOLVED ver.C",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/LOVE & JOY.sm",
+      "title": "LOVE & JOY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/LOVE IS THE POWER -Reborn-.sm",
+      "title": "LOVE IS THE POWER -Re\\:born-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/MAGIC PARADE.sm",
+      "title": "MAGIC PARADE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Memeshikute.sm",
+      "title": "女々しくて",
+      "titleTranslit": "Memeshikute"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Mermaid girl.sm",
+      "title": "Mermaid girl",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/message.sm",
+      "title": "message",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/NEPHILIM DELTA.sm",
+      "title": "NEPHILIM DELTA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/New Beginning.sm",
+      "title": "New Beginning",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/New York EVOLVED (Type A).sm",
+      "title": "New York EVOLVED (Type A)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/New York EVOLVED (Type B).sm",
+      "title": "New York EVOLVED (Type B)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/New York EVOLVED (Type C).sm",
+      "title": "New York EVOLVED (Type C)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/osaka EVOLVED -MAIDO, OHKINI!- (TYPE1).sm",
+      "title": "osaka EVOLVED -毎度、おおきに！- (TYPE1)",
+      "titleTranslit": "osaka EVOLVED -MAIDO, OHKINI!- (TYPE1)"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/osaka EVOLVED -MAIDO, OHKINI!- (TYPE2).sm",
+      "title": "osaka EVOLVED -毎度、おおきに！- (TYPE2)",
+      "titleTranslit": "osaka EVOLVED -MAIDO, OHKINI!- (TYPE2)"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/osaka EVOLVED -MAIDO, OHKINI!- (TYPE3).sm",
+      "title": "osaka EVOLVED -毎度、おおきに！- (TYPE3)",
+      "titleTranslit": "osaka EVOLVED -MAIDO, OHKINI!- (TYPE3)"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/PARANOiA (kskst mix).sm",
+      "title": "PARANOiA (kskst mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/PARANOiA Revolution.sm",
+      "title": "PARANOiA Revolution",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Private Eye.sm",
+      "title": "Private Eye",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Programmed Universe.sm",
+      "title": "Programmed Universe",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/PUT YOUR FAITH IN ME (DA's Twinkly Disco Remix).sm",
+      "title": "PUT YOUR FAITH IN ME (DA's Twinkly Disco Remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/REBORN MAGIC.sm",
+      "title": "REBORN MAGIC",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Rensen ryouran.sm",
+      "title": "恋閃繚乱",
+      "titleTranslit": "Rensen ryouran"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Rescue Me.sm",
+      "title": "Rescue Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Resurrection.sm",
+      "title": "Resurrection",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/REVOLUTIONARY ADDICT.sm",
+      "title": "REVOLUTIONARY ADDICT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Rhythms Inside.sm",
+      "title": "Rhythms Inside",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Ryouran Hit Chart.sm",
+      "title": "繚乱ヒットチャート",
+      "titleTranslit": "Ryouran Hit Chart"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Seasons.sm",
+      "title": "Seasons",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Seule.sm",
+      "title": "Seule",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Share The Love.sm",
+      "title": "Share The Love",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Shizuku.sm",
+      "title": "雫",
+      "titleTranslit": "Shizuku"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/SigSig.sm",
+      "title": "SigSig",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/SILVER DREAM.sm",
+      "title": "SILVER☆DREAM",
+      "titleTranslit": "SILVER DREAM"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/snow prism.sm",
+      "title": "snow prism",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Something Special.sm",
+      "title": "Something Special",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/STRAIGHT JET.sm",
+      "title": "STRAIGHT JET",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Sumidagawa karenka.sm",
+      "title": "隅田川夏恋歌",
+      "titleTranslit": "Sumidagawa karenka"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Take A Step Forward.sm",
+      "title": "Take A Step Forward",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tenjou no Hoshi -Reimeiki-.sm",
+      "title": "天上の星 ～黎明記～",
+      "titleTranslit": "Tenjou no Hoshi -Reimeiki-"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/The Heavens Above.sm",
+      "title": "The Heavens Above",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/TIME.sm",
+      "title": "TIME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tohoku EVOLVED (TYPE1).sm",
+      "title": "Tohoku EVOLVED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tohoku EVOLVED (TYPE2).sm",
+      "title": "Tohoku EVOLVED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tohoku EVOLVED (TYPE3).sm",
+      "title": "Tohoku EVOLVED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tohoku EVOLVED (TYPE4).sm",
+      "title": "Tohoku EVOLVED",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/tokyoEVOLVED (TYPE1).sm",
+      "title": "tokyoEVOLVED (TYPE1)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/tokyoEVOLVED (TYPE2).sm",
+      "title": "tokyoEVOLVED (TYPE2)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/tokyoEVOLVED (TYPE3).sm",
+      "title": "tokyoEVOLVED (TYPE3)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Tribe.sm",
+      "title": "Tribe",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/TRIP MACHINE (xac nanoglide mix).sm",
+      "title": "TRIP MACHINE (xac nanoglide mix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/TRIP MACHINE EVOLUTION.sm",
+      "title": "TRIP MACHINE EVOLUTION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/TWINKLE HEART.sm",
+      "title": "TWINKLE♡HEART",
+      "titleTranslit": "TWINKLE HEART"
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/UNBELIEVABLE (Sparky remix).sm",
+      "title": "UNBELIEVABLE (Sparky remix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Until the End.sm",
+      "title": "Until the End",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Wicked Plastik.sm",
+      "title": "Wicked Plastik",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/X3 vs 2ndMix/Wings of an Angel (Fly With Me).sm",
+      "title": "Wings of an Angel (Fly With Me)",
       "titleTranslit": ""
     }
   ]

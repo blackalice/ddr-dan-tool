@@ -447,6 +447,8 @@ function MainPage({ targetBPM, setTargetBPM }) {
 
 function App() {
   const [targetBPM, setTargetBPM] = useState(300);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [selectedGame, setSelectedGame] = useState('all');
 
   return (
     <Router>
@@ -455,7 +457,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
           <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-          <Route path="/bpm" element={<BPMTool />} />
+          <Route path="/bpm" element={<BPMTool selectedSong={selectedSong} setSelectedSong={setSelectedSong} selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
         </Routes>
       </div>
     </Router>

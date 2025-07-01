@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -201,10 +201,17 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
 
 import Camera from './Camera';
 
-const BPMTool = () => {
+const getBpmRange = (bpm) => {
+  if (typeof bpm !== 'string') return { min: 0, max: 0 };
+  const parts = bpm.split('-').map(Number);
+  if (parts.length === 1) {
+    return { min: parts[0], max: parts[0] };
+  }
+  return { min: Math.min(...parts), max: Math.max(...parts) };
+};
+
+const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame, targetBPM }) => {
     const [smData, setSmData] = useState({ games: [], files: [] });
-    const [selectedGame, setSelectedGame] = useState('all');
-    const [selectedSong, setSelectedSong] = useState(null);
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
@@ -212,6 +219,34 @@ const BPMTool = () => {
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+
+    const calculation = useMemo(() => {
+        if (!targetBPM || !songMeta.bpmDisplay || songMeta.bpmDisplay === 'N/A') return null;
+
+        const numericTarget = Number(targetBPM) || 0;
+        const bpmRange = getBpmRange(songMeta.bpmDisplay);
+        
+        if (bpmRange.max === 0) return null;
+
+        const idealMultiplier = numericTarget / bpmRange.max;
+        const multipliers = [
+            ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25),
+            ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),
+        ];
+        const closestMultiplier = multipliers.reduce((prev, curr) => 
+          Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
+        );
+
+        const minSpeed = (bpmRange.min * closestMultiplier).toFixed(0);
+        const maxSpeed = (bpmRange.max * closestMultiplier).toFixed(0);
+
+        return {
+            modifier: closestMultiplier,
+            minSpeed: minSpeed,
+            maxSpeed: maxSpeed,
+            isRange: bpmRange.min !== bpmRange.max
+        };
+    }, [targetBPM, songMeta.bpmDisplay]);
 
     const handleCapture = (imageDataUrl) => {
         if (!apiKey) {
@@ -283,11 +318,11 @@ const BPMTool = () => {
                         if (bpms.length === 0) {
                             bpmDisplay = 'N/A';
                         } else if (bpms.length === 1) {
-                            bpmDisplay = bpms[0];
+                            bpmDisplay = String(bpms[0]);
                         } else {
                             const minBpm = Math.min(...bpms);
                             const maxBpm = Math.max(...bpms);
-                            bpmDisplay = minBpm === maxBpm ? minBpm : `${minBpm}-${maxBpm}`;
+                            bpmDisplay = minBpm === maxBpm ? String(minBpm) : `${minBpm}-${maxBpm}`;
                         }
                     }
 
@@ -447,6 +482,15 @@ const BPMTool = () => {
                             <div className="bpm-display">
                                 <span className="bpm-label">BPM:</span>
                                 <span className="bpm-value">{songMeta.bpmDisplay}</span>
+                                {calculation && (
+                                    <div className="song-calculation">
+                                        <span className="song-speed">
+                                          {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
+                                        </span>
+                                        <span className="song-separator">@</span>
+                                        <span className="song-modifier">{calculation.modifier}x</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
