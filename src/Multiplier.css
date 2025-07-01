@@ -64,3 +64,9 @@
   color: var(--green-color);
   margin-top: 0.5rem;
 }
+
+@media (max-width: 640px) {
+    .multiplier-content {
+        margin: 0 0.75rem;
+    }
+}

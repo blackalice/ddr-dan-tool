@@ -1,0 +1,238 @@
+.bpm-tool-container {
+    padding: 2rem;
+    background-color: #111827;
+    color: #E5E7EB;
+    min-height: 100vh;
+}
+
+.selection-container {
+    margin-bottom: 1rem;
+    
+}
+
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+@media (min-width: 640px) {
+    .controls-container {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.game-select {
+appearance: none;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);*/
+}
+
+
+.song-search-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+     flex-grow: 1;
+}
+
+.song-select-container {
+    flex-grow: 1;
+}
+
+
+.api-key-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.api-key-modal-content {
+    background-color: #1F2937;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    width: 90%;
+}
+
+.api-key-modal-content h3 {
+    margin-top: 0;
+}
+
+.api-key-disclaimer {
+    font-size: 0.9rem;
+    color: #A0AEC0;
+    margin-bottom: 1rem;
+}
+
+.api-key-modal-content input {
+    background-color: #374151;
+    border: 1px solid #4B5563;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.api-key-modal-content button {
+    background-color: #4A5568;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.api-key-modal-content button:hover {
+    background-color: #5A6578;
+}
+
+.api-key-button {
+    background-color: #374151;
+    border: 0px solid #4B5563;
+    color: white; 
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    padding: 1rem;
+}
+.camera-button{
+    background-color: #374151;
+    border: 0px solid #4B5563;
+    color: white; 
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+
+.camera-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera-modal-content {
+    background-color: #1F2937;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chart-section {
+    background-color: #1F2937;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.song-info-bar {
+    background-color: #2D3748;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.song-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #F9FAFB;
+    margin-bottom: 1rem;
+}
+
+.details-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.difficulties-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.play-style {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #E5E7EB;
+}
+
+.difficulty-meter {
+    padding: 0.3rem 0.5rem;
+    width:22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.375rem;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.bpm-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bpm-label {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #E5E7EB;
+}
+
+.bpm-value {
+    background-color: #4A5568;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: white;
+}
+
+.recommended-speed {
+    font-size: 1.25rem;
+    color: #A0AEC0;
+}
+
+.chart-container {
+    height: 500px;
+    position: relative;
+    margin-top: 2rem;
+}
+
+.api-key-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
