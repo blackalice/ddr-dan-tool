@@ -272,7 +272,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
     };
 
     useEffect(() => {
-        const storedApiKey = localStorage.getItem('geminiApiKey');
+        const storedApiKey = sessionStorage.getItem('geminiApiKey');
         if (storedApiKey) {
             setApiKey(storedApiKey);
         }
@@ -397,7 +397,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
 
     const handleApiKeySave = (newApiKey) => {
         setApiKey(newApiKey);
-        localStorage.setItem('geminiApiKey', newApiKey);
+        sessionStorage.setItem('geminiApiKey', newApiKey);
         setShowApiKeyModal(false);
     };
 
@@ -442,7 +442,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                                 }}
                             />
                         </div>
-                        <Camera onCapture={handleCapture} isProcessing={isProcessing} />
+                        {apiKey && <Camera onCapture={handleCapture} isProcessing={isProcessing} />}
                     </div>
                 </div>
             </div>
@@ -451,6 +451,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                 <div className="api-key-modal">
                     <div className="api-key-modal-content">
                         <h3>Enter your Google AI Studio API Key</h3>
+                        <p className="api-key-disclaimer">Your API key is stored only in your browser's session storage and is sent directly to Google's AI services. It is never sent to our servers.</p>
                         <input
                             type="password"
                             defaultValue={apiKey}

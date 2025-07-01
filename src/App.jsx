@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
@@ -446,9 +446,16 @@ function MainPage({ targetBPM, setTargetBPM }) {
 }
 
 function App() {
-  const [targetBPM, setTargetBPM] = useState(300);
+  const [targetBPM, setTargetBPM] = useState(() => {
+    const savedTargetBPM = localStorage.getItem('targetBPM');
+    return savedTargetBPM ? parseInt(savedTargetBPM, 10) : 300;
+  });
   const [selectedSong, setSelectedSong] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
+
+  useEffect(() => {
+    localStorage.setItem('targetBPM', targetBPM);
+  }, [targetBPM]);
 
   return (
     <Router>

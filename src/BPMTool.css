@@ -67,6 +67,40 @@ appearance: none;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-width: 500px;
+    width: 90%;
+}
+
+.api-key-modal-content h3 {
+    margin-top: 0;
+}
+
+.api-key-disclaimer {
+    font-size: 0.9rem;
+    color: #A0AEC0;
+    margin-bottom: 1rem;
+}
+
+.api-key-modal-content input {
+    background-color: #374151;
+    border: 1px solid #4B5563;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.api-key-modal-content button {
+    background-color: #4A5568;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.api-key-modal-content button:hover {
+    background-color: #5A6578;
 }
 
 .api-key-button {
