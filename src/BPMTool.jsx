@@ -46,6 +46,7 @@ const DifficultyMeter = ({ level, difficultyName, isMissing }) => {
 const parseSmFile = (fileContent) => {
     const lines = fileContent.split('\n');
     let title = 'Unknown Title';
+    let titleTranslit = '';
     let artist = 'Unknown Artist';
     let bpmString = '';
 
@@ -53,6 +54,8 @@ const parseSmFile = (fileContent) => {
         const trimmedLine = line.trim();
         if (trimmedLine.startsWith('#TITLE:')) {
             title = trimmedLine.substring(7, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
+        } else if (trimmedLine.startsWith('#TITLETRANSLIT:')) {
+            titleTranslit = trimmedLine.substring(14, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
         } else if (trimmedLine.startsWith('#ARTIST:')) {
             artist = trimmedLine.substring(8, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
         } else if (trimmedLine.startsWith('#BPMS:')) {
@@ -80,7 +83,7 @@ const parseSmFile = (fileContent) => {
         }
     }
 
-    return { title, artist, bpmString, fileContent, difficulties };
+    return { title, titleTranslit, artist, bpmString, fileContent, difficulties };
 };
 
 const getLastBeat = (fileContent) => {
@@ -234,11 +237,19 @@ const BPMTool = () => {
             filteredFiles = smData.files.filter(file => file.startsWith(`sm/${selectedGame}/`));
         }
         
-        const options = filteredFiles.map(file => {
-            const fileName = file.split('/').pop().replace('.sm', '');
-            return { value: file, label: fileName };
+        const optionsPromises = filteredFiles.map(file => 
+            fetch(encodeURI(file))
+                .then(response => response.text())
+                .then(content => {
+                    const { title, titleTranslit } = parseSmFile(content);
+                    const fileName = file.split('/').pop().replace('.sm', '');
+                    return { value: file, label: fileName, title, titleTranslit };
+                })
+        );
+
+        Promise.all(optionsPromises).then(options => {
+            setSongOptions(options);
         });
-        setSongOptions(options);
     }, [selectedGame, smData]);
 
     useEffect(() => {
@@ -388,6 +399,14 @@ const BPMTool = () => {
                             placeholder="Search for a song..."
                             isClearable
                             components={{ MenuList }}
+                            filterOption={(option, rawInput) => {
+                                const { label, data } = option;
+                                const { title, titleTranslit } = data;
+                                const input = rawInput.toLowerCase();
+                                return label.toLowerCase().includes(input) || 
+                                       title.toLowerCase().includes(input) || 
+                                       (titleTranslit && titleTranslit.toLowerCase().includes(input));
+                            }}
                         />
                     </div>
                 </div>
