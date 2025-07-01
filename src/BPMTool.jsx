@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import './BPMTool.css';
@@ -11,6 +11,36 @@ import './BPMTool.css';
 const gameFolders = {
     "A3": "sm/A3/",
     "A20Plus": "sm/A20Plus/"
+};
+
+const difficultyMap = {
+    'Beginner': { color: '#4DB6AC' },
+    'Basic': { color: '#FDD835' },
+    'Difficult': { color: '#F44336' },
+    'Expert': { color: '#8BC34A' },
+    'Challenge': { color: '#BA68C8' },
+};
+
+const difficultyLevels = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
+
+const difficultyNameMapping = {
+    'Beginner': ['Beginner'],
+    'Basic': ['Basic', 'Easy', 'Light'],
+    'Difficult': ['Difficult', 'Medium', 'Standard'],
+    'Expert': ['Expert', 'Hard', 'Heavy'],
+    'Challenge': ['Challenge', 'Oni']
+};
+
+const DifficultyMeter = ({ level, difficultyName, isMissing }) => {
+    const style = {
+        backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
+        color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? '#111827' : 'white',
+    };
+    return (
+        <div className="difficulty-meter" style={style}>
+            {level}
+        </div>
+    );
 };
 
 const parseSmFile = (fileContent) => {
@@ -30,7 +60,27 @@ const parseSmFile = (fileContent) => {
         }
     });
 
-    return { title, artist, bpmString, fileContent };
+    const difficulties = { singles: {}, doubles: {} };
+    const noteSections = fileContent.split('#NOTES:');
+    if (noteSections.length > 1) {
+        for (let i = 1; i < noteSections.length; i++) {
+            const section = noteSections[i];
+            const details = section.trim().split(':');
+            if (details.length >= 4) {
+                const type = details[0].trim().replace('dance-', '');
+                const difficulty = details[2].trim();
+                const level = details[3].trim();
+
+                if (type === 'single') {
+                    difficulties.singles[difficulty] = level;
+                } else if (type === 'double') {
+                    difficulties.doubles[difficulty] = level;
+                }
+            }
+        }
+    }
+
+    return { title, artist, bpmString, fileContent, difficulties };
 };
 
 const getLastBeat = (fileContent) => {
@@ -152,9 +202,24 @@ const BPMTool = () => {
     const [selectedSong, setSelectedSong] = useState(null);
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: '', artist: '' });
+    const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A' });
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
+
+    const renderDifficulties = (difficulties, playStyle) => {
+        return difficultyLevels.map(levelName => {
+            let level = null;
+            
+            for (const name of difficultyNameMapping[levelName]) {
+                if (difficulties[name]) {
+                    level = difficulties[name];
+                    break;
+                }
+            }
+    
+            return <DifficultyMeter key={`${playStyle}-${levelName}`} level={level || 'X'} difficultyName={levelName} isMissing={!level} />;
+        });
+    };
 
     useEffect(() => {
         fetch('/sm-files.json')
@@ -183,8 +248,31 @@ const BPMTool = () => {
                 .then(content => {
                     const metadata = parseSmFile(content);
                     const lastBeat = getLastBeat(metadata.fileContent);
-                    setSongMeta({ title: metadata.title, artist: metadata.artist });
+                    
                     const bpmChanges = parseBPMs(metadata.bpmString);
+                    let bpmDisplay;
+                    if (bpmChanges.length === 0) {
+                        bpmDisplay = 'N/A';
+                    } else {
+                        const bpms = bpmChanges.map(b => b.bpm).filter(bpm => bpm > 0);
+                        if (bpms.length === 0) {
+                            bpmDisplay = 'N/A';
+                        } else if (bpms.length === 1) {
+                            bpmDisplay = bpms[0];
+                        } else {
+                            const minBpm = Math.min(...bpms);
+                            const maxBpm = Math.max(...bpms);
+                            bpmDisplay = minBpm === maxBpm ? minBpm : `${minBpm}-${maxBpm}`;
+                        }
+                    }
+
+                    setSongMeta({ 
+                        title: metadata.title, 
+                        artist: metadata.artist, 
+                        difficulties: metadata.difficulties,
+                        bpmDisplay: bpmDisplay
+                    });
+
                     const data = calculateChartData(bpmChanges, lastBeat);
                     setChartData(data);
                 });
@@ -220,12 +308,12 @@ const BPMTool = () => {
                     scales: {
                         x: {
                             type: 'linear',
-                            title: { display: true, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                            title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                             ticks: { color: '#9CA3AF' },
                             grid: { color: 'rgba(255, 255, 255, 0.1)' }
                         },
                         y: {
-                            title: { display: true, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                            title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                             ticks: { color: '#9CA3AF', stepSize: 10 },
                             grid: { color: 'rgba(255, 255, 255,.1)' }
                         }
@@ -258,8 +346,18 @@ const BPMTool = () => {
             ...styles,
             backgroundColor: isSelected ? '#4A5563' : isFocused ? '#374151' : null,
             color: 'white',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
         }),
-        singleValue: (styles) => ({ ...styles, color: 'white' }),
+        singleValue: (styles) => ({ 
+            ...styles, 
+            color: 'white',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        }),
+        input: (styles) => ({ ...styles, color: 'white' }),
     };
 
     return (
@@ -297,10 +395,24 @@ const BPMTool = () => {
 
             {chartData && (
                 <div className="chart-section">
-                    <div className="chart-header">
-                        <h2>{songMeta.title}</h2>
-                        <p>{songMeta.artist}</p>
+                    <div className="song-info-bar">
+                        <h2 className="song-title">{songMeta.title} - {songMeta.artist}</h2>
+                        <div className="details-bar">
+                            <div className="difficulties-display">
+                                <span className="play-style">SP</span>
+                                {renderDifficulties(songMeta.difficulties.singles, 'sp')}
+                            </div>
+                            <div className="difficulties-display">
+                                <span className="play-style">DP</span>
+                                {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
+                            </div>
+                            <div className="bpm-display">
+                                <span className="bpm-label">BPM:</span>
+                                <span className="bpm-value">{songMeta.bpmDisplay}</span>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div className="chart-container">
                         {chartData && (
                             <Line
@@ -325,12 +437,12 @@ const BPMTool = () => {
                                     scales: {
                                         x: {
                                             type: 'linear',
-                                            title: { display: true, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                            title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                                             ticks: { color: '#9CA3AF' },
                                             grid: { color: 'rgba(255, 255, 255, 0.1)' }
                                         },
                                         y: {
-                                            title: { display: true, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                            title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
                                             ticks: { color: '#9CA3AF', stepSize: 10 },
                                             grid: { color: 'rgba(255, 255, 255,.1)' }
                                         }
