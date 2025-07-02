@@ -485,8 +485,9 @@ function AppRoutes({
 
   return (
     <Routes>
-      <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+      <Route path="/dan" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
     </Routes>
   );
