@@ -380,7 +380,8 @@ appearance: none;
      
     }
 
-.chart-container{margin-top:0px;}
+.chart-container{margin-top:0px;
+padding: 0.5rem;}
     
     .bpm-tool-grid{
         margin-top:1rem;
