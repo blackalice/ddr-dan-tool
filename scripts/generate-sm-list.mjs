@@ -41,9 +41,32 @@ try {
     const allFiles = findSongFiles(smDir, publicDir);
     
     // Dynamically get game folders from the 'sm' directory
-    const gameFolders = fs.readdirSync(smDir).filter(item => 
+    const allGameFolders = fs.readdirSync(smDir).filter(item => 
         fs.statSync(path.join(smDir, item)).isDirectory()
     );
+
+    // Manual sort order for games
+    const manualSortOrder = [
+        'World', 'A3', 'A20 Plus', 'A20', 'A', '2014', '2013', 'X3 vs 2ndMix', 'X2', 'X', 
+        'Supernova 2', 'Supernova', 'Extreme', '7thMix', '6thMix', '5thMix', '4thMix Plus', '4thMix', '3rdMix', '2ndMix', 'DDR'
+    ];
+
+    // Sort folders based on the manual order
+    const gameFolders = allGameFolders.sort((a, b) => {
+        const indexA = manualSortOrder.indexOf(a);
+        const indexB = manualSortOrder.indexOf(b);
+
+        if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB; // Both are in the manual list, sort by its order
+        }
+        if (indexA !== -1) {
+            return -1; // Only A is in the list, it comes first
+        }
+        if (indexB !== -1) {
+            return 1; // Only B is in the list, it comes first
+        }
+        return a.localeCompare(b); // Neither are in the list, sort alphabetically
+    });
 
     const output = {
         games: gameFolders,

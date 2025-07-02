@@ -644,7 +644,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                 <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
                     <div className="song-info-bar">
                         <div className="song-title-container">
-                            <h2 className="song-title">{songMeta.title} - {songMeta.artist}</h2>
+                            <h2 className="song-title bpm-title-mobile">{songMeta.title} - {songMeta.artist}</h2>
                             <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
                                 <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
                             </button>
