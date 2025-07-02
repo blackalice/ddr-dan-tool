@@ -672,10 +672,10 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                                         )}
                                         {calculation && calculation.alternative && (
                                             <button 
-                                                className={`toggle-button ${showAltBpm ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                                className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
                                                 onClick={() => setShowAltBpm(!showAltBpm)}
                                             >
-                                                <i className="fa-solid fa-rotate"></i>
+                                                <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                             </button>
                                         )}
                                     </div>
@@ -701,10 +701,10 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                                         )}
                                         {coreCalculation && coreCalculation.alternative && (
                                             <button 
-                                                className={`toggle-button ${showAltCoreBpm ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                                className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
                                                 onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
                                             >
-                                                <i className="fa-solid fa-rotate"></i>
+                                                <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                             </button>
                                         )}
                                     </div>
