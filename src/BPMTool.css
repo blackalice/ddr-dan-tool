@@ -240,16 +240,29 @@ appearance: none;
 }
 
 @media (max-width: 768px) {
+    .chart-section {
+        padding: 0;
+    }
+    .song-info-bar {
+        margin-bottom: 0;
+        border-radius: 0;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        padding: 1.5rem 2rem;
+        margin-left: 0rem!important;
+    }
+    .chart-container {
+        padding: 2rem;
+        margin-top: 1.5rem;
+    }
     .details-grid {
         grid-template-columns: 1fr;
         justify-items: center;
     }
-
     .grid-item {
         flex-direction: column;
         gap: 0.5rem;
     }
-
     .grid-item-sp { order: 1; }
     .grid-item-dp { order: 2; }
     .grid-item-bpm { order: 3; }
@@ -334,4 +347,22 @@ appearance: none;
     margin-top: 2rem;
     display: flex;
     justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .song-info-bar {
+        position: relative;
+        width: 100%;
+        left: 0;
+        right: 0;
+        margin-left: -2rem;
+        margin-right: -2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        box-sizing: border-box;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 }
