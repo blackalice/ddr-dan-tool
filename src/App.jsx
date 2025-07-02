@@ -450,7 +450,6 @@ function App() {
     const savedTargetBPM = localStorage.getItem('targetBPM');
     return savedTargetBPM ? parseInt(savedTargetBPM, 10) : 300;
   });
-  const [selectedSong, setSelectedSong] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
   const [playMode, setPlayMode] = useState(() => {
     return localStorage.getItem('playMode') || 'single';
@@ -478,7 +477,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-          <Route path="/bpm" element={<BPMTool selectedSong={selectedSong} setSelectedSong={setSelectedSong} selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
+          <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
         </Routes>
       </div>
     </Router>

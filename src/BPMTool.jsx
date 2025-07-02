@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
@@ -290,10 +290,12 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame, targetBPM }) => {
+const BPMTool = ({ selectedGame, setSelectedGame, targetBPM }) => {
     const query = useQuery();
+    const navigate = useNavigate();
     const [smData, setSmData] = useState({ games: [], files: [] });
     const [songOptions, setSongOptions] = useState([]);
+    const [selectedSong, setSelectedSong] = useState(null);
     const [chartData, setChartData] = useState(null);
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
     const [inputValue, setInputValue] = useState('');
@@ -314,8 +316,19 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
             if (matchedSong) {
                 setSelectedSong(matchedSong);
             }
+        } else {
+            setSelectedSong(null);
         }
-    }, [query, songOptions, setSelectedSong]);
+    }, [query, songOptions]);
+
+    const handleSongSelection = (song) => {
+        setSelectedSong(song);
+        if (song) {
+            navigate(`/bpm?song=${encodeURIComponent(song.title)}`);
+        } else {
+            navigate('/bpm');
+        }
+    };
 
 
     const calculation = useMemo(() => {
@@ -509,6 +522,9 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                     const data = calculateChartData(bpmChanges, lastBeat);
                     setChartData(data);
                 });
+        } else {
+            setChartData(null);
+            setSongMeta({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
         }
     }, [selectedSong]);
 
@@ -598,7 +614,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                                 className="song-select"
                                 options={songOptions}
                                 value={selectedSong}
-                                onChange={setSelectedSong}
+                                onChange={handleSongSelection}
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
                                 isClearable
