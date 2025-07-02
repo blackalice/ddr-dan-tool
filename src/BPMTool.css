@@ -172,6 +172,16 @@ appearance: none;
     font-weight: bold;
     color: #F9FAFB;
     margin: 0;
+    margin-bottom:0px!important;
+}
+
+.song-title-main {
+    font-weight: bold;
+}
+
+.song-title-artist {
+    font-weight: normal;
+    color: #d1d5db;
 }
 
 .collapse-button {
@@ -372,12 +382,25 @@ appearance: none;
     }
     .bpm-title-mobile
     {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem;
         margin-bottom: 0px!important;
         margin-left:auto!important;
         margin-right:auto!important;
         padding-left:0.5rem;
         padding-right:0.5rem;
      
+    }
+    .song-title-separator {
+        display: none;
+    }
+    .song-title-main {
+        font-size: 1.5rem;
+    }
+    .song-title-artist {
+        font-size: 1rem;
     }
 
 .chart-container{margin-top:0px;
