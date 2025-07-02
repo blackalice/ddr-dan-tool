@@ -65,6 +65,41 @@
   margin-top: 0.5rem;
 }
 
+.toggle-button {
+    background-color: #4A5568;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto 0;
+    transition: background-color 0.2s;
+}
+
+.toggle-button:hover {
+    background-color: #5A6578;
+}
+
+.toggle-button.up {
+    background-color: #10B981;
+}
+
+.toggle-button.up:hover {
+    background-color: #059669;
+}
+
+.toggle-button.down {
+    background-color: #EF4444;
+}
+
+.toggle-button.down:hover {
+    background-color: #DC2626;
+}
+
 @media (max-width: 640px) {
     .multiplier-content {
         margin: 0 0.75rem;

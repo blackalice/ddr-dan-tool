@@ -1,25 +1,25 @@
 {
   "games": [
-    "2013",
-    "2014",
-    "2ndMix",
-    "3rdMix",
-    "4thMix Plus",
-    "5thMix",
-    "6thMix",
-    "7thMix",
-    "A",
-    "A20",
-    "A20 Plus",
-    "A3",
-    "DDR",
-    "Extreme",
-    "Supernova",
-    "Supernova 2",
     "World",
-    "X",
+    "A3",
+    "A20 Plus",
+    "A20",
+    "A",
+    "2014",
+    "2013",
+    "X3 vs 2ndMix",
     "X2",
-    "X3 vs 2ndMix"
+    "X",
+    "Supernova 2",
+    "Supernova",
+    "Extreme",
+    "7thMix",
+    "6thMix",
+    "5thMix",
+    "4thMix Plus",
+    "3rdMix",
+    "2ndMix",
+    "DDR"
   ],
   "files": [
     {
@@ -3004,7 +3004,7 @@
     },
     {
       "path": "sm/A20/Lachryma (Re-Queen'M).sm",
-      "title": "Lachryma《Re\\:Queen’M》",
+      "title": "Lachryma《Re:Queen’M》",
       "titleTranslit": ""
     },
     {
@@ -4203,6 +4203,16 @@
       "titleTranslit": ""
     },
     {
+      "path": "sm/A3/Finale.ssc",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Challenge",
+      "title": "Finale (Challenge)",
+      "titleTranslit": " (Challenge)"
+    },
+    {
       "path": "sm/A3/Finally Dive.sm",
       "title": "Finally Dive",
       "titleTranslit": ""
@@ -4343,6 +4353,16 @@
       "titleTranslit": ""
     },
     {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Challenge",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院 (Challenge)",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein (Challenge)"
+    },
+    {
       "path": "sm/A3/Kill The Night.sm",
       "title": "Kill The Night",
       "titleTranslit": ""
@@ -4388,9 +4408,29 @@
       "titleTranslit": ""
     },
     {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Challenge",
+      "title": "Let's DANCE aROUND!! (Challenge)",
+      "titleTranslit": " (Challenge)"
+    },
+    {
       "path": "sm/A3/Like A Star.sm",
       "title": "Like A Star",
       "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Challenge",
+      "title": "リリーゼと炎龍レーヴァテイン (Challenge)",
+      "titleTranslit": "Lilieze to enryuu Laevateinn (Challenge)"
     },
     {
       "path": "sm/A3/little steps.sm",
