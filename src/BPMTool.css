@@ -159,12 +159,18 @@ appearance: none;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
+    
 }
 
 .song-title-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
+}
+
+.chart-section.collapsed .song-title-container {
+    margin-bottom: 0;
 }
 
 .song-title {
@@ -172,16 +178,17 @@ appearance: none;
     font-weight: bold;
     color: #F9FAFB;
     margin: 0;
-    margin-bottom:0px!important;
 }
 
 .song-title-main {
     font-weight: bold;
+     font-size: 1.5rem;
 }
 
 .song-title-artist {
     font-weight: normal;
     color: #d1d5db;
+     font-size: 1.5rem;
 }
 
 .collapse-button {
