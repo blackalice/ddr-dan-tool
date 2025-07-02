@@ -219,6 +219,44 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+<<<<<<< Updated upstream
+=======
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [showAltBpm, setShowAltBpm] = useState(false);
+    const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const songTitle = query.get('song');
+        if (songTitle && songOptions.length > 0) {
+            const matchedSong = songOptions.find(option =>
+                option.title.toLowerCase() === songTitle.toLowerCase() ||
+                (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
+            );
+            if (matchedSong) {
+                setSelectedSong(matchedSong);
+            }
+        } else {
+            setSelectedSong(null);
+        }
+    }, [query, songOptions]);
+
+    const handleSongSelection = (song) => {
+        setSelectedSong(song);
+        if (song) {
+            navigate(`/bpm?song=${encodeURIComponent(song.title)}`);
+        } else {
+            navigate('/bpm');
+        }
+    };
+
+>>>>>>> Stashed changes
 
     const calculation = useMemo(() => {
         if (!targetBPM || !songMeta.bpmDisplay || songMeta.bpmDisplay === 'N/A') return null;
@@ -536,6 +574,7 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
                                     plugins: {
                                         legend: { display: false },
                                         tooltip: {
+                                            enabled: !isMobile,
                                             mode: 'index',
                                             intersect: false,
                                             callbacks: {
