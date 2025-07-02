@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
@@ -15,7 +15,7 @@ const ddrDanData = {
       songs: [
         { title: "Love You More", level: 9, bpm: "175", difficulty: "basic" },
         { title: "Starry Sky", level: 9, bpm: "150", difficulty: "difficult" },
-        { title: "Bang Pad Werk Mix", level: 9, bpm: "180", difficulty: "difficult" },
+        { title: "Bang Pad(Werk Mix)", level: 9, bpm: "180", difficulty: "difficult" },
         { title: "LEVEL UP", level: 10, bpm: "180", difficulty: "difficult" },
       ],
     },
@@ -24,7 +24,7 @@ const ddrDanData = {
       color: "#6fbe44",
       songs: [
         { title: "Electric Dance System Music", level: 10, bpm: "190", difficulty: "difficult" },
-        { title: "十二星座の翼", level: 10, bpm: "164", difficulty: "difficult" },
+        { title: "十二星座の聖域", level: 10, bpm: "164", difficulty: "difficult" },
         { title: "Liberate", level: 10, bpm: "128", difficulty: "difficult" },
         { title: "Show Me Your Moves", level: 11, bpm: "155", difficulty: "expert" },
       ],
@@ -33,7 +33,7 @@ const ddrDanData = {
       dan: "3rd Dan (三段)",
       color: "#6fbe44",
       songs: [
-        { title: "This Beat is...", level: 11, bpm: "128", difficulty: "expert" },
+        { title: "This Beat is.....", level: 11, bpm: "128", difficulty: "expert" },
         { title: "Starlight in the Snow", level: 11, bpm: "150", difficulty: "difficult" },
         { title: "Stay 4 Ever", level: 11, bpm: "140", difficulty: "expert" },
         { title: "Astrogazer", level: 12, bpm: "154", difficulty: "expert" },
@@ -96,7 +96,7 @@ const ddrDanData = {
         { title: "DIGITALIZER", level: 17, bpm: "180", difficulty: "expert" },
         { title: "東京神話", level: 17, bpm: "96-196", difficulty: "expert" },
         { title: "Avenger", level: 17, bpm: "100-400", difficulty: "expert" },
-        { title: "EGOISM440", level: 18, bpm: "55-879", difficulty: "expert" },
+        { title: "EGOISM 440", level: 18, bpm: "55-879", difficulty: "expert" },
       ],
     },
     {
@@ -113,7 +113,7 @@ const ddrDanData = {
       dan: "Kaiden (皆伝)",
       color: "#f8d45a",
       songs: [
-        { title: "Lachryma《Re:Queen'M》", level: 19, bpm: "236", difficulty: "challenge" },
+        { title: "Lachryma《Re:Queen’M》", level: 19, bpm: "236", difficulty: "challenge" },
         { title: "Over the “Period”", level: 19, bpm: "25-838", difficulty: "challenge" },
         { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
         { title: "ENDYMION", level: 19, bpm: "110-880", difficulty: "challenge" },
@@ -147,7 +147,7 @@ const ddrDanData = {
       songs: [
         { title: "starmine", level: 11, bpm: "182", difficulty: "difficult" },
         { title: "The Lonely Streets", level: 11, bpm: "115", difficulty: "expert" },
-        { title: "SUNKISS♡DROP", level: 11, bpm: "185", difficulty: "expert" },
+        { title: "SUNKiSS♥DROP", level: 11, bpm: "185", difficulty: "expert" },
         { title: "Dance Dance Revolution", level: 12, bpm: "150", difficulty: "expert" },
       ],
     },
@@ -175,7 +175,7 @@ const ddrDanData = {
       dan: "6th Dan (六段)",
       color: "#e6413a",
       songs: [
-        { title: "oh the bounce", level: 14, bpm: "150", difficulty: "expert" },
+        { title: "on the bounce", level: 14, bpm: "150", difficulty: "expert" },
         { title: "Let's DANCE aROUND!!", level: 14, bpm: "155", difficulty: "expert" },
         { title: "Pierce The Sky", level: 14, bpm: "85-173", difficulty: "expert" },
         { title: "PARANOiA survivor", level: 15, bpm: "135-270", difficulty: "expert" },
@@ -197,7 +197,7 @@ const ddrDanData = {
       songs: [
         { title: "Sand Blow", level: 16, bpm: "83-165", difficulty: "expert" },
         { title: "Helios", level: 16, bpm: "182", difficulty: "expert" },
-        { title: "KIMONO♡PRINCESS", level: 16, bpm: "95-190", difficulty: "expert" },
+        { title: "KIMONO♥PRINCESS", level: 16, bpm: "95-190", difficulty: "expert" },
         { title: "The legend of MAX(X-Special)", level: 17, bpm: "83-333", difficulty: "challenge" },
       ],
     },
@@ -206,7 +206,7 @@ const ddrDanData = {
       color: "#c846a6",
       songs: [
         { title: "New Era", level: 17, bpm: "98-346", difficulty: "expert" },
-        { title: "Fascination ~eternal love mix~", level: 17, bpm: "100-400", difficulty: "challenge" },
+        { title: "Fascination ～eternal love mix～", level: 17, bpm: "100-400", difficulty: "challenge" },
         { title: "RISING FIRE HAWK", level: 17, bpm: "180", difficulty: "challenge" },
         { title: "PARANOiA Rebirth", level: 18, bpm: "180-360", difficulty: "expert" },
       ],
@@ -218,14 +218,14 @@ const ddrDanData = {
         { title: "Spanish Snowy Dance", level: 18, bpm: "180", difficulty: "challenge" },
         { title: "Astrogazer", level: 18, bpm: "154", difficulty: "challenge" },
         { title: "New Decade", level: 18, bpm: "100-400", difficulty: "challenge" },
-        { title: "PARANOIA ~HADES~", level: 18, bpm: "75-300", difficulty: "challenge" },
+        { title: "PARANOiA ～HADES～", level: 18, bpm: "75-300", difficulty: "challenge" },
       ],
     },
     {
       dan: "Kaiden (皆伝)",
       color: "#f8d45a",
       songs: [
-        { title: "Show My Mind", level: 18, bpm: "95-380", difficulty: "challenge" },
+        { title: "Blow My Mind", level: 18, bpm: "95-380", difficulty: "challenge" },
         { title: "Tohoku EVOLVED", level: 18, bpm: "42-1021", difficulty: "challenge" },
         { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
         { title: "POSSESSION", level: 19, bpm: "183-370", difficulty: "challenge" },
@@ -265,7 +265,7 @@ const getBpmRange = (bpm) => {
 
 // --- React Components ---
 
-const SongCard = ({ song, targetBPM, playMode }) => {
+const SongCard = ({ song, targetBPM, playMode, setSelectedGame }) => {
   const calculation = useMemo(() => {
     const numericTarget = Number(targetBPM) || 0;
     const bpmRange = getBpmRange(song.bpm);
@@ -291,44 +291,46 @@ const SongCard = ({ song, targetBPM, playMode }) => {
   const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
 
   return (
-    <div className="song-card">
-      <h3 className="song-title">{song.title}</h3>
-      <div className="song-details">
-        <div>
-          <span className="song-bpm">BPM: {song.bpm}</span>
-          <div className="song-calculation">
-            <span className="song-speed">
-              {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
-            </span>
-            <span className="song-separator">@</span>
-            <span className="song-modifier">{calculation.modifier}x</span>
+    <Link to={`/bpm?song=${encodeURIComponent(song.title)}`} className="song-card-link" onClick={() => setSelectedGame('all')}>
+      <div className="song-card">
+        <h3 className="song-title">{song.title}</h3>
+        <div className="song-details">
+          <div>
+            <span className="song-bpm">BPM: {song.bpm}</span>
+            <div className="song-calculation">
+              <span className="song-speed">
+                {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
+              </span>
+              <span className="song-separator">@</span>
+              <span className="song-modifier">{calculation.modifier}x</span>
+            </div>
+          </div>
+          <div className="song-level-container">
+              <span className="song-level">Lv.{song.level}</span>
+              {difficultyInfo && (
+                   <span 
+                      className="difficulty-badge"
+                      style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                  >
+                      {difficultyInfo.name}
+                  </span>
+              )}
           </div>
         </div>
-        <div className="song-level-container">
-            <span className="song-level">Lv.{song.level}</span>
-            {difficultyInfo && (
-                 <span 
-                    className="difficulty-badge"
-                    style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
-                >
-                    {difficultyInfo.name}
-                </span>
-            )}
-        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
 
-const DanSection = ({ danCourse, targetBPM, playMode }) => (
+const DanSection = ({ danCourse, targetBPM, playMode, setSelectedGame }) => (
   <section className="dan-section">
     <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
       {danCourse.dan}
     </h2>
     <div className="song-grid">
       {danCourse.songs.map((song) => (
-        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} />
+        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} setSelectedGame={setSelectedGame} />
       ))}
     </div>
   </section>
@@ -386,10 +388,7 @@ const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
     </div>
 );
 
-function MainPage({ targetBPM, setTargetBPM }) {
-  const [playMode, setPlayMode] = useState('single');
-  const [activeDan, setActiveDan] = useState('All');
-
+function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) {
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
     if (activeDan === 'All') return courses;
@@ -426,6 +425,7 @@ function MainPage({ targetBPM, setTargetBPM }) {
                   danCourse={course} 
                   targetBPM={targetBPM}
                   playMode={playMode}
+                  setSelectedGame={setSelectedGame}
                 />
             ))
           ) : (
@@ -450,21 +450,34 @@ function App() {
     const savedTargetBPM = localStorage.getItem('targetBPM');
     return savedTargetBPM ? parseInt(savedTargetBPM, 10) : 300;
   });
-  const [selectedSong, setSelectedSong] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
+  const [playMode, setPlayMode] = useState(() => {
+    return localStorage.getItem('playMode') || 'single';
+  });
+  const [activeDan, setActiveDan] = useState(() => {
+    return localStorage.getItem('activeDan') || 'All';
+  });
 
   useEffect(() => {
     localStorage.setItem('targetBPM', targetBPM);
   }, [targetBPM]);
+
+  useEffect(() => {
+    localStorage.setItem('playMode', playMode);
+  }, [playMode]);
+
+  useEffect(() => {
+    localStorage.setItem('activeDan', activeDan);
+  }, [activeDan]);
 
   return (
     <Router>
       <div className="app-container">
         <Tabs />
         <Routes>
-          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-          <Route path="/bpm" element={<BPMTool selectedSong={selectedSong} setSelectedSong={setSelectedSong} selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
+          <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
         </Routes>
       </div>
     </Router>
