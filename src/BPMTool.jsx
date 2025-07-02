@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -8,11 +8,6 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import './BPMTool.css';
-
-const gameFolders = {
-    "A3": "sm/A3/",
-    "A20Plus": "sm/A20Plus/"
-};
 
 const difficultyMap = {
     'Beginner': { color: '#4DB6AC' },
@@ -44,96 +39,130 @@ const DifficultyMeter = ({ level, difficultyName, isMissing }) => {
     );
 };
 
-const parseSmFile = (fileContent) => {
-    const lines = fileContent.split('\n');
-    let title = 'Unknown Title';
-    let titleTranslit = '';
-    let artist = 'Unknown Artist';
-    let bpmString = '';
+const parseSmFile = (fileContent, requestedDifficulty) => {
+    const getTagValue = (content, tagName) => {
+        const regex = new RegExp(`^#${tagName}:([^;]+);`, 'im');
+        const match = content.match(regex);
+        return match ? match[1].trim() : '';
+    };
 
-    lines.forEach(line => {
-        const trimmedLine = line.trim();
-        if (trimmedLine.startsWith('#TITLE:')) {
-            title = trimmedLine.substring(7, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
-        } else if (trimmedLine.startsWith('#TITLETRANSLIT:')) {
-            titleTranslit = trimmedLine.substring(14, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
-        } else if (trimmedLine.startsWith('#ARTIST:')) {
-            artist = trimmedLine.substring(8, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
-        } else if (trimmedLine.startsWith('#BPMS:')) {
-            bpmString = trimmedLine.substring(6, trimmedLine.endsWith(';') ? trimmedLine.length - 1 : undefined);
+    const charts = [];
+    const difficulties = { singles: {}, doubles: {} };
+
+    const title = getTagValue(fileContent, 'TITLE');
+    const titleTranslit = getTagValue(fileContent, 'TITLETRANSLIT');
+    const artist = getTagValue(fileContent, 'ARTIST');
+    const globalBpmString = getTagValue(fileContent, 'BPMS');
+
+    if (fileContent.includes('#NOTEDATA:;')) { // SSC file parsing
+        const noteDataBlocks = fileContent.split(/#NOTEDATA:;/i).slice(1);
+        noteDataBlocks.forEach(block => {
+            const difficulty = getTagValue(block, 'DIFFICULTY');
+            if (!difficulty) return;
+
+            const type = getTagValue(block, 'STEPSTYPE').replace('dance-', '');
+            const meter = getTagValue(block, 'METER');
+            const chartBpmString = getTagValue(block, 'BPMS');
+            const notesMatch = block.match(/#NOTES:\s*([\s\S]*?);/i);
+            const notes = notesMatch ? notesMatch[1].trim() : '';
+
+            charts.push({
+                type,
+                difficulty,
+                meter,
+                bpmString: chartBpmString || globalBpmString,
+                notes,
+            });
+        });
+    } else { // SM file parsing
+        const noteBlocks = fileContent.split(/#NOTES:/i).slice(1);
+        noteBlocks.forEach(block => {
+            const details = block.trim().split(':');
+            if (details.length >= 5) {
+                const type = details[0].trim().replace('dance-', '');
+                const difficulty = details[2].trim();
+                const meter = details[3].trim();
+                const notes = details.slice(4).join(':').split(';')[0].trim();
+
+                charts.push({
+                    type,
+                    difficulty,
+                    meter,
+                    bpmString: globalBpmString,
+                    notes,
+                });
+            }
+        });
+    }
+
+    charts.forEach(c => {
+        if (c.type === 'single') {
+            difficulties.singles[c.difficulty] = c.meter;
+        } else if (c.type === 'double') {
+            difficulties.doubles[c.difficulty] = c.meter;
         }
     });
 
-    const difficulties = { singles: {}, doubles: {} };
-    const noteSections = fileContent.split('#NOTES:');
-    if (noteSections.length > 1) {
-        for (let i = 1; i < noteSections.length; i++) {
-            const section = noteSections[i];
-            const details = section.trim().split(':');
-            if (details.length >= 4) {
-                const type = details[0].trim().replace('dance-', '');
-                const difficulty = details[2].trim();
-                const level = details[3].trim();
+    let targetChart;
+    if (requestedDifficulty) {
+        targetChart = charts.find(c => c.difficulty.toLowerCase() === requestedDifficulty.toLowerCase());
+    }
+    
+    if (!targetChart) {
+        const defaultDifficultyOrder = ['Expert', 'Hard', 'Difficult', 'Medium', 'Basic', 'Easy', 'Beginner'];
+        for (const d of defaultDifficultyOrder) {
+            targetChart = charts.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+            if (targetChart) break;
+        }
+    }
+    
+    if (!targetChart && charts.length > 0) {
+        targetChart = charts[0];
+    }
 
-                if (type === 'single') {
-                    difficulties.singles[difficulty] = level;
-                } else if (type === 'double') {
-                    difficulties.doubles[difficulty] = level;
-                }
-            }
+    return {
+        title,
+        titleTranslit,
+        artist,
+        bpmString: targetChart ? targetChart.bpmString : globalBpmString,
+        notes: targetChart ? targetChart.notes : '',
+        difficulties,
+    };
+};
+
+const getLastBeat = (notes) => {
+    if (!notes) return 0;
+    const measuresList = notes.split(',');
+
+    let lastNoteMeasureIndex = -1;
+    for (let j = measuresList.length - 1; j >= 0; j--) {
+        if (/[1234MKLF]/i.test(measuresList[j])) {
+            lastNoteMeasureIndex = j;
+            break;
         }
     }
 
-    return { title, titleTranslit, artist, bpmString, fileContent, difficulties };
-};
+    if (lastNoteMeasureIndex !== -1) {
+        const lastMeasureStr = measuresList[lastNoteMeasureIndex];
+        const lines = lastMeasureStr.trim().split('\n').filter(l => l.trim() !== '');
+        if (lines.length === 0) return 0;
 
-const getLastBeat = (fileContent) => {
-    const noteSections = fileContent.split('#NOTES:');
-    if (noteSections.length < 2) return 0;
-
-    let maxBeat = 0;
-
-    for (let i = 1; i < noteSections.length; i++) {
-        const section = noteSections[i];
-        const chartParts = section.trim().split(':');
-        if (chartParts.length < 6) continue;
-
-        const measureData = chartParts.slice(5).join(':').split(';')[0];
-        const measuresList = measureData.split(',');
-
-        let lastNoteMeasureIndex = -1;
-        for (let j = measuresList.length - 1; j >= 0; j--) {
-            if (/[1234MKLF]/i.test(measuresList[j])) {
-                lastNoteMeasureIndex = j;
+        let lastNoteLineIndex = -1;
+        for (let k = lines.length - 1; k >= 0; k--) {
+            if (/[1234MKLF]/i.test(lines[k])) {
+                lastNoteLineIndex = k;
                 break;
             }
         }
 
-        if (lastNoteMeasureIndex !== -1) {
-            const lastMeasureStr = measuresList[lastNoteMeasureIndex];
-            const lines = lastMeasureStr.trim().split('\n').filter(l => l.trim() !== '');
-            if (lines.length === 0) continue;
-
-            let lastNoteLineIndex = -1;
-            for (let k = lines.length - 1; k >= 0; k--) {
-                if (/[1234MKLF]/i.test(lines[k])) {
-                    lastNoteLineIndex = k;
-                    break;
-                }
-            }
-
-            if (lastNoteLineIndex !== -1) {
-                const beatsInMeasure = 4;
-                const beatOfLastNote = (lastNoteMeasureIndex * beatsInMeasure) + (lastNoteLineIndex / lines.length) * beatsInMeasure;
-                if (beatOfLastNote > maxBeat) {
-                    maxBeat = beatOfLastNote;
-                }
-            }
+        if (lastNoteLineIndex !== -1) {
+            const beatsInMeasure = 4;
+            const beatOfLastNote = (lastNoteMeasureIndex * beatsInMeasure) + (lastNoteLineIndex / lines.length) * beatsInMeasure;
+            return beatOfLastNote;
         }
     }
-    return maxBeat;
+    return 0;
 };
-
 
 const parseBPMs = (bpmString) => {
     if (!bpmString) return [];
@@ -440,11 +469,15 @@ const BPMTool = ({ selectedSong, setSelectedSong, selectedGame, setSelectedGame,
 
     useEffect(() => {
         if (selectedSong) {
-            fetch(encodeURI(selectedSong.value))
+            const pathParts = selectedSong.value.split('?difficulty=');
+            const filePath = pathParts[0];
+            const difficulty = pathParts.length > 1 ? pathParts[1] : null;
+
+            fetch(encodeURI(filePath))
                 .then(response => response.text())
                 .then(content => {
-                    const metadata = parseSmFile(content);
-                    const lastBeat = getLastBeat(metadata.fileContent);
+                    const metadata = parseSmFile(content, difficulty);
+                    const lastBeat = getLastBeat(metadata.notes);
                     
                     const bpmChanges = parseBPMs(metadata.bpmString);
                     let bpmDisplay;

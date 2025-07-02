@@ -33,7 +33,7 @@ const ddrDanData = {
       dan: "3rd Dan (三段)",
       color: "#6fbe44",
       songs: [
-        { title: "This Beat is...", level: 11, bpm: "128", difficulty: "expert" },
+        { title: "This Beat is.....", level: 11, bpm: "128", difficulty: "expert" },
         { title: "Starlight in the Snow", level: 11, bpm: "150", difficulty: "difficult" },
         { title: "Stay 4 Ever", level: 11, bpm: "140", difficulty: "expert" },
         { title: "Astrogazer", level: 12, bpm: "154", difficulty: "expert" },
@@ -96,7 +96,7 @@ const ddrDanData = {
         { title: "DIGITALIZER", level: 17, bpm: "180", difficulty: "expert" },
         { title: "東京神話", level: 17, bpm: "96-196", difficulty: "expert" },
         { title: "Avenger", level: 17, bpm: "100-400", difficulty: "expert" },
-        { title: "EGOISM440", level: 18, bpm: "55-879", difficulty: "expert" },
+        { title: "EGOISM 440", level: 18, bpm: "55-879", difficulty: "expert" },
       ],
     },
     {
@@ -147,7 +147,7 @@ const ddrDanData = {
       songs: [
         { title: "starmine", level: 11, bpm: "182", difficulty: "difficult" },
         { title: "The Lonely Streets", level: 11, bpm: "115", difficulty: "expert" },
-        { title: "SUNKISS♡DROP", level: 11, bpm: "185", difficulty: "expert" },
+        { title: "SUNKiSS♥DROP", level: 11, bpm: "185", difficulty: "expert" },
         { title: "Dance Dance Revolution", level: 12, bpm: "150", difficulty: "expert" },
       ],
     },
@@ -175,7 +175,7 @@ const ddrDanData = {
       dan: "6th Dan (六段)",
       color: "#e6413a",
       songs: [
-        { title: "oh the bounce", level: 14, bpm: "150", difficulty: "expert" },
+        { title: "on the bounce", level: 14, bpm: "150", difficulty: "expert" },
         { title: "Let's DANCE aROUND!!", level: 14, bpm: "155", difficulty: "expert" },
         { title: "Pierce The Sky", level: 14, bpm: "85-173", difficulty: "expert" },
         { title: "PARANOiA survivor", level: 15, bpm: "135-270", difficulty: "expert" },
@@ -197,7 +197,7 @@ const ddrDanData = {
       songs: [
         { title: "Sand Blow", level: 16, bpm: "83-165", difficulty: "expert" },
         { title: "Helios", level: 16, bpm: "182", difficulty: "expert" },
-        { title: "KIMONO♡PRINCESS", level: 16, bpm: "95-190", difficulty: "expert" },
+        { title: "KIMONO♥PRINCESS", level: 16, bpm: "95-190", difficulty: "expert" },
         { title: "The legend of MAX(X-Special)", level: 17, bpm: "83-333", difficulty: "challenge" },
       ],
     },
@@ -206,7 +206,7 @@ const ddrDanData = {
       color: "#c846a6",
       songs: [
         { title: "New Era", level: 17, bpm: "98-346", difficulty: "expert" },
-        { title: "Fascination ~eternal love mix~", level: 17, bpm: "100-400", difficulty: "challenge" },
+        { title: "Fascination ～eternal love mix～", level: 17, bpm: "100-400", difficulty: "challenge" },
         { title: "RISING FIRE HAWK", level: 17, bpm: "180", difficulty: "challenge" },
         { title: "PARANOiA Rebirth", level: 18, bpm: "180-360", difficulty: "expert" },
       ],
@@ -218,14 +218,14 @@ const ddrDanData = {
         { title: "Spanish Snowy Dance", level: 18, bpm: "180", difficulty: "challenge" },
         { title: "Astrogazer", level: 18, bpm: "154", difficulty: "challenge" },
         { title: "New Decade", level: 18, bpm: "100-400", difficulty: "challenge" },
-        { title: "PARANOIA ~HADES~", level: 18, bpm: "75-300", difficulty: "challenge" },
+        { title: "PARANOiA ～HADES～", level: 18, bpm: "75-300", difficulty: "challenge" },
       ],
     },
     {
       dan: "Kaiden (皆伝)",
       color: "#f8d45a",
       songs: [
-        { title: "Show My Mind", level: 18, bpm: "95-380", difficulty: "challenge" },
+        { title: "Blow My Mind", level: 18, bpm: "95-380", difficulty: "challenge" },
         { title: "Tohoku EVOLVED", level: 18, bpm: "42-1021", difficulty: "challenge" },
         { title: "Valkyrie Dimension", level: 19, bpm: "47-742", difficulty: "challenge" },
         { title: "POSSESSION", level: 19, bpm: "183-370", difficulty: "challenge" },
