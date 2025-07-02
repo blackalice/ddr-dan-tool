@@ -290,12 +290,10 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-const BPMTool = ({ selectedGame, setSelectedGame, targetBPM }) => {
+const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSelectedSong, smData }) => {
     const query = useQuery();
     const navigate = useNavigate();
-    const [smData, setSmData] = useState({ games: [], files: [] });
     const [songOptions, setSongOptions] = useState([]);
-    const [selectedSong, setSelectedSong] = useState(null);
     const [chartData, setChartData] = useState(null);
     const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
     const [inputValue, setInputValue] = useState('');
@@ -312,21 +310,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM }) => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    useEffect(() => {
-        const songTitle = query.get('song');
-        if (songTitle && songOptions.length > 0) {
-            const matchedSong = songOptions.find(option =>
-                option.title.toLowerCase() === songTitle.toLowerCase() ||
-                (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
-            );
-            if (matchedSong) {
-                setSelectedSong(matchedSong);
-            }
-        } else {
-            setSelectedSong(null);
-        }
-    }, [query, songOptions]);
 
     const handleSongSelection = (song) => {
         setSelectedSong(song);
@@ -461,13 +444,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM }) => {
         if (storedApiKey) {
             setApiKey(storedApiKey);
         }
-    }, []);
-
-    useEffect(() => {
-        fetch('/sm-files.json')
-            .then(response => response.json())
-            .then(data => setSmData(data))
-            .catch(error => console.error('Error fetching sm-files.json:', error));
     }, []);
 
     useEffect(() => {

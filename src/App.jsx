@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
@@ -445,6 +445,53 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
   );
 }
 
+function AppRoutes({
+  targetBPM, setTargetBPM,
+  playMode, setPlayMode,
+  activeDan, setActiveDan,
+  selectedGame, setSelectedGame,
+  selectedSong, setSelectedSong,
+  smData
+}) {
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const songTitle = queryParams.get('song');
+
+    if (songTitle && smData.files.length > 0) {
+      const currentSongTitle = selectedSong ? selectedSong.title : null;
+      const currentSongTitleTranslit = selectedSong ? selectedSong.titleTranslit : null;
+
+      if (currentSongTitle?.toLowerCase() === songTitle.toLowerCase() || currentSongTitleTranslit?.toLowerCase() === songTitle.toLowerCase()) {
+        return; // Already selected
+      }
+
+      const matchedSong = smData.files.find(option =>
+        option.title.toLowerCase() === songTitle.toLowerCase() ||
+        (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
+      );
+
+      if (matchedSong) {
+        setSelectedSong({
+          value: matchedSong.path,
+          label: matchedSong.title,
+          title: matchedSong.title,
+          titleTranslit: matchedSong.titleTranslit
+        });
+      }
+    }
+  }, [location, smData, selectedSong, setSelectedSong]);
+
+  return (
+    <Routes>
+      <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+      <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
+    </Routes>
+  );
+}
+
 function App() {
   const [targetBPM, setTargetBPM] = useState(() => {
     const savedTargetBPM = localStorage.getItem('targetBPM');
@@ -457,7 +504,16 @@ function App() {
   const [activeDan, setActiveDan] = useState(() => {
     return localStorage.getItem('activeDan') || 'All';
   });
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [smData, setSmData] = useState({ games: [], files: [] });
 
+  useEffect(() => {
+    fetch('/sm-files.json')
+        .then(response => response.json())
+        .then(data => setSmData(data))
+        .catch(error => console.error('Error fetching sm-files.json:', error));
+  }, []);
+  
   useEffect(() => {
     localStorage.setItem('targetBPM', targetBPM);
   }, [targetBPM]);
@@ -474,11 +530,14 @@ function App() {
     <Router>
       <div className="app-container">
         <Tabs />
-        <Routes>
-          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
-          <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-          <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
-        </Routes>
+        <AppRoutes
+          targetBPM={targetBPM} setTargetBPM={setTargetBPM}
+          playMode={playMode} setPlayMode={setPlayMode}
+          activeDan={activeDan} setActiveDan={setActiveDan}
+          selectedGame={selectedGame} setSelectedGame={setSelectedGame}
+          selectedSong={selectedSong} setSelectedSong={setSelectedSong}
+          smData={smData}
+        />
       </div>
     </Router>
   );
