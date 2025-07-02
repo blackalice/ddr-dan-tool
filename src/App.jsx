@@ -15,7 +15,7 @@ const ddrDanData = {
       songs: [
         { title: "Love You More", level: 9, bpm: "175", difficulty: "basic" },
         { title: "Starry Sky", level: 9, bpm: "150", difficulty: "difficult" },
-        { title: "Bang Pad Werk Mix", level: 9, bpm: "180", difficulty: "difficult" },
+        { title: "Bang Pad(Werk Mix)", level: 9, bpm: "180", difficulty: "difficult" },
         { title: "LEVEL UP", level: 10, bpm: "180", difficulty: "difficult" },
       ],
     },
@@ -265,7 +265,7 @@ const getBpmRange = (bpm) => {
 
 // --- React Components ---
 
-const SongCard = ({ song, targetBPM, playMode }) => {
+const SongCard = ({ song, targetBPM, playMode, setSelectedGame }) => {
   const calculation = useMemo(() => {
     const numericTarget = Number(targetBPM) || 0;
     const bpmRange = getBpmRange(song.bpm);
@@ -291,7 +291,7 @@ const SongCard = ({ song, targetBPM, playMode }) => {
   const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
 
   return (
-    <Link to={`/bpm?song=${encodeURIComponent(song.title)}`} className="song-card-link">
+    <Link to={`/bpm?song=${encodeURIComponent(song.title)}`} className="song-card-link" onClick={() => setSelectedGame('all')}>
       <div className="song-card">
         <h3 className="song-title">{song.title}</h3>
         <div className="song-details">
@@ -323,14 +323,14 @@ const SongCard = ({ song, targetBPM, playMode }) => {
 };
 
 
-const DanSection = ({ danCourse, targetBPM, playMode }) => (
+const DanSection = ({ danCourse, targetBPM, playMode, setSelectedGame }) => (
   <section className="dan-section">
     <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
       {danCourse.dan}
     </h2>
     <div className="song-grid">
       {danCourse.songs.map((song) => (
-        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} />
+        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} setSelectedGame={setSelectedGame} />
       ))}
     </div>
   </section>
@@ -388,7 +388,7 @@ const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
     </div>
 );
 
-function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan }) {
+function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) {
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
     if (activeDan === 'All') return courses;
@@ -425,6 +425,7 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
                   danCourse={course} 
                   targetBPM={targetBPM}
                   playMode={playMode}
+                  setSelectedGame={setSelectedGame}
                 />
             ))
           ) : (
@@ -475,7 +476,7 @@ function App() {
       <div className="app-container">
         <Tabs />
         <Routes>
-          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} />} />
+          <Route path="/" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
           <Route path="/bpm" element={<BPMTool selectedSong={selectedSong} setSelectedSong={setSelectedSong} selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} />} />
         </Routes>
