@@ -295,11 +295,12 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
     const [inputValue, setInputValue] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
@@ -464,12 +465,19 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
 
     useEffect(() => {
         if (selectedSong) {
+            setIsLoading(true);
+            setChartData(null);
+            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+
             const pathParts = selectedSong.value.split('?difficulty=');
             const filePath = pathParts[0];
             const difficulty = pathParts.length > 1 ? pathParts[1] : null;
 
             fetch(encodeURI(filePath))
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok.');
+                    return response.text()
+                })
                 .then(content => {
                     const metadata = parseSmFile(content, difficulty);
                     const lastBeat = getLastBeat(metadata.notes);
@@ -503,10 +511,18 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
 
                     const data = calculateChartData(bpmChanges, lastBeat);
                     setChartData(data);
+                })
+                .catch(error => {
+                    console.error("Error fetching song data:", error);
+                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+                })
+                .finally(() => {
+                    setIsLoading(false);
                 });
         } else {
+            setIsLoading(false);
             setChartData(null);
-            setSongMeta({ title: '', artist: '', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
         }
     }, [selectedSong]);
 
@@ -638,143 +654,145 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 </div>
             )}
 
-            {chartData && (
-                <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
-                    <div className="song-info-bar">
-                        <div className="song-title-container">
-                            <h2 className="song-title bpm-title-mobile">
-                                <span className="song-title-main">{songMeta.title}</span>
-                                <span className="song-title-separator"> - </span>
-                                <span className="song-title-artist">{songMeta.artist}</span>
-                            </h2>
-                            <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-                                <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-                            </button>
-                        </div>
-                        {!isCollapsed && (
-                            <div className="details-grid bpm-tool-grid">
-                                <div className="grid-item grid-item-sp">
-                                    <span className="play-style">SP</span>
-                                    <div className="difficulty-meters-container">
-                                        {renderDifficulties(songMeta.difficulties.singles, 'sp')}
-                                    </div>
-                                </div>
-                                <div className="grid-item grid-item-bpm">
-                                    <span className="bpm-label">BPM:</span>
-                                    <div className="bpm-value-container">
-                                        <span className="bpm-value">{songMeta.bpmDisplay}</span>
-                                        {calculation && (
-                                            <div className="song-calculation">
-                                                <span className="song-speed">
-                                                  {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
-                                                </span>
-                                                <span className="song-separator">@</span>
-                                                <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
-                                            </div>
-                                        )}
-                                        {calculation && calculation.alternative && (
-                                            <button 
-                                                className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                                                onClick={() => setShowAltBpm(!showAltBpm)}
-                                            >
-                                                <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="grid-item grid-item-dp">
-                                    <span className="play-style">DP</span>
-                                    <div className="difficulty-meters-container">
-                                        {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
-                                    </div>
-                                </div>
-                                <div className="grid-item grid-item-core">
-                                    <span className="core-bpm-label">CORE:</span>
-                                    <div className="core-bpm-value-container">
-                                        <span className="core-bpm-value">{songMeta.coreBpm ? songMeta.coreBpm.toFixed(0) : 'N/A'}</span>
-                                        {coreCalculation && (
-                                             <div className="song-calculation">
-                                                <span className="song-speed">
-                                                  {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
-                                                </span>
-                                                <span className="song-separator">@</span>
-                                                <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
-                                            </div>
-                                        )}
-                                        {coreCalculation && coreCalculation.alternative && (
-                                            <button 
-                                                className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                                                onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
-                                            >
-                                                <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
-                                            </button>
-                                        )}
-                                    </div>
+            <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
+                <div className="song-info-bar">
+                    <div className="song-title-container">
+                        <h2 className="song-title bpm-title-mobile">
+                            <span className="song-title-main">{songMeta.title}</span>
+                            <span className="song-title-separator"> - </span>
+                            <span className="song-title-artist">{songMeta.artist}</span>
+                        </h2>
+                        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                        </button>
+                    </div>
+                    {!isCollapsed && (
+                        <div className="details-grid bpm-tool-grid">
+                            <div className="grid-item grid-item-sp">
+                                <span className="play-style">SP</span>
+                                <div className="difficulty-meters-container">
+                                    {renderDifficulties(songMeta.difficulties.singles, 'sp')}
                                 </div>
                             </div>
-                        )}
-                    </div>
-                    
-                    <div className="chart-container">
-                        {chartData && (
-                            <Line
-                                data={{
-                                    datasets: [{
-                                        label: 'BPM',
-                                        data: chartData,
-                                        borderColor: 'rgba(59, 130, 246, 1)',
-                                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                                        stepped: true,
-                                        fill: true,
-                                        pointRadius: 4,
-                                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                                        pointBorderColor: '#fff',
-                                        pointHoverRadius: 7,
-                                        borderWidth: 2.5
-                                    }]
-                                }}
-                                options={{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        x: {
-                                            type: 'linear',
-                                            title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                                            ticks: { color: '#9CA3AF' },
-                                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                                            min: 0,
-                                            max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0
-                                        },
-                                        y: {
-                                            title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                                            ticks: { color: '#9CA3AF', stepSize: 10 },
-                                            grid: { color: 'rgba(255, 255, 255,.1)' },
-                                            min: 0
-                                        }
-                                    },
-                                    plugins: {
-                                        legend: { display: false },
-                                        tooltip: {
-                                            enabled: !isMobile,
-                                            mode: 'index',
-                                            intersect: false,
-                                            callbacks: {
-                                                title: (tooltipItems) => `Time: ${tooltipItems[0].parsed.x.toFixed(2)}s`,
-                                                label: (context) => `BPM: ${context.parsed.y}`
-                                            }
-                                        }
-                                    },
-                                    interaction: {
-                                      mode: 'nearest',
-                                      axis: 'x',
-                                      intersect: false
-                                    }
-                                }}
-                            />
-                        )}
-                    </div>
+                            <div className="grid-item grid-item-bpm">
+                                <span className="bpm-label">BPM:</span>
+                                <div className="bpm-value-container">
+                                    <span className="bpm-value">{songMeta.bpmDisplay}</span>
+                                    {calculation && (
+                                        <div className="song-calculation">
+                                            <span className="song-speed">
+                                              {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
+                                            </span>
+                                            <span className="song-separator">@</span>
+                                            <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
+                                        </div>
+                                    )}
+                                    {calculation && calculation.alternative && (
+                                        <button 
+                                            className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                            onClick={() => setShowAltBpm(!showAltBpm)}
+                                        >
+                                            <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="grid-item grid-item-dp">
+                                <span className="play-style">DP</span>
+                                <div className="difficulty-meters-container">
+                                    {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
+                                </div>
+                            </div>
+                            <div className="grid-item grid-item-core">
+                                <span className="core-bpm-label">CORE:</span>
+                                <div className="core-bpm-value-container">
+                                    <span className="core-bpm-value">{songMeta.coreBpm ? songMeta.coreBpm.toFixed(0) : 'N/A'}</span>
+                                    {coreCalculation && (
+                                         <div className="song-calculation">
+                                            <span className="song-speed">
+                                              {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
+                                            </span>
+                                            <span className="song-separator">@</span>
+                                            <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
+                                        </div>
+                                    )}
+                                    {coreCalculation && coreCalculation.alternative && (
+                                        <button 
+                                            className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                                            onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
+                                        >
+                                            <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+                
+                <div className="chart-container">
+                    {chartData ? (
+                        <Line
+                            data={{
+                                datasets: [{
+                                    label: 'BPM',
+                                    data: chartData,
+                                    borderColor: 'rgba(59, 130, 246, 1)',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                    stepped: true,
+                                    fill: true,
+                                    pointRadius: 4,
+                                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                    pointBorderColor: '#fff',
+                                    pointHoverRadius: 7,
+                                    borderWidth: 2.5
+                                }]
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        type: 'linear',
+                                        title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                        ticks: { color: '#9CA3AF' },
+                                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                        min: 0,
+                                        max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0
+                                    },
+                                    y: {
+                                        title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
+                                        ticks: { color: '#9CA3AF', stepSize: 10 },
+                                        grid: { color: 'rgba(255, 255, 255,.1)' },
+                                        min: 0
+                                    }
+                                },
+                                plugins: {
+                                    legend: { display: false },
+                                    tooltip: {
+                                        enabled: !isMobile,
+                                        mode: 'index',
+                                        intersect: false,
+                                        callbacks: {
+                                            title: (tooltipItems) => `Time: ${tooltipItems[0].parsed.x.toFixed(2)}s`,
+                                            label: (context) => `BPM: ${context.parsed.y}`
+                                        }
+                                    }
+                                },
+                                interaction: {
+                                  mode: 'nearest',
+                                  axis: 'x',
+                                  intersect: false
+                                }
+                            }}
+                        />
+                    ) : (
+                        <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
+                            <p>{isLoading ? 'Loading chart...' : 'The BPM chart for the selected song will be displayed here.'}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
             <footer className="api-key-footer">
                 <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
             </footer>
