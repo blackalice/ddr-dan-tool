@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
+import Settings from './Settings';
 import './App.css';
 import './Tabs.css';
 
@@ -451,7 +452,8 @@ function AppRoutes({
   activeDan, setActiveDan,
   selectedGame, setSelectedGame,
   selectedSong, setSelectedSong,
-  smData
+  smData,
+  apiKey, setApiKey
 }) {
   const location = useLocation();
 
@@ -487,8 +489,9 @@ function AppRoutes({
     <Routes>
       <Route path="/dan" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
-      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
+      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
+      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
+      <Route path="/settings" element={<Settings apiKey={apiKey} setApiKey={setApiKey} />} />
     </Routes>
   );
 }
@@ -507,6 +510,7 @@ function App() {
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [smData, setSmData] = useState({ games: [], files: [] });
+  const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -527,6 +531,10 @@ function App() {
     localStorage.setItem('activeDan', activeDan);
   }, [activeDan]);
 
+  useEffect(() => {
+    sessionStorage.setItem('geminiApiKey', apiKey);
+  }, [apiKey]);
+
   return (
     <Router>
       <div className="app-container">
@@ -538,6 +546,7 @@ function App() {
           selectedGame={selectedGame} setSelectedGame={setSelectedGame}
           selectedSong={selectedSong} setSelectedSong={setSelectedSong}
           smData={smData}
+          apiKey={apiKey} setApiKey={setApiKey}
         />
       </div>
     </Router>

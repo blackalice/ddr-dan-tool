@@ -1,18 +1,23 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import './Tabs.css';
 
 const Tabs = () => {
     return (
         <nav className="tabs-container">
             <NavLink to="/bpm" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                BPM Tool
+                BPM
             </NavLink>
             <NavLink to="/dan" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                Dan Courses
+                Dan
             </NavLink>
             <NavLink to="/multiplier" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                Multiplier Calculator
+                Multi
+            </NavLink>
+            <NavLink to="/settings" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                <FontAwesomeIcon icon={faCog} />
             </NavLink>
         </nav>
     );

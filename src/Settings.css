@@ -1,0 +1,114 @@
+.settings-content {
+    background-color: #1F2937;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-content h1 {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting-item:first-of-type {
+    border-top: 1px solid var(--border-color);
+}
+
+.setting-text {
+    flex: 1;
+    padding-right: 2rem;
+}
+
+.setting-text h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.setting-text p {
+    margin: 0;
+    color: var(--text-muted-color);
+    font-size: 0.875rem;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.settings-input {
+    width: 300px;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.settings-input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+.settings-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.settings-button:hover {
+    background-color: #9d7aea;
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+    .settings-content {
+        padding: 1rem;
+    }
+
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .setting-text {
+        padding-right: 0;
+    }
+
+    .setting-control {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .settings-input {
+        width: 100%;
+    }
+
+    .settings-button {
+        text-align: center;
+    }
+}

@@ -290,15 +290,13 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSelectedSong, smData }) => {
+const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSelectedSong, smData, apiKey, setApiKey }) => {
     const query = useQuery();
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
     const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
     const [inputValue, setInputValue] = useState('');
-    const [apiKey, setApiKey] = useState('');
-    const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -419,7 +417,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
 
     const handleCapture = (imageDataUrl) => {
         if (!apiKey) {
-            setShowApiKeyModal(true);
+            navigate('/settings');
             return;
         }
         sendToGemini(imageDataUrl);
@@ -439,13 +437,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
             return <DifficultyMeter key={`${playStyle}-${levelName}`} level={level || 'X'} difficultyName={levelName} isMissing={!level} />;
         });
     };
-
-    useEffect(() => {
-        const storedApiKey = sessionStorage.getItem('geminiApiKey');
-        if (storedApiKey) {
-            setApiKey(storedApiKey);
-        }
-    }, []);
 
     useEffect(() => {
         let filteredFiles = smData.files;
@@ -582,12 +573,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
         }
     }
 
-    const handleApiKeySave = (newApiKey) => {
-        setApiKey(newApiKey);
-        sessionStorage.setItem('geminiApiKey', newApiKey);
-        setShowApiKeyModal(false);
-    };
-
     return (
         <div className="app-container">
             <div className="selection-container">
@@ -633,26 +618,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                     </div>
                 </div>
             </div>
-
-            {showApiKeyModal && (
-                <div className="api-key-modal">
-                    <div className="api-key-modal-content">
-                        <h3>Enter your Google AI Studio API Key</h3>
-                        <p className="api-key-disclaimer">Your API key is stored only in your browser's session storage and is sent directly to Google's AI services. It is never sent to our servers.</p>
-                        <input
-                            type="password"
-                            defaultValue={apiKey}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleApiKeySave(e.target.value);
-                                }
-                            }}
-                        />
-                        <button onClick={() => handleApiKeySave(document.querySelector('.api-key-modal-content input').value)}>Save</button>
-                        <button onClick={() => setShowApiKeyModal(false)}>Close</button>
-                    </div>
-                </div>
-            )}
 
             <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
                 <div className="song-info-bar">
@@ -793,9 +758,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                     )}
                 </div>
             </div>
-            <footer className="api-key-footer">
-                <button onClick={() => setShowApiKeyModal(true)} className="api-key-button">Set API Key</button>
-            </footer>
         </div>
     );
 };
