@@ -3,6 +3,10 @@
     padding: 1.5rem;
     border-radius: 0.75rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.settings-inner-container {
+    max-width: 768px;
     margin: 0 auto;
 }
 
@@ -24,10 +28,12 @@
 
 .setting-item:first-of-type {
     border-top: 1px solid var(--border-color);
+    
+    
 }
 
 .setting-text {
-    flex: 1;
+    flex-basis: 50%;
     padding-right: 2rem;
 }
 
@@ -45,12 +51,13 @@
 
 .setting-control {
     display: flex;
+    flex-basis: 50%;
     align-items: center;
     gap: 1rem;
 }
 
 .settings-input {
-    width: 300px;
+    width: 100%;
     background-color: var(--card-bg-color);
     color: var(--text-color);
     padding: 0.75rem;
@@ -59,6 +66,7 @@
     font-size: 1rem;
     transition: border-color 0.2s;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .settings-input:focus {

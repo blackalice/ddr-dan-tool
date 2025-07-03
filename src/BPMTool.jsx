@@ -557,12 +557,20 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
             const text = response.text();
             setInputValue(text);
 
-            const matchedSong = songOptions.find(option =>
+            const allSongOptions = smData.files.map(file => ({
+                value: file.path,
+                label: file.title,
+                title: file.title,
+                titleTranslit: file.titleTranslit
+            }));
+
+            const matchedSong = allSongOptions.find(option =>
                 option.title.toLowerCase() === text.toLowerCase() ||
                 (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase())
             );
 
             if (matchedSong) {
+                setSelectedGame('all');
                 setSelectedSong(matchedSong);
             }
         } catch (error) {

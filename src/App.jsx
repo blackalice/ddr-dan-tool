@@ -371,24 +371,6 @@ const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
   </div>
 );
 
-const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
-    <div className="target-bpm-bar">
-        <div className="target-bpm-container">
-            <label htmlFor="targetBPM" className="target-bpm-label">
-                Your Target Scroll Speed:
-            </label>
-            <input
-                id="targetBPM"
-                type="number"
-                value={targetBPM}
-                onChange={(e) => setTargetBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
-                className="target-bpm-input"
-                placeholder="e.g. 300"
-            />
-        </div>
-    </div>
-);
-
 function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) {
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
@@ -403,11 +385,6 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
       
       <div className="app-container">
         <main>
-          <TargetBPMInput 
-              targetBPM={targetBPM} 
-              setTargetBPM={setTargetBPM} 
-          />
-
           <FilterBar 
             activeMode={playMode} 
             setMode={(mode) => {
@@ -435,12 +412,6 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
             </div>
           )}
         </main>
-
-        <footer className="footer">
-            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> <br />Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
-        
-
-        </footer>
       </div>
     </>
   );
@@ -491,7 +462,7 @@ function AppRoutes({
       <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
-      <Route path="/settings" element={<Settings apiKey={apiKey} setApiKey={setApiKey} />} />
+      <Route path="/settings" element={<Settings apiKey={apiKey} setApiKey={setApiKey} targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
     </Routes>
   );
 }
@@ -538,16 +509,21 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Tabs />
-        <AppRoutes
-          targetBPM={targetBPM} setTargetBPM={setTargetBPM}
-          playMode={playMode} setPlayMode={setPlayMode}
-          activeDan={activeDan} setActiveDan={setActiveDan}
-          selectedGame={selectedGame} setSelectedGame={setSelectedGame}
-          selectedSong={selectedSong} setSelectedSong={setSelectedSong}
-          smData={smData}
-          apiKey={apiKey} setApiKey={setApiKey}
-        />
+        <div className="app-content">
+          <Tabs />
+          <AppRoutes
+            targetBPM={targetBPM} setTargetBPM={setTargetBPM}
+            playMode={playMode} setPlayMode={setPlayMode}
+            activeDan={activeDan} setActiveDan={setActiveDan}
+            selectedGame={selectedGame} setSelectedGame={setSelectedGame}
+            selectedSong={selectedSong} setSelectedSong={setSelectedSong}
+            smData={smData}
+            apiKey={apiKey} setApiKey={setApiKey}
+          />
+        </div>
+        <footer className="footer">
+            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> <br />Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+        </footer>
       </div>
     </Router>
   );

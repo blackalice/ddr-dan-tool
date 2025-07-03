@@ -1,6 +1,7 @@
 .tabs-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     background-color: #1F2937;
     border-radius: 0.75rem;
     padding: 0.5rem;
@@ -8,6 +9,42 @@
     
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
+
+.logo-container {
+    padding: 0 1rem;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.tabs-group {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.settings-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    font-size: 1.25rem;
+    color: var(--text-muted-color);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.settings-tab:hover {
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-color);
+}
+
+.settings-tab.active {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
 
 .tab {
     padding: 0.75rem 1.5rem;
