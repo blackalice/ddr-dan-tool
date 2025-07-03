@@ -99,9 +99,3 @@
 .toggle-button.down:hover {
     background-color: #DC2626;
 }
-
-@media (max-width: 640px) {
-    .multiplier-content {
-        margin: 0 0.75rem;
-    }
-}

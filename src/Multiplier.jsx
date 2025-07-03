@@ -67,7 +67,7 @@ function Multiplier({ targetBPM, setTargetBPM }) {
 
 
   return (
-    <main>
+    <main className="app-container">
         <div className="multiplier-content">
           <div className="input-group">
             <label htmlFor="targetBPM">Your Target Scroll Speed</label>

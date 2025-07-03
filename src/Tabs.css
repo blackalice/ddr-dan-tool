@@ -4,7 +4,7 @@
     background-color: #1F2937;
     border-radius: 0.75rem;
     padding: 0.5rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
@@ -33,7 +33,7 @@
 @media (max-width: 640px) {
     .tabs-container {
         padding: 0.5rem;
-        margin: 0.5rem 0.25rem 1rem 0.25rem;
+        margin: 1rem 0.25rem;
     }
     .tab {
         flex-grow: 1;

@@ -9,7 +9,7 @@ const Settings = ({ apiKey, setApiKey }) => {
     };
 
     return (
-        <div className="settings-container">
+        <div className="app-container">
             <div className="settings-content">
                 <h1>Settings</h1>
                 <div className="setting-item">
