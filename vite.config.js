@@ -28,7 +28,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,sm,ssc}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}', 'sm/**/*.{sm,ssc}'],
         navigateFallback: 'index.html',
         runtimeCaching: [
           {
@@ -64,6 +64,20 @@ export default defineConfig({
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'sm-files-cache',
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /\/sm\/.*\.(sm|ssc)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'sm-ssc-files-cache',
+              expiration: {
+                maxEntries: 500, // Adjust as needed
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 365 days
+              },
               cacheableResponse: {
                 statuses: [0, 200]
               }
