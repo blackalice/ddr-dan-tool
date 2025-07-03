@@ -1,5 +1,5 @@
 {
-  "name": "ddr-dan-tool",
+  "name": "ddr-toolkit",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -28,6 +28,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "vite-plugin-pwa": "^1.0.1"
   }
 }

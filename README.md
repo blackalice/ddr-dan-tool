@@ -1,5 +1,5 @@
-DDR A3 Dan Course Visualizer & BPM Tool
-=======================================
+DDR Toolkit
+============
 
 ![screenshot](screenshot.png)
 
