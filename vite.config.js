@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['index.html', 'favicon.ico', 'apple-touch-icon.png', 'sm-files.json', 'sm/**/*.{sm,ssc}'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'sm-files.json'],
       manifest: {
         name: 'DDR Toolkit',
         short_name: 'DDR Toolkit',
@@ -26,6 +26,9 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,sm,ssc}']
       }
     })
   ],
