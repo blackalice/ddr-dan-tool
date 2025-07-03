@@ -67,42 +67,44 @@ function Multiplier({ targetBPM, setTargetBPM }) {
 
 
   return (
-    <main>
+    <main className="app-container">
         <div className="multiplier-content">
-          <div className="input-group">
-            <label htmlFor="targetBPM">Your Target Scroll Speed</label>
-            <input
-              id="targetBPM"
-              type="number"
-              value={targetBPM}
-              onChange={(e) => setTargetBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
-              className="bpm-input"
-              placeholder="e.g. 300"
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="songBPM">Song BPM</label>
-            <input
-              id="songBPM"
-              type="number"
-              value={songBPM}
-              onChange={(e) => setSongBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
-              className="bpm-input"
-              placeholder="e.g. 150"
-            />
-          </div>
-          <div className="result">
-            <h2>Recommended Multiplier</h2>
-            <p className="modifier">{currentDisplay.modifier}x</p>
-            <p className="speed">{currentDisplay.speed} scroll speed</p>
-            {calculation && calculation.alternative && (
-              <button 
-                className={`toggle-button ${showAlternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                onClick={() => setShowAlternative(!showAlternative)}
-              >
-                <i className="fa-solid fa-rotate"></i>
-              </button>
-            )}
+          <div className="multiplier-inner-container">
+            <div className="input-group">
+              <label htmlFor="targetBPM">Your Target Scroll Speed</label>
+              <input
+                id="targetBPM"
+                type="number"
+                value={targetBPM}
+                onChange={(e) => setTargetBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
+                className="bpm-input"
+                placeholder="e.g. 300"
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="songBPM">Song BPM</label>
+              <input
+                id="songBPM"
+                type="number"
+                value={songBPM}
+                onChange={(e) => setSongBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
+                className="bpm-input"
+                placeholder="e.g. 150"
+              />
+            </div>
+            <div className="result">
+              <h2>Recommended Multiplier</h2>
+              <p className="modifier">{currentDisplay.modifier}x</p>
+              <p className="speed">{currentDisplay.speed} scroll speed</p>
+              {calculation && calculation.alternative && (
+                <button 
+                  className={`toggle-button ${showAlternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                  onClick={() => setShowAlternative(!showAlternative)}
+                >
+                  <i className="fa-solid fa-rotate"></i>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </main>

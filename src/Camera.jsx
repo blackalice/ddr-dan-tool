@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 const Camera = ({ onCapture, isProcessing }) => {
   const fileInputRef = useRef(null);
@@ -66,7 +68,7 @@ const Camera = ({ onCapture, isProcessing }) => {
         />
       )}
       <button onClick={openFileDialog} className="camera-button" disabled={isProcessing}>
-        {isProcessing ? '...' : '📷'}
+        {isProcessing ? '...' : <FontAwesomeIcon icon={faCamera} />}
       </button>
     </div>
   );
