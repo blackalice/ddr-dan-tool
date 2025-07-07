@@ -22,6 +22,9 @@
    /* background-color: #374151;*/
     padding: 1.5rem;
     border-radius: 0.5rem;
+    border-color:#4a5563;
+    border-width:1px;  
+    border-style: solid;
     display: flex;
     justify-content: space-between;
     align-items: center;
