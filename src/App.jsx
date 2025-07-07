@@ -522,7 +522,7 @@ function App() {
           />
         </div>
         <footer className="footer">
-            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> <br />Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
         </footer>
       </div>
     </Router>

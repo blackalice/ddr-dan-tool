@@ -1,46 +1,39 @@
 .bpm-tool-container {
-    padding: 2rem;
     background-color: #111827;
     color: #E5E7EB;
     min-height: 100vh;
 }
 
-.selection-container {
-    margin-bottom: 1rem;
-    
-}
 
 .controls-container {
+    background-color: #1F2937;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
-}
-
-@media (min-width: 640px) {
-    .controls-container {
-        flex-direction: row;
-        align-items: center;
-    }
+    align-items: center;
+    justify-content: center;
 }
 
 .game-select {
-appearance: none;
-  background-color: var(--card-bg-color);
-  color: var(--text-color);
-  font-weight: 600;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
-
 
 .song-search-row {
     display: flex;
     gap: 1rem;
     align-items: center;
-     flex-grow: 1;
+    width: 100%;
 }
 
 .song-select-container {
@@ -151,6 +144,7 @@ appearance: none;
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    margin-top: 1rem;
 }
 
 .song-info-bar {
@@ -415,5 +409,19 @@ padding: 0.5rem;}
     
     .bpm-tool-grid{
         margin-top:1rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .controls-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .game-select {
+        width: auto;
+    }
+    .song-search-row {
+        width: auto;
+        flex-grow: 1;
     }
 }
