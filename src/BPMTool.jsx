@@ -295,7 +295,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -458,11 +458,14 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
         if (selectedSong) {
             setIsLoading(true);
             setChartData(null);
-            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
 
             const pathParts = selectedSong.value.split('?difficulty=');
             const filePath = pathParts[0];
             const difficulty = pathParts.length > 1 ? pathParts[1] : null;
+
+            const gamePathParts = filePath.split('/');
+            const gameVersion = gamePathParts.length > 2 ? gamePathParts[1] : 'N/A';
 
             fetch(encodeURI(filePath))
                 .then(response => {
@@ -497,7 +500,8 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                         artist: metadata.artist, 
                         difficulties: metadata.difficulties,
                         bpmDisplay: bpmDisplay,
-                        coreBpm: coreBpm
+                        coreBpm: coreBpm,
+                        game: gameVersion
                     });
 
                     const data = calculateChartData(bpmChanges, lastBeat);
@@ -505,7 +509,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 })
                 .catch(error => {
                     console.error("Error fetching song data:", error);
-                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
                 })
                 .finally(() => {
                     setIsLoading(false);
@@ -513,7 +517,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
         } else {
             setIsLoading(false);
             setChartData(null);
-            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
         }
     }, [selectedSong]);
 
@@ -631,9 +635,12 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 <div className="song-info-bar">
                     <div className="song-title-container">
                         <h2 className="song-title bpm-title-mobile">
-                            <span className="song-title-main">{songMeta.title}</span>
-                            <span className="song-title-separator"> - </span>
-                            <span className="song-title-artist">{songMeta.artist}</span>
+                            {songMeta.game && <span className="song-game-version">{songMeta.game}</span>}
+                            <div className="title-artist-group">
+                                <span className="song-title-main">{songMeta.title}</span>
+                                <span className="song-title-separator"> - </span>
+                                <span className="song-title-artist">{songMeta.artist}</span>
+                            </div>
                         </h2>
                         <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
                             <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
