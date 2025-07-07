@@ -1,24 +1,6 @@
 import React, { useState } from 'react';
 import './Settings.css';
 
-const TargetBPMInput = ({ targetBPM, setTargetBPM }) => (
-    <div className="target-bpm-bar">
-        <div className="target-bpm-container">
-            <label htmlFor="targetBPM" className="target-bpm-label">
-                Your Target Scroll Speed:
-            </label>
-            <input
-                id="targetBPM"
-                type="number"
-                value={targetBPM}
-                onChange={(e) => setTargetBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
-                className="target-bpm-input"
-                placeholder="e.g. 300"
-            />
-        </div>
-    </div>
-);
-
 const Settings = ({ apiKey, setApiKey, targetBPM, setTargetBPM }) => {
     const [newApiKey, setNewApiKey] = useState(apiKey);
 
@@ -30,7 +12,7 @@ const Settings = ({ apiKey, setApiKey, targetBPM, setTargetBPM }) => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
-                    <div className="setting-item">
+                    <div className="setting-card">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>
                             <p>
@@ -48,7 +30,7 @@ const Settings = ({ apiKey, setApiKey, targetBPM, setTargetBPM }) => {
                             />
                         </div>
                     </div>
-                    <div className="setting-item">
+                    <div className="setting-card">
                         <div className="setting-text">
                             <h3>Google AI Studio API Key</h3>
                             <p>
