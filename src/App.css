@@ -39,10 +39,12 @@ body {
   flex-grow: 1;
 
 }
-@media (min-width: 768px) {
-  .app-container {
+@media (max-width: 768px) {
+  .dan-select{
+    text-align:center;}
+    .dan-header{
+    text-align: center;}
 
-  }
 }
 
 /* --- Header --- */
@@ -164,6 +166,7 @@ body {
   border: none;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   width:100%;
+
 }
   
 .dan-select-wrapper{
@@ -292,7 +295,7 @@ body {
 /* --- Footer --- */
 .footer {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 1rem;
   color: var(--text-muted-color);
   font-size: 0.875rem;
 }

@@ -4,17 +4,14 @@
     min-height: 100vh;
 }
 
-
 .controls-container {
     background-color: #1F2937;
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;
     gap: 1rem;
     align-items: center;
-    justify-content: center;
 }
 
 .game-select {
@@ -22,11 +19,13 @@
     background-color: var(--card-bg-color);
     color: var(--text-color);
     font-weight: 600;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
     border: none;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    text-align: center;
+    min-height: 2.5rem;
+    box-sizing: border-box;
 }
 
 .song-search-row {
@@ -39,7 +38,6 @@
 .song-select-container {
     flex-grow: 1;
 }
-
 
 .api-key-modal {
     position: fixed;
@@ -97,25 +95,15 @@
     background-color: #5A6578;
 }
 
-.api-key-button {
+.api-key-button,
+.camera-button {
     background-color: #374151;
     border: 0px solid #4B5563;
-    color: white; 
-    padding: 0.5rem 1rem;
+    color: white;
+    padding: 1rem;
     border-radius: 0.375rem;
     cursor: pointer;
-    padding: 1rem;
 }
-.camera-button{
-    background-color: #374151;
-    border: 0px solid #4B5563;
-    color: white; 
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    padding: 1rem;
-}
-
 
 .camera-modal {
     position: fixed;
@@ -152,8 +140,6 @@
     padding: 1.5rem;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
-    text-align: center;
-    
 }
 
 .song-title-container {
@@ -170,8 +156,16 @@
 .song-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     margin: 0;
+    width: 100%;
+}
+
+.title-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     text-align: left;
 }
 
@@ -201,6 +195,7 @@
     color: #d1d5db;
     font-size: 1.25rem;
 }
+
 .collapse-button {
     background-color: #4A5568;
     color: white;
@@ -215,34 +210,6 @@
     transition: background-color 0.2s;
     flex-shrink: 0;
 }
-@media (max-width: 768px) {
-    .bpm-title-mobile {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    .title-artist-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.1rem;
-    }
-
-    .song-title-separator {
-        display: none;
-    }
-
-    .song-title-main {
-        font-size: 1.5rem;
-    }
-
-    .song-title-artist {
-        font-size: 1rem;
-    }
-}
 
 .collapse-button:hover {
     background-color: #5A6578;
@@ -250,12 +217,6 @@
 
 .chart-section.collapsed .chart-container {
     height: 600px;
-}
-
-@media (max-width: 768px) {
-    .chart-section.collapsed .chart-container {
-        height: 400px;
-    }
 }
 
 .details-grid {
@@ -272,7 +233,9 @@
     gap: 1rem;
 }
 
-.play-style, .bpm-label, .core-bpm-label {
+.play-style,
+.bpm-label,
+.core-bpm-label {
     font-weight: bold;
     font-size: 1.25rem;
     color: #E5E7EB;
@@ -285,7 +248,7 @@
 
 .difficulty-meter {
     padding: 0.3rem 0.5rem;
-    width:22px;
+    width: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,44 +258,15 @@
     font-size: 1rem;
 }
 
-@media (max-width: 768px) {
-    .chart-section {
-        padding: 0;
-    }
-    .song-info-bar {
-        margin-bottom: 0;
-        border-radius: 0;
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-        padding: 1.5rem 2rem;
-        margin-left: 0rem!important;
-    }
-    .chart-container {
-        padding: 2rem;
-        margin-top: 1.5rem;
-    }
-    .details-grid {
-        grid-template-columns: 1fr;
-        justify-items: center;
-    }
-    .grid-item {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .grid-item-sp { order: 1; }
-    .grid-item-dp { order: 2; }
-    .grid-item-bpm { order: 3; }
-    .grid-item-core { order: 4; }
-}
-
-.bpm-value-container, .core-bpm-value-container {
+.bpm-value-container,
+.core-bpm-value-container {
     display: flex;
     align-items: center;
     gap: 1rem;
-   
 }
 
-.bpm-value, .core-bpm-value {
+.bpm-value,
+.core-bpm-value {
     font-weight: 600;
     color: #FBBF24;
     font-size: 1.25rem;
@@ -346,8 +280,8 @@
     align-items: center;
     gap: 0.5rem;
     width: 150px;
+    text-align: center;
 }
-
 
 .toggle-button {
     background-color: #4A5568;
@@ -362,7 +296,6 @@
     align-items: center;
     transition: background-color 0.2s;
     margin-top: 0;
-    
 }
 
 .toggle-button:hover {
@@ -410,59 +343,112 @@
     justify-content: center;
 }
 
+/* --- Mobile & Small Screen Overrides --- */
 @media (max-width: 768px) {
-    .song-info-bar {
-        position: relative;
+    .controls-container {
+        flex-direction: column;
+    }
+    .game-select {
         width: 100%;
-        left: 0;
-        right: 0;
-        margin-left: -2rem;
-        margin-right: -2rem;
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        box-sizing: border-box;
+    }
+    .song-search-row {
+        width: 100%;
+    }
+
+    .chart-section {
+        padding: 0;
+    }
+    .chart-section.collapsed .chart-container {
+        height: 400px;
+    }
+
+    .song-info-bar {
+        background-color: #2D3748;
+        padding: 1rem;
+        margin-bottom: 0;
+        border-radius: 0;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
     }
-    .bpm-title-mobile
-    {
+
+    .song-title-container {
+        margin-bottom: 1rem;
+    }
+
+    .bpm-title-mobile {
+        display: grid;
+        grid-template-areas:
+            ". chip button"
+            "title title title";
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.5rem 1rem;
+    }
+
+    .title-content-wrapper {
+        display: contents; /* Makes children direct grid items */
+    }
+
+    .song-game-version {
+        grid-area: chip;
+        justify-self: center;
+    }
+
+    .title-artist-group {
+        grid-area: title;
+        grid-column: 1 / -1; /* Span all columns */
+        justify-self: center;
+        text-align: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 0.1rem;
-        margin-bottom: 0px!important;
-        margin-left:auto!important;
-        margin-right:auto!important;
-        padding-left:0.5rem;
-        padding-right:0.5rem;
-     
     }
+
+    .collapse-button {
+        grid-area: button;
+        justify-self: end;
+        background-color: transparent;
+    }
+    .collapse-button:hover {
+        background-color: transparent;
+        color: #9CA3AF;
+    }
+
     .song-title-separator {
         display: none;
     }
-    .song-artist-line {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        justify-content: center;
-    }
+
     .song-title-main {
         font-size: 1.5rem;
     }
+
     .song-title-artist {
         font-size: 1rem;
     }
-        .song-game-version{
-        margin-bottom: 0.3rem!important;
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 0 1rem;
     }
 
-.chart-container{margin-top:0px;
-padding: 0.5rem;}
-    
-    .bpm-tool-grid{
-        margin-top:1rem;
+    .grid-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .grid-item-sp { order: 1; }
+    .grid-item-dp { order: 2; }
+    .grid-item-bpm { order: 3; }
+    .grid-item-core { order: 4; }
+
+    .chart-container {
+        margin-top: 0px;
+        padding: 0.5rem;
+    }
+
+    .bpm-tool-grid {
+        margin-top: 1rem;
     }
 }
 
@@ -474,7 +460,6 @@ padding: 0.5rem;}
     .game-select {
         width: auto;
     }
-
     .song-search-row {
         width: auto;
         flex-grow: 1;

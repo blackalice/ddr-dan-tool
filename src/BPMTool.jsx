@@ -635,16 +635,18 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 <div className="song-info-bar">
                     <div className="song-title-container">
                         <h2 className="song-title bpm-title-mobile">
-                            {songMeta.game && <span className="song-game-version">{songMeta.game}</span>}
-                            <div className="title-artist-group">
-                                <span className="song-title-main">{songMeta.title}</span>
-                                <span className="song-title-separator"> - </span>
-                                <span className="song-title-artist">{songMeta.artist}</span>
+                            <div className="title-content-wrapper">
+                                {songMeta.game && <span className="song-game-version">{songMeta.game}</span>}
+                                <div className="title-artist-group">
+                                    <span className="song-title-main">{songMeta.title}</span>
+                                    <span className="song-title-separator"> - </span>
+                                    <span className="song-title-artist">{songMeta.artist}</span>
+                                </div>
                             </div>
+                            <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                                <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                            </button>
                         </h2>
-                        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-                            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-                        </button>
                     </div>
                     {!isCollapsed && (
                         <div className="details-grid bpm-tool-grid">
