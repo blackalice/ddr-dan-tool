@@ -16,6 +16,11 @@
     color: var(--accent-color);
 }
 
+.logo-container svg {
+    width: 24px;
+    height: 24px;
+}
+
 .tabs-group {
     display: flex;
     justify-content: center;
