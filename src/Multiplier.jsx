@@ -1,13 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo, useContext } from 'react';
+import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Multiplier.css';
 
-const multipliers = [
-  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
-  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
-];
-
-function Multiplier({ targetBPM, setTargetBPM }) {
+function Multiplier() {
+  const { targetBPM, setTargetBPM, multipliers } = useContext(SettingsContext);
   const [songBPM, setSongBPM] = useState(150);
   const [showAlternative, setShowAlternative] = useState(false);
 
@@ -54,17 +50,14 @@ function Multiplier({ targetBPM, setTargetBPM }) {
       };
     }
     
-    // If the primary and alternative are the same, there's no real alternative.
     if (result.alternative && result.primary.speed === result.alternative.speed) {
         result.alternative = null;
     }
 
-
     return result;
-  }, [songBPM, targetBPM]);
+  }, [songBPM, targetBPM, multipliers]);
 
   const currentDisplay = calculation ? (showAlternative && calculation.alternative ? calculation.alternative : calculation.primary) : { modifier: 'N/A', speed: 'N/A' };
-
 
   return (
     <main className="app-container">

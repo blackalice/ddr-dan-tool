@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLocation, useNavigate } from 'react-router-dom';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
+import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './BPMTool.css';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const difficultyMap = {
     'Beginner': { color: '#4DB6AC' },
@@ -281,17 +282,8 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const multipliers = [
-  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
-  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
-];
-
-const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-}
-
-const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSelectedSong, smData, apiKey, setApiKey }) => {
-    const query = useQuery();
+const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData }) => {
+    const { targetBPM, multipliers, apiKey } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);

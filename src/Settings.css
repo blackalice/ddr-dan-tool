@@ -1,5 +1,5 @@
 .settings-content {
-    background-color: #1F2937;
+    background-color: #1f2937;
     padding: 1.5rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -19,10 +19,9 @@
 }
 
 .setting-card {
-    background-color: #2D3748; /* Changed to main bg for contrast inside the card */
+   /* background-color: #374151;*/
     padding: 1.5rem;
     border-radius: 0.5rem;
-    /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,7 +56,7 @@
     gap: 1rem;
 }
 
-.settings-input {
+.settings-input, .settings-select {
     width: 100%;
     background-color: #374151;
     color: var(--text-color);
@@ -67,10 +66,13 @@
     font-size: 1rem;
     transition: border-color 0.2s;
     box-sizing: border-box;
+}
+
+.settings-input {
     text-align: center;
 }
 
-.settings-input:focus {
+.settings-input:focus, .settings-select:focus {
     border-color: var(--accent-color);
     outline: none;
 }
@@ -95,6 +97,10 @@
     .settings-content {
         padding: 1rem;
     }
+    .settings-select{
+                text-align:center;
+
+    }
     .settings-inner-container {
         padding: 0;
     }
@@ -108,13 +114,14 @@
 
     .setting-text {
         padding-right: 0;
-        text-align: center;
+        text-align: center;;
     }
 
     .setting-control {
         width: 100%;
         flex-direction: column;
         align-items: stretch;
+        
     }
 
     .settings-input {
