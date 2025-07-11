@@ -91,10 +91,10 @@ function Multiplier() {
               <p className="speed">{currentDisplay.speed} scroll speed</p>
               {calculation && calculation.alternative && (
                 <button 
-                  className={`toggle-button ${showAlternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
+                  className={`toggle-button ${showAlternative && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
                   onClick={() => setShowAlternative(!showAlternative)}
                 >
-                  <i className="fa-solid fa-rotate"></i>
+                  <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                 </button>
               )}
             </div>

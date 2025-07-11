@@ -17,7 +17,7 @@ const ThemeSwitcher = () => {
       <div className="setting-control">
         <select className="settings-select" value={theme} onChange={handleThemeChange}>
           <option value="dark">Dark</option>
-          <option value="light">Light</option>
+          <option value="light">Light (Beta)</option>
         </select>
       </div>
     </div>

@@ -69,22 +69,22 @@
 }
 
 .toggle-button {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
-    width: 40px;
-    height: 40px;
+    background-color: var(--button-bg);
+    color: var(--button-icon);
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem auto 0;
     transition: background-color 0.2s;
+    margin: 1rem auto 0;
 }
 
 .toggle-button:hover {
-    background-color: #5A6578;
+    background-color: var(--card-hover-bg-color-light);
 }
 
 .toggle-button.up {
