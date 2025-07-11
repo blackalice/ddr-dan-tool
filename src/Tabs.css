@@ -2,8 +2,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1F2937;
-    border-radius: 0.75rem;
+    background-color: var(--bg-color-light);
+    border-radius: 0.5rem;
     padding: 0.5rem;
     margin: 1rem 0;
     
@@ -14,6 +14,11 @@
     padding: 0 1rem;
     font-size: 1.5rem;
     color: var(--accent-color);
+}
+
+.logo-container svg {
+    width: 24px;
+    height: 24px;
 }
 
 .tabs-group {
