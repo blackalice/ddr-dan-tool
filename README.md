@@ -1,103 +1,75 @@
-DDR Toolkit
-============
+# DDR Dan Tool
 
 ![screenshot](screenshot.png)
 
-A clean, fast, and mobile-friendly web application designed to help DanceDanceRevolution players visualize the A3 Dan (Class) mode courses and calculate their ideal scroll speed.
+A modern, feature-rich web application for DanceDanceRevolution players. This tool provides scroll speed calculations, detailed song data, and advanced analysis tools to help you optimize your gameplay.
 
-[➡️ Live Demo Link Here](https://ddr-dan-tool.rtfoy.co.uk/ "null")
+## Features
 
-Features
---------
+-   **BPM & Chart Visualizer**:
+    -   Search for any song from the entire DDR library.
+    -   View a detailed, interactive BPM graph to understand every speed change.
+    -   Calculates the "core" BPM based on the most prominent speed zone.
+    -   Displays all available chart difficulties (Beginner, Basic, Difficult, Expert, Challenge) for both Single and Double play.
 
--   Complete Course Listing: Displays all Single Play and Double Play Dan courses from 1st Dan to Kaiden, based on the DDR A3 version.
+-   **Scroll Speed Calculator**:
+    -   Set your personal target scroll speed.
+    -   The tool instantly recommends the best `x` multiplier to achieve your target for any song.
+    -   Provides an alternative multiplier (faster or slower) to fine-tune your speed.
+    -   Works for both the overall BPM range and the calculated core BPM.
 
--   Dynamic BPM Calculator: Enter your personal target scroll speed (e.g., 300, 450) and instantly see the recommended `x` multiplier and resulting scroll speed for every song.
+-   **Dan Course Browser**:
+    -   Browse all official Dan (Class) mode courses for DDR A3.
+    -   Filter by Single or Double play style and specific Dan level.
+    -   Each course shows the required songs with their difficulty, BPM, and a recommended multiplier based on your target speed.
 
--   Variable BPM Support: For songs with a BPM range (e.g., 100-200), the tool calculates the resulting scroll speed range (e.g., `~200-400`) based on the multiplier.
+-   **Simple Multiplier Tool**:
+    -   A quick calculator to find a multiplier for a given song BPM and target speed.
 
--   Intuitive Filtering: Quickly switch between Single and Double play styles, or filter the view to a specific Dan level.
+-   **Camera-based Song Recognition (Experimental)**:
+    -   Using your device's camera and a Google AI API key, the tool can identify the song currently on your game screen.
 
--   At-a-Glance Difficulty: Each song features a color-coded difficulty badge (e.g., ESP, CDP) to match the in-game representation.
+-   **Customizable Experience**:
+    -   Light and Dark themes available.
+    -   All settings, including your target BPM and API key, are saved in your browser for convenience.
 
--   Responsive Design: Built to be perfectly usable on any device, from a mobile phone to a desktop monitor.
+## Tech Stack
 
--   Zero Dependencies: Runs with a simple, clean React setup using Vite. No complex libraries or frameworks needed.
+-   **Framework**: [React](https://reactjs.org/)
+-   **Build Tool**: [Vite](https://vitejs.dev/)
+-   **Routing**: [React Router](https://reactrouter.com/)
+-   **Charting**: [Chart.js](https://www.chartjs.org/)
+-   **Styling**: CSS with dynamic theming
+-   **AI Integration**: [Google AI SDK](https://ai.google.dev/)
 
-Tech Stack
-----------
-
--   Framework: [React](https://reactjs.org/ "null")
-
--   Build Tool: [Vite](https://vitejs.dev/ "null")
-
--   Styling: Plain CSS 
-
--   Deployment: [Cloudflare Pages](https://pages.cloudflare.com/ "null")
-
-How to Run Locally
-------------------
+## How to Run Locally
 
 To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-You will need [Node.js](https://nodejs.org/en/ "null") installed on your machine.
+You will need [Node.js](https://nodejs.org/en/) installed on your machine.
 
 ### Installation
 
 1.  Clone the repository:
-
-    ```
-    git clone https://github.com/blackalice/ddr-dan-tool.git
-
+    ```sh
+      git clone https://github.com/blackalice/ddr-dan-tool.git
     ```
 
 2.  Navigate into the project directory:
-
-    ```
-    cd your_repo_name
-
+    ```sh
+    cd ddr-dan-tool
     ```
 
 3.  Install NPM packages:
-
-    ```
+    ```sh
     npm install
-
     ```
 
 4.  Run the development server:
-
-    ```
+    ```sh
     npm run dev
-
     ```
 
-    The application will now be running locally, typically at `http://localhost:5173`.
-
-Deployment
-----------
-
-This project is configured for easy, zero-cost deployment via Cloudflare Pages.
-
-1.  Push your code to a GitHub repository.
-
-2.  In the Cloudflare dashboard, create a new Pages project and connect it to your repository.
-
-3.  Use the following build settings:
-
-    -   Framework Preset: `Vite`
-
-    -   Build command: `npm run build`
-
-    -   Build output directory: `dist`
-
-Cloudflare will automatically build and deploy your site. Any subsequent pushes to your main branch will trigger a new deployment.
-
-Acknowledgements
-----------------
-
--   Data for the Dan courses was sourced from community resources.
-
--   Built by [stu :)](https://stua.rtfoy.co.uk/ "null")
+The application will now be running locally, typically at `http://localhost:5173`.
