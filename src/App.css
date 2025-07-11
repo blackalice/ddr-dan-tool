@@ -1,16 +1,39 @@
+
 /* --- Global Styles & Resets --- */
 :root {
   --bg-color: #111827;
+  --bg-color-light: #1F2937;
+  --bg-color-dark: #2D3748;
   --card-bg-color: #374151;
   --card-hover-bg-color: #4B5563;
+  --card-hover-bg-color-light: #5A6578;
   --border-color: #4B5563;
   --text-color: #FFFFFF;
+  --text-color-light: #E5E7EB;
+  --text-color-lighter: #F9FAFB;
+  --text-color-lightest: #d1d5db;
   --text-muted-color: #9CA3AF;
   --accent-color: #2484c3;
+  --accent-color-light: #9d7aea;
   --cyan-color: #67E8F9;
   --green-color: #4ADE80;
   --pink-color: #F472B6;
   --blue-color: #60A5FA;
+  --yellow-color: #FBBF24;
+
+  --difficulty-beginner-color: #4A90E2;
+  --difficulty-light-color: #F5A623;
+  --difficulty-standard-color: #D0021B;
+  --difficulty-heavy-color: #417505;
+  --difficulty-challenge-color: #BD10E0;
+  --difficulty-edit-color: #7F8C8D;
+  --difficulty-single-color: #F472B6;
+  --difficulty-double-color: #60A5FA;
+
+  --button-up-color: #10B981;
+  --button-up-hover-color: #059669;
+  --button-down-color: #EF4444;
+  --button-down-hover-color: #DC2626;
 }
 html {
   overflow-y: scroll;
@@ -83,7 +106,7 @@ body {
 
 /* --- Filter & Target BPM Bars --- */
 .filter-bar {
-  background-color: #1F2937;
+  background-color: var(--bg-color-light);
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -201,7 +224,7 @@ body {
   grid-template-columns: 1fr;
   gap: 0.75rem;
   padding: 0.75rem;
-  background-color: #1F2937;
+  background-color: var(--bg-color-light);
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
@@ -301,6 +324,33 @@ body {
 }
 
 @media (max-width: 640px) {
+    .app-container {
+        padding: 0 0.25rem;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    .play-mode-toggle {
+        display: flex;
+    }
+    .play-mode-toggle button {
+        flex-grow: 1;
+    }
+}
+
+.difficulty-beginner { background-color: var(--difficulty-beginner-color); }
+.difficulty-light { background-color: var(--difficulty-light-color); }
+.difficulty-standard { background-color: var(--difficulty-standard-color); }
+.difficulty-heavy { background-color: var(--difficulty-heavy-color); }
+.difficulty-challenge { background-color: var(--difficulty-challenge-color); }
+.difficulty-edit { background-color: var(--difficulty-edit-color); }
+
+.difficulty-single { background-color: var(--difficulty-single-color); }
+.difficulty-double { background-color: var(--difficulty-double-color); }
+a (max-width: 640px) {
     .app-container {
         padding: 0 0.25rem;
     }

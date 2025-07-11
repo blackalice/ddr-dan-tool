@@ -1,5 +1,5 @@
 .settings-content {
-    background-color: #1f2937;
+    background-color: var(--bg-color-light);
     padding: 1.5rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -19,10 +19,10 @@
 }
 
 .setting-card {
-   /* background-color: #374151;*/
+   /* background-color: var(--card-bg-color); */
     padding: 1.5rem;
     border-radius: 0.5rem;
-    border-color:#4a5563;
+    border-color: var(--border-color);
     border-width:1px;  
     border-style: solid;
     display: flex;
@@ -61,7 +61,7 @@
 
 .settings-input, .settings-select {
     width: 100%;
-    background-color: #374151;
+    background-color: var(--card-bg-color);
     color: var(--text-color);
     padding: 0.75rem;
     border-radius: 0.5rem;
@@ -92,7 +92,7 @@
 }
 
 .settings-button:hover {
-    background-color: #9d7aea;
+    background-color: var(--accent-color-light);
 }
 
 /* Mobile Layout */

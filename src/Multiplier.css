@@ -1,5 +1,5 @@
 .multiplier-content {
-  background-color: #1F2937;
+  background-color: var(--bg-color-light);
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
@@ -69,8 +69,8 @@
 }
 
 .toggle-button {
-    background-color: #4A5568;
-    color: white;
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-color);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -88,17 +88,17 @@
 }
 
 .toggle-button.up {
-    background-color: #10B981;
+    background-color: var(--button-up-color);
 }
 
 .toggle-button.up:hover {
-    background-color: #059669;
+    background-color: var(--button-up-hover-color);
 }
 
 .toggle-button.down {
-    background-color: #EF4444;
+    background-color: var(--button-down-color);
 }
 
 .toggle-button.down:hover {
-    background-color: #DC2626;
+    background-color: var(--button-down-hover-color);
 }
