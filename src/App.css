@@ -1,17 +1,81 @@
-/* --- Global Styles & Resets --- */
-:root {
+
+html[data-theme='dark'] {
   --bg-color: #111827;
+  --bg-color-light: #1F2937;
+  --bg-color-dark: #2D3748;
   --card-bg-color: #374151;
   --card-hover-bg-color: #4B5563;
+  --card-hover-bg-color-light: #5A6578;
   --border-color: #4B5563;
   --text-color: #FFFFFF;
+  --text-color-light: #E5E7EB;
+  --text-color-lighter: #F9FAFB;
+  --text-color-lightest: #d1d5db;
   --text-muted-color: #9CA3AF;
-  --accent-color: #A78BFA;
+  --accent-color: #2484c3;
+  --accent-color-light: #9d7aea;
   --cyan-color: #67E8F9;
   --green-color: #4ADE80;
   --pink-color: #F472B6;
   --blue-color: #60A5FA;
+  --yellow-color: #FBBF24;
+  --button-icon: white;
+  --button-bg: #4B5563;
+
+  --difficulty-beginner-color: #4A90E2;
+  --difficulty-light-color: #F5A623;
+  --difficulty-standard-color: #D0021B;
+  --difficulty-heavy-color: #417505;
+  --difficulty-challenge-color: #BD10E0;
+  --difficulty-edit-color: #7F8C8D;
+  --difficulty-single-color: #F472B6;
+  --difficulty-double-color: #60A5FA;
+
+  --button-up-color: #10B981;
+  --button-up-hover-color: #059669;
+  --button-down-color: #EF4444;
+  --button-down-hover-color: #DC2626;
 }
+
+html[data-theme='light'] {
+  --bg-color: #FAFAFA;
+  --bg-color-light: #EAEAEB;
+  --bg-color-dark: #DCDDDE;
+  --card-bg-color: #FFFFFF;
+  --card-hover-bg-color: #F0F0F1;
+  --card-hover-bg-color-light: #EAEAEB;
+  --border-color: #D1D1D2;
+  --text-color: #383A42;
+  --text-color-light: #383A42;
+  --text-color-lighter: #383A42;
+  --text-color-lightest: #5C5E66;
+  --text-muted-color: #808289;
+  --accent-color: #4078F2;
+  --accent-color-light: #6995F5;
+  --cyan-color: #0184BC;
+  --green-color: #50A14F;
+  --pink-color: #A626A4;
+  --blue-color: #4078F2;
+  --yellow-color: #C18401;
+  --button-bg: #5C5E66;
+  --button-icon: white;
+
+  --difficulty-beginner-color: #4078F2;
+  --difficulty-light-color: #C18401;
+  --difficulty-standard-color: #E45649;
+  --difficulty-heavy-color: #50A14F;
+  --difficulty-challenge-color: #A626A4;
+  --difficulty-edit-color: #696C77;
+  --difficulty-single-color: #A626A4;
+  --difficulty-double-color: #4078F2;
+
+  --button-up-color: #50A14F;
+  --button-up-hover-color: #468C45;
+  --button-down-color: #E45649;
+  --button-down-hover-color: #C94D41;
+}
+
+/* --- Global Styles & Resets --- */
 html {
   overflow-y: scroll;
 }
@@ -34,15 +98,17 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100%;
- /* ---  padding: 1rem;--- */
 }
 .app-content {
   flex-grow: 1;
+
 }
-@media (min-width: 768px) {
-  .app-container {
-/* --- 	padding: 2rem; --- */
-  }
+@media (max-width: 768px) {
+  .dan-select{
+    text-align:center;}
+    .dan-header{
+    text-align: center;}
+
 }
 
 /* --- Header --- */
@@ -81,9 +147,9 @@ body {
 
 /* --- Filter & Target BPM Bars --- */
 .filter-bar {
-  background-color: #1F2937;
+  background-color: var(--bg-color-light);
   padding: 1rem;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
@@ -164,6 +230,7 @@ body {
   border: none;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   width:100%;
+
 }
   
 .dan-select-wrapper{
@@ -198,7 +265,7 @@ body {
   grid-template-columns: 1fr;
   gap: 0.75rem;
   padding: 0.75rem;
-  background-color: #1F2937;
+  background-color: var(--bg-color-light);
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
@@ -217,7 +284,7 @@ body {
 .song-card {
     background-color: var(--card-bg-color);
     padding: 1.25rem;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -292,7 +359,7 @@ body {
 /* --- Footer --- */
 .footer {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 1rem;
   color: var(--text-muted-color);
   font-size: 0.875rem;
 }
@@ -313,4 +380,18 @@ body {
     .play-mode-toggle button {
         flex-grow: 1;
     }
+}
+
+.difficulty-beginner { background-color: var(--difficulty-beginner-color); }
+.difficulty-light { background-color: var(--difficulty-light-color); }
+.difficulty-standard { background-color: var(--difficulty-standard-color); }
+.difficulty-heavy { background-color: var(--difficulty-heavy-color); }
+.difficulty-challenge { background-color: var(--difficulty-challenge-color); }
+.difficulty-edit { background-color: var(--difficulty-edit-color); }
+
+.difficulty-single { background-color: var(--difficulty-single-color); }
+.difficulty-double { background-color: var(--difficulty-double-color); }
+
+.footer-link {
+  color: var(--text-color);
 }

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLocation, useNavigate } from 'react-router-dom';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
+import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './BPMTool.css';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const difficultyMap = {
     'Beginner': { color: '#4DB6AC' },
@@ -281,21 +282,12 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const multipliers = [
-  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
-  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
-];
-
-const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-}
-
-const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSelectedSong, smData, apiKey, setApiKey }) => {
-    const query = useQuery();
+const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData }) => {
+    const { targetBPM, multipliers, apiKey, theme } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -458,11 +450,14 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
         if (selectedSong) {
             setIsLoading(true);
             setChartData(null);
-            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
 
             const pathParts = selectedSong.value.split('?difficulty=');
             const filePath = pathParts[0];
             const difficulty = pathParts.length > 1 ? pathParts[1] : null;
+
+            const gamePathParts = filePath.split('/');
+            const gameVersion = gamePathParts.length > 2 ? gamePathParts[1] : 'N/A';
 
             fetch(encodeURI(filePath))
                 .then(response => {
@@ -497,7 +492,8 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                         artist: metadata.artist, 
                         difficulties: metadata.difficulties,
                         bpmDisplay: bpmDisplay,
-                        coreBpm: coreBpm
+                        coreBpm: coreBpm,
+                        game: gameVersion
                     });
 
                     const data = calculateChartData(bpmChanges, lastBeat);
@@ -505,7 +501,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 })
                 .catch(error => {
                     console.error("Error fetching song data:", error);
-                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
                 })
                 .finally(() => {
                     setIsLoading(false);
@@ -513,29 +509,29 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
         } else {
             setIsLoading(false);
             setChartData(null);
-            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null });
+            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
         }
     }, [selectedSong]);
 
     const selectStyles = {
-        control: (styles) => ({ ...styles, backgroundColor: '#374151', border: '1px solid #4B5563', color: 'white', padding: '0.3rem', borderRadius: '0.5rem' }),
-        menu: (styles) => ({ ...styles, backgroundColor: '#1F2937' }),
+        control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
+        menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)' }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
-            backgroundColor: isSelected ? '#4A5563' : isFocused ? '#374151' : null,
-            color: 'white',
+            backgroundColor: isSelected ? 'var(--card-hover-bg-color)' : isFocused ? 'var(--card-bg-color)' : null,
+            color: 'var(--text-color)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }),
         singleValue: (styles) => ({ 
             ...styles, 
-            color: 'white',
+            color: 'var(--text-color)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }),
-        input: (styles) => ({ ...styles, color: 'white' }),
+        input: (styles) => ({ ...styles, color: 'var(--text-color)' }),
     };
 
     async function sendToGemini(imageDataUrl) {
@@ -631,13 +627,18 @@ const BPMTool = ({ selectedGame, setSelectedGame, targetBPM, selectedSong, setSe
                 <div className="song-info-bar">
                     <div className="song-title-container">
                         <h2 className="song-title bpm-title-mobile">
-                            <span className="song-title-main">{songMeta.title}</span>
-                            <span className="song-title-separator"> - </span>
-                            <span className="song-title-artist">{songMeta.artist}</span>
+                            <div className="title-content-wrapper">
+                                {songMeta.game && <span className="song-game-version">{songMeta.game}</span>}
+                                <div className="title-artist-group">
+                                    <span className="song-title-main">{songMeta.title}</span>
+                                    <span className="song-title-separator"> - </span>
+                                    <span className="song-title-artist">{songMeta.artist}</span>
+                                </div>
+                            </div>
+                            <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                                <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                            </button>
                         </h2>
-                        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-                            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-                        </button>
                     </div>
                     {!isCollapsed && (
                         <div className="details-grid bpm-tool-grid">

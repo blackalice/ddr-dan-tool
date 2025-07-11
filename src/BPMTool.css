@@ -1,52 +1,43 @@
 .bpm-tool-container {
-    padding: 2rem;
-    background-color: #111827;
-    color: #E5E7EB;
+    background-color: var(--bg-color);
+    color: var(--text-color-light);
     min-height: 100vh;
 }
 
-.selection-container {
-    margin-bottom: 1rem;
-    
-}
-
 .controls-container {
+    background-color: var(--bg-color-light);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
-}
-
-@media (min-width: 640px) {
-    .controls-container {
-        flex-direction: row;
-        align-items: center;
-    }
+    align-items: center;
 }
 
 .game-select {
-appearance: none;
-  background-color: var(--card-bg-color);
-  color: var(--text-color);
-  font-weight: 600;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    border: none;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-height: 2.5rem;
+    box-sizing: border-box;
 }
-
 
 .song-search-row {
     display: flex;
     gap: 1rem;
     align-items: center;
-     flex-grow: 1;
+    width: 100%;
 }
 
 .song-select-container {
     flex-grow: 1;
 }
-
 
 .api-key-modal {
     position: fixed;
@@ -62,7 +53,7 @@ appearance: none;
 }
 
 .api-key-modal-content {
-    background-color: #1F2937;
+    background-color: var(--bg-color-light);
     padding: 2rem;
     border-radius: 0.5rem;
     display: flex;
@@ -78,21 +69,21 @@ appearance: none;
 
 .api-key-disclaimer {
     font-size: 0.9rem;
-    color: #A0AEC0;
+    color: var(--text-muted-color);
     margin-bottom: 1rem;
 }
 
 .api-key-modal-content input {
-    background-color: #374151;
-    border: 1px solid #4B5563;
-    color: white;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
     padding: 0.75rem;
     border-radius: 0.5rem;
 }
 
 .api-key-modal-content button {
-    background-color: #4A5568;
-    color: white;
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-color);
     padding: 0.75rem;
     border-radius: 0.5rem;
     border: none;
@@ -101,28 +92,18 @@ appearance: none;
 }
 
 .api-key-modal-content button:hover {
-    background-color: #5A6578;
+    background-color: var(--card-hover-bg-color-light);
 }
 
-.api-key-button {
-    background-color: #374151;
-    border: 0px solid #4B5563;
-    color: white; 
-    padding: 0.5rem 1rem;
+.api-key-button,
+.camera-button {
+    background-color: var(--card-bg-color);
+    border: 0px solid var(--border-color);
+    color: var(--text-color);
+    padding: 1rem;
     border-radius: 0.375rem;
     cursor: pointer;
-    padding: 1rem;
 }
-.camera-button{
-    background-color: #374151;
-    border: 0px solid #4B5563;
-    color: white; 
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    padding: 1rem;
-}
-
 
 .camera-modal {
     position: fixed;
@@ -138,7 +119,7 @@ appearance: none;
 }
 
 .camera-modal-content {
-    background-color: #1F2937;
+    background-color: var(--bg-color-light);
     padding: 2rem;
     border-radius: 0.5rem;
     display: flex;
@@ -147,19 +128,18 @@ appearance: none;
 }
 
 .chart-section {
-    background-color: #1F2937;
+    background-color: var(--bg-color-light);
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    margin-top: 1rem;
 }
 
 .song-info-bar {
-    background-color: #2D3748;
+    background-color: var(--bg-color-dark);
     padding: 1.5rem;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
-    text-align: center;
-    
 }
 
 .song-title-container {
@@ -174,26 +154,51 @@ appearance: none;
 }
 
 .song-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #F9FAFB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     margin: 0;
+    width: 100%;
+}
+
+.title-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+}
+
+.song-game-version {
+    font-size: 0.9rem;
+    font-weight: 500;
+    background-color: var(--card-bg-color);
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.375rem;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    line-height: 1.2;
+}
+
+.title-artist-group {
+    display: inline-block;
 }
 
 .song-title-main {
     font-weight: bold;
-     font-size: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-color-lighter);
 }
 
 .song-title-artist {
     font-weight: normal;
-    color: #d1d5db;
-     font-size: 1.5rem;
+    color: var(--text-color-lightest);
+    font-size: 1.25rem;
 }
 
 .collapse-button {
-    background-color: #4A5568;
-    color: white;
+    background-color: var(--button-bg);
+    color: var(--button-icon);
     width: 32px;
     height: 32px;
     border-radius: 0.375rem;
@@ -203,20 +208,15 @@ appearance: none;
     justify-content: center;
     align-items: center;
     transition: background-color 0.2s;
+    flex-shrink: 0;
 }
 
 .collapse-button:hover {
-    background-color: #5A6578;
+    background-color: var(--card-hover-bg-color-light);
 }
 
 .chart-section.collapsed .chart-container {
     height: 600px;
-}
-
-@media (max-width: 768px) {
-    .chart-section.collapsed .chart-container {
-        height: 400px;
-    }
 }
 
 .details-grid {
@@ -233,10 +233,12 @@ appearance: none;
     gap: 1rem;
 }
 
-.play-style, .bpm-label, .core-bpm-label {
+.play-style,
+.bpm-label,
+.core-bpm-label {
     font-weight: bold;
     font-size: 1.25rem;
-    color: #E5E7EB;
+    color: var(--text-color-light);
 }
 
 .difficulty-meters-container {
@@ -246,73 +248,44 @@ appearance: none;
 
 .difficulty-meter {
     padding: 0.3rem 0.5rem;
-    width:22px;
+    width: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0.375rem;
-    color: white;
+    color: var(--text-color);
     font-weight: bold;
     font-size: 1rem;
 }
 
-@media (max-width: 768px) {
-    .chart-section {
-        padding: 0;
-    }
-    .song-info-bar {
-        margin-bottom: 0;
-        border-radius: 0;
-        border-top-left-radius: 0.5rem;
-        border-top-right-radius: 0.5rem;
-        padding: 1.5rem 2rem;
-        margin-left: 0rem!important;
-    }
-    .chart-container {
-        padding: 2rem;
-        margin-top: 1.5rem;
-    }
-    .details-grid {
-        grid-template-columns: 1fr;
-        justify-items: center;
-    }
-    .grid-item {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .grid-item-sp { order: 1; }
-    .grid-item-dp { order: 2; }
-    .grid-item-bpm { order: 3; }
-    .grid-item-core { order: 4; }
-}
-
-.bpm-value-container, .core-bpm-value-container {
+.bpm-value-container,
+.core-bpm-value-container {
     display: flex;
     align-items: center;
     gap: 1rem;
-   
 }
 
-.bpm-value, .core-bpm-value {
+.bpm-value,
+.core-bpm-value {
     font-weight: 600;
-    color: #FBBF24;
+    color: var(--yellow-color);
     font-size: 1.25rem;
 }
 
 .bpm-tool-grid .song-calculation {
-    background-color: #374151;
+    background-color: var(--card-bg-color);
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     display: inline;
     align-items: center;
     gap: 0.5rem;
     width: 150px;
+    text-align: center;
 }
 
-
 .toggle-button {
-    background-color: #4A5568;
-    color: white;
+    background-color: var(--button-bg);
+    color: var(--button-icon);
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -323,39 +296,38 @@ appearance: none;
     align-items: center;
     transition: background-color 0.2s;
     margin-top: 0;
-    
 }
 
 .toggle-button:hover {
-    background-color: #5A6578;
+    background-color: var(--card-hover-bg-color-light);
 }
 
 .toggle-button.up {
-    background-color: #10B981;
+    background-color: var(--button-up-color);
 }
 
 .toggle-button.up:hover {
-    background-color: #059669;
+    background-color: var(--button-up-hover-color);
 }
 
 .toggle-button.down {
-    background-color: #EF4444;
+    background-color: var(--button-down-color);
 }
 
 .toggle-button.down:hover {
-    background-color: #DC2626;
+    background-color: var(--button-down-hover-color);
 }
 
 .song-speed {
-    color: #6EE7B7;
+    color: var(--green-color);
 }
 
 .song-separator {
-    color: #9CA3AF;
+    color: var(--text-muted-color);
 }
 
 .song-modifier {
-    color: #6EE7B7;
+    color: var(--green-color);
     font-weight: bold;
 }
 
@@ -371,49 +343,125 @@ appearance: none;
     justify-content: center;
 }
 
+/* --- Mobile & Small Screen Overrides --- */
 @media (max-width: 768px) {
-    .song-info-bar {
-        position: relative;
+    .controls-container {
+        flex-direction: column;
+    }
+    .game-select {
         width: 100%;
-        left: 0;
-        right: 0;
-        margin-left: -2rem;
-        margin-right: -2rem;
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        box-sizing: border-box;
+    }
+    .song-search-row {
+        width: 100%;
+    }
+
+    .chart-section {
+        padding: 0;
+    }
+    .chart-section.collapsed .chart-container {
+        height: 400px;
+    }
+
+    .song-info-bar {
+        background-color: var(--bg-color-dark);
+        padding: 1rem;
+        margin-bottom: 0;
+        border-radius: 0;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
     }
-    .bpm-title-mobile
-    {
+
+    .song-title-container {
+        margin-bottom: 1rem;
+    }
+
+    .bpm-title-mobile {
+        display: grid;
+        grid-template-areas:
+            ". chip button"
+            "title title title";
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.5rem 1rem;
+    }
+
+    .title-content-wrapper {
+        display: contents; /* Makes children direct grid items */
+    }
+
+    .song-game-version {
+        grid-area: chip;
+        justify-self: center;
+    }
+
+    .title-artist-group {
+        grid-area: title;
+        grid-column: 1 / -1; /* Span all columns */
+        justify-self: center;
+        text-align: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
         gap: 0.1rem;
-        margin-bottom: 0px!important;
-        margin-left:auto!important;
-        margin-right:auto!important;
-        padding-left:0.5rem;
-        padding-right:0.5rem;
-     
     }
+
+    .collapse-button {
+        grid-area: button;
+        justify-self: end;
+        background-color: transparent;
+    }
+    .collapse-button:hover {
+        background-color: transparent;
+        color: var(--text-muted-color);
+    }
+
     .song-title-separator {
         display: none;
     }
+
     .song-title-main {
         font-size: 1.5rem;
     }
+
     .song-title-artist {
         font-size: 1rem;
     }
 
-.chart-container{margin-top:0px;
-padding: 0.5rem;}
-    
-    .bpm-tool-grid{
-        margin-top:1rem;
+    .details-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 0 1rem;
+    }
+
+    .grid-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .grid-item-sp { order: 1; }
+    .grid-item-dp { order: 2; }
+    .grid-item-bpm { order: 3; }
+    .grid-item-core { order: 4; }
+
+    .chart-container {
+        margin-top: 0px;
+        padding: 0.5rem;
+    }
+
+    .bpm-tool-grid {
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .controls-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .game-select {
+        width: auto;
+    }
+    .song-search-row {
+        width: auto;
+        flex-grow: 1;
     }
 }

@@ -1,9 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
+import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import './App.css';
 import './Tabs.css';
 
@@ -235,13 +236,6 @@ const ddrDanData = {
   ],
 };
 
-
-// --- Helper Functions & Constants ---
-const multipliers = [
-  ...Array.from({ length: 16 }, (_, i) => 0.25 + i * 0.25), // 0.25 to 4.0 in 0.25 steps
-  ...Array.from({ length: 8 }, (_, i) => 4.5 + i * 0.5),   // 4.5 to 8.0 in 0.5 steps
-];
-
 const difficultyMap = {
     basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
     difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
@@ -266,7 +260,9 @@ const getBpmRange = (bpm) => {
 
 // --- React Components ---
 
-const SongCard = ({ song, targetBPM, playMode, setSelectedGame }) => {
+const SongCard = ({ song, playMode, setSelectedGame }) => {
+  const { targetBPM, multipliers } = useContext(SettingsContext);
+
   const calculation = useMemo(() => {
     const numericTarget = Number(targetBPM) || 0;
     const bpmRange = getBpmRange(song.bpm);
@@ -287,7 +283,7 @@ const SongCard = ({ song, targetBPM, playMode, setSelectedGame }) => {
       maxSpeed: maxSpeed,
       isRange: bpmRange.min !== bpmRange.max
     };
-  }, [song.bpm, targetBPM]);
+  }, [song.bpm, targetBPM, multipliers]);
 
   const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
 
@@ -324,14 +320,14 @@ const SongCard = ({ song, targetBPM, playMode, setSelectedGame }) => {
 };
 
 
-const DanSection = ({ danCourse, targetBPM, playMode, setSelectedGame }) => (
+const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
   <section className="dan-section">
     <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
       {danCourse.dan}
     </h2>
     <div className="song-grid">
       {danCourse.songs.map((song) => (
-        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} targetBPM={targetBPM} playMode={playMode} setSelectedGame={setSelectedGame} />
+        <SongCard key={`${danCourse.dan}-${song.title}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} />
       ))}
     </div>
   </section>
@@ -371,7 +367,7 @@ const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
   </div>
 );
 
-function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) {
+function MainPage({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) {
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
     if (activeDan === 'All') return courses;
@@ -401,7 +397,6 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
                 <DanSection 
                   key={course.dan} 
                   danCourse={course} 
-                  targetBPM={targetBPM}
                   playMode={playMode}
                   setSelectedGame={setSelectedGame}
                 />
@@ -418,13 +413,11 @@ function MainPage({ targetBPM, setTargetBPM, playMode, setPlayMode, activeDan, s
 }
 
 function AppRoutes({
-  targetBPM, setTargetBPM,
   playMode, setPlayMode,
   activeDan, setActiveDan,
   selectedGame, setSelectedGame,
   selectedSong, setSelectedSong,
-  smData,
-  apiKey, setApiKey
+  smData
 }) {
   const location = useLocation();
 
@@ -458,20 +451,17 @@ function AppRoutes({
 
   return (
     <Routes>
-      <Route path="/dan" element={<MainPage targetBPM={targetBPM} setTargetBPM={setTargetBPM} playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
-      <Route path="/multiplier" element={<Multiplier targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
-      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
-      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} targetBPM={targetBPM} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} apiKey={apiKey} setApiKey={setApiKey} />} />
-      <Route path="/settings" element={<Settings apiKey={apiKey} setApiKey={setApiKey} targetBPM={targetBPM} setTargetBPM={setTargetBPM} />} />
+      <Route path="/dan" element={<MainPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+      <Route path="/multiplier" element={<Multiplier />} />
+      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
+      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
+      <Route path="/settings" element={<Settings />} />
     </Routes>
   );
 }
 
 function App() {
-  const [targetBPM, setTargetBPM] = useState(() => {
-    const savedTargetBPM = localStorage.getItem('targetBPM');
-    return savedTargetBPM ? parseInt(savedTargetBPM, 10) : 300;
-  });
+  const { theme } = useContext(SettingsContext);
   const [selectedGame, setSelectedGame] = useState('all');
   const [playMode, setPlayMode] = useState(() => {
     return localStorage.getItem('playMode') || 'single';
@@ -481,7 +471,6 @@ function App() {
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [smData, setSmData] = useState({ games: [], files: [] });
-  const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -489,10 +478,6 @@ function App() {
         .then(data => setSmData(data))
         .catch(error => console.error('Error fetching sm-files.json:', error));
   }, []);
-  
-  useEffect(() => {
-    localStorage.setItem('targetBPM', targetBPM);
-  }, [targetBPM]);
 
   useEffect(() => {
     localStorage.setItem('playMode', playMode);
@@ -502,31 +487,36 @@ function App() {
     localStorage.setItem('activeDan', activeDan);
   }, [activeDan]);
 
-  useEffect(() => {
-    sessionStorage.setItem('geminiApiKey', apiKey);
-  }, [apiKey]);
-
   return (
-    <Router>
-      <div className="app-container">
-        <div className="app-content">
-          <Tabs />
-          <AppRoutes
-            targetBPM={targetBPM} setTargetBPM={setTargetBPM}
-            playMode={playMode} setPlayMode={setPlayMode}
-            activeDan={activeDan} setActiveDan={setActiveDan}
-            selectedGame={selectedGame} setSelectedGame={setSelectedGame}
-            selectedSong={selectedSong} setSelectedSong={setSelectedSong}
-            smData={smData}
-            apiKey={apiKey} setApiKey={setApiKey}
-          />
+    <div data-theme={theme}>
+      <Router>
+        <div className="app-container">
+          <div className="app-content">
+            <Tabs />
+            <AppRoutes
+              playMode={playMode} setPlayMode={setPlayMode}
+              activeDan={activeDan} setActiveDan={setActiveDan}
+              selectedGame={selectedGame} setSelectedGame={setSelectedGame}
+              selectedSong={selectedSong} setSelectedSong={setSelectedSong}
+              smData={smData}
+            />
+          </div>
+          <footer className="footer">
+              <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+          </footer>
         </div>
-        <footer className="footer">
-            <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> <br />Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
-        </footer>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 
-export default App;
+function AppWrapper() {
+  return (
+    <SettingsProvider>
+      <App />
+    </SettingsProvider>
+  );
+}
+
+export default AppWrapper;
+
