@@ -16,6 +16,11 @@ export const SettingsProvider = ({ children }) => {
         return saved || MULTIPLIER_MODES.ONLINE;
     });
 
+    const [theme, setTheme] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        return saved || 'dark';
+    });
+
     useEffect(() => {
         localStorage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -28,6 +33,11 @@ export const SettingsProvider = ({ children }) => {
         localStorage.setItem('multiplierMode', multiplierMode);
     }, [multiplierMode]);
 
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -38,6 +48,8 @@ export const SettingsProvider = ({ children }) => {
         multiplierMode,
         setMultiplierMode,
         multipliers,
+        theme,
+        setTheme,
     };
 
     return (

@@ -461,6 +461,7 @@ function AppRoutes({
 }
 
 function App() {
+  const { theme } = useContext(SettingsContext);
   const [selectedGame, setSelectedGame] = useState('all');
   const [playMode, setPlayMode] = useState(() => {
     return localStorage.getItem('playMode') || 'single';
@@ -487,7 +488,7 @@ function App() {
   }, [activeDan]);
 
   return (
-    <SettingsProvider>
+    <div data-theme={theme}>
       <Router>
         <div className="app-container">
           <div className="app-content">
@@ -501,13 +502,21 @@ function App() {
             />
           </div>
           <footer className="footer">
-              <p>Built by <a style={{ color: "white" }} href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a style={{ color: "white" }} href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+              <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
           </footer>
         </div>
       </Router>
+    </div>
+  );
+}
+
+function AppWrapper() {
+  return (
+    <SettingsProvider>
+      <App />
     </SettingsProvider>
   );
 }
 
-export default App;
+export default AppWrapper;
 

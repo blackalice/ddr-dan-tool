@@ -283,7 +283,7 @@ const getBpmRange = (bpm) => {
 };
 
 const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData }) => {
-    const { targetBPM, multipliers, apiKey } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, theme } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [chartData, setChartData] = useState(null);
@@ -514,24 +514,24 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
     }, [selectedSong]);
 
     const selectStyles = {
-        control: (styles) => ({ ...styles, backgroundColor: '#374151', border: '1px solid #4B5563', color: 'white', padding: '0.3rem', borderRadius: '0.5rem' }),
-        menu: (styles) => ({ ...styles, backgroundColor: '#1F2937' }),
+        control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
+        menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)' }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
-            backgroundColor: isSelected ? '#4A5563' : isFocused ? '#374151' : null,
-            color: 'white',
+            backgroundColor: isSelected ? 'var(--card-hover-bg-color)' : isFocused ? 'var(--card-bg-color)' : null,
+            color: 'var(--text-color)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }),
         singleValue: (styles) => ({ 
             ...styles, 
-            color: 'white',
+            color: 'var(--text-color)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }),
-        input: (styles) => ({ ...styles, color: 'white' }),
+        input: (styles) => ({ ...styles, color: 'var(--text-color)' }),
     };
 
     async function sendToGemini(imageDataUrl) {

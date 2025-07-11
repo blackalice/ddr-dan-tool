@@ -117,7 +117,8 @@
 
     .setting-text {
         padding-right: 0;
-        text-align: center;;
+        text-align: center;
+        width: 100%;
     }
 
     .setting-control {

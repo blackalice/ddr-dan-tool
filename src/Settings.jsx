@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
+import ThemeSwitcher from './components/ThemeSwitcher';
 import './Settings.css';
 
 const Settings = () => {
@@ -23,6 +24,7 @@ const Settings = () => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
+                    <ThemeSwitcher />
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>

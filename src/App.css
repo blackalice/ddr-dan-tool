@@ -1,6 +1,5 @@
 
-/* --- Global Styles & Resets --- */
-:root {
+html[data-theme='dark'] {
   --bg-color: #111827;
   --bg-color-light: #1F2937;
   --bg-color-dark: #2D3748;
@@ -20,6 +19,8 @@
   --pink-color: #F472B6;
   --blue-color: #60A5FA;
   --yellow-color: #FBBF24;
+  --button-icon: white;
+  --button-bg: #4B5563;
 
   --difficulty-beginner-color: #4A90E2;
   --difficulty-light-color: #F5A623;
@@ -35,6 +36,46 @@
   --button-down-color: #EF4444;
   --button-down-hover-color: #DC2626;
 }
+
+html[data-theme='light'] {
+  --bg-color: #FAFAFA;
+  --bg-color-light: #EAEAEB;
+  --bg-color-dark: #DCDDDE;
+  --card-bg-color: #FFFFFF;
+  --card-hover-bg-color: #F0F0F1;
+  --card-hover-bg-color-light: #EAEAEB;
+  --border-color: #D1D1D2;
+  --text-color: #383A42;
+  --text-color-light: #383A42;
+  --text-color-lighter: #383A42;
+  --text-color-lightest: #5C5E66;
+  --text-muted-color: #808289;
+  --accent-color: #4078F2;
+  --accent-color-light: #6995F5;
+  --cyan-color: #0184BC;
+  --green-color: #50A14F;
+  --pink-color: #A626A4;
+  --blue-color: #4078F2;
+  --yellow-color: #C18401;
+  --button-bg: #5C5E66;
+  --button-icon: white;
+
+  --difficulty-beginner-color: #4078F2;
+  --difficulty-light-color: #C18401;
+  --difficulty-standard-color: #E45649;
+  --difficulty-heavy-color: #50A14F;
+  --difficulty-challenge-color: #A626A4;
+  --difficulty-edit-color: #696C77;
+  --difficulty-single-color: #A626A4;
+  --difficulty-double-color: #4078F2;
+
+  --button-up-color: #50A14F;
+  --button-up-hover-color: #468C45;
+  --button-down-color: #E45649;
+  --button-down-hover-color: #C94D41;
+}
+
+/* --- Global Styles & Resets --- */
 html {
   overflow-y: scroll;
 }
@@ -350,20 +391,7 @@ body {
 
 .difficulty-single { background-color: var(--difficulty-single-color); }
 .difficulty-double { background-color: var(--difficulty-double-color); }
-a (max-width: 640px) {
-    .app-container {
-        padding: 0 0.25rem;
-    }
 
-    .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-    }
-    .play-mode-toggle {
-        display: flex;
-    }
-    .play-mode-toggle button {
-        flex-grow: 1;
-    }
+.footer-link {
+  color: var(--text-color);
 }

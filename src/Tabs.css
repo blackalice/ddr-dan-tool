@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1F2937;
+    background-color: var(--bg-color-light);
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin: 1rem 0;
