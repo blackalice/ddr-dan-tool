@@ -73,9 +73,9 @@ function AppRoutes({
             inputValue={inputValue}
             setInputValue={setInputValue}
           />
-          {simfileData && simfileData.availableTypes && simfileData.availableTypes.length > 0 ? <StepchartPage 
+          <StepchartPage 
             simfile={simfileData} 
-            currentType={currentChart ? currentChart.slug : simfileData.availableTypes[0].slug}
+            currentType={currentChart ? currentChart.slug : (simfileData?.availableTypes?.[0]?.slug)}
             setCurrentChart={setCurrentChart}
             selectedGame={selectedGame}
             setSelectedGame={setSelectedGame}
@@ -85,7 +85,7 @@ function AppRoutes({
             songOptions={songOptions}
             inputValue={inputValue}
             setInputValue={setInputValue}
-          /> : <div>Loading...</div>}
+          />
         </div>
       } />
     </Routes>

@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation } from 'react-router-dom';
 
-import { ImageFrame } from "./ImageFrame";
-import { Breadcrumbs } from "./Breadcrumbs";
-import { TitleDetailsTable, TitleDetailsRow } from "./TitleDetailsTable";
 import { ToggleBar } from "./ToggleBar";
-import { Banner } from "./Banner";
 import { StepchartSection } from "./StepchartSection";
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './DifficultyMeter';
-import SongPicker from './SongPicker';
 
 import styles from "./StepchartPage.module.css";
 import "../BPMTool.css";
@@ -41,18 +35,11 @@ export function StepchartPage({
   simfile,
   currentType: initialCurrentType,
   setCurrentChart,
-  selectedGame,
-  setSelectedGame,
-  selectedSong,
-  setSelectedSong,
-  smData,
-  songOptions,
-  inputValue,
-  setInputValue,
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
   const location = useLocation();
+  const isLoading = !simfile;
 
   useEffect(() => {
     setCurrentType(initialCurrentType);
@@ -65,57 +52,68 @@ export function StepchartPage({
     }
   }, [location.hash]);
 
-  const currentTypeMeta = simfile.availableTypes.find(
+  const displaySimfile = simfile || {
+    title: { titleName: 'Please select a song', translitTitleName: '' },
+    artist: '...',
+    mix: { mixName: '' },
+    displayBpm: 'N/A',
+    availableTypes: [],
+    charts: {}
+  };
+
+  const currentTypeMeta = displaySimfile.availableTypes.find(
     (at) => at.slug === currentType
   );
 
-  if (!currentTypeMeta) {
-    return <div>Chart not found</div>;
-  }
+  const chart = currentTypeMeta ? displaySimfile.charts[currentType] : null;
+  
+  const sectionGroups = useMemo(() => {
+    if (!chart) return [];
+    
+    const { arrows, freezes } = chart;
+    const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
+    const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
+    const totalSongHeight = Math.max(lastArrowOffset, lastFreezeOffset);
 
-  const chart = simfile.charts[currentType];
-  const { arrows, freezes } = chart;
+    const sections = [];
+    for (let i = 0; i < totalSongHeight; i += sectionSizesInMeasures[speedmod]) {
+      sections.push(
+        <StepchartSection
+          key={i}
+          chart={chart}
+          speedMod={speedmod}
+          startOffset={i}
+          endOffset={Math.min(totalSongHeight, i + sectionSizesInMeasures[speedmod])}
+          style={{ zIndex: Math.round(totalSongHeight) - i }}
+          headerId={HEADER_ID}
+        />
+      );
+    }
 
-  const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
-  const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
-  const totalSongHeight = Math.max(lastArrowOffset, lastFreezeOffset);
+    const groups = [];
+    const sectionsPerChunk = currentType.includes("single") ? 7 : 4;
+    while (sections.length) {
+      const sectionChunk = sections.splice(0, sectionsPerChunk);
+      groups.push(
+        <div
+          key={groups.length}
+          className={styles.stepchartSectionGroup}
+          style={{ zIndex: 99999 - groups.length }}
+        >
+          {sectionChunk}
+        </div>
+      );
+    }
+    return groups;
+  }, [chart, speedmod, currentType]);
 
-  const sections = [];
-  for (let i = 0; i < totalSongHeight; i += sectionSizesInMeasures[speedmod]) {
-    sections.push(
-      <StepchartSection
-        key={i}
-        chart={chart}
-        speedMod={speedmod}
-        startOffset={i}
-        endOffset={Math.min(totalSongHeight, i + sectionSizesInMeasures[speedmod])}
-        style={{ zIndex: Math.round(totalSongHeight) - i }}
-        headerId={HEADER_ID}
-      />
-    );
-  }
 
-  const sectionGroups = [];
-  const sectionsPerChunk = currentType.includes("single") ? 7 : 4;
-  while (sections.length) {
-    const sectionChunk = sections.splice(0, sectionsPerChunk);
-    sectionGroups.push(
-      <div
-        key={sectionGroups.length}
-        className={styles.stepchartSectionGroup}
-        style={{ zIndex: 99999 - sectionGroups.length }}
-      >
-        {sectionChunk}
-      </div>
-    );
-  }
-
-  const title = `${
-    simfile.title.translitTitleName || simfile.title.titleName
-  } - ${currentType.replace(/-/g, ", ")} (${currentTypeMeta.feet})`;
+  const title = currentTypeMeta ? `${
+    displaySimfile.title.translitTitleName || displaySimfile.title.titleName
+  } - ${currentType.replace(/-/g, ", ")} (${currentTypeMeta.feet})` : displaySimfile.title.titleName;
 
   const renderDifficulties = (playStyle) => {
-    const chartDifficulties = simfile.availableTypes.filter(t => t.mode === playStyle);
+    const chartDifficulties = displaySimfile.availableTypes.filter(t => t.mode === playStyle);
 
     return difficultyLevels.map(levelName => {
         const type = chartDifficulties.find(t => t.difficulty === levelName.toLowerCase());
@@ -126,11 +124,13 @@ export function StepchartPage({
                 level={type ? type.feet : 'X'} 
                 difficultyName={levelName} 
                 isMissing={!type}
-                isSelected={type?.slug === currentType}
+                isSelected={type && type.slug === currentType}
                 onClick={() => {
                   if (type) {
                     setCurrentType(type.slug);
-                    setCurrentChart(type);
+                    if (setCurrentChart) {
+                        setCurrentChart(type);
+                    }
                   }
                 }}
             />
@@ -141,17 +141,15 @@ export function StepchartPage({
   return (
     <div className={styles.rootPrint}>
       <div className="chart-section">
-        <div className="selection-container">
-        </div>
         <div className="song-info-bar">
             <div className="song-title-container">
                 <h2 className="song-title bpm-title-mobile">
                     <div className="title-content-wrapper">
-                        {simfile.mix.mixName && <span className="song-game-version">{simfile.mix.mixName}</span>}
+                        {displaySimfile.mix.mixName && <span className="song-game-version">{displaySimfile.mix.mixName}</span>}
                         <div className="title-artist-group">
-                            <span className="song-title-main">{simfile.title.titleName}</span>
+                            <span className="song-title-main">{displaySimfile.title.titleName}</span>
                             <span className="song-title-separator"> - </span>
-                            <span className="song-title-artist">{simfile.artist}</span>
+                            <span className="song-title-artist">{displaySimfile.artist}</span>
                         </div>
                     </div>
                 </h2>
@@ -166,7 +164,7 @@ export function StepchartPage({
                 <div className="grid-item grid-item-bpm">
                     <span className="bpm-label">BPM:</span>
                     <div className="bpm-value-container">
-                        <span className="bpm-value">{simfile.displayBpm}</span>
+                        <span className="bpm-value">{displaySimfile.displayBpm}</span>
                     </div>
                 </div>
                 <div className="grid-item grid-item-dp">
@@ -190,12 +188,20 @@ export function StepchartPage({
                 </div>
             </div>
         </div>
-        <div className={styles.printTitle}>
-          <div>
-            {simfile.mix.mixName}: {title}
-          </div>
-        </div>
-        {sectionGroups}
+        {simfile ? (
+            <>
+                <div className={styles.printTitle}>
+                  <div>
+                    {displaySimfile.mix.mixName}: {title}
+                  </div>
+                </div>
+                {sectionGroups}
+            </>
+        ) : (
+            <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
+                <p>{isLoading ? 'Loading chart...' : 'The step chart for the selected song will be displayed here.'}</p>
+            </div>
+        )}
       </div>
     </div>
   );
