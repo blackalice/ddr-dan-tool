@@ -24,8 +24,8 @@ const range = (start, end, step) => {
 export const MULTIPLIER_MODES = {
     MAX_SN: 'DDR MAX - Supernova',
     SN2: 'DDR Supernova 2',
-    X_A: 'DDR X - A (Offline)',
-    A_A3: 'DDR A - A3 (Online)',
+    X_A: 'DDR X - A3 (Offline)',
+    A_A3: 'DDR 2014 - A3 (Online)',
     WORLD: 'DDR World',
 };
 
