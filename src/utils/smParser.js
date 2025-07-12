@@ -123,11 +123,11 @@ function parseFreezes(lines, i, mode, difficulty, title) {
             continue;
           }
         }
-        open[d].endOffset = Number(curOffset.add(new Fraction(1).div(4)).n / curOffset.d);
-        freezes.push(open[d]);
-        open[d] = undefined;
+        open[d].endOffset = Number(curOffset.n / curOffset.d) + 0.25;
+          freezes.push(open[d]);
+          open[d] = undefined;
+        }
       }
-    }
     curOffset = curOffset.add(curMeasureFraction);
   }
   return freezes;
