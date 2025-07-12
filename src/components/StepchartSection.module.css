@@ -1,8 +1,18 @@
-.container-single {
+.section {
+    position: relative;
+}
+
+.container {
+    position: relative;
+    background-color: #f3f4f6; /* bg-gray-50 */
+    z-index: 10;
+}
+
+.containerSingle {
     width: calc(var(--arrow-size) * 4);
 }
 
-.container-double {
+.containerDouble {
     width: calc(var(--arrow-size) * 8);
 }
 
@@ -12,13 +22,23 @@
     position: absolute;
     top: 0;
     pointer-events: none;
+    height: 100%;
 }
 
 .bar {
-    border-bottom: 1px solid #d1d5db; /* border-gray-300 */
+    box-sizing: border-box;
 }
+
+.barMeasure {
+    border-bottom: 2px solid #818cf8; /* border-indigo-400 */
+}
+
+.barBeat {
+    border-bottom: 1px dashed #60a5fa; /* border-blue-500 */
+}
+
 .bar:nth-child(odd) {
-    background-color: #f3f4f6; /* bg-gray-50 */
+    background-color: #eef2ff; /* bg-indigo-50 */
 }
 
 .bar:last-of-type {
@@ -26,11 +46,11 @@
 }
 
 .bar:hover {
-    background-color: #d1d5db; /* sm:bg-gray-300 */
+    background-color: #c7d2fe; /* sm:bg-indigo-300 */
 }
 
 .bar:target, .targeted {
-    background-color: #9ca3af; /* bg-gray-400 */
+    background-color: #a5b4fc; /* bg-indigo-400 */
 }
 
 .selfLink {
@@ -63,14 +83,62 @@
     visibility: visible;
 }
 
+.freeze {
+    position: absolute;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bpmRange {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.bpmRangeBorder {
+    border-top: 1px solid;
+}
+
+.bpmRangeEven {
+    border-color: #60a5fa; /* border-blue-500 */
+}
+
+.bpmRangeOdd {
+    border-color: var(--color-difficult);
+}
+
+.bpmLabel {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    pointer-events: none;
+    left: -100px;
+    width: 100px;
+}
 
 .bpmLabelText {
     font-size: 0.675rem;
+    color: white;
+    padding: 0.125rem 0.25rem; /* p-0.5 */
+    border-top-left-radius: 0.5rem; /* rounded-l-lg */
+    border-bottom-left-radius: 0.5rem;
+}
+
+.bpmLabelEven {
+    background-color: #60a5fa; /* bg-blue-500 */
+}
+
+.bpmLabelOdd {
+    background-color: var(--color-difficult);
 }
 
 .stopSign {
     font-size: 1.5rem; /* text-2xl */
     right: -1.75rem; /* -right-7 */
+    color: #ef4444; /* text-red-600 */
+    position: absolute;
 }
 
 @media print {

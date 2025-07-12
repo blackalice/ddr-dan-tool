@@ -106,7 +106,6 @@ export function parseSm(sm) {
   }
 
   function parseBpms(bpmString, emptyOffsetInMeasures) {
-    // 0=79.3,4=80,33=79.8,36=100,68=120,100=137,103=143,106=139,108=140,130=141.5,132=160,164=182,166=181,168=180;
     const entries = bpmString.split(",");
 
     const bpms = entries.map((e, i, a) => {
@@ -186,8 +185,6 @@ export function parseSm(sm) {
           };
         } else if (cleanedLine[d] === "3") {
           if (!open[d]) {
-            // In some cases, a freeze may be properly closed with a 3, but the opening 2 was on the same line.
-            // We should still handle this case gracefully.
             if (line[d] !== '2') {
                  console.warn(
                     `${sc.title}, ${mode}, ${difficulty} -- error parsing freezes, needed to close a freeze that never opened. Line: ${line}`
@@ -210,21 +207,18 @@ export function parseSm(sm) {
   }
 
   function parseNotes(lines, i, bpmString) {
-    // move past #NOTES into the note metadata
     i++;
     const mode = lines[i++].replace("dance-", "").replace(":", "");
-    i++; // skip author for now
+    i++; 
     const difficulty =
       normalizedDifficultyMap[lines[i++].replace(":", "").toLowerCase()];
     const feet = Number(lines[i++].replace(":", ""));
-    i++; // skip groove meter data for now
+    i++; 
 
-    // skip couple, versus, etc for now
     if (mode !== "single" && mode !== "double") {
       return i + 1;
     }
 
-    // now i is pointing at the first measure
     let arrows = [];
 
     const { firstNonEmptyMeasureIndex, numMeasuresSkipped } =
@@ -233,15 +227,11 @@ export function parseSm(sm) {
 
     const firstMeasureIndex = i;
     let curOffset = new Fraction(0);
-    // in case the measure is size zero, fall back to dividing by one
-    // this is just being defensive, this would mean the stepfile has no notes in it
     let curMeasureFraction = new Fraction(1).div(
       getMeasureLength(lines, i) || 1
     );
 
     for (; i < lines.length && !concludesANoteTag(lines[i]); ++i) {
-      // for now, remove freeze ends as they are handled in parseFreezes
-      // TODO: deal with freezes here, no need to have two functions doing basically the same thing
       const line = trimNoteLine(lines[i], mode).replace(/3/g, "0");
 
       if (line.trim() === "") {
@@ -257,7 +247,7 @@ export function parseSm(sm) {
 
       if (!isRest(line)) {
         arrows.push({
-          beat: determineBeat(curOffset),
+          beat: determineBeat(new Fraction(curOffset)),
           offset: Number(curOffset.n / curOffset.d),
           direction: line,
         });

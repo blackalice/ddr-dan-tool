@@ -6,6 +6,7 @@ import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { StepchartPage } from './components/StepchartPage';
+import { parseSm } from './utils/smParser.js';
 import './App.css';
 import './Tabs.css';
 
@@ -27,7 +28,7 @@ const ddrDanData = {
       color: "#6fbe44",
       songs: [
         { title: "Electric Dance System Music", level: 10, bpm: "190", difficulty: "difficult" },
-        { title: "十二星座の聖域", level: 10, bpm: "164", difficulty: "difficult" },
+        { title: "十二���座の聖域", level: 10, bpm: "164", difficulty: "difficult" },
         { title: "Liberate", level: 10, bpm: "128", difficulty: "difficult" },
         { title: "Show Me Your Moves", level: 11, bpm: "155", difficulty: "expert" },
       ],
@@ -419,7 +420,7 @@ function AppRoutes({
   selectedGame, setSelectedGame,
   selectedSong, setSelectedSong,
   smData,
-  mockSimfile
+  simfileData
 }) {
   const location = useLocation();
 
@@ -458,7 +459,7 @@ function AppRoutes({
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/stepchart" element={<StepchartPage simfile={mockSimfile} currentType="single-expert" />} />
+      <Route path="/stepchart" element={simfileData ? <StepchartPage simfile={simfileData} currentType="single-challenge" /> : <div>Loading...</div>} />
     </Routes>
   );
 }
@@ -474,37 +475,30 @@ function App() {
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [smData, setSmData] = useState({ games: [], files: [] });
+  const [simfileData, setSimfileData] = useState(null);
 
-  const mockSimfile = {
-    title: {
-      titleName: "Sample Song",
-      translitTitleName: "Sample Song",
-      titleDir: "sample-song",
-      banner: null,
-    },
-    artist: "Sample Artist",
-    mix: {
-      mixName: "Sample Mix",
-      mixDir: "sample-mix",
-    },
-    availableTypes: [
-      { slug: 'single-expert', mode: 'single', difficulty: 'expert', feet: 10 },
-    ],
-    charts: {
-      'single-expert': {
-        arrows: [
-          { beat: 4, direction: '1000', offset: 0 },
-          { beat: 4, direction: '0100', offset: 0.25 },
-          { beat: 4, direction: '0010', offset: 0.5 },
-          { beat: 4, direction: '0001', offset: 0.75 },
-        ],
-        freezes: [],
-        bpm: [{ startOffset: 0, endOffset: null, bpm: 150 }],
-        stops: [],
-      },
-    },
-    displayBpm: "150",
-  };
+  useEffect(() => {
+    fetch('/sm/Supernova 2/TRIP MACHINE PhoeniX.sm')
+      .then(response => response.text())
+      .then(text => {
+        const parsed = parseSm(text, 'TRIP MACHINE PhoeniX');
+        const simfile = {
+          ...parsed,
+          title: {
+            titleName: parsed.title,
+            translitTitleName: parsed.titletranslit,
+            titleDir: 'TRIP MACHINE PhoeniX',
+            banner: parsed.banner,
+          },
+          mix: {
+            mixName: 'Supernova 2',
+            mixDir: 'Supernova 2',
+          },
+        };
+        setSimfileData(simfile);
+      })
+      .catch(error => console.error('Error fetching sm file:', error));
+  }, []);
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -533,7 +527,7 @@ function App() {
               selectedGame={selectedGame} setSelectedGame={setSelectedGame}
               selectedSong={selectedSong} setSelectedSong={setSelectedSong}
               smData={smData}
-              mockSimfile={mockSimfile}
+              simfileData={simfileData}
             />
           </div>
           <footer className="footer">

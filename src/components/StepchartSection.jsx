@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
@@ -60,15 +60,15 @@ function StepchartSection({
   const { arrows, freezes, bpm, stops } = chart;
 
   if (arrows.length === 0 && freezes.length === 0) {
-    return null; // Don't render anything if there are no notes in this section
+    return null;
   }
 
   const isSingle = arrows.length > 0 ? arrows[0].direction.length === 4 : freezes[0].direction < 4;
-  const singleDoubleClass = isSingle ? "single" : "double";
+  const singleDoubleClass = isSingle ? styles.containerSingle : styles.containerDouble;
 
   const barHeight = `var(--arrow-size) * ${speedMod}`;
-  const measureHeight = `${barHeight} * 4`;
-  const arrowAdjustment = `(${barHeight} - var(--arrow-size)) / 2`;
+  const measureHeight = `calc(${barHeight} * 4)`;
+  const arrowAdjustment = `calc((${barHeight} - var(--arrow-size)) / 2)`;
 
   const arrowImgs = [];
 
@@ -83,7 +83,7 @@ function StepchartSection({
       break;
     }
 
-    const isShockArrow = a.direction.indexOf("0") === -1;
+    const isShockArrow = a.direction.indexOf("M") !== -1;
     const isFreezeArrow = a.direction.indexOf("2") > -1;
 
     for (let i = 0; i < a.direction.length; ++i) {
@@ -92,11 +92,11 @@ function StepchartSection({
           <ArrowImg
             key={`Arrow-${ai}-${i}`}
             className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
+            position={i}
+            beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
             style={{
               top: `calc((${a.offset} - ${startOffset}) * ${measureHeight} + ${arrowAdjustment})`,
             }}
-            position={i}
-            beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
           />
         );
       }
@@ -107,15 +107,15 @@ function StepchartSection({
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
     const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
-    const height = `calc(${barHeight})`;
+    const height = barHeight;
 
     barDivs.push(
       <div
         key={id}
         id={id}
         className={clsx(styles.bar, {
-          "border-b-2 border-indigo-400": (i + 1) % 4 === 0,
-          "border-b border-blue-500 border-dashed": (i + 1) % 4 !== 0,
+          [styles.barMeasure]: (i + 1) % 4 === 0,
+          [styles.barBeat]: (i + 1) % 4 !== 0,
           [styles.targeted]: id === targetedBeat,
         })}
         style={{
@@ -145,23 +145,23 @@ function StepchartSection({
     const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
     const hasTail = f.endOffset <= endOffset;
 
-    const freezeOffset = `var(--arrow-size) / 2`;
+    const freezeOffset = `calc(var(--arrow-size) / 2)`;
 
     return (
       <div
         key={`${f.startOffset}-${f.direction}`}
-        className="absolute pointer-events-none overflow-hidden"
+        className={styles.freeze}
         style={{
-          top: `calc(${inRangeStartOffset - startOffset}  * ${measureHeight} ${
-            hasHead ? `+ ${freezeOffset} + ${arrowAdjustment}` : ""
+          top: `calc((${inRangeStartOffset - startOffset}) * ${measureHeight} + ${
+            hasHead ? `${freezeOffset} + ${arrowAdjustment}` : "0px"
           })`,
           left: `calc(${f.direction} * var(--arrow-size))`,
           width: "var(--arrow-size)",
-          height: `calc(${
+          height: `calc((${
             inRangeEndOffset - inRangeStartOffset
-          } * ${measureHeight} ${
-            hasTail && hasHead ? `- ${arrowAdjustment}` : ""
-          } ${hasHead ? `- ${freezeOffset} * ${speedMod}` : ""})`,
+          }) * ${measureHeight} - ${
+            hasTail && hasHead ? arrowAdjustment : "0px"
+          } - ${hasHead ? `(${freezeOffset} * ${speedMod})` : "0px"})`,
         }}
       >
         <FreezeBody includeTail={hasTail} direction={f.direction} />
@@ -198,10 +198,10 @@ function StepchartSection({
       bpmRangeDivs.push(
         <div
           key={b.startOffset}
-          className={clsx("absolute left-0 w-full pointer-events-none", {
-            "border-t": startsInThisSection,
-            "border-blue-500": even,
-            "border-difficult": !even,
+          className={clsx(styles.bpmRange, {
+            [styles.bpmRangeBorder]: startsInThisSection,
+            [styles.bpmRangeEven]: even,
+            [styles.bpmRangeOdd]: !even,
           })}
           style={{
             backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
@@ -220,22 +220,19 @@ function StepchartSection({
         bpmLabelDivs.push(
           <div
             key={b.startOffset}
-            className="absolute flex flex-row justify-end pointer-events-none"
+            className={styles.bpmLabel}
             style={{
               top: `calc(${
                 inRangeStartOffset - startOffset
               } * ${measureHeight})`,
-              left: -100,
-              width: 100,
             }}
           >
             <div
               className={clsx(
                 styles.bpmLabelText,
-                "text-white p-0.5 rounded-l-lg",
                 {
-                  "bg-blue-500": even,
-                  "bg-difficult": !even,
+                  [styles.bpmLabelEven]: even,
+                  [styles.bpmLabelOdd]: !even,
                 }
               )}
             >
@@ -255,7 +252,7 @@ function StepchartSection({
     return (
       <GiStopSign
         key={s.offset}
-        className={clsx(styles.stopSign, "text-red-600 absolute")}
+        className={clsx(styles.stopSign)}
         style={{
           top: `calc(${s.offset - startOffset} * ${measureHeight})`,
         }}
@@ -278,16 +275,13 @@ function StepchartSection({
     <>
       {noscriptStyle}
       <div
-        className={clsx(className, "relative", {
-          "border-b-4 border-yellow-400": process.env.NODE_ENV !== "production",
-        })}
+        className={clsx(className, styles.section)}
         style={style}
       >
         <div
           className={clsx(
             styles.container,
-            styles[`container-${singleDoubleClass}`],
-            "relative bg-indigo-100 z-10"
+            singleDoubleClass
           )}
           style={
             {

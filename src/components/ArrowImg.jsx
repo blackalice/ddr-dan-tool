@@ -38,7 +38,6 @@ function ArrowImg({ className, style, position, beat }) {
         className,
         styles.arrowSvg,
         arrowClasses[position],
-        styles[`beat${beat}`],
         "pointer-events-none"
       )}
       style={style}
