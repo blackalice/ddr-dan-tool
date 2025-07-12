@@ -118,14 +118,6 @@ function StepchartPage({ simfile, currentType }) {
           styles.desktopHeader
         )}
       >
-        <div className={styles.desktopBannerContainer}>
-          <div className={styles.desktopBanner}>
-            <Banner
-              className={styles.desktopBannerImage}
-              title={simfile.title}
-            />
-          </div>
-        </div>
         <div className={styles.detailsContainer}>
           <TitleDetailsTable>
             {simfile.title.translitTitleName && (

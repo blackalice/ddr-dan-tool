@@ -91,7 +91,6 @@ function StepchartSection({
         arrowImgs.push(
           <ArrowImg
             key={`Arrow-${ai}-${i}`}
-            className={clsx(styles.arrow, "absolute text-xs ease-in-out")}
             position={i}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
             style={{

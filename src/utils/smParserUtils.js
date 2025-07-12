@@ -12,8 +12,6 @@ export function determineBeat(offset) {
   const match = beats.find((b) => offset.mod(b).n === 0);
 
   if (!match) {
-    // didn't find anything? then it's a weirdo like a 5th note or 32nd note, they get colored
-    // the same as 6ths
     return 6;
   }
 
@@ -34,7 +32,6 @@ export const normalizedDifficultyMap = {
   hard: "expert",
   challenge: "challenge",
   smaniac: "challenge",
-  // TODO: filter edits out altogether
   edit: "edit",
 };
 
@@ -48,7 +45,6 @@ export function mergeSimilarBpmRanges(bpm) {
     const next = a[i + 1];
 
     if (prev && similarBpm(prev, b)) {
-      // this bpm was merged on the last iteration, so skip it
       return building;
     }
 
