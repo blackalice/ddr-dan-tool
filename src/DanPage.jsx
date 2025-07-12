@@ -205,7 +205,7 @@ const ddrDanData = {
         { title: "New Era", level: 17, bpm: "98-346", difficulty: "expert" },
         { title: "Fascination ～eternal love mix～", level: 17, bpm: "100-400", difficulty: "challenge" },
         { title: "RISING FIRE HAWK", level: 17, bpm: "180", difficulty: "challenge" },
-        { title: "PARANOiA Rebirth", level: 18, bpm: "180-360", difficulty: "expert" },
+        { title: "PARANOiA Revolution", level: 18, bpm: "180-360", difficulty: "expert" },
       ],
     },
     {

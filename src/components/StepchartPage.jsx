@@ -37,9 +37,10 @@ function scrollTargetBeatJustUnderHeader(beatId, headerId) {
   }, 10);
 }
 
-export function StepchartPage({ 
-  simfile, 
+export function StepchartPage({
+  simfile,
   currentType: initialCurrentType,
+  setCurrentChart,
   selectedGame,
   setSelectedGame,
   selectedSong,
@@ -126,7 +127,12 @@ export function StepchartPage({
                 difficultyName={levelName} 
                 isMissing={!type}
                 isSelected={type?.slug === currentType}
-                onClick={type ? () => setCurrentType(type.slug) : undefined}
+                onClick={() => {
+                  if (type) {
+                    setCurrentType(type.slug);
+                    setCurrentChart(type);
+                  }
+                }}
             />
         );
     });

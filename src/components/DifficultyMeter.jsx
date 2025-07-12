@@ -1,6 +1,7 @@
 import React from 'react';
+import './DifficultyMeter.css';
 
-const difficultyMap = {
+export const difficultyMap = {
     'Beginner': { color: '#4DB6AC' },
     'Basic': { color: '#FDD835' },
     'Difficult': { color: '#F44336' },
@@ -8,21 +9,23 @@ const difficultyMap = {
     'Challenge': { color: '#BA68C8' },
 };
 
-const difficultyNameMapping = {
-    'Beginner': ['Beginner'],
-    'Basic': ['Basic', 'Easy', 'Light'],
-    'Difficult': ['Difficult', 'Medium', 'Standard'],
-    'Expert': ['Expert', 'Hard', 'Heavy'],
-    'Challenge': ['Challenge', 'Oni']
+export const difficultyLevels = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
+
+export const difficultyNameMapping = {
+    'Beginner': ['beginner'],
+    'Basic': ['basic', 'easy', 'light'],
+    'Difficult': ['difficult', 'medium', 'standard'],
+    'Expert': ['expert', 'hard', 'heavy'],
+    'Challenge': ['challenge', 'oni'],
 };
 
-const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isSelected }) => {
+export const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isSelected }) => {
     const style = {
         backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
         color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? '#111827' : 'white',
-        cursor: onClick ? 'pointer' : 'default',
-        outline: isSelected ? '2px solid var(--accent-color)' : 'none',
-        outlineOffset: '2px',
+        cursor: isMissing ? 'default' : 'pointer',
+        border: isSelected ? '2px solid white' : '2px solid transparent',
+        boxSizing: 'border-box',
     };
     return (
         <div className="difficulty-meter" style={style} onClick={onClick}>
@@ -30,7 +33,3 @@ const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isSelected
         </div>
     );
 };
-
-export { DifficultyMeter, difficultyLevels, difficultyNameMapping };
-
-const difficultyLevels = Object.keys(difficultyMap);

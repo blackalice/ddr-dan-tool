@@ -6,135 +6,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './components/DifficultyMeter';
+import Camera from './Camera';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const difficultyMap = {
-    'Beginner': { color: '#4DB6AC' },
-    'Basic': { color: '#FDD835' },
-    'Difficult': { color: '#F44336' },
-    'Expert': { color: '#8BC34A' },
-    'Challenge': { color: '#BA68C8' },
-};
-
-const difficultyLevels = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
-
-const difficultyNameMapping = {
-    'Beginner': ['Beginner'],
-    'Basic': ['Basic', 'Easy', 'Light'],
-    'Difficult': ['Difficult', 'Medium', 'Standard'],
-    'Expert': ['Expert', 'Hard', 'Heavy'],
-    'Challenge': ['Challenge', 'Oni']
-};
-
-const DifficultyMeter = ({ level, difficultyName, isMissing }) => {
-    const style = {
-        backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
-        color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? '#111827' : 'white',
-    };
-    return (
-        <div className="difficulty-meter" style={style}>
-            {level}
-        </div>
-    );
-};
-
-const parseSmFile = (fileContent, requestedDifficulty) => {
-    const getTagValue = (content, tagName) => {
-        const regex = new RegExp(`^#${tagName}:([^;]+);`, 'im');
-        const match = content.match(regex);
-        return match ? match[1].trim() : '';
-    };
-
-    const charts = [];
-    const difficulties = { singles: {}, doubles: {} };
-
-    const title = getTagValue(fileContent, 'TITLE');
-    const titleTranslit = getTagValue(fileContent, 'TITLETRANSLIT');
-    const artist = getTagValue(fileContent, 'ARTIST');
-    const globalBpmString = getTagValue(fileContent, 'BPMS');
-
-    if (fileContent.includes('#NOTEDATA:;')) { // SSC file parsing
-        const noteDataBlocks = fileContent.split(/#NOTEDATA:;/i).slice(1);
-        noteDataBlocks.forEach(block => {
-            const difficulty = getTagValue(block, 'DIFFICULTY');
-            if (!difficulty) return;
-
-            const type = getTagValue(block, 'STEPSTYPE').replace('dance-', '');
-            const meter = getTagValue(block, 'METER');
-            const chartBpmString = getTagValue(block, 'BPMS');
-            const notesMatch = block.match(/#NOTES:\s*([\s\S]*?);/i);
-            const notes = notesMatch ? notesMatch[1].trim() : '';
-
-            charts.push({
-                type,
-                difficulty,
-                meter,
-                bpmString: chartBpmString || globalBpmString,
-                notes,
-            });
-        });
-    } else { // SM file parsing
-        const noteBlocks = fileContent.split(/#NOTES:/i).slice(1);
-        noteBlocks.forEach(block => {
-            const details = block.trim().split(':');
-            if (details.length >= 5) {
-                const type = details[0].trim().replace('dance-', '');
-                const difficulty = details[2].trim();
-                const meter = details[3].trim();
-                const notes = details.slice(4).join(':').split(';')[0].trim();
-
-                charts.push({
-                    type,
-                    difficulty,
-                    meter,
-                    bpmString: globalBpmString,
-                    notes,
-                });
-            }
-        });
-    }
-
-    charts.forEach(c => {
-        if (c.type === 'single') {
-            difficulties.singles[c.difficulty] = c.meter;
-        } else if (c.type === 'double') {
-            difficulties.doubles[c.difficulty] = c.meter;
-        }
-    });
-
-    let targetChart;
-    if (requestedDifficulty) {
-        targetChart = charts.find(c => c.difficulty.toLowerCase() === requestedDifficulty.toLowerCase());
-    }
-    
-    if (!targetChart) {
-        const defaultDifficultyOrder = ['Challenge', 'Expert', 'Hard', 'Difficult', 'Medium', 'Basic', 'Easy', 'Beginner'];
-        for (const d of defaultDifficultyOrder) {
-            targetChart = charts.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-            if (targetChart) break;
-        }
-    }
-    
-    if (!targetChart && charts.length > 0) {
-        targetChart = charts[0];
-    }
-
-    return {
-        title,
-        titleTranslit,
-        artist,
-        bpmString: targetChart ? targetChart.bpmString : globalBpmString,
-        notes: targetChart ? targetChart.notes : '',
-        difficulties,
-    };
-};
-
 const getLastBeat = (notes) => {
     if (!notes) return 0;
     const measuresList = notes.split(',');
-
     let lastNoteMeasureIndex = -1;
     for (let j = measuresList.length - 1; j >= 0; j--) {
         if (/[1234MKLF]/i.test(measuresList[j])) {
@@ -142,12 +22,10 @@ const getLastBeat = (notes) => {
             break;
         }
     }
-
     if (lastNoteMeasureIndex !== -1) {
         const lastMeasureStr = measuresList[lastNoteMeasureIndex];
         const lines = lastMeasureStr.trim().split('\n').filter(l => l.trim() !== '');
         if (lines.length === 0) return 0;
-
         let lastNoteLineIndex = -1;
         for (let k = lines.length - 1; k >= 0; k--) {
             if (/[1234MKLF]/i.test(lines[k])) {
@@ -155,94 +33,63 @@ const getLastBeat = (notes) => {
                 break;
             }
         }
-
         if (lastNoteLineIndex !== -1) {
             const beatsInMeasure = 4;
-            const beatOfLastNote = (lastNoteMeasureIndex * beatsInMeasure) + (lastNoteLineIndex / lines.length) * beatsInMeasure;
-            return beatOfLastNote;
+            return (lastNoteMeasureIndex * beatsInMeasure) + (lastNoteLineIndex / lines.length) * beatsInMeasure;
         }
     }
     return 0;
 };
 
-const parseBPMs = (bpmString) => {
-    if (!bpmString) return [];
-    return bpmString.split(',')
-        .filter(entry => entry.includes('='))
-        .map(entry => {
-            const [beat, bpm] = entry.split('=');
-            return { beat: parseFloat(beat), bpm: parseFloat(bpm) };
-        })
-        .sort((a, b) => a.beat - b.beat);
-};
-
 const calculateChartData = (bpmChanges, songLastBeat) => {
-    if (bpmChanges.length === 0) return [];
-
+    if (!bpmChanges || bpmChanges.length === 0) return [];
     const dataPoints = [];
     let currentTime = 0;
     let lastBeat = 0;
     let currentBpm = bpmChanges[0].bpm;
-
     dataPoints.push({ x: 0, y: currentBpm });
-    lastBeat = bpmChanges[0].beat; // Should be 0
-
+    lastBeat = bpmChanges[0].startOffset * 4; // Convert offset to beats
     for (let i = 1; i < bpmChanges.length; i++) {
         const change = bpmChanges[i];
-        const beatsElapsed = change.beat - lastBeat;
-        
-        if(currentBpm > 0) {
-            const segmentDuration = (beatsElapsed / currentBpm) * 60;
-            currentTime += segmentDuration;
+        const beatsElapsed = (change.startOffset * 4) - lastBeat;
+        if (currentBpm > 0) {
+            currentTime += (beatsElapsed / currentBpm) * 60;
         }
-
         dataPoints.push({ x: currentTime, y: currentBpm });
         currentBpm = change.bpm;
         dataPoints.push({ x: currentTime, y: currentBpm });
-        
-        lastBeat = change.beat;
+        lastBeat = change.startOffset * 4;
     }
-
     const beatsRemaining = songLastBeat - lastBeat;
     if (currentBpm > 0 && beatsRemaining > 0) {
-        const finalSegmentDuration = (beatsRemaining / currentBpm) * 60;
-        currentTime += finalSegmentDuration;
+        currentTime += (beatsRemaining / currentBpm) * 60;
     }
-
     dataPoints.push({ x: currentTime, y: currentBpm });
-
     return dataPoints;
 };
 
 const calculateCoreBpm = (bpmChanges, songLastBeat) => {
-    if (bpmChanges.length === 0) return null;
+    if (!bpmChanges || bpmChanges.length === 0) return null;
     if (bpmChanges.length === 1) return bpmChanges[0].bpm;
-
     const bpmDurations = new Map();
     let lastBeat = 0;
     let currentBpm = bpmChanges[0].bpm;
-
     for (let i = 1; i < bpmChanges.length; i++) {
         const change = bpmChanges[i];
-        const beatsElapsed = change.beat - lastBeat;
-        
+        const beatsElapsed = (change.startOffset * 4) - lastBeat;
         if (currentBpm > 0) {
             const duration = (beatsElapsed / currentBpm) * 60;
             bpmDurations.set(currentBpm, (bpmDurations.get(currentBpm) || 0) + duration);
         }
-        
         currentBpm = change.bpm;
-        lastBeat = change.beat;
+        lastBeat = change.startOffset * 4;
     }
-
     const beatsRemaining = songLastBeat - lastBeat;
     if (currentBpm > 0 && beatsRemaining > 0) {
         const finalSegmentDuration = (beatsRemaining / currentBpm) * 60;
         bpmDurations.set(currentBpm, (bpmDurations.get(currentBpm) || 0) + finalSegmentDuration);
     }
-
     if (bpmDurations.size === 0) return null;
-
     let maxDuration = 0;
     let coreBpm = null;
     for (const [bpm, duration] of bpmDurations.entries()) {
@@ -251,50 +98,38 @@ const calculateCoreBpm = (bpmChanges, songLastBeat) => {
             coreBpm = bpm;
         }
     }
-
     return coreBpm;
 };
 
 const MenuList = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
     const initialOffset = options.indexOf(value) * 35;
-
     return (
-        <List
-            height={maxHeight}
-            itemCount={children.length}
-            itemSize={35}
-            initialScrollOffset={initialOffset}
-        >
+        <List height={maxHeight} itemCount={children.length} itemSize={35} initialScrollOffset={initialOffset}>
             {({ index, style }) => <div style={style}>{children[index]}</div>}
         </List>
     );
 };
 
-import Camera from './Camera';
-
 const getBpmRange = (bpm) => {
-  if (typeof bpm !== 'string') return { min: 0, max: 0 };
-  const parts = bpm.split('-').map(Number);
-  if (parts.length === 1) {
-    return { min: parts[0], max: parts[0] };
-  }
-  return { min: Math.min(...parts), max: Math.max(...parts) };
+    if (typeof bpm !== 'string') return { min: 0, max: 0 };
+    const parts = bpm.split('-').map(Number);
+    if (parts.length === 1) return { min: parts[0], max: parts[0] };
+    return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData }) => {
-    const { targetBPM, multipliers, apiKey, theme } = useContext(SettingsContext);
+const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData, simfileData, currentChart, setCurrentChart }) => {
+    const { targetBPM, multipliers, apiKey } = useContext(SettingsContext);
     const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
-    const [chartData, setChartData] = useState(null);
-    const [songMeta, setSongMeta] = useState({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    const isLoading = !simfileData;
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -305,128 +140,155 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
     const handleSongSelection = (song) => {
         setSelectedSong(song);
         if (song) {
-            navigate(`/bpm?song=${encodeURIComponent(song.label)}`);
+            navigate(`/bpm?song=${encodeURIComponent(song.title)}`);
         } else {
             navigate('/bpm');
         }
     };
 
+    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData } = useMemo(() => {
+        if (!simfileData) {
+            return {
+                songTitle: 'Please select a song',
+                artist: '...',
+                gameVersion: '',
+                difficulties: { singles: {}, doubles: {} },
+                bpmDisplay: 'N/A',
+                coreBpm: null,
+                chartData: null,
+            };
+        }
+
+        const diffs = { singles: {}, doubles: {} };
+        simfileData.availableTypes.forEach(chart => {
+            if (chart.mode === 'single') {
+                diffs.singles[chart.difficulty] = chart.feet;
+            } else if (chart.mode === 'double') {
+                diffs.doubles[chart.difficulty] = chart.feet;
+            }
+        });
+
+        let display = 'N/A';
+        let core = null;
+        let data = null;
+
+        if (currentChart && simfileData.charts) {
+            const chartDetails = simfileData.charts[currentChart.slug];
+            if (chartDetails) {
+                const bpmChanges = chartDetails.bpm; // Use the pre-parsed BPM data
+                const lastBeat = getLastBeat(chartDetails.notes);
+                
+                if (bpmChanges && bpmChanges.length > 0) {
+                    const bpms = bpmChanges.map(b => b.bpm).filter(bpm => bpm > 0);
+                    if (bpms.length === 1) {
+                        display = String(Math.round(bpms[0]));
+                    } else if (bpms.length > 1) {
+                        const minBpm = Math.round(Math.min(...bpms));
+                        const maxBpm = Math.round(Math.max(...bpms));
+                        display = minBpm === maxBpm ? String(minBpm) : `${minBpm}-${maxBpm}`;
+                    }
+                }
+                
+                core = calculateCoreBpm(bpmChanges, lastBeat);
+                data = calculateChartData(bpmChanges, lastBeat);
+            }
+        }
+
+        return {
+            songTitle: simfileData.title.titleName,
+            artist: simfileData.artist,
+            gameVersion: simfileData.mix.mixName,
+            difficulties: diffs,
+            bpmDisplay: display,
+            coreBpm: core,
+            chartData: data,
+        };
+    }, [simfileData, currentChart]);
+
     const calculation = useMemo(() => {
-        if (!targetBPM || !songMeta.bpmDisplay || songMeta.bpmDisplay === 'N/A') return null;
-
+        if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;
         const numericTarget = Number(targetBPM) || 0;
-        const bpmRange = getBpmRange(songMeta.bpmDisplay);
-        
+        const bpmRange = getBpmRange(bpmDisplay);
         if (bpmRange.max === 0) return null;
-
         const idealMultiplier = numericTarget / bpmRange.max;
-        
-        const closestMultiplier = multipliers.reduce((prev, curr) => 
-          Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
-        );
-
+        const closestMultiplier = multipliers.reduce((prev, curr) => Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev);
         const closestIndex = multipliers.indexOf(closestMultiplier);
         const primarySpeed = (bpmRange.max * closestMultiplier);
-
         let alternativeMultiplier = null;
         if (primarySpeed > numericTarget) {
             if (closestIndex > 0) alternativeMultiplier = multipliers[closestIndex - 1];
         } else {
             if (closestIndex < multipliers.length - 1) alternativeMultiplier = multipliers[closestIndex + 1];
         }
-
         const result = {
-            primary: {
-                modifier: closestMultiplier,
-                minSpeed: Math.round(bpmRange.min * closestMultiplier),
-                maxSpeed: Math.round(primarySpeed),
-                isRange: bpmRange.min !== bpmRange.max
-            },
+            primary: { modifier: closestMultiplier, minSpeed: Math.round(bpmRange.min * closestMultiplier), maxSpeed: Math.round(primarySpeed), isRange: bpmRange.min !== bpmRange.max },
             alternative: null
         };
-
         if (alternativeMultiplier) {
             const altMaxSpeed = (bpmRange.max * alternativeMultiplier);
-            result.alternative = {
-                modifier: alternativeMultiplier,
-                minSpeed: Math.round(bpmRange.min * alternativeMultiplier),
-                maxSpeed: Math.round(altMaxSpeed),
-                isRange: bpmRange.min !== bpmRange.max,
-                direction: altMaxSpeed > primarySpeed ? 'up' : 'down'
-            };
+            result.alternative = { modifier: alternativeMultiplier, minSpeed: Math.round(bpmRange.min * alternativeMultiplier), maxSpeed: Math.round(altMaxSpeed), isRange: bpmRange.min !== bpmRange.max, direction: altMaxSpeed > primarySpeed ? 'up' : 'down' };
         }
-        
         if (result.alternative && result.primary.maxSpeed === result.alternative.maxSpeed) {
             result.alternative = null;
         }
-
         return result;
-    }, [targetBPM, songMeta.bpmDisplay]);
+    }, [targetBPM, bpmDisplay, multipliers]);
 
     const coreCalculation = useMemo(() => {
-        if (!targetBPM || !songMeta.coreBpm) return null;
-
+        if (!targetBPM || !coreBpm) return null;
         const numericTarget = Number(targetBPM) || 0;
-        const idealMultiplier = numericTarget / songMeta.coreBpm;
-
-        const closestMultiplier = multipliers.reduce((prev, curr) => 
-          Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
-        );
-
+        const idealMultiplier = numericTarget / coreBpm;
+        const closestMultiplier = multipliers.reduce((prev, curr) => Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev);
         const closestIndex = multipliers.indexOf(closestMultiplier);
-        const primarySpeed = (songMeta.coreBpm * closestMultiplier);
-
+        const primarySpeed = (coreBpm * closestMultiplier);
         let alternativeMultiplier = null;
         if (primarySpeed > numericTarget) {
             if (closestIndex > 0) alternativeMultiplier = multipliers[closestIndex - 1];
         } else {
             if (closestIndex < multipliers.length - 1) alternativeMultiplier = multipliers[closestIndex + 1];
         }
-
         const result = {
-            primary: {
-                modifier: closestMultiplier,
-                speed: Math.round(primarySpeed),
-            },
+            primary: { modifier: closestMultiplier, speed: Math.round(primarySpeed) },
             alternative: null
         };
-
         if (alternativeMultiplier) {
-            const altSpeed = (songMeta.coreBpm * alternativeMultiplier);
-            result.alternative = {
-                modifier: alternativeMultiplier,
-                speed: Math.round(altSpeed),
-                direction: altSpeed > primarySpeed ? 'up' : 'down'
-            };
+            const altSpeed = (coreBpm * alternativeMultiplier);
+            result.alternative = { modifier: alternativeMultiplier, speed: Math.round(altSpeed), direction: altSpeed > primarySpeed ? 'up' : 'down' };
         }
-        
         if (result.alternative && result.primary.speed === result.alternative.speed) {
             result.alternative = null;
         }
-
         return result;
-    }, [targetBPM, songMeta.coreBpm]);
+    }, [targetBPM, coreBpm, multipliers]);
 
-    const handleCapture = (imageDataUrl) => {
-        if (!apiKey) {
-            navigate('/settings');
-            return;
-        }
-        sendToGemini(imageDataUrl);
-    };
-
-    const renderDifficulties = (difficulties, playStyle) => {
+    const renderDifficulties = (playStyle) => {
+        const difficultySet = playStyle === 'sp' ? difficulties.singles : difficulties.doubles;
+        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === (playStyle === 'sp' ? 'single' : 'double')) : [];
         return difficultyLevels.map(levelName => {
             let level = null;
-            
+            let difficulty = null;
+            let chartType = null;
             for (const name of difficultyNameMapping[levelName]) {
-                if (difficulties[name]) {
-                    level = difficulties[name];
+                if (difficultySet[name]) {
+                    level = difficultySet[name];
+                    difficulty = name;
+                    if (simfileData) {
+                        chartType = chartDifficulties.find(t => t.difficulty === name);
+                    }
                     break;
                 }
             }
-    
-            return <DifficultyMeter key={`${playStyle}-${levelName}`} level={level || 'X'} difficultyName={levelName} isMissing={!level} />;
+            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === (playStyle === 'sp' ? 'single' : 'double');
+            return (
+                <DifficultyMeter
+                    key={`${playStyle}-${levelName}`}
+                    level={level || 'X'}
+                    difficultyName={levelName}
+                    isMissing={!level}
+                    onClick={() => chartType && setCurrentChart(chartType)}
+                    isSelected={isSelected}
+                />
+            );
         });
     };
 
@@ -435,88 +297,14 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         if (selectedGame !== 'all') {
             filteredFiles = smData.files.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
-        
-        const options = filteredFiles.map(file => {
-            const pathParts = file.path.split('?difficulty=');
-            const difficulty = pathParts.length > 1 ? pathParts[1] : null;
-            const title = difficulty ? `${file.title} (${difficulty})` : file.title;
-            return {
-                value: file.path,
-                label: title,
-                title: file.title,
-                titleTranslit: file.titleTranslit
-            }
-        });
-
+        const options = filteredFiles.map(file => ({
+            value: file.path,
+            label: file.title,
+            title: file.title,
+            titleTranslit: file.titleTranslit
+        }));
         setSongOptions(options);
     }, [selectedGame, smData]);
-
-    useEffect(() => {
-        if (selectedSong) {
-            setIsLoading(true);
-            setChartData(null);
-            setSongMeta({ title: 'Loading...', artist: 'Please wait...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
-
-            const pathParts = selectedSong.value.split('?difficulty=');
-            const filePath = pathParts[0];
-            const difficulty = pathParts.length > 1 ? pathParts[1] : null;
-
-            const gamePathParts = filePath.split('/');
-            const gameVersion = gamePathParts.length > 2 ? gamePathParts[1] : 'N/A';
-
-            fetch(encodeURI(filePath))
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok.');
-                    return response.text()
-                })
-                .then(content => {
-                    const metadata = parseSmFile(content, difficulty);
-                    const lastBeat = getLastBeat(metadata.notes);
-                    
-                    const bpmChanges = parseBPMs(metadata.bpmString);
-                    let bpmDisplay;
-                    if (bpmChanges.length === 0) {
-                        bpmDisplay = 'N/A';
-                    } else {
-                        const bpms = bpmChanges.map(b => b.bpm).filter(bpm => bpm > 0);
-                        if (bpms.length === 0) {
-                            bpmDisplay = 'N/A';
-                        } else if (bpms.length === 1) {
-                            bpmDisplay = String(Math.round(bpms[0]));
-                        } else {
-                            const minBpm = Math.round(Math.min(...bpms));
-                            const maxBpm = Math.round(Math.max(...bpms));
-                            bpmDisplay = minBpm === maxBpm ? String(minBpm) : `${minBpm}-${maxBpm}`;
-                        }
-                    }
-
-                    const coreBpm = calculateCoreBpm(bpmChanges, lastBeat);
-
-                    setSongMeta({ 
-                        title: difficulty ? `${metadata.title} (${difficulty})` : metadata.title, 
-                        artist: metadata.artist, 
-                        difficulties: metadata.difficulties,
-                        bpmDisplay: bpmDisplay,
-                        coreBpm: coreBpm,
-                        game: gameVersion
-                    });
-
-                    const data = calculateChartData(bpmChanges, lastBeat);
-                    setChartData(data);
-                })
-                .catch(error => {
-                    console.error("Error fetching song data:", error);
-                    setSongMeta({ title: 'Error loading song', artist: 'Please try again.', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        } else {
-            setIsLoading(false);
-            setChartData(null);
-            setSongMeta({ title: 'Please select a song', artist: '...', difficulties: { singles: {}, doubles: {} }, bpmDisplay: 'N/A', coreBpm: null, game: '' });
-        }
-    }, [selectedSong]);
 
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
@@ -529,13 +317,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
         }),
-        singleValue: (styles) => ({ 
-            ...styles, 
-            color: 'var(--text-color)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-        }),
+        singleValue: (styles) => ({ ...styles, color: 'var(--text-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }),
         input: (styles) => ({ ...styles, color: 'var(--text-color)' }),
     };
 
@@ -544,32 +326,14 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
         const prompt = "From the attached image of a rhythm game screen, identify the song title. Return only the song title and nothing else. If the title is not visible, return 'Unknown'.";
-        
-        const image = {
-            inlineData: {
-              data: imageDataUrl.split(',')[1],
-              mimeType: "image/jpeg"
-            },
-        };
-
+        const image = { inlineData: { data: imageDataUrl.split(',')[1], mimeType: "image/jpeg" } };
         try {
             const result = await model.generateContent([prompt, image]);
             const response = await result.response;
             const text = response.text();
             setInputValue(text);
-
-            const allSongOptions = smData.files.map(file => ({
-                value: file.path,
-                label: file.title,
-                title: file.title,
-                titleTranslit: file.titleTranslit
-            }));
-
-            const matchedSong = allSongOptions.find(option =>
-                option.title.toLowerCase() === text.toLowerCase() ||
-                (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase())
-            );
-
+            const allSongOptions = smData.files.map(file => ({ value: file.path, label: file.title, title: file.title, titleTranslit: file.titleTranslit }));
+            const matchedSong = allSongOptions.find(option => option.title.toLowerCase() === text.toLowerCase() || (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase()));
             if (matchedSong) {
                 setSelectedGame('all');
                 setSelectedSong(matchedSong);
@@ -586,19 +350,9 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         <div className="app-container">
             <div className="selection-container">
                 <div className="controls-container">
-                    <select 
-                        className="game-select"
-                        value={selectedGame} 
-                        onChange={(e) => {
-                            setSelectedGame(e.target.value);
-                            setSelectedSong(null);
-                            setChartData(null);
-                        }}
-                    >
+                    <select className="game-select" value={selectedGame} onChange={(e) => { setSelectedGame(e.target.value); setSelectedSong(null); }}>
                         <option value="all">All Games</option>
-                        {smData.games.map(game => (
-                            <option key={game} value={game}>{game}</option>
-                        ))}
+                        {smData.games.map(game => (<option key={game} value={game}>{game}</option>))}
                     </select>
                     <div className="song-search-row">
                         <div className="song-select-container">
@@ -617,23 +371,11 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                                     const { label, data } = option;
                                     const { title, titleTranslit } = data;
                                     const input = rawInput.toLowerCase();
-                                    
-                                    // The `label` for the option already includes the difficulty, so we can just use that.
-                                    // e.g., "My Song (Hard)"
-                                    const searchLabel = label.toLowerCase();
-                                    
-                                    // We also want to be able to search by the original title and transliterated title
-                                    // without the difficulty.
-                                    const searchTitle = title.toLowerCase();
-                                    const searchTitleTranslit = titleTranslit ? titleTranslit.toLowerCase() : '';
-
-                                    return searchLabel.includes(input) || 
-                                           searchTitle.includes(input) || 
-                                           (searchTitleTranslit && searchTitleTranslit.includes(input));
+                                    return label.toLowerCase().includes(input) || (titleTranslit && titleTranslit.toLowerCase().includes(input));
                                 }}
                             />
                         </div>
-                        {apiKey && <Camera onCapture={handleCapture} isProcessing={isProcessing} />}
+                        {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                     </div>
                 </div>
             </div>
@@ -643,11 +385,11 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                     <div className="song-title-container">
                         <h2 className="song-title bpm-title-mobile">
                             <div className="title-content-wrapper">
-                                {songMeta.game && <span className="song-game-version">{songMeta.game}</span>}
+                                {gameVersion && <span className="song-game-version">{gameVersion}</span>}
                                 <div className="title-artist-group">
-                                    <span className="song-title-main">{songMeta.title}</span>
+                                    <span className="song-title-main">{songTitle}</span>
                                     <span className="song-title-separator"> - </span>
-                                    <span className="song-title-artist">{songMeta.artist}</span>
+                                    <span className="song-title-artist">{artist}</span>
                                 </div>
                             </div>
                             <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -660,27 +402,24 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                             <div className="grid-item grid-item-sp">
                                 <span className="play-style">SP</span>
                                 <div className="difficulty-meters-container">
-                                    {renderDifficulties(songMeta.difficulties.singles, 'sp')}
+                                    {renderDifficulties('sp')}
                                 </div>
                             </div>
                             <div className="grid-item grid-item-bpm">
                                 <span className="bpm-label">BPM:</span>
                                 <div className="bpm-value-container">
-                                    <span className="bpm-value">{songMeta.bpmDisplay}</span>
+                                    <span className="bpm-value">{bpmDisplay}</span>
                                     {calculation && (
                                         <div className="song-calculation">
                                             <span className="song-speed">
-                                              {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
+                                                {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
                                             </span>
                                             <span className="song-separator">@</span>
                                             <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
                                         </div>
                                     )}
                                     {calculation && calculation.alternative && (
-                                        <button 
-                                            className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                                            onClick={() => setShowAltBpm(!showAltBpm)}
-                                        >
+                                        <button className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltBpm(!showAltBpm)}>
                                             <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                         </button>
                                     )}
@@ -689,27 +428,24 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                             <div className="grid-item grid-item-dp">
                                 <span className="play-style">DP</span>
                                 <div className="difficulty-meters-container">
-                                    {renderDifficulties(songMeta.difficulties.doubles, 'dp')}
+                                    {renderDifficulties('dp')}
                                 </div>
                             </div>
                             <div className="grid-item grid-item-core">
                                 <span className="core-bpm-label">CORE:</span>
                                 <div className="core-bpm-value-container">
-                                    <span className="core-bpm-value">{songMeta.coreBpm ? songMeta.coreBpm.toFixed(0) : 'N/A'}</span>
+                                    <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                                     {coreCalculation && (
-                                         <div className="song-calculation">
+                                        <div className="song-calculation">
                                             <span className="song-speed">
-                                              {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
+                                                {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
                                             </span>
                                             <span className="song-separator">@</span>
                                             <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
                                         </div>
                                     )}
                                     {coreCalculation && coreCalculation.alternative && (
-                                        <button 
-                                            className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                                            onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
-                                        >
+                                        <button className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}>
                                             <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                         </button>
                                     )}
@@ -741,20 +477,8 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                                 responsive: true,
                                 maintainAspectRatio: false,
                                 scales: {
-                                    x: {
-                                        type: 'linear',
-                                        title: { display: false, text: 'Time (seconds)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                                        ticks: { color: '#9CA3AF' },
-                                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                                        min: 0,
-                                        max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0
-                                    },
-                                    y: {
-                                        title: { display: false, text: 'BPM (Beats Per Minute)', color: '#9CA3AF', font: { size: 14, weight: '500' } },
-                                        ticks: { color: '#9CA3AF', stepSize: 10 },
-                                        grid: { color: 'rgba(255, 255, 255,.1)' },
-                                        min: 0
-                                    }
+                                    x: { type: 'linear', title: { display: false }, ticks: { color: '#9CA3AF' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, min: 0, max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0 },
+                                    y: { title: { display: false }, ticks: { color: '#9CA3AF', stepSize: 10 }, grid: { color: 'rgba(255, 255, 255,.1)' }, min: 0 }
                                 },
                                 plugins: {
                                     legend: { display: false },
@@ -768,11 +492,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                                         }
                                     }
                                 },
-                                interaction: {
-                                  mode: 'nearest',
-                                  axis: 'x',
-                                  intersect: false
-                                }
+                                interaction: { mode: 'nearest', axis: 'x', intersect: false }
                             }}
                         />
                     ) : (

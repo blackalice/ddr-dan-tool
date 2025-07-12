@@ -1,0 +1,11 @@
+.difficulty-meter {
+    padding: 0.3rem 0.5rem;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.375rem;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 1rem;
+}

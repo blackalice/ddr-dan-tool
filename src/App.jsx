@@ -22,6 +22,7 @@ function AppRoutes({
   songOptions,
   inputValue,
   setInputValue,
+  currentChart, setCurrentChart,
 }) {
   const location = useLocation();
 
@@ -57,8 +58,8 @@ function AppRoutes({
     <Routes>
       <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier />} />
-      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} />} />
-      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} />} />
+      <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />
+      <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/stepchart" element={
         <div>
@@ -74,7 +75,8 @@ function AppRoutes({
           />
           {simfileData && simfileData.availableTypes && simfileData.availableTypes.length > 0 ? <StepchartPage 
             simfile={simfileData} 
-            currentType={simfileData.availableTypes[0].slug}
+            currentType={currentChart ? currentChart.slug : simfileData.availableTypes[0].slug}
+            setCurrentChart={setCurrentChart}
             selectedGame={selectedGame}
             setSelectedGame={setSelectedGame}
             selectedSong={selectedSong}
@@ -104,6 +106,7 @@ function App() {
   const [simfileData, setSimfileData] = useState(null);
   const [songOptions, setSongOptions] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [currentChart, setCurrentChart] = useState(null);
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -131,8 +134,8 @@ function App() {
   useEffect(() => {
     if (selectedSong) {
       setSimfileData(null);
-      const pathParts = selectedSong.value.split('?difficulty=');
-      const filePath = pathParts[0];
+      setCurrentChart(null);
+      const filePath = selectedSong.value;
 
       fetch(encodeURI(filePath))
         .then(response => response.text())
@@ -154,8 +157,24 @@ function App() {
             },
           };
           setSimfileData(simfile);
+
+          if (parsed.availableTypes && parsed.availableTypes.length > 0) {
+            const defaultDifficultyOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+            let defaultChart = null;
+            for (const d of defaultDifficultyOrder) {
+                defaultChart = parsed.availableTypes.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+                if (defaultChart) break;
+            }
+            if (!defaultChart) {
+                defaultChart = parsed.availableTypes[0];
+            }
+            setCurrentChart(defaultChart);
+          }
         })
         .catch(error => console.error('Error fetching sm file:', error));
+    } else {
+        setSimfileData(null);
+        setCurrentChart(null);
     }
   }, [selectedSong]);
 
@@ -183,6 +202,8 @@ function App() {
               songOptions={songOptions}
               inputValue={inputValue}
               setInputValue={setInputValue}
+              currentChart={currentChart}
+              setCurrentChart={setCurrentChart}
             />
           </div>
           <footer className="footer">

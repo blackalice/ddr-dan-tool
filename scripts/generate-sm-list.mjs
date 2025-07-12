@@ -19,18 +19,13 @@ function findSongFiles(dir, baseDir) {
         } else if (path.extname(fullPath) === '.sm' || path.extname(fullPath) === '.ssc') {
             const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
             const content = fs.readFileSync(fullPath, 'utf-8');
-            
-            if (path.extname(fullPath) === '.ssc') {
-                files.push(...parseSscFile(content, relativePath));
-            } else {
-                const title = content.match(/#TITLE:([^;]+);/)?.[1] || 'Unknown Title';
-                const titleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1] || '';
-                files.push({
-                    path: relativePath,
-                    title: title.trim(),
-                    titleTranslit: titleTranslit.trim()
-                });
-            }
+            const title = content.match(/#TITLE:([^;]+);/)?.[1] || 'Unknown Title';
+            const titleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1] || '';
+            files.push({
+                path: relativePath,
+                title: title.trim(),
+                titleTranslit: titleTranslit.trim()
+            });
         }
     }
     return files;
@@ -83,42 +78,8 @@ try {
         // Create an empty file to prevent build failures
         fs.writeFileSync(outputFile, JSON.stringify({ games: [], files: [] }, null, 2));
     }
-    // Don't exit with an error if the folder doesn't exist, just log it.
+    // Don't exit with an error if the folder doesn't exist, just log it. 
     // process.exit(1); 
-}
-
-function parseSscFile(content, relativePath) {
-    const songs = [];
-    const globalTitle = content.match(/#TITLE:([^;]+);/)?.[1]?.trim() || 'Unknown Title';
-    const globalTitleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1]?.trim() || '';
-
-    const charts = content.split(/#NOTEDATA:;/g);
-    charts.shift(); // Remove content before the first #NOTEDATA:
-
-    for (const chartInfo of charts) {
-        const difficultyMatch = chartInfo.match(/#DIFFICULTY:([^;]+);/);
-        const stepstypeMatch = chartInfo.match(/#STEPSTYPE:([^;]+);/);
-        const meterMatch = chartInfo.match(/#METER:([^;]+);/);
-
-        if (difficultyMatch && stepstypeMatch && meterMatch) {
-            const difficulty = difficultyMatch[1].trim();
-            const stepstype = stepstypeMatch[1].trim();
-            const meter = meterMatch[1].trim();
-
-            // Skip if any of these are empty
-            if (!difficulty || !stepstype || !meter) {
-                continue;
-            }
-            
-            songs.push({
-                path: `${relativePath}?difficulty=${difficulty}`,
-                title: `${globalTitle}`,
-                titleTranslit: `${globalTitleTranslit}`
-            });
-        }
-    }
-
-    return songs;
 }
 
 
