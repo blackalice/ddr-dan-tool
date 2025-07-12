@@ -118,6 +118,60 @@ html[data-theme='light'] {
   --color-link: var(--color-challenge);
 }
 
+html[data-theme='cg'] {
+  --bg-color: #111111;
+  --bg-color-dark: #333333;
+  --bg-color-light: #222222;
+  --bg-color-lighter: #333333;
+  --text-color: #ffffff;
+  --text-color-light: #ff8800;
+  --text-color-lighter: #ff8800;
+  --text-color-lightest: hsl(0, 0%, 100%);
+  --primary-color: #ff8800;
+  --secondary-color: #3f51b5;
+  --border-color: #444446;
+  --card-bg-color: #2c2c2e;
+  --card-hover-bg-color: #3a3a3c;
+  --text-muted-color: #8e8e93;
+  --accent-color: #ff8800;
+  --cyan-color: #ff8800;
+  --green-color: white;
+  --pink-color: #ff8800;;
+  --blue-color: #ff8800;
+  --yellow-color: white;
+  --button-bg: #3a3a3c;
+  --button-icon: #ffffff;
+
+  --difficulty-beginner-color: #00bcd4;
+  --difficulty-light-color: #ff9800;
+  --difficulty-standard-color: #f44336;
+  --difficulty-heavy-color: #8bc34a;
+  --difficulty-challenge-color: #9c27b0;
+  --difficulty-edit-color: #795548;
+  --difficulty-single-color: #e91e63;
+  --difficulty-double-color: #3f51b5;
+
+  --button-up-color: #4caf50;
+  --button-up-hover-color: #388e3c;
+  --button-down-color: #f44336;
+  --button-down-hover-color: #d32f2f;
+
+  --color-focal-50: #2c2c2e;
+  --color-focal-100: #3a3a3c;
+  --color-focal-200: #444446;
+  --color-focal-300: #6c6c70;
+  --color-focal-400: #8e8e93;
+  --color-focal-500: #b0b0b0;
+  --color-focal-600: #d0d0d0;
+  --color-focal-700: #ffffff;
+  --color-focal: var(--color-focal-500);
+
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+
+  --color-link: var(--primary-color);
+}
+
 /* --- Global Styles & Resets --- */
 html {
   overflow-y: scroll;

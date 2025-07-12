@@ -228,6 +228,7 @@
     grid-template-rows: repeat(2, auto);
     gap: 1rem;
     justify-items: start;
+    min-height:120px;
 }
 
 .grid-item {
