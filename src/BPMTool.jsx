@@ -110,7 +110,7 @@ const parseSmFile = (fileContent, requestedDifficulty) => {
     }
     
     if (!targetChart) {
-        const defaultDifficultyOrder = ['Expert', 'Hard', 'Difficult', 'Medium', 'Basic', 'Easy', 'Beginner'];
+        const defaultDifficultyOrder = ['Challenge', 'Expert', 'Hard', 'Difficult', 'Medium', 'Basic', 'Easy', 'Beginner'];
         for (const d of defaultDifficultyOrder) {
             targetChart = charts.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
             if (targetChart) break;
@@ -305,7 +305,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
     const handleSongSelection = (song) => {
         setSelectedSong(song);
         if (song) {
-            navigate(`/bpm?song=${encodeURIComponent(song.title)}`);
+            navigate(`/bpm?song=${encodeURIComponent(song.label)}`);
         } else {
             navigate('/bpm');
         }
@@ -436,12 +436,17 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
             filteredFiles = smData.files.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
         
-        const options = filteredFiles.map(file => ({
-            value: file.path,
-            label: file.title,
-            title: file.title,
-            titleTranslit: file.titleTranslit
-        }));
+        const options = filteredFiles.map(file => {
+            const pathParts = file.path.split('?difficulty=');
+            const difficulty = pathParts.length > 1 ? pathParts[1] : null;
+            const title = difficulty ? `${file.title} (${difficulty})` : file.title;
+            return {
+                value: file.path,
+                label: title,
+                title: file.title,
+                titleTranslit: file.titleTranslit
+            }
+        });
 
         setSongOptions(options);
     }, [selectedGame, smData]);
@@ -488,7 +493,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                     const coreBpm = calculateCoreBpm(bpmChanges, lastBeat);
 
                     setSongMeta({ 
-                        title: metadata.title, 
+                        title: difficulty ? `${metadata.title} (${difficulty})` : metadata.title, 
                         artist: metadata.artist, 
                         difficulties: metadata.difficulties,
                         bpmDisplay: bpmDisplay,
@@ -612,9 +617,19 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                                     const { label, data } = option;
                                     const { title, titleTranslit } = data;
                                     const input = rawInput.toLowerCase();
-                                    return label.toLowerCase().includes(input) || 
-                                           title.toLowerCase().includes(input) || 
-                                           (titleTranslit && titleTranslit.toLowerCase().includes(input));
+                                    
+                                    // The `label` for the option already includes the difficulty, so we can just use that.
+                                    // e.g., "My Song (Hard)"
+                                    const searchLabel = label.toLowerCase();
+                                    
+                                    // We also want to be able to search by the original title and transliterated title
+                                    // without the difficulty.
+                                    const searchTitle = title.toLowerCase();
+                                    const searchTitleTranslit = titleTranslit ? titleTranslit.toLowerCase() : '';
+
+                                    return searchLabel.includes(input) || 
+                                           searchTitle.includes(input) || 
+                                           (searchTitleTranslit && searchTitleTranslit.includes(input));
                                 }}
                             />
                         </div>

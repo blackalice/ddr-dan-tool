@@ -4308,14 +4308,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/A3/Finale.ssc",
+      "path": "sm/A3/Finale.ssc?difficulty=Beginner",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Easy",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Medium",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Hard",
       "title": "Finale",
       "titleTranslit": ""
     },
     {
       "path": "sm/A3/Finale.ssc?difficulty=Challenge",
-      "title": "Finale (Challenge)",
-      "titleTranslit": " (Challenge)"
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Easy",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Medium",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Hard",
+      "title": "Finale",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Finale.ssc?difficulty=Challenge",
+      "title": "Finale",
+      "titleTranslit": ""
     },
     {
       "path": "sm/A3/Finally Dive.sm",
@@ -4458,14 +4493,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc",
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Beginner",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Easy",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Medium",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Hard",
       "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
       "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
     },
     {
       "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Challenge",
-      "title": "患部で止まってすぐ溶ける～狂気の優曇華院 (Challenge)",
-      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein (Challenge)"
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Easy",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Medium",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Hard",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
+    },
+    {
+      "path": "sm/A3/Kanbu de tomatte sugu tokeru ~ kyouki no Udongein.ssc?difficulty=Challenge",
+      "title": "患部で止まってすぐ溶ける～狂気の優曇華院",
+      "titleTranslit": "Kanbu de tomatte sugu tokeru ~ kyouki no Udongein"
     },
     {
       "path": "sm/A3/Kill The Night.sm",
@@ -4513,14 +4583,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/A3/Let's DANCE aROUND!!.ssc",
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Beginner",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Easy",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Medium",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Hard",
       "title": "Let's DANCE aROUND!!",
       "titleTranslit": ""
     },
     {
       "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Challenge",
-      "title": "Let's DANCE aROUND!! (Challenge)",
-      "titleTranslit": " (Challenge)"
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Easy",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Medium",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Hard",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/A3/Let's DANCE aROUND!!.ssc?difficulty=Challenge",
+      "title": "Let's DANCE aROUND!!",
+      "titleTranslit": ""
     },
     {
       "path": "sm/A3/Like A Star.sm",
@@ -4528,14 +4633,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc",
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Beginner",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Easy",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Medium",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Hard",
       "title": "リリーゼと炎龍レーヴァテイン",
       "titleTranslit": "Lilieze to enryuu Laevateinn"
     },
     {
       "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Challenge",
-      "title": "リリーゼと炎龍レーヴァテイン (Challenge)",
-      "titleTranslit": "Lilieze to enryuu Laevateinn (Challenge)"
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Easy",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Medium",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Hard",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
+    },
+    {
+      "path": "sm/A3/Lilieze to enryuu Laevateinn.ssc?difficulty=Challenge",
+      "title": "リリーゼと炎龍レーヴァテイン",
+      "titleTranslit": "Lilieze to enryuu Laevateinn"
     },
     {
       "path": "sm/A3/little steps.sm",
@@ -6548,34 +6688,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Dopamine (STARDOM Remix).ssc",
+      "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Beginner",
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
+    },
+    {
+      "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Easy",
       "title": "ドーパミン (STARDOM Remix)",
       "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Medium",
-      "title": "ドーパミン (STARDOM Remix) (Medium)",
-      "titleTranslit": "Dopamine (STARDOM Remix) (Medium)"
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Hard",
-      "title": "ドーパミン (STARDOM Remix) (Hard)",
-      "titleTranslit": "Dopamine (STARDOM Remix) (Hard)"
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Challenge",
-      "title": "ドーパミン (STARDOM Remix) (Challenge)",
-      "titleTranslit": "Dopamine (STARDOM Remix) (Challenge)"
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
+    },
+    {
+      "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Easy",
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Medium",
-      "title": "ドーパミン (STARDOM Remix) (Medium)",
-      "titleTranslit": "Dopamine (STARDOM Remix) (Medium)"
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Hard",
-      "title": "ドーパミン (STARDOM Remix) (Hard)",
-      "titleTranslit": "Dopamine (STARDOM Remix) (Hard)"
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
+    },
+    {
+      "path": "sm/World/Dopamine (STARDOM Remix).ssc?difficulty=Challenge",
+      "title": "ドーパミン (STARDOM Remix)",
+      "titleTranslit": "Dopamine (STARDOM Remix)"
     },
     {
       "path": "sm/World/Douwa kairou.sm",
@@ -6613,24 +6768,39 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Florence.ssc",
+      "path": "sm/World/Florence.ssc?difficulty=Beginner",
+      "title": "Florence",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Florence.ssc?difficulty=Easy",
       "title": "Florence",
       "titleTranslit": ""
     },
     {
       "path": "sm/World/Florence.ssc?difficulty=Medium",
-      "title": "Florence (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Florence",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Florence.ssc?difficulty=Hard",
-      "title": "Florence (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Florence",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Florence.ssc?difficulty=Easy",
+      "title": "Florence",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Florence.ssc?difficulty=Medium",
-      "title": "Florence (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Florence",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Florence.ssc?difficulty=Hard",
+      "title": "Florence",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/fluctus.sm",
@@ -6828,34 +6998,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Monsters Den.ssc",
+      "path": "sm/World/Monsters Den.ssc?difficulty=Beginner",
+      "title": "Monsters Den",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Monsters Den.ssc?difficulty=Easy",
       "title": "Monsters Den",
       "titleTranslit": ""
     },
     {
       "path": "sm/World/Monsters Den.ssc?difficulty=Medium",
-      "title": "Monsters Den (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Monsters Den",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Monsters Den.ssc?difficulty=Hard",
-      "title": "Monsters Den (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Monsters Den",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Monsters Den.ssc?difficulty=Challenge",
-      "title": "Monsters Den (Challenge)",
-      "titleTranslit": " (Challenge)"
+      "title": "Monsters Den",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Monsters Den.ssc?difficulty=Easy",
+      "title": "Monsters Den",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Monsters Den.ssc?difficulty=Medium",
-      "title": "Monsters Den (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Monsters Den",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Monsters Den.ssc?difficulty=Hard",
-      "title": "Monsters Den (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Monsters Den",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Monsters Den.ssc?difficulty=Challenge",
+      "title": "Monsters Den",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Move On.sm",
@@ -6938,14 +7123,39 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Rabbit hole.ssc",
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Beginner",
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
+    },
+    {
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Easy",
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
+    },
+    {
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Medium",
       "title": "ラビットホール",
       "titleTranslit": "Rabbit hole"
     },
     {
       "path": "sm/World/Rabbit hole.ssc?difficulty=Hard",
-      "title": "ラビットホール (Hard)",
-      "titleTranslit": "Rabbit hole (Hard)"
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
+    },
+    {
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Easy",
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
+    },
+    {
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Medium",
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
+    },
+    {
+      "path": "sm/World/Rabbit hole.ssc?difficulty=Hard",
+      "title": "ラビットホール",
+      "titleTranslit": "Rabbit hole"
     },
     {
       "path": "sm/World/Red. by Full Metal Jacket.sm",
@@ -7018,14 +7228,49 @@
       "titleTranslit": "Show"
     },
     {
-      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc",
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Beginner",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Easy",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Medium",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Hard",
       "title": "粛聖!! ロリ神レクイエム☆",
       "titleTranslit": "Shukusei!! Loli-kami requiem"
     },
     {
       "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Challenge",
-      "title": "粛聖!! ロリ神レクイエム☆ (Challenge)",
-      "titleTranslit": "Shukusei!! Loli-kami requiem (Challenge)"
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Easy",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Medium",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Hard",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
+    },
+    {
+      "path": "sm/World/Shukusei!! Loli-kami requiem.ssc?difficulty=Challenge",
+      "title": "粛聖!! ロリ神レクイエム☆",
+      "titleTranslit": "Shukusei!! Loli-kami requiem"
     },
     {
       "path": "sm/World/Sign wa B -New Arrange Ver.-.sm",
@@ -7038,64 +7283,94 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Stand Alone Beat Masta.ssc",
+      "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Beginner",
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Easy",
       "title": "Stand Alone Beat Masta",
       "titleTranslit": ""
     },
     {
       "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Medium",
-      "title": "Stand Alone Beat Masta (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Hard",
-      "title": "Stand Alone Beat Masta (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Challenge",
-      "title": "Stand Alone Beat Masta (Challenge)",
-      "titleTranslit": " (Challenge)"
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Easy",
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Medium",
-      "title": "Stand Alone Beat Masta (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Hard",
-      "title": "Stand Alone Beat Masta (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
     },
     {
-      "path": "sm/World/Steps for Victory.ssc",
+      "path": "sm/World/Stand Alone Beat Masta.ssc?difficulty=Challenge",
+      "title": "Stand Alone Beat Masta",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Steps for Victory.ssc?difficulty=Beginner",
+      "title": "Steps for Victory",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Steps for Victory.ssc?difficulty=Easy",
       "title": "Steps for Victory",
       "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps for Victory.ssc?difficulty=Medium",
-      "title": "Steps for Victory (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Steps for Victory",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps for Victory.ssc?difficulty=Hard",
-      "title": "Steps for Victory (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Steps for Victory",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps for Victory.ssc?difficulty=Challenge",
-      "title": "Steps for Victory (Challenge)",
-      "titleTranslit": " (Challenge)"
+      "title": "Steps for Victory",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Steps for Victory.ssc?difficulty=Easy",
+      "title": "Steps for Victory",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps for Victory.ssc?difficulty=Medium",
-      "title": "Steps for Victory (Medium)",
-      "titleTranslit": " (Medium)"
+      "title": "Steps for Victory",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps for Victory.ssc?difficulty=Hard",
-      "title": "Steps for Victory (Hard)",
-      "titleTranslit": " (Hard)"
+      "title": "Steps for Victory",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/World/Steps for Victory.ssc?difficulty=Challenge",
+      "title": "Steps for Victory",
+      "titleTranslit": ""
     },
     {
       "path": "sm/World/Steps to the Star.sm",
@@ -7198,34 +7473,49 @@
       "titleTranslit": ""
     },
     {
-      "path": "sm/World/Yuusha.ssc",
+      "path": "sm/World/Yuusha.ssc?difficulty=Beginner",
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
+    },
+    {
+      "path": "sm/World/Yuusha.ssc?difficulty=Easy",
       "title": "勇者",
       "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Yuusha.ssc?difficulty=Medium",
-      "title": "勇者 (Medium)",
-      "titleTranslit": "Yuusha (Medium)"
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Yuusha.ssc?difficulty=Hard",
-      "title": "勇者 (Hard)",
-      "titleTranslit": "Yuusha (Hard)"
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Yuusha.ssc?difficulty=Challenge",
-      "title": "勇者 (Challenge)",
-      "titleTranslit": "Yuusha (Challenge)"
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
+    },
+    {
+      "path": "sm/World/Yuusha.ssc?difficulty=Easy",
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Yuusha.ssc?difficulty=Medium",
-      "title": "勇者 (Medium)",
-      "titleTranslit": "Yuusha (Medium)"
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Yuusha.ssc?difficulty=Hard",
-      "title": "勇者 (Hard)",
-      "titleTranslit": "Yuusha (Hard)"
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
+    },
+    {
+      "path": "sm/World/Yuusha.ssc?difficulty=Challenge",
+      "title": "勇者",
+      "titleTranslit": "Yuusha"
     },
     {
       "path": "sm/World/Zanzou ni tsunagareta tsuioku no HIDEAWAY.sm",

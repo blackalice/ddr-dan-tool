@@ -72,7 +72,7 @@ function AppRoutes({
             inputValue={inputValue}
             setInputValue={setInputValue}
           />
-          {simfileData ? <StepchartPage 
+          {simfileData && simfileData.availableTypes && simfileData.availableTypes.length > 0 ? <StepchartPage 
             simfile={simfileData} 
             currentType={simfileData.availableTypes[0].slug}
             selectedGame={selectedGame}

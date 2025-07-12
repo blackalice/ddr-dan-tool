@@ -92,31 +92,28 @@ function parseSscFile(content, relativePath) {
     const globalTitle = content.match(/#TITLE:([^;]+);/)?.[1]?.trim() || 'Unknown Title';
     const globalTitleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1]?.trim() || '';
 
-    // Add the main song by default
-    songs.push({
-        path: relativePath,
-        title: globalTitle,
-        titleTranslit: globalTitleTranslit
-    });
-
     const charts = content.split(/#NOTEDATA:;/g);
-    const chartInfos = charts.slice(0, -1); // Last element is after the last NOTEDATA
-    chartInfos.shift(); // The part of the file before the first NOTEDATA
+    charts.shift(); // Remove content before the first #NOTEDATA:
 
-    let currentDifficulty = 'Beginner'; // Default difficulty
-    for (const chartInfo of chartInfos) {
+    for (const chartInfo of charts) {
         const difficultyMatch = chartInfo.match(/#DIFFICULTY:([^;]+);/);
-        if (difficultyMatch) {
-            currentDifficulty = difficultyMatch[1].trim();
-        }
+        const stepstypeMatch = chartInfo.match(/#STEPSTYPE:([^;]+);/);
+        const meterMatch = chartInfo.match(/#METER:([^;]+);/);
 
-        const bpmsMatch = chartInfo.match(/#BPMS:([^;]+);/);
-        if (bpmsMatch) {
-            // This chart has its own BPM, so treat it as a separate song
+        if (difficultyMatch && stepstypeMatch && meterMatch) {
+            const difficulty = difficultyMatch[1].trim();
+            const stepstype = stepstypeMatch[1].trim();
+            const meter = meterMatch[1].trim();
+
+            // Skip if any of these are empty
+            if (!difficulty || !stepstype || !meter) {
+                continue;
+            }
+            
             songs.push({
-                path: `${relativePath}?difficulty=${currentDifficulty}`,
-                title: `${globalTitle} (${currentDifficulty})`,
-                titleTranslit: `${globalTitleTranslit} (${currentDifficulty})`
+                path: `${relativePath}?difficulty=${difficulty}`,
+                title: `${globalTitle}`,
+                titleTranslit: `${globalTitleTranslit}`
             });
         }
     }
