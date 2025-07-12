@@ -50,7 +50,7 @@ const SongPicker = ({
     };
 
     return (
-        <div className="selection-container">
+        <div className="app-container">
             <div className="controls-container">
                 <select 
                     className="game-select"

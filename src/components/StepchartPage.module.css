@@ -19,8 +19,7 @@
 
 /* My own classes for replacing the complex layout from StepchartPage.tsx */
 .mobileHeader {
-    margin-left: -1rem; /* Assuming parent has 1rem padding */
-    margin-right: -1rem;
+    width: 100%;
     background-color: var(--color-focal-300);
     position: sticky;
     top: 0;
@@ -44,8 +43,6 @@
 .desktopHeader {
     margin-top: 0;
     border: none;
-    margin-left: -1rem;
-    margin-right: -1rem;
     margin-bottom: 2rem;
     position: sticky;
     top: 0;

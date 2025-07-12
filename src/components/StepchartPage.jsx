@@ -38,6 +38,7 @@ export function StepchartPage({
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const isLoading = !simfile;
 
@@ -139,8 +140,8 @@ export function StepchartPage({
 };
 
   return (
-    <div className={styles.rootPrint}>
-      <div className="chart-section">
+    <div className="app-container">
+      <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="song-info-bar">
             <div className="song-title-container">
                 <h2 className="song-title bpm-title-mobile">
@@ -152,41 +153,46 @@ export function StepchartPage({
                             <span className="song-title-artist">{displaySimfile.artist}</span>
                         </div>
                     </div>
+                    <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                        <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                    </button>
                 </h2>
             </div>
-            <div className="details-grid bpm-tool-grid">
-                <div className="grid-item grid-item-sp">
-                    <span className="play-style">SP</span>
-                    <div className="difficulty-meters-container">
-                        {renderDifficulties('single')}
-                    </div>
-                </div>
-                <div className="grid-item grid-item-bpm">
-                    <span className="bpm-label">BPM:</span>
-                    <div className="bpm-value-container">
-                        <span className="bpm-value">{displaySimfile.displayBpm}</span>
-                    </div>
-                </div>
-                <div className="grid-item grid-item-dp">
-                    <span className="play-style">DP</span>
-                    <div className="difficulty-meters-container">
-                        {renderDifficulties('double')}
-                    </div>
-                </div>
-                <div className="grid-item grid-item-core">
-                  <div className={styles.speedmodContainer}>
-                    <div className={styles.speedmodLabel}>SMOD</div>
-                    <ToggleBar
-                      namespace="speedmod"
-                      entries={speedmods.map((sm) => (
-                        <div key={sm}>{sm}</div>
-                      ))}
-                      onToggle={(i) => setSpeedmod(speedmods[i])}
-                      checkedIndex={speedmods.indexOf(speedmod)}
-                    />
+            {!isCollapsed && (
+              <div className="details-grid bpm-tool-grid">
+                  <div className="grid-item grid-item-sp">
+                      <span className="play-style">SP</span>
+                      <div className="difficulty-meters-container">
+                          {renderDifficulties('single')}
+                      </div>
                   </div>
-                </div>
-            </div>
+                  <div className="grid-item grid-item-bpm">
+                      <span className="bpm-label">BPM:</span>
+                      <div className="bpm-value-container">
+                          <span className="bpm-value">{displaySimfile.displayBpm}</span>
+                      </div>
+                  </div>
+                  <div className="grid-item grid-item-dp">
+                      <span className="play-style">DP</span>
+                      <div className="difficulty-meters-container">
+                          {renderDifficulties('double')}
+                      </div>
+                  </div>
+                  <div className="grid-item grid-item-core">
+                    <div className={styles.speedmodContainer}>
+                      <div className={styles.speedmodLabel}>SMOD</div>
+                      <ToggleBar
+                        namespace="speedmod"
+                        entries={speedmods.map((sm) => (
+                          <div key={sm}>{sm}</div>
+                        ))}
+                        onToggle={(i) => setSpeedmod(speedmods[i])}
+                        checkedIndex={speedmods.indexOf(speedmod)}
+                      />
+                    </div>
+                  </div>
+              </div>
+            )}
         </div>
         {simfile ? (
             <>
