@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 
@@ -28,6 +28,7 @@ const SongPicker = ({
     inputValue,
     setInputValue,
 }) => {
+    const navigate = useNavigate();
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
         menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)', zIndex: 9999 }),
@@ -71,7 +72,14 @@ const SongPicker = ({
                             className="song-select"
                             options={songOptions}
                             value={selectedSong}
-                            onChange={setSelectedSong}
+                            onChange={(song) => {
+                                setSelectedSong(song);
+                                if (song) {
+                                    navigate(`/stepchart#${encodeURIComponent(song.title)}`);
+                                } else {
+                                    navigate('/stepchart');
+                                }
+                            }}
                             styles={selectStyles}
                             placeholder="Search for a song..."
                             isClearable

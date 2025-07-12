@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
@@ -140,7 +140,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
     const handleSongSelection = (song) => {
         setSelectedSong(song);
         if (song) {
-            navigate(`/bpm?song=${encodeURIComponent(song.title)}`);
+            navigate(`/bpm#${encodeURIComponent(song.title)}`);
         } else {
             navigate('/bpm');
         }

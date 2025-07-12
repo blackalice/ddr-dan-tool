@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './App.css';
 
@@ -179,7 +179,7 @@ const ddrDanData = {
       ],
     },
     {
-      dan: "7th Dan (七段)",
+      dan: "7th Dan (七���)",
       color: "#e6413a",
       songs: [
         { title: "Going Hypersonic", level: 15, bpm: "156", difficulty: "expert" },
@@ -255,6 +255,7 @@ const getBpmRange = (bpm) => {
 
 const SongCard = ({ song, playMode, setSelectedGame }) => {
   const { targetBPM, multipliers } = useContext(SettingsContext);
+  const navigate = useNavigate();
 
   const calculation = useMemo(() => {
     const numericTarget = Number(targetBPM) || 0;
@@ -281,7 +282,10 @@ const SongCard = ({ song, playMode, setSelectedGame }) => {
   const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
 
   return (
-    <Link to={`/bpm?song=${encodeURIComponent(song.title)}`} className="song-card-link" onClick={() => setSelectedGame('all')}>
+    <div className="song-card-link" onClick={() => {
+      setSelectedGame('all');
+      navigate(`/bpm#${encodeURIComponent(song.title)}`);
+    }}>
       <div className="song-card">
         <h3 className="song-title">{song.title}</h3>
         <div className="song-details">
@@ -308,7 +312,7 @@ const SongCard = ({ song, playMode, setSelectedGame }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

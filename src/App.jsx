@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
@@ -27,32 +27,33 @@ function AppRoutes({
   const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const songTitle = queryParams.get('song');
+    const hash = location.hash;
+    if (hash) {
+      const songTitle = decodeURIComponent(hash.substring(1));
+      if (songTitle && smData.files.length > 0) {
+        const currentSongTitle = selectedSong ? selectedSong.title : null;
+        const currentSongTitleTranslit = selectedSong ? selectedSong.titleTranslit : null;
 
-    if (songTitle && smData.files.length > 0) {
-      const currentSongTitle = selectedSong ? selectedSong.title : null;
-      const currentSongTitleTranslit = selectedSong ? selectedSong.titleTranslit : null;
+        if (currentSongTitle?.toLowerCase() === songTitle.toLowerCase() || currentSongTitleTranslit?.toLowerCase() === songTitle.toLowerCase()) {
+          return; // Already selected
+        }
 
-      if (currentSongTitle?.toLowerCase() === songTitle.toLowerCase() || currentSongTitleTranslit?.toLowerCase() === songTitle.toLowerCase()) {
-        return; // Already selected
-      }
+        const matchedSong = smData.files.find(option =>
+          option.title.toLowerCase() === songTitle.toLowerCase() ||
+          (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
+        );
 
-      const matchedSong = smData.files.find(option =>
-        option.title.toLowerCase() === songTitle.toLowerCase() ||
-        (option.titleTranslit && option.titleTranslit.toLowerCase() === songTitle.toLowerCase())
-      );
-
-      if (matchedSong) {
-        setSelectedSong({
-          value: matchedSong.path,
-          label: matchedSong.title,
-          title: matchedSong.title,
-          titleTranslit: matchedSong.titleTranslit
-        });
+        if (matchedSong) {
+          setSelectedSong({
+            value: matchedSong.path,
+            label: matchedSong.title,
+            title: matchedSong.title,
+            titleTranslit: matchedSong.titleTranslit
+          });
+        }
       }
     }
-  }, [location, smData, selectedSong, setSelectedSong]);
+  }, [location.hash, smData, selectedSong, setSelectedSong]);
 
   return (
     <Routes>

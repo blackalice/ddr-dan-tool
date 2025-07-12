@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import './Tabs.css';
@@ -11,26 +11,28 @@ const Logo = () => (
 );
 
 const Tabs = () => {
+    const location = useLocation();
+
     return (
         <nav className="tabs-container">
             <div className="logo-container">
                 <Logo />
             </div>
             <div className="tabs-group">
-                <NavLink to="/bpm" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     BPM
                 </NavLink>
-                <NavLink to="/stepchart" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                <NavLink to={`/stepchart${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Chart
                 </NavLink>
-                <NavLink to="/dan" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Dan
                 </NavLink>
-                <NavLink to="/multiplier" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Multi
                 </NavLink>
             </div>
-            <NavLink to="/settings" className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
+            <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
                 <FontAwesomeIcon icon={faCog} />
             </NavLink>
         </nav>
