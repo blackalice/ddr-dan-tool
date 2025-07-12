@@ -19,7 +19,8 @@
     "4thMix Plus",
     "3rdMix",
     "2ndMix",
-    "DDR"
+    "DDR",
+    "ITG 1"
   ],
   "files": [
     {
@@ -5465,6 +5466,366 @@
     {
       "path": "sm/Extreme/xenon.sm",
       "title": "xenon",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Anubis.sm",
+      "title": "Anubis",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Bend Your Mind.sm",
+      "title": "Bend Your Mind",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Boogie Down.sm",
+      "title": "Boogie Down",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Bouff.sm",
+      "title": "Bouff",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Bubble Dancer.sm",
+      "title": "Bubble Dancer",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Changes.sm",
+      "title": "Changes",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Charlene.sm",
+      "title": "Charlene",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Crazy.sm",
+      "title": "Crazy",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Da Roots.sm",
+      "title": "Da Roots",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Dawn.sm",
+      "title": "Dawn",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Delirium.sm",
+      "title": "Delirium",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Disconnected -Hyper-.sm",
+      "title": "Disconnected -Hyper-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Disconnected -Mobius-.sm",
+      "title": "Disconnected -Mobius-",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/disconnected.sm",
+      "title": "Disconnected",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/DJ Party.sm",
+      "title": "DJ Party",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/dont promise me.sm",
+      "title": "Don't Promise Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/douloveme.sm",
+      "title": "Do U Love Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Dreams of Passion.sm",
+      "title": "Dreams of Passion",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Drifting Away.sm",
+      "title": "Drifting Away",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Driving Force Classical.sm",
+      "title": "Driving Force Classical",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Euphoria.sm",
+      "title": "Euphoria",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Fly Away.sm",
+      "title": "Fly Away",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Fly With Me.sm",
+      "title": "Fly With Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Flying High.sm",
+      "title": "Flying High",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Hand of Time.sm",
+      "title": "Hand of Time",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Happiness Comes.sm",
+      "title": "Don't Promise Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Hardcore of the North.sm",
+      "title": "Hardcore of the North",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Hip Hop Jam.sm",
+      "title": "Hip Hop Jam",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Hybrid.sm",
+      "title": "Hybrid",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/I Think I Like That Sound.sm",
+      "title": "I Think I Like That Sound",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/I'll Get There Anyway.sm",
+      "title": "I'll Get There Anyway",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Infection.sm",
+      "title": "Infection",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/July.sm",
+      "title": "July",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Kagami.sm",
+      "title": "Kagami",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Kiss Me Red.sm",
+      "title": "Kiss Me Red",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Land of the Rising Sun.sm",
+      "title": "Land of the Rising Sun",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Lemmings on the Run.sm",
+      "title": "Lemmings on the Run",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Let Me Be The One.sm",
+      "title": "Let Me Be The One",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Let My Love Go Blind.sm",
+      "title": "Let My Love Go Blind",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Mellow.sm",
+      "title": "Mellow",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Mouth.sm",
+      "title": "Mouth",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/My Favourite Game.sm",
+      "title": "My Favourite Game",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Mythology.sm",
+      "title": "Mythology",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/No 1 Nation.sm",
+      "title": "No 1 Nation",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Normal.sm",
+      "title": "Normal",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Not Worth The Paper.sm",
+      "title": "Not Worth The Paper",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Oasis.sm",
+      "title": "Oasis",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/On a Day Like Today.sm",
+      "title": "On a Day Like Today",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/PA Theme.sm",
+      "title": "PA Theme",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Pandemonium.sm",
+      "title": "Pandemonium",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Perfect.sm",
+      "title": "Perfect",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Queen of Light.sm",
+      "title": "Queen of Light",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Remember December.sm",
+      "title": "Remember December",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/ROM-eo & Juli8.sm",
+      "title": "ROM-eo & Juli8",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Solina.sm",
+      "title": "Solina",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Tell.sm",
+      "title": "Tell",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Tension.sm",
+      "title": "Tension",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/The Beginning.sm",
+      "title": "The Beginning",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/The Game.sm",
+      "title": "The Game",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Torn.sm",
+      "title": "Torn",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Touch Me.sm",
+      "title": "Touch Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Tough Enough.sm",
+      "title": "Tough Enough",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Training1.sm",
+      "title": "Tutorial",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Turn It On.sm",
+      "title": "Turn It On",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Utopia.sm",
+      "title": "Utopia",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/VerTex.sm",
+      "title": "VerTex",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Walking on Fire.sm",
+      "title": "Walking on Fire",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Which MC Was That.sm",
+      "title": "Which MC Was That?",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/While Tha Rekkid Spinz.sm",
+      "title": "While Tha Rekkid Spinz",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Why Me.sm",
+      "title": "Why Me",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Xuxa.sm",
+      "title": "Xuxa",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/ITG 1/Zodiac.sm",
+      "title": "Zodiac",
       "titleTranslit": ""
     },
     {
