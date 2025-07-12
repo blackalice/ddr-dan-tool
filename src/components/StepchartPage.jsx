@@ -125,6 +125,7 @@ export function StepchartPage({
                 level={type ? type.feet : 'X'} 
                 difficultyName={levelName} 
                 isMissing={!type}
+                isSelected={type?.slug === currentType}
                 onClick={type ? () => setCurrentType(type.slug) : undefined}
             />
         );

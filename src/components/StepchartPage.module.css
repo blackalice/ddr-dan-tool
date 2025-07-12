@@ -119,9 +119,9 @@
 }
 
 .speedmodLabel {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-muted-color);
+    font-size: 1.25rem;
+    font-weight: BOLD;
+    color: var(--text-color-light);
     text-transform: uppercase;
 }
 
