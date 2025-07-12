@@ -1,0 +1,62 @@
+.stepchart-viewer {
+  position: relative;
+  width: 256px; /* 64px per lane */
+  height: 512px;
+  overflow-y: scroll;
+  background-color: #000;
+  border: 1px solid #fff;
+}
+
+.note-lane {
+  position: relative;
+  width: 100%;
+}
+
+.note {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+}
+
+.note-left {
+  left: 0;
+}
+
+.note-down {
+  left: 64px;
+}
+
+.note-up {
+  left: 128px;
+}
+
+.note-right {
+  left: 192px;
+}
+
+.note-left img {
+  transform: rotate(-90deg);
+}
+
+.note-down img {
+  transform: rotate(180deg);
+}
+
+.note-up img {
+  transform: rotate(0deg);
+}
+
+.note-right img {
+  transform: rotate(90deg);
+}
+
+.note img {
+  width: 100%;
+  height: 100%;
+}
+
+.stepchartSectionGroup {
+    --arrow-size: 40px;
+    display: grid;
+    place-items: center;
+}

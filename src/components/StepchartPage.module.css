@@ -1,0 +1,184 @@
+.aboveStepChart {
+    z-index: 999999;
+}
+
+.stepchartSections {
+    display: flex;
+    flex-direction: column;
+}
+
+.stepchartSectionGroup {
+    --arrow-size: 40px;
+    display: grid;
+    place-items: center;
+}
+
+.printTitle {
+    display: none;
+}
+
+/* My own classes for replacing the complex layout from StepchartPage.tsx */
+.mobileHeader {
+    width: 100vw;
+    margin-left: -1rem; /* Assuming parent has 1rem padding */
+    margin-right: -1rem;
+    background-color: var(--color-focal-300);
+    position: sticky;
+    top: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+@media (min-width: 640px) {
+    .mobileHeader {
+        display: none;
+    }
+}
+
+.mobileBanner {
+    margin: auto;
+    border-bottom: 4px solid white;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.desktopHeader {
+    margin-top: 0;
+    width: 100vw;
+    border: none;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 1rem;
+    background-color: var(--color-focal-300);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (min-width: 640px) {
+    .desktopHeader {
+        width: auto;
+        border: 1px solid;
+        margin: 2rem auto;
+        border-radius: 0.75rem 0 0.75rem 0; /* rounded-tl-xl rounded-br-xl */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+}
+
+.desktopBannerContainer {
+    width: 100%;
+}
+@media (min-width: 640px) {
+    .desktopBannerContainer {
+        display: block;
+        width: 16rem;
+    }
+}
+
+.desktopBanner {
+    display: none;
+}
+@media (min-width: 640px) {
+    .desktopBanner {
+        display: block;
+    }
+}
+
+.desktopBannerImage {
+    margin: auto;
+    border: 2px solid white;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.detailsContainer {
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 640px) {
+    .detailsContainer {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem 0;
+    }
+}
+
+.speedmodContainer {
+    margin-top: 0.5rem;
+    flex: 1 1 0%;
+    width: 100%;
+    max-width: 42rem;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 640px) {
+    .speedmodContainer {
+        margin-top: 0;
+    }
+}
+
+.speedmodLabel {
+    display: none;
+}
+@media (min-width: 640px) {
+    .speedmodLabel {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin-left: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+.printUrl {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: #9ca3af; /* gray-400 */
+}
+
+@media print {
+    .rootPrint {
+        width: 100%;
+        height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important;
+    }
+
+    .rootPrint header, .rootPrint footer {
+        display: none;
+    }
+
+    .rootPrint main {
+        max-width: initial !important;
+        max-height: initial !important;
+    }
+
+    .hideForPrint {
+        display: none;
+    }
+
+    .printTitle {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .stepchartSectionGroup {
+        --arrow-size: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1rem;
+        page-break-after: always;
+    }
+}

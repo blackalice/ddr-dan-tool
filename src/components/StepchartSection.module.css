@@ -1,0 +1,85 @@
+.container-single {
+    width: calc(var(--arrow-size) * 4);
+}
+
+.container-double {
+    width: calc(var(--arrow-size) * 8);
+}
+
+.doubleDivider {
+    width: calc(var(--arrow-size) * 4);
+    border-right: 1px dashed #4338ca; /* border-blue-500 */
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+}
+
+.bar {
+    border-bottom: 1px solid #d1d5db; /* border-gray-300 */
+}
+.bar:nth-child(odd) {
+    background-color: #f3f4f6; /* bg-gray-50 */
+}
+
+.bar:last-of-type {
+    border-width: 0;
+}
+
+.bar:hover {
+    background-color: #d1d5db; /* sm:bg-gray-300 */
+}
+
+.bar:target, .targeted {
+    background-color: #9ca3af; /* bg-gray-400 */
+}
+
+.selfLink {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .selfLink {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+    }
+}
+
+
+.selfLink svg {
+    visibility: hidden;
+    padding: 0 0.25rem; /* px-1 */
+    background-color: #4f46e5; /* bg-indigo-500 */
+    color: white;
+    height: 100%;
+    border-top-left-radius: 0.5rem; /* rounded-l-lg */
+    border-bottom-left-radius: 0.5rem;
+}
+
+.bar:hover .selfLink svg,
+.selfLink:hover svg {
+    visibility: visible;
+}
+
+
+.bpmLabelText {
+    font-size: 0.675rem;
+}
+
+.stopSign {
+    font-size: 1.5rem; /* text-2xl */
+    right: -1.75rem; /* -right-7 */
+}
+
+@media print {
+    .bpmLabelText {
+        font-size: 0.45rem;
+    }
+
+    .stopSign {
+        font-size: 1.125rem; /* text-lg */
+        right: -1rem; /* -right-4 */
+    }
+}

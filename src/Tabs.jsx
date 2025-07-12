@@ -26,6 +26,9 @@ const Tabs = () => {
                 <NavLink to="/multiplier" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Multi
                 </NavLink>
+                <NavLink to="/stepchart" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                    Chart
+                </NavLink>
             </div>
             <NavLink to="/settings" className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
                 <FontAwesomeIcon icon={faCog} />

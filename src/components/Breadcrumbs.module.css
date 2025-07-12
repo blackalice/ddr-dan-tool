@@ -1,0 +1,29 @@
+.list {
+    display: flex;
+    flex-direction: row;
+}
+
+.breadcrumbEntry {
+    color: var(--color-focal-700);
+}
+
+.breadcrumbEntry::after {
+    content: '/';
+    display: inline-block;
+    font-weight: bold;
+    margin: 0 0.5rem;
+    color: var(--color-focal-400);
+}
+
+.breadcrumbEntry:last-child::after {
+    content: '';
+}
+
+.link {
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.link:hover {
+    border-bottom-color: var(--color-focal);
+}

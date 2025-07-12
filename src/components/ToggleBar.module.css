@@ -1,0 +1,33 @@
+.root {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--entry-width), 1fr));
+    border-radius: 0.5rem; /* rounded-lg */
+    overflow: hidden;
+    background-color: var(--color-focal-200);
+    border: 1px solid var(--color-focal-500);
+}
+
+.radioInput {
+    width: 0;
+    display: none;
+}
+
+.label {
+    text-align: center;
+    padding: 0.25rem 0.5rem; /* py-1 px-2 */
+    background-color: var(--color-focal);
+    color: var(--color-heading);
+    cursor: pointer;
+}
+
+.radioInput + .label:hover {
+    background-color: var(--color-focal-300);
+    color: var(--color-focal-700);
+}
+
+.radioInput:checked + .label {
+    background-color: var(--color-heading);
+    color: var(--color-focal);
+    cursor: default;
+}

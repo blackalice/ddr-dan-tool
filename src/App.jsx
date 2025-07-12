@@ -5,6 +5,7 @@ import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
+import { StepchartPage } from './components/StepchartPage';
 import './App.css';
 import './Tabs.css';
 
@@ -417,7 +418,8 @@ function AppRoutes({
   activeDan, setActiveDan,
   selectedGame, setSelectedGame,
   selectedSong, setSelectedSong,
-  smData
+  smData,
+  mockSimfile
 }) {
   const location = useLocation();
 
@@ -456,6 +458,7 @@ function AppRoutes({
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/stepchart" element={<StepchartPage simfile={mockSimfile} currentType="single-expert" />} />
     </Routes>
   );
 }
@@ -471,6 +474,37 @@ function App() {
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [smData, setSmData] = useState({ games: [], files: [] });
+
+  const mockSimfile = {
+    title: {
+      titleName: "Sample Song",
+      translitTitleName: "Sample Song",
+      titleDir: "sample-song",
+      banner: null,
+    },
+    artist: "Sample Artist",
+    mix: {
+      mixName: "Sample Mix",
+      mixDir: "sample-mix",
+    },
+    availableTypes: [
+      { slug: 'single-expert', mode: 'single', difficulty: 'expert', feet: 10 },
+    ],
+    charts: {
+      'single-expert': {
+        arrows: [
+          { beat: 4, direction: '1000', offset: 0 },
+          { beat: 4, direction: '0100', offset: 0.25 },
+          { beat: 4, direction: '0010', offset: 0.5 },
+          { beat: 4, direction: '0001', offset: 0.75 },
+        ],
+        freezes: [],
+        bpm: [{ startOffset: 0, endOffset: null, bpm: 150 }],
+        stops: [],
+      },
+    },
+    displayBpm: "150",
+  };
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -499,6 +533,7 @@ function App() {
               selectedGame={selectedGame} setSelectedGame={setSelectedGame}
               selectedSong={selectedSong} setSelectedSong={setSelectedSong}
               smData={smData}
+              mockSimfile={mockSimfile}
             />
           </div>
           <footer className="footer">
@@ -519,4 +554,3 @@ function AppWrapper() {
 }
 
 export default AppWrapper;
-
