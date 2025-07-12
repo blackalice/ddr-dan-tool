@@ -106,7 +106,7 @@ function StepchartSection({
 
   for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
     const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
-    const height = barHeight;
+    const height = `calc(var(--arrow-size) * ${speedMod})`;
 
     barDivs.push(
       <div
