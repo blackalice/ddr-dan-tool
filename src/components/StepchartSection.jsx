@@ -9,19 +9,6 @@ import styles from "./StepchartSection.module.css";
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 
-function scrollTargetBeatJustUnderHeader(beatId, headerId) {
-  setTimeout(() => {
-    const targetBeat = document.getElementById(beatId);
-    const header = document.getElementById(headerId);
-
-    if (targetBeat && header) {
-      const headerBounds = header.getBoundingClientRect();
-      targetBeat.scrollIntoView(true);
-      window.scrollBy(0, -headerBounds.height);
-    }
-  }, 10);
-}
-
 function SelfLink({
   style,
   id,
@@ -305,4 +292,4 @@ function StepchartSection({
   );
 }
 
-export { StepchartSection, scrollTargetBeatJustUnderHeader };
+export { StepchartSection };

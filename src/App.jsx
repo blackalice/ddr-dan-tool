@@ -8,28 +8,9 @@ import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.js
 import { StepchartPage } from './components/StepchartPage';
 import { parseSm } from './utils/smParser.js';
 import SongPicker from './components/SongPicker.jsx';
+import DanPage from './DanPage.jsx';
 import './App.css';
 import './Tabs.css';
-
-// --- Data Structure ---
-const ddrDanData = {
-  single: [
-    {
-      dan: "1st Dan (初段)",
-      color: "#6fbe44",
-      songs: [
-        { title: "Love You More", level: 9, bpm: "175", difficulty: "basic" },
-        { title: "Starry Sky", level: 9, bpm: "150", difficulty: "difficult" },
-        { title: "Bang Pad(Werk Mix)", level: 9, bpm: "180", difficulty: "difficult" },
-        { title: "LEVEL UP", level: 10, bpm: "180", difficulty: "difficult" },
-      ],
-    },
-    // ... (rest of the dan data)
-  ],
-  double: [
-    // ... (rest of the dan data)
-  ],
-};
 
 function AppRoutes({
   playMode, setPlayMode,
@@ -74,6 +55,7 @@ function AppRoutes({
 
   return (
     <Routes>
+      <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier />} />
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} />} />
@@ -90,7 +72,18 @@ function AppRoutes({
             inputValue={inputValue}
             setInputValue={setInputValue}
           />
-          {simfileData ? <StepchartPage simfile={simfileData} currentType={simfileData.availableTypes[0].slug} /> : <div>Loading...</div>}
+          {simfileData ? <StepchartPage 
+            simfile={simfileData} 
+            currentType={simfileData.availableTypes[0].slug}
+            selectedGame={selectedGame}
+            setSelectedGame={setSelectedGame}
+            selectedSong={selectedSong}
+            setSelectedSong={setSelectedSong}
+            smData={smData}
+            songOptions={songOptions}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+          /> : <div>Loading...</div>}
         </div>
       } />
     </Routes>
@@ -145,17 +138,19 @@ function App() {
         .then(response => response.text())
         .then(text => {
           const parsed = parseSm(text);
+          const gamePathParts = filePath.split('/');
+          const mixName = gamePathParts.length > 1 ? gamePathParts[1] : 'Unknown Mix';
           const simfile = {
             ...parsed,
             title: {
               titleName: parsed.title,
               translitTitleName: parsed.titletranslit,
-              titleDir: 'TRIP MACHINE PhoeniX',
+              titleDir: parsed.title,
               banner: parsed.banner,
             },
             mix: {
-              mixName: 'Supernova 2',
-              mixDir: 'Supernova 2',
+              mixName: mixName,
+              mixDir: mixName,
             },
           };
           setSimfileData(simfile);
