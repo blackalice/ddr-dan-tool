@@ -2,14 +2,23 @@
 
 /**
  * Generates an array of numbers within a range with a specific step.
+ * This version is more robust against floating-point inaccuracies than
+ * calculating the length beforehand.
  * @param {number} start - The starting number.
- * @param {number} end - The ending number.
+ * @param {number} end - The ending number (inclusive).
  * @param {number} step - The increment step.
  * @returns {number[]} - The array of numbers.
  */
 const range = (start, end, step) => {
-    const len = Math.floor((end - start) / step) + 1;
-    return Array(len).fill().map((_, idx) => start + (idx * step));
+    const result = [];
+    // Use a small epsilon for safer floating-point comparisons
+    const epsilon = 1e-9;
+    let current = start;
+    while (current <= end + epsilon) {
+        result.push(current);
+        current += step;
+    }
+    return result;
 };
 
 export const MULTIPLIER_MODES = {
