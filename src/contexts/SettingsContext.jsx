@@ -13,7 +13,7 @@ export const SettingsProvider = ({ children }) => {
 
     const [multiplierMode, setMultiplierMode] = useState(() => {
         const saved = localStorage.getItem('multiplierMode');
-        return saved || MULTIPLIER_MODES.ONLINE;
+        return saved || MULTIPLIER_MODES.A_A3;
     });
 
     const [theme, setTheme] = useState(() => {

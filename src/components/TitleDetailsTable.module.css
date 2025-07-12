@@ -1,0 +1,21 @@
+.table {
+    font-size: 0.75rem; /* text-xs */
+    line-height: 1rem;
+}
+
+@media (min-width: 640px) {
+    .table {
+        font-size: 1rem; /* sm:text-base */
+        line-height: 1.5rem;
+    }
+}
+
+.nameCell {
+    text-align: right;
+    color: var(--color-focal-500);
+    padding-right: 0.25rem; /* pr-1 */
+}
+
+.valueCell {
+    padding-left: 0.25rem; /* pl-1 */
+}

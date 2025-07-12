@@ -1,0 +1,38 @@
+.bannerContainer {
+    position: relative;
+}
+
+.bannerImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fallbackContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-focal);
+    color: var(--color-focal-400);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.fallbackTitle {
+    color: var(--color-focal-200);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+}
+
+.fallbackSubtitle {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--color-focal-50);
+}

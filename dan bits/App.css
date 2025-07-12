@@ -1,15 +1,4 @@
 
-html {
-  --color-white-agnostic: white;
-  --color-black-agnostic: hsl(0, 0%, 5%);
-
-  --color-beginner: #00B0C6;
-  --color-basic: #D68B00;
-  --color-difficult: #CE1A87;
-  --color-expert: #68DE13;
-  --color-challenge: #7D72FE;
-}
-
 html[data-theme='dark'] {
   --bg-color: #111827;
   --bg-color-light: #1F2937;
@@ -46,22 +35,6 @@ html[data-theme='dark'] {
   --button-up-hover-color: #059669;
   --button-down-color: #EF4444;
   --button-down-hover-color: #DC2626;
-
-  /* from stepcharts-main */
-  --color-focal-50: #374151;
-  --color-focal-100: #4b5563;
-  --color-focal-200: #6B7280;
-  --color-focal-300: #9ca3af;
-  --color-focal-400: #d1d5db;
-  --color-focal-500: #e5e7eb;
-  --color-focal-600: #f3f4f6;
-  --color-focal-700: #f7f8f9;
-  --color-focal: var(--color-focal-500);
-
-  --color-heading: var(--color-focal-50);
-  --color-subheading: var(--color-focal-200);
-
-  --color-link: var(--color-expert);
 }
 
 html[data-theme='light'] {
@@ -100,22 +73,6 @@ html[data-theme='light'] {
   --button-up-hover-color: #468C45;
   --button-down-color: #E45649;
   --button-down-hover-color: #C94D41;
-
-  /* from stepcharts-main */
-  --color-focal-700: #374151;
-  --color-focal-600: #4b5563;
-  --color-focal-500: #6B7280;
-  --color-focal-400: #9ca3af;
-  --color-focal-300: #d1d5db;
-  --color-focal-200: #e5e7eb;
-  --color-focal-100: #f3f4f6;
-  --color-focal-50: #f9fafb;
-  --color-focal: var(--color-focal-500);
-
-  --color-heading: var(--color-white-agnostic);
-  --color-subheading: var(--color-focal-200);
-
-  --color-link: var(--color-challenge);
 }
 
 /* --- Global Styles & Resets --- */

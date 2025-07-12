@@ -20,6 +20,9 @@ const Tabs = () => {
                 <NavLink to="/bpm" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     BPM
                 </NavLink>
+                <NavLink to="/stepchart" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                    Chart
+                </NavLink>
                 <NavLink to="/dan" className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Dan
                 </NavLink>
