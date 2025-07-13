@@ -1,0 +1,37 @@
+.song-grid.three-items {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.song-grid.one-item {
+    grid-template-columns: 1fr;
+}
+
+.song-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.game-chip {
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-muted-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .song-grid.three-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .song-grid.three-items {
+        grid-template-columns: 1fr;
+    }
+}
