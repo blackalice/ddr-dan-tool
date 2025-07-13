@@ -10,7 +10,7 @@ const vegaData = [
     dan: "LIGHT COURSE",
     color: "#46aadc",
     songs: [
-      { title: "Din Don Dan", level: 10, bpm: "175", difficulty: "difficult" },
+      { title: "Din Don Dan", level: 10, bpm: "140", difficulty: "difficult" },
       { title: "虹色", level: 11, bpm: "160", difficulty: "expert" },
       { title: "HAPPY☆ANGEL", level: 12, bpm: "180", difficulty: "expert" },
     ],
@@ -19,9 +19,9 @@ const vegaData = [
     dan: "HEAVY COURSE",
     color: "#e6413a",
     songs: [
-      { title: "Romancing Layer", level: 14, bpm: "175", difficulty: "expert" },
-      { title: "Debug Dance", level: 15, bpm: "155", difficulty: "expert" },
-      { title: "GROOVE 04", level: 16, bpm: "170", difficulty: "expert" },
+      { title: "Romancing Layer", level: 14, bpm: "150", difficulty: "expert" },
+      { title: "Debug Dance", level: 15, bpm: "151', difficulty: "expert" },
+      { title: "GROOVE 04", level: 16, bpm: "155", difficulty: "expert" },
     ],
   },
   {
