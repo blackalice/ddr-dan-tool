@@ -45,9 +45,9 @@ export const getMultipliers = (mode) => {
         case MULTIPLIER_MODES.A_A3:
             return [0.25, 0.5, ...range(1, 4, 0.25), ...range(4.5, 8, 0.5)];
         case MULTIPLIER_MODES.WORLD:
-            return range(0.25, 10, 0.05).map(m => parseFloat(m.toFixed(2)));
+            return range(0.25, 8, 0.05).map(m => parseFloat(m.toFixed(2)));
         default:
             // Default to WORLD for broadest compatibility
-            return range(0.25, 10, 0.05).map(m => parseFloat(m.toFixed(2)));
+            return range(0.25, 8, 0.05).map(m => parseFloat(m.toFixed(2)));
     }
 };
