@@ -28,7 +28,7 @@ const vegaData = [
     dan: "EXTRA CHALLENGE",
     color: "#c846a6",
     songs: [
-      { title: "MAX 360", level: 18, bpm: "180-720x, difficulty: "challenge" },
+      { title: "MAX 360", level: 18, bpm: "180-720", difficulty: "challenge" },
     ],
   },
 ];
