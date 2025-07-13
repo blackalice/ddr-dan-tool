@@ -10,7 +10,7 @@ const vegaData = [
     dan: "LIGHT COURSE",
     color: "#46aadc",
     songs: [
-      { title: "Din Don Dan", level: 10, bpm: "140", difficulty: "difficult" },
+      { title: "Din Don Dan", level: 10, bpm: "140", difficulty: "expert" },
       { title: "虹色", level: 11, bpm: "160", difficulty: "expert" },
       { title: "HAPPY☆ANGEL", level: 12, bpm: "180", difficulty: "expert" },
     ],
