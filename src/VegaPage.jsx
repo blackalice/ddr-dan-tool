@@ -1,43 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
+import { loadCourseData } from './utils/course-loader.js';
 import './App.css';
 import './VegaPage.css';
-
-// --- Data Structure ---
-const vegaData = [
-  {
-    dan: "LIGHT COURSE",
-    color: "#46aadc",
-    songs: [
-      { title: "Din Don Dan", level: 10, bpm: "140", difficulty: "expert" },
-      { title: "虹色", level: 11, bpm: "160", difficulty: "expert" },
-      { title: "HAPPY☆ANGEL", level: 12, bpm: "180", difficulty: "expert" },
-    ],
-  },
-  {
-    dan: "HEAVY COURSE",
-    color: "#e6413a",
-    songs: [
-      { title: "Romancing Layer", level: 14, bpm: "150", difficulty: "expert" },
-      { title: "Debug Dance", level: 15, bpm: "151", difficulty: "expert" },
-      { title: "GROOVE 04", level: 16, bpm: "155", difficulty: "expert" },
-    ],
-  },
-  {
-    dan: "EXTRA CHALLENGE",
-    color: "#c846a6",
-    songs: [
-      { title: "MAX 360", level: 18, bpm: "180-720", difficulty: "challenge" },
-    ],
-  },
-];
-
-const difficultyMap = {
-    basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
-    difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
-    expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
-    challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
-};
 
 const DanSection = ({ danCourse, setSelectedGame }) => {
     const songGridClasses = `song-grid ${
@@ -47,11 +12,11 @@ const DanSection = ({ danCourse, setSelectedGame }) => {
     return (
         <section className="dan-section">
             <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
-                {danCourse.dan}
+                {danCourse.name}
             </h2>
             <div className={songGridClasses}>
-                {danCourse.songs.map((song) => (
-                    <SongCard key={`${danCourse.dan}-${song.title}`} song={song} setSelectedGame={setSelectedGame} />
+                {danCourse.songs.map((song, index) => (
+                    <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} />
                 ))}
             </div>
         </section>
@@ -79,37 +44,30 @@ const FilterBar = ({ activeCourse, setCourse, courseLevels }) => (
 );
 
 const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
-  const [smData, setSmData] = useState({ files: [] });
+  const [vegaCourses, setVegaCourses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/sm-files.json')
-        .then(response => response.json())
-        .then(data => setSmData(data))
-        .catch(error => console.error('Error fetching sm-files.json:', error));
+    const fetchCourses = async () => {
+      setIsLoading(true);
+      const courseData = await loadCourseData();
+      if (courseData && courseData.vega) {
+        setVegaCourses(courseData.vega);
+      }
+      setIsLoading(false);
+    };
+    fetchCourses();
   }, []);
 
   const coursesToShow = useMemo(() => {
-    let courses = vegaData.map(course => ({
-      ...course,
-      songs: course.songs.map(song => {
-        const file = smData.files.find(f => f.title.toLowerCase() === song.title.toLowerCase());
-        const game = file ? file.path.split('/')[1] : null;
-        return { ...song, game };
-      })
-    }));
-
-    if (activeVegaCourse !== 'All') {
-      courses = courses.filter(course => course.dan.startsWith(activeVegaCourse));
-    }
-    
-    return courses;
-  }, [smData, activeVegaCourse]);
+    if (activeVegaCourse === 'All') return vegaCourses;
+    return vegaCourses.filter(course => course.name.startsWith(activeVegaCourse));
+  }, [vegaCourses, activeVegaCourse]);
 
   const courseLevels = useMemo(() => ["LIGHT", "HEAVY", "EXTRA"], []);
 
   return (
     <>
-      
       <div className="app-container">
         <main>
             <FilterBar
@@ -118,10 +76,14 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
                 courseLevels={courseLevels}
             />
           
-          {coursesToShow.length > 0 ? (
+          {isLoading ? (
+            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+              <p style={{ color: 'var(--text-muted-color)' }}>Loading courses...</p>
+            </div>
+          ) : coursesToShow.length > 0 ? (
              coursesToShow.map((course) => (
                 <DanSection 
-                  key={course.dan} 
+                  key={course.name} 
                   danCourse={course} 
                   setSelectedGame={setSelectedGame}
                 />

@@ -1,0 +1,255 @@
+{
+  "dan": {
+    "single": [
+      {
+        "name": "1st Dan (初段)",
+        "color": "#6fbe44",
+        "charts": [
+          "Love You More:basic:single",
+          "Starry Sky:difficult:single",
+          "Bang Pad(Werk Mix):difficult:single",
+          "LEVEL UP:difficult:single"
+        ]
+      },
+      {
+        "name": "2nd Dan (二段)",
+        "color": "#6fbe44",
+        "charts": [
+          "Electric Dance System Music:difficult:single",
+          "Jyuuniseiza no Seiiki:difficult:single",
+          "Liberate:difficult:single",
+          "Show Me Your Moves:expert:single"
+        ]
+      },
+      {
+        "name": "3rd Dan (三段)",
+        "color": "#6fbe44",
+        "charts": [
+          "This Beat is.....:expert:single",
+          "Starlight in the Snow:difficult:single",
+          "Stay 4 Ever:expert:single",
+          "Astrogazer:expert:single"
+        ]
+      },
+      {
+        "name": "4th Dan (四段)",
+        "color": "#46aadc",
+        "charts": [
+          "out of focus:difficult:single",
+          "SODA GALAXY:expert:single",
+          "In the Past:difficult:single",
+          "Deadlock -out of reach-:difficult:single"
+        ]
+      },
+      {
+        "name": "5th Dan (五段)",
+        "color": "#46aadc",
+        "charts": [
+          "aftershock!!:expert:single",
+          "mythomane:expert:single",
+          "DeStRuCtIvE FoRcE:expert:single",
+          "London EVOLVED ver.C:expert:single"
+        ]
+      },
+      {
+        "name": "6th Dan (六段)",
+        "color": "#e6413a",
+        "charts": [
+          "Dead Heat:expert:single",
+          "IRON HEART:expert:single",
+          "STEP MACHINE:expert:single",
+          "MAX 300:expert:single"
+        ]
+      },
+      {
+        "name": "7th Dan (七段)",
+        "color": "#e6413a",
+        "charts": [
+          "Neverland:expert:single",
+          "Next Phase:expert:single",
+          "Last Card:expert:single",
+          "Cosy Catastrophe:expert:single"
+        ]
+      },
+      {
+        "name": "8th Dan (八段)",
+        "color": "#e6413a",
+        "charts": [
+          "Rave Accelerator:expert:single",
+          "Golden Arrow:expert:single",
+          "Splash Gold:expert:single",
+          "The History of the Future:expert:single"
+        ]
+      },
+      {
+        "name": "9th Dan (九段)",
+        "color": "#c846a6",
+        "charts": [
+          "DIGITALIZER:expert:single",
+          "Tokyo Shinwa:expert:single",
+          "Avenger:expert:single",
+          "EGOISM 440:expert:single"
+        ]
+      },
+      {
+        "name": "10th Dan (十段)",
+        "color": "#c846a6",
+        "charts": [
+          "Bi:challenge:single",
+          "HyperTwist:challenge:single",
+          "Neutrino:challenge:single",
+          "PARANOiA Revolution:challenge:single"
+        ]
+      },
+      {
+        "name": "Kaiden (皆伝)",
+        "color": "#f8d45a",
+        "charts": [
+          "Lachryma(Re:Queen’M):challenge:single",
+          "Over The “Period”:challenge:single",
+          "Valkyrie Dimension:challenge:single",
+          "ENDYMION:challenge:single"
+        ]
+      }
+    ],
+    "double": [
+      {
+        "name": "1st Dan (初段)",
+        "color": "#6fbe44",
+        "charts": [
+          "Sayonara Trip ~Natsuhiko EDM edition~:difficult:double",
+          "Second Heaven:difficult:double",
+          "Snow prism:difficult:double",
+          "TRIP MACHINE:difficult:double"
+        ]
+      },
+      {
+        "name": "2nd Dan (二段)",
+        "color": "#6fbe44",
+        "charts": [
+          "bass 2 bass:difficult:double",
+          "Anthurium:difficult:double",
+          "SEXY PLANET:expert:double",
+          "sakura storm:expert:double"
+        ]
+      },
+      {
+        "name": "3rd Dan (三段)",
+        "color": "#6fbe44",
+        "charts": [
+          "starmine:difficult:double",
+          "The Lonely Streets:expert:double",
+          "SUNKiSS♥DROP:expert:double",
+          "Dance Dance Revolution:expert:double"
+        ]
+      },
+      {
+        "name": "4th Dan (四段)",
+        "color": "#46aadc",
+        "charts": [
+          "Private Eye:expert:double",
+          "CENTAUR:expert:double",
+          "DOLL:expert:double",
+          "MARS WAR 3:expert:double"
+        ]
+      },
+      {
+        "name": "5th Dan (五段)",
+        "color": "#46aadc",
+        "charts": [
+          "TECH-NOID:expert:double",
+          "exotic ethnic:expert:double",
+          "Deadball de Homerun:expert:double",
+          "Ishtar:expert:double"
+        ]
+      },
+      {
+        "name": "6th Dan (六段)",
+        "color": "#e6413a",
+        "charts": [
+          "on the bounce:expert:double",
+          "Let's DANCE aROUND!!:expert:double",
+          "Pierce The Sky:expert:double",
+          "PARANOiA survivor:expert:double"
+        ]
+      },
+      {
+        "name": "7th Dan (七段)",
+        "color": "#e6413a",
+        "charts": [
+          "Going Hypersonic:expert:double",
+          "out of focus:expert:double",
+          "Skywalking:expert:double",
+          "UNBELIEVABLE (Sparky remix):expert:double"
+        ]
+      },
+      {
+        "name": "8th Dan (八段)",
+        "color": "#e6413a",
+        "charts": [
+          "Sand Blow:expert:double",
+          "Helios:expert:double",
+          "KIMONO♥PRINCESS:expert:double",
+          "The legend of MAX (X-Special):challenge:double"
+        ]
+      },
+      {
+        "name": "9th Dan (九段)",
+        "color": "#c846a6",
+        "charts": [
+          "New Era:expert:double",
+          "Fascination ~eternal love mix~:challenge:double",
+          "RISING FIRE HAWK:challenge:double",
+          "PARANOiA Revolution:expert:double"
+        ]
+      },
+      {
+        "name": "10th Dan (十段)",
+        "color": "#c846a6",
+        "charts": [
+          "Spanish Snowy Dance:challenge:double",
+          "Astrogazer:challenge:double",
+          "New Decade:challenge:double",
+          "PARANOIA ~HADES~:challenge:double"
+        ]
+      },
+      {
+        "name": "Kaiden (皆伝)",
+        "color": "#f8d45a",
+        "charts": [
+          "Blow My Mind:challenge:double",
+          "Tohoku EVOLVED:challenge:double",
+          "Valkyrie Dimension:challenge:double",
+          "POSSESSION:challenge:double"
+        ]
+      }
+    ]
+  },
+  "vega": [
+    {
+      "name": "LIGHT COURSE",
+      "color": "#46aadc",
+      "charts": [
+        "Din Don Dan:expert:single",
+        "Nijiiro:expert:single",
+        "HAPPY☆ANGEL:expert:single"
+      ]
+    },
+    {
+      "name": "HEAVY COURSE",
+      "color": "#e6413a",
+      "charts": [
+        "Romancing Layer:expert:single",
+        "Debug Dance:expert:single",
+        "GROOVE 04:expert:single"
+      ]
+    },
+    {
+      "name": "EXTRA CHALLENGE",
+      "color": "#c846a6",
+      "charts": [
+        "MAX 360:challenge:single"
+      ]
+    }
+  ]
+}

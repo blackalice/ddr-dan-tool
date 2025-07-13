@@ -3,18 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import './SongCard.css';
 
-const difficultyMap = {
-    basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
-    difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
-    expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
-    challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
-};
-
-const difficultyMapDouble = {
-    basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
-    difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
-    expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
-    challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
+const difficultyDisplayMap = {
+    single: {
+        basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
+        difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
+        expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
+        challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
+    },
+    double: {
+        basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
+        difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
+        expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
+        challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
+    }
 };
 
 const getBpmRange = (bpm) => {
@@ -26,11 +27,13 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const SongCard = ({ song, playMode = 'single', setSelectedGame }) => {
+const SongCard = ({ song, setSelectedGame }) => {
   const { targetBPM, multipliers } = useContext(SettingsContext);
   const navigate = useNavigate();
 
   const calculation = useMemo(() => {
+    if (song.error) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
+    
     const numericTarget = Number(targetBPM) || 0;
     const bpmRange = getBpmRange(song.bpm);
     
@@ -50,14 +53,29 @@ const SongCard = ({ song, playMode = 'single', setSelectedGame }) => {
       maxSpeed: maxSpeed,
       isRange: bpmRange.min !== bpmRange.max
     };
-  }, [song.bpm, targetBPM, multipliers]);
+  }, [song.bpm, targetBPM, multipliers, song.error]);
 
-  const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
+  const difficultyInfo = song.mode && song.difficulty ? difficultyDisplayMap[song.mode]?.[song.difficulty] : null;
+
+  if (song.error) {
+    return (
+      <div className="song-card-link">
+        <div className="song-card error-card">
+          <div className="song-card-header">
+            <h3 className="song-title">{song.title}</h3>
+          </div>
+          <div className="song-details">
+            <p className="error-message">{song.error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="song-card-link" onClick={() => {
       setSelectedGame('all');
-      navigate(`/bpm?difficulty=${song.difficulty}#${encodeURIComponent(song.title)}`);
+      navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
     }}>
       <div className="song-card">
         <div className="song-card-header">
