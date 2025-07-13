@@ -20,7 +20,7 @@ const vegaData = [
     color: "#e6413a",
     songs: [
       { title: "Romancing Layer", level: 14, bpm: "150", difficulty: "expert" },
-      { title: "Debug Dance", level: 15, bpm: "151', difficulty: "expert" },
+      { title: "Debug Dance", level: 15, bpm: "151", difficulty: "expert" },
       { title: "GROOVE 04", level: 16, bpm: "155", difficulty: "expert" },
     ],
   },
