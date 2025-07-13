@@ -135,7 +135,27 @@ const DanSection = ({ danCourse, setSelectedGame }) => {
     );
 };
 
-const VegaPage = ({ setSelectedGame }) => {
+const FilterBar = ({ activeCourse, setCourse, courseLevels }) => (
+    <div className="filter-bar">
+        <div className="filter-group">
+            <h2 className="target-bpm-label vega-header-title">VEGA London DDR July 2025 Rankings</h2>
+            <div className="dan-select-wrapper vega-header-selector">
+                <select
+                    value={activeCourse}
+                    onChange={(e) => setCourse(e.target.value)}
+                    className="dan-select"
+                >
+                    <option value="All">All Courses</option>
+                    {courseLevels.map(course => (
+                        <option key={course} value={course}>{course}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
+    </div>
+);
+
+const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
   const [smData, setSmData] = useState({ files: [] });
 
   useEffect(() => {
@@ -146,9 +166,7 @@ const VegaPage = ({ setSelectedGame }) => {
   }, []);
 
   const coursesToShow = useMemo(() => {
-    if (smData.files.length === 0) return vegaData;
-
-    return vegaData.map(course => ({
+    let courses = vegaData.map(course => ({
       ...course,
       songs: course.songs.map(song => {
         const file = smData.files.find(f => f.title.toLowerCase() === song.title.toLowerCase());
@@ -156,14 +174,26 @@ const VegaPage = ({ setSelectedGame }) => {
         return { ...song, game };
       })
     }));
-  }, [smData]);
+
+    if (activeVegaCourse !== 'All') {
+      courses = courses.filter(course => course.dan.startsWith(activeVegaCourse));
+    }
+    
+    return courses;
+  }, [smData, activeVegaCourse]);
+
+  const courseLevels = useMemo(() => ["LIGHT", "HEAVY", "EXTRA"], []);
 
   return (
     <>
       
       <div className="app-container">
         <main>
-            <h1 style={{textAlign: 'center', marginTop: '1rem'}}>DDR A3 July 2025 Rankings</h1>
+            <FilterBar
+                activeCourse={activeVegaCourse}
+                setCourse={setActiveVegaCourse}
+                courseLevels={courseLevels}
+            />
           
           {coursesToShow.length > 0 ? (
              coursesToShow.map((course) => (
@@ -178,6 +208,11 @@ const VegaPage = ({ setSelectedGame }) => {
               <p style={{ color: 'var(--text-muted-color)' }}>No courses found for this filter.</p>
             </div>
           )}
+            <div className="vega-footer">
+                <a href="https://close.your.3y3s.net" target="_blank" rel="noopener noreferrer" className="vega-button">
+                    CLOSE.YOUR.3Y3S.NET
+                </a>
+            </div>
         </main>
       </div>
     </>

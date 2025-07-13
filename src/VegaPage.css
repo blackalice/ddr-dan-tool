@@ -24,6 +24,34 @@
     margin-left: 0.5rem;
 }
 
+.vega-header-title {
+    flex-basis: 66.66%;
+    text-align: left;
+}
+
+.vega-header-selector {
+    flex-basis: 33.33%;
+}
+
+.vega-footer {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.vega-button {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.2s;
+}
+
+.vega-button:hover {
+    background-color: var(--accent-color-light);
+}
+
 @media (max-width: 1024px) {
     .song-grid.three-items {
         grid-template-columns: repeat(2, 1fr);
@@ -33,5 +61,12 @@
 @media (max-width: 640px) {
     .song-grid.three-items {
         grid-template-columns: 1fr;
+    }
+    .vega-header-title {
+        flex-basis: 100%;
+        text-align: center;
+    }
+    .vega-header-selector {
+        flex-basis: 100%;
     }
 }

@@ -16,6 +16,7 @@ import './Tabs.css';
 function AppRoutes({
   playMode, setPlayMode,
   activeDan, setActiveDan,
+  activeVegaCourse, setActiveVegaCourse,
   selectedGame, setSelectedGame,
   selectedSong, setSelectedSong,
   smData,
@@ -63,7 +64,7 @@ function AppRoutes({
   return (
     <Routes>
       <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
-      <Route path="/vega" element={<VegaPage setSelectedGame={setSelectedGame} />} />
+      <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier />} />
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />
@@ -107,6 +108,9 @@ function App() {
   });
   const [activeDan, setActiveDan] = useState(() => {
     return localStorage.getItem('activeDan') || 'All';
+  });
+  const [activeVegaCourse, setActiveVegaCourse] = useState(() => {
+    return localStorage.getItem('activeVegaCourse') || 'All';
   });
   const [selectedSong, setSelectedSong] = useState(null);
   const [smData, setSmData] = useState({ games: [], files: [] });
@@ -202,6 +206,10 @@ function App() {
     localStorage.setItem('activeDan', activeDan);
   }, [activeDan]);
 
+  useEffect(() => {
+    localStorage.setItem('activeVegaCourse', activeVegaCourse);
+  }, [activeVegaCourse]);
+
   return (
     <div data-theme={theme}>
       <Router>
@@ -211,6 +219,7 @@ function App() {
             <AppRoutes
               playMode={playMode} setPlayMode={setPlayMode}
               activeDan={activeDan} setActiveDan={setActiveDan}
+              activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse}
               selectedGame={selectedGame} setSelectedGame={setSelectedGame}
               selectedSong={selectedSong} setSelectedSong={setSelectedSong}
               smData={smData}
