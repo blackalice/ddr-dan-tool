@@ -9,6 +9,7 @@ import { StepchartPage } from './components/StepchartPage';
 import { parseSm } from './utils/smParser.js';
 import SongPicker from './components/SongPicker.jsx';
 import DanPage from './DanPage.jsx';
+import VegaPage from './VegaPage.jsx';
 import './App.css';
 import './Tabs.css';
 
@@ -58,6 +59,7 @@ function AppRoutes({
   return (
     <Routes>
       <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+      <Route path="/vega" element={<VegaPage setSelectedGame={setSelectedGame} />} />
       <Route path="/multiplier" element={<Multiplier />} />
       <Route path="/" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />
       <Route path="/bpm" element={<BPMTool selectedGame={selectedGame} setSelectedGame={setSelectedGame} selectedSong={selectedSong} setSelectedSong={setSelectedSong} smData={smData} songOptions={songOptions} inputValue={inputValue} setInputValue={setInputValue} simfileData={simfileData} currentChart={currentChart} setCurrentChart={setCurrentChart} />} />

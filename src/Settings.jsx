@@ -37,7 +37,21 @@ const Settings = () => {
                                 id="targetBPM"
                                 type="number"
                                 value={targetBPM}
-                                onChange={(e) => setTargetBPM(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'e' || e.key === 'E') {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                onChange={(e) => {
+                                    if (e.target.value === '') {
+                                        setTargetBPM('');
+                                        return;
+                                    }
+                                    let value = parseInt(e.target.value, 10);
+                                    if (value < 1) value = 1;
+                                    if (value > 1000) value = 1000;
+                                    setTargetBPM(value);
+                                }}
                                 className="settings-input"
                                 placeholder="e.g. 300"
                             />
