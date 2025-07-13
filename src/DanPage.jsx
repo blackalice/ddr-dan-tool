@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SettingsContext } from './contexts/SettingsContext.jsx';
+import React, { useState, useMemo, useEffect } from 'react';
+import SongCard from './components/SongCard.jsx';
 import './App.css';
+import './components/SongCard.css';
 
 // --- Data Structure ---
 const ddrDanData = {
@@ -244,79 +244,6 @@ const difficultyMapDouble = {
     challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
 };
 
-const getBpmRange = (bpm) => {
-  if (typeof bpm !== 'string') return { min: 0, max: 0 };
-  const parts = bpm.split('-').map(Number);
-  if (parts.length === 1) {
-    return { min: parts[0], max: parts[0] };
-  }
-  return { min: Math.min(...parts), max: Math.max(...parts) };
-};
-
-const SongCard = ({ song, playMode, setSelectedGame }) => {
-  const { targetBPM, multipliers } = useContext(SettingsContext);
-  const navigate = useNavigate();
-
-  const calculation = useMemo(() => {
-    const numericTarget = Number(targetBPM) || 0;
-    const bpmRange = getBpmRange(song.bpm);
-    
-    if (bpmRange.max === 0) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
-
-    const idealMultiplier = numericTarget / bpmRange.max;
-    const closestMultiplier = multipliers.reduce((prev, curr) => 
-      Math.abs(curr - idealMultiplier) < Math.abs(prev - idealMultiplier) ? curr : prev
-    );
-
-    const minSpeed = (bpmRange.min * closestMultiplier).toFixed(0);
-    const maxSpeed = (bpmRange.max * closestMultiplier).toFixed(0);
-
-    return {
-      modifier: closestMultiplier,
-      minSpeed: minSpeed,
-      maxSpeed: maxSpeed,
-      isRange: bpmRange.min !== bpmRange.max
-    };
-  }, [song.bpm, targetBPM, multipliers]);
-
-  const difficultyInfo = playMode === 'single' ? difficultyMap[song.difficulty] : difficultyMapDouble[song.difficulty];
-
-  return (
-    <div className="song-card-link" onClick={() => {
-      setSelectedGame('all');
-      navigate(`/bpm?difficulty=${song.difficulty}#${encodeURIComponent(song.title)}`);
-    }}>
-      <div className="song-card">
-        <h3 className="song-title">{song.title}</h3>
-        <div className="song-details">
-          <div>
-            <span className="song-bpm">BPM: {song.bpm}</span>
-            <div className="song-calculation">
-              <span className="song-speed">
-                {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
-              </span>
-              <span className="song-separator">@</span>
-              <span className="song-modifier">{calculation.modifier}x</span>
-            </div>
-          </div>
-          <div className="song-level-container">
-              <span className="song-level">Lv.{song.level}</span>
-              {difficultyInfo && (
-                   <span 
-                      className="difficulty-badge"
-                      style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
-                  >
-                      {difficultyInfo.name}
-                  </span>
-              )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
 const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
   <section className="dan-section">
     <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
@@ -365,11 +292,29 @@ const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
 );
 
 const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) => {
+  const [smData, setSmData] = useState({ files: [] });
+
+  useEffect(() => {
+    fetch('/sm-files.json')
+        .then(response => response.json())
+        .then(data => setSmData(data))
+        .catch(error => console.error('Error fetching sm-files.json:', error));
+  }, []);
+
   const coursesToShow = useMemo(() => {
     const courses = ddrDanData[playMode];
-    if (activeDan === 'All') return courses;
-    return courses.filter(course => course.dan === activeDan);
-  }, [playMode, activeDan]);
+    const coursesWithGames = courses.map(course => ({
+      ...course,
+      songs: course.songs.map(song => {
+        const file = smData.files.find(f => f.title.toLowerCase() === song.title.toLowerCase());
+        const game = file ? file.path.split('/')[1] : null;
+        return { ...song, game };
+      })
+    }));
+
+    if (activeDan === 'All') return coursesWithGames;
+    return coursesWithGames.filter(course => course.dan === activeDan);
+  }, [playMode, activeDan, smData]);
   
   const danLevels = useMemo(() => ddrDanData[playMode].map(d => d.dan), [playMode]);
 

@@ -6,23 +6,7 @@
     grid-template-columns: 1fr;
 }
 
-.song-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
-}
 
-.game-chip {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-muted-color);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    margin-left: 0.5rem;
-}
 
 .vega-header-title {
     flex-basis: 66.66%;
