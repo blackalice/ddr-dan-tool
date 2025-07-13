@@ -29,6 +29,9 @@ function AppRoutes({
 
   useEffect(() => {
     const hash = location.hash;
+    const queryParams = new URLSearchParams(location.search);
+    const difficulty = queryParams.get('difficulty');
+
     if (hash) {
       const songTitle = decodeURIComponent(hash.substring(1));
       if (songTitle && smData.files.length > 0) {
@@ -49,12 +52,13 @@ function AppRoutes({
             value: matchedSong.path,
             label: matchedSong.title,
             title: matchedSong.title,
-            titleTranslit: matchedSong.titleTranslit
+            titleTranslit: matchedSong.titleTranslit,
+            difficulty,
           });
         }
       }
     }
-  }, [location.hash, smData, selectedSong, setSelectedSong]);
+  }, [location.hash, location.search, smData, selectedSong, setSelectedSong]);
 
   return (
     <Routes>
@@ -162,16 +166,25 @@ function App() {
           setSimfileData(simfile);
 
           if (parsed.availableTypes && parsed.availableTypes.length > 0) {
-            const defaultDifficultyOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
-            let defaultChart = null;
-            for (const d of defaultDifficultyOrder) {
-                defaultChart = parsed.availableTypes.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-                if (defaultChart) break;
+            let chartToSelect = null;
+            if (selectedSong.difficulty) {
+              chartToSelect = parsed.availableTypes.find(c => c.difficulty.toLowerCase() === selectedSong.difficulty.toLowerCase());
             }
-            if (!defaultChart) {
-                defaultChart = parsed.availableTypes[0];
+            
+            if (chartToSelect) {
+              setCurrentChart(chartToSelect);
+            } else {
+              const defaultDifficultyOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+              let defaultChart = null;
+              for (const d of defaultDifficultyOrder) {
+                  defaultChart = parsed.availableTypes.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+                  if (defaultChart) break;
+              }
+              if (!defaultChart) {
+                  defaultChart = parsed.availableTypes[0];
+              }
+              setCurrentChart(defaultChart);
             }
-            setCurrentChart(defaultChart);
           }
         })
         .catch(error => console.error('Error fetching sm file:', error));
