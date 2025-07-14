@@ -35,10 +35,11 @@ export function StepchartPage({
   simfile,
   currentType: initialCurrentType,
   setCurrentChart,
+  isCollapsed,
+  setIsCollapsed,
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const [speedmod, setSpeedmod] = useState(speedmods[0]);
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const isLoading = !simfile;
 
@@ -99,7 +100,7 @@ export function StepchartPage({
         <div
           key={groups.length}
           className={styles.stepchartSectionGroup}
-          style={{ zIndex: 99999 - groups.length }}
+          style={{ zIndex: 999 - groups.length }}
         >
           {sectionChunk}
         </div>

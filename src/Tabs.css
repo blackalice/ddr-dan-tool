@@ -80,8 +80,8 @@
 
 @media (max-width: 640px) {
     .tabs-container {
-        padding: 0.5rem;
         margin-bottom:1rem;
+        
     }
     .tab {
         flex-grow: 1;

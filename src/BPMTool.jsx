@@ -123,11 +123,18 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(() => {
+        const savedState = localStorage.getItem('isCollapsed');
+        return savedState ? JSON.parse(savedState) : false;
+    });
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [view, setView] = useState('bpm');
+
+    useEffect(() => {
+        localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
+    }, [isCollapsed]);
 
     const isLoading = !simfileData;
 
@@ -299,7 +306,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
-        menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)' }),
+        menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)', zIndex: 1000 }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
             backgroundColor: isSelected ? 'var(--card-hover-bg-color)' : isFocused ? 'var(--card-bg-color)' : null,
@@ -510,6 +517,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     simfile={simfileData}
                     currentType={currentChart ? currentChart.slug : (simfileData?.availableTypes?.[0]?.slug)}
                     setCurrentChart={setCurrentChart}
+                    isCollapsed={isCollapsed}
+                    setIsCollapsed={setIsCollapsed}
                 />
             </div>
             )}
