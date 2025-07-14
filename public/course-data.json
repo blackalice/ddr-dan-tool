@@ -16,8 +16,8 @@
         "color": "#6fbe44",
         "charts": [
           "Electric Dance System Music:difficult:single",
-          "Jyuuniseiza no Seiiki:difficult:single",
-          "Liberate:difficult:single",
+          "十二星座の聖域:difficult:single",
+          "siberite:difficult:single",
           "Show Me Your Moves:expert:single"
         ]
       },
@@ -105,7 +105,7 @@
         "name": "Kaiden (皆伝)",
         "color": "#f8d45a",
         "charts": [
-          "Lachryma(Re:Queen’M):challenge:single",
+          "Lachryma《Re:Queen’M》:challenge:single",
           "Over The “Period”:challenge:single",
           "Valkyrie Dimension:challenge:single",
           "ENDYMION:challenge:single"
@@ -117,7 +117,7 @@
         "name": "1st Dan (初段)",
         "color": "#6fbe44",
         "charts": [
-          "Sayonara Trip ~Natsuhiko EDM edition~:difficult:double",
+          "さよならトリップ ～夏陽 EDM edition～:difficult:double",
           "Second Heaven:difficult:double",
           "Snow prism:difficult:double",
           "TRIP MACHINE:difficult:double"
@@ -217,7 +217,7 @@
         "name": "Kaiden (皆伝)",
         "color": "#f8d45a",
         "charts": [
-          "Blow My Mind:challenge:double",
+          "Blew My Mind:challenge:double",
           "Tohoku EVOLVED:challenge:double",
           "Valkyrie Dimension:challenge:double",
           "POSSESSION:challenge:double"

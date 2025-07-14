@@ -63,7 +63,10 @@ export const loadCourseData = async () => {
         for (const course of courses) {
             const processedSongs = [];
             for (const shortCode of course.charts) {
-                const [title, difficulty, mode] = shortCode.split(':');
+                const parts = shortCode.split(':');
+                const mode = parts.pop();
+                const difficulty = parts.pop();
+                const title = parts.join(':');
                 
                 const songFile = findSongFile(title, smFilesCache);
                 if (!songFile) {

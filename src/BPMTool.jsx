@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo, useContext } from 'react';
+import React, { useState, useMemo, useContext, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
@@ -118,9 +117,8 @@ const getBpmRange = (bpm) => {
     return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong, smData, simfileData, currentChart, setCurrentChart }) => {
+const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame }) => {
     const { targetBPM, multipliers, apiKey } = useContext(SettingsContext);
-    const navigate = useNavigate();
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -136,15 +134,6 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    const handleSongSelection = (song) => {
-        setSelectedSong(song);
-        if (song) {
-            navigate(`/bpm#${encodeURIComponent(song.title)}`);
-        } else {
-            navigate('/bpm');
-        }
-    };
 
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData } = useMemo(() => {
         if (!simfileData) {
@@ -175,7 +164,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         if (currentChart && simfileData.charts) {
             const chartDetails = simfileData.charts[currentChart.slug];
             if (chartDetails) {
-                const bpmChanges = chartDetails.bpm; // Use the pre-parsed BPM data
+                const bpmChanges = chartDetails.bpm;
                 const lastBeat = getLastBeat(chartDetails.notes);
                 
                 if (bpmChanges && bpmChanges.length > 0) {
@@ -324,7 +313,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
     async function sendToGemini(imageDataUrl) {
         setIsProcessing(true);
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite-preview-06-17" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
         const prompt = "From the attached image of a rhythm game screen, identify the song title. Return only the song title and nothing else. If the title is not visible, return 'Unknown'.";
         const image = { inlineData: { data: imageDataUrl.split(',')[1], mimeType: "image/jpeg" } };
         try {
@@ -336,7 +325,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
             const matchedSong = allSongOptions.find(option => option.title.toLowerCase() === text.toLowerCase() || (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase()));
             if (matchedSong) {
                 setSelectedGame('all');
-                setSelectedSong(matchedSong);
+                onSongSelect(matchedSong);
             }
         } catch (error) {
             console.error("Error with Gemini API:", error);
@@ -350,7 +339,7 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
         <div className="app-container">
             <div className="selection-container">
                 <div className="controls-container">
-                    <select className="game-select" value={selectedGame} onChange={(e) => { setSelectedGame(e.target.value); setSelectedSong(null); }}>
+                    <select className="game-select" value={selectedGame} onChange={(e) => { setSelectedGame(e.target.value); onSongSelect(null); }}>
                         <option value="all">All Games</option>
                         {smData.games.map(game => (<option key={game} value={game}>{game}</option>))}
                     </select>
@@ -359,8 +348,8 @@ const BPMTool = ({ selectedGame, setSelectedGame, selectedSong, setSelectedSong,
                             <Select
                                 className="song-select"
                                 options={songOptions}
-                                value={selectedSong}
-                                onChange={handleSongSelection}
+                                value={simfileData ? { label: simfileData.title.titleName, value: simfileData.title.titleName } : null}
+                                onChange={(selected) => onSongSelect(selected)}
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
                                 isClearable

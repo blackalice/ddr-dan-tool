@@ -74,7 +74,6 @@ const SongCard = ({ song, setSelectedGame }) => {
 
   return (
     <div className="song-card-link" onClick={() => {
-      setSelectedGame('all');
       navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
     }}>
       <div className="song-card">
