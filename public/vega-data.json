@@ -1,0 +1,91 @@
+{
+  "2025-07": [
+    {
+      "name": "LIGHT COURSE",
+      "color": "#46aadc",
+      "charts": [
+        "Din Don Dan:expert:single",
+        "Nijiiro:expert:single",
+        "HAPPY☆ANGEL:expert:single"
+      ],
+      "songs": [
+        {
+          "title": "Din Don Dan",
+          "level": 10,
+          "bpm": "140",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "2014"
+        },
+        {
+          "title": "虹色",
+          "level": 11,
+          "bpm": "160",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "Supernova"
+        },
+        {
+          "title": "HAPPY☆ANGEL",
+          "level": 12,
+          "bpm": "179-180",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "Supernova"
+        }
+      ]
+    },
+    {
+      "name": "HEAVY COURSE",
+      "color": "#e6413a",
+      "charts": [
+        "Romancing Layer:expert:single",
+        "Debug Dance:expert:single",
+        "GROOVE 04:expert:single"
+      ],
+      "songs": [
+        {
+          "title": "Romancing Layer",
+          "level": 14,
+          "bpm": "150",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "2014"
+        },
+        {
+          "title": "Debug Dance",
+          "level": 15,
+          "bpm": "151",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "A3"
+        },
+        {
+          "title": "GROOVE 04",
+          "level": 16,
+          "bpm": "155",
+          "difficulty": "expert",
+          "mode": "single",
+          "game": "A3"
+        }
+      ]
+    },
+    {
+      "name": "EXTRA CHALLENGE",
+      "color": "#c846a6",
+      "charts": [
+        "MAX 360:challenge:single"
+      ],
+      "songs": [
+        {
+          "title": "MAX 360",
+          "level": 19,
+          "bpm": "180-720",
+          "difficulty": "challenge",
+          "mode": "single",
+          "game": "A"
+        }
+      ]
+    }
+  ]
+}

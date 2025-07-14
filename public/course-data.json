@@ -225,31 +225,33 @@
       }
     ]
   },
-  "vega": [
-    {
-      "name": "LIGHT COURSE",
-      "color": "#46aadc",
-      "charts": [
-        "Din Don Dan:expert:single",
-        "Nijiiro:expert:single",
-        "HAPPY☆ANGEL:expert:single"
-      ]
-    },
-    {
-      "name": "HEAVY COURSE",
-      "color": "#e6413a",
-      "charts": [
-        "Romancing Layer:expert:single",
-        "Debug Dance:expert:single",
-        "GROOVE 04:expert:single"
-      ]
-    },
-    {
-      "name": "EXTRA CHALLENGE",
-      "color": "#c846a6",
-      "charts": [
-        "MAX 360:challenge:single"
-      ]
-    }
-  ]
+  "vega": {
+    "2025-07": [
+      {
+        "name": "LIGHT COURSE",
+        "color": "#46aadc",
+        "charts": [
+          "Din Don Dan:expert:single",
+          "Nijiiro:expert:single",
+          "HAPPY☆ANGEL:expert:single"
+        ]
+      },
+      {
+        "name": "HEAVY COURSE",
+        "color": "#e6413a",
+        "charts": [
+          "Romancing Layer:expert:single",
+          "Debug Dance:expert:single",
+          "GROOVE 04:expert:single"
+        ]
+      },
+      {
+        "name": "EXTRA CHALLENGE",
+        "color": "#c846a6",
+        "charts": [
+          "MAX 360:challenge:single"
+        ]
+      }
+    ]
+  }
 }

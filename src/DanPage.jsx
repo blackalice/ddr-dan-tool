@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import SongCard from './components/SongCard.jsx';
-import { loadCourseData } from './utils/course-loader.js';
+import { loadDanData } from './utils/course-loader.js';
 import './App.css';
 import './components/SongCard.css';
 
@@ -58,9 +58,9 @@ const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGa
   useEffect(() => {
     const fetchCourses = async () => {
       setIsLoading(true);
-      const courseData = await loadCourseData();
-      if (courseData && courseData.dan) {
-        setDanCourses(courseData.dan);
+      const courseData = await loadDanData();
+      if (courseData) {
+        setDanCourses(courseData);
       }
       setIsLoading(false);
     };

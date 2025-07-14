@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
-import { loadCourseData } from './utils/course-loader.js';
+import { loadVegaData } from './utils/course-loader.js';
 import './App.css';
 import './VegaPage.css';
 
@@ -23,36 +23,54 @@ const DanSection = ({ danCourse, setSelectedGame }) => {
     );
 };
 
-const FilterBar = ({ activeCourse, setCourse, courseLevels }) => (
+const FilterBar = ({ activeCourse, setCourse, courseLevels, selectedMonth, setSelectedMonth, availableMonths }) => (
     <div className="filter-bar">
         <div className="filter-group">
-            <h2 className="target-bpm-label vega-header-title">VEGA London DDR July 2025 Rankings</h2>
+            <h2 className="target-bpm-label vega-header-title">VEGA London DDR Rankings</h2>
             <div className="dan-select-wrapper vega-header-selector">
-                <select
-                    value={activeCourse}
-                    onChange={(e) => setCourse(e.target.value)}
-                    className="dan-select"
-                >
-                    <option value="All">All Courses</option>
-                    {courseLevels.map(course => (
-                        <option key={course} value={course}>{course}</option>
-                    ))}
-                </select>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <select
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                        className="dan-select"
+                    >
+                        {availableMonths.map(month => (
+                            <option key={month} value={month}>{new Date(month).toLocaleString('default', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</option>
+                        ))}
+                    </select>
+                    <select
+                        value={activeCourse}
+                        onChange={(e) => setCourse(e.target.value)}
+                        className="dan-select"
+                    >
+                        <option value="All">All Courses</option>
+                        {courseLevels.map(course => (
+                            <option key={course} value={course}>{course}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
         </div>
     </div>
 );
 
 const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
-  const [vegaCourses, setVegaCourses] = useState([]);
+  const [vegaData, setVegaData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState('');
+  
+  const availableMonths = useMemo(() => Object.keys(vegaData).sort((a, b) => new Date(b) - new Date(a)), [vegaData]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       setIsLoading(true);
-      const courseData = await loadCourseData();
-      if (courseData && courseData.vega) {
-        setVegaCourses(courseData.vega);
+      const courseData = await loadVegaData();
+      if (courseData) {
+        setVegaData(courseData);
+        const latestMonth = Object.keys(courseData).sort((a, b) => new Date(b) - new Date(a))[0];
+        if (latestMonth) {
+            setSelectedMonth(latestMonth);
+        }
       }
       setIsLoading(false);
     };
@@ -60,9 +78,10 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
   }, []);
 
   const coursesToShow = useMemo(() => {
-    if (activeVegaCourse === 'All') return vegaCourses;
-    return vegaCourses.filter(course => course.name.startsWith(activeVegaCourse));
-  }, [vegaCourses, activeVegaCourse]);
+    const coursesForMonth = vegaData[selectedMonth] || [];
+    if (activeVegaCourse === 'All') return coursesForMonth;
+    return coursesForMonth.filter(course => course.name.startsWith(activeVegaCourse));
+  }, [vegaData, selectedMonth, activeVegaCourse]);
 
   const courseLevels = useMemo(() => ["LIGHT", "HEAVY", "EXTRA"], []);
 
@@ -74,6 +93,9 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
                 activeCourse={activeVegaCourse}
                 setCourse={setActiveVegaCourse}
                 courseLevels={courseLevels}
+                selectedMonth={selectedMonth}
+                setSelectedMonth={setSelectedMonth}
+                availableMonths={availableMonths}
             />
           
           {isLoading ? (

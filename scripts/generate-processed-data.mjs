@@ -395,7 +395,9 @@ function parseSm(sm) {
 const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
-const OUTPUT_PATH = path.join(PUBLIC_DIR, 'processed-data.json');
+const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
+const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
+
 
 const readJson = async (filePath) => {
     const content = await fs.readFile(filePath, 'utf-8');
@@ -493,20 +495,25 @@ async function main() {
         const smFiles = await readJson(SM_FILES_PATH);
         const courseData = await readJson(COURSE_DATA_PATH);
 
+        // Process Dan data
         const processedDanSingle = await processCourseList(courseData.dan.single, smFiles);
         const processedDanDouble = await processCourseList(courseData.dan.double, smFiles);
-        const processedVega = await processCourseList(courseData.vega, smFiles);
-
-        const result = {
-            dan: {
-                single: processedDanSingle,
-                double: processedDanDouble,
-            },
-            vega: processedVega,
+        const danResult = {
+            single: processedDanSingle,
+            double: processedDanDouble,
         };
+        await fs.writeFile(DAN_OUTPUT_PATH, JSON.stringify(danResult, null, 2));
+        console.log(`Successfully generated Dan data at ${DAN_OUTPUT_PATH}`);
 
-        await fs.writeFile(OUTPUT_PATH, JSON.stringify(result, null, 2));
-        console.log(`Successfully generated processed data at ${OUTPUT_PATH}`);
+        // Process Vega data
+        const vegaResult = {};
+        for (const month in courseData.vega) {
+            if (Object.hasOwnProperty.call(courseData.vega, month)) {
+                vegaResult[month] = await processCourseList(courseData.vega[month], smFiles);
+            }
+        }
+        await fs.writeFile(VEGA_OUTPUT_PATH, JSON.stringify(vegaResult, null, 2));
+        console.log(`Successfully generated Vega data at ${VEGA_OUTPUT_PATH}`);
 
     } catch (error) {
         console.error('Error generating processed data:', error);
