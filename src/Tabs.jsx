@@ -15,27 +15,29 @@ const Tabs = () => {
 
     return (
         <nav className="tabs-container">
-            <div className="logo-container">
-                <Logo />
-            </div>
-            <div className="tabs-group">
-                <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                    BPM
-                </NavLink>
+            <div className="tabs-content">
+                <div className="logo-container">
+                    <Logo />
+                </div>
+                <div className="tabs-group">
+                    <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        BPM
+                    </NavLink>
 
-                <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                    Dan
-                </NavLink>
-                <NavLink to={`/vega${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                    <FontAwesomeIcon icon={faTrophy} />
-                </NavLink>
-                <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                    Multi
+                    <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        Dan
+                    </NavLink>
+                    <NavLink to={`/vega${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        <FontAwesomeIcon icon={faTrophy} />
+                    </NavLink>
+                    <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        Multi
+                    </NavLink>
+                </div>
+                <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
+                    <FontAwesomeIcon icon={faCog} />
                 </NavLink>
             </div>
-            <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
-                <FontAwesomeIcon icon={faCog} />
-            </NavLink>
         </nav>
     );
 };

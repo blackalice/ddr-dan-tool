@@ -110,9 +110,10 @@ function AppRoutes() {
 
   return (
     <div data-theme={theme}>
+                <Tabs />
+
       <div className="app-container">
         <div className="app-content">
-          <Tabs />
           <Routes>
             <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />

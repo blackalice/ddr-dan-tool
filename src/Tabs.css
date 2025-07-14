@@ -1,13 +1,16 @@
 .tabs-container {
+    background-color: var(--bg-color-light);
+    margin-bottom:1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.tabs-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-color-light);
-    border-radius: 0.5rem;
+    max-width: 1152px;
+    margin: 0 auto;
     padding: 0.5rem;
-    margin: 1rem 0;
-    
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
 .logo-container {
@@ -25,6 +28,7 @@
     display: flex;
     justify-content: center;
     flex-grow: 1;
+    
 }
 
 .settings-tab {
@@ -38,6 +42,7 @@
     color: var(--text-muted-color);
     text-decoration: none;
     transition: all 0.2s ease-in-out;
+    
 }
 
 .settings-tab:hover {
@@ -59,6 +64,7 @@
     color: var(--text-muted-color);
     font-weight: 600;
     transition: all 0.2s ease-in-out;
+    
 }
 
 .tab:hover {
@@ -75,7 +81,7 @@
 @media (max-width: 640px) {
     .tabs-container {
         padding: 0.5rem;
-        margin: 1rem 0.25rem;
+        margin-bottom:1rem;
     }
     .tab {
         flex-grow: 1;
