@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
 import { loadVegaData } from './utils/course-loader.js';
 import './App.css';
@@ -121,6 +123,14 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
                 </a>
             </div>
         </main>
+      </div>
+      <div className="mobile-record-buttons">
+        <a href="https://close.your.3y3s.net/export/replay-ddr-01-main" target="_blank" rel="noopener noreferrer" className="record-button">
+            <FontAwesomeIcon icon={faVideo} /> Upstairs
+        </a>
+        <a href="https://close.your.3y3s.net/export/replay-ddr-02-main" target="_blank" rel="noopener noreferrer" className="record-button">
+            <FontAwesomeIcon icon={faVideo} /> Downstairs
+        </a>
       </div>
     </>
   );

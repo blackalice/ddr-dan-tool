@@ -36,6 +36,11 @@
     background-color: var(--accent-color-light);
 }
 
+
+.mobile-record-buttons {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .song-grid.three-items {
         grid-template-columns: repeat(2, 1fr);
@@ -43,11 +48,42 @@
 }
 
 @media (max-width: 640px) {
+    main {
+        padding-bottom: 5rem;
+    }
     .song-grid.three-items {
         grid-template-columns: 1fr;
     }
     .vega-header-title {
         flex-basis: 100%;
         text-align: center;
+    }
+    .mobile-record-buttons {
+        display: flex;
+        gap: 1rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background-color: var(--background-color-transparent);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+    }
+    .record-button {
+        flex-grow: 1;
+        background-color: var(--accent-color);
+        color: var(--text-color);
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 700;
+        transition: background-color 0.2s;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
     }
 }
