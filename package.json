@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-sm-list.mjs && vite",
-    "build": "node scripts/generate-sm-list.mjs && vite build",
+    "dev": "node scripts/generate-processed-data.mjs && vite",
+    "build": "vite build",
+    "prebuild": "node scripts/generate-processed-data.mjs",
+    "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
