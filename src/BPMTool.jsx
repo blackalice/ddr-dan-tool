@@ -130,11 +130,18 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [view, setView] = useState('bpm');
+    const [view, setView] = useState(() => {
+        const savedView = localStorage.getItem('bpmToolView');
+        return savedView ? JSON.parse(savedView) : 'bpm';
+    });
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
     }, [isCollapsed]);
+
+    useEffect(() => {
+        localStorage.setItem('bpmToolView', JSON.stringify(view));
+    }, [view]);
 
     const isLoading = !simfileData;
 
