@@ -3,6 +3,9 @@ import { parseSm } from './smParser.js';
 // --- Data Cache ---
 let smFilesCache = null;
 let courseDataCache = null;
+let processedDataCache = null; // In-memory cache for the current session
+
+const CACHE_KEY = 'processedCourseData';
 
 // --- Utility Functions ---
 const fetchJson = async (url) => {
@@ -44,6 +47,24 @@ const findSongFile = (title, smFiles) => {
 
 // --- Main Data Loading Logic ---
 export const loadCourseData = async () => {
+    // 1. Try loading from localStorage first for persistence across page loads
+    try {
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) {
+            console.log("Loaded processed course data from localStorage.");
+            processedDataCache = JSON.parse(cachedData);
+            return processedDataCache;
+        }
+    } catch (error) {
+        console.error("Failed to read from localStorage:", error);
+    }
+
+    // 2. If not in localStorage, check the in-memory cache (for the current session)
+    if (processedDataCache) {
+        return processedDataCache;
+    }
+
+    // 3. If no cache exists, fetch and process the data
     if (!smFilesCache) {
         smFilesCache = await fetchJson('/sm-files.json');
     }
@@ -128,11 +149,22 @@ export const loadCourseData = async () => {
     const processedDanDouble = await processCourseList(courseDataCache.dan.double);
     const processedVega = await processCourseList(courseDataCache.vega);
 
-    return {
+    const result = {
         dan: {
             single: processedDanSingle,
             double: processedDanDouble,
         },
         vega: processedVega,
     };
+
+    // 4. Store the result in both caches
+    processedDataCache = result; // In-memory cache
+    try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(result));
+        console.log("Saved processed course data to localStorage.");
+    } catch (error) {
+        console.error("Failed to save to localStorage:", error);
+    }
+
+    return result;
 };
