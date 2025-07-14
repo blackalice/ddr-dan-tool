@@ -20,7 +20,7 @@ const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
 const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
   <div className="filter-bar">
     <div className="filter-group">
-      <div className="play-mode-toggle">
+      <div className="play-mode-toggle dan-toggle">
         <button
           onClick={() => setMode('single')}
           className={activeMode === 'single' ? 'active' : ''}

@@ -7,7 +7,6 @@ import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './components/DifficultyMeter';
 import Camera from './Camera';
-import { ToggleBar } from './components/ToggleBar.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import './BPMTool.css';
 
@@ -347,13 +346,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             <div className="selection-container">
                 <div className="controls-container">
                     <div className="top-row">
-                        <ToggleBar
-                            className="view-toggle"
-                            namespace="view"
-                            entries={['BPM', 'Chart']}
-                            onToggle={handleToggle}
-                            checkedIndex={view === 'bpm' ? 0 : 1}
-                        />
+                        <div className="play-mode-toggle">
+                            <button onClick={() => setView('bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
+                            <button onClick={() => setView('chart')} className={view === 'chart' ? 'active' : ''}>Chart</button>
+                        </div>
                         <select className="game-select" value={selectedGame} onChange={(e) => { setSelectedGame(e.target.value); onSongSelect(null); }}>
                             <option value="all">All Games</option>
                             {smData.games.map(game => (<option key={game} value={game}>{game}</option>))}

@@ -307,13 +307,15 @@ body {
 	background-color: var(--card-hover-bg-color);
 	color: var(--text-color);
 }
+
 .play-mode-toggle button.active {
   color: var(--text-color);
+  background-color: var(--accent-color);
 }
-.play-mode-toggle button:first-of-type.active {
+.play-mode-toggle.dan-toggle button:first-of-type.active {
   background-color: var(--pink-color);
 }
-.play-mode-toggle button:last-of-type.active {
+.play-mode-toggle.dan-toggle button:last-of-type.active {
   background-color: var(--blue-color);
 }
 
