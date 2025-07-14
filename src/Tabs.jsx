@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator } from '@fortawesome/free-solid-svg-icons';
 import './Tabs.css';
 
 const Logo = () => (
@@ -21,7 +21,7 @@ const Tabs = () => {
                 </div>
                 <div className="tabs-group">
                     <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        BPM
+                        Charts
                     </NavLink>
 
                     <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
@@ -31,7 +31,7 @@ const Tabs = () => {
                         <FontAwesomeIcon icon={faTrophy} />
                     </NavLink>
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        Multi
+                        <FontAwesomeIcon icon={faCalculator} />
                     </NavLink>
                 </div>
                 <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
