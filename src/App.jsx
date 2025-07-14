@@ -5,7 +5,6 @@ import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
-import { StepchartPage } from './components/StepchartPage';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
@@ -121,13 +120,6 @@ function AppRoutes() {
             <Route path="/" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/stepchart" element={
-              <StepchartPage 
-                simfile={simfileData} 
-                currentType={currentChart ? currentChart.slug : (simfileData?.availableTypes?.[0]?.slug)}
-                setCurrentChart={handleChartSelect}
-              />
-            } />
           </Routes>
         </div>
         <footer className="footer">

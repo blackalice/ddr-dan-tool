@@ -22,9 +22,7 @@ const Tabs = () => {
                 <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     BPM
                 </NavLink>
-                <NavLink to={`/stepchart${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                    Chart
-                </NavLink>
+
                 <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                     Dan
                 </NavLink>

@@ -17,6 +17,7 @@
     "6thMix",
     "5thMix",
     "4thMix Plus",
+    "4thMix",
     "3rdMix",
     "2ndMix",
     "DDR",
@@ -1391,6 +1392,261 @@
     {
       "path": "sm/3rdMix/XANADU.sm",
       "title": "XANADU",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/.59.sm",
+      "title": ".59",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/1,2,3,4, 007.sm",
+      "title": "1,2,3,4, 007",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/B4U.sm",
+      "title": "B4U",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/BABY BABY GIMME YOUR LOVE.sm",
+      "title": "BABY BABY GIMME YOUR LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/BOYS (EURO MIX).sm",
+      "title": "BOYS (EURO MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/BURNIN' THE FLOOR.sm",
+      "title": "BURNIN' THE FLOOR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/CAN'T STOP FALLIN' IN LOVE.sm",
+      "title": "CAN'T STOP FALLIN' IN LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/CELEBRATE NITE.sm",
+      "title": "CELEBRATE NITE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/DAM DARIRAM (KCP MIX).sm",
+      "title": "DAM DARIRAM (KCP MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Don't Stop!~AMD 2nd MIX~.sm",
+      "title": "Don't Stop!～AMD 2nd MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/DREAM A DREAM.sm",
+      "title": "DREAM A DREAM",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/DROP OUT.sm",
+      "title": "DROP OUT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/EAT YOU UP.sm",
+      "title": "EAT YOU UP",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/era (nostalmix).sm",
+      "title": "era (nostalmix)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/FURUHATA'S THEME.sm",
+      "title": "FURUHATA'S THEME",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Get me in your sight (AMD CANCUN MIX).sm",
+      "title": "Get me in your sight (AMD CANCUN MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/GOTCHA (The Theme From STARSKY & HUTCH).sm",
+      "title": "GOTCHA (The Theme From STARSKY & HUTCH)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/HAVE YOU NEVER BEEN MELLOW (MM GROOVIN MIX).sm",
+      "title": "HAVE YOU NEVER BEEN MELLOW (MM GROOVIN MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/HERO (HAPPY GRANDALE MIX).sm",
+      "title": "HERO (HAPPY GRANDALE MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/HIGHER.sm",
+      "title": "HIGHER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Holic.sm",
+      "title": "Holic",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/HYPNOTIC CRISIS.sm",
+      "title": "HYPNØTIC CRISIS",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/HYSTERIA.sm",
+      "title": "HYSTERIA",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/IF YOU WERE HERE (B4 ZA BEAT MIX).sm",
+      "title": "IF YOU WERE HERE (B4 ZA BEAT MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/IN THE HEAT OF THE NIGHT.sm",
+      "title": "IN THE HEAT OF THE NIGHT",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/KICK THE CAN.sm",
+      "title": "KICK THE CAN",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/LEADING CYBER.sm",
+      "title": "LEADING CYBER",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Let the beat hit em!.sm",
+      "title": "Let the beat hit em!",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Let's talk it over.sm",
+      "title": "Let's talk it over",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/LOVE AGAIN TONIGHT~For Melissa MIX~.sm",
+      "title": "LOVE AGAIN TONIGHT～For Melissa MIX～",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Make Your Move.sm",
+      "title": "Make Your Move",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/MUSIC.sm",
+      "title": "MUSIC",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/MY SUMMER LOVE.sm",
+      "title": "MY SUMMER LOVE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/NEVER GONNA MAKE (FACTORY DANCE TEAM MIX).sm",
+      "title": "NEVER GONNA MAKE (FACTORY DANCE TEAM MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/never let you down.sm",
+      "title": "never let you down",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/NIGHT IN MOTION.sm",
+      "title": "NIGHT IN MOTION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/ONE TWO (LITTLE BITCH).sm",
+      "title": "ONE TWO (LITTLE BITCH)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/ONLY YOU.sm",
+      "title": "ONLY YOU",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/ORION.78(AMeuro-MIX).sm",
+      "title": "ORION.78(AMeuro-MIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/PARANOIA EVOLUTION.sm",
+      "title": "PARANOIA EVOLUTION",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/PINK DINOSAUR.sm",
+      "title": "PINK DINOSAUR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/SAINT GOES MARCHING (REMIX).sm",
+      "title": "SAINT GOES MARCHING (REMIX)",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/SEXY PLANET.sm",
+      "title": "SEXY PLANET",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/SHAKE YOUR BOOTY.sm",
+      "title": "SHAKE YOUR BOOTY",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/SHOOTING STAR.sm",
+      "title": "SHOOTING STAR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/SUPER STAR.sm",
+      "title": "SUPER STAR",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/THE 7 JUMP.sm",
+      "title": "THE 7 JUMP",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/TRIP MACHINE CLIMAX.sm",
+      "title": "TRIP MACHINE CLIMAX",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/WALKIE TALKIE.sm",
+      "title": "WALKIE TALKIE",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/WILD RUSH.sm",
+      "title": "WILD RUSH",
+      "titleTranslit": ""
+    },
+    {
+      "path": "sm/4thMix/Young Forever.sm",
+      "title": "Young Forever",
       "titleTranslit": ""
     },
     {

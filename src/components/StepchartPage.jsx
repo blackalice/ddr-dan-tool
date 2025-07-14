@@ -140,75 +140,73 @@ export function StepchartPage({
 };
 
   return (
-    <div className="app-container">
-      <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
-        <div className="song-info-bar">
-            <div className="song-title-container">
-                <h2 className="song-title bpm-title-mobile">
-                    <div className="title-content-wrapper">
-                        {displaySimfile.mix.mixName && <span className="song-game-version">{displaySimfile.mix.mixName}</span>}
-                        <div className="title-artist-group">
-                            <span className="song-title-main">{displaySimfile.title.titleName}</span>
-                            <span className="song-title-separator"> - </span>
-                            <span className="song-title-artist">{displaySimfile.artist}</span>
-                        </div>
+    <>
+      <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
+          <div className="song-title-container">
+              <h2 className="song-title bpm-title-mobile">
+                  <div className="title-content-wrapper">
+                      {displaySimfile.mix.mixName && <span className="song-game-version">{displaySimfile.mix.mixName}</span>}
+                      <div className="title-artist-group">
+                          <span className="song-title-main">{displaySimfile.title.titleName}</span>
+                          <span className="song-title-separator"> - </span>
+                          <span className="song-title-artist">{displaySimfile.artist}</span>
+                      </div>
+                  </div>
+                  <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                      <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                  </button>
+              </h2>
+          </div>
+          {!isCollapsed && (
+            <div className="details-grid bpm-tool-grid">
+                <div className="grid-item grid-item-sp">
+                    <span className="play-style">SP</span>
+                    <div className="difficulty-meters-container">
+                        {renderDifficulties('single')}
                     </div>
-                    <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-                        <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-                    </button>
-                </h2>
-            </div>
-            {!isCollapsed && (
-              <div className="details-grid bpm-tool-grid">
-                  <div className="grid-item grid-item-sp">
-                      <span className="play-style">SP</span>
-                      <div className="difficulty-meters-container">
-                          {renderDifficulties('single')}
-                      </div>
-                  </div>
-                  <div className="grid-item grid-item-bpm">
-                      <span className="bpm-label">BPM:</span>
-                      <div className="bpm-value-container">
-                          <span className="bpm-value">{displaySimfile.displayBpm}</span>
-                      </div>
-                  </div>
-                  <div className="grid-item grid-item-dp">
-                      <span className="play-style">DP</span>
-                      <div className="difficulty-meters-container">
-                          {renderDifficulties('double')}
-                      </div>
-                  </div>
-                  <div className="grid-item grid-item-core">
-                    <div className={styles.speedmodContainer}>
-                      <div className={styles.speedmodLabel}>SMOD</div>
-                      <ToggleBar
-                        namespace="speedmod"
-                        entries={speedmods.map((sm) => (
-                          <div key={sm}>{sm}</div>
-                        ))}
-                        onToggle={(i) => setSpeedmod(speedmods[i])}
-                        checkedIndex={speedmods.indexOf(speedmod)}
-                      />
+                </div>
+                <div className="grid-item grid-item-bpm">
+                    <span className="bpm-label">BPM:</span>
+                    <div className="bpm-value-container">
+                        <span className="bpm-value">{displaySimfile.displayBpm}</span>
                     </div>
-                  </div>
-              </div>
-            )}
-        </div>
-        {simfile ? (
-            <>
-                <div className={styles.printTitle}>
-                  <div>
-                    {displaySimfile.mix.mixName}: {title}
+                </div>
+                <div className="grid-item grid-item-dp">
+                    <span className="play-style">DP</span>
+                    <div className="difficulty-meters-container">
+                        {renderDifficulties('double')}
+                    </div>
+                </div>
+                <div className="grid-item grid-item-core">
+                  <div className={styles.speedmodContainer}>
+                    <div className={styles.speedmodLabel}>SMOD</div>
+                    <ToggleBar
+                      namespace="speedmod"
+                      entries={speedmods.map((sm) => (
+                        <div key={sm}>{sm}</div>
+                      ))}
+                      onToggle={(i) => setSpeedmod(speedmods[i])}
+                      checkedIndex={speedmods.indexOf(speedmod)}
+                    />
                   </div>
                 </div>
-                {sectionGroups}
-            </>
-        ) : (
-            <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
-                <p>{isLoading ? 'Loading chart...' : 'The step chart for the selected song will be displayed here.'}</p>
             </div>
-        )}
+          )}
       </div>
-    </div>
+      {simfile ? (
+          <>
+              <div className={styles.printTitle}>
+                <div>
+                  {displaySimfile.mix.mixName}: {title}
+                </div>
+              </div>
+              {sectionGroups}
+          </>
+      ) : (
+          <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
+              <p>{isLoading ? 'Loading chart...' : 'The step chart for the selected song will be displayed here.'}</p>
+          </div>
+      )}
+    </>
   );
 }
