@@ -95,6 +95,6 @@
 
 @media (max-width: 640px) {
   .song-card {
-
-    min-height:0px;
+    min-height: 0px;
+  }
 }

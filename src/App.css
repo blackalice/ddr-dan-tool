@@ -410,7 +410,7 @@ body {
         flex-grow: 1;
         min-width: 150px;
     }
-}}
+}
 
 .difficulty-beginner { background-color: var(--difficulty-beginner-color); }
 .difficulty-light { background-color: var(--difficulty-light-color); }
