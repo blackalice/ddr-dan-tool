@@ -406,10 +406,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                     </div>
-                    <div className="play-mode-toggle play-style-toggle">
-                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'single' ? 'active' : ''}>SP</button>
-                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'double' ? 'active' : ''}>DP</button>
-                    </div>
                 </div>
             </div>
 

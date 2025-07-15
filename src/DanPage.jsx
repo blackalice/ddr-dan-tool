@@ -18,24 +18,9 @@ const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
   </section>
 );
 
-const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
+const FilterBar = ({ activeDan, setDan, danLevels }) => (
     <div className="filter-bar">
         <div className="filter-group">
-            <div className="play-mode-toggle">
-                <button
-                    onClick={() => setMode(s => s === 'single' ? 'double' : 'single')}
-                    className={activeMode === 'single' ? 'active' : ''}
-                >
-                    Single
-                </button>
-                <button
-                    onClick={() => setMode(s => s === 'single' ? 'double' : 'single')}
-                    className={activeMode === 'double' ? 'active' : ''}
-                >
-                    Double
-                </button>
-            </div>
-
             <div className="dan-select-wrapper">
                 <select
                     value={activeDan}
