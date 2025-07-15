@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Tabs.css';
 
@@ -23,11 +23,11 @@ const Tabs = () => {
                 </div>
                 <div className="tabs-group">
                     <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        Charts
+                        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
                     </NavLink>
 
                     <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        Dan
+                        段
                     </NavLink>
                     <NavLink to={`/vega${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faTrophy} />
