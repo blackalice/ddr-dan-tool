@@ -255,10 +255,28 @@
 
 .play-style,
 .bpm-label,
-.core-bpm-label {
+.core-bpm-label,
+.difficulty-label {
     font-weight: bold;
     font-size: 1.25rem;
     color: var(--text-color-light);
+}
+
+.difficulty-label {
+    display: none; /* Hidden on mobile by default */
+}
+
+@media (min-width: 769px) {
+    .difficulty-label {
+        display: block; /* Shown on desktop */
+    }
+
+    .difficulty-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 }
 
 .difficulty-meters-container {
@@ -443,14 +461,22 @@
     }
 
     .grid-item {
+        display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        align-items: center;
+    }
+
+    .bpm-core-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
     }
 
     .grid-item-sp { order: 1; }
-    .grid-item-dp { order: 2; }
-    .grid-item-bpm { order: 3; }
-    .grid-item-core { order: 4; }
+    .grid-item-dp { order: 1; }
+    .bpm-core-container { order: 2; }
 
     .chart-container {
         margin-top: 0px;
@@ -463,6 +489,18 @@
 }
 
 @media (min-width: 769px) {
+    .details-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+        justify-items: start;
+    }
+
+    .bpm-core-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
     .controls-container {
         flex-direction: row;
         align-items: center;
