@@ -573,12 +573,13 @@
     z-index: 1000;
     display: flex;
     gap: 10px;
-    background-color: rgba(var(--bg-color-rgb), 0.5);
+    background-color: var(--bg-color-light);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     float: right;
     margin-bottom: 20px;
+    opacity: 0.5;
 }
 
 .smod-button {
