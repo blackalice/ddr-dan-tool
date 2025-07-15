@@ -107,8 +107,17 @@
     background-color: var(--card-hover-bg-color);
 }
 
+.checkboxLabel.selected {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.checkboxLabel.selected:hover {
+    background-color: var(--accent-color-light);
+}
+
 .checkboxLabel input {
-    margin-right: 0.5rem;
+    display: none; /* Hide the checkbox */
 }
 
 .buttonGroup {

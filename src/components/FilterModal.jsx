@@ -86,11 +86,17 @@ const FilterModal = ({ isOpen, onClose, games }) => {
           <div className={styles.formGroup}>
             <label>Game Versions</label>
             <div className={styles.gameCheckboxes}>
-              {games.map(game => (
-                <label key={game} className={styles.checkboxLabel}>
-                  <input type="checkbox" checked={localFilters.games.includes(game)} onChange={() => toggleGame(game)} /> {game}
-                </label>
-              ))}
+              {games.map(game => {
+                const isSelected = localFilters.games.includes(game);
+                return (
+                  <label 
+                    key={game} 
+                    className={`${styles.checkboxLabel} ${isSelected ? styles.selected : ''}`}
+                  >
+                    <input type="checkbox" checked={isSelected} onChange={() => toggleGame(game)} /> {game}
+                  </label>
+                );
+              })}
             </div>
           </div>
           <div className={styles.formGroup}>
