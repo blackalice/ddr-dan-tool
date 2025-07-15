@@ -10,21 +10,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Define the 'cg' theme variables. */
-[data-theme='cg'] {
-  --bg-color: #1c1c1e;
-  --bg-color-light: #2c2c2e;
-  --bg-color-lighter: #3a3a3c;
-  --text-color: #ffffff;
-  --text-color-light: #b0b0b0;
-  --text-color-lighter: #8e8e93;
-  --text-color-lightest: #6c6c70;
-  --primary-color: #e91e63;
-  --secondary-color: #3f51b5;
-  --border-color: #444446;
-  --card-bg-color: #2c2c2e;
-  --card-hover-bg-color: #3a3a3c;
-}
+
 
 /* Remove default margin. App.css will handle the rest. */
 body {
