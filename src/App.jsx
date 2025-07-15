@@ -5,6 +5,7 @@ import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
+import { FilterProvider } from './contexts/FilterContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
@@ -133,9 +134,11 @@ function AppRoutes() {
 function AppWrapper() {
   return (
     <SettingsProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <FilterProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </FilterProvider>
     </SettingsProvider>
   );
 }
