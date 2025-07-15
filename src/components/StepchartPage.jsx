@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useContext } from "react";
+import { FixedSizeList as List } from 'react-window';
 import { useLocation } from 'react-router-dom';
 
 import { ToggleBar } from "./ToggleBar";
@@ -103,45 +104,44 @@ export function StepchartPage({
 
   const chart = currentTypeMeta ? displaySimfile.charts[currentType] : null;
   
-  const sectionGroups = useMemo(() => {
-    if (!chart) return [];
-    
+  const totalSongHeight = useMemo(() => {
+    if (!chart) return 0;
     const { arrows, freezes } = chart;
     const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
     const lastFreezeOffset = freezes[freezes.length - 1]?.endOffset ?? 0;
-    const totalSongHeight = Math.max(lastArrowOffset, lastFreezeOffset);
+    return Math.max(lastArrowOffset, lastFreezeOffset);
+  }, [chart]);
 
-    const sections = [];
-    for (let i = 0; i < totalSongHeight; i += sectionSizesInMeasures[speedmod]) {
-      sections.push(
+  const sectionsPerChunk = currentType.includes("single") ? 7 : 4;
+  const groupSizeMeasures = sectionSizesInMeasures[speedmod] * sectionsPerChunk;
+  const measureHeightPx = 160 * speedmod; // 40px arrow * 4 beats
+  const itemSize = groupSizeMeasures * measureHeightPx;
+  const groupCount = Math.ceil(totalSongHeight / groupSizeMeasures);
+
+  const Row = ({ index, style }) => {
+    const groupStart = index * groupSizeMeasures;
+    const elems = [];
+    for (let i = 0; i < sectionsPerChunk; ++i) {
+      const start = groupStart + i * sectionSizesInMeasures[speedmod];
+      if (start >= totalSongHeight) break;
+      elems.push(
         <StepchartSection
-          key={i}
+          key={start}
           chart={chart}
           speedMod={speedmod}
-          startOffset={i}
-          endOffset={Math.min(totalSongHeight, i + sectionSizesInMeasures[speedmod])}
-          style={{ zIndex: Math.round(totalSongHeight) - i }}
+          startOffset={start}
+          endOffset={Math.min(totalSongHeight, start + sectionSizesInMeasures[speedmod])}
+          style={{ zIndex: Math.round(totalSongHeight) - start }}
           headerId={HEADER_ID}
         />
       );
     }
-
-    const groups = [];
-    const sectionsPerChunk = currentType.includes("single") ? 7 : 4;
-    while (sections.length) {
-      const sectionChunk = sections.splice(0, sectionsPerChunk);
-      groups.push(
-        <div
-          key={groups.length}
-          className={styles.stepchartSectionGroup}
-          style={{ zIndex: 999 - groups.length }}
-        >
-          {sectionChunk}
-        </div>
-      );
-    }
-    return groups;
-  }, [chart, speedmod, currentType]);
+    return (
+      <div style={{ ...style, zIndex: 999 - index }} className={styles.stepchartSectionGroup}>
+        {elems}
+      </div>
+    );
+  };
 
 
   const title = currentTypeMeta ? `${
@@ -242,7 +242,14 @@ export function StepchartPage({
                   {displaySimfile.mix.mixName}: {title}
                 </div>
               </div>
-              {sectionGroups}
+              <List
+                height={600}
+                itemCount={groupCount}
+                itemSize={itemSize}
+                width="100%"
+              >
+                {Row}
+              </List>
           </>
       ) : (
           <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>

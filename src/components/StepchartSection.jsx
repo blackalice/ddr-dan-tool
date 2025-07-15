@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
@@ -26,7 +26,7 @@ function SelfLink({
   );
 }
 
-function StepchartSection({
+const StepchartSection = React.memo(function StepchartSection({
   className,
   style,
   chart,
@@ -57,194 +57,208 @@ function StepchartSection({
   const measureHeight = `calc(${barHeight} * 4)`;
   const arrowAdjustment = `calc((${barHeight} - var(--arrow-size)) / 2)`;
 
-  const arrowImgs = [];
+  const arrowImgs = useMemo(() => {
+    const imgs = [];
+    for (let ai = arrows.length - 1; ai >= 0; --ai) {
+      const a = arrows[ai];
 
-  for (let ai = arrows.length - 1; ai >= 0; --ai) {
-    const a = arrows[ai];
-
-    if (a.offset >= endOffset) {
-      continue;
-    }
-
-    if (a.offset < startOffset) {
-      break;
-    }
-
-    const isShockArrow = a.direction.indexOf("M") !== -1;
-    const isFreezeArrow = a.direction.indexOf("2") > -1;
-
-    for (let i = 0; i < a.direction.length; ++i) {
-      if (a.direction[i] !== "0") {
-        arrowImgs.push(
-          <ArrowImg
-            key={`Arrow-${ai}-${i}`}
-            position={i}
-            beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
-            style={{
-              top: `calc((${a.offset} - ${startOffset}) * ${measureHeight} + ${arrowAdjustment})`,
-            }}
-          />
-        );
-      }
-    }
-  }
-
-  const barDivs = [];
-
-  for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
-    const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
-    const height = `calc(var(--arrow-size) * ${speedMod})`;
-
-    barDivs.push(
-      <div
-        key={id}
-        id={id}
-        className={clsx(styles.bar, {
-          [styles.barMeasure]: (i + 1) % 4 === 0,
-          [styles.barBeat]: (i + 1) % 4 !== 0,
-          [styles.targeted]: id === targetedBeat,
-        })}
-        style={{
-          height,
-        }}
-      >
-        <SelfLink
-          id={id}
-          style={{ height }}
-          onClick={() => {
-            setTargetedBeat(id);
-            scrollTargetBeatJustUnderHeader(id, headerId);
-          }}
-        />
-      </div>
-    );
-  }
-
-  const freezeDivs = freezes.map((f) => {
-    const inRangeStartOffset = Math.max(f.startOffset, startOffset);
-    const inRangeEndOffset = Math.min(f.endOffset, endOffset);
-
-    if (inRangeEndOffset < startOffset || inRangeStartOffset >= endOffset) {
-      return null;
-    }
-
-    const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
-    const hasTail = f.endOffset <= endOffset;
-
-    const freezeOffset = `calc(var(--arrow-size) / 2)`;
-
-    return (
-      <div
-        key={`${f.startOffset}-${f.direction}`}
-        className={styles.freeze}
-        style={{
-          top: `calc((${inRangeStartOffset - startOffset}) * ${measureHeight} + ${
-            hasHead ? `${freezeOffset} + ${arrowAdjustment}` : "0px"
-          })`,
-          left: `calc(${f.direction} * var(--arrow-size))`,
-          width: "var(--arrow-size)",
-          height: `calc((${
-            inRangeEndOffset - inRangeStartOffset
-          }) * ${measureHeight} - ${
-            hasTail && hasHead ? arrowAdjustment : "0px"
-          } - ${hasHead ? `(${freezeOffset} * ${speedMod})` : "0px"})`,
-        }}
-      >
-        <FreezeBody includeTail={hasTail} direction={f.direction} />
-      </div>
-    );
-  });
-
-  const bpmRangeDivs = [];
-  const bpmLabelDivs = [];
-
-  if (bpm.length > 1) {
-    for (let i = 0; i < bpm.length; ++i) {
-      const b = bpm[i];
-
-      const inRangeStartOffset = Math.max(b.startOffset, startOffset);
-      const inRangeEndOffset = Math.min(b.endOffset ?? endOffset, endOffset);
-
-      if (inRangeStartOffset >= endOffset) {
-        break;
-      }
-
-      if (inRangeEndOffset < startOffset) {
+      if (a.offset >= endOffset) {
         continue;
       }
 
-      const even = (i & 1) === 0;
+      if (a.offset < startOffset) {
+        break;
+      }
 
-      const normalizedStartOffset = Math.max(0, b.startOffset);
+      const isShockArrow = a.direction.indexOf("M") !== -1;
+      const isFreezeArrow = a.direction.indexOf("2") > -1;
 
-      const startsInThisSection =
-        normalizedStartOffset >= startOffset &&
-        normalizedStartOffset < endOffset;
-
-      bpmRangeDivs.push(
-        <div
-          key={b.startOffset}
-          className={clsx(styles.bpmRange, {
-            [styles.bpmRangeBorder]: startsInThisSection,
-            [styles.bpmRangeEven]: even,
-            [styles.bpmRangeOdd]: !even,
-          })}
-          style={{
-            backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
-            top: `calc(${inRangeStartOffset - startOffset} * ${measureHeight})`,
-            height: `calc(${
-              inRangeEndOffset - inRangeStartOffset
-            } * ${measureHeight})`,
-          }}
-        />
-      );
-
-      if (
-        normalizedStartOffset >= startOffset &&
-        normalizedStartOffset < endOffset
-      ) {
-        bpmLabelDivs.push(
-          <div
-            key={b.startOffset}
-            className={styles.bpmLabel}
-            style={{
-              top: `calc(${
-                inRangeStartOffset - startOffset
-              } * ${measureHeight})`,
-            }}
-          >
-            <div
-              className={clsx(
-                styles.bpmLabelText,
-                {
-                  [styles.bpmLabelEven]: even,
-                  [styles.bpmLabelOdd]: !even,
-                }
-              )}
-            >
-              {Math.round(b.bpm)}
-            </div>
-          </div>
-        );
+      for (let i = 0; i < a.direction.length; ++i) {
+        if (a.direction[i] !== "0") {
+          imgs.push(
+            <ArrowImg
+              key={`Arrow-${ai}-${i}`}
+              position={i}
+              beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
+              style={{
+                top: `calc((${a.offset} - ${startOffset}) * ${measureHeight} + ${arrowAdjustment})`,
+              }}
+            />
+          );
+        }
       }
     }
-  }
+    return imgs;
+  }, [chart, startOffset, endOffset, speedMod]);
 
-  const stopLabels = stops.map((s) => {
-    if (s.offset < startOffset || s.offset >= endOffset) {
-      return null;
+  const barDivs = useMemo(() => {
+    const divs = [];
+    for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
+      const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
+      const height = `calc(var(--arrow-size) * ${speedMod})`;
+
+      divs.push(
+        <div
+          key={id}
+          id={id}
+          className={clsx(styles.bar, {
+            [styles.barMeasure]: (i + 1) % 4 === 0,
+            [styles.barBeat]: (i + 1) % 4 !== 0,
+            [styles.targeted]: id === targetedBeat,
+          })}
+          style={{
+            height,
+          }}
+        >
+          <SelfLink
+            id={id}
+            style={{ height }}
+            onClick={() => {
+              setTargetedBeat(id);
+              scrollTargetBeatJustUnderHeader(id, headerId);
+            }}
+          />
+        </div>
+      );
+    }
+    return divs;
+  }, [chart, startOffset, endOffset, speedMod, targetedBeat]);
+
+  const freezeDivs = useMemo(() =>
+    freezes.map((f) => {
+      const inRangeStartOffset = Math.max(f.startOffset, startOffset);
+      const inRangeEndOffset = Math.min(f.endOffset, endOffset);
+
+      if (inRangeEndOffset < startOffset || inRangeStartOffset >= endOffset) {
+        return null;
+      }
+
+      const hasHead = f.startOffset >= startOffset && f.startOffset < endOffset;
+      const hasTail = f.endOffset <= endOffset;
+
+      const freezeOffset = `calc(var(--arrow-size) / 2)`;
+
+      return (
+        <div
+          key={`${f.startOffset}-${f.direction}`}
+          className={styles.freeze}
+          style={{
+            top: `calc((${inRangeStartOffset - startOffset}) * ${measureHeight} + ${
+              hasHead ? `${freezeOffset} + ${arrowAdjustment}` : "0px"
+            })`,
+            left: `calc(${f.direction} * var(--arrow-size))`,
+            width: "var(--arrow-size)",
+            height: `calc((${
+              inRangeEndOffset - inRangeStartOffset
+            }) * ${measureHeight} - ${
+              hasTail && hasHead ? arrowAdjustment : "0px"
+            } - ${hasHead ? `(${freezeOffset} * ${speedMod})` : "0px"})`,
+          }}
+        >
+          <FreezeBody includeTail={hasTail} direction={f.direction} />
+        </div>
+      );
+    }),
+  [chart, startOffset, endOffset, speedMod]);
+
+  const { bpmRangeDivs, bpmLabelDivs } = useMemo(() => {
+    const rangeDivs = [];
+    const labelDivs = [];
+
+    if (bpm.length > 1) {
+      for (let i = 0; i < bpm.length; ++i) {
+        const b = bpm[i];
+
+        const inRangeStartOffset = Math.max(b.startOffset, startOffset);
+        const inRangeEndOffset = Math.min(b.endOffset ?? endOffset, endOffset);
+
+        if (inRangeStartOffset >= endOffset) {
+          break;
+        }
+
+        if (inRangeEndOffset < startOffset) {
+          continue;
+        }
+
+        const even = (i & 1) === 0;
+
+        const normalizedStartOffset = Math.max(0, b.startOffset);
+
+        const startsInThisSection =
+          normalizedStartOffset >= startOffset &&
+          normalizedStartOffset < endOffset;
+
+        rangeDivs.push(
+          <div
+            key={b.startOffset}
+            className={clsx(styles.bpmRange, {
+              [styles.bpmRangeBorder]: startsInThisSection,
+              [styles.bpmRangeEven]: even,
+              [styles.bpmRangeOdd]: !even,
+            })}
+            style={{
+              backgroundColor: even ? "transparent" : BPM_RANGE_COLOR,
+              top: `calc(${inRangeStartOffset - startOffset} * ${measureHeight})`,
+              height: `calc(${
+                inRangeEndOffset - inRangeStartOffset
+              } * ${measureHeight})`,
+            }}
+          />
+        );
+
+        if (
+          normalizedStartOffset >= startOffset &&
+          normalizedStartOffset < endOffset
+        ) {
+          labelDivs.push(
+            <div
+              key={b.startOffset}
+              className={styles.bpmLabel}
+              style={{
+                top: `calc(${
+                  inRangeStartOffset - startOffset
+                } * ${measureHeight})`,
+              }}
+            >
+              <div
+                className={clsx(
+                  styles.bpmLabelText,
+                  {
+                    [styles.bpmLabelEven]: even,
+                    [styles.bpmLabelOdd]: !even,
+                  }
+                )}
+              >
+                {Math.round(b.bpm)}
+              </div>
+            </div>
+          );
+        }
+      }
     }
 
-    return (
-      <GiStopSign
-        key={s.offset}
-        className={clsx(styles.stopSign)}
-        style={{
-          top: `calc(${s.offset - startOffset} * ${measureHeight})`,
-        }}
-      />
-    );
-  });
+    return { bpmRangeDivs: rangeDivs, bpmLabelDivs: labelDivs };
+  }, [chart, startOffset, endOffset, speedMod]);
+
+  const stopLabels = useMemo(
+    () =>
+      stops.map((s) => {
+        if (s.offset < startOffset || s.offset >= endOffset) {
+          return null;
+        }
+
+        return (
+          <GiStopSign
+            key={s.offset}
+            className={clsx(styles.stopSign)}
+            style={{
+              top: `calc(${s.offset - startOffset} * ${measureHeight})`,
+            }}
+          />
+        );
+      }),
+    [chart, startOffset, endOffset, speedMod]
+  );
 
   const noscriptStyle =
     startOffset === 0 ? (
@@ -290,6 +304,6 @@ function StepchartSection({
       </div>
     </>
   );
-}
+});
 
 export { StepchartSection };

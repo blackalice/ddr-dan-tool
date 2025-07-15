@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FixedSizeList as List } from 'react-window';
 import { StepchartSection } from './StepchartSection';
 import { parseSm } from '../utils/smParser';
 import './StepchartViewer.css';
@@ -52,39 +53,38 @@ const StepchartViewer = ({ smFileUrl }) => {
       ) + 1
     : 0;
 
-  const sections = [];
-  if (selectedChart) {
-    for (let i = 0; i < totalSongHeight; i += 8) {
-      sections.push(
+  const isSingle = selectedChartKey?.includes('single');
+  const sectionsPerChunk = isSingle ? 7 : 4;
+  const groupSizeMeasures = 8 * sectionsPerChunk;
+  const measureHeightPx = 160; // arrow size 40 * 4 beats
+  const itemSize = groupSizeMeasures * measureHeightPx;
+  const groupCount = Math.ceil(totalSongHeight / groupSizeMeasures);
+
+  const Row = ({ index, style }) => {
+    const groupStart = index * groupSizeMeasures;
+    const elems = [];
+    for (let i = 0; i < sectionsPerChunk; ++i) {
+      const start = groupStart + i * 8;
+      if (start >= totalSongHeight) break;
+      elems.push(
         <StepchartSection
-          key={i}
+          key={start}
           chart={selectedChart}
           speedMod={1}
-          startOffset={i}
-          endOffset={Math.min(totalSongHeight, i + 8)}
+          startOffset={start}
+          endOffset={Math.min(totalSongHeight, start + 8)}
         />
       );
     }
-  }
-
-  const sectionGroups = [];
-  if (selectedChart) {
-    const isSingle = selectedChartKey.includes('single');
-    const sectionsPerChunk = isSingle ? 7 : 4;
-
-    while (sections.length) {
-      const sectionChunk = sections.splice(0, sectionsPerChunk);
-      sectionGroups.push(
-        <div
-          key={sectionGroups.length}
-          className="stepchartSectionGroup"
-          style={{ zIndex: 99999 - sectionGroups.length }}
-        >
-          {sectionChunk}
-        </div>
-      );
-    }
-  }
+    return (
+      <div
+        style={{ ...style, zIndex: 99999 - index }}
+        className="stepchartSectionGroup"
+      >
+        {elems}
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -95,7 +95,15 @@ const StepchartViewer = ({ smFileUrl }) => {
           </option>
         ))}
       </select>
-      <div className="stepchart-viewer">{sectionGroups}</div>
+      <List
+        className="stepchart-viewer"
+        height={512}
+        itemCount={groupCount}
+        itemSize={itemSize}
+        width={256}
+      >
+        {Row}
+      </List>
     </div>
   );
 };
