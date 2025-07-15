@@ -195,7 +195,6 @@ export function StepchartPage({
           {!isCollapsed && (
             <div className="details-grid bpm-tool-grid">
                 <div className={`grid-item ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
-                    <span className="play-style">{playStyle === 'single' ? 'SP' : 'DP'}</span>
                     <div className="difficulty-meters-container">
                         {renderDifficulties(playStyle)}
                     </div>
@@ -204,6 +203,20 @@ export function StepchartPage({
                     <span className="bpm-label">BPM:</span>
                     <div className="bpm-value-container">
                         <span className="bpm-value">{displaySimfile.displayBpm}</span>
+                        {calculation && (
+                            <div className="song-calculation">
+                                <span className="song-speed">
+                                    {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
+                                </span>
+                                <span className="song-separator">@</span>
+                                <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
+                            </div>
+                        )}
+                        {calculation && calculation.alternative && (
+                            <button className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltBpm(!showAltBpm)}>
+                                <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="grid-item grid-item-core">
@@ -216,15 +229,6 @@ export function StepchartPage({
                           value={speedmod}
                           onChange={setSpeedmod}
                         />
-                        {calculation && (
-                            <div className="song-calculation">
-                                <span className="song-speed">
-                                    {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
-                                </span>
-                                <span className="song-separator">@</span>
-                                <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
-                            </div>
-                        )}
                     </div>
                   </div>
                 </div>

@@ -18,29 +18,44 @@ const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
   </section>
 );
 
-const FilterBar = ({ activeDan, setDan, danLevels }) => (
+const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
     <div className="filter-bar">
-      <div className="filter-group">
-        <div className="dan-select-wrapper">
-           <select
-              value={activeDan}
-              onChange={(e) => setDan(e.target.value)}
-              className="dan-select"
-          >
-              <option value="All">All Dan Levels</option>
-              {danLevels.map(dan => (
-                  <option key={dan} value={dan}>{dan}</option>
-              ))}
-          </select>
+        <div className="filter-group">
+            <div className="play-mode-toggle">
+                <button
+                    onClick={() => setMode(s => s === 'single' ? 'double' : 'single')}
+                    className={activeMode === 'single' ? 'active' : ''}
+                >
+                    Single
+                </button>
+                <button
+                    onClick={() => setMode(s => s === 'single' ? 'double' : 'single')}
+                    className={activeMode === 'double' ? 'active' : ''}
+                >
+                    Double
+                </button>
+            </div>
+
+            <div className="dan-select-wrapper">
+                <select
+                    value={activeDan}
+                    onChange={(e) => setDan(e.target.value)}
+                    className="dan-select"
+                >
+                    <option value="All">All Dan Levels</option>
+                    {danLevels.map(dan => (
+                        <option key={dan} value={dan}>{dan}</option>
+                    ))}
+                </select>
+            </div>
         </div>
-      </div>
     </div>
-  );
+);
 
 const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
   const [danCourses, setDanCourses] = useState({ single: [], double: [] });
   const [isLoading, setIsLoading] = useState(true);
-  const { playStyle } = useContext(SettingsContext);
+  const { playStyle, setPlayStyle } = useContext(SettingsContext);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -72,6 +87,8 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
       <div className="app-container">
         <main>
           <FilterBar 
+            activeMode={playStyle}
+            setMode={setPlayStyle}
             activeDan={activeDan}
             setDan={setActiveDan}
             danLevels={danLevels}

@@ -8,7 +8,6 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './components/DifficultyMeter';
 import Camera from './Camera';
 import { StepchartPage } from './components/StepchartPage.jsx';
-import { ToggleBar } from './components/ToggleBar.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -131,18 +130,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [view, setView] = useState(() => {
-        const savedView = localStorage.getItem('bpmToolView');
-        return savedView ? JSON.parse(savedView) : 'bpm';
-    });
+    const [view, setView] = useState('bpm');
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
     }, [isCollapsed]);
-
-    useEffect(() => {
-        localStorage.setItem('bpmToolView', JSON.stringify(view));
-    }, [view]);
 
     const isLoading = !simfileData;
 
@@ -151,6 +143,27 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    useEffect(() => {
+        if (!simfileData || !currentChart) return;
+
+        const newMode = playStyle;
+        const currentDifficulty = currentChart.difficulty;
+
+        const chartsInNewMode = simfileData.availableTypes.filter(c => c.mode === newMode);
+
+        if (chartsInNewMode.length === 0) return;
+
+        let newChart = chartsInNewMode.find(c => c.difficulty === currentDifficulty);
+        if (!newChart) {
+            newChart = chartsInNewMode.find(c => c.difficulty === 'Difficult');
+        }
+        if (!newChart) {
+            newChart = chartsInNewMode[0];
+        }
+        setCurrentChart(newChart);
+
+    }, [playStyle, simfileData]);
 
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData } = useMemo(() => {
         if (!simfileData) {
@@ -267,9 +280,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return result;
     }, [targetBPM, coreBpm, multipliers]);
 
-    const renderDifficulties = (style) => {
-        const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
-        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === style) : [];
+    const renderDifficulties = (playStyle) => {
+        const difficultySet = playStyle === 'sp' ? difficulties.singles : difficulties.doubles;
+        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === (playStyle === 'sp' ? 'single' : 'double')) : [];
         return difficultyLevels.map(levelName => {
             let level = null;
             let difficulty = null;
@@ -284,10 +297,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     break;
                 }
             }
-            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === style;
+            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === (playStyle === 'sp' ? 'single' : 'double');
             return (
                 <DifficultyMeter
-                    key={`${style}-${levelName}`}
+                    key={`${playStyle}-${levelName}`}
                     level={level || 'X'}
                     difficultyName={levelName}
                     isMissing={!level}
@@ -362,8 +375,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 <div className="controls-container">
                     <div className="top-row">
                         <div className="play-mode-toggle">
-                            <button onClick={() => setView('bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
-                            <button onClick={() => setView('chart')} className={view === 'chart' ? 'active' : ''}>Chart</button>
+                            <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
+                            <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'chart' ? 'active' : ''}>Chart</button>
                         </div>
                         <select className="game-select" value={selectedGame} onChange={(e) => { setSelectedGame(e.target.value); onSongSelect(null); }}>
                             <option value="all">All Games</option>
@@ -393,14 +406,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                     </div>
-                    <div className="playstyle-toggle-container">
-                        <ToggleBar
-                            namespace="playstyle"
-                            options={[{ value: 'single', label: 'SP' }, { value: 'double', label: 'DP' }]}
-                            value={playStyle}
-                            onChange={setPlayStyle}
-                            entryWidth="4rem"
-                        />
+                    <div className="play-mode-toggle play-style-toggle">
+                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'single' ? 'active' : ''}>SP</button>
+                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'double' ? 'active' : ''}>DP</button>
+                    </div>
+                    <div className="play-mode-toggle play-style-toggle">
+                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'single' ? 'active' : ''}>SP</button>
+                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'double' ? 'active' : ''}>DP</button>
                     </div>
                 </div>
             </div>
@@ -425,10 +437,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {!isCollapsed && (
                             <div className="details-grid bpm-tool-grid">
-                                <div className={`grid-item ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
-                                    <span className="play-style">{playStyle === 'single' ? 'SP' : 'DP'}</span>
+                                <div className="grid-item grid-item-sp">
                                     <div className="difficulty-meters-container">
-                                        {renderDifficulties(playStyle)}
+                                        {renderDifficulties('sp')}
                                     </div>
                                 </div>
                                 <div className="grid-item grid-item-bpm">
@@ -449,6 +460,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                                 <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                             </button>
                                         )}
+                                    </div>
+                                </div>
+                                <div className="grid-item grid-item-dp">
+                                    <div className="difficulty-meters-container">
+                                        {renderDifficulties('dp')}
                                     </div>
                                 </div>
                                 <div className="grid-item grid-item-core">
