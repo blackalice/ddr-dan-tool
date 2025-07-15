@@ -28,8 +28,12 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}', 'sm/**/*.{sm,ssc}'],
+        globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 100 * 1024 * 1024, // cache up to 100MB
         navigateFallback: 'index.html',
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -53,6 +57,20 @@ export default defineConfig({
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/cdnjs\.cloudflare\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'cdnjs-cache',
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 365 days
               },
               cacheableResponse: {
                 statuses: [0, 200]
