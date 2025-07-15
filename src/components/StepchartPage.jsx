@@ -20,18 +20,18 @@ const sectionSizesInMeasures = {
 
 const HEADER_ID = "stepchart-page-header";
 
-function scrollTargetBeatJustUnderHeader(beatId, headerId) {
-  setTimeout(() => {
-    const targetBeat = document.getElementById(beatId);
-    const header = document.getElementById(headerId);
+// function scrollTargetBeatJustUnderHeader(beatId, headerId) {
+//   setTimeout(() => {
+//     const targetBeat = document.getElementById(beatId);
+//     const header = document.getElementById(headerId);
 
-    if (targetBeat && header) {
-      const headerBounds = header.getBoundingClientRect();
-      targetBeat.scrollIntoView(true);
-      window.scrollBy(0, -headerBounds.height);
-    }
-  }, 10);
-}
+//     if (targetBeat && header) {
+//       const headerBounds = header.getBoundingClientRect();
+//       targetBeat.scrollIntoView(true);
+//       window.scrollBy(0, -headerBounds.height);
+//     }
+//   }, 10);
+// }
 
 export function StepchartPage({
   simfile,
@@ -52,12 +52,12 @@ export function StepchartPage({
     setCurrentType(initialCurrentType);
   }, [initialCurrentType]);
 
-  useEffect(() => {
-    const hash = (window.location.hash ?? "").replace("#", "");
-    if (hash) {
-      scrollTargetBeatJustUnderHeader(hash, HEADER_ID);
-    }
-  }, [location.hash]);
+  // useEffect(() => {
+  //   const hash = (window.location.hash ?? "").replace("#", "");
+  //   if (hash) {
+  //     scrollTargetBeatJustUnderHeader(hash, HEADER_ID);
+  //   }
+  // }, [location.hash]);
 
   const displaySimfile = simfile || {
     title: { titleName: 'Please select a song', translitTitleName: '' },
