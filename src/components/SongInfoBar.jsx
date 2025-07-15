@@ -8,7 +8,7 @@ const SongInfoBar = ({
   gameVersion,
   songTitle,
   artist,
-  playStyle,
+  playStyle, // 'single' or 'double'
   difficulties,
   currentChart,
   setCurrentChart,
@@ -21,27 +21,30 @@ const SongInfoBar = ({
   coreCalculation,
   showAltCoreBpm,
   setShowAltCoreBpm,
-  view
 }) => {
 
-  const renderDifficulties = (style) => {
-    const difficultySet = style === 'sp' ? difficulties.singles : difficulties.doubles;
-    const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === (style === 'sp' ? 'single' : 'double')) : [];
+  const renderDifficulties = (style) => { // style is 'single' or 'double'
+    if (!simfileData || !difficulties) return null;
+
+    const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
+    const chartDifficulties = simfileData.availableTypes.filter(t => t.mode === style);
+
     return difficultyLevels.map(levelName => {
         let level = null;
         let difficulty = null;
         let chartType = null;
+
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
                 level = difficultySet[name];
                 difficulty = name;
-                if (simfileData) {
-                    chartType = chartDifficulties.find(t => t.difficulty === name);
-                }
-                break;
+                chartType = chartDifficulties.find(t => t.difficulty === name);
+                if (chartType) break;
             }
         }
-        const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === (style === 'sp' ? 'single' : 'double');
+
+        const isSelected = currentChart && chartType && currentChart.slug === chartType.slug;
+
         return (
             <DifficultyMeter
                 key={`${style}-${levelName}`}
@@ -50,29 +53,6 @@ const SongInfoBar = ({
                 isMissing={!level}
                 onClick={() => chartType && setCurrentChart(chartType)}
                 isSelected={isSelected}
-            />
-        );
-    });
-  };
-
-  const renderChartDifficulties = (style) => {
-    const chartDifficulties = simfileData.availableTypes.filter(t => t.mode === style);
-
-    return difficultyLevels.map(levelName => {
-        const type = chartDifficulties.find(t => t.difficulty === levelName.toLowerCase());
-        
-        return (
-            <DifficultyMeter 
-                key={`${style}-${levelName}`} 
-                level={type ? type.feet : 'X'} 
-                difficultyName={levelName} 
-                isMissing={!type}
-                isSelected={type && type.slug === currentChart.slug}
-                onClick={() => {
-                  if (type) {
-                    setCurrentChart(type);
-                  }
-                }}
             />
         );
     });
@@ -97,19 +77,11 @@ const SongInfoBar = ({
       </div>
       {!isCollapsed && (
         <div className="details-grid bpm-tool-grid">
-          {playStyle === 'single' ? (
-            <div className="grid-item grid-item-sp">
+          <div className={`grid-item ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
               <div className="difficulty-meters-container">
-                {view === 'bpm' ? renderDifficulties('sp') : renderChartDifficulties('single')}
+                {renderDifficulties(playStyle)}
               </div>
-            </div>
-          ) : (
-            <div className="grid-item grid-item-dp">
-              <div className="difficulty-meters-container">
-                {view === 'bpm' ? renderDifficulties('dp') : renderChartDifficulties('double')}
-              </div>
-            </div>
-          )}
+          </div>
           <div className="grid-item grid-item-bpm">
             <span className="bpm-label">BPM:</span>
             <div className="bpm-value-container">
@@ -130,28 +102,26 @@ const SongInfoBar = ({
               )}
             </div>
           </div>
-          {view === 'bpm' && (
-            <div className="grid-item grid-item-core">
-              <span className="core-bpm-label">CORE:</span>
-              <div className="core-bpm-value-container">
-                <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
-                {coreCalculation && (
-                  <div className="song-calculation">
-                    <span className="song-speed">
-                      {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
-                    </span>
-                    <span className="song-separator">@</span>
-                    <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
-                  </div>
-                )}
-                {coreCalculation && coreCalculation.alternative && (
-                  <button className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}>
-                    <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
-                  </button>
-                )}
-              </div>
+          <div className="grid-item grid-item-core">
+            <span className="core-bpm-label">CORE:</span>
+            <div className="core-bpm-value-container">
+              <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
+              {coreCalculation && (
+                <div className="song-calculation">
+                  <span className="song-speed">
+                    {(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.speed : coreCalculation.primary.speed}
+                  </span>
+                  <span className="song-separator">@</span>
+                  <span className="song-modifier">{(showAltCoreBpm && coreCalculation.alternative) ? coreCalculation.alternative.modifier : coreCalculation.primary.modifier}x</span>
+                </div>
+              )}
+              {coreCalculation && coreCalculation.alternative && (
+                <button className={`toggle-button ${showAltCoreBpm && coreCalculation.alternative ? (coreCalculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}>
+                  <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                </button>
+              )}
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>
