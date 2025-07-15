@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-height:110px;
 }
 
 .song-card-link {
@@ -21,7 +22,7 @@
 }
 .song-title {
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 1.1rem;
   line-height: 1.25;
   margin: 0 0 0.5rem 0;
 }
@@ -78,7 +79,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .game-chip {
@@ -90,4 +91,10 @@
     font-weight: 600;
     white-space: nowrap;
     margin-left: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .song-card {
+
+    min-height:0px;
 }
