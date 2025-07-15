@@ -8,7 +8,6 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './components/DifficultyMeter';
 import Camera from './Camera';
 import { StepchartPage } from './components/StepchartPage.jsx';
-import { ToggleBar } from './components/ToggleBar.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -112,7 +111,7 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
-export const getBpmRange = (bpm) => {
+const getBpmRange = (bpm) => {
     if (typeof bpm !== 'string') return { min: 0, max: 0 };
     const parts = bpm.split('-').map(Number);
     if (parts.length === 1) return { min: parts[0], max: parts[0] };
@@ -120,7 +119,7 @@ export const getBpmRange = (bpm) => {
 };
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey } = useContext(SettingsContext);
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -131,18 +130,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [view, setView] = useState(() => {
-        const savedView = localStorage.getItem('bpmToolView');
-        return savedView ? JSON.parse(savedView) : 'bpm';
-    });
+    const [view, setView] = useState('bpm');
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
     }, [isCollapsed]);
-
-    useEffect(() => {
-        localStorage.setItem('bpmToolView', JSON.stringify(view));
-    }, [view]);
 
     const isLoading = !simfileData;
 
@@ -267,9 +259,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return result;
     }, [targetBPM, coreBpm, multipliers]);
 
-    const renderDifficulties = (style) => {
-        const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
-        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === style) : [];
+    const renderDifficulties = (playStyle) => {
+        const difficultySet = playStyle === 'sp' ? difficulties.singles : difficulties.doubles;
+        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === (playStyle === 'sp' ? 'single' : 'double')) : [];
         return difficultyLevels.map(levelName => {
             let level = null;
             let difficulty = null;
@@ -284,10 +276,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     break;
                 }
             }
-            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === style;
+            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === (playStyle === 'sp' ? 'single' : 'double');
             return (
                 <DifficultyMeter
-                    key={`${style}-${levelName}`}
+                    key={`${playStyle}-${levelName}`}
                     level={level || 'X'}
                     difficultyName={levelName}
                     isMissing={!level}
@@ -393,15 +385,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                     </div>
-                    <div className="playstyle-toggle-container">
-                        <ToggleBar
-                            namespace="playstyle"
-                            options={[{ value: 'single', label: 'SP' }, { value: 'double', label: 'DP' }]}
-                            value={playStyle}
-                            onChange={setPlayStyle}
-                            entryWidth="4rem"
-                        />
-                    </div>
                 </div>
             </div>
 
@@ -425,10 +408,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {!isCollapsed && (
                             <div className="details-grid bpm-tool-grid">
-                                <div className={`grid-item ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
-                                    <span className="play-style">{playStyle === 'single' ? 'SP' : 'DP'}</span>
+                                <div className="grid-item grid-item-sp">
+                                    <span className="play-style">SP</span>
                                     <div className="difficulty-meters-container">
-                                        {renderDifficulties(playStyle)}
+                                        {renderDifficulties('sp')}
                                     </div>
                                 </div>
                                 <div className="grid-item grid-item-bpm">
@@ -449,6 +432,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                                 <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                             </button>
                                         )}
+                                    </div>
+                                </div>
+                                <div className="grid-item grid-item-dp">
+                                    <span className="play-style">DP</span>
+                                    <div className="difficulty-meters-container">
+                                        {renderDifficulties('dp')}
                                     </div>
                                 </div>
                                 <div className="grid-item grid-item-core">
@@ -530,7 +519,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     setCurrentChart={setCurrentChart}
                     isCollapsed={isCollapsed}
                     setIsCollapsed={setIsCollapsed}
-                    playStyle={playStyle}
                 />
             </div>
             )}

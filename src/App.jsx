@@ -17,7 +17,6 @@ function AppRoutes() {
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
-  const [playMode, setPlayMode] = useState(() => localStorage.getItem('playMode') || 'single');
   const [activeDan, setActiveDan] = useState(() => localStorage.getItem('activeDan') || 'All');
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => localStorage.getItem('activeVegaCourse') || 'All');
   
@@ -104,7 +103,6 @@ function AppRoutes() {
     navigate(`${location.pathname}?${queryParams.toString()}${location.hash}`);
   };
 
-  useEffect(() => { localStorage.setItem('playMode', playMode); }, [playMode]);
   useEffect(() => { localStorage.setItem('activeDan', activeDan); }, [activeDan]);
   useEffect(() => { localStorage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);
 
@@ -115,7 +113,7 @@ function AppRoutes() {
       <div className="app-container">
         <div className="app-content">
           <Routes>
-            <Route path="/dan" element={<DanPage playMode={playMode} setPlayMode={setPlayMode} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+            <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
             <Route path="/" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} />} />
@@ -142,3 +140,4 @@ function AppWrapper() {
 }
 
 export default AppWrapper;
+

@@ -21,6 +21,11 @@ export const SettingsProvider = ({ children }) => {
         return saved || 'dark';
     });
 
+    const [playStyle, setPlayStyle] = useState(() => {
+        const saved = localStorage.getItem('playStyle');
+        return saved || 'single';
+    });
+
     useEffect(() => {
         localStorage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -38,6 +43,10 @@ export const SettingsProvider = ({ children }) => {
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme]);
 
+    useEffect(() => {
+        localStorage.setItem('playStyle', playStyle);
+    }, [playStyle]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -50,6 +59,8 @@ export const SettingsProvider = ({ children }) => {
         multipliers,
         theme,
         setTheme,
+        playStyle,
+        setPlayStyle,
     };
 
     return (
