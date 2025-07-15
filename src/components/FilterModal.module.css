@@ -15,7 +15,8 @@
 
 .modalContent {
     background-color: var(--bg-color);
-    padding: 1rem 0.5rem;
+    padding-top:1rem;
+    padding-bottom:1rem;
     border-radius: 0.5rem;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     width: 90%;
@@ -148,15 +149,35 @@
 }
 
 @media (max-width: 768px) {
+    .modalBackdrop {
+        align-items: flex-start; /* Align to top on mobile */
+    }
+
     .modalContent {
         width: 100%;
-        height: 100vh;
+        height: 100vh; /* Fallback for older browsers */
+        height: 100dvh; /* Dynamic viewport height */
+        max-height: 100vh; /* Override desktop style */
+        max-height: 100dvh;
         border-radius: 0;
         justify-content: space-between;
+        box-sizing: border-box;
+        background-color: var(--bg-color-light); /* Unify background color */
+        
+    }
+
+    .modalHeader {
+        padding-top: env(safe-area-inset-top, 1.5rem);
+        text-align:center;
     }
 
     .modalBody {
         flex-grow: 1;
+        background-color: var(--bg-color); /* Set form area back to main bg */
+        padding: 1rem 1.5rem; /* Adjust padding for content alignment */
+        margin: 0; /* Remove margins */
+        border-radius: 0; /* Remove radius */
+        
     }
 
     .gameCheckboxes {
@@ -165,6 +186,16 @@
 
     .buttonGroup {
         justify-content: center;
+    
+        padding-bottom: env(safe-area-inset-bottom, 1.5rem);
+        margin: 0;
+    }
+ 
+    label{
+        text-align:center;
+    }
+    ._checkboxLabel_******_98{
+        text-align:left!important;
     }
 }
 
