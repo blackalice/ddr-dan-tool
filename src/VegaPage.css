@@ -11,6 +11,8 @@
 .vega-header-title {
     flex-basis: 66.66%;
     text-align: left;
+    margin:0px;
+   
 }
 
 .vega-header-selector {
