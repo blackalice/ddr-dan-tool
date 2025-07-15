@@ -410,10 +410,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'single' ? 'active' : ''}>SP</button>
                         <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'double' ? 'active' : ''}>DP</button>
                     </div>
-                    <div className="play-mode-toggle play-style-toggle">
-                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'single' ? 'active' : ''}>SP</button>
-                        <button onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')} className={playStyle === 'double' ? 'active' : ''}>DP</button>
-                    </div>
                 </div>
             </div>
 
@@ -437,11 +433,19 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         {!isCollapsed && (
                             <div className="details-grid bpm-tool-grid">
-                                <div className="grid-item grid-item-sp">
-                                    <div className="difficulty-meters-container">
-                                        {renderDifficulties('sp')}
+                                {playStyle === 'single' ? (
+                                    <div className="grid-item grid-item-sp">
+                                        <div className="difficulty-meters-container">
+                                            {renderDifficulties('sp')}
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="grid-item grid-item-dp">
+                                        <div className="difficulty-meters-container">
+                                            {renderDifficulties('dp')}
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="grid-item grid-item-bpm">
                                     <span className="bpm-label">BPM:</span>
                                     <div className="bpm-value-container">
@@ -460,11 +464,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                                 <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                                             </button>
                                         )}
-                                    </div>
-                                </div>
-                                <div className="grid-item grid-item-dp">
-                                    <div className="difficulty-meters-container">
-                                        {renderDifficulties('dp')}
                                     </div>
                                 </div>
                                 <div className="grid-item grid-item-core">
