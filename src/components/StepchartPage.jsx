@@ -220,20 +220,14 @@ export function StepchartPage({
                     </div>
                 </div>
                 <div className="grid-item grid-item-core">
-                  <div className={styles.speedmodContainer}>
-                    <div className={styles.speedmodLabel}>SMOD</div>
-                    <div className="smod-controls">
-                        <ToggleBar
-                          namespace="speedmod"
-                          options={speedmods.map(s => ({ value: s, label: s }))}
-                          value={speedmod}
-                          onChange={setSpeedmod}
-                        />
-                    </div>
-                  </div>
                 </div>
             </div>
           )}
+      </div>
+      <div className={styles.smodControlsContainer}>
+        <button className={styles.smodButton} onClick={() => setSpeedmod(prev => speedmods[Math.max(0, speedmods.indexOf(prev) - 1)])}>-</button>
+        <div className={styles.smodValue}>{speedmod}x</div>
+        <button className={styles.smodButton} onClick={() => setSpeedmod(prev => speedmods[Math.min(speedmods.length - 1, speedmods.indexOf(prev) + 1)])}>+</button>
       </div>
       {simfile ? (
           <>
