@@ -77,6 +77,8 @@
     gap: 1rem;
     max-width: 500px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .api-key-modal-content h3 {
@@ -137,6 +139,12 @@
     border-radius: 0.375rem;
     cursor: pointer;
     margin-left: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.filter-button.active {
+    background-color: var(--accent-color);
+    color: var(--text-color);
 }
 
 .camera-modal {

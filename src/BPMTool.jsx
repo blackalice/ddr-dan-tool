@@ -135,6 +135,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
+    const filtersActive = Boolean(
+        filters.bpmMin !== '' ||
+        filters.bpmMax !== '' ||
+        filters.difficultyMin !== '' ||
+        filters.difficultyMax !== '' ||
+        filters.games.length > 0 ||
+        filters.artist !== '' ||
+        filters.multiBpm !== 'any'
+    );
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
@@ -439,7 +448,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             />
                         </div>
                         {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
-                        <button className="filter-button" onClick={() => setShowFilter(true)}>Filters</button>
+                        <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
+                            <i className="fa-solid fa-filter"></i>
+                        </button>
                     </div>
                 </div>
             </div>
