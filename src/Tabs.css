@@ -16,7 +16,7 @@
 .logo-container {
     padding: 0 1rem;
     font-size: 1.5rem;
-    color: var(--accent-color);
+    color: var(--text-color);
 }
 
 .logo-container svg {

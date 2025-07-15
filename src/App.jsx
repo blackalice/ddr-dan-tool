@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
@@ -117,7 +117,7 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
-            <Route path="/" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+            <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
