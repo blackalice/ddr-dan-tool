@@ -176,54 +176,6 @@ export function StepchartPage({
 
   return (
     <>
-      <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
-          <div className="song-title-container">
-              <h2 className="song-title bpm-title-mobile">
-                  <div className="title-content-wrapper">
-                      {displaySimfile.mix.mixName && <span className="song-game-version">{displaySimfile.mix.mixName}</span>}
-                      <div className="title-artist-group">
-                          <span className="song-title-main">{displaySimfile.title.titleName}</span>
-                          <span className="song-title-separator"> - </span>
-                          <span className="song-title-artist">{displaySimfile.artist}</span>
-                      </div>
-                  </div>
-                  <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-                  </button>
-              </h2>
-          </div>
-          {!isCollapsed && (
-            <div className="details-grid bpm-tool-grid">
-                <div className={`grid-item ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
-                    <div className="difficulty-meters-container">
-                        {renderDifficulties(playStyle)}
-                    </div>
-                </div>
-                <div className="grid-item grid-item-bpm">
-                    <span className="bpm-label">BPM:</span>
-                    <div className="bpm-value-container">
-                        <span className="bpm-value">{displaySimfile.displayBpm}</span>
-                        {calculation && (
-                            <div className="song-calculation">
-                                <span className="song-speed">
-                                    {(showAltBpm && calculation.alternative) ? (calculation.alternative.isRange ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}` : calculation.alternative.maxSpeed) : (calculation.primary.isRange ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}` : calculation.primary.maxSpeed)}
-                                </span>
-                                <span className="song-separator">@</span>
-                                <span className="song-modifier">{(showAltBpm && calculation.alternative) ? calculation.alternative.modifier : calculation.primary.modifier}x</span>
-                            </div>
-                        )}
-                        {calculation && calculation.alternative && (
-                            <button className={`toggle-button ${showAltBpm && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`} onClick={() => setShowAltBpm(!showAltBpm)}>
-                                <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
-                            </button>
-                        )}
-                    </div>
-                </div>
-                <div className="grid-item grid-item-core">
-                </div>
-            </div>
-          )}
-      </div>
       <div className={styles.smodControlsContainer}>
         <button className={styles.smodButton} onClick={() => setSpeedmod(prev => speedmods[Math.max(0, speedmods.indexOf(prev) - 1)])}>-</button>
         <div className={styles.smodValue}>{speedmod}x</div>
