@@ -29,6 +29,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 100 * 1024 * 1024, // cache up to 100MB
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,
         clientsClaim: true,
