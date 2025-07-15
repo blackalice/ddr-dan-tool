@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
+import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Tabs.css';
 
 const Logo = () => (
@@ -12,6 +13,7 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
+    const { playStyle, setPlayStyle } = useContext(SettingsContext);
 
     return (
         <nav className="tabs-container">
@@ -21,11 +23,11 @@ const Tabs = () => {
                 </div>
                 <div className="tabs-group">
                     <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        Charts
+                        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
                     </NavLink>
 
                     <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        Dan
+                        段
                     </NavLink>
                     <NavLink to={`/vega${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faTrophy} />
@@ -33,6 +35,9 @@ const Tabs = () => {
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faCalculator} />
                     </NavLink>
+                </div>
+                <div className="play-style-toggle-tab" onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')}>
+                    {playStyle === 'single' ? 'SP' : 'DP'}
                 </div>
                 <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
                     <FontAwesomeIcon icon={faCog} />

@@ -98,7 +98,7 @@ function StepchartSection({
     barDivs.push(
       <div
         key={id}
-        id={id}
+        // id={id}
         className={clsx(styles.bar, {
           [styles.barMeasure]: (i + 1) % 4 === 0,
           [styles.barBeat]: (i + 1) % 4 !== 0,
@@ -108,14 +108,14 @@ function StepchartSection({
           height,
         }}
       >
-        <SelfLink
+        {/* <SelfLink
           id={id}
           style={{ height }}
           onClick={() => {
             setTargetedBeat(id);
             scrollTargetBeatJustUnderHeader(id, headerId);
           }}
-        />
+        /> */}
       </div>
     );
   }

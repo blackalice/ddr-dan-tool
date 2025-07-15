@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useContext } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { loadDanData } from './utils/course-loader.js';
+import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './App.css';
 import './components/SongCard.css';
 
@@ -17,43 +18,29 @@ const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
   </section>
 );
 
-const FilterBar = ({ activeMode, setMode, activeDan, setDan, danLevels }) => (
-  <div className="filter-bar">
-    <div className="filter-group">
-      <div className="play-mode-toggle dan-toggle">
-        <button
-          onClick={() => setMode('single')}
-          className={activeMode === 'single' ? 'active' : ''}
-        >
-          Single
-        </button>
-        <button
-          onClick={() => setMode('double')}
-          className={activeMode === 'double' ? 'active' : ''}
-        >
-          Double
-        </button>
-      </div>
-
-      <div className="dan-select-wrapper">
-         <select
-            value={activeDan}
-            onChange={(e) => setDan(e.target.value)}
-            className="dan-select"
-        >
-            <option value="All">All Dan Levels</option>
-            {danLevels.map(dan => (
-                <option key={dan} value={dan}>{dan}</option>
-            ))}
-        </select>
-      </div>
+const FilterBar = ({ activeDan, setDan, danLevels }) => (
+    <div className="filter-bar">
+        <div className="filter-group">
+            <div className="dan-select-wrapper">
+                <select
+                    value={activeDan}
+                    onChange={(e) => setDan(e.target.value)}
+                    className="dan-select"
+                >
+                    <option value="All">All Dan Levels</option>
+                    {danLevels.map(dan => (
+                        <option key={dan} value={dan}>{dan}</option>
+                    ))}
+                </select>
+            </div>
+        </div>
     </div>
-  </div>
 );
 
-const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGame }) => {
+const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
   const [danCourses, setDanCourses] = useState({ single: [], double: [] });
   const [isLoading, setIsLoading] = useState(true);
+  const { playStyle, setPlayStyle } = useContext(SettingsContext);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -68,12 +55,16 @@ const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGa
   }, []);
 
   const coursesToShow = useMemo(() => {
-    const courses = danCourses[playMode] || [];
+    const courses = danCourses[playStyle] || [];
     if (activeDan === 'All') return courses;
     return courses.filter(course => course.name === activeDan);
-  }, [playMode, activeDan, danCourses]);
+  }, [playStyle, activeDan, danCourses]);
   
-  const danLevels = useMemo(() => (danCourses[playMode] || []).map(d => d.name), [playMode, danCourses]);
+  const danLevels = useMemo(() => (danCourses[playStyle] || []).map(d => d.name), [playStyle, danCourses]);
+
+  useEffect(() => {
+    setActiveDan('All');
+  }, [playStyle, setActiveDan]);
 
   return (
     <>
@@ -81,11 +72,8 @@ const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGa
       <div className="app-container">
         <main>
           <FilterBar 
-            activeMode={playMode} 
-            setMode={(mode) => {
-              setPlayMode(mode);
-              setActiveDan('All');
-            }}
+            activeMode={playStyle}
+            setMode={setPlayStyle}
             activeDan={activeDan}
             setDan={setActiveDan}
             danLevels={danLevels}
@@ -100,7 +88,7 @@ const DanPage = ({ playMode, setPlayMode, activeDan, setActiveDan, setSelectedGa
                 <DanSection 
                   key={course.name} 
                   danCourse={course} 
-                  playMode={playMode}
+                  playMode={playStyle}
                   setSelectedGame={setSelectedGame}
                 />
             ))
