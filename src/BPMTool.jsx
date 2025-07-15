@@ -9,6 +9,7 @@ import { useFilters } from './contexts/FilterContext.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
 import FilterModal from './components/FilterModal.jsx';
+import Camera from './Camera.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -447,10 +448,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 }}
                             />
                         </div>
-                        {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
-                        <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
-                            <i className="fa-solid fa-filter"></i>
-                        </button>
+                        <div className="action-buttons">
+                            {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
+                            <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
+                                <i className="fa-solid fa-filter"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

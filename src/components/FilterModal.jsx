@@ -1,14 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useFilters } from '../contexts/FilterContext.jsx';
-import '../BPMTool.css';
+import styles from './FilterModal.module.css';
 
 const FilterModal = ({ isOpen, onClose, games }) => {
   const { filters, setFilters } = useFilters();
   const [localFilters, setLocalFilters] = useState(filters);
 
   useEffect(() => {
-    if (isOpen) setLocalFilters(filters);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      setLocalFilters(filters);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen, filters]);
+
+  const handleRangeBlur = (field, value, min, max) => {
+    if (value === '') return; // Don't validate if empty
+
+    let numValue = parseInt(value, 10);
+
+    if (isNaN(numValue)) { // If not a number, clear it
+        setLocalFilters(f => ({ ...f, [field]: '' }));
+        return;
+    }
+
+    if (numValue > max) numValue = max;
+    if (numValue < min) numValue = min;
+
+    setLocalFilters(f => ({ ...f, [field]: String(numValue) }));
+  };
 
   const toggleGame = (game) => {
     setLocalFilters((prev) => {
@@ -37,39 +61,51 @@ const FilterModal = ({ isOpen, onClose, games }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="api-key-modal" onClick={onClose}>
-      <div className="api-key-modal-content" onClick={e => e.stopPropagation()}>
-        <h3>Song Filters</h3>
-        <label>BPM Range</label>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <input type="number" placeholder="Min" value={localFilters.bpmMin} onChange={e => setLocalFilters(f => ({ ...f, bpmMin: e.target.value }))} />
-          <input type="number" placeholder="Max" value={localFilters.bpmMax} onChange={e => setLocalFilters(f => ({ ...f, bpmMax: e.target.value }))} />
+    <div className={styles.modalBackdrop} onClick={onClose}>
+      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <h3 className={styles.modalHeader}>Song Filters</h3>
+        <div className={styles.modalBody}>
+          <div className={styles.formGroup}>
+            <label>BPM Range (1-1100)</label>
+            <div className={styles.inputGroup}>
+              <input type="number" min="1" max="1100" placeholder="Min" value={localFilters.bpmMin} onChange={e => setLocalFilters(f => ({ ...f, bpmMin: e.target.value }))} onBlur={e => handleRangeBlur('bpmMin', e.target.value, 1, 1100)} className={styles.input} />
+              <input type="number" min="1" max="1100" placeholder="Max" value={localFilters.bpmMax} onChange={e => setLocalFilters(f => ({ ...f, bpmMax: e.target.value }))} onBlur={e => handleRangeBlur('bpmMax', e.target.value, 1, 1100)} className={styles.input} />
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Difficulty Range (1-19)</label>
+            <div className={styles.inputGroup}>
+              <input type="number" min="1" max="19" placeholder="Min" value={localFilters.difficultyMin} onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)} className={styles.input} />
+              <input type="number" min="1" max="19" placeholder="Max" value={localFilters.difficultyMax} onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)} className={styles.input} />
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Artist</label>
+            <input type="text" value={localFilters.artist} onChange={e => setLocalFilters(f => ({ ...f, artist: e.target.value }))} className={styles.input} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Game Versions</label>
+            <div className={styles.gameCheckboxes}>
+              {games.map(game => (
+                <label key={game} className={styles.checkboxLabel}>
+                  <input type="checkbox" checked={localFilters.games.includes(game)} onChange={() => toggleGame(game)} /> {game}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Multiple BPMs</label>
+            <select value={localFilters.multiBpm} onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))} className={styles.select}>
+              <option value="any">Any</option>
+              <option value="single">Single BPM only</option>
+              <option value="multiple">Multiple BPM only</option>
+            </select>
+          </div>
         </div>
-        <label>Difficulty Range</label>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <input type="number" placeholder="Min" value={localFilters.difficultyMin} onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))} />
-          <input type="number" placeholder="Max" value={localFilters.difficultyMax} onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))} />
-        </div>
-        <label>Artist</label>
-        <input type="text" value={localFilters.artist} onChange={e => setLocalFilters(f => ({ ...f, artist: e.target.value }))} />
-        <label>Game Versions</label>
-        <div className="game-checkboxes">
-          {games.map(game => (
-            <label key={game} style={{ display: 'block' }}>
-              <input type="checkbox" checked={localFilters.games.includes(game)} onChange={() => toggleGame(game)} /> {game}
-            </label>
-          ))}
-        </div>
-        <label>Multiple BPMs</label>
-        <select value={localFilters.multiBpm} onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))}>
-          <option value="any">Any</option>
-          <option value="single">Single BPM only</option>
-          <option value="multiple">Multiple BPM only</option>
-        </select>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={apply}>Apply</button>
+        <div className={styles.buttonGroup}>
+          <button onClick={reset} className={`${styles.button} ${styles.resetButton}`}>Reset</button>
+          <button onClick={onClose} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
+          <button onClick={apply} className={`${styles.button} ${styles.applyButton}`}>Apply</button>
         </div>
       </div>
     </div>
