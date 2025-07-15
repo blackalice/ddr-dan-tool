@@ -38,7 +38,15 @@
     min-height: 2.5rem;
     box-sizing: border-box;
     width: 100%;
+    transition: background-color 0.2s, color 0.2s;
 }
+
+.game-select:disabled {
+    background-color: var(--bg-color-dark);
+    color: var(--text-muted-color);
+    cursor: not-allowed;
+}
+
 
 .song-search-row {
     display: flex;
