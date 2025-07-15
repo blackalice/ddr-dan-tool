@@ -5,6 +5,7 @@ import { ToggleBar } from "./ToggleBar";
 import { StepchartSection } from "./StepchartSection";
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './DifficultyMeter';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { useFilters } from '../contexts/FilterContext.jsx';
 import { getBpmRange } from '../BPMTool.jsx';
 
 import styles from "./StepchartPage.module.css";
@@ -46,6 +47,7 @@ export function StepchartPage({
   const location = useLocation();
   const isLoading = !simfile;
   const { targetBPM, multipliers } = useContext(SettingsContext);
+  const { filters } = useFilters();
   const [showAltBpm, setShowAltBpm] = useState(false);
 
   useEffect(() => {
@@ -153,16 +155,25 @@ export function StepchartPage({
 
     return difficultyLevels.map(levelName => {
         const type = chartDifficulties.find(t => t.difficulty === levelName.toLowerCase());
-        
+        let filteredOut = false;
+        if (type) {
+            if (filters.difficultyMin !== '' && type.feet < Number(filters.difficultyMin)) {
+                filteredOut = true;
+            }
+            if (filters.difficultyMax !== '' && type.feet > Number(filters.difficultyMax)) {
+                filteredOut = true;
+            }
+        }
+
         return (
-            <DifficultyMeter 
-                key={`${style}-${levelName}`} 
-                level={type ? type.feet : 'X'} 
-                difficultyName={levelName} 
-                isMissing={!type}
-                isSelected={type && type.slug === currentType}
+            <DifficultyMeter
+                key={`${style}-${levelName}`}
+                level={!type || filteredOut ? 'X' : type.feet}
+                difficultyName={levelName}
+                isMissing={!type || filteredOut}
+                isSelected={type && !filteredOut && type.slug === currentType}
                 onClick={() => {
-                  if (type) {
+                  if (type && !filteredOut) {
                     setCurrentType(type.slug);
                     if (setCurrentChart) {
                         setCurrentChart(type);
@@ -172,7 +183,7 @@ export function StepchartPage({
             />
         );
     });
-};
+  };
 
   return (
     <>

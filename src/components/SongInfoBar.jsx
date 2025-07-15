@@ -1,5 +1,6 @@
 import React from 'react';
 import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './DifficultyMeter';
+import { useFilters } from '../contexts/FilterContext.jsx';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -23,6 +24,8 @@ const SongInfoBar = ({
   setShowAltCoreBpm,
 }) => {
 
+  const { filters } = useFilters();
+
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData || !difficulties) return null;
 
@@ -33,6 +36,7 @@ const SongInfoBar = ({
         let level = null;
         let difficulty = null;
         let chartType = null;
+        let filteredOut = false;
 
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
@@ -43,15 +47,24 @@ const SongInfoBar = ({
             }
         }
 
+        if (chartType) {
+            if (filters.difficultyMin !== '' && chartType.feet < Number(filters.difficultyMin)) {
+                filteredOut = true;
+            }
+            if (filters.difficultyMax !== '' && chartType.feet > Number(filters.difficultyMax)) {
+                filteredOut = true;
+            }
+        }
+
         const isSelected = currentChart && chartType && currentChart.slug === chartType.slug;
 
         return (
             <DifficultyMeter
                 key={`${style}-${levelName}`}
-                level={level || 'X'}
+                level={!level || filteredOut ? 'X' : level}
                 difficultyName={levelName}
-                isMissing={!level}
-                onClick={() => chartType && setCurrentChart(chartType)}
+                isMissing={!level || filteredOut}
+                onClick={() => chartType && !filteredOut && setCurrentChart(chartType)}
                 isSelected={isSelected}
             />
         );
