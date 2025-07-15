@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-processed-data.mjs && vite",
+    "dev": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && vite",
     "build": "vite build",
-    "prebuild": "node scripts/generate-processed-data.mjs",
-    "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs",
+    "prebuild": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs",
+    "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
