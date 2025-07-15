@@ -2,17 +2,18 @@ import React, { useState, useMemo, useEffect, useContext } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { loadDanData } from './utils/course-loader.js';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useFilters } from './contexts/FilterContext.jsx';
 import './App.css';
 import './components/SongCard.css';
 
-const DanSection = ({ danCourse, playMode, setSelectedGame }) => (
+const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => (
   <section className="dan-section">
     <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
       {danCourse.name}
     </h2>
     <div className="song-grid">
       {danCourse.songs.map((song, index) => (
-        <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} />
+        <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
       ))}
     </div>
   </section>
@@ -41,6 +42,7 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
   const [danCourses, setDanCourses] = useState({ single: [], double: [] });
   const [isLoading, setIsLoading] = useState(true);
   const { playStyle, setPlayStyle } = useContext(SettingsContext);
+  const { resetFilters } = useFilters();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -85,11 +87,12 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
             </div>
           ) : coursesToShow.length > 0 ? (
              coursesToShow.map((course) => (
-                <DanSection 
-                  key={course.name} 
-                  danCourse={course} 
+                <DanSection
+                  key={course.name}
+                  danCourse={course}
                   playMode={playStyle}
                   setSelectedGame={setSelectedGame}
+                  resetFilters={resetFilters}
                 />
             ))
           ) : (

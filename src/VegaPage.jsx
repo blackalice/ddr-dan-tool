@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
+import { useFilters } from './contexts/FilterContext.jsx';
 import { loadVegaData } from './utils/course-loader.js';
 import './App.css';
 import './VegaPage.css';
 
-const DanSection = ({ danCourse, setSelectedGame }) => {
+const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
     const songGridClasses = `song-grid ${
         danCourse.songs.length === 3 ? 'three-items' : ''
     } ${danCourse.songs.length === 1 ? 'one-item' : ''}`;
@@ -18,7 +19,7 @@ const DanSection = ({ danCourse, setSelectedGame }) => {
             </h2>
             <div className={songGridClasses}>
                 {danCourse.songs.map((song, index) => (
-                    <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} />
+                    <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
                 ))}
             </div>
         </section>
@@ -60,6 +61,7 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
   const [vegaData, setVegaData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState('');
+  const { resetFilters } = useFilters();
   
   const availableMonths = useMemo(() => Object.keys(vegaData).sort((a, b) => new Date(b) - new Date(a)), [vegaData]);
 
@@ -106,10 +108,11 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
             </div>
           ) : coursesToShow.length > 0 ? (
              coursesToShow.map((course) => (
-                <DanSection 
-                  key={course.name} 
-                  danCourse={course} 
+                <DanSection
+                  key={course.name}
+                  danCourse={course}
                   setSelectedGame={setSelectedGame}
+                  resetFilters={resetFilters}
                 />
             ))
           ) : (

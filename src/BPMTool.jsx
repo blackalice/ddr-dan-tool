@@ -5,8 +5,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useFilters } from './contexts/FilterContext.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
+import FilterModal from './components/FilterModal.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -119,6 +121,7 @@ export const getBpmRange = (bpm) => {
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
     const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { filters, resetFilters } = useFilters();
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -130,6 +133,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [speedmod, setSpeedmod] = useState(1);
+    const [showFilter, setShowFilter] = useState(false);
+    const [songMeta, setSongMeta] = useState([]);
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
@@ -141,6 +146,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const handleResize = () => setIsMobile(window.innerWidth <= 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        fetch('/song-meta.json')
+            .then(res => res.json())
+            .then(setSongMeta)
+            .catch(err => console.error('Failed to load song meta:', err));
     }, []);
 
     useEffect(() => {
@@ -311,10 +323,32 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     };
 
     useEffect(() => {
+        if (!smData.files.length) return;
         let filteredFiles = smData.files;
         if (selectedGame !== 'all') {
-            filteredFiles = smData.files.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
+            filteredFiles = filteredFiles.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
+
+        const metaMap = new Map(songMeta.map(m => [m.path, m]));
+
+        filteredFiles = filteredFiles.filter(file => {
+            const meta = metaMap.get(file.path);
+            if (!meta) return false;
+            if (filters.games.length && !filters.games.includes(meta.game)) return false;
+            if (filters.artist && !meta.artist.toLowerCase().includes(filters.artist.toLowerCase())) return false;
+            if (filters.multiBpm === 'single' && meta.hasMultipleBpms) return false;
+            if (filters.multiBpm === 'multiple' && !meta.hasMultipleBpms) return false;
+            if (filters.bpmMin !== '' && meta.bpmMax < Number(filters.bpmMin)) return false;
+            if (filters.bpmMax !== '' && meta.bpmMin > Number(filters.bpmMax)) return false;
+            if (filters.difficultyMin !== '' || filters.difficultyMax !== '') {
+                const maxFeet = Math.max(...meta.difficulties.map(d => d.feet));
+                const minFeet = Math.min(...meta.difficulties.map(d => d.feet));
+                if (filters.difficultyMin !== '' && maxFeet < Number(filters.difficultyMin)) return false;
+                if (filters.difficultyMax !== '' && minFeet > Number(filters.difficultyMax)) return false;
+            }
+            return true;
+        });
+
         const options = filteredFiles.map(file => ({
             value: file.path,
             label: file.title,
@@ -322,7 +356,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             titleTranslit: file.titleTranslit
         }));
         setSongOptions(options);
-    }, [selectedGame, smData]);
+    }, [selectedGame, smData, songMeta, filters]);
 
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
@@ -369,6 +403,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     };
 
     return (
+        <>
         <div className="app-container">
             <div className="selection-container">
                 <div className="controls-container">
@@ -404,6 +439,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             />
                         </div>
                         {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
+                        <button className="filter-button" onClick={() => setShowFilter(true)}>Filters</button>
                     </div>
                 </div>
             </div>
@@ -497,6 +533,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 )}
             </div>
         </div>
+        <FilterModal isOpen={showFilter} onClose={() => setShowFilter(false)} games={smData.games} />
+        </>
     );
 };
 
