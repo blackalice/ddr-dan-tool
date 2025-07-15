@@ -19,6 +19,7 @@ function AppRoutes() {
   const [selectedGame, setSelectedGame] = useState('all');
   const [activeDan, setActiveDan] = useState(() => localStorage.getItem('activeDan') || 'All');
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => localStorage.getItem('activeVegaCourse') || 'All');
+  const [view, setView] = useState('bpm');
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -116,8 +117,8 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
-            <Route path="/" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} />} />
+            <Route path="/" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </div>

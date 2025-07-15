@@ -117,7 +117,7 @@ export const getBpmRange = (bpm) => {
     return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame }) => {
+const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
     const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle } = useContext(SettingsContext);
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -129,7 +129,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [view, setView] = useState('bpm');
     const [speedmod, setSpeedmod] = useState(1);
 
     useEffect(() => {
