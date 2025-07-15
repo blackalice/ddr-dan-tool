@@ -10,11 +10,11 @@ import { getBpmRange } from '../BPMTool.jsx';
 import styles from "./StepchartPage.module.css";
 import "../BPMTool.css";
 
-const speedmods = [1, 1.5, 2, 3];
 const sectionSizesInMeasures = {
   1: 8,
   1.5: 5,
   2: 4,
+  2.5: 3,
   3: 3,
 };
 
@@ -40,9 +40,9 @@ export function StepchartPage({
   isCollapsed,
   setIsCollapsed,
   playStyle,
+  speedmod,
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
-  const [speedmod, setSpeedmod] = useState(speedmods[0]);
   const location = useLocation();
   const isLoading = !simfile;
   const { targetBPM, multipliers } = useContext(SettingsContext);
@@ -176,11 +176,6 @@ export function StepchartPage({
 
   return (
     <>
-      <div className={styles.smodControlsContainer}>
-        <button className={styles.smodButton} onClick={() => setSpeedmod(prev => speedmods[Math.max(0, speedmods.indexOf(prev) - 1)])}>-</button>
-        <div className={styles.smodValue}>{speedmod}x</div>
-        <button className={styles.smodButton} onClick={() => setSpeedmod(prev => speedmods[Math.min(speedmods.length - 1, speedmods.indexOf(prev) + 1)])}>+</button>
-      </div>
       {simfile ? (
           <>
               <div className={styles.printTitle}>

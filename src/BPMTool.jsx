@@ -130,6 +130,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [view, setView] = useState('bpm');
+    const [speedmod, setSpeedmod] = useState(1);
 
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
@@ -485,7 +486,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         isCollapsed={isCollapsed}
                         setIsCollapsed={setIsCollapsed}
                         playStyle={playStyle}
+                        speedmod={speedmod}
                     />
+                )}
+                 {view === 'chart' && (
+                    <div className="smod-controls-container">
+                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.max(1, prev - 0.5))}>-</button>
+                        <div className="smod-value">{speedmod}x</div>
+                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.min(3, prev + 0.5))}>+</button>
+                    </div>
                 )}
             </div>
         </div>
