@@ -30,16 +30,27 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <h3 className={styles.modalHeader}>Add Chart to List</h3>
         <div className={styles.modalBody}>
-          {groups.length > 0 && (
-            <div className={styles.formGroup}>
-              <label>Select List</label>
-              <select value={selected} onChange={e => setSelected(e.target.value)} className={styles.select}>
-                {groups.map(g => (
-                  <option key={g.name} value={g.name}>{g.name}</option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className={styles.formGroup}>
+            <label>Select List</label>
+            <select
+              value={selected}
+              onChange={e => setSelected(e.target.value)}
+              className={styles.select}
+              disabled={groups.length === 0}
+            >
+              {groups.length === 0 ? (
+                <option value="" disabled>
+                  There are no lists yet
+                </option>
+              ) : (
+                groups.map(g => (
+                  <option key={g.name} value={g.name}>
+                    {g.name}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
           <div className={styles.formGroup}>
             <label>Or Create New</label>
             <input type="text" value={newName} onChange={e => setNewName(e.target.value)} className={styles.input} placeholder="New list name" />
