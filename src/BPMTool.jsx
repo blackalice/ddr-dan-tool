@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useContext, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -176,6 +177,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
     const { filters, resetFilters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
+    const location = useLocation();
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -215,6 +217,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    useEffect(() => {
+        if (location.state?.fromSongCard) {
+            window.scrollTo(0, 0);
+        }
+    }, [location.state?.fromSongCard]);
 
     useEffect(() => {
         fetch('/song-meta.json')
