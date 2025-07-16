@@ -163,6 +163,12 @@ export function StepchartPage({
             if (filters.difficultyMax !== '' && type.feet > Number(filters.difficultyMax)) {
                 filteredOut = true;
             }
+            if (filters.difficultyNames && filters.difficultyNames.length > 0) {
+                const lowerCaseFilterNames = filters.difficultyNames.map(n => n.toLowerCase());
+                if (!lowerCaseFilterNames.includes(type.difficulty.toLowerCase())) {
+                    filteredOut = true;
+                }
+            }
         }
 
         return (
