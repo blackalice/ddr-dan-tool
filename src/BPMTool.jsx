@@ -373,6 +373,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [selectedGame, smData, songMeta, filters]);
 
     useEffect(() => {
+        if (!simfileData || songOptions.length === 0) return;
+        const currentTitle = simfileData.title.titleName;
+        const isValid = songOptions.some(opt => opt.title === currentTitle);
+        if (!isValid) {
+            onSongSelect(songOptions[0]);
+        }
+    }, [songOptions, simfileData]);
+
+    useEffect(() => {
         if (!simfileData || !currentChart) return;
 
         const mode = playStyle;
