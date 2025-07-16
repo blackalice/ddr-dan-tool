@@ -36,7 +36,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: border-radius 0.3s ease-in-out;
 }
+
+.dan-header.is-collapsed {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
 
 .dan-header-title {
   flex-grow: 1;

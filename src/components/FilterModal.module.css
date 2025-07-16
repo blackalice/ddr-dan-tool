@@ -41,6 +41,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding-bottom:1rem;
 }
 
 .formGroup {
@@ -49,9 +50,9 @@
     gap: 0.5rem;
 }
 
-.formGroup label {
+.formGroup > label {
     font-weight: 600;
-    color: var(--text-muted-color);
+    color: var(--text-muted);
 }
 
 .inputGroup {
@@ -84,6 +85,7 @@
 .formGroup > .input,
 .formGroup > .select {
     width: 100%;
+    
 }
 
 .gameCheckboxes {
@@ -93,6 +95,7 @@
     border-radius: 0.5rem;
     padding: 0.5rem;
     background-color: var(--card-bg-color);
+    
 }
 
 .checkboxLabel {
@@ -101,6 +104,8 @@
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    font-weight: 400;
+   
 }
 
 .checkboxLabel:hover {
@@ -113,21 +118,20 @@
 }
 
 .activeGroup {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    border-radius: 0.5rem;
 }
 
 .activeInput {
     outline: 3px solid var(--accent-color);
     outline-offset: 1px;
     border-radius: 0.5rem;
+
 }
 
 
 
 .checkboxLabel input {
     display: none; /* Hide the checkbox */
+    
 }
 
 .buttonGroup {
@@ -223,9 +227,12 @@
     .modalBody {
         flex-grow: 1;
         background-color: var(--bg-color); /* Set form area back to main bg */
-        padding: 1rem 1.5rem; /* Adjust padding for content alignment */
+        padding-left:  1.5rem; /* Adjust padding for content alignment */
+        padding-right:  1.5rem; /* Adjust padding for content alignment */
+        padding-bottom:1.5rem;
         margin: 0; /* Remove margins */
         border-radius: 0; /* Remove radius */
+      
         
     }
 
@@ -242,10 +249,9 @@
  
     label{
         text-align:center;
+        padding-top: 0.8rem;
     }
-    ._checkboxLabel_******_98{
-        text-align:left!important;
-    }
+    
 }
 
 

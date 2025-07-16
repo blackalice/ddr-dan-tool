@@ -6,18 +6,37 @@ import { useFilters } from './contexts/FilterContext.jsx';
 import './App.css';
 import './components/SongCard.css';
 
-const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => (
-  <section className="dan-section">
-    <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
-      {danCourse.name}
-    </h2>
-    <div className="song-grid">
-      {danCourse.songs.map((song, index) => (
-        <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
-      ))}
-    </div>
-  </section>
-);
+const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`dan-header-collapsed-${danCourse.name}`, JSON.stringify(isCollapsed));
+  }, [isCollapsed, danCourse.name]);
+
+  return (
+    <section className="dan-section">
+      <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: danCourse.color }}>
+        {danCourse.name}
+        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+        </button>
+      </h2>
+      {!isCollapsed && (
+        <div className="song-grid">
+          {danCourse.songs.map((song, index) => (
+            <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
 
 const FilterBar = ({ activeDan, setDan, danLevels }) => (
     <div className="filter-bar">

@@ -10,9 +10,19 @@ import './VegaPage.css';
 import './ListsPage.css';
 
 const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
+    } catch {
+      return false;
+    }
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
+
+  useEffect(() => {
+    localStorage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
+  }, [isCollapsed, group.name]);
 
   useEffect(() => {
     setName(group.name);
@@ -37,7 +47,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
 
   return (
     <section className="dan-section">
-      <h2 className="dan-header" style={{ backgroundColor: group.color }}>
+      <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: group.color }}>
         <div className="dan-header-title">
           <label className="color-picker-label">
             <FontAwesomeIcon icon={faPalette} />

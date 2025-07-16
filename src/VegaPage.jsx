@@ -8,20 +8,37 @@ import './App.css';
 import './VegaPage.css';
 
 const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
+    const [isCollapsed, setIsCollapsed] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
+        } catch {
+            return false;
+        }
+    });
+
+    useEffect(() => {
+        localStorage.setItem(`dan-header-collapsed-${danCourse.name}`, JSON.stringify(isCollapsed));
+    }, [isCollapsed, danCourse.name]);
+
     const songGridClasses = `song-grid ${
         danCourse.songs.length === 3 ? 'three-items' : ''
     } ${danCourse.songs.length === 1 ? 'one-item' : ''}`;
 
     return (
         <section className="dan-section">
-            <h2 className="dan-header" style={{ backgroundColor: danCourse.color }}>
+            <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: danCourse.color }}>
                 {danCourse.name}
+                <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+                </button>
             </h2>
-            <div className={songGridClasses}>
-                {danCourse.songs.map((song, index) => (
-                    <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
-                ))}
-            </div>
+            {!isCollapsed && (
+              <div className={songGridClasses}>
+                  {danCourse.songs.map((song, index) => (
+                      <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
+                  ))}
+              </div>
+            )}
         </section>
     );
 };
