@@ -1,3 +1,4 @@
+/* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
 

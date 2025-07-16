@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -13,6 +13,7 @@ import FilterModal from './components/FilterModal.jsx';
 import Camera from './Camera.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
+import { getBpmRange } from './utils/bpm.js';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -166,16 +167,10 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
-export const getBpmRange = (bpm) => {
-    if (typeof bpm !== 'string') return { min: 0, max: 0 };
-    const parts = bpm.split('-').map(Number);
-    if (parts.length === 1) return { min: parts[0], max: parts[0] };
-    return { min: Math.min(...parts), max: Math.max(...parts) };
-};
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
-    const { filters, resetFilters } = useFilters();
+    const { targetBPM, multipliers, apiKey, playStyle, showLists } = useContext(SettingsContext);
+    const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
     const [songOptions, setSongOptions] = useState([]);
@@ -399,36 +394,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return result;
     }, [targetBPM, coreBpm, multipliers]);
 
-    const renderDifficulties = (playStyle) => {
-        const difficultySet = playStyle === 'sp' ? difficulties.singles : difficulties.doubles;
-        const chartDifficulties = simfileData ? simfileData.availableTypes.filter(t => t.mode === (playStyle === 'sp' ? 'single' : 'double')) : [];
-        return difficultyLevels.map(levelName => {
-            let level = null;
-            let difficulty = null;
-            let chartType = null;
-            for (const name of difficultyNameMapping[levelName]) {
-                if (difficultySet[name]) {
-                    level = difficultySet[name];
-                    difficulty = name;
-                    if (simfileData) {
-                        chartType = chartDifficulties.find(t => t.difficulty === name);
-                    }
-                    break;
-                }
-            }
-            const isSelected = currentChart && currentChart.difficulty === difficulty && currentChart.mode === (playStyle === 'sp' ? 'single' : 'double');
-            return (
-                <DifficultyMeter
-                    key={`${playStyle}-${levelName}`}
-                    level={level || 'X'}
-                    difficultyName={levelName}
-                    isMissing={!level}
-                    onClick={() => chartType && setCurrentChart(chartType)}
-                    isSelected={isSelected}
-                />
-            );
-        });
-    };
 
     useEffect(() => {
         if (!smData.files.length) return;
@@ -695,9 +660,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         setShowFilter(false);
     };
 
-    const handleToggle = (index) => {
-        setView(index === 0 ? 'bpm' : 'chart');
-    };
 
     return (
         <>
@@ -709,15 +671,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'chart' ? 'active' : ''}>Chart</button>
                         </div>
-                        <select 
-                            className="game-select" 
-                            value={selectedGame} 
-                            onChange={(e) => { setSelectedGame(e.target.value); onSongSelect(null); }}
-                            disabled={filters.games.length > 0}
-                        >
-                            <option value="all">All Games</option>
-                            {smData.games.map(game => (<option key={game} value={game}>{game}</option>))}
-                        </select>
                     </div>
                     <div className="song-search-row">
                         <div className="song-select-container">
@@ -734,7 +687,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 onInputChange={setInputValue}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
-                                    const { title, titleTranslit } = data;
+                                    const { titleTranslit } = data;
                                     const input = rawInput.toLowerCase();
                                     return label.toLowerCase().includes(input) || (titleTranslit && titleTranslit.toLowerCase().includes(input));
                                 }}

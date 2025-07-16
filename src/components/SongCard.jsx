@@ -29,7 +29,7 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
+const SongCard = ({ song, resetFilters, onRemove }) => {
   const { targetBPM, multipliers, setPlayStyle } = useContext(SettingsContext);
   const navigate = useNavigate();
 

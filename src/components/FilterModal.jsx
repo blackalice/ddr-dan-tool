@@ -74,10 +74,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
 
   if (!isOpen) return null;
 
-  const bpmActive = localFilters.bpmMin !== '' || localFilters.bpmMax !== '';
-  const diffRangeActive = localFilters.difficultyMin !== '' || localFilters.difficultyMax !== '';
   const diffNamesActive = localFilters.difficultyNames.length > 0;
-  const lengthActive = localFilters.lengthMin !== '' || localFilters.lengthMax !== '';
   const artistActive = localFilters.artist !== '';
   const titleActive = localFilters.title !== '';
   const gamesActive = localFilters.games.length > 0;
