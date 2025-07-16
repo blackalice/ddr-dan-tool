@@ -624,11 +624,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (currentFilters.multiBpm === 'multiple' && isSingleBpm) return false;
             if (currentFilters.bpmMin !== '' && meta.bpmMax < Number(currentFilters.bpmMin)) return false;
             if (currentFilters.bpmMax !== '' && meta.bpmMin > Number(currentFilters.bpmMax)) return false;
-            if (currentFilters.difficultyMin !== '' || currentFilters.difficultyMax !== '' || currentFilters.difficultyNames.length > 0) {
+            if (currentFilters.difficultyMin !== '' || currentFilters.difficultyMax !== '' || (currentFilters.difficultyNames && currentFilters.difficultyNames.length > 0)) {
+                const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
                     const levelMatch = currentFilters.difficultyMin === '' || d.feet >= Number(currentFilters.difficultyMin);
                     const levelMaxMatch = currentFilters.difficultyMax === '' || d.feet <= Number(currentFilters.difficultyMax);
-                    const nameMatch = currentFilters.difficultyNames.length === 0 || currentFilters.difficultyNames.includes(d.difficulty);
+                    const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
                     return levelMatch && levelMaxMatch && nameMatch;
                 });
                 if (!chartMatches) return false;
@@ -647,13 +648,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const chartsToAdd = filteredSongOptions.flatMap(song => {
             const meta = metaMap.get(song.value);
             if (!meta) return [];
+            const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
 
             return meta.difficulties
                 .filter(d => {
                     if (d.mode !== playStyle) return false; // Filter by play style
                     if (currentFilters.difficultyMin && d.feet < currentFilters.difficultyMin) return false;
                     if (currentFilters.difficultyMax && d.feet > currentFilters.difficultyMax) return false;
-                    if (currentFilters.difficultyNames.length > 0 && !currentFilters.difficultyNames.includes(d.difficulty)) return false;
+                    if (lowerCaseFilterNames.length > 0 && !lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) return false;
                     return true;
                 })
                 .map(d => ({
