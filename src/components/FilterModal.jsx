@@ -89,18 +89,54 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
         <h3 className={styles.modalHeader}>Song Filters</h3>
         <div className={styles.modalBody}>
           <div className={styles.column}>
-            <div className={`${styles.formGroup} ${bpmActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>BPM Range (1-1100)</label>
               <div className={styles.inputGroup}>
-                <input type="number" min="1" max="1100" placeholder="Min" value={localFilters.bpmMin} onChange={e => setLocalFilters(f => ({ ...f, bpmMin: e.target.value }))} onBlur={e => handleRangeBlur('bpmMin', e.target.value, 1, 1100)} className={styles.input} />
-                <input type="number" min="1" max="1100" placeholder="Max" value={localFilters.bpmMax} onChange={e => setLocalFilters(f => ({ ...f, bpmMax: e.target.value }))} onBlur={e => handleRangeBlur('bpmMax', e.target.value, 1, 1100)} className={styles.input} />
+                <input
+                  type="number"
+                  min="1"
+                  max="1100"
+                  placeholder="Min"
+                  value={localFilters.bpmMin}
+                  onChange={e => setLocalFilters(f => ({ ...f, bpmMin: e.target.value }))}
+                  onBlur={e => handleRangeBlur('bpmMin', e.target.value, 1, 1100)}
+                  className={`${styles.input} ${localFilters.bpmMin !== '' ? styles.activeInput : ''}`}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  max="1100"
+                  placeholder="Max"
+                  value={localFilters.bpmMax}
+                  onChange={e => setLocalFilters(f => ({ ...f, bpmMax: e.target.value }))}
+                  onBlur={e => handleRangeBlur('bpmMax', e.target.value, 1, 1100)}
+                  className={`${styles.input} ${localFilters.bpmMax !== '' ? styles.activeInput : ''}`}
+                />
               </div>
             </div>
-            <div className={`${styles.formGroup} ${diffRangeActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>Difficulty Range (1-19)</label>
               <div className={styles.inputGroup}>
-                <input type="number" min="1" max="19" placeholder="Min" value={localFilters.difficultyMin} onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)} className={styles.input} />
-                <input type="number" min="1" max="19" placeholder="Max" value={localFilters.difficultyMax} onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)} className={styles.input} />
+                <input
+                  type="number"
+                  min="1"
+                  max="19"
+                  placeholder="Min"
+                  value={localFilters.difficultyMin}
+                  onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))}
+                  onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)}
+                  className={`${styles.input} ${localFilters.difficultyMin !== '' ? styles.activeInput : ''}`}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  max="19"
+                  placeholder="Max"
+                  value={localFilters.difficultyMax}
+                  onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))}
+                  onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)}
+                  className={`${styles.input} ${localFilters.difficultyMax !== '' ? styles.activeInput : ''}`}
+                />
               </div>
             </div>
             <div className={`${styles.formGroup} ${diffNamesActive ? styles.activeGroup : ''}`}>
@@ -119,22 +155,50 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 })}
               </div>
             </div>
-            <div className={`${styles.formGroup} ${lengthActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>Length (seconds)</label>
               <div className={styles.inputGroup}>
-                <input type="number" min="1" max="600" placeholder="Min" value={localFilters.lengthMin} onChange={e => setLocalFilters(f => ({ ...f, lengthMin: e.target.value }))} onBlur={e => handleRangeBlur('lengthMin', e.target.value, 1, 600)} className={styles.input} />
-                <input type="number" min="1" max="600" placeholder="Max" value={localFilters.lengthMax} onChange={e => setLocalFilters(f => ({ ...f, lengthMax: e.target.value }))} onBlur={e => handleRangeBlur('lengthMax', e.target.value, 1, 600)} className={styles.input} />
+                <input
+                  type="number"
+                  min="1"
+                  max="600"
+                  placeholder="Min"
+                  value={localFilters.lengthMin}
+                  onChange={e => setLocalFilters(f => ({ ...f, lengthMin: e.target.value }))}
+                  onBlur={e => handleRangeBlur('lengthMin', e.target.value, 1, 600)}
+                  className={`${styles.input} ${localFilters.lengthMin !== '' ? styles.activeInput : ''}`}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  max="600"
+                  placeholder="Max"
+                  value={localFilters.lengthMax}
+                  onChange={e => setLocalFilters(f => ({ ...f, lengthMax: e.target.value }))}
+                  onBlur={e => handleRangeBlur('lengthMax', e.target.value, 1, 600)}
+                  className={`${styles.input} ${localFilters.lengthMax !== '' ? styles.activeInput : ''}`}
+                />
               </div>
             </div>
           </div>
           <div className={styles.column}>
-            <div className={`${styles.formGroup} ${artistActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>Artist</label>
-              <input type="text" value={localFilters.artist} onChange={e => setLocalFilters(f => ({ ...f, artist: e.target.value }))} className={styles.input} />
+              <input
+                type="text"
+                value={localFilters.artist}
+                onChange={e => setLocalFilters(f => ({ ...f, artist: e.target.value }))}
+                className={`${styles.input} ${artistActive ? styles.activeInput : ''}`}
+              />
             </div>
-            <div className={`${styles.formGroup} ${titleActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>Song</label>
-              <input type="text" value={localFilters.title} onChange={e => setLocalFilters(f => ({ ...f, title: e.target.value }))} className={styles.input} />
+              <input
+                type="text"
+                value={localFilters.title}
+                onChange={e => setLocalFilters(f => ({ ...f, title: e.target.value }))}
+                className={`${styles.input} ${titleActive ? styles.activeInput : ''}`}
+              />
             </div>
             <div className={`${styles.formGroup} ${gamesActive ? styles.activeGroup : ''}`}>
               <label>Game Versions</label>
@@ -152,9 +216,13 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 })}
               </div>
             </div>
-            <div className={`${styles.formGroup} ${multiBpmActive ? styles.activeGroup : ''}`}>
+            <div className={styles.formGroup}>
               <label>Multiple BPMs</label>
-              <select value={localFilters.multiBpm} onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))} className={styles.select}>
+              <select
+                value={localFilters.multiBpm}
+                onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))}
+                className={`${styles.select} ${multiBpmActive ? styles.activeInput : ''}`}
+              >
                 <option value="any">Any</option>
                 <option value="single">Single BPM only</option>
                 <option value="multiple">Multiple BPM only</option>
