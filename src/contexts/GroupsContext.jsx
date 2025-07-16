@@ -16,11 +16,15 @@ export const GroupsProvider = ({ children }) => {
 
   const createGroup = (name) => {
     if (!name || groups.some(g => g.name === name)) return;
-    setGroups(prev => [...prev, { name, charts: [] }]);
+    setGroups(prev => [...prev, { name, charts: [], color: 'var(--accent-color)' }]);
   };
 
   const deleteGroup = (name) => {
     setGroups(prev => prev.filter(g => g.name !== name));
+  };
+
+  const updateGroupColor = (name, color) => {
+    setGroups(prev => prev.map(g => g.name === name ? { ...g, color } : g));
   };
 
   const addChartToGroup = (name, chart) => {
@@ -38,7 +42,7 @@ export const GroupsProvider = ({ children }) => {
   };
 
   return (
-    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup }}>
+    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor }}>
       {children}
     </GroupsContext.Provider>
   );
