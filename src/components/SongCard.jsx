@@ -30,7 +30,7 @@ const getBpmRange = (bpm) => {
 };
 
 const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
-  const { targetBPM, multipliers } = useContext(SettingsContext);
+  const { targetBPM, multipliers, setPlayStyle } = useContext(SettingsContext);
   const navigate = useNavigate();
 
   const calculation = useMemo(() => {
@@ -77,6 +77,7 @@ const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
   return (
     <div className="song-card-link" onClick={() => {
       if (resetFilters) resetFilters();
+      if (setPlayStyle) setPlayStyle(song.mode);
       navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
     }}>
       <div className="song-card">
