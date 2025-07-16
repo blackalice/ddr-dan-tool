@@ -6,9 +6,11 @@ import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { FilterProvider } from './contexts/FilterContext.jsx';
+import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
+import ListsPage from './ListsPage.jsx';
 import './App.css';
 import './Tabs.css';
 
@@ -117,8 +119,9 @@ function AppRoutes() {
           <Routes>
             <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
-            <Route path="/multiplier" element={<Multiplier />} />
-            <Route path="/" element={<Navigate to="/bpm" replace />} />
+          <Route path="/multiplier" element={<Multiplier />} />
+          <Route path="/lists" element={<ListsPage />} />
+          <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
@@ -135,9 +138,11 @@ function AppWrapper() {
   return (
     <SettingsProvider>
       <FilterProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
+        <GroupsProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </GroupsProvider>
       </FilterProvider>
     </SettingsProvider>
   );

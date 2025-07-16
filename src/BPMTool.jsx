@@ -10,6 +10,8 @@ import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
 import FilterModal from './components/FilterModal.jsx';
 import Camera from './Camera.jsx';
+import { useGroups } from './contexts/GroupsContext.jsx';
+import AddToListModal from './components/AddToListModal.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -159,6 +161,7 @@ export const getBpmRange = (bpm) => {
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
     const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle } = useContext(SettingsContext);
     const { filters, resetFilters } = useFilters();
+    const { groups, addChartToGroup, createGroup } = useGroups();
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -171,6 +174,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const filtersActive = Boolean(
         filters.bpmMin !== '' ||
@@ -493,6 +497,27 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }
 
+    const saveChartToGroup = (name) => {
+        if (!simfileData || !currentChart) return;
+        if (!groups.some(g => g.name === name)) {
+            createGroup(name);
+        }
+        const chart = {
+            title: simfileData.title.titleName,
+            level: currentChart.feet,
+            bpm: bpmDisplay,
+            difficulty: currentChart.difficulty.toLowerCase(),
+            mode: currentChart.mode,
+            game: simfileData.mix.mixName
+        };
+        addChartToGroup(name, chart);
+    };
+
+    const handleAddToList = () => {
+        if (!simfileData || !currentChart) return;
+        setShowAddModal(true);
+    };
+
     const handleToggle = (index) => {
         setView(index === 0 ? 'bpm' : 'chart');
     };
@@ -540,6 +565,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         <div className="action-buttons">
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
+                            <button className="filter-button" onClick={handleAddToList} title="Add to list">
+                                <i className="fa-solid fa-plus"></i>
+                            </button>
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
                                 <i className="fa-solid fa-filter"></i>
                             </button>
@@ -639,6 +667,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             </div>
         </div>
         <FilterModal isOpen={showFilter} onClose={() => setShowFilter(false)} games={smData.games} />
+        <AddToListModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            groups={groups}
+            onAdd={saveChartToGroup}
+        />
         </>
     );
 };
