@@ -1,0 +1,18 @@
+.list-page-filter-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap; /* Prevent wrapping on mobile */
+}
+
+/* Target the input specifically within this group */
+.list-page-filter-group > .dan-select {
+  flex-grow: 1; /* Allow it to take up available space */
+  width: auto; /* Override the global 'width: 100%' */
+  min-width: 100px;
+}
+
+.list-page-filter-group > .vega-button {
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent the button from shrinking */
+}

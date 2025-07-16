@@ -3,6 +3,7 @@ import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import './App.css';
 import './VegaPage.css';
+import './ListsPage.css';
 
 const GroupSection = ({ group, removeChart }) => (
   <section className="dan-section">
@@ -34,7 +35,7 @@ const ListsPage = () => {
     <div className="app-container">
       <main>
         <div className="filter-bar">
-          <div className="filter-group">
+          <div className="filter-group list-page-filter-group">
             <input
               className="dan-select"
               value={newName}
