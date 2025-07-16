@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const defaultFilters = {
   bpmMin: '',
@@ -17,7 +17,15 @@ export const FilterContext = createContext({
 });
 
 export const FilterProvider = ({ children }) => {
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(() => {
+    const saved = localStorage.getItem('filters');
+    return saved ? JSON.parse(saved) : defaultFilters;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('filters', JSON.stringify(filters));
+  }, [filters]);
+
   const resetFilters = () => setFilters(defaultFilters);
   return (
     <FilterContext.Provider value={{ filters, setFilters, resetFilters }}>
