@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
+import { useFilters } from './contexts/FilterContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPalette } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const GroupSection = ({ group, removeChart, deleteGroup, updateColor }) => {
+const GroupSection = ({ group, removeChart, deleteGroup, updateColor, resetFilters }) => {
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete the list "${group.name}"?`)) {
       deleteGroup(group.name);
@@ -35,7 +36,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor }) => {
       </h2>
       <div className="song-grid">
         {group.charts.map((chart, idx) => (
-          <SongCard key={idx} song={chart} onRemove={() => removeChart(group.name, chart)} />
+          <SongCard key={idx} song={chart} resetFilters={resetFilters} onRemove={() => removeChart(group.name, chart)} />
         ))}
         {group.charts.length === 0 && (
           <p style={{ padding: '1rem', color: 'var(--text-muted-color)' }}>No charts in this list.</p>
@@ -47,6 +48,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor }) => {
 
 const ListsPage = () => {
   const { groups, createGroup, removeChartFromGroup, deleteGroup, updateGroupColor } = useGroups();
+  const { resetFilters } = useFilters();
   const [newName, setNewName] = useState('');
 
   const handleCreate = () => {
@@ -78,6 +80,7 @@ const ListsPage = () => {
             removeChart={removeChartFromGroup}
             deleteGroup={deleteGroup}
             updateColor={updateGroupColor}
+            resetFilters={resetFilters}
           />
         ))}
       </main>
