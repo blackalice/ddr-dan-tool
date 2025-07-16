@@ -15,7 +15,7 @@ import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
-  const { theme, showLists } = useContext(SettingsContext);
+  const { theme, showLists, setPlayStyle } = useContext(SettingsContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -49,12 +49,19 @@ function AppRoutes() {
       const difficulty = queryParams.get('difficulty');
       const mode = queryParams.get('mode');
 
+      if (mode === 'single' || mode === 'double') {
+        setPlayStyle(mode);
+      }
+
       if (simfileData && simfileData.title.titleName.toLowerCase() === songTitle.toLowerCase()) {
         // If song is the same, check if we need to update the chart
         if (currentChart && difficulty && mode && (currentChart.difficulty.toLowerCase() !== difficulty.toLowerCase() || currentChart.mode.toLowerCase() !== mode.toLowerCase())) {
             const chartToSelect = simfileData.availableTypes.find(c => c.difficulty.toLowerCase() === difficulty.toLowerCase() && c.mode.toLowerCase() === mode.toLowerCase());
             if (chartToSelect) {
                 setCurrentChart(chartToSelect);
+                if (chartToSelect.mode) {
+                  setPlayStyle(chartToSelect.mode);
+                }
             }
         }
         return;
@@ -82,6 +89,9 @@ function AppRoutes() {
             }
           }
           setCurrentChart(chartToSelect);
+          if (chartToSelect && chartToSelect.mode) {
+            setPlayStyle(chartToSelect.mode);
+          }
         }
       }
     };
@@ -101,6 +111,9 @@ function AppRoutes() {
 
   const handleChartSelect = (chart) => {
     setCurrentChart(chart);
+    if (chart && chart.mode) {
+      setPlayStyle(chart.mode);
+    }
     const queryParams = new URLSearchParams(location.search);
     queryParams.set('difficulty', chart.difficulty);
     queryParams.set('mode', chart.mode);
