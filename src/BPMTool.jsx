@@ -223,25 +223,53 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, []);
 
     useEffect(() => {
-        if (!simfileData || !currentChart) return;
+        if (!simfileData) return;
 
-        const newMode = playStyle;
-        const currentDifficulty = currentChart.difficulty;
-
-        const chartsInNewMode = simfileData.availableTypes.filter(c => c.mode === newMode);
-
-        if (chartsInNewMode.length === 0) return;
-
-        let newChart = chartsInNewMode.find(c => c.difficulty === currentDifficulty);
-        if (!newChart) {
-            newChart = chartsInNewMode.find(c => c.difficulty === 'Difficult');
+        const chartsInMode = simfileData.availableTypes.filter(c => c.mode === playStyle);
+        if (chartsInMode.length === 0) {
+            // If no charts for this play style, do nothing and let the song be filtered out
+            return;
         }
-        if (!newChart) {
-            newChart = chartsInNewMode[0];
-        }
-        setCurrentChart(newChart);
 
-    }, [playStyle, simfileData]);
+        const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
+
+        // Check if the current chart is valid
+        const isCurrentChartValid = currentChart &&
+            chartsInMode.some(c => c.slug === currentChart.slug) &&
+            (!filters.difficultyMin || currentChart.feet >= Number(filters.difficultyMin)) &&
+            (!filters.difficultyMax || currentChart.feet <= Number(filters.difficultyMax)) &&
+            (lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(currentChart.difficulty.toLowerCase()));
+
+        if (isCurrentChartValid) {
+            return; // Current chart is fine, no need to change
+        }
+
+        // Current chart is not valid, find a new one
+        const validCharts = chartsInMode.filter(c =>
+            (!filters.difficultyMin || c.feet >= Number(filters.difficultyMin)) &&
+            (!filters.difficultyMax || c.feet <= Number(filters.difficultyMax)) &&
+            (lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(c.difficulty.toLowerCase()))
+        );
+
+        if (validCharts.length > 0) {
+            let newChart = null;
+            // Prioritize the first selected difficulty name
+            if (lowerCaseFilterNames.length > 0) {
+                newChart = validCharts.find(c => c.difficulty.toLowerCase() === lowerCaseFilterNames[0]);
+            }
+            // Fallback to the first valid chart
+            if (!newChart) {
+                newChart = validCharts[0];
+            }
+            setCurrentChart(newChart);
+        } else {
+            // The song itself will be filtered out by the other effect,
+            // but we can try to find *any* chart for the new playstyle if the mode was just switched.
+            if (currentChart && currentChart.mode !== playStyle && chartsInMode.length > 0) {
+                setCurrentChart(chartsInMode[0]);
+            }
+        }
+    }, [filters, playStyle, simfileData]);
 
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
         if (!simfileData) {
@@ -414,11 +442,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (filters.multiBpm === 'multiple' && isSingleBpm) return false;
             if (filters.bpmMin !== '' && meta.bpmMax < Number(filters.bpmMin)) return false;
             if (filters.bpmMax !== '' && meta.bpmMin > Number(filters.bpmMax)) return false;
-            if (filters.difficultyMin !== '' || filters.difficultyMax !== '') {
-                const maxFeet = Math.max(...meta.difficulties.map(d => d.feet));
-                const minFeet = Math.min(...meta.difficulties.map(d => d.feet));
-                if (filters.difficultyMin !== '' && maxFeet < Number(filters.difficultyMin)) return false;
-                if (filters.difficultyMax !== '' && minFeet > Number(filters.difficultyMax)) return false;
+            if (filters.difficultyMin !== '' || filters.difficultyMax !== '' || (filters.difficultyNames && filters.difficultyNames.length > 0)) {
+                const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
+                const chartMatches = meta.difficulties.some(d => {
+                    const levelMatch = filters.difficultyMin === '' || d.feet >= Number(filters.difficultyMin);
+                    const levelMaxMatch = filters.difficultyMax === '' || d.feet <= Number(filters.difficultyMax);
+                    const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
+                    return levelMatch && levelMaxMatch && nameMatch;
+                });
+                if (!chartMatches) return false;
             }
             if (filters.lengthMin !== '' && meta.length !== undefined && meta.length < Number(filters.lengthMin)) return false;
             if (filters.lengthMax !== '' && meta.length !== undefined && meta.length > Number(filters.lengthMax)) return false;
@@ -444,6 +476,41 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             onSongSelect(songOptions[0]);
         }
     }, [songOptions, simfileData]);
+
+    useEffect(() => {
+        if (!simfileData || !currentChart || !filters) return;
+
+        // If the current chart is still valid, do nothing.
+        const currentChartIsValid =
+            (!filters.difficultyMin || currentChart.feet >= Number(filters.difficultyMin)) &&
+            (!filters.difficultyMax || currentChart.feet <= Number(filters.difficultyMax)) &&
+            (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(currentChart.difficulty));
+
+        if (currentChartIsValid) return;
+
+        // Find a better chart that matches the filters
+        const availableCharts = simfileData.availableTypes.filter(c => c.mode === playStyle);
+        const matchingCharts = availableCharts.filter(c =>
+            (!filters.difficultyMin || c.feet >= Number(filters.difficultyMin)) &&
+            (!filters.difficultyMax || c.feet <= Number(filters.difficultyMax)) &&
+            (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(c.difficulty))
+        );
+
+        if (matchingCharts.length > 0) {
+            // Prioritize the first difficulty in the filter, if available
+            let newChart = null;
+            if (filters.difficultyNames && filters.difficultyNames.length > 0) {
+                for (const diffName of filters.difficultyNames) {
+                    newChart = matchingCharts.find(c => c.difficulty === diffName);
+                    if (newChart) break;
+                }
+            }
+            if (!newChart) {
+                newChart = matchingCharts[0];
+            }
+            setCurrentChart(newChart);
+        }
+    }, [simfileData, filters]);
 
     useEffect(() => {
         if (!simfileData || !currentChart) return;
