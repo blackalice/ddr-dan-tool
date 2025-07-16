@@ -56,6 +56,7 @@ const FilterModal = ({ isOpen, onClose, games }) => {
       lengthMax: '',
       games: [],
       artist: '',
+      title: '',
       multiBpm: 'any',
     });
   };
@@ -91,6 +92,10 @@ const FilterModal = ({ isOpen, onClose, games }) => {
           <div className={styles.formGroup}>
             <label>Artist</label>
             <input type="text" value={localFilters.artist} onChange={e => setLocalFilters(f => ({ ...f, artist: e.target.value }))} className={styles.input} />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Song</label>
+            <input type="text" value={localFilters.title} onChange={e => setLocalFilters(f => ({ ...f, title: e.target.value }))} className={styles.input} />
           </div>
           <div className={styles.formGroup}>
             <label>Game Versions</label>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from 'react';
+import React, { useState, useMemo, useContext, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -142,10 +142,24 @@ const calculateSongLength = (bpmChanges, songLastBeat, stops = []) => {
 };
 
 const MenuList = ({ options, children, maxHeight, getValue }) => {
+    const listRef = React.useRef(null);
     const [value] = getValue();
-    const initialOffset = options.indexOf(value) * 35;
+    const initialOffset = useMemo(() => options.indexOf(value) * 35, [options, value]);
+
+    useEffect(() => {
+        if (listRef.current) {
+            listRef.current.scrollTo(initialOffset);
+        }
+    }, [initialOffset]);
+
     return (
-        <List height={maxHeight} itemCount={children.length} itemSize={35} initialScrollOffset={initialOffset}>
+        <List
+            ref={listRef}
+            height={maxHeight}
+            itemCount={children.length}
+            itemSize={35}
+            initialScrollOffset={initialOffset}
+        >
             {({ index, style }) => <div style={style}>{children[index]}</div>}
         </List>
     );
@@ -185,6 +199,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         filters.lengthMax !== '' ||
         filters.games.length > 0 ||
         filters.artist !== '' ||
+        (filters.title && filters.title !== '') ||
         filters.multiBpm !== 'any'
     );
 
@@ -392,6 +407,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!meta) return false;
             if (filters.games.length && !filters.games.includes(meta.game)) return false;
             if (filters.artist && !meta.artist.toLowerCase().includes(filters.artist.toLowerCase())) return false;
+            if (filters.title && !meta.title.toLowerCase().includes(filters.title.toLowerCase()) && !(meta.titleTranslit && meta.titleTranslit.toLowerCase().includes(filters.title.toLowerCase()))) return false;
             const bpmDiff = meta.bpmMax - meta.bpmMin;
             const isSingleBpm = bpmDiff <= 5;
             if (filters.multiBpm === 'single' && !isSingleBpm) return false;
