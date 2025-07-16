@@ -82,6 +82,11 @@ const SongInfoBar = ({
               <span className="song-title-main">{songTitle}</span>
               <span className="song-title-separator"> - </span>
               <span className="song-title-artist">{artist}</span>
+              {songLength && (
+                <span className="song-length">
+                  {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                </span>
+              )}
             </div>
           </div>
           <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -136,12 +141,6 @@ const SongInfoBar = ({
                     <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                   </button>
                 )}
-                </div>
-              </div>
-              <div className="grid-item grid-item-length">
-                <span className="core-bpm-label">Length:</span>
-                <div className="core-bpm-value-container">
-                  <span className="core-bpm-value">{songLength ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : 'N/A'}</span>
                 </div>
               </div>
             </div>
