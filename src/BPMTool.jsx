@@ -11,6 +11,7 @@ import SongInfoBar from './components/SongInfoBar.jsx';
 import FilterModal from './components/FilterModal.jsx';
 import Camera from './Camera.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
+import AddToListModal from './components/AddToListModal.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -173,6 +174,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const filtersActive = Boolean(
         filters.bpmMin !== '' ||
@@ -495,10 +497,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }
 
-    const handleAddToList = () => {
+    const saveChartToGroup = (name) => {
         if (!simfileData || !currentChart) return;
-        let name = prompt(`Add to which list?\nAvailable: ${groups.map(g => g.name).join(', ')}`);
-        if (!name) return;
         if (!groups.some(g => g.name === name)) {
             createGroup(name);
         }
@@ -511,6 +511,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             game: simfileData.mix.mixName
         };
         addChartToGroup(name, chart);
+    };
+
+    const handleAddToList = () => {
+        if (!simfileData || !currentChart) return;
+        setShowAddModal(true);
     };
 
     const handleToggle = (index) => {
@@ -662,6 +667,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             </div>
         </div>
         <FilterModal isOpen={showFilter} onClose={() => setShowFilter(false)} games={smData.games} />
+        <AddToListModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            groups={groups}
+            onAdd={saveChartToGroup}
+        />
         </>
     );
 };
