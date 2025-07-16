@@ -6,6 +6,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
+import { similarity } from './utils/stringSimilarity';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
@@ -169,7 +171,7 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -187,6 +189,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
+    const [overrideSongs, setOverrideSongs] = useState(null);
     const filtersActive = Boolean(
         filters.bpmMin !== '' ||
         filters.bpmMax !== '' ||
@@ -225,6 +228,18 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             .then(setSongMeta)
             .catch(err => console.error('Failed to load song meta:', err));
     }, []);
+
+    useEffect(() => {
+        const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
+        if (!option || !option.file) {
+            setOverrideSongs(null);
+            return;
+        }
+        fetch(option.file)
+            .then(res => res.json())
+            .then(data => setOverrideSongs(data.songs || []))
+            .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
+    }, [songlistOverride]);
 
     useEffect(() => {
         if (!simfileData) return;
@@ -402,6 +417,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             filteredFiles = filteredFiles.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
 
+        if (overrideSongs && overrideSongs.length > 0) {
+            filteredFiles = filteredFiles.filter(file => {
+                const titles = [file.title];
+                if (file.titleTranslit) titles.push(file.titleTranslit);
+                return titles.some(t => overrideSongs.some(os => similarity(t, os) >= 0.9));
+            });
+        }
+
         const metaMap = new Map(songMeta.map(m => [m.path, m]));
 
         filteredFiles = filteredFiles.filter(file => {
@@ -441,7 +464,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }))
             .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
         setSongOptions(options);
-    }, [selectedGame, smData, songMeta, filters]);
+    }, [selectedGame, smData, songMeta, filters, overrideSongs]);
 
     useEffect(() => {
         if (!simfileData || songOptions.length === 0) return;
