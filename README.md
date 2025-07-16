@@ -11,6 +11,7 @@ A modern, feature-rich web application for DanceDanceRevolution players. This to
     -   View a detailed, interactive BPM graph to understand every speed change.
     -   Calculates the "core" BPM based on the most prominent speed zone.
     -   Displays all available chart difficulties (Beginner, Basic, Difficult, Expert, Challenge) for both Single and Double play.
+    -   Shows the length of the selected song and supports filtering songs by length.
 
 -   **Scroll Speed Calculator**:
     -   Set your personal target scroll speed.

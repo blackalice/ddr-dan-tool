@@ -52,6 +52,8 @@ const FilterModal = ({ isOpen, onClose, games }) => {
       bpmMax: '',
       difficultyMin: '',
       difficultyMax: '',
+      lengthMin: '',
+      lengthMax: '',
       games: [],
       artist: '',
       multiBpm: 'any',
@@ -77,6 +79,13 @@ const FilterModal = ({ isOpen, onClose, games }) => {
             <div className={styles.inputGroup}>
               <input type="number" min="1" max="19" placeholder="Min" value={localFilters.difficultyMin} onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)} className={styles.input} />
               <input type="number" min="1" max="19" placeholder="Max" value={localFilters.difficultyMax} onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)} className={styles.input} />
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Length (seconds)</label>
+            <div className={styles.inputGroup}>
+              <input type="number" min="1" max="600" placeholder="Min" value={localFilters.lengthMin} onChange={e => setLocalFilters(f => ({ ...f, lengthMin: e.target.value }))} onBlur={e => handleRangeBlur('lengthMin', e.target.value, 1, 600)} className={styles.input} />
+              <input type="number" min="1" max="600" placeholder="Max" value={localFilters.lengthMax} onChange={e => setLocalFilters(f => ({ ...f, lengthMax: e.target.value }))} onBlur={e => handleRangeBlur('lengthMax', e.target.value, 1, 600)} className={styles.input} />
             </div>
           </div>
           <div className={styles.formGroup}>

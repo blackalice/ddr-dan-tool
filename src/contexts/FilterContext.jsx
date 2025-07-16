@@ -5,6 +5,8 @@ const defaultFilters = {
   bpmMax: '',
   difficultyMin: '',
   difficultyMax: '',
+  lengthMin: '',
+  lengthMax: '',
   games: [],
   artist: '',
   multiBpm: 'any', // 'any' | 'single' | 'multiple'

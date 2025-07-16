@@ -22,6 +22,7 @@ const SongInfoBar = ({
   coreCalculation,
   showAltCoreBpm,
   setShowAltCoreBpm,
+  songLength,
 }) => {
 
   const { filters } = useFilters();
@@ -81,6 +82,11 @@ const SongInfoBar = ({
               <span className="song-title-main">{songTitle}</span>
               <span className="song-title-separator"> - </span>
               <span className="song-title-artist">{artist}</span>
+              {songLength && (
+                <span className="song-length">
+                  {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                </span>
+              )}
             </div>
           </div>
           <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -116,11 +122,11 @@ const SongInfoBar = ({
                   </button>
                 )}
               </div>
-            </div>
-            <div className="grid-item grid-item-core">
-              <span className="core-bpm-label">CORE:</span>
-              <div className="core-bpm-value-container">
-                <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
+              </div>
+              <div className="grid-item grid-item-core">
+                <span className="core-bpm-label">CORE:</span>
+                <div className="core-bpm-value-container">
+                  <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                 {coreCalculation && (
                   <div className="song-calculation">
                     <span className="song-speed">
@@ -135,11 +141,11 @@ const SongInfoBar = ({
                     <i className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
                   </button>
                 )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
