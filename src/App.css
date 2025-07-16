@@ -368,6 +368,9 @@ body {
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
+.song-grid > * {
+  min-width: 0;
+}
 @media (min-width: 640px) {
   .song-grid {
 	grid-template-columns: repeat(2, 1fr);
