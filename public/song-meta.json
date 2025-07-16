@@ -3278,7 +3278,7 @@
     "game": "2013",
     "bpmMin": 139.5,
     "bpmMax": 141,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -4912,7 +4912,7 @@
     "game": "2014",
     "bpmMin": 125,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -12459,7 +12459,7 @@
     "game": "3rdMix",
     "bpmMin": 166,
     "bpmMax": 167.26,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -12882,7 +12882,7 @@
     "game": "3rdMix",
     "bpmMin": 122,
     "bpmMax": 122.6,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -13112,7 +13112,7 @@
     "game": "3rdMix",
     "bpmMin": 153,
     "bpmMax": 154,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -14816,7 +14816,7 @@
     "game": "4thMix",
     "bpmMin": 168.009,
     "bpmMax": 171.226,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -16945,7 +16945,7 @@
     "game": "5thMix",
     "bpmMin": 152.664,
     "bpmMax": 155.092,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -17165,7 +17165,7 @@
     "game": "5thMix",
     "bpmMin": 153.009,
     "bpmMax": 155,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -17578,7 +17578,7 @@
     "game": "5thMix",
     "bpmMin": 178.4,
     "bpmMax": 180,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -18394,7 +18394,7 @@
     "game": "5thMix",
     "bpmMin": 175.35,
     "bpmMax": 178.182,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -18436,7 +18436,7 @@
     "game": "5thMix",
     "bpmMin": 155.8,
     "bpmMax": 158,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -18661,7 +18661,7 @@
     "game": "6thMix",
     "bpmMin": 155,
     "bpmMax": 158.7,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -18708,7 +18708,7 @@
     "game": "6thMix",
     "bpmMin": 135,
     "bpmMax": 139.8,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -18896,7 +18896,7 @@
     "game": "6thMix",
     "bpmMin": 148.3,
     "bpmMax": 150,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19027,7 +19027,7 @@
     "game": "6thMix",
     "bpmMin": 137.959,
     "bpmMax": 139.535,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19121,7 +19121,7 @@
     "game": "6thMix",
     "bpmMin": 128,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19445,7 +19445,7 @@
     "game": "6thMix",
     "bpmMin": 140,
     "bpmMax": 143.5,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19492,7 +19492,7 @@
     "game": "6thMix",
     "bpmMin": 137.377,
     "bpmMax": 141.296,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19727,7 +19727,7 @@
     "game": "6thMix",
     "bpmMin": 158.628,
     "bpmMax": 160.307,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19774,7 +19774,7 @@
     "game": "6thMix",
     "bpmMin": 130,
     "bpmMax": 132.4,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19868,7 +19868,7 @@
     "game": "6thMix",
     "bpmMin": 200.2,
     "bpmMax": 202.7,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -19915,7 +19915,7 @@
     "game": "6thMix",
     "bpmMin": 125,
     "bpmMax": 129.4,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -20009,7 +20009,7 @@
     "game": "6thMix",
     "bpmMin": 148.76,
     "bpmMax": 151.261,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -20197,7 +20197,7 @@
     "game": "6thMix",
     "bpmMin": 123.985,
     "bpmMax": 125,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -20587,7 +20587,7 @@
     "game": "7thMix",
     "bpmMin": 158.359,
     "bpmMax": 160.006,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -20836,7 +20836,7 @@
     "game": "7thMix",
     "bpmMin": 160,
     "bpmMax": 163,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21024,7 +21024,7 @@
     "game": "7thMix",
     "bpmMin": 127.269,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21068,7 +21068,7 @@
     "game": "7thMix",
     "bpmMin": 145.749,
     "bpmMax": 150.33,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21090,7 +21090,7 @@
     "game": "7thMix",
     "bpmMin": 143,
     "bpmMax": 145,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21137,7 +21137,7 @@
     "game": "7thMix",
     "bpmMin": 137.909,
     "bpmMax": 140,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21426,7 +21426,7 @@
     "game": "7thMix",
     "bpmMin": 167.339,
     "bpmMax": 169.008,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21520,7 +21520,7 @@
     "game": "7thMix",
     "bpmMin": 132.783,
     "bpmMax": 134.697,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21567,7 +21567,7 @@
     "game": "7thMix",
     "bpmMin": 178,
     "bpmMax": 180,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -21589,7 +21589,7 @@
     "game": "7thMix",
     "bpmMin": 138.291,
     "bpmMax": 140.012,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -22016,7 +22016,7 @@
     "game": "7thMix",
     "bpmMin": 138.842,
     "bpmMax": 139.994,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -22149,7 +22149,7 @@
     "game": "7thMix",
     "bpmMin": 123.711,
     "bpmMax": 128.114,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -22290,7 +22290,7 @@
     "game": "7thMix",
     "bpmMin": 143.612,
     "bpmMax": 145,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -22401,7 +22401,7 @@
     "game": "7thMix",
     "bpmMin": 168.554,
     "bpmMax": 169.996,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -23346,7 +23346,7 @@
     "game": "A",
     "bpmMin": 190,
     "bpmMax": 191.5,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -24658,7 +24658,7 @@
     "game": "A",
     "bpmMin": 157,
     "bpmMax": 160,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -25346,7 +25346,7 @@
     "game": "A",
     "bpmMin": 225,
     "bpmMax": 227,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -26437,7 +26437,7 @@
     "game": "A",
     "bpmMin": 140.6,
     "bpmMax": 142,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -26863,7 +26863,7 @@
     "game": "A",
     "bpmMin": 155,
     "bpmMax": 157,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -28413,7 +28413,7 @@
     "game": "A",
     "bpmMin": 177.4,
     "bpmMax": 179,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -28997,7 +28997,7 @@
     "game": "A",
     "bpmMin": 174,
     "bpmMax": 175,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -29232,7 +29232,7 @@
     "game": "A",
     "bpmMin": 173.8,
     "bpmMax": 176,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -29326,7 +29326,7 @@
     "game": "A",
     "bpmMin": 158,
     "bpmMax": 161.5,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -32836,7 +32836,7 @@
     "game": "A20",
     "bpmMin": 182,
     "bpmMax": 183.8,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -39582,7 +39582,7 @@
     "game": "A20 Plus",
     "bpmMin": 200,
     "bpmMax": 205,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -39931,7 +39931,7 @@
     "game": "A20 Plus",
     "bpmMin": 178,
     "bpmMax": 179,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -51520,7 +51520,7 @@
     "game": "DDR",
     "bpmMin": 117.5,
     "bpmMax": 121.5,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -52411,7 +52411,7 @@
     "game": "Extreme",
     "bpmMin": 149.991,
     "bpmMax": 152.542,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -52468,7 +52468,7 @@
     "game": "Extreme",
     "bpmMin": 198.7,
     "bpmMax": 200,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -53626,7 +53626,7 @@
     "game": "Extreme",
     "bpmMin": 140,
     "bpmMax": 145,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -53814,7 +53814,7 @@
     "game": "Extreme",
     "bpmMin": 138,
     "bpmMax": 140,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -54002,7 +54002,7 @@
     "game": "Extreme",
     "bpmMin": 142.4,
     "bpmMax": 145,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -54982,7 +54982,7 @@
     "game": "Extreme",
     "bpmMin": 137.5,
     "bpmMax": 140,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -57407,7 +57407,7 @@
     "game": "ITG 1",
     "bpmMin": 133.943,
     "bpmMax": 134.003,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -58616,7 +58616,7 @@
     "game": "ITG 1",
     "bpmMin": 127,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -59324,7 +59324,7 @@
     "game": "Supernova",
     "bpmMin": 128.5,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -59700,7 +59700,7 @@
     "game": "Supernova",
     "bpmMin": 126,
     "bpmMax": 131,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -59992,7 +59992,7 @@
     "game": "Supernova",
     "bpmMin": 183.2,
     "bpmMax": 185,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -60039,7 +60039,7 @@
     "game": "Supernova",
     "bpmMin": 183.5,
     "bpmMax": 188,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -60878,7 +60878,7 @@
     "game": "Supernova",
     "bpmMin": 216.8,
     "bpmMax": 218,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -61019,7 +61019,7 @@
     "game": "Supernova",
     "bpmMin": 134.7,
     "bpmMax": 137,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -61170,7 +61170,7 @@
     "game": "Supernova",
     "bpmMin": 178.7,
     "bpmMax": 180,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -61331,7 +61331,7 @@
     "game": "Supernova",
     "bpmMin": 173,
     "bpmMax": 175,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -61566,7 +61566,7 @@
     "game": "Supernova",
     "bpmMin": 148.52,
     "bpmMax": 150,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -61952,7 +61952,7 @@
     "game": "Supernova",
     "bpmMin": 99,
     "bpmMax": 100,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -62489,7 +62489,7 @@
     "game": "Supernova",
     "bpmMin": 157,
     "bpmMax": 158,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -62781,7 +62781,7 @@
     "game": "Supernova",
     "bpmMin": 118.812,
     "bpmMax": 120.805,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -62969,7 +62969,7 @@
     "game": "Supernova",
     "bpmMin": 157.9,
     "bpmMax": 160,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -63110,7 +63110,7 @@
     "game": "Supernova",
     "bpmMin": 173,
     "bpmMax": 174,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -63412,7 +63412,7 @@
     "game": "Supernova",
     "bpmMin": 140.8,
     "bpmMax": 142,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -64023,7 +64023,7 @@
     "game": "Supernova",
     "bpmMin": 138,
     "bpmMax": 140,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -64305,7 +64305,7 @@
     "game": "Supernova",
     "bpmMin": 141.8,
     "bpmMax": 144,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -65996,7 +65996,7 @@
     "game": "Supernova 2",
     "bpmMin": 148.08,
     "bpmMax": 150,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -72463,7 +72463,7 @@
     "game": "World",
     "bpmMin": 182,
     "bpmMax": 186,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -74151,7 +74151,7 @@
     "game": "World",
     "bpmMin": 160,
     "bpmMax": 161.5,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -74965,7 +74965,7 @@
     "game": "X",
     "bpmMin": 137,
     "bpmMax": 138,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -77354,7 +77354,7 @@
     "game": "X",
     "bpmMin": 169,
     "bpmMax": 170,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -77752,7 +77752,7 @@
     "game": "X",
     "bpmMin": 128,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -78088,7 +78088,7 @@
     "game": "X",
     "bpmMin": 174,
     "bpmMax": 175,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -80915,7 +80915,7 @@
     "game": "X2",
     "bpmMin": 168.5,
     "bpmMax": 170,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -82921,7 +82921,7 @@
     "game": "X2",
     "bpmMin": 128.7,
     "bpmMax": 130,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -83072,7 +83072,7 @@
     "game": "X2",
     "bpmMin": 159,
     "bpmMax": 160,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -83223,7 +83223,7 @@
     "game": "X2",
     "bpmMin": 185,
     "bpmMax": 186,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -83317,7 +83317,7 @@
     "game": "X2",
     "bpmMin": 138.9,
     "bpmMax": 140,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -85283,7 +85283,7 @@
     "game": "X3 vs 2ndMix",
     "bpmMin": 142,
     "bpmMax": 143,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",
@@ -86575,7 +86575,7 @@
     "game": "X3 vs 2ndMix",
     "bpmMin": 210,
     "bpmMax": 212,
-    "hasMultipleBpms": true,
+    "hasMultipleBpms": false,
     "difficulties": [
       {
         "mode": "single",

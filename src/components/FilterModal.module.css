@@ -112,9 +112,7 @@
     color: white;
 }
 
-.checkboxLabel.selected:hover {
-    background-color: var(--accent-color-light);
-}
+
 
 .checkboxLabel input {
     display: none; /* Hide the checkbox */
