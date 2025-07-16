@@ -1,6 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
+import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides';
 
 export const SettingsContext = createContext();
 
@@ -25,6 +26,11 @@ export const SettingsProvider = ({ children }) => {
     const [playStyle, setPlayStyle] = useState(() => {
         const saved = localStorage.getItem('playStyle');
         return saved || 'single';
+    });
+
+    const [songlistOverride, setSonglistOverride] = useState(() => {
+        const saved = localStorage.getItem('songlistOverride');
+        return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
     });
 
     const [showLists, setShowLists] = useState(() => {
@@ -57,6 +63,10 @@ export const SettingsProvider = ({ children }) => {
         localStorage.setItem('showLists', JSON.stringify(showLists));
     }, [showLists]);
 
+    useEffect(() => {
+        localStorage.setItem('songlistOverride', songlistOverride);
+    }, [songlistOverride]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -73,6 +83,8 @@ export const SettingsProvider = ({ children }) => {
         setPlayStyle,
         showLists,
         setShowLists,
+        songlistOverride,
+        setSonglistOverride,
     };
 
     return (

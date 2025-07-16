@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
+import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import './Settings.css';
 
@@ -14,6 +15,8 @@ const Settings = () => {
         setMultiplierMode,
         showLists,
         setShowLists,
+        songlistOverride,
+        setSonglistOverride,
     } = useContext(SettingsContext);
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
@@ -75,6 +78,26 @@ const Settings = () => {
                             >
                                 {Object.values(MULTIPLIER_MODES).map(mode => (
                                     <option key={mode} value={mode}>{mode}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Songlist Override</h3>
+                            <p>
+                                Restrict the BPM page to songs available in a particular game version.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={songlistOverride}
+                                onChange={(e) => setSonglistOverride(e.target.value)}
+                                className="settings-select"
+                            >
+                                {SONGLIST_OVERRIDE_OPTIONS.map(opt => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                                 ))}
                             </select>
                         </div>

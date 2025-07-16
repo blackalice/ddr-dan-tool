@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
-import { FilterProvider } from './contexts/FilterContext.jsx';
+import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
@@ -15,7 +15,7 @@ import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
-  const { theme, showLists, setPlayStyle } = useContext(SettingsContext);
+  const { theme, showLists, setPlayStyle, songlistOverride } = useContext(SettingsContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -23,6 +23,9 @@ function AppRoutes() {
   const [activeDan, setActiveDan] = useState(() => localStorage.getItem('activeDan') || 'All');
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => localStorage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
+
+  const { resetFilters } = useFilters();
+  const firstOverride = useRef(true);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -108,6 +111,15 @@ function AppRoutes() {
       navigate('/bpm');
     }
   };
+
+  useEffect(() => {
+    if (firstOverride.current) {
+      firstOverride.current = false;
+      return;
+    }
+    resetFilters();
+    handleSongSelect(null);
+  }, [songlistOverride]);
 
   const handleChartSelect = (chart) => {
     setCurrentChart(chart);
