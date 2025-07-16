@@ -12,6 +12,7 @@
 }
 
 .song-card-link {
+    position: relative;
     text-decoration: none;
     color: inherit;
 }
@@ -97,4 +98,20 @@
   .song-card {
     min-height: 0px;
   }
+}
+
+.song-card-action {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: var(--button-bg);
+  color: var(--button-icon);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+.song-card-action.remove {
+  background-color: var(--button-down-color);
+  color: white;
 }
