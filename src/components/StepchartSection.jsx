@@ -33,7 +33,6 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
-  headerId,
 }) {
   const [targetedBeat, setTargetedBeat] = useState(null);
 
@@ -108,14 +107,6 @@ function StepchartSection({
           height,
         }}
       >
-        {/* <SelfLink
-          id={id}
-          style={{ height }}
-          onClick={() => {
-            setTargetedBeat(id);
-            scrollTargetBeatJustUnderHeader(id, headerId);
-          }}
-        /> */}
       </div>
     );
   }

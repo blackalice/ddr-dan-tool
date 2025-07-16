@@ -14,7 +14,7 @@ function ToggleBar({
 
   return (
     <div className={clsx(className, styles.root)} style={style}>
-      {options.map((option, i) => {
+      {options.map((option) => {
         const id = `toggle-${namespace}-${option.value}`;
         return (
           <React.Fragment key={id}>
