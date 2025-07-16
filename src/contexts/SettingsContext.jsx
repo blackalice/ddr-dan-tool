@@ -26,6 +26,11 @@ export const SettingsProvider = ({ children }) => {
         return saved || 'single';
     });
 
+    const [showLists, setShowLists] = useState(() => {
+        const saved = localStorage.getItem('showLists');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     useEffect(() => {
         localStorage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -47,6 +52,10 @@ export const SettingsProvider = ({ children }) => {
         localStorage.setItem('playStyle', playStyle);
     }, [playStyle]);
 
+    useEffect(() => {
+        localStorage.setItem('showLists', JSON.stringify(showLists));
+    }, [showLists]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -61,6 +70,8 @@ export const SettingsProvider = ({ children }) => {
         setTheme,
         playStyle,
         setPlayStyle,
+        showLists,
+        setShowLists,
     };
 
     return (

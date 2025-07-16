@@ -159,7 +159,7 @@ export const getBpmRange = (bpm) => {
 };
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
     const { filters, resetFilters } = useFilters();
     const { groups, addChartToGroup, createGroup } = useGroups();
     const [songOptions, setSongOptions] = useState([]);
@@ -565,9 +565,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         </div>
                         <div className="action-buttons">
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
-                            <button className="filter-button" onClick={handleAddToList} title="Add to list">
-                                <i className="fa-solid fa-plus"></i>
-                            </button>
+                            {showLists && (
+                                <button className="filter-button" onClick={handleAddToList} title="Add to list">
+                                    <i className="fa-solid fa-plus"></i>
+                                </button>
+                            )}
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
                                 <i className="fa-solid fa-filter"></i>
                             </button>

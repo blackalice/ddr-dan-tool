@@ -13,7 +13,7 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
-    const { playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
 
     return (
         <nav className="tabs-container">
@@ -35,9 +35,11 @@ const Tabs = () => {
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faCalculator} />
                     </NavLink>
-                    <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        <FontAwesomeIcon icon={faList} />
-                    </NavLink>
+                    {showLists && (
+                        <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                            <FontAwesomeIcon icon={faList} />
+                        </NavLink>
+                    )}
                 </div>
                 <div className="play-style-toggle-tab" onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')}>
                     {playStyle === 'single' ? 'SP' : 'DP'}
