@@ -112,6 +112,18 @@
     color: white;
 }
 
+.activeGroup {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+}
+
+.activeInput {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 1px;
+    border-radius: 0.5rem;
+}
+
 
 
 .checkboxLabel input {
