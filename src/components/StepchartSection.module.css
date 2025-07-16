@@ -45,8 +45,10 @@
     border-width: 0;
 }
 
-.bar:hover {
-    background-color: #c7d2fe; /* sm:bg-indigo-300 */
+@media (hover: hover) {
+    .bar:hover {
+        background-color: #c7d2fe; /* sm:bg-indigo-300 */
+    }
 }
 
 .bar:target, .targeted {
@@ -78,9 +80,11 @@
     border-bottom-left-radius: 0.5rem;
 }
 
-.bar:hover .selfLink svg,
-.selfLink:hover svg {
-    visibility: visible;
+@media (hover: hover) {
+    .bar:hover .selfLink svg,
+    .selfLink:hover svg {
+        visibility: visible;
+    }
 }
 
 .freeze {

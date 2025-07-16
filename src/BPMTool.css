@@ -124,8 +124,10 @@
     transition: background-color 0.2s;
 }
 
-.api-key-modal-content button:hover {
-    background-color: var(--card-hover-bg-color-light);
+@media (hover: hover) {
+    .api-key-modal-content button:hover {
+        background-color: var(--card-hover-bg-color-light);
+    }
 }
 
 .game-checkboxes {
@@ -269,8 +271,10 @@
     flex-shrink: 0;
 }
 
-.collapse-button:hover {
-    background-color: var(--card-hover-bg-color-light);
+@media (hover: hover) {
+    .collapse-button:hover {
+        background-color: var(--card-hover-bg-color-light);
+    }
 }
 
 .chart-section.collapsed .chart-container {
@@ -362,24 +366,30 @@
     margin-top: 0;
 }
 
-.toggle-button:hover {
-    background-color: var(--card-hover-bg-color-light);
+@media (hover: hover) {
+    .toggle-button:hover {
+        background-color: var(--card-hover-bg-color-light);
+    }
 }
 
 .toggle-button.up {
     background-color: var(--button-up-color);
 }
 
-.toggle-button.up:hover {
-    background-color: var(--button-up-hover-color);
+@media (hover: hover) {
+    .toggle-button.up:hover {
+        background-color: var(--button-up-hover-color);
+    }
 }
 
 .toggle-button.down {
     background-color: var(--button-down-color);
 }
 
-.toggle-button.down:hover {
-    background-color: var(--button-down-hover-color);
+@media (hover: hover) {
+    .toggle-button.down:hover {
+        background-color: var(--button-down-hover-color);
+    }
 }
 
 .song-speed {
@@ -463,9 +473,11 @@
         justify-self: end;
         background-color: transparent;
     }
-    .collapse-button:hover {
-        background-color: transparent;
-        color: var(--text-muted-color);
+    @media (hover: hover) {
+        .collapse-button:hover {
+            background-color: transparent;
+            color: var(--text-muted-color);
+        }
     }
 
     .song-title-separator {
@@ -635,8 +647,10 @@
     transition: background-color 0.2s;
 }
 
-.smod-button:hover {
-    background-color: var(--card-hover-bg-color-light);
+@media (hover: hover) {
+    .smod-button:hover {
+        background-color: var(--card-hover-bg-color-light);
+    }
 }
 
 .smod-value {

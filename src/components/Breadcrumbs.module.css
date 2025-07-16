@@ -24,6 +24,8 @@
     border-bottom: 2px solid transparent;
 }
 
-.link:hover {
-    border-bottom-color: var(--color-focal);
+@media (hover: hover) {
+    .link:hover {
+        border-bottom-color: var(--color-focal);
+    }
 }

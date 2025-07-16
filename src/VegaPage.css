@@ -34,8 +34,10 @@
     transition: background-color 0.2s;
 }
 
-.vega-button:hover {
-    background-color: var(--accent-color-light);
+@media (hover: hover) {
+    .vega-button:hover {
+        background-color: var(--accent-color-light);
+    }
 }
 
 

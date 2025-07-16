@@ -83,22 +83,28 @@
     margin: 1rem auto 0;
 }
 
-.toggle-button:hover {
-    background-color: var(--card-hover-bg-color-light);
+@media (hover: hover) {
+    .toggle-button:hover {
+        background-color: var(--card-hover-bg-color-light);
+    }
 }
 
 .toggle-button.up {
     background-color: var(--button-up-color);
 }
 
-.toggle-button.up:hover {
-    background-color: var(--button-up-hover-color);
+@media (hover: hover) {
+    .toggle-button.up:hover {
+        background-color: var(--button-up-hover-color);
+    }
 }
 
 .toggle-button.down {
     background-color: var(--button-down-color);
 }
 
-.toggle-button.down:hover {
-    background-color: var(--button-down-hover-color);
+@media (hover: hover) {
+    .toggle-button.down:hover {
+        background-color: var(--button-down-hover-color);
+    }
 }

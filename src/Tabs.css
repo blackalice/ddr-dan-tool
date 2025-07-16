@@ -45,9 +45,11 @@
     
 }
 
-.settings-tab:hover {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
+@media (hover: hover) {
+    .settings-tab:hover {
+        background-color: var(--card-hover-bg-color);
+        color: var(--text-color);
+    }
 }
 
 .settings-tab.active {
@@ -67,9 +69,11 @@
     
 }
 
-.tab:hover {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
+@media (hover: hover) {
+    .tab:hover {
+        background-color: var(--card-hover-bg-color);
+        color: var(--text-color);
+    }
 }
 
 .tab.active {
@@ -92,8 +96,10 @@
     transition: all 0.2s ease-in-out;
 }
 
-.play-style-toggle-tab:hover {
-    background-color: var(--card-hover-bg-color);
+@media (hover: hover) {
+    .play-style-toggle-tab:hover {
+        background-color: var(--card-hover-bg-color);
+    }
 }
 
 @media (max-width: 640px) {

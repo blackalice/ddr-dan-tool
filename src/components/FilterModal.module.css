@@ -103,8 +103,10 @@
     transition: background-color 0.2s;
 }
 
-.checkboxLabel:hover {
-    background-color: var(--card-hover-bg-color);
+@media (hover: hover) {
+    .checkboxLabel:hover {
+        background-color: var(--card-hover-bg-color);
+    }
 }
 
 .checkboxLabel.selected {
@@ -112,8 +114,10 @@
     color: white;
 }
 
-.checkboxLabel.selected:hover {
-    background-color: var(--accent-color-light);
+@media (hover: hover) {
+    .checkboxLabel.selected:hover {
+        background-color: var(--accent-color-light);
+    }
 }
 
 .checkboxLabel input {
@@ -143,8 +147,10 @@
     color: white;
 }
 
-.applyButton:hover {
-    background-color: var(--accent-color-light);
+@media (hover: hover) {
+    .applyButton:hover {
+        background-color: var(--accent-color-light);
+    }
 }
 
 .resetButton {
