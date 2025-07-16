@@ -38,18 +38,6 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
     <section className="dan-section">
       <h2 className="dan-header" style={{ backgroundColor: group.color }}>
         <div className="dan-header-title">
-          {isEditing ? (
-            <input
-              className="list-name-input"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              onBlur={saveName}
-              onKeyDown={e => { if (e.key === 'Enter') { e.target.blur(); } }}
-              autoFocus
-            />
-          ) : (
-            <span onDoubleClick={() => setIsEditing(true)}>{group.name}</span>
-          )}
           <label className="color-picker-label">
             <FontAwesomeIcon icon={faPalette} />
             <input
@@ -62,6 +50,18 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
           <button onClick={handleDelete} className="delete-list-button">
             <FontAwesomeIcon icon={faTrash} />
           </button>
+          {isEditing ? (
+            <input
+              className="list-name-input"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              onBlur={saveName}
+              onKeyDown={e => { if (e.key === 'Enter') { e.target.blur(); } }}
+              autoFocus
+            />
+          ) : (
+            <span onDoubleClick={() => setIsEditing(true)}>{group.name}</span>
+          )}
         </div>
         <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
           <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
