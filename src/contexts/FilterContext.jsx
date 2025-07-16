@@ -9,28 +9,42 @@ const defaultFilters = {
   lengthMax: '',
   games: [],
   artist: '',
-  multiBpm: 'any', // 'any' | 'single' | 'multiple'
+  title: '',
+  multiBpm: 'any',
+  difficultyNames: [],
 };
 
 export const FilterContext = createContext({
   filters: defaultFilters,
-  setFilters: () => {},
+  updateFilter: () => {},
   resetFilters: () => {},
 });
 
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState(() => {
-    const saved = localStorage.getItem('filters');
-    return saved ? JSON.parse(saved) : defaultFilters;
+    const savedFilters = localStorage.getItem('filters');
+    if (savedFilters) {
+      const parsed = JSON.parse(savedFilters);
+      // Ensure all keys from defaultFilters are present
+      return { ...defaultFilters, ...parsed };
+    }
+    return defaultFilters;
   });
 
   useEffect(() => {
     localStorage.setItem('filters', JSON.stringify(filters));
   }, [filters]);
 
-  const resetFilters = () => setFilters(defaultFilters);
+  const updateFilter = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const resetFilters = () => {
+    setFilters(defaultFilters);
+  };
+
   return (
-    <FilterContext.Provider value={{ filters, setFilters, resetFilters }}>
+    <FilterContext.Provider value={{ filters, setFilters, updateFilter, resetFilters }}>
       {children}
     </FilterContext.Provider>
   );

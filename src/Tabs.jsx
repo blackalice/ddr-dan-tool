@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Tabs.css';
 
@@ -13,7 +13,7 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
-    const { playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
 
     return (
         <nav className="tabs-container">
@@ -35,6 +35,11 @@ const Tabs = () => {
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faCalculator} />
                     </NavLink>
+                    {showLists && (
+                        <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                            <FontAwesomeIcon icon={faList} />
+                        </NavLink>
+                    )}
                 </div>
                 <div className="play-style-toggle-tab" onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')}>
                     {playStyle === 'single' ? 'SP' : 'DP'}

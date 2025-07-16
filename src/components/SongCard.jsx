@@ -1,6 +1,8 @@
 import React, { useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
 
 const difficultyDisplayMap = {
@@ -27,7 +29,7 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const SongCard = ({ song, setSelectedGame, resetFilters }) => {
+const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
   const { targetBPM, multipliers } = useContext(SettingsContext);
   const navigate = useNavigate();
 
@@ -78,6 +80,11 @@ const SongCard = ({ song, setSelectedGame, resetFilters }) => {
       navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
     }}>
       <div className="song-card">
+        {onRemove && (
+          <button className="song-card-action" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        )}
         <div className="song-card-header">
           <h3 className="song-title">{song.title}</h3>
           {song.game && <div className="game-chip">{song.game}</div>}

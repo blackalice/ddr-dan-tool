@@ -37,8 +37,8 @@ const SongInfoBar = ({
         let level = null;
         let difficulty = null;
         let chartType = null;
-        let filteredOut = false;
 
+        // Find the chart for the current difficulty level (e.g., 'Expert')
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
                 level = difficultySet[name];
@@ -48,12 +48,22 @@ const SongInfoBar = ({
             }
         }
 
+        let isMissing = !chartType;
+        let filteredOut = false;
+
+        // Now, check against filters
         if (chartType) {
-            if (filters.difficultyMin !== '' && chartType.feet < Number(filters.difficultyMin)) {
+            // Check level range filter
+            if ((filters.difficultyMin && chartType.feet < Number(filters.difficultyMin)) ||
+                (filters.difficultyMax && chartType.feet > Number(filters.difficultyMax))) {
                 filteredOut = true;
             }
-            if (filters.difficultyMax !== '' && chartType.feet > Number(filters.difficultyMax)) {
-                filteredOut = true;
+            // Check difficulty name filter
+            if (filters.difficultyNames && filters.difficultyNames.length > 0) {
+                const lowerCaseFilterNames = filters.difficultyNames.map(n => n.toLowerCase());
+                if (!lowerCaseFilterNames.includes(chartType.difficulty.toLowerCase())) {
+                    filteredOut = true;
+                }
             }
         }
 
@@ -62,9 +72,9 @@ const SongInfoBar = ({
         return (
             <DifficultyMeter
                 key={`${style}-${levelName}`}
-                level={!level || filteredOut ? 'X' : level}
+                level={isMissing || filteredOut ? 'X' : level}
                 difficultyName={levelName}
-                isMissing={!level || filteredOut}
+                isMissing={isMissing || filteredOut}
                 onClick={() => chartType && !filteredOut && setCurrentChart(chartType)}
                 isSelected={isSelected}
             />

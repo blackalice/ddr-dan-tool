@@ -1,0 +1,77 @@
+.list-page-filter-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap; /* Prevent wrapping on mobile */
+}
+
+/* Target the input specifically within this group */
+.list-page-filter-group > .dan-select {
+  flex-grow: 1; /* Allow it to take up available space */
+  width: auto; /* Override the global 'width: 100%' */
+  min-width: 100px;
+}
+
+.list-page-filter-group > .vega-button {
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.dan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dan-header-title {
+  flex-grow: 1;
+}
+
+.dan-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.delete-list-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.delete-list-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.color-picker-label {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.color-picker-label:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.color-picker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}

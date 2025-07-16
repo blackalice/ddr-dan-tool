@@ -11,7 +11,9 @@ const Settings = () => {
         targetBPM,
         setTargetBPM,
         multiplierMode,
-        setMultiplierMode
+        setMultiplierMode,
+        showLists,
+        setShowLists,
     } = useContext(SettingsContext);
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
@@ -94,6 +96,25 @@ const Settings = () => {
                                 className="settings-input"
                             />
                             <button onClick={handleSaveKey} className="settings-button">Save</button>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Custom List Function</h3>
+                            <p>
+                                This is a work-in-progress feature. Your lists are stored in your browser and could be lost easily.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={showLists ? 'Enable' : 'Disable'}
+                                onChange={(e) => setShowLists(e.target.value === 'Enable')}
+                                className="settings-select"
+                            >
+                                <option value="Enable">Enable</option>
+                                <option value="Disable">Disable</option>
+                            </select>
                         </div>
                     </div>
 
