@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
-import { similarity } from './utils/stringSimilarity';
+import { normalizeString } from './utils/stringSimilarity';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
@@ -237,7 +237,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
         fetch(option.file)
             .then(res => res.json())
-            .then(data => setOverrideSongs(data.songs || []))
+            .then(data => {
+                const songs = (data.songs || []).map(normalizeString);
+                setOverrideSongs(new Set(songs));
+            })
             .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
     }, [songlistOverride]);
 
@@ -417,11 +420,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             filteredFiles = filteredFiles.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
 
-        if (overrideSongs && overrideSongs.length > 0) {
+        if (overrideSongs && overrideSongs.size > 0) {
             filteredFiles = filteredFiles.filter(file => {
                 const titles = [file.title];
                 if (file.titleTranslit) titles.push(file.titleTranslit);
-                return titles.some(t => overrideSongs.some(os => similarity(t, os) >= 0.9));
+                const normalized = titles.map(normalizeString);
+                return normalized.some(t => overrideSongs.has(t));
             });
         }
 
