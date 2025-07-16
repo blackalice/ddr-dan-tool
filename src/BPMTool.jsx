@@ -671,15 +671,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'chart' ? 'active' : ''}>Chart</button>
                         </div>
-                        <select 
-                            className="game-select" 
-                            value={selectedGame} 
-                            onChange={(e) => { setSelectedGame(e.target.value); onSongSelect(null); }}
-                            disabled={filters.games.length > 0}
-                        >
-                            <option value="all">All Games</option>
-                            {smData.games.map(game => (<option key={game} value={game}>{game}</option>))}
-                        </select>
                     </div>
                     <div className="song-search-row">
                         <div className="song-select-container">
