@@ -90,8 +90,10 @@
     transition: background-color 0.2s;
 }
 
-.settings-button:hover {
-    background-color: var(--accent-color-light);
+@media (hover: hover) {
+    .settings-button:hover {
+        background-color: var(--accent-color-light);
+    }
 }
 
 /* Mobile Layout */

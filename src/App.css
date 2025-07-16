@@ -236,9 +236,11 @@ body {
   border: 2px solid var(--accent-color);
   border-radius: 9999px;
 }
-.nav-link:hover {
-  color: var(--text-color);
-  background-color: var(--accent-color);
+@media (hover: hover) {
+  .nav-link:hover {
+    color: var(--text-color);
+    background-color: var(--accent-color);
+  }
 }
 
 
@@ -303,9 +305,11 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
-.play-mode-toggle button:hover {
-	background-color: var(--card-hover-bg-color);
-	color: var(--text-color);
+@media (hover: hover) {
+  .play-mode-toggle button:hover {
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-color);
+  }
 }
 
 .play-mode-toggle button.active {

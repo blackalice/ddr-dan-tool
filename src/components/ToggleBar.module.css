@@ -24,8 +24,10 @@
     color: var(--text-color);
 }
 
-.root input[type="radio"] + label:hover {
-    background-color: var(--card-hover-bg-color);
+@media (hover: hover) {
+    .root input[type="radio"] + label:hover {
+        background-color: var(--card-hover-bg-color);
+    }
 }
 
 .root input[type="radio"]:checked + label {
