@@ -3,7 +3,8 @@ import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPalette, faPlus } from '@fortawesome/free-solid-svg-icons';
+import CreateListModal from './components/CreateListModal.jsx';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
@@ -82,33 +83,57 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
 };
 
 const ListsPage = () => {
-  const { groups, createGroup, removeChartFromGroup, deleteGroup, updateGroupColor, updateGroupName } = useGroups();
+  const {
+    groups,
+    createGroup,
+    removeChartFromGroup,
+    deleteGroup,
+    updateGroupColor,
+    updateGroupName,
+    activeGroup,
+    setActiveGroup,
+  } = useGroups();
   const { resetFilters } = useFilters();
-  const [newName, setNewName] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const handleCreate = () => {
-    const name = newName.trim();
-    if (name) {
-      createGroup(name);
-      setNewName('');
+  const handleCreate = (name) => {
+    if (name.trim()) {
+      createGroup(name.trim());
     }
   };
+
+  const groupsToShow =
+    activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
 
   return (
     <div className="app-container">
       <main>
         <div className="filter-bar">
           <div className="filter-group list-page-filter-group">
-            <input
-              className="dan-select"
-              value={newName}
-              onChange={e => setNewName(e.target.value)}
-              placeholder="New list name"
-            />
-            <button className="vega-button" onClick={handleCreate}>Create</button>
+            <div className="dan-select-wrapper">
+              <select
+                value={activeGroup}
+                onChange={e => setActiveGroup(e.target.value)}
+                className="dan-select"
+              >
+                <option value="All">All Lists</option>
+                {groups.map(g => (
+                  <option key={g.name} value={g.name}>
+                    {g.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              className="filter-button"
+              onClick={() => setShowCreateModal(true)}
+              title="Add list"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
         </div>
-        {groups.map(g => (
+        {groupsToShow.map(g => (
           <GroupSection
             key={g.name}
             group={g}
@@ -119,6 +144,11 @@ const ListsPage = () => {
             resetFilters={resetFilters}
           />
         ))}
+        <CreateListModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onCreate={handleCreate}
+        />
       </main>
     </div>
   );

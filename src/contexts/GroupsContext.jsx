@@ -10,10 +10,23 @@ export const GroupsProvider = ({ children }) => {
     const saved = localStorage.getItem('groups');
     return saved ? JSON.parse(saved) : defaultGroups;
   });
+  const [activeGroup, setActiveGroup] = useState(() =>
+    localStorage.getItem('activeGroup') || 'All'
+  );
 
   useEffect(() => {
     localStorage.setItem('groups', JSON.stringify(groups));
   }, [groups]);
+
+  useEffect(() => {
+    localStorage.setItem('activeGroup', activeGroup);
+  }, [activeGroup]);
+
+  useEffect(() => {
+    if (activeGroup !== 'All' && !groups.some(g => g.name === activeGroup)) {
+      setActiveGroup('All');
+    }
+  }, [groups, activeGroup]);
 
   const createGroup = (name) => {
     if (groups.length >= MAX_GROUPS) {
@@ -71,7 +84,18 @@ export const GroupsProvider = ({ children }) => {
   };
 
   return (
-    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor, addChartsToGroup, updateGroupName }}>
+    <GroupsContext.Provider value={{
+      groups,
+      createGroup,
+      deleteGroup,
+      addChartToGroup,
+      removeChartFromGroup,
+      updateGroupColor,
+      addChartsToGroup,
+      updateGroupName,
+      activeGroup,
+      setActiveGroup,
+    }}>
       {children}
     </GroupsContext.Provider>
   );
