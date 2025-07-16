@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const defaultGroups = [];
+const MAX_GROUPS = 20;
 
 export const GroupsContext = createContext();
 
@@ -15,8 +16,16 @@ export const GroupsProvider = ({ children }) => {
   }, [groups]);
 
   const createGroup = (name) => {
-    if (!name || groups.some(g => g.name === name)) return;
+    if (groups.length >= MAX_GROUPS) {
+      alert(`You have reached the maximum of ${MAX_GROUPS} lists.`);
+      return false;
+    }
+    if (!name || groups.some(g => g.name === name)) {
+      alert('A list with this name already exists.');
+      return false;
+    }
     setGroups(prev => [...prev, { name, charts: [], color: 'var(--accent-color)' }]);
+    return true;
   };
 
   const deleteGroup = (name) => {
@@ -25,6 +34,17 @@ export const GroupsProvider = ({ children }) => {
 
   const updateGroupColor = (name, color) => {
     setGroups(prev => prev.map(g => g.name === name ? { ...g, color } : g));
+  };
+
+  const addChartsToGroup = (name, charts) => {
+    setGroups(prev => prev.map(g => {
+      if (g.name === name) {
+        const existingChartIds = new Set(g.charts.map(c => `${c.title}-${c.mode}-${c.difficulty}`));
+        const newCharts = charts.filter(c => !existingChartIds.has(`${c.title}-${c.mode}-${c.difficulty}`));
+        return { ...g, charts: [...g.charts, ...newCharts] };
+      }
+      return g;
+    }));
   };
 
   const addChartToGroup = (name, chart) => {
@@ -42,7 +62,7 @@ export const GroupsProvider = ({ children }) => {
   };
 
   return (
-    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor }}>
+    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor, addChartsToGroup }}>
       {children}
     </GroupsContext.Provider>
   );

@@ -155,6 +155,16 @@
     color: var(--text-color);
 }
 
+.createListButton {
+    background-color: var(--button-up-color);
+    color: white;
+    flex-grow: 1; /* Make it stand out */
+}
+
+.createListButton:hover {
+    background-color: var(--button-up-hover-color);
+}
+
 @media (max-width: 768px) {
     .modalBackdrop {
         align-items: flex-start; /* Align to top on mobile */

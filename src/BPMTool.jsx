@@ -175,7 +175,7 @@ export const getBpmRange = (bpm) => {
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
     const { targetBPM, multipliers, apiKey, playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
     const { filters, resetFilters } = useFilters();
-    const { groups, addChartToGroup, createGroup } = useGroups();
+    const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -534,6 +534,87 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         setShowAddModal(true);
     };
 
+    const handleCreateListFromFilter = (currentFilters) => {
+        const listName = prompt("Enter a name for the new list:");
+        if (!listName || !listName.trim()) return;
+
+        if (!createGroup(listName)) {
+            return; // Stop if group creation failed (e.g., duplicate name, max limit reached)
+        }
+
+        const metaMap = new Map(songMeta.map(m => [m.path, m]));
+
+        // Re-filter songOptions based on the modal's current filters
+        const filteredSongOptions = smData.files.filter(file => {
+            const meta = metaMap.get(file.path);
+            if (!meta) return false;
+            if (currentFilters.games.length && !currentFilters.games.includes(meta.game)) return false;
+            if (currentFilters.artist && !meta.artist.toLowerCase().includes(currentFilters.artist.toLowerCase())) return false;
+            if (currentFilters.title && !meta.title.toLowerCase().includes(currentFilters.title.toLowerCase()) && !(meta.titleTranslit && meta.titleTranslit.toLowerCase().includes(currentFilters.title.toLowerCase()))) return false;
+            const bpmDiff = meta.bpmMax - meta.bpmMin;
+            const isSingleBpm = bpmDiff <= 5;
+            if (currentFilters.multiBpm === 'single' && !isSingleBpm) return false;
+            if (currentFilters.multiBpm === 'multiple' && isSingleBpm) return false;
+            if (currentFilters.bpmMin !== '' && meta.bpmMax < Number(currentFilters.bpmMin)) return false;
+            if (currentFilters.bpmMax !== '' && meta.bpmMin > Number(currentFilters.bpmMax)) return false;
+            if (currentFilters.difficultyMin !== '' || currentFilters.difficultyMax !== '' || currentFilters.difficultyNames.length > 0) {
+                const chartMatches = meta.difficulties.some(d => {
+                    const levelMatch = currentFilters.difficultyMin === '' || d.feet >= Number(currentFilters.difficultyMin);
+                    const levelMaxMatch = currentFilters.difficultyMax === '' || d.feet <= Number(currentFilters.difficultyMax);
+                    const nameMatch = currentFilters.difficultyNames.length === 0 || currentFilters.difficultyNames.includes(d.difficulty);
+                    return levelMatch && levelMaxMatch && nameMatch;
+                });
+                if (!chartMatches) return false;
+            }
+
+            if (currentFilters.lengthMin !== '' && meta.length !== undefined && meta.length < Number(currentFilters.lengthMin)) return false;
+            if (currentFilters.lengthMax !== '' && meta.length !== undefined && meta.length > Number(currentFilters.lengthMax)) return false;
+            return true;
+        }).map(file => ({
+            value: file.path,
+            label: file.title,
+            title: file.title,
+            titleTranslit: file.titleTranslit,
+        }));
+
+        const chartsToAdd = filteredSongOptions.flatMap(song => {
+            const meta = metaMap.get(song.value);
+            if (!meta) return [];
+
+            return meta.difficulties
+                .filter(d => {
+                    if (d.mode !== playStyle) return false; // Filter by play style
+                    if (currentFilters.difficultyMin && d.feet < currentFilters.difficultyMin) return false;
+                    if (currentFilters.difficultyMax && d.feet > currentFilters.difficultyMax) return false;
+                    if (currentFilters.difficultyNames.length > 0 && !currentFilters.difficultyNames.includes(d.difficulty)) return false;
+                    return true;
+                })
+                .map(d => ({
+                    title: meta.title,
+                    level: d.feet,
+                    bpm: `${meta.bpmMin}-${meta.bpmMax}`,
+                    difficulty: d.difficulty.toLowerCase(),
+                    mode: d.mode,
+                    game: meta.game,
+                }));
+        });
+
+        const maxSongsToAdd = 150;
+        const truncatedCharts = chartsToAdd.slice(0, maxSongsToAdd);
+
+        if (truncatedCharts.length > 0) {
+            addChartsToGroup(listName, truncatedCharts);
+            let alertMessage = `Added ${truncatedCharts.length} charts to the new list "${listName}".`;
+            if (chartsToAdd.length > maxSongsToAdd) {
+                alertMessage += `\n\nNote: The filter matched ${chartsToAdd.length} charts, but the list has been truncated to the first ${maxSongsToAdd}.`;
+            }
+            alert(alertMessage);
+        } else {
+            alert("No charts found matching the current filters.");
+        }
+        setShowFilter(false);
+    };
+
     const handleToggle = (index) => {
         setView(index === 0 ? 'bpm' : 'chart');
     };
@@ -684,7 +765,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 )}
             </div>
         </div>
-        <FilterModal isOpen={showFilter} onClose={() => setShowFilter(false)} games={smData.games} />
+        <FilterModal
+            isOpen={showFilter}
+            onClose={() => setShowFilter(false)}
+            games={smData.games}
+            showLists={showLists}
+            onCreateList={handleCreateListFromFilter}
+        />
         <AddToListModal
             isOpen={showAddModal}
             onClose={() => setShowAddModal(false)}

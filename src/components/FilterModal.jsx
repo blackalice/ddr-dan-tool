@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useFilters } from '../contexts/FilterContext.jsx';
 import styles from './FilterModal.module.css';
 
-const FilterModal = ({ isOpen, onClose, games }) => {
+const difficultyNames = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
+
+const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const { filters, setFilters } = useFilters();
   const [localFilters, setLocalFilters] = useState(filters);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -41,6 +44,13 @@ const FilterModal = ({ isOpen, onClose, games }) => {
     });
   };
 
+  const toggleDifficultyName = (name) => {
+    setLocalFilters((prev) => {
+      const has = prev.difficultyNames.includes(name);
+      return { ...prev, difficultyNames: has ? prev.difficultyNames.filter(n => n !== name) : [...prev.difficultyNames, name] };
+    });
+  };
+
   const apply = () => {
     setFilters(localFilters);
     onClose();
@@ -58,6 +68,7 @@ const FilterModal = ({ isOpen, onClose, games }) => {
       artist: '',
       title: '',
       multiBpm: 'any',
+      difficultyNames: [],
     });
   };
 
@@ -80,6 +91,22 @@ const FilterModal = ({ isOpen, onClose, games }) => {
             <div className={styles.inputGroup}>
               <input type="number" min="1" max="19" placeholder="Min" value={localFilters.difficultyMin} onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)} className={styles.input} />
               <input type="number" min="1" max="19" placeholder="Max" value={localFilters.difficultyMax} onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))} onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)} className={styles.input} />
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Difficulty Names</label>
+            <div className={styles.gameCheckboxes}>
+              {difficultyNames.map(name => {
+                const isSelected = localFilters.difficultyNames.includes(name);
+                return (
+                  <label
+                    key={name}
+                    className={`${styles.checkboxLabel} ${isSelected ? styles.selected : ''}`}
+                  >
+                    <input type="checkbox" checked={isSelected} onChange={() => toggleDifficultyName(name)} /> {name}
+                  </label>
+                );
+              })}
             </div>
           </div>
           <div className={styles.formGroup}>
@@ -124,6 +151,11 @@ const FilterModal = ({ isOpen, onClose, games }) => {
         </div>
         <div className={styles.buttonGroup}>
           <button onClick={reset} className={`${styles.button} ${styles.resetButton}`}>Reset</button>
+          {showLists && (
+            <button onClick={() => onCreateList(localFilters)} className={`${styles.button} ${styles.createListButton}`}>
+              Create List
+            </button>
+          )}
           <button onClick={onClose} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
           <button onClick={apply} className={`${styles.button} ${styles.applyButton}`}>Apply</button>
         </div>

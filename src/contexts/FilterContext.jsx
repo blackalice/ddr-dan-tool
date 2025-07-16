@@ -11,6 +11,7 @@ const defaultFilters = {
   artist: '',
   title: '',
   multiBpm: 'any',
+  difficultyNames: [],
 };
 
 export const FilterContext = createContext({
