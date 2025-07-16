@@ -698,6 +698,17 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
                             <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'chart' ? 'active' : ''}>Chart</button>
                         </div>
+                        <div className="action-buttons mobile-only">
+                            {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
+                            {showLists && (
+                                <button className="filter-button" onClick={handleAddToList} title="Add to list">
+                                    <i className="fa-solid fa-plus"></i>
+                                </button>
+                            )}
+                            <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
+                                <i className="fa-solid fa-filter"></i>
+                            </button>
+                        </div>
                     </div>
                     <div className="song-search-row">
                         <div className="song-select-container">
@@ -720,7 +731,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 }}
                             />
                         </div>
-                        <div className="action-buttons">
+                        <div className="action-buttons desktop-only">
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (
                                 <button className="filter-button" onClick={handleAddToList} title="Add to list">

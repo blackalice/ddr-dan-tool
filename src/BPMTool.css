@@ -38,6 +38,14 @@
     align-items: center;
 }
 
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: flex;
+}
+
 
 .song-select-container {
     flex-grow: 1;
@@ -549,6 +557,14 @@
         order: 2;
         flex-grow: 1;
     }
+
+    .mobile-only {
+        display: none;
+    }
+
+    .desktop-only {
+        display: flex;
+    }
 }
 
 .play-mode-toggle {
@@ -593,6 +609,14 @@
 
     .play-style-toggle {
         order: 3;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+
+    .desktop-only {
+        display: none;
     }
 }
 
