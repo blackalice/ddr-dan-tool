@@ -372,6 +372,34 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         setSongOptions(options);
     }, [selectedGame, smData, songMeta, filters]);
 
+    useEffect(() => {
+        if (!simfileData || !currentChart) return;
+
+        const mode = playStyle;
+        const chartsInMode = simfileData.availableTypes.filter(c => c.mode === mode);
+
+        const matchesFilters = (chart) => {
+            if (filters.difficultyMin !== '' && chart.feet < Number(filters.difficultyMin)) return false;
+            if (filters.difficultyMax !== '' && chart.feet > Number(filters.difficultyMax)) return false;
+            return true;
+        };
+
+        const matchingCharts = chartsInMode.filter(matchesFilters);
+
+        if (matchingCharts.length === 0) {
+            if (songOptions.length > 0 && simfileData.title.titleName !== songOptions[0].title) {
+                onSongSelect(songOptions[0]);
+            }
+            return;
+        }
+
+        if (!matchingCharts.find(c => c.slug === currentChart.slug)) {
+            const targetFeet = currentChart.feet;
+            const closest = matchingCharts.reduce((prev, c) => Math.abs(c.feet - targetFeet) < Math.abs(prev.feet - targetFeet) ? c : prev, matchingCharts[0]);
+            setCurrentChart(closest);
+        }
+    }, [filters, playStyle, simfileData, currentChart, songOptions]);
+
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
         menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)', zIndex: 1000 }),
