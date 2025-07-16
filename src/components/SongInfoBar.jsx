@@ -1,5 +1,6 @@
 import React from 'react';
-import { DifficultyMeter, difficultyLevels, difficultyNameMapping } from './DifficultyMeter';
+import { DifficultyMeter } from './DifficultyMeter';
+import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.js';
 import { useFilters } from '../contexts/FilterContext.jsx';
 import '../BPMTool.css';
 
@@ -35,14 +36,12 @@ const SongInfoBar = ({
 
     return difficultyLevels.map(levelName => {
         let level = null;
-        let difficulty = null;
         let chartType = null;
 
         // Find the chart for the current difficulty level (e.g., 'Expert')
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
                 level = difficultySet[name];
-                difficulty = name;
                 chartType = chartDifficulties.find(t => t.difficulty === name);
                 if (chartType) break;
             }

@@ -1,3 +1,4 @@
+/* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const defaultFilters = {
