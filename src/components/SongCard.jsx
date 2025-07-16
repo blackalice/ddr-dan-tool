@@ -1,9 +1,8 @@
 import React, { useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
-import { useGroups } from '../contexts/GroupsContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
 
 const difficultyDisplayMap = {
@@ -32,7 +31,6 @@ const getBpmRange = (bpm) => {
 
 const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
   const { targetBPM, multipliers } = useContext(SettingsContext);
-  const { groups, addChartToGroup, createGroup } = useGroups();
   const navigate = useNavigate();
 
   const calculation = useMemo(() => {
@@ -76,29 +74,15 @@ const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
     );
   }
 
-  const handleAdd = (e) => {
-    e.stopPropagation();
-    let name = prompt(`Add to which list?\nAvailable: ${groups.map(g => g.name).join(', ')}`);
-    if (!name) return;
-    if (!groups.some(g => g.name === name)) {
-      createGroup(name);
-    }
-    addChartToGroup(name, song);
-  };
-
   return (
     <div className="song-card-link" onClick={() => {
       if (resetFilters) resetFilters();
       navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
     }}>
       <div className="song-card">
-        {onRemove ? (
+        {onRemove && (
           <button className="song-card-action" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
             <FontAwesomeIcon icon={faTimes} />
-          </button>
-        ) : (
-          <button className="song-card-action" onClick={handleAdd}>
-            <FontAwesomeIcon icon={faPlus} />
           </button>
         )}
         <div className="song-card-header">
