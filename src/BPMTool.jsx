@@ -198,6 +198,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         filters.lengthMin !== '' ||
         filters.lengthMax !== '' ||
         filters.games.length > 0 ||
+        (filters.difficultyNames && filters.difficultyNames.length > 0) ||
         filters.artist !== '' ||
         (filters.title && filters.title !== '') ||
         filters.multiBpm !== 'any'
