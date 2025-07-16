@@ -20,31 +20,8 @@
     width: 100%;
 }
 
-.top-row > .view-toggle,
-.top-row > .game-select {
+.top-row > .view-toggle {
     flex: 1;
-}
-
-.game-select {
-    appearance: none;
-    background-color: var(--card-bg-color);
-    color: var(--text-color);
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    border: none;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    min-height: 2.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.game-select:disabled {
-    background-color: var(--bg-color-dark);
-    color: var(--text-muted-color);
-    cursor: not-allowed;
 }
 
 
@@ -567,9 +544,6 @@
     }
     .view-toggle {
         width: 12rem;
-    }
-    .game-select {
-        width: auto;
     }
     .song-search-row {
         order: 2;
