@@ -454,6 +454,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (filters.difficultyMin !== '' || filters.difficultyMax !== '' || (filters.difficultyNames && filters.difficultyNames.length > 0)) {
                 const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
+                    if (d.mode !== playStyle) return false;
                     const levelMatch = filters.difficultyMin === '' || d.feet >= Number(filters.difficultyMin);
                     const levelMaxMatch = filters.difficultyMax === '' || d.feet <= Number(filters.difficultyMax);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
@@ -636,6 +637,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (currentFilters.difficultyMin !== '' || currentFilters.difficultyMax !== '' || (currentFilters.difficultyNames && currentFilters.difficultyNames.length > 0)) {
                 const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
+                    if (d.mode !== playStyle) return false;
                     const levelMatch = currentFilters.difficultyMin === '' || d.feet >= Number(currentFilters.difficultyMin);
                     const levelMaxMatch = currentFilters.difficultyMax === '' || d.feet <= Number(currentFilters.difficultyMax);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
