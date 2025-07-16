@@ -78,7 +78,10 @@ const SongCard = ({ song, setSelectedGame, resetFilters, onRemove }) => {
     <div className="song-card-link" onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);
-      navigate(`/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`);
+      navigate(
+        `/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`,
+        { state: { fromSongCard: true } }
+      );
     }}>
       <div className="song-card">
         {onRemove && (
