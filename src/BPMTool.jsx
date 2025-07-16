@@ -346,8 +346,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!meta) return false;
             if (filters.games.length && !filters.games.includes(meta.game)) return false;
             if (filters.artist && !meta.artist.toLowerCase().includes(filters.artist.toLowerCase())) return false;
-            if (filters.multiBpm === 'single' && meta.hasMultipleBpms) return false;
-            if (filters.multiBpm === 'multiple' && !meta.hasMultipleBpms) return false;
+            const bpmDiff = meta.bpmMax - meta.bpmMin;
+            const isSingleBpm = bpmDiff <= 5;
+            if (filters.multiBpm === 'single' && !isSingleBpm) return false;
+            if (filters.multiBpm === 'multiple' && isSingleBpm) return false;
             if (filters.bpmMin !== '' && meta.bpmMax < Number(filters.bpmMin)) return false;
             if (filters.bpmMax !== '' && meta.bpmMin > Number(filters.bpmMax)) return false;
             if (filters.difficultyMin !== '' || filters.difficultyMax !== '') {

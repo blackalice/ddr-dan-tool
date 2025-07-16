@@ -42,7 +42,7 @@ async function main() {
           game,
           bpmMin,
           bpmMax,
-          hasMultipleBpms: uniqueBpms.length > 1,
+          hasMultipleBpms: bpmMax - bpmMin > 5,
           difficulties,
         });
       } catch (err) {
