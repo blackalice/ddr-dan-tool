@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
@@ -8,18 +8,48 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const GroupSection = ({ group, removeChart, deleteGroup, updateColor, resetFilters }) => {
+const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(group.name);
+
+  useEffect(() => {
+    setName(group.name);
+  }, [group.name]);
+
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete the list "${group.name}"?`)) {
       deleteGroup(group.name);
     }
   };
 
+  const saveName = () => {
+    const newName = name.trim();
+    if (newName && newName !== group.name) {
+      const success = updateName(group.name, newName);
+      if (!success) {
+        setName(group.name);
+      }
+    }
+    setIsEditing(false);
+  };
+
   return (
     <section className="dan-section">
       <h2 className="dan-header" style={{ backgroundColor: group.color }}>
-        <span className="dan-header-title">{group.name}</span>
-        <div className="dan-header-controls">
+        <div className="dan-header-title">
+          {isEditing ? (
+            <input
+              className="list-name-input"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              onBlur={saveName}
+              onKeyDown={e => { if (e.key === 'Enter') { e.target.blur(); } }}
+              autoFocus
+            />
+          ) : (
+            <span onDoubleClick={() => setIsEditing(true)}>{group.name}</span>
+          )}
           <label className="color-picker-label">
             <FontAwesomeIcon icon={faPalette} />
             <input
@@ -33,21 +63,26 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, resetFilte
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
+        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+        </button>
       </h2>
-      <div className="song-grid">
-        {group.charts.map((chart, idx) => (
-          <SongCard key={idx} song={chart} resetFilters={resetFilters} onRemove={() => removeChart(group.name, chart)} />
-        ))}
-        {group.charts.length === 0 && (
-          <p style={{ padding: '1rem', color: 'var(--text-muted-color)' }}>No charts in this list.</p>
-        )}
-      </div>
+      {!isCollapsed && (
+        <div className="song-grid">
+          {group.charts.map((chart, idx) => (
+            <SongCard key={idx} song={chart} resetFilters={resetFilters} onRemove={() => removeChart(group.name, chart)} />
+          ))}
+          {group.charts.length === 0 && (
+            <p style={{ padding: '1rem', color: 'var(--text-muted-color)' }}>No charts in this list.</p>
+          )}
+        </div>
+      )}
     </section>
   );
 };
 
 const ListsPage = () => {
-  const { groups, createGroup, removeChartFromGroup, deleteGroup, updateGroupColor } = useGroups();
+  const { groups, createGroup, removeChartFromGroup, deleteGroup, updateGroupColor, updateGroupName } = useGroups();
   const { resetFilters } = useFilters();
   const [newName, setNewName] = useState('');
 
@@ -80,6 +115,7 @@ const ListsPage = () => {
             removeChart={removeChartFromGroup}
             deleteGroup={deleteGroup}
             updateColor={updateGroupColor}
+            updateName={updateGroupName}
             resetFilters={resetFilters}
           />
         ))}

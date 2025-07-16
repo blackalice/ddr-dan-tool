@@ -36,6 +36,15 @@ export const GroupsProvider = ({ children }) => {
     setGroups(prev => prev.map(g => g.name === name ? { ...g, color } : g));
   };
 
+  const updateGroupName = (oldName, newName) => {
+    if (!newName || groups.some(g => g.name === newName && g.name !== oldName)) {
+      alert('A list with this name already exists.');
+      return false;
+    }
+    setGroups(prev => prev.map(g => g.name === oldName ? { ...g, name: newName } : g));
+    return true;
+  };
+
   const addChartsToGroup = (name, charts) => {
     setGroups(prev => prev.map(g => {
       if (g.name === name) {
@@ -62,7 +71,7 @@ export const GroupsProvider = ({ children }) => {
   };
 
   return (
-    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor, addChartsToGroup }}>
+    <GroupsContext.Provider value={{ groups, createGroup, deleteGroup, addChartToGroup, removeChartFromGroup, updateGroupColor, addChartsToGroup, updateGroupName }}>
       {children}
     </GroupsContext.Provider>
   );
