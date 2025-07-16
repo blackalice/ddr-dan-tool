@@ -1,4 +1,4 @@
-# DDR Dan Tool
+# DDR Toolkit
 
 ![screenshot](screenshot.png)
 
