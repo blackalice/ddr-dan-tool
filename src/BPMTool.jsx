@@ -361,12 +361,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             return true;
         });
 
-        const options = filteredFiles.map(file => ({
-            value: file.path,
-            label: file.title,
-            title: file.title,
-            titleTranslit: file.titleTranslit
-        }));
+        const options = filteredFiles
+            .map(file => ({
+                value: file.path,
+                label: file.title,
+                title: file.title,
+                titleTranslit: file.titleTranslit,
+            }))
+            .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
         setSongOptions(options);
     }, [selectedGame, smData, songMeta, filters]);
 
