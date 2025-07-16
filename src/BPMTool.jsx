@@ -103,6 +103,42 @@ const calculateCoreBpm = (bpmChanges, songLastBeat) => {
     return coreBpm;
 };
 
+const calculateSongLength = (bpmChanges, songLastBeat, stops = []) => {
+    if (!bpmChanges || bpmChanges.length === 0) return 0;
+    let time = 0;
+    let lastBeat = bpmChanges[0].startOffset * 4;
+    let currentBpm = bpmChanges[0].bpm;
+
+    for (let i = 1; i < bpmChanges.length; i++) {
+        const change = bpmChanges[i];
+        const endBeat = change.startOffset * 4;
+        const beatsElapsed = endBeat - lastBeat;
+        if (currentBpm > 0) {
+            time += (beatsElapsed / currentBpm) * 60;
+        }
+        stops.forEach(s => {
+            const beat = s.offset * 4;
+            if (beat >= lastBeat && beat < endBeat) {
+                time += s.duration;
+            }
+        });
+        currentBpm = change.bpm;
+        lastBeat = endBeat;
+    }
+
+    const beatsRemaining = songLastBeat - lastBeat;
+    if (currentBpm > 0 && beatsRemaining > 0) {
+        time += (beatsRemaining / currentBpm) * 60;
+    }
+    stops.forEach(s => {
+        const beat = s.offset * 4;
+        if (beat >= lastBeat && beat < songLastBeat) {
+            time += s.duration;
+        }
+    });
+    return Math.round(time);
+};
+
 const MenuList = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
     const initialOffset = options.indexOf(value) * 35;
@@ -141,6 +177,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         filters.bpmMax !== '' ||
         filters.difficultyMin !== '' ||
         filters.difficultyMax !== '' ||
+        filters.lengthMin !== '' ||
+        filters.lengthMax !== '' ||
         filters.games.length > 0 ||
         filters.artist !== '' ||
         filters.multiBpm !== 'any'
@@ -186,7 +224,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
     }, [playStyle, simfileData]);
 
-    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData } = useMemo(() => {
+    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
         if (!simfileData) {
             return {
                 songTitle: 'Please select a song',
@@ -196,6 +234,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 bpmDisplay: 'N/A',
                 coreBpm: null,
                 chartData: null,
+                songLength: 0,
             };
         }
 
@@ -211,6 +250,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let display = 'N/A';
         let core = null;
         let data = null;
+        let length = 0;
 
         if (currentChart && simfileData.charts) {
             const chartDetails = simfileData.charts[currentChart.slug];
@@ -231,6 +271,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 
                 core = calculateCoreBpm(bpmChanges, lastBeat);
                 data = calculateChartData(bpmChanges, lastBeat);
+                length = calculateSongLength(bpmChanges, lastBeat, chartDetails.stops);
             }
         }
 
@@ -242,6 +283,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             bpmDisplay: display,
             coreBpm: core,
             chartData: data,
+            songLength: length,
         };
     }, [simfileData, currentChart]);
 
@@ -356,6 +398,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 if (filters.difficultyMin !== '' && maxFeet < Number(filters.difficultyMin)) return false;
                 if (filters.difficultyMax !== '' && minFeet > Number(filters.difficultyMax)) return false;
             }
+            if (filters.lengthMin !== '' && meta.length !== undefined && meta.length < Number(filters.lengthMin)) return false;
+            if (filters.lengthMax !== '' && meta.length !== undefined && meta.length > Number(filters.lengthMax)) return false;
             return true;
         });
 
@@ -483,6 +527,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     coreCalculation={coreCalculation}
                     showAltCoreBpm={showAltCoreBpm}
                     setShowAltCoreBpm={setShowAltCoreBpm}
+                    songLength={songLength}
                     view={view}
                 />
                 {view === 'bpm' ? (
