@@ -20,9 +20,10 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,webmanifest,sm,ssc}'],
+        navigateFallback: 'index.html',
         runtimeCaching: [
           {
-            urlPattern: /\/sm\/.*\.(sm|ssc)$/,
+            urlPattern: /(?:^|\/)sm\/.*\.(sm|ssc)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'simfiles-cache',
@@ -32,7 +33,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/(sm-files|song-meta|course-data|dan-data|vega-data)\.json$/,
+            urlPattern: /(?:^|\/)(sm-files|song-meta|course-data|dan-data|vega-data)\.json$/,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'json-cache',
