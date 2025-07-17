@@ -113,7 +113,7 @@
     text-transform: uppercase;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
     .speedmodContainer {
         flex-direction: row;
     }
