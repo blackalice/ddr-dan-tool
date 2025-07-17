@@ -172,6 +172,60 @@ html[data-theme='cg'] {
   --color-link: var(--primary-color);
 }
 
+html[data-theme='dark-pink'] {
+  --bg-color: #1b1120;
+  --bg-color-light: #25192d;
+  --bg-color-dark: #2e1d3b;
+  --card-bg-color: #402850;
+  --card-hover-bg-color: #53325f;
+  --card-hover-bg-color-light: #5f3d6b;
+  --border-color: #4b2e5c;
+  --text-color: #FFFFFF;
+  --text-color-light: #E5E7EB;
+  --text-color-lighter: #F9FAFB;
+  --text-color-lightest: #d1d5db;
+  --text-muted-color: #b38bbf;
+  --accent-color: #e879f9;
+  --accent-color-light: #f0abfc;
+  --cyan-color: #67E8F9;
+  --green-color: #4ADE80;
+  --pink-color: #F472B6;
+  --blue-color: #60A5FA;
+  --yellow-color: #FBBF24;
+  --button-icon: white;
+  --button-bg: #53325f;
+
+  --difficulty-beginner-color: #4A90E2;
+  --difficulty-light-color: #F5A623;
+  --difficulty-standard-color: #D0021B;
+  --difficulty-heavy-color: #417505;
+  --difficulty-challenge-color: #BD10E0;
+  --difficulty-edit-color: #7F8C8D;
+  --difficulty-single-color: #F472B6;
+  --difficulty-double-color: #60A5FA;
+
+  --button-up-color: #ec4899;
+  --button-up-hover-color: #db2777;
+  --button-down-color: #f472b6;
+  --button-down-hover-color: #be185d;
+
+  /* from stepcharts-main */
+  --color-focal-50: #374151;
+  --color-focal-100: #4b5563;
+  --color-focal-200: #6B7280;
+  --color-focal-300: #9ca3af;
+  --color-focal-400: #d1d5db;
+  --color-focal-500: #e5e7eb;
+  --color-focal-600: #f3f4f6;
+  --color-focal-700: #f7f8f9;
+  --color-focal: var(--color-focal-500);
+
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+
+  --color-link: var(--color-expert);
+}
+
 /* --- Global Styles & Resets --- */
 html {
   overflow-y: scroll;
