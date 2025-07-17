@@ -30,8 +30,10 @@ function AppRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const BASE = import.meta.env.BASE_URL
+
   useEffect(() => {
-    fetch('/sm-files.json')
+    fetch(`${BASE}sm-files.json`)
         .then(response => response.json())
         .then(data => setSmData(data))
         .catch(error => console.error('Error fetching sm-files.json:', error));

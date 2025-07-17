@@ -1,5 +1,7 @@
 import { parseSm } from './smParser.js';
 
+const BASE = import.meta.env.BASE_URL
+
 let smFilesCache = null;
 
 const fetchJson = async (url) => {
@@ -17,7 +19,7 @@ const fetchJson = async (url) => {
 
 export const findSongByTitle = async (title) => {
     if (!smFilesCache) {
-        smFilesCache = await fetchJson('/sm-files.json');
+        smFilesCache = await fetchJson(`${BASE}sm-files.json`);
     }
     if (!smFilesCache) return null;
 
@@ -35,7 +37,7 @@ export const loadSimfileData = async (songFile) => {
     }
 
     try {
-        const response = await fetch(encodeURI(`/${songFile.path}`));
+        const response = await fetch(encodeURI(`${BASE}${songFile.path}`));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

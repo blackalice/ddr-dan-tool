@@ -1,7 +1,9 @@
 // Fetches the pre-processed Dan course data.
+const BASE = import.meta.env.BASE_URL
+
 export const loadDanData = async () => {
     try {
-        const response = await fetch('/dan-data.json');
+        const response = await fetch(`${BASE}dan-data.json`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -17,7 +19,7 @@ export const loadDanData = async () => {
 // Fetches the pre-processed Vega course data.
 export const loadVegaData = async () => {
     try {
-        const response = await fetch('/vega-data.json');
+        const response = await fetch(`${BASE}vega-data.json`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

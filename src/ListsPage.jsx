@@ -129,8 +129,10 @@ const ListsPage = () => {
   const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
   const [highlightKey, setHighlightKey] = useState(null);
 
+  const BASE = import.meta.env.BASE_URL
+
   useEffect(() => {
-    fetch('/song-meta.json')
+    fetch(`${BASE}song-meta.json`)
       .then(res => res.json())
       .then(setSongMeta)
       .catch(err => console.error('Failed to load song meta:', err));
