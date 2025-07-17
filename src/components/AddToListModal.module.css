@@ -85,7 +85,7 @@
     color: var(--text-color);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .modalBackdrop {
         align-items: flex-start;
     }

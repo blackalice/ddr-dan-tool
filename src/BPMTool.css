@@ -38,6 +38,14 @@
     align-items: center;
 }
 
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: flex;
+}
+
 
 .song-select-container {
     flex-grow: 1;
@@ -391,7 +399,7 @@
 }
 
 /* --- Mobile & Small Screen Overrides --- */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .chart-section {
         padding: 0;
     }
@@ -510,7 +518,7 @@
     }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
     .details-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
@@ -549,6 +557,20 @@
         order: 2;
         flex-grow: 1;
     }
+
+    .mobile-only {
+        display: none;
+    }
+
+    .desktop-only {
+        display: flex;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .top-row {
+        justify-content: space-between;
+    }
 }
 
 .play-mode-toggle {
@@ -577,7 +599,7 @@
     justify-content: center;
     padding: 0.5rem 0;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .controls-container {
         display: flex;
         flex-direction: column;
@@ -593,6 +615,14 @@
 
     .play-style-toggle {
         order: 3;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+
+    .desktop-only {
+        display: none;
     }
 }
 
@@ -643,7 +673,7 @@
     justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .smod-controls-container {
         position: fixed;
         flex-direction: column;

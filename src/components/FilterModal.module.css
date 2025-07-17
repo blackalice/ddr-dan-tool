@@ -185,7 +185,7 @@
     background-color: var(--button-up-hover-color);
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
     .modalContent {
         max-width: 800px; /* Wider modal for desktop */
     }
@@ -201,7 +201,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .modalBackdrop {
         align-items: flex-start; /* Align to top on mobile */
     }

@@ -95,7 +95,7 @@
 }
 
 /* Mobile Layout */
- @media (max-width: 768px) {
+@media (max-width: 1024px) {
     .settings-content {
         padding: 1rem;
     }
