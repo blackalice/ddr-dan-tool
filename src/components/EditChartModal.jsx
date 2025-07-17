@@ -4,38 +4,21 @@ import styles from './AddToListModal.module.css';
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   const [selected, setSelected] = useState(chart?.difficulty || '');
 
-  const [scrollPos, setScrollPos] = useState(0);
-
   useEffect(() => {
     if (isOpen) {
       setSelected(chart?.difficulty || '');
-      const y = window.scrollY;
-      setScrollPos(y);
       const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${y}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.paddingRight = `${sbWidth}px`;
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${sbWidth}px`;
     } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
+      document.body.style.overflow = '';
       document.body.style.paddingRight = '';
-      document.body.style.overflow = 'unset';
-      window.scrollTo(0, scrollPos);
     }
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
+      document.body.style.overflow = '';
       document.body.style.paddingRight = '';
-      document.body.style.overflow = 'unset';
     };
-  }, [isOpen, chart, scrollPos]);
+  }, [isOpen, chart]);
 
   if (!isOpen || !chart) return null;
 

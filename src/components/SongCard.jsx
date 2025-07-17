@@ -7,15 +7,15 @@ import './SongCard.css';
 
 const difficultyDisplayMap = {
     single: {
-        beginner: { name: "BGN", color: "#4DB6AC", textColor: "#000000" },
-        basic: { name: "bSP", color: "#f8d45a", textColor: "#000000" },
+        beginner: { name: "bSP", color: "#4DB6AC", textColor: "#000000" },
+        basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
         expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
         challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
     },
     double: {
-        beginner: { name: "BGD", color: "#4DB6AC", textColor: "#000000" },
-        basic: { name: "bDP", color: "#f8d45a", textColor: "#000000" },
+        beginner: { name: "bDP", color: "#4DB6AC", textColor: "#000000" },
+        basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
         expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
         challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
