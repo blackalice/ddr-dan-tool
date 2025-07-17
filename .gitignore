@@ -35,3 +35,4 @@ stepcharts-main/*
 ganymede.png
 songs.png
 /_archive
+public/song-meta.json

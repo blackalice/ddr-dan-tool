@@ -106,7 +106,7 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background-color: var(--button-bg);
+  background-color: var(--difficulty-standard-color);
   color: var(--button-icon);
   border: none;
   border-radius: 0.25rem;
