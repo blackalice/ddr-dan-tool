@@ -18,7 +18,7 @@ export default defineConfig({
       ],
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,webmanifest,sm,ssc}'],
       },
       manifest: {
         name: 'DDR Toolkit',
