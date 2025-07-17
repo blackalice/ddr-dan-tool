@@ -5,11 +5,12 @@ import { useFilters } from './contexts/FilterContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPalette, faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreateListModal from './components/CreateListModal.jsx';
+import EditChartModal from './components/EditChartModal.jsx';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters }) => {
+const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart }) => {
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
@@ -81,7 +82,13 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
       {!isCollapsed && (
         <div className="song-grid">
           {group.charts.map((chart, idx) => (
-            <SongCard key={idx} song={chart} resetFilters={resetFilters} onRemove={() => removeChart(group.name, chart)} />
+            <SongCard
+              key={idx}
+              song={chart}
+              resetFilters={resetFilters}
+              onRemove={() => removeChart(group.name, chart)}
+              onEdit={() => onEditChart(group.name, chart)}
+            />
           ))}
           {group.charts.length === 0 && (
             <p style={{ padding: '1rem', color: 'var(--text-muted-color)' }}>No charts in this list.</p>
@@ -100,17 +107,42 @@ const ListsPage = () => {
     deleteGroup,
     updateGroupColor,
     updateGroupName,
+    updateChartDifficulty,
     activeGroup,
     setActiveGroup,
   } = useGroups();
   const { resetFilters } = useFilters();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [songMeta, setSongMeta] = useState([]);
+  const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
+
+  useEffect(() => {
+    fetch('/song-meta.json')
+      .then(res => res.json())
+      .then(setSongMeta)
+      .catch(err => console.error('Failed to load song meta:', err));
+  }, []);
 
   const handleCreate = (name) => {
     if (name.trim()) {
       createGroup(name.trim());
     }
   };
+
+  const handleEditSave = (newDiff) => {
+    if (editInfo) {
+      updateChartDifficulty(editInfo.groupName, editInfo.chart, newDiff);
+    }
+  };
+
+  const editOptions = React.useMemo(() => {
+    if (!editInfo) return [];
+    const meta = songMeta.find(
+      m => m.title === editInfo.chart.title && m.game === editInfo.chart.game
+    );
+    if (!meta) return [];
+    return meta.difficulties.filter(d => d.mode === editInfo.chart.mode);
+  }, [editInfo, songMeta]);
 
   const groupsToShow =
     activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
@@ -152,12 +184,20 @@ const ListsPage = () => {
             updateColor={updateGroupColor}
             updateName={updateGroupName}
             resetFilters={resetFilters}
+            onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
           />
         ))}
         <CreateListModal
           isOpen={showCreateModal}
           onClose={() => setShowCreateModal(false)}
           onCreate={handleCreate}
+        />
+        <EditChartModal
+          isOpen={!!editInfo}
+          onClose={() => setEditInfo(null)}
+          chart={editInfo?.chart}
+          options={editOptions}
+          onSave={handleEditSave}
         />
       </main>
     </div>

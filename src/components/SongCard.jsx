@@ -2,17 +2,19 @@ import React, { useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
 
 const difficultyDisplayMap = {
     single: {
+        beginner: { name: "BGN", color: "#4DB6AC", textColor: "#000000" },
         basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
         expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
         challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
     },
     double: {
+        beginner: { name: "BGD", color: "#4DB6AC", textColor: "#000000" },
         basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
         expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
@@ -29,7 +31,7 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const SongCard = ({ song, resetFilters, onRemove }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit }) => {
   const { targetBPM, multipliers, setPlayStyle } = useContext(SettingsContext);
   const navigate = useNavigate();
 
@@ -84,8 +86,13 @@ const SongCard = ({ song, resetFilters, onRemove }) => {
       );
     }}>
       <div className="song-card">
+        {onEdit && (
+          <button className="song-card-action edit" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+        )}
         {onRemove && (
-          <button className="song-card-action" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
+          <button className="song-card-action remove" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
             <FontAwesomeIcon icon={faTimes} />
           </button>
         )}
