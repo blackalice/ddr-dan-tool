@@ -9,6 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: { enabled: true },
       includeAssets: [
         'favicon.ico',
         'favicon-16x16.png',
@@ -19,6 +20,8 @@ export default defineConfig({
       ],
       workbox: {
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,webmanifest,sm,ssc}'],
         navigateFallback: 'index.html',
         runtimeCaching: [
