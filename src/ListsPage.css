@@ -31,6 +31,10 @@
   font-size: 1rem;
   transition: background-color 0.2s;
 }
+.filter-button.active {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
 
 .dan-header {
   display: flex;

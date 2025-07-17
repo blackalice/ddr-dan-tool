@@ -4,15 +4,28 @@ import styles from './AddToListModal.module.css';
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   const [selected, setSelected] = useState(chart?.difficulty || '');
 
+  const [scrollPos, setScrollPos] = useState(0);
+
   useEffect(() => {
     if (isOpen) {
       setSelected(chart?.difficulty || '');
+      const y = window.scrollY;
+      setScrollPos(y);
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${y}px`;
       document.body.style.overflow = 'hidden';
     } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
       document.body.style.overflow = 'unset';
+      window.scrollTo(0, scrollPos);
     }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [isOpen, chart]);
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, chart, scrollPos]);
 
   if (!isOpen || !chart) return null;
 
