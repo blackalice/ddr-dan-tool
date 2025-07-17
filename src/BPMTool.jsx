@@ -20,33 +20,21 @@ import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-const getLastBeat = (notes) => {
-    if (!notes) return 0;
-    const measuresList = notes.split(',');
-    let lastNoteMeasureIndex = -1;
-    for (let j = measuresList.length - 1; j >= 0; j--) {
-        if (/[1234MKLF]/i.test(measuresList[j])) {
-            lastNoteMeasureIndex = j;
-            break;
-        }
-    }
-    if (lastNoteMeasureIndex !== -1) {
-        const lastMeasureStr = measuresList[lastNoteMeasureIndex];
-        const lines = lastMeasureStr.trim().split('\n').filter(l => l.trim() !== '');
-        if (lines.length === 0) return 0;
-        let lastNoteLineIndex = -1;
-        for (let k = lines.length - 1; k >= 0; k--) {
-            if (/[1234MKLF]/i.test(lines[k])) {
-                lastNoteLineIndex = k;
-                break;
-            }
-        }
-        if (lastNoteLineIndex !== -1) {
-            const beatsInMeasure = 4;
-            return (lastNoteMeasureIndex * beatsInMeasure) + (lastNoteLineIndex / lines.length) * beatsInMeasure;
-        }
-    }
-    return 0;
+// Determine the last beat of a chart using parsed arrow and freeze data.
+// This mirrors the logic used in the stepchart view so the BPM and chart
+// displays are consistent.
+const getLastBeat = (chart) => {
+    if (!chart) return 0;
+
+    const lastArrowOffset = chart.arrows.length > 0
+        ? chart.arrows[chart.arrows.length - 1].offset + 0.25
+        : 0;
+
+    const lastFreezeOffset = chart.freezes.length > 0
+        ? chart.freezes[chart.freezes.length - 1].endOffset
+        : 0;
+
+    return Math.max(lastArrowOffset, lastFreezeOffset) * 4;
 };
 
 const calculateChartData = (bpmChanges, songLastBeat) => {
@@ -325,7 +313,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             const chartDetails = simfileData.charts[currentChart.slug];
             if (chartDetails) {
                 const bpmChanges = chartDetails.bpm;
-                const lastBeat = getLastBeat(chartDetails.notes);
+                const lastBeat = getLastBeat(chartDetails);
                 
                 if (bpmChanges && bpmChanges.length > 0) {
                     const bpms = bpmChanges.map(b => b.bpm).filter(bpm => bpm > 0);
