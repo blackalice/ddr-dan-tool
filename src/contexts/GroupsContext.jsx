@@ -84,6 +84,17 @@ export const GroupsProvider = ({ children }) => {
     } : g));
   };
 
+  const updateChartDifficulty = (name, chart, newDiff) => {
+    setGroups(prev => prev.map(g => g.name === name ? {
+      ...g,
+      charts: g.charts.map(c =>
+        c.title === chart.title && c.mode === chart.mode && c.difficulty === chart.difficulty
+          ? { ...c, difficulty: newDiff.difficulty.toLowerCase(), level: newDiff.feet }
+          : c
+      )
+    } : g));
+  };
+
   return (
     <GroupsContext.Provider value={{
       groups,
@@ -94,6 +105,7 @@ export const GroupsProvider = ({ children }) => {
       updateGroupColor,
       addChartsToGroup,
       updateGroupName,
+      updateChartDifficulty,
       activeGroup,
       setActiveGroup,
     }}>

@@ -113,7 +113,21 @@
   padding: 0.25rem;
   cursor: pointer;
 }
+.song-card-action.edit {
+  background-color: var(--difficulty-edit-color);
+  right: 2rem;
+}
 .song-card-action.remove {
   background-color: var(--button-down-color);
   color: white;
+}
+
+.song-card.highlight {
+  box-shadow: 0 0 0 3px var(--accent-color);
+  animation: highlight-fade 1.5s forwards;
+}
+
+@keyframes highlight-fade {
+  from { box-shadow: 0 0 0 3px var(--accent-color); }
+  to { box-shadow: none; }
 }
