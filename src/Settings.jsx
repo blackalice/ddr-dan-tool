@@ -34,7 +34,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>
                             <p>
-                                Set your preferred scroll speed (e.g., 300) to calculate the best multiplier for each song.
+                                Set your preferred scroll speed (e.g., 300) to calculate the best multiplier for each song. This is used across the app to determine the best speed multiplier for your playstyle.
                             </p>
                         </div>
                         <div className="setting-control">
@@ -87,7 +87,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Songlist Override</h3>
                             <p>
-                                Restrict the BPM page to songs available in a particular game version.
+                                Only display songs available in a specific game version. This will override the default songlist.
                             </p>
                         </div>
                         <div className="setting-control">
@@ -107,7 +107,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Google AI Studio API Key</h3>
                             <p>
-                                Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google.
+                                BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
                             </p>
                         </div>
                         <div className="setting-control">
@@ -126,7 +126,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Custom List Function</h3>
                             <p>
-                                This is a work-in-progress feature. Your lists are stored in your browser and could be lost easily.
+                                BETA - Create custom lists of songs, with the abilty to build from custom filters. Maximum 150 songs per list. Your lists are currently stored in your browser and could be lost easily.
                             </p>
                         </div>
                         <div className="setting-control">
