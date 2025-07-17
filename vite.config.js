@@ -19,6 +19,25 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,webmanifest,sm,ssc}'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/sm\/.*\.(sm|ssc)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'simfiles-cache',
+              expiration: {
+                maxEntries: 2000,
+              },
+            },
+          },
+          {
+            urlPattern: /\/(sm-files|song-meta|course-data|dan-data|vega-data)\.json$/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'json-cache',
+            },
+          },
+        ],
       },
       manifest: {
         name: 'DDR Toolkit',
