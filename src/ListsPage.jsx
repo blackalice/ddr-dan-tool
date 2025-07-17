@@ -3,14 +3,14 @@ import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPalette, faPlus, faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPalette, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import CreateListModal from './components/CreateListModal.jsx';
 import EditChartModal from './components/EditChartModal.jsx';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart, showEdit, showDelete, highlightKey }) => {
+const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart, highlightKey }) => {
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
@@ -20,6 +20,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   });
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
+  const [showActions, setShowActions] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
@@ -62,6 +63,13 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
           <button onClick={handleDelete} className="delete-list-button">
             <FontAwesomeIcon icon={faTrash} />
           </button>
+          <button
+            className={`edit-charts-button${showActions ? ' active' : ''}`}
+            onClick={() => setShowActions(prev => !prev)}
+            title="Edit charts"
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </button>
           {isEditing ? (
             <input
               className="list-name-input"
@@ -88,8 +96,8 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
                 key={idx}
                 song={chart}
                 resetFilters={resetFilters}
-                onRemove={showDelete ? () => removeChart(group.name, chart) : undefined}
-                onEdit={showEdit ? () => onEditChart(group.name, chart) : undefined}
+                onRemove={showActions ? () => removeChart(group.name, chart) : undefined}
+                onEdit={showActions ? () => onEditChart(group.name, chart) : undefined}
                 highlight={highlightKey === key}
               />
             );
@@ -119,8 +127,6 @@ const ListsPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [songMeta, setSongMeta] = useState([]);
   const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
-  const [editMode, setEditMode] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
   const [highlightKey, setHighlightKey] = useState(null);
 
   useEffect(() => {
@@ -183,20 +189,6 @@ const ListsPage = () => {
             >
               <FontAwesomeIcon icon={faPlus} />
             </button>
-            <button
-              className={`filter-button ${editMode ? 'active' : ''}`}
-              onClick={() => setEditMode(prev => !prev)}
-              title="Toggle edit mode"
-            >
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-            <button
-              className={`filter-button ${deleteMode ? 'active' : ''}`}
-              onClick={() => setDeleteMode(prev => !prev)}
-              title="Toggle delete mode"
-            >
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
           </div>
         </div>
         {groupsToShow.map(g => (
@@ -209,8 +201,6 @@ const ListsPage = () => {
             updateName={updateGroupName}
             resetFilters={resetFilters}
             onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
-            showEdit={editMode}
-            showDelete={deleteMode}
             highlightKey={highlightKey}
           />
         ))}
