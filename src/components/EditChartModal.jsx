@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './AddToListModal.module.css';
 
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   const [selected, setSelected] = useState(chart?.difficulty || '');
+  const scrollRef = useRef(0);
 
   useEffect(() => {
-    if (isOpen) {
-      setSelected(chart?.difficulty || '');
-      const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${sbWidth}px`;
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-    }
+    if (!isOpen) return;
+    setSelected(chart?.difficulty || '');
+    scrollRef.current = window.scrollY;
+    const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollRef.current}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.paddingRight = `${sbWidth}px`;
     return () => {
+      const y = scrollRef.current;
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.paddingRight = '';
+      window.scrollTo(0, y);
     };
   }, [isOpen, chart]);
 
