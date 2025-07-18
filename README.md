@@ -74,3 +74,14 @@ You will need [Node.js](https://nodejs.org/en/) installed on your machine.
     ```
 
 The application will now be running locally, typically at `http://localhost:5173`.
+
+## Database Setup
+
+This project includes a sample `wrangler.toml` configured for a Cloudflare D1 database.
+After creating the database, run the schema using:
+
+```sh
+wrangler d1 execute ddr-toolkit --file=./schema.sql
+```
+
+Replace `ddr-toolkit` with your database name if different. This command will create the `users` table defined in `schema.sql`.
