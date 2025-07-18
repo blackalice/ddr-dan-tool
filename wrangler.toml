@@ -7,4 +7,4 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "ddr-toolkit"
 # Reference the secret using a placeholder
-database_id = "${DATABASE_ID}"
+database_id = "e462e8e5-78fa-475b-b046-736a4ec94fdd"
