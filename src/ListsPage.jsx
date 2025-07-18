@@ -11,20 +11,10 @@ import './VegaPage.css';
 import './ListsPage.css';
 
 const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart, highlightKey }) => {
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
-    } catch {
-      return false;
-    }
-  });
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showActions, setShowActions] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
-  }, [isCollapsed, group.name]);
 
   useEffect(() => {
     setName(group.name);
@@ -32,17 +22,14 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
 
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete the list "${group.name}"?`)) {
-      deleteGroup(group.name);
+      deleteGroup(group.id);
     }
   };
 
   const saveName = () => {
     const newName = name.trim();
     if (newName && newName !== group.name) {
-      const success = updateName(group.name, newName);
-      if (!success) {
-        setName(group.name);
-      }
+      updateName(group.id, newName);
     }
     setIsEditing(false);
   };
@@ -56,7 +43,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
             <input
               type="color"
               value={group.color}
-              onChange={(e) => updateColor(group.name, e.target.value)}
+              onChange={(e) => updateColor(group.id, e.target.value)}
               className="color-picker"
             />
           </label>
@@ -90,14 +77,14 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
       {!isCollapsed && (
         <div className="song-grid">
           {group.charts.map((chart, idx) => {
-            const key = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
+            const key = `${group.id}-${chart.title}-${chart.mode}-${chart.difficulty}`;
             return (
               <SongCard
                 key={idx}
                 song={chart}
                 resetFilters={resetFilters}
-                onRemove={showActions ? () => removeChart(group.name, chart) : undefined}
-                onEdit={showActions ? () => onEditChart(group.name, chart) : undefined}
+                onRemove={showActions ? () => removeChart(group.id, chart) : undefined}
+                onEdit={showActions ? () => onEditChart(group.id, chart) : undefined}
                 highlight={highlightKey === key}
               />
             );
@@ -126,7 +113,7 @@ const ListsPage = () => {
   const { resetFilters } = useFilters();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [songMeta, setSongMeta] = useState([]);
-  const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
+  const [editInfo, setEditInfo] = useState(null); // { groupId, chart }
   const [highlightKey, setHighlightKey] = useState(null);
 
   useEffect(() => {
@@ -144,8 +131,8 @@ const ListsPage = () => {
 
   const handleEditSave = (newDiff) => {
     if (editInfo) {
-      updateChartDifficulty(editInfo.groupName, editInfo.chart, newDiff);
-      const key = `${editInfo.groupName}-${editInfo.chart.title}-${editInfo.chart.mode}-${newDiff.difficulty.toLowerCase()}`;
+      updateChartDifficulty(editInfo.groupId, editInfo.chart, newDiff);
+      const key = `${editInfo.groupId}-${editInfo.chart.title}-${editInfo.chart.mode}-${newDiff.difficulty.toLowerCase()}`;
       setHighlightKey(key);
       setTimeout(() => setHighlightKey(null), 1500);
     }
@@ -176,7 +163,7 @@ const ListsPage = () => {
               >
                 <option value="All">All Lists</option>
                 {groups.map(g => (
-                  <option key={g.name} value={g.name}>
+                  <option key={g.id} value={g.name}>
                     {g.name}
                   </option>
                 ))}
@@ -193,14 +180,14 @@ const ListsPage = () => {
         </div>
         {groupsToShow.map(g => (
           <GroupSection
-            key={g.name}
+            key={g.id}
             group={g}
             removeChart={removeChartFromGroup}
             deleteGroup={deleteGroup}
             updateColor={updateGroupColor}
             updateName={updateGroupName}
             resetFilters={resetFilters}
-            onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
+            onEditChart={(groupId, chart) => setEditInfo({ groupId, chart })}
             highlightKey={highlightKey}
           />
         ))}

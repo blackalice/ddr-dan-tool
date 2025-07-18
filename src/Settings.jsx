@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { AuthContext } from './contexts/AuthContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import ThemeSwitcher from './components/ThemeSwitcher';
@@ -17,12 +19,28 @@ const Settings = () => {
         setShowLists,
         songlistOverride,
         setSonglistOverride,
+        saveSettings,
     } = useContext(SettingsContext);
+    const { logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
 
-    const handleSaveKey = () => {
+    const handleSave = () => {
         setApiKey(newApiKey);
+        saveSettings({
+            apiKey: newApiKey,
+            targetBPM,
+            multiplierMode,
+            showLists,
+            songlistOverride,
+        });
+        alert('Settings saved!');
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
     };
 
     return (
@@ -118,7 +136,6 @@ const Settings = () => {
                                 placeholder="Enter your Google AI API Key"
                                 className="settings-input"
                             />
-                            <button onClick={handleSaveKey} className="settings-button">Save</button>
                         </div>
                     </div>
 
@@ -143,11 +160,26 @@ const Settings = () => {
 
                     <div className="setting-card">
                         <div className="setting-text">
+                            <h3>Logout</h3>
+                            <p>
+                                Log out of your account. You will be returned to the login page.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <button onClick={handleLogout} className="settings-button">Logout</button>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
                             <h3>About</h3>
                             <p>
                                Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. <br></br><br></br>Crafted with an organic blend of Gemini 2.5 Pro via GeminiCLI and ChatGPT Codex (with a sprinkle of ChatGPT 4o for initial planning). Human intelligence used sparingly. <br></br><br></br> Always remember to wear deoderant when playing DDR, and clean up after you've used the bathroom. <br></br><br></br> This tool is not affiliated with Konami or any other company. It is a fan-made project for educational purposes only.
                             </p>
                         </div>
+                    </div>
+                    <div className="save-button-container">
+                        <button onClick={handleSave} className="settings-button save-button">Save Settings</button>
                     </div>
                 </div>
             </div>

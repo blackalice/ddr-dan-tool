@@ -26,11 +26,16 @@ export const onRequestPost = async ({ request, env }) => {
       return new Response('User exists', { status: 409, headers: corsHeaders });
     }
     const hashed = await bcrypt.hash(password, 10);
-    const result = await env.DB.prepare(
-      'INSERT INTO users (email, hashed_password) VALUES (?, ?)'
-    ).bind(email, hashed).run();
-    const userId = result.lastRowId;
-    const token = jwt.sign({ id: userId, email }, env.JWT_SECRET, { expiresIn: '7d' });
+    await env.DB.prepare(
+      'INSERT INTO users (email, hashed_password, settings) VALUES (?, ?, ?)'
+    ).bind(email, hashed, '{}').run();
+
+    const newUser = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
+    if (!newUser) {
+      return new Response('Failed to create user', { status: 500, headers: corsHeaders });
+    }
+
+    const token = jwt.sign({ id: newUser.id, email }, env.JWT_SECRET, { expiresIn: '7d' });
     return new Response(JSON.stringify({ token }), {
       status: 201,
       headers: {
@@ -39,7 +44,8 @@ export const onRequestPost = async ({ request, env }) => {
         ...corsHeaders
       }
     });
-  } catch {
+  } catch (err) {
+    console.error('Registration Error:', err);
     return new Response('Server error', { status: 500, headers: corsHeaders });
   }
 };

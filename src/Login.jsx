@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Settings.css';
@@ -12,6 +12,19 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Clear user-specific settings whenever the login page is shown
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('authUser');
+    localStorage.removeItem('targetBPM');
+    localStorage.removeItem('multiplierMode');
+    localStorage.removeItem('theme');
+    localStorage.removeItem('playStyle');
+    localStorage.removeItem('showLists');
+    localStorage.removeItem('songlistOverride');
+    sessionStorage.removeItem('geminiApiKey');
+  }, []);
 
   const applySettings = (data) => {
     if (data.targetBPM !== undefined) settingsCtx.setTargetBPM(data.targetBPM);
@@ -76,7 +89,7 @@ const Login = () => {
           {error && <div className="setting-text" style={{color:'red'}}>{error}</div>}
           <button type="submit" className="settings-button">Login</button>
           <p style={{textAlign:'center',marginTop:'1rem'}}>
-            Need an account? <a href="/register">Register</a>
+            Need an account? <Link to="/register">Register</Link>
           </p>
         </form>
       </div>

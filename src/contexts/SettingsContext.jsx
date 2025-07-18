@@ -9,37 +9,23 @@ export const SettingsContext = createContext();
 export const SettingsProvider = ({ children }) => {
     const { token } = useContext(AuthContext);
 
-    const [targetBPM, setTargetBPM] = useState(() => {
-        const saved = localStorage.getItem('targetBPM');
-        return saved ? parseInt(saved, 10) : 300;
-    });
+    const defaultState = {
+        targetBPM: 300,
+        apiKey: '',
+        multiplierMode: MULTIPLIER_MODES.A_A3,
+        theme: 'dark',
+        playStyle: 'single',
+        songlistOverride: SONGLIST_OVERRIDE_OPTIONS[0].value,
+        showLists: false,
+    };
 
-    const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
-
-    const [multiplierMode, setMultiplierMode] = useState(() => {
-        const saved = localStorage.getItem('multiplierMode');
-        return saved || MULTIPLIER_MODES.A_A3;
-    });
-
-    const [theme, setTheme] = useState(() => {
-        const saved = localStorage.getItem('theme');
-        return saved || 'dark';
-    });
-
-    const [playStyle, setPlayStyle] = useState(() => {
-        const saved = localStorage.getItem('playStyle');
-        return saved || 'single';
-    });
-
-    const [songlistOverride, setSonglistOverride] = useState(() => {
-        const saved = localStorage.getItem('songlistOverride');
-        return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
-    });
-
-    const [showLists, setShowLists] = useState(() => {
-        const saved = localStorage.getItem('showLists');
-        return saved ? JSON.parse(saved) : false;
-    });
+    const [targetBPM, setTargetBPM] = useState(defaultState.targetBPM);
+    const [apiKey, setApiKey] = useState(defaultState.apiKey);
+    const [multiplierMode, setMultiplierMode] = useState(defaultState.multiplierMode);
+    const [theme, setTheme] = useState(defaultState.theme);
+    const [playStyle, setPlayStyle] = useState(defaultState.playStyle);
+    const [songlistOverride, setSonglistOverride] = useState(defaultState.songlistOverride);
+    const [showLists, setShowLists] = useState(defaultState.showLists);
 
     const applySettings = (data) => {
         if (data.targetBPM !== undefined) setTargetBPM(data.targetBPM);
@@ -51,18 +37,18 @@ export const SettingsProvider = ({ children }) => {
         if (data.apiKey) setApiKey(data.apiKey);
     };
 
-    const saveSettings = async (updated = {}) => {
+    const resetSettings = () => {
+        setTargetBPM(defaultState.targetBPM);
+        setApiKey(defaultState.apiKey);
+        setMultiplierMode(defaultState.multiplierMode);
+        setTheme(defaultState.theme);
+        setPlayStyle(defaultState.playStyle);
+        setSonglistOverride(defaultState.songlistOverride);
+        setShowLists(defaultState.showLists);
+    };
+
+    const saveSettings = async (settingsToSave) => {
         if (!token) return;
-        const settings = {
-            targetBPM,
-            apiKey,
-            multiplierMode,
-            theme,
-            playStyle,
-            showLists,
-            songlistOverride,
-            ...updated,
-        };
         try {
             await fetch('/api/settings', {
                 method: 'PUT',
@@ -70,7 +56,7 @@ export const SettingsProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(settings),
+                body: JSON.stringify(settingsToSave),
             });
         } catch (err) {
             console.error('Failed to save settings', err);
@@ -78,14 +64,19 @@ export const SettingsProvider = ({ children }) => {
     };
 
     const loadSettings = async () => {
-        if (!token) return;
+        if (!token) {
+            resetSettings();
+            return;
+        }
         try {
             const res = await fetch('/api/settings', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (res.ok) {
                 const data = await res.json();
-                applySettings(data);
+                if (Object.keys(data).length > 0) {
+                    applySettings(data);
+                }
             }
         } catch (err) {
             console.error('Failed to load settings', err);
@@ -93,44 +84,14 @@ export const SettingsProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        loadSettings();
+        if (token) {
+            loadSettings();
+        }
     }, [token]);
 
     useEffect(() => {
-        localStorage.setItem('targetBPM', targetBPM);
-        saveSettings({ targetBPM });
-    }, [targetBPM]);
-
-    useEffect(() => {
-        sessionStorage.setItem('geminiApiKey', apiKey);
-        saveSettings({ apiKey });
-    }, [apiKey]);
-
-    useEffect(() => {
-        localStorage.setItem('multiplierMode', multiplierMode);
-        saveSettings({ multiplierMode });
-    }, [multiplierMode]);
-
-    useEffect(() => {
-        localStorage.setItem('theme', theme);
         document.documentElement.setAttribute('data-theme', theme);
-        saveSettings({ theme });
     }, [theme]);
-
-    useEffect(() => {
-        localStorage.setItem('playStyle', playStyle);
-        saveSettings({ playStyle });
-    }, [playStyle]);
-
-    useEffect(() => {
-        localStorage.setItem('showLists', JSON.stringify(showLists));
-        saveSettings({ showLists });
-    }, [showLists]);
-
-    useEffect(() => {
-        localStorage.setItem('songlistOverride', songlistOverride);
-        saveSettings({ songlistOverride });
-    }, [songlistOverride]);
 
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
@@ -151,7 +112,6 @@ export const SettingsProvider = ({ children }) => {
         songlistOverride,
         setSonglistOverride,
         saveSettings,
-        loadSettings,
     };
 
     return (

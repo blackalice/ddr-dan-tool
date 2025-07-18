@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 export const AuthContext = createContext();
 
@@ -33,6 +33,13 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('authUser');
+    localStorage.removeItem('targetBPM');
+    localStorage.removeItem('multiplierMode');
+    localStorage.removeItem('theme');
+    localStorage.removeItem('playStyle');
+    localStorage.removeItem('showLists');
+    localStorage.removeItem('songlistOverride');
+    sessionStorage.removeItem('geminiApiKey');
   };
 
   const value = {
@@ -45,4 +52,6 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+export const useAuth = () => useContext(AuthContext);
 

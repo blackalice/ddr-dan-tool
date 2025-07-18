@@ -1,0 +1,19 @@
+# This is an example file. Copy it to wrangler.toml for local development.
+# DO NOT COMMIT wrangler.toml to version control.
+
+name = "ddr-dan-tool"
+compatibility_date = "2025-06-29"
+compatibility_flags = ["nodejs_compat"]
+
+# For local development, you can define your secrets here.
+# In production, these are set in the Cloudflare Pages dashboard.
+[vars]
+JWT_SECRET = "a-super-secret-local-dev-string"
+
+# For local development, this points to your local D1 instance.
+# In production, this binding is configured in the Cloudflare Pages dashboard.
+[[d1_databases]]
+binding = "DB"
+database_name = "ddr-toolkit"
+database_id = "e462e8e5-78fa-475b-b046-736a4ec94fdd"
+migrations_dir = "migrations"

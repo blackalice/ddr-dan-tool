@@ -570,11 +570,26 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }
 
-    const saveChartToGroup = (name) => {
-        if (!simfileData || !currentChart) return;
-        if (!groups.some(g => g.name === name)) {
-            createGroup(name);
+    const saveChartToGroup = async (name) => {
+        console.log(`Attempting to save chart to list: ${name}`);
+        if (!simfileData || !currentChart) {
+            console.error("No song or chart selected.");
+            return;
         }
+        
+        let group = groups.find(g => g.name === name);
+        console.log("Found group:", group);
+        
+        if (!group) {
+            console.log("Group not found, creating new one...");
+            group = await createGroup(name);
+            if (!group) {
+                console.error("Failed to create new group.");
+                return; 
+            }
+            console.log("Created new group:", group);
+        }
+
         const chart = {
             title: simfileData.title.titleName,
             level: currentChart.feet,
@@ -583,7 +598,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             mode: currentChart.mode,
             game: simfileData.mix.mixName
         };
-        addChartToGroup(name, chart);
+        console.log("Chart to add:", chart);
+        console.log(`Calling addChartToGroup with groupId: ${group.id}`);
+        addChartToGroup(group.id, chart);
     };
 
     const handleAddToList = () => {
