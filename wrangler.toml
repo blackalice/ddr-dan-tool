@@ -6,5 +6,5 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "ddr-toolkit"
-# Set this to your D1 database ID
-database_id = "e462e8e5-78fa-475b-b046-736a4ec94fdd"
+# Reference the secret using a placeholder
+database_id = "${DATABASE_ID}"
