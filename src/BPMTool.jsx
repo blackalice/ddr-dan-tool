@@ -210,8 +210,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }, [location.state?.fromSongCard]);
 
+    const BASE = import.meta.env.BASE_URL
+
     useEffect(() => {
-        fetch('/song-meta.json')
+        fetch(`${BASE}song-meta.json`)
             .then(res => res.json())
             .then(setSongMeta)
             .catch(err => console.error('Failed to load song meta:', err));
