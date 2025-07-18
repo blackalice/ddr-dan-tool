@@ -1,0 +1,3 @@
+name = "ddr-dan-tool"
+compatibility_date = "2025-06-29"
+compatibility_flags = ["nodejs_compat"]
