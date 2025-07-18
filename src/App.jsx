@@ -7,15 +7,18 @@ import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
+import { AuthProvider, AuthContext } from './contexts/AuthContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
 import ListsPage from './ListsPage.jsx';
+import Login from './Login.jsx';
 import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
   const { theme, showLists, setPlayStyle, songlistOverride } = useContext(SettingsContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -142,13 +145,20 @@ function AppRoutes() {
       <div className="app-container">
         <div className="app-content">
           <Routes>
-            <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
-            <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
-          <Route path="/multiplier" element={<Multiplier />} />
-          {showLists && <Route path="/lists" element={<ListsPage />} />}
-          <Route path="/" element={<Navigate to="/bpm" replace />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/login" element={isAuthenticated ? <Navigate to="/bpm" replace /> : <Login />} />
+            {isAuthenticated ? (
+              <>
+                <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+                <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
+                <Route path="/multiplier" element={<Multiplier />} />
+                {showLists && <Route path="/lists" element={<ListsPage />} />}
+                <Route path="/" element={<Navigate to="/bpm" replace />} />
+                <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+                <Route path="/settings" element={<Settings />} />
+              </>
+            ) : (
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            )}
           </Routes>
         </div>
         <footer className="footer">
@@ -161,15 +171,17 @@ function AppRoutes() {
 
 function AppWrapper() {
   return (
-    <SettingsProvider>
-      <FilterProvider>
-        <GroupsProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </GroupsProvider>
-      </FilterProvider>
-    </SettingsProvider>
+    <AuthProvider>
+      <SettingsProvider>
+        <FilterProvider>
+          <GroupsProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </GroupsProvider>
+        </FilterProvider>
+      </SettingsProvider>
+    </AuthProvider>
   );
 }
 
