@@ -85,3 +85,19 @@ wrangler d1 execute ddr-toolkit --file=./schema.sql
 ```
 
 Replace `ddr-toolkit` with your database name if different. This command will create the `users` table defined in `schema.sql`.
+
+## Cloudflare Deployment
+
+1. **Create a D1 database** in your Cloudflare account and note the ID and name.
+   Update `wrangler.toml` with these values under the `[[d1_databases]]` block.
+2. **Set the JWT secret** used for signing tokens:
+   ```sh
+   wrangler secret put JWT_SECRET
+   ```
+   Choose a long random value when prompted.
+3. **Apply the schema** to the new database:
+   ```sh
+   wrangler d1 execute <your-db-name> --file=./schema.sql
+   ```
+4. Deploy the project with `wrangler deploy`.
+

@@ -1,43 +1,38 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext.jsx';
-import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Settings.css';
 
-const Login = () => {
+const Register = () => {
   const { login } = useContext(AuthContext);
-  const settingsCtx = useContext(SettingsContext);
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [error, setError] = useState(null);
-
-  const applySettings = (data) => {
-    if (data.targetBPM !== undefined) settingsCtx.setTargetBPM(data.targetBPM);
-    if (data.multiplierMode) settingsCtx.setMultiplierMode(data.multiplierMode);
-    if (data.theme) settingsCtx.setTheme(data.theme);
-    if (data.playStyle) settingsCtx.setPlayStyle(data.playStyle);
-    if (data.showLists !== undefined) settingsCtx.setShowLists(data.showLists);
-    if (data.songlistOverride) settingsCtx.setSonglistOverride(data.songlistOverride);
-    if (data.apiKey) settingsCtx.setApiKey(data.apiKey);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    if (password !== confirm) {
+      setError('Passwords do not match');
+      return;
+    }
     try {
-      const token = await login(email, password);
-      const res = await fetch('/api/settings', {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        applySettings(data);
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(msg);
       }
+      await res.json();
+      await login(email, password); // sets token and user
       navigate('/bpm');
-    } catch {
-      setError('Invalid credentials');
+    } catch (err) {
+      setError(err.message || 'Registration failed');
     }
   };
 
@@ -70,19 +65,31 @@ const Login = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
+                minLength={8}
+              />
+            </div>
+          </div>
+          <div className="setting-card">
+            <div className="setting-text">
+              <h3>Confirm Password</h3>
+            </div>
+            <div className="setting-control">
+              <input
+                type="password"
+                className="settings-input"
+                value={confirm}
+                onChange={e => setConfirm(e.target.value)}
+                required
+                minLength={8}
               />
             </div>
           </div>
           {error && <div className="setting-text" style={{color:'red'}}>{error}</div>}
-          <button type="submit" className="settings-button">Login</button>
-          <p style={{textAlign:'center',marginTop:'1rem'}}>
-            Need an account? <a href="/register">Register</a>
-          </p>
+          <button type="submit" className="settings-button">Register</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Login;
-
+export default Register;
