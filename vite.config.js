@@ -7,4 +7,16 @@ export default defineConfig({
     react(),
     // PWA plugin removed due to caching issues
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1024,
+  },
 })
