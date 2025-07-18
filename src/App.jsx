@@ -13,6 +13,7 @@ import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
 import ListsPage from './ListsPage.jsx';
 import Login from './Login.jsx';
+import Register from './Register.jsx';
 import './App.css';
 import './Tabs.css';
 
@@ -146,6 +147,7 @@ function AppRoutes() {
         <div className="app-content">
           <Routes>
             <Route path="/login" element={isAuthenticated ? <Navigate to="/bpm" replace /> : <Login />} />
+            <Route path="/register" element={isAuthenticated ? <Navigate to="/bpm" replace /> : <Register />} />
             {isAuthenticated ? (
               <>
                 <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
