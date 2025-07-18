@@ -467,6 +467,13 @@ body {
         flex-grow: 1;
         min-width: 150px;
     }
+
+    /* Keep open section headers visible while scrolling */
+    .dan-header:not(.is-collapsed) {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
 }
 
 .difficulty-beginner { background-color: var(--difficulty-beginner-color); }
