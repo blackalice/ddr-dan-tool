@@ -1,8 +1,8 @@
-[[d1_databases]]
-binding = "DB"
-database_name = "ddr-toolkit"
-
 name = "ddr-dan-tool"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-06-01"
 compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ddr-toolkit"
