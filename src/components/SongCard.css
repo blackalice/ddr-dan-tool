@@ -112,10 +112,12 @@
   border-radius: 0.25rem;
   padding: 0.25rem;
   cursor: pointer;
+  height:32px;
+  width:32px;
 }
 .song-card-action.edit {
   background-color: var(--difficulty-edit-color);
-  right: 2rem;
+  right: 3rem;
 }
 .song-card-action.remove {
   background-color: var(--button-down-color);

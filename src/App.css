@@ -436,6 +436,13 @@ body {
   }
 }
 
+    .dan-header:not(.is-collapsed) {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      
+    }
+
 
 
 /* --- Footer --- */
