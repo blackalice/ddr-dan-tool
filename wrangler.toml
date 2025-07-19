@@ -1,10 +1,10 @@
 name = "ddr-toolkit"
-main = "worker.js"           # keep whatever entry you’re actually using
+main = "worker.js"
 compatibility_date = "2024-05-01"
 
 [assets]
-directory = "./dist"         # folder you want served
-binding   = "ASSETS"         # this creates env.ASSETS
+directory = "./dist"
+binding   = "ASSETS"
 
 [build]
 command = "npm run build"
