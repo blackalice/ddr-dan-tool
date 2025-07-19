@@ -301,6 +301,10 @@
     gap: 0.5rem;
 }
 
+.difficulty-meters-container.ranked .difficulty-meter {
+    width: 60px;
+}
+
 .difficulty-meter {
     padding: 0.3rem 0.5rem;
     width: 40px;

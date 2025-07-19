@@ -109,7 +109,7 @@ const SongInfoBar = ({
         <div className="details-grid bpm-tool-grid">
           <div className={`grid-item difficulty-container ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
               <span className="difficulty-label">Difficulty:</span>
-              <div className="difficulty-meters-container">
+              <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
                 {renderDifficulties(playStyle)}
               </div>
           </div>
