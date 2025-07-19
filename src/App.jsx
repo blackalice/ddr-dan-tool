@@ -118,7 +118,6 @@ function AppRoutes() {
       return;
     }
     resetFilters();
-    handleSongSelect(null);
   }, [songlistOverride]);
 
   const handleChartSelect = (chart) => {

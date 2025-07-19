@@ -85,7 +85,7 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
 
   useEffect(() => {
     setActiveDan('All');
-  }, [playStyle, setActiveDan]);
+  }, [playStyle]);
 
   return (
     <>
