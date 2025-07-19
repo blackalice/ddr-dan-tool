@@ -15,7 +15,7 @@ import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
-  const { theme, showLists, setPlayStyle, songlistOverride } = useContext(SettingsContext);
+  const { theme, showLists, playStyle, setPlayStyle, songlistOverride } = useContext(SettingsContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -78,17 +78,51 @@ function AppRoutes() {
         if (data && data.availableTypes.length > 0) {
           let chartToSelect = null;
           if (difficulty && mode) {
-            chartToSelect = data.availableTypes.find(c => c.difficulty.toLowerCase() === difficulty.toLowerCase() && c.mode.toLowerCase() === mode.toLowerCase());
+            chartToSelect = data.availableTypes.find(
+              c => c.difficulty.toLowerCase() === difficulty.toLowerCase() &&
+                   c.mode.toLowerCase() === mode.toLowerCase()
+            );
           }
-          
+
           if (!chartToSelect) {
-            const defaultDifficultyOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
-            for (const d of defaultDifficultyOrder) {
-                chartToSelect = data.availableTypes.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-                if (chartToSelect) break;
+            if (difficulty && !mode) {
+              chartToSelect = data.availableTypes.find(
+                c => c.difficulty.toLowerCase() === difficulty.toLowerCase() &&
+                     c.mode.toLowerCase() === playStyle.toLowerCase()
+              );
             }
+          }
+
+          if (!chartToSelect) {
+            const defaultDifficultyOrder = [
+              'Expert',
+              'Hard',
+              'Heavy',
+              'Challenge',
+              'Difficult',
+              'Standard',
+              'Medium',
+              'Basic',
+              'Easy',
+              'Light',
+              'Beginner',
+            ];
+
+            const chartsToSearch = !mode
+              ? data.availableTypes.filter(
+                  c => c.mode.toLowerCase() === playStyle.toLowerCase()
+                )
+              : data.availableTypes;
+
+            for (const d of defaultDifficultyOrder) {
+              chartToSelect = chartsToSearch.find(
+                c => c.difficulty.toLowerCase() === d.toLowerCase()
+              );
+              if (chartToSelect) break;
+            }
+
             if (!chartToSelect) {
-                chartToSelect = data.availableTypes[0];
+              chartToSelect = chartsToSearch[0] || data.availableTypes[0];
             }
           }
           setCurrentChart(chartToSelect);
@@ -106,7 +140,7 @@ function AppRoutes() {
 
   const handleSongSelect = (song) => {
     if (song) {
-      navigate(`/bpm#${encodeURIComponent(song.title)}`);
+      navigate(`/bpm?mode=${playStyle}#${encodeURIComponent(song.title)}`);
     } else {
       navigate('/bpm');
     }
