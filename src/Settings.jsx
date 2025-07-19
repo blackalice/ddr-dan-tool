@@ -15,6 +15,8 @@ const Settings = () => {
         setMultiplierMode,
         showLists,
         setShowLists,
+        showRankedRatings,
+        setShowRankedRatings,
         songlistOverride,
         setSonglistOverride,
     } = useContext(SettingsContext);
@@ -133,6 +135,25 @@ const Settings = () => {
                             <select
                                 value={showLists ? 'Enable' : 'Disable'}
                                 onChange={(e) => setShowLists(e.target.value === 'Enable')}
+                                className="settings-select"
+                            >
+                                <option value="Enable">Enable</option>
+                                <option value="Disable">Disable</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Show Ranked Ratings</h3>
+                            <p>
+                                Display decimal ranked ratings instead of the standard foot level.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={showRankedRatings ? 'Enable' : 'Disable'}
+                                onChange={(e) => setShowRankedRatings(e.target.value === 'Enable')}
                                 className="settings-select"
                             >
                                 <option value="Enable">Enable</option>

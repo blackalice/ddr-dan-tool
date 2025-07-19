@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StepchartSection } from './StepchartSection';
 import { parseSm } from '../utils/smParser';
+import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import './StepchartViewer.css';
 
 const StepchartViewer = ({ smFileUrl }) => {
@@ -8,6 +9,7 @@ const StepchartViewer = ({ smFileUrl }) => {
   const [error, setError] = useState(null);
   const [selectedChart, setSelectedChart] = useState(null);
   const [selectedChartKey, setSelectedChartKey] = useState(null);
+  const { showRankedRatings } = useContext(SettingsContext);
 
   useEffect(() => {
     const loadChart = async () => {
@@ -91,7 +93,7 @@ const StepchartViewer = ({ smFileUrl }) => {
       <select onChange={handleChartChange} value={selectedChartKey || ''}>
         {simfile.availableTypes.map((chartType) => (
           <option key={chartType.slug} value={chartType.slug}>
-            {chartType.mode} - {chartType.difficulty} ({chartType.feet})
+            {chartType.mode} - {chartType.difficulty} ({showRankedRatings && chartType.rankedRating != null ? chartType.rankedRating.toFixed(1) : chartType.feet})
           </option>
         ))}
       </select>

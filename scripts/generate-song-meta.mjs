@@ -74,6 +74,8 @@ const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const OUTPUT_PATH = path.join(PUBLIC_DIR, 'song-meta.json');
+const SINGLE_RANKED_PATH = path.join(PUBLIC_DIR, 'single_ranked.json');
+const DOUBLE_RANKED_PATH = path.join(PUBLIC_DIR, 'doubles_ranked.json');
 
 async function readJson(p) {
   const data = await fs.readFile(p, 'utf-8');
@@ -85,9 +87,24 @@ async function readSmFile(p) {
   return parseSm(text);
 }
 
+function buildRatingMap(data, key) {
+  const map = new Map();
+  for (const entry of data) {
+    if (!map.has(entry.song_name)) map.set(entry.song_name, []);
+    map.get(entry.song_name).push(Number(entry[key]));
+  }
+  return map;
+}
+
+const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
+
 async function main() {
   try {
     const smList = await readJson(SM_FILES_PATH);
+    const singleRanked = await readJson(SINGLE_RANKED_PATH).catch(() => []);
+    const doubleRanked = await readJson(DOUBLE_RANKED_PATH).catch(() => []);
+    const singleRankMap = buildRatingMap(singleRanked, 'v10_rating');
+    const doubleRankMap = buildRatingMap(doubleRanked, 'ranked_rating');
     const results = [];
     for (const file of smList.files) {
       try {
@@ -97,7 +114,18 @@ async function main() {
         const uniqueBpms = [...new Set(allBpms)];
         const bpmMin = uniqueBpms.length ? Math.min(...uniqueBpms) : 0;
         const bpmMax = uniqueBpms.length ? Math.max(...uniqueBpms) : 0;
-        const difficulties = simfile.availableTypes.map(c => ({ mode: c.mode, difficulty: c.difficulty, feet: c.feet }));
+        const singleRatings = singleRankMap.get(simfile.title) || [];
+        const doubleRatings = doubleRankMap.get(simfile.title) || [];
+        let sIdx = 0;
+        let dIdx = 0;
+        const difficulties = simfile.availableTypes
+          .sort((a,b) => DIFF_ORDER.indexOf(a.difficulty) - DIFF_ORDER.indexOf(b.difficulty))
+          .map(c => {
+            const arr = c.mode === 'single' ? singleRatings : doubleRatings;
+            const idx = c.mode === 'single' ? sIdx++ : dIdx++;
+            const rating = arr[idx];
+            return { mode: c.mode, difficulty: c.difficulty, feet: c.feet, rankedRating: rating };
+          });
         const game = file.path.split('/')[1] || 'Unknown';
 
         const chartKeys = Object.keys(simfile.charts);

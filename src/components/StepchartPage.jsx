@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 
 import { ToggleBar } from "./ToggleBar";
 import { StepchartSection } from "./StepchartSection";
 import { DifficultyMeter } from './DifficultyMeter';
+import { SettingsContext } from '../contexts/SettingsContext.jsx';
 
 import styles from "./StepchartPage.module.css";
 import "../BPMTool.css";
@@ -35,6 +36,7 @@ export function StepchartPage({
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const isLoading = !simfile;
+  const { showRankedRatings } = useContext(SettingsContext);
 
   useEffect(() => {
     setCurrentType(initialCurrentType);
@@ -102,7 +104,7 @@ export function StepchartPage({
 
 
   const title = currentTypeMeta
-    ? `${displaySimfile.title.translitTitleName || displaySimfile.title.titleName} - ${currentType.replace(/-/g, ", ")} (${currentTypeMeta.feet})`
+    ? `${displaySimfile.title.translitTitleName || displaySimfile.title.titleName} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating.toFixed(1) : currentTypeMeta.feet})`
     : displaySimfile.title.titleName;
 
 

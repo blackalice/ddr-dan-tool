@@ -89,7 +89,7 @@ export const GroupsProvider = ({ children }) => {
       ...g,
       charts: g.charts.map(c =>
         c.title === chart.title && c.mode === chart.mode && c.difficulty === chart.difficulty
-          ? { ...c, difficulty: newDiff.difficulty.toLowerCase(), level: newDiff.feet }
+          ? { ...c, difficulty: newDiff.difficulty.toLowerCase(), level: newDiff.feet, rankedRating: newDiff.rankedRating }
           : c
       )
     } : g));

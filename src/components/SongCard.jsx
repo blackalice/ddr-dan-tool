@@ -32,7 +32,7 @@ const getBpmRange = (bpm) => {
 };
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false }) => {
-  const { targetBPM, multipliers, setPlayStyle } = useContext(SettingsContext);
+  const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const navigate = useNavigate();
 
   const calculation = useMemo(() => {
@@ -112,7 +112,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false }) =
             </div>
           </div>
           <div className="song-level-container">
-              <span className="song-level">Lv.{song.level}</span>
+              <span className="song-level">Lv.{showRankedRatings && song.rankedRating ? song.rankedRating.toFixed(1) : song.level}</span>
               {difficultyInfo && (
                    <span 
                       className="difficulty-badge"
