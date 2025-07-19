@@ -74,3 +74,14 @@ You will need [Node.js](https://nodejs.org/en/) installed on your machine.
     ```
 
 The application will now be running locally, typically at `http://localhost:5173`.
+
+## Deploying to Cloudflare Workers
+
+This project is configured for [Cloudflare Workers](https://developers.cloudflare.com/workers/).
+Install the `wrangler` CLI and run `wrangler publish` to deploy the built assets.
+
+```sh
+npm install -g wrangler
+wrangler publish
+```
+
