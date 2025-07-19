@@ -1,0 +1,12 @@
+{
+  "name": "ddr-toolkit",
+  "main": "./_worker.js",
+  "compatibility_date": "2025-06-05",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "build": {
+    "command": "npm run build"
+  }
+}
