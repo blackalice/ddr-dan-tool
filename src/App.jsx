@@ -147,8 +147,7 @@ function AppRoutes() {
             <Route path="/lists/*" element={<ListsPage />} />
             <Route path="/bpm/*" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings/*" element={<Settings />} />
-            <Route index element={<Navigate to="/bpm" replace />} />
-            <Route path="*" element={<Navigate to="/bpm" replace />} />
+
           </Routes>
         </div>
         <footer className="footer">

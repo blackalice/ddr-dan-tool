@@ -459,13 +459,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [selectedGame, smData, songMeta, filters, overrideSongs]);
 
     useEffect(() => {
-        if (!simfileData || songOptions.length === 0) return;
+        if (!simfileData || songOptions.length === 0) return; // Do nothing if no song is selected
         const currentTitle = simfileData.title.titleName;
         const isValid = songOptions.some(opt => opt.title === currentTitle);
         if (!isValid) {
+            // The current song is not in the new filtered list, so select the first available one.
             onSongSelect(songOptions[0]);
         }
-    }, [songOptions, simfileData]);
+    }, [songOptions]); // Rerun only when songOptions change
 
     useEffect(() => {
         if (!simfileData || !currentChart || !filters) return;
