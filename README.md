@@ -85,3 +85,7 @@ npm install -g wrangler
 wrangler publish
 ```
 
+If you preview the Worker in the Cloudflare dashboard, ensure the build was
+deployed with `wrangler publish` (or run `wrangler dev` locally) so the `ASSETS`
+binding is available.
+
