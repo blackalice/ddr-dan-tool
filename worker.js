@@ -19,6 +19,7 @@ export default {
     // can handle the navigation.
     if (request.method === 'GET' && !url.pathname.includes('.')) {
       const indexUrl = new URL('/index.html', url);
+      indexUrl.search = url.search;
       response = await env.ASSETS.fetch(new Request(indexUrl.toString(), request));
       if (response.status !== 404) {
         return response;
