@@ -397,6 +397,8 @@ const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
 const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
 const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
+const SINGLE_RANKED_PATH = path.join(PUBLIC_DIR, 'single_ranked.json');
+const DOUBLE_RANKED_PATH = path.join(PUBLIC_DIR, 'doubles_ranked.json');
 
 
 const readJson = async (filePath) => {
@@ -409,6 +411,15 @@ const readSmFile = async (filePath) => {
     return parseSm(content);
 };
 
+function buildRatingMap(data, key) {
+    const map = new Map();
+    for (const entry of data) {
+        if (!map.has(entry.song_name)) map.set(entry.song_name, []);
+        map.get(entry.song_name).push(Number(entry[key]));
+    }
+    return map;
+}
+
 const findSongFile = (title, smFiles) => {
     const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
     const normalizedTitle = normalize(title);
@@ -419,9 +430,11 @@ const findSongFile = (title, smFiles) => {
     );
 };
 
-const processCourseList = async (courses, smFiles) => {
+const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap) => {
     if (!courses) return [];
     const processedCourses = [];
+
+    const counters = { single: new Map(), double: new Map() };
 
     for (const course of courses) {
         const processedSongs = [];
@@ -474,6 +487,12 @@ const processCourseList = async (courses, smFiles) => {
 
             const game = songFile.path.split('/')[1] || 'N/A';
 
+            const ratingArr = chart.mode === 'single' ? singleRankMap.get(simfileData.title) || [] : doubleRankMap.get(simfileData.title) || [];
+            const key = `${simfileData.title}:${chart.mode}`;
+            const idx = counters[chart.mode].get(key) || 0;
+            const rankedRating = ratingArr[idx];
+            counters[chart.mode].set(key, idx + 1);
+
             processedSongs.push({
                 title: simfileData.title,
                 level: chart.feet,
@@ -481,6 +500,7 @@ const processCourseList = async (courses, smFiles) => {
                 difficulty: chart.difficulty,
                 mode: chart.mode,
                 game: game,
+                rankedRating,
             });
         }
         processedCourses.push({ ...course, songs: processedSongs });
@@ -494,10 +514,14 @@ async function main() {
         console.log('Starting data processing...');
         const smFiles = await readJson(SM_FILES_PATH);
         const courseData = await readJson(COURSE_DATA_PATH);
+        const singleRanked = await readJson(SINGLE_RANKED_PATH).catch(() => []);
+        const doubleRanked = await readJson(DOUBLE_RANKED_PATH).catch(() => []);
+        const singleRankMap = buildRatingMap(singleRanked, 'v10_rating');
+        const doubleRankMap = buildRatingMap(doubleRanked, 'ranked_rating');
 
         // Process Dan data
-        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles);
-        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles);
+        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap);
+        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles, singleRankMap, doubleRankMap);
         const danResult = {
             single: processedDanSingle,
             double: processedDanDouble,
@@ -509,7 +533,7 @@ async function main() {
         const vegaResult = {};
         for (const month in courseData.vega) {
             if (Object.hasOwnProperty.call(courseData.vega, month)) {
-                vegaResult[month] = await processCourseList(courseData.vega[month], smFiles);
+                vegaResult[month] = await processCourseList(courseData.vega[month], smFiles, singleRankMap, doubleRankMap);
             }
         }
         await fs.writeFile(VEGA_OUTPUT_PATH, JSON.stringify(vegaResult, null, 2));
