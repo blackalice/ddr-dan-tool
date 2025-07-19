@@ -15,7 +15,7 @@ import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
-  const { theme, showLists, setPlayStyle, songlistOverride } = useContext(SettingsContext);
+  const { theme, setPlayStyle, songlistOverride } = useContext(SettingsContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -145,10 +145,11 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier />} />
-          {showLists && <Route path="/lists" element={<ListsPage />} />}
-          <Route path="/" element={<Navigate to="/bpm" replace />} />
+          <Route path="/lists" element={<ListsPage />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
+          <Route path="/" element={<Navigate to="/bpm" replace />} />
+          <Route path="*" element={<Navigate to="/bpm" replace />} />
           </Routes>
         </div>
         <footer className="footer">
