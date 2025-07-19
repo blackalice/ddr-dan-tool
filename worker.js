@@ -1,15 +1,16 @@
 export default {
   async fetch(request, env) {
     if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+      const url = new URL(request.url);
       let response = await env.ASSETS.fetch(request);
 
-      // If the asset was not found and the path doesn't look like a file,
-      // fall back to serving the SPA entry point so client-side routing works.
-      if (
-        response.status === 404 &&
-        !new URL(request.url).pathname.includes('.')
-      ) {
-        const indexRequest = new Request(new URL('/index.html', request.url), request);
+      // Serve the SPA entry file for non-asset paths so the front-end router can
+      // handle the URL. Preserve the query string to avoid losing application
+      // state on refresh.
+      if (response.status === 404 && !url.pathname.includes('.')) {
+        const indexURL = new URL('/index.html', url.origin);
+        indexURL.search = url.search; // keep query params
+        const indexRequest = new Request(indexURL.toString(), request);
         response = await env.ASSETS.fetch(indexRequest);
       }
 
