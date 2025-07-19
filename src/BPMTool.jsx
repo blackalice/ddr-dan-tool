@@ -323,8 +323,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let data = null;
         let length = 0;
 
-        if (currentChart && simfileData.charts) {
-            const chartDetails = simfileData.charts[currentChart.slug];
+        if (currentChart && simfileWithRatings.charts) {
+            const chartDetails = simfileWithRatings.charts[currentChart.slug];
             if (chartDetails) {
                 const bpmChanges = chartDetails.bpm;
                 const lastBeat = getLastBeat(chartDetails);
@@ -347,16 +347,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
 
         return {
-            songTitle: simfileData.title.titleName,
-            artist: simfileData.artist,
-            gameVersion: simfileData.mix.mixName,
+            songTitle: simfileWithRatings.title.titleName,
+            artist: simfileWithRatings.artist,
+            gameVersion: simfileWithRatings.mix.mixName,
             difficulties: diffs,
             bpmDisplay: display,
             coreBpm: core,
             chartData: data,
             songLength: length,
         };
-    }, [simfileData, currentChart]);
+    }, [simfileWithRatings, currentChart]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;
