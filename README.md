@@ -78,14 +78,14 @@ The application will now be running locally, typically at `http://localhost:5173
 ## Deploying to Cloudflare Workers
 
 This project is configured for [Cloudflare Workers](https://developers.cloudflare.com/workers/).
-Install the `wrangler` CLI and run `wrangler publish` to deploy the built assets.
+Install the `wrangler` CLI and run `wrangler deploy` to publish the built assets.
 
 ```sh
 npm install -g wrangler
-wrangler publish
+wrangler deploy
 ```
 
 If you preview the Worker in the Cloudflare dashboard, ensure the build was
-deployed with `wrangler publish` (or run `wrangler dev` locally) so the `ASSETS`
+deployed with `wrangler deploy` (or run `wrangler dev` locally) so the `ASSETS`
 binding is available.
 
