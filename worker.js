@@ -6,14 +6,26 @@ export default {
 
     const url = new URL(request.url);
 
-    // For requests that look like SPA routes (no file extension), always serve
-    // the main index file so the front-end router can resolve the path.
-    if (request.method === 'GET' && !url.pathname.includes('.')) {
-      const indexUrl = new URL('/index.html', url);
-      return env.ASSETS.fetch(new Request(indexUrl.toString(), request));
+    // Attempt to fetch the requested asset first. If it exists, return it
+    // immediately. This allows regular files like JSON and images to resolve
+    // normally without falling back to the SPA index file.
+    let response = await env.ASSETS.fetch(request);
+    if (response.status !== 404) {
+      return response;
     }
 
-    // Otherwise treat as a normal static asset request.
-    return env.ASSETS.fetch(request);
+    // If the asset was not found and the request looks like an SPA route
+    // (no file extension), serve the main index file so the client-side router
+    // can handle the navigation.
+    if (request.method === 'GET' && !url.pathname.includes('.')) {
+      const indexUrl = new URL('/index.html', url);
+      response = await env.ASSETS.fetch(new Request(indexUrl.toString(), request));
+      if (response.status !== 404) {
+        return response;
+      }
+    }
+
+    // If everything fails, return the original response (likely a 404).
+    return response;
   },
 };
