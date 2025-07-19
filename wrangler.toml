@@ -7,3 +7,8 @@ command = "npm run build"
 
 [site]
 bucket = "./dist"
+
+
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true
