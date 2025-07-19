@@ -9,7 +9,8 @@ export default {
     // For requests that look like SPA routes (no file extension), always serve
     // the main index file so the front-end router can resolve the path.
     if (request.method === 'GET' && !url.pathname.includes('.')) {
-      return env.ASSETS.fetch(new Request('/index.html', request));
+      const indexUrl = new URL('/index.html', url);
+      return env.ASSETS.fetch(new Request(indexUrl.toString(), request));
     }
 
     // Otherwise treat as a normal static asset request.
