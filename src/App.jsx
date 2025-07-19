@@ -142,12 +142,12 @@ function AppRoutes() {
       <div className="app-container">
         <div className="app-content">
           <Routes>
-            <Route path="dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
-            <Route path="vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
-            <Route path="multiplier" element={<Multiplier />} />
-            <Route path="lists" element={<ListsPage />} />
-            <Route path="bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="dan/*" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+            <Route path="vega/*" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
+            <Route path="multiplier/*" element={<Multiplier />} />
+            <Route path="lists/*" element={<ListsPage />} />
+            <Route path="bpm/*" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+            <Route path="settings/*" element={<Settings />} />
             <Route index element={<Navigate to="bpm" replace />} />
             <Route path="*" element={<Navigate to="bpm" replace />} />
           </Routes>
