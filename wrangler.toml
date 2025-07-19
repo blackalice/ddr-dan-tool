@@ -5,6 +5,10 @@ compatibility_date = "2024-05-01"
 [build]
 command = "npm run build"
 
+[build.upload]
+format = "modules"
+
+
 [site]
 bucket = "./dist"
 
