@@ -83,9 +83,19 @@ function AppRoutes() {
           
           if (!chartToSelect) {
             const defaultDifficultyOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+            // Prioritize current play style
+            const preferredCharts = data.availableTypes.filter(c => c.mode === (mode || playStyle));
+            const otherCharts = data.availableTypes.filter(c => c.mode !== (mode || playStyle));
+
             for (const d of defaultDifficultyOrder) {
-                chartToSelect = data.availableTypes.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+                chartToSelect = preferredCharts.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
                 if (chartToSelect) break;
+            }
+            if (!chartToSelect) {
+                for (const d of defaultDifficultyOrder) {
+                    chartToSelect = otherCharts.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+                    if (chartToSelect) break;
+                }
             }
             if (!chartToSelect) {
                 chartToSelect = data.availableTypes[0];
