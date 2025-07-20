@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from 'react';
+import React, { useState, useMemo, useContext, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -169,7 +169,7 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme, showRankedRatings } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings, theme } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -208,21 +208,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     };
 
     // Store theme-dependent colors for the BPM chart
-    const [themeColors, setThemeColors] = useState(() => {
-        const style = getComputedStyle(document.documentElement);
-        const border = style.getPropertyValue('--border-color').trim();
-        return {
-            accentColor: style.getPropertyValue('--accent-color').trim(),
-            accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
-            mutedColor: style.getPropertyValue('--text-muted-color').trim(),
-            gridColor: hexToRgba(border, 0.1),
-        };
+    const [themeColors, setThemeColors] = useState({
+        accentColor: '',
+        accentColorRgb: '',
+        mutedColor: '',
+        gridColor: '',
     });
 
-    // Update colors whenever the theme changes. This runs after
-    // SettingsContext applies the data-theme attribute so the computed
-    // styles reflect the correct theme.
-    useEffect(() => {
+    const updateThemeColors = useCallback(() => {
         const style = getComputedStyle(document.documentElement);
         const border = style.getPropertyValue('--border-color').trim();
         setThemeColors({
@@ -231,7 +224,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             mutedColor: style.getPropertyValue('--text-muted-color').trim(),
             gridColor: hexToRgba(border, 0.1),
         });
-    }, [theme]);
+    }, []);
+
+    // Update colors once on mount and whenever the data-theme attribute changes
+    useEffect(() => {
+        updateThemeColors();
+        const observer = new MutationObserver(updateThemeColors);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        return () => observer.disconnect();
+    }, [updateThemeColors]);
 
     const simfileWithRatings = useMemo(() => {
         if (!simfileData) return null;
