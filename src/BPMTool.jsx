@@ -501,13 +501,18 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
         const getLevel = (meta) => {
             if (!meta) return Infinity;
-            if (diffForSort) {
-                const d = meta.difficulties.find(x => x.mode === playStyle && x.difficulty === diffForSort);
-                if (d) return showRankedRatings && d.rankedRating != null ? d.rankedRating : d.feet;
-            }
-            for (const name of DEFAULT_DIFF_ORDER) {
-                const d = meta.difficulties.find(x => x.mode === playStyle && x.difficulty.toLowerCase() === name.toLowerCase());
-                if (d) return showRankedRatings && d.rankedRating != null ? d.rankedRating : d.feet;
+            const candidates = [];
+            if (diffForSort) candidates.push(diffForSort);
+            candidates.push(...DEFAULT_DIFF_ORDER);
+
+            for (const name of candidates) {
+                const d = meta.difficulties.find(
+                    x => x.mode === playStyle && x.difficulty.toLowerCase() === name.toLowerCase()
+                );
+                if (d) {
+                    const val = showRankedRatings && d.rankedRating != null ? d.rankedRating : d.feet;
+                    return typeof val === 'string' ? parseFloat(val) : val;
+                }
             }
             return Infinity;
         };
