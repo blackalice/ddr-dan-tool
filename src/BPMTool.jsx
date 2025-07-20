@@ -166,13 +166,7 @@ const NoFocusDropdownIndicator = (props) => {
         e.stopPropagation();
 
         const input = selectRef?.current?.inputRef;
-        if (input) {
-            input.readOnly = true;
-            input.focus();
-            setTimeout(() => {
-                input.readOnly = false;
-            }, 0);
-        }
+        if (input) input.blur();
 
         setMenuIsOpen(!menuIsOpen);
     };
@@ -183,7 +177,12 @@ const NoFocusDropdownIndicator = (props) => {
         onTouchStart: toggleMenu,
     };
 
-    return <RSComponents.DropdownIndicator {...props} innerProps={innerProps} />;
+    return (
+        <RSComponents.DropdownIndicator
+            {...props}
+            innerProps={innerProps}
+        />
+    );
 };
 
 const DEFAULT_DIFF_ORDER = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
