@@ -7,6 +7,7 @@ import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
+import { UserProvider } from './contexts/UserContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
@@ -176,9 +177,11 @@ function AppWrapper() {
     <SettingsProvider>
       <FilterProvider>
         <GroupsProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
+          <UserProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </UserProvider>
         </GroupsProvider>
       </FilterProvider>
     </SettingsProvider>
