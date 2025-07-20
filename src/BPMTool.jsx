@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Select from 'react-select';
+import Select, { components as RSComponents } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
@@ -158,6 +158,21 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
+const NoFocusDropdownIndicator = (props) => {
+    const { menuIsOpen, setMenuIsOpen } = props.selectProps;
+    const onMouseDown = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setMenuIsOpen(!menuIsOpen);
+    };
+    const innerProps = {
+        ...props.innerProps,
+        onMouseDown,
+        onTouchEnd: onMouseDown,
+    };
+    return <RSComponents.DropdownIndicator {...props} innerProps={innerProps} />;
+};
+
 const DEFAULT_DIFF_ORDER = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
 
 const GAME_VERSION_ORDER = [
@@ -169,7 +184,7 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings, theme } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -183,6 +198,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [selectMenuOpen, setSelectMenuOpen] = useState(false);
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -838,9 +854,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
                                 isClearable
-                                components={{ MenuList }}
+                                components={{
+                                    MenuList,
+                                    ...(isMobile && { DropdownIndicator: NoFocusDropdownIndicator })
+                                }}
                                 inputValue={inputValue}
                                 onInputChange={setInputValue}
+                                menuIsOpen={isMobile ? selectMenuOpen : undefined}
+                                onMenuOpen={() => setSelectMenuOpen(true)}
+                                onMenuClose={() => setSelectMenuOpen(false)}
+                                setMenuIsOpen={setSelectMenuOpen}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
                                     const { titleTranslit } = data;
