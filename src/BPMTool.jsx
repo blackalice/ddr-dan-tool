@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from 'react';
+import React, { useState, useMemo, useContext, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -169,7 +169,7 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme, showRankedRatings } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -207,19 +207,32 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     };
 
-    // Recompute colors when the theme changes
-    const themeColors = useMemo(() => {
+    // Store theme-dependent colors for the BPM chart
+    const [themeColors, setThemeColors] = useState({
+        accentColor: '',
+        accentColorRgb: '',
+        mutedColor: '',
+        gridColor: '',
+    });
+
+    const updateThemeColors = useCallback(() => {
         const style = getComputedStyle(document.documentElement);
         const border = style.getPropertyValue('--border-color').trim();
-        return {
+        setThemeColors({
             accentColor: style.getPropertyValue('--accent-color').trim(),
             accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
             mutedColor: style.getPropertyValue('--text-muted-color').trim(),
             gridColor: hexToRgba(border, 0.1),
-        };
-        // `theme` is included so colors update when the user changes the theme
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [theme]);
+        });
+    }, []);
+
+    // Update colors once on mount and whenever the data-theme attribute changes
+    useEffect(() => {
+        updateThemeColors();
+        const observer = new MutationObserver(updateThemeColors);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        return () => observer.disconnect();
+    }, [updateThemeColors]);
 
     const simfileWithRatings = useMemo(() => {
         if (!simfileData) return null;
