@@ -158,23 +158,32 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
-const NoFocusDropdownIndicator = (props) => {
-    const { menuIsOpen, setMenuIsOpen, selectRef } = props.selectProps;
+const MobileDropdownIndicator = (props) => {
+    const { selectRef } = props.selectProps;
 
     const toggleMenu = (e) => {
+        if (e && e.type === 'mousedown' && e.button !== 0) return;
+
         e.preventDefault();
         e.stopPropagation();
 
-        const input = selectRef?.current?.inputRef;
-        if (input) input.blur();
+        const select = selectRef?.current;
+        if (!select) return;
 
-        setMenuIsOpen(!menuIsOpen);
+        if (select.state.menuIsOpen) {
+            select.setState({ inputIsHiddenAfterUpdate: !select.props.isMulti });
+            select.onMenuClose();
+        } else {
+            select.openMenu('first');
+        }
+
+        select.blurInput();
     };
 
     const innerProps = {
         ...props.innerProps,
         onMouseDown: toggleMenu,
-        onTouchStart: toggleMenu,
+        onTouchEnd: toggleMenu,
     };
 
     return (
@@ -210,7 +219,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-    const [selectMenuOpen, setSelectMenuOpen] = useState(false);
     const selectRef = useRef(null);
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
@@ -870,14 +878,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 isClearable
                                 components={{
                                     MenuList,
-                                    ...(isMobile && { DropdownIndicator: NoFocusDropdownIndicator })
+                                    ...(isMobile && { DropdownIndicator: MobileDropdownIndicator })
                                 }}
                                 inputValue={inputValue}
                                 onInputChange={setInputValue}
-                                menuIsOpen={isMobile ? selectMenuOpen : undefined}
-                                onMenuOpen={() => setSelectMenuOpen(true)}
-                                onMenuClose={() => setSelectMenuOpen(false)}
-                                setMenuIsOpen={setSelectMenuOpen}
                                 selectRef={selectRef}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
