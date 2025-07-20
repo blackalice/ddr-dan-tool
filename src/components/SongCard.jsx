@@ -4,6 +4,7 @@ import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
+import { getBpmRange } from '../utils/bpm.js';
 
 const difficultyDisplayMap = {
     single: {
@@ -20,15 +21,6 @@ const difficultyDisplayMap = {
         expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
         challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
     }
-};
-
-const getBpmRange = (bpm) => {
-  if (typeof bpm !== 'string') return { min: 0, max: 0 };
-  const parts = bpm.split('-').map(Number);
-  if (parts.length === 1) {
-    return { min: parts[0], max: parts[0] };
-  }
-  return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, forceShowRankedRating = false }) => {
