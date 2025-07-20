@@ -15,6 +15,7 @@ import FilterModal from './components/FilterModal.jsx';
 import Camera from './Camera.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
+import SortModal from './components/SortModal.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import './BPMTool.css';
 
@@ -157,9 +158,18 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
+const DEFAULT_DIFF_ORDER = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+
+const GAME_VERSION_ORDER = [
+    'World', 'A3', 'A20 Plus', 'A20', 'A', '2014', '2013',
+    'X3 vs 2ndMix', 'X2', 'X', 'Supernova 2', 'Supernova',
+    'Extreme', '7thMix', '6thMix', '5thMix', '4thMix Plus',
+    '4thMix', '3rdMix', '2ndMix', 'DDR'
+];
+
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme, showRankedRatings } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -178,6 +188,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const [overrideSongs, setOverrideSongs] = useState(null);
+    const [sortKey, setSortKey] = useState(() => localStorage.getItem('bpmSortKey') || 'title');
+    const [sortAscending, setSortAscending] = useState(() => {
+        const saved = localStorage.getItem('bpmSortAsc');
+        return saved ? JSON.parse(saved) : true;
+    });
+    const [showSortModal, setShowSortModal] = useState(false);
 
     // Recompute colors when the theme changes
     const themeColors = useMemo(() => {
@@ -217,6 +233,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     useEffect(() => {
         localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
     }, [isCollapsed]);
+
+    useEffect(() => {
+        localStorage.setItem('bpmSortKey', sortKey);
+    }, [sortKey]);
+
+    useEffect(() => {
+        localStorage.setItem('bpmSortAsc', JSON.stringify(sortAscending));
+    }, [sortAscending]);
 
     const isLoading = !simfileData;
 
@@ -472,16 +496,62 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             return true;
         });
 
-        const options = filteredFiles
-            .map(file => ({
-                value: file.path,
-                label: file.title,
-                title: file.title,
-                titleTranslit: file.titleTranslit,
-            }))
-            .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
+        const diffForSort = filters.difficultyNames && filters.difficultyNames.length > 0 ?
+            filters.difficultyNames[0] : null;
+
+        const getLevel = (meta) => {
+            if (!meta) return Infinity;
+            if (diffForSort) {
+                const d = meta.difficulties.find(x => x.mode === playStyle && x.difficulty === diffForSort);
+                if (d) return showRankedRatings && d.rankedRating != null ? d.rankedRating : d.feet;
+            }
+            for (const name of DEFAULT_DIFF_ORDER) {
+                const d = meta.difficulties.find(x => x.mode === playStyle && x.difficulty.toLowerCase() === name.toLowerCase());
+                if (d) return showRankedRatings && d.rankedRating != null ? d.rankedRating : d.feet;
+            }
+            return Infinity;
+        };
+
+        const sorted = [...filteredFiles].sort((a, b) => {
+            const metaA = metaMap.get(a.path);
+            const metaB = metaMap.get(b.path);
+            let cmp = 0;
+            switch (sortKey) {
+                case 'artist':
+                    cmp = (metaA?.artist || '').localeCompare(metaB?.artist || '', undefined, { sensitivity: 'base' });
+                    break;
+                case 'level':
+                    cmp = getLevel(metaA) - getLevel(metaB);
+                    break;
+                case 'bpmHigh':
+                    cmp = (metaA?.bpmMax || 0) - (metaB?.bpmMax || 0);
+                    break;
+                case 'bpmLow':
+                    cmp = (metaA?.bpmMin || 0) - (metaB?.bpmMin || 0);
+                    break;
+                case 'game':
+                {
+                    const idxA = GAME_VERSION_ORDER.indexOf(metaA?.game);
+                    const idxB = GAME_VERSION_ORDER.indexOf(metaB?.game);
+                    cmp = (idxA === -1 ? GAME_VERSION_ORDER.length : idxA) - (idxB === -1 ? GAME_VERSION_ORDER.length : idxB);
+                    break;
+                }
+                case 'title':
+                default:
+                    cmp = a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
+            }
+            if (cmp === 0) cmp = a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
+            return sortAscending ? cmp : -cmp;
+        });
+
+        const options = sorted.map(file => ({
+            value: file.path,
+            label: file.title,
+            title: file.title,
+            titleTranslit: file.titleTranslit,
+        }));
         setSongOptions(options);
-    }, [selectedGame, smData, songMeta, filters, overrideSongs]);
+    }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings]);
 
     useEffect(() => {
         if (!simfileData || songOptions.length === 0) return;
@@ -725,6 +795,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
                                 <i className="fa-solid fa-filter"></i>
                             </button>
+                            <button className="filter-button" onClick={() => setShowSortModal(true)} title="Sort songs">
+                                <i className={`fa-solid ${sortAscending ? 'fa-arrow-up-wide-short' : 'fa-arrow-down-wide-short'}`}></i>
+                            </button>
                         </div>
                     </div>
                     <div className="song-search-row">
@@ -757,6 +830,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             )}
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
                                 <i className="fa-solid fa-filter"></i>
+                            </button>
+                            <button className="filter-button" onClick={() => setShowSortModal(true)} title="Sort songs">
+                                <i className={`fa-solid ${sortAscending ? 'fa-arrow-up-wide-short' : 'fa-arrow-down-wide-short'}`}></i>
                             </button>
                         </div>
                     </div>
@@ -865,6 +941,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             onClose={() => setShowAddModal(false)}
             groups={groups}
             onAdd={saveChartToGroup}
+        />
+        <SortModal
+            isOpen={showSortModal}
+            onClose={() => setShowSortModal(false)}
+            sortKey={sortKey}
+            setSortKey={setSortKey}
+            ascending={sortAscending}
+            setAscending={setSortAscending}
         />
         </>
     );
