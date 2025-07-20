@@ -159,7 +159,7 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -178,6 +178,17 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const [overrideSongs, setOverrideSongs] = useState(null);
+
+    // Recompute colors when the theme changes
+    const themeColors = useMemo(() => {
+        const style = getComputedStyle(document.documentElement);
+        return {
+            accentColor: style.getPropertyValue('--accent-color').trim(),
+            accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
+        };
+        // `theme` is included so colors update when the user changes the theme
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [theme]);
 
     const simfileWithRatings = useMemo(() => {
         if (!simfileData) return null;
@@ -783,12 +794,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                     datasets: [{
                                         label: 'BPM',
                                         data: chartData,
-                                        borderColor: `var(--accent-color)`,
-                                        backgroundColor: `rgba(var(--accent-color-rgb), 0.2)`,
+                                        borderColor: themeColors.accentColor,
+                                        backgroundColor: `rgba(${themeColors.accentColorRgb}, 0.2)`,
                                         stepped: true,
                                         fill: true,
                                         pointRadius: 4,
-                                        pointBackgroundColor: `var(--accent-color)`,
+                                        pointBackgroundColor: themeColors.accentColor,
                                         pointBorderColor: '#fff',
                                         pointHoverRadius: 7,
                                         borderWidth: 2.5
