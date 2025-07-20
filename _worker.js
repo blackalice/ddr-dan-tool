@@ -11,15 +11,15 @@ const initDB = async (db) => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL
-  );`);
+  )`);
   await db.exec(`CREATE TABLE IF NOT EXISTS settings (
     user_id INTEGER PRIMARY KEY,
     data TEXT
-  );`);
+  )`);
   await db.exec(`CREATE TABLE IF NOT EXISTS lists (
     user_id INTEGER PRIMARY KEY,
     data TEXT
-  );`);
+  )`);
 };
 
 // Middleware for handling CORS and OPTIONS requests
