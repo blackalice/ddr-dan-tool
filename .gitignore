@@ -38,3 +38,9 @@ public/dan-data.json
 public/song-meta.json
 public/vega-data.json
 dist
+.dev.vars
+/.wrangler
+public/dan-data.json
+public/sm-files.json
+public/song-meta.json
+public/vega-data.json
