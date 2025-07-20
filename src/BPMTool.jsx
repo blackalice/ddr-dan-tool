@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useContext, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -159,17 +159,30 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
 };
 
 const NoFocusDropdownIndicator = (props) => {
-    const { menuIsOpen, setMenuIsOpen } = props.selectProps;
-    const onMouseDown = (e) => {
+    const { menuIsOpen, setMenuIsOpen, selectRef } = props.selectProps;
+
+    const toggleMenu = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        const input = selectRef?.current?.inputRef;
+        if (input) {
+            input.readOnly = true;
+            input.focus();
+            setTimeout(() => {
+                input.readOnly = false;
+            }, 0);
+        }
+
         setMenuIsOpen(!menuIsOpen);
     };
+
     const innerProps = {
         ...props.innerProps,
-        onMouseDown,
-        onTouchEnd: onMouseDown,
+        onMouseDown: toggleMenu,
+        onTouchStart: toggleMenu,
     };
+
     return <RSComponents.DropdownIndicator {...props} innerProps={innerProps} />;
 };
 
@@ -199,6 +212,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [selectMenuOpen, setSelectMenuOpen] = useState(false);
+    const selectRef = useRef(null);
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -847,6 +861,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     <div className="song-search-row">
                         <div className="song-select-container">
                             <Select
+                                ref={selectRef}
                                 className="song-select"
                                 options={songOptions}
                                 value={simfileData ? { label: simfileData.title.titleName, value: simfileData.title.titleName } : null}
@@ -864,6 +879,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 onMenuOpen={() => setSelectMenuOpen(true)}
                                 onMenuClose={() => setSelectMenuOpen(false)}
                                 setMenuIsOpen={setSelectMenuOpen}
+                                selectRef={selectRef}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
                                     const { titleTranslit } = data;
