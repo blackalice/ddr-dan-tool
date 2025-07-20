@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useContext, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Select from 'react-select';
+import Select, { components as RSComponents } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
@@ -158,6 +158,46 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
     );
 };
 
+const MobileDropdownIndicator = (props) => {
+    const { selectRef } = props.selectProps;
+
+    const toggleMenu = (e) => {
+        if (e && e.type === 'mousedown' && e.button !== 0) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const select = selectRef?.current;
+        if (!select) return;
+
+        const input = select.inputRef;
+
+        if (select.state.menuIsOpen) {
+            if (input) input.readOnly = false;
+            select.onMenuClose();
+            select.blurInput();
+        } else {
+            if (input) input.readOnly = true;
+            select.focusInput();
+            select.openMenu('first');
+        }
+
+    };
+
+    const innerProps = {
+        ...props.innerProps,
+        onMouseDown: toggleMenu,
+        onTouchEnd: toggleMenu,
+    };
+
+    return (
+        <RSComponents.DropdownIndicator
+            {...props}
+            innerProps={innerProps}
+        />
+    );
+};
+
 const DEFAULT_DIFF_ORDER = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
 
 const GAME_VERSION_ORDER = [
@@ -169,7 +209,7 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings, theme } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -183,6 +223,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltBpm, setShowAltBpm] = useState(false);
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const selectRef = useRef(null);
+    const handleMenuClose = () => {
+        const input = selectRef.current?.inputRef;
+        if (input) {
+            input.readOnly = false;
+            input.blur();
+        }
+    };
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -831,6 +879,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     <div className="song-search-row">
                         <div className="song-select-container">
                             <Select
+                                ref={selectRef}
                                 className="song-select"
                                 options={songOptions}
                                 value={simfileData ? { label: simfileData.title.titleName, value: simfileData.title.titleName } : null}
@@ -838,9 +887,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
                                 isClearable
-                                components={{ MenuList }}
+                                components={{
+                                    MenuList,
+                                    ...(isMobile && { DropdownIndicator: MobileDropdownIndicator })
+                                }}
+                                onMenuClose={handleMenuClose}
                                 inputValue={inputValue}
                                 onInputChange={setInputValue}
+                                selectRef={selectRef}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
                                     const { titleTranslit } = data;
