@@ -23,6 +23,7 @@
     flex-direction: column;
     gap: 1rem;
     max-height: 90vh;
+    position: relative;
 }
 
 .modalHeader {
@@ -85,6 +86,22 @@
     color: var(--text-color);
 }
 
+.resetButton {
+    background-color: var(--button-bg);
+    color: var(--button-icon);
+}
+
+.closeButton {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
 @media (max-width: 1024px) {
     .modalBackdrop {
         align-items: flex-start;
@@ -105,6 +122,10 @@
     .modalHeader {
         padding-top: env(safe-area-inset-top, 1.5rem);
         text-align: center;
+    }
+
+    .closeButton {
+        top: calc(env(safe-area-inset-top, 0) + 0.5rem);
     }
 
     .modalBody {

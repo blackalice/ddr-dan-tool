@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from './AddToListModal.module.css';
 
 const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
@@ -28,6 +30,9 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
         <h3 className={styles.modalHeader}>Add Chart to List</h3>
         <div className={styles.modalBody}>
           <div className={styles.formGroup}>
@@ -57,7 +62,6 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
           </div>
         </div>
         <div className={styles.buttonGroup}>
-          <button onClick={onClose} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
           <button onClick={handleAdd} className={`${styles.button} ${styles.applyButton}`}>Add</button>
         </div>
       </div>

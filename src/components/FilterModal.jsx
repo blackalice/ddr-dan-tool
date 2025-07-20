@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFilters } from '../contexts/FilterContext.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from './FilterModal.module.css';
 
 const difficultyNames = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
@@ -83,6 +85,9 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
         <h3 className={styles.modalHeader}>Song Filters</h3>
         <div className={styles.modalBody}>
           <div className={styles.column}>
@@ -235,7 +240,6 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
           )}
           <div className={styles.rightButtons}>
             <button onClick={reset} className={`${styles.button} ${styles.resetButton}`}>Reset</button>
-            <button onClick={onClose} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
             <button onClick={apply} className={`${styles.button} ${styles.applyButton}`}>Apply</button>
           </div>
         </div>
