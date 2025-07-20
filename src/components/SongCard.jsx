@@ -114,7 +114,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, for
             </div>
           </div>
           <div className="song-level-container">
-              <span className="song-level">Lv.{showRanked && song.rankedRating ? song.rankedRating.toFixed(1) : song.level}</span>
+              <span className="song-level">Lv.{showRanked && song.rankedRating != null ? song.rankedRating : song.level}</span>
               {difficultyInfo && (
                    <span 
                       className="difficulty-badge"

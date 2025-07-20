@@ -54,7 +54,7 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
             >
               {options.map(o => (
                 <option key={o.difficulty} value={o.difficulty}>
-                  {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating.toFixed(1) : o.feet})
+                  {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating : o.feet})
                 </option>
               ))}
             </select>

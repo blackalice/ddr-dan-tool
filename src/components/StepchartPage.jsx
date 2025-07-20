@@ -104,7 +104,7 @@ export function StepchartPage({
 
 
   const title = currentTypeMeta
-    ? `${displaySimfile.title.translitTitleName || displaySimfile.title.titleName} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating.toFixed(1) : currentTypeMeta.feet})`
+    ? `${displaySimfile.title.translitTitleName || displaySimfile.title.titleName} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating : currentTypeMeta.feet})`
     : displaySimfile.title.titleName;
 
 

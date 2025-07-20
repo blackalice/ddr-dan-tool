@@ -93,7 +93,7 @@ const StepchartViewer = ({ smFileUrl }) => {
       <select onChange={handleChartChange} value={selectedChartKey || ''}>
         {simfile.availableTypes.map((chartType) => (
           <option key={chartType.slug} value={chartType.slug}>
-            {chartType.mode} - {chartType.difficulty} ({showRankedRatings && chartType.rankedRating != null ? chartType.rankedRating.toFixed(1) : chartType.feet})
+            {chartType.mode} - {chartType.difficulty} ({showRankedRatings && chartType.rankedRating != null ? chartType.rankedRating : chartType.feet})
           </option>
         ))}
       </select>

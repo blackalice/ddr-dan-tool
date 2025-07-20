@@ -30,7 +30,10 @@ const RankingsPage = () => {
   const { playStyle } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
   const [songMeta, setSongMeta] = useState([]);
-  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState(() => {
+    const stored = localStorage.getItem('selectedRankingLevel');
+    return stored ? Number(stored) : null;
+  });
 
   useEffect(() => {
     fetch('/song-meta.json')
@@ -52,10 +55,21 @@ const RankingsPage = () => {
   }, [songMeta, playStyle]);
 
   useEffect(() => {
-    if (availableLevels.length > 0 && !availableLevels.includes(selectedLevel)) {
+    if (availableLevels.length === 0) return;
+    if (selectedLevel == null) {
+      const stored = localStorage.getItem('selectedRankingLevel');
+      const level = stored ? Number(stored) : availableLevels[0];
+      setSelectedLevel(availableLevels.includes(level) ? level : availableLevels[0]);
+    } else if (!availableLevels.includes(selectedLevel)) {
       setSelectedLevel(availableLevels[0]);
     }
-  }, [availableLevels, selectedLevel]);
+  }, [availableLevels]);
+
+  useEffect(() => {
+    if (selectedLevel != null) {
+      localStorage.setItem('selectedRankingLevel', selectedLevel);
+    }
+  }, [selectedLevel]);
 
   const chartsForLevel = useMemo(() => {
     const charts = [];
