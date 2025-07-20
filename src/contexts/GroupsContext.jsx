@@ -98,6 +98,7 @@ export const GroupsProvider = ({ children }) => {
   return (
     <GroupsContext.Provider value={{
       groups,
+      setGroups,
       createGroup,
       deleteGroup,
       addChartToGroup,

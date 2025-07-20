@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useUser } from './contexts/UserContext.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
@@ -20,6 +21,7 @@ const Settings = () => {
         songlistOverride,
         setSonglistOverride,
     } = useContext(SettingsContext);
+    const { user, login, logout, register } = useUser();
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
 
@@ -103,6 +105,45 @@ const Settings = () => {
                         </div>
                     </div>
                     <ThemeSwitcher />
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Account</h3>
+                            {user ? (
+                                <p>Logged in as {user.username}</p>
+                            ) : (
+                                <p>Create an account to sync your settings and lists across devices.</p>
+                            )}
+                        </div>
+                        <div className="setting-control">
+                            {user ? (
+                                <button onClick={logout} className="settings-button">Logout</button>
+                            ) : (
+                                <form
+                                    onSubmit={e => {
+                                        e.preventDefault();
+                                        const form = e.target;
+                                        const username = form.username.value;
+                                        const password = form.password.value;
+                                        login(username, password).catch(() => alert('Login failed'));
+                                    }}
+                                    className="login-form"
+                                >
+                                    <input name="username" placeholder="username" className="settings-input" />
+                                    <input type="password" name="password" placeholder="password" className="settings-input" />
+                                    <div style={{display:'flex',gap:'0.5rem'}}>
+                                        <button type="submit" className="settings-button">Login</button>
+                                        <button type="button" onClick={() => {
+                                            const form = document.querySelector('.login-form');
+                                            const username = form.username.value;
+                                            const password = form.password.value;
+                                            register(username, password).catch(() => alert('Register failed'));
+                                        }} className="settings-button">Register</button>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+                    </div>
 
                     <h2 className="settings-sub-header">Beta Features</h2>
 
