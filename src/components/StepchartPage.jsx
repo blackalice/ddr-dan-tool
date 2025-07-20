@@ -120,7 +120,7 @@ export function StepchartPage({
               {sectionGroups}
           </>
       ) : (
-          <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
+          <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted-color)', textAlign: 'center', padding: '1rem' }}>
               <p>{isLoading ? 'Loading chart...' : 'The step chart for the selected song will be displayed here.'}</p>
           </div>
       )}

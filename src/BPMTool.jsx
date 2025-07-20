@@ -195,12 +195,27 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     });
     const [showSortModal, setShowSortModal] = useState(false);
 
+    const hexToRgba = (hex, alpha) => {
+        let c = hex.replace('#', '').trim();
+        if (c.length === 3) {
+            c = c.split('').map(ch => ch + ch).join('');
+        }
+        const num = parseInt(c, 16);
+        const r = (num >> 16) & 255;
+        const g = (num >> 8) & 255;
+        const b = num & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    };
+
     // Recompute colors when the theme changes
     const themeColors = useMemo(() => {
         const style = getComputedStyle(document.documentElement);
+        const border = style.getPropertyValue('--border-color').trim();
         return {
             accentColor: style.getPropertyValue('--accent-color').trim(),
             accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
+            mutedColor: style.getPropertyValue('--text-muted-color').trim(),
+            gridColor: hexToRgba(border, 0.1),
         };
         // `theme` is included so colors update when the user changes the theme
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -885,8 +900,20 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
-                                        x: { type: 'linear', title: { display: false }, ticks: { color: '#9CA3AF' }, grid: { color: 'rgba(255, 255, 255, 0.1)' }, min: 0, max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0 },
-                                        y: { title: { display: false }, ticks: { color: '#9CA3AF', stepSize: 10 }, grid: { color: 'rgba(255, 255, 255,.1)' }, min: 0 }
+                                        x: {
+                                            type: 'linear',
+                                            title: { display: false },
+                                            ticks: { color: themeColors.mutedColor },
+                                            grid: { color: themeColors.gridColor },
+                                            min: 0,
+                                            max: chartData.length > 0 ? chartData[chartData.length - 1].x : 0
+                                        },
+                                        y: {
+                                            title: { display: false },
+                                            ticks: { color: themeColors.mutedColor, stepSize: 10 },
+                                            grid: { color: themeColors.gridColor },
+                                            min: 0
+                                        }
                                     },
                                     plugins: {
                                         legend: { display: false },
@@ -904,7 +931,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 }}
                             />
                         ) : (
-                            <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: '#9CA3AF', textAlign: 'center', padding: '1rem' }}>
+                            <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted-color)', textAlign: 'center', padding: '1rem' }}>
                                 <p>{isLoading ? 'Loading chart...' : 'The BPM chart for the selected song will be displayed here.'}</p>
                             </div>
                         )}
