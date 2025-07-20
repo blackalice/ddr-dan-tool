@@ -74,8 +74,7 @@ const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const OUTPUT_PATH = path.join(PUBLIC_DIR, 'song-meta.json');
-const SINGLE_RANKED_PATH = path.join(PUBLIC_DIR, 'single_ranked.json');
-const DOUBLE_RANKED_PATH = path.join(PUBLIC_DIR, 'doubles_ranked.json');
+const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
 
 async function readJson(p) {
   const data = await fs.readFile(p, 'utf-8');
@@ -119,7 +118,12 @@ function buildRatingMap(data, key) {
   for (const entry of data) {
     const norm = normalizeName(entry.song_name);
     if (!map.has(norm)) map.set(norm, []);
-    map.get(norm).push(Number(entry[key]));
+    const val = entry[key];
+    if (Array.isArray(val)) {
+      map.get(norm).push(...val.map(Number));
+    } else if (val !== undefined) {
+      map.get(norm).push(Number(val));
+    }
   }
   return map;
 }
@@ -167,10 +171,9 @@ const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
 async function main() {
   try {
     const smList = await readJson(SM_FILES_PATH);
-    const singleRanked = await readJson(SINGLE_RANKED_PATH).catch(() => []);
-    const doubleRanked = await readJson(DOUBLE_RANKED_PATH).catch(() => []);
-    const singleRankMap = buildRatingMap(singleRanked, 'v10_rating');
-    const doubleRankMap = buildRatingMap(doubleRanked, 'ranked_rating');
+    const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
+    const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
+    const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
     const results = [];
     for (const file of smList.files) {
       try {
