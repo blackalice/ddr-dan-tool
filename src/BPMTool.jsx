@@ -207,8 +207,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     };
 
-    // Recompute colors when the theme changes
-    const themeColors = useMemo(() => {
+    // Store theme-dependent colors for the BPM chart
+    const [themeColors, setThemeColors] = useState(() => {
         const style = getComputedStyle(document.documentElement);
         const border = style.getPropertyValue('--border-color').trim();
         return {
@@ -217,8 +217,20 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             mutedColor: style.getPropertyValue('--text-muted-color').trim(),
             gridColor: hexToRgba(border, 0.1),
         };
-        // `theme` is included so colors update when the user changes the theme
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+
+    // Update colors whenever the theme changes. This runs after
+    // SettingsContext applies the data-theme attribute so the computed
+    // styles reflect the correct theme.
+    useEffect(() => {
+        const style = getComputedStyle(document.documentElement);
+        const border = style.getPropertyValue('--border-color').trim();
+        setThemeColors({
+            accentColor: style.getPropertyValue('--accent-color').trim(),
+            accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
+            mutedColor: style.getPropertyValue('--text-muted-color').trim(),
+            gridColor: hexToRgba(border, 0.1),
+        });
     }, [theme]);
 
     const simfileWithRatings = useMemo(() => {
