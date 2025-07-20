@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from './AddToListModal.module.css';
 
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
@@ -43,6 +45,9 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
         <h3 className={styles.modalHeader}>Edit Difficulty</h3>
         <div className={styles.modalBody}>
           <div className={styles.formGroup}>
@@ -61,7 +66,6 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
           </div>
         </div>
         <div className={styles.buttonGroup}>
-          <button onClick={onClose} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
           <button onClick={handleSave} className={`${styles.button} ${styles.applyButton}`}>Save</button>
         </div>
       </div>
