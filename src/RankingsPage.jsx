@@ -2,8 +2,11 @@ import React, { useState, useEffect, useContext, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDownWideShort, faArrowUpWideShort } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import './VegaPage.css';
+import './ListsPage.css';
 
 const RatingSection = ({ rating, charts }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -33,6 +36,10 @@ const RankingsPage = () => {
   const [selectedLevel, setSelectedLevel] = useState(() => {
     const stored = localStorage.getItem('selectedRankingLevel');
     return stored ? Number(stored) : null;
+  });
+  const [ascendingOrder, setAscendingOrder] = useState(() => {
+    const stored = localStorage.getItem('rankingsAscending');
+    return stored ? JSON.parse(stored) : false;
   });
 
   useEffect(() => {
@@ -71,6 +78,10 @@ const RankingsPage = () => {
     }
   }, [selectedLevel]);
 
+  useEffect(() => {
+    localStorage.setItem('rankingsAscending', JSON.stringify(ascendingOrder));
+  }, [ascendingOrder]);
+
   const chartsForLevel = useMemo(() => {
     const charts = [];
     for (const song of songMeta) {
@@ -104,9 +115,11 @@ const RankingsPage = () => {
       if (!map.has(ratingKey)) map.set(ratingKey, []);
       map.get(ratingKey).push(chart);
     }
-    const keys = Array.from(map.keys()).sort((a, b) => b - a);
+    const keys = Array.from(map.keys()).sort((a, b) =>
+      ascendingOrder ? a - b : b - a
+    );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
-  }, [chartsForLevel]);
+  }, [chartsForLevel, ascendingOrder]);
 
   if (!selectedLevel) return null;
 
@@ -122,6 +135,13 @@ const RankingsPage = () => {
                 ))}
               </select>
             </div>
+            <button
+              className="filter-button"
+              onClick={() => setAscendingOrder(a => !a)}
+              title="Flip order"
+            >
+              <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
+            </button>
           </div>
         </div>
         {groupedCharts.map(group => (
