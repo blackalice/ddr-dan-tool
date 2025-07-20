@@ -16,7 +16,7 @@ import './App.css';
 import './Tabs.css';
 
 function AppRoutes() {
-  const { theme, showLists, setPlayStyle, songlistOverride } = useContext(SettingsContext);
+  const { theme, showLists, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
