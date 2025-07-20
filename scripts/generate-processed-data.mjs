@@ -411,30 +411,91 @@ const readSmFile = async (filePath) => {
     return parseSm(content);
 };
 
+function normalizeName(str) {
+    return str
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+}
+
+function levenshtein(a, b) {
+    const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + cost,
+            );
+        }
+    }
+    return dp[a.length][b.length];
+}
+
 function buildRatingMap(data, key) {
     const map = new Map();
     for (const entry of data) {
-        if (!map.has(entry.song_name)) map.set(entry.song_name, []);
-        map.get(entry.song_name).push(Number(entry[key]));
+        const norm = normalizeName(entry.song_name);
+        if (!map.has(norm)) map.set(norm, []);
+        map.get(norm).push(Number(entry[key]));
     }
     return map;
 }
 
+const ratingCache = new Map();
+
+function getRatingsForTitle(title, map) {
+    const norm = normalizeName(title);
+    if (ratingCache.has(norm)) return [...ratingCache.get(norm)];
+    if (map.has(norm)) {
+        const arr = map.get(norm);
+        ratingCache.set(norm, arr);
+        return [...arr];
+    }
+    let bestKey = null;
+    let bestDist = Infinity;
+    for (const key of map.keys()) {
+        const dist = levenshtein(norm, key);
+        if (dist < bestDist) {
+            bestDist = dist;
+            bestKey = key;
+        }
+    }
+    if (bestKey && bestDist <= 2) {
+        const arr = map.get(bestKey);
+        ratingCache.set(norm, arr);
+        return [...arr];
+    }
+    ratingCache.set(norm, []);
+    return [];
+}
+
+function pickRatingForLevel(ratings, level) {
+    const idx = ratings.findIndex(r => Math.floor(r) === level);
+    if (idx !== -1) {
+        const val = ratings[idx];
+        ratings.splice(idx, 1);
+        return val;
+    }
+    return ratings.shift();
+}
+
 const findSongFile = (title, smFiles) => {
-    const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const normalizedTitle = normalize(title);
-    
-    return smFiles.files.find(file => 
-        normalize(file.title) === normalizedTitle || 
-        (file.titleTranslit && normalize(file.titleTranslit) === normalizedTitle)
+    const normalizedTitle = normalizeName(title);
+
+    return smFiles.files.find(file =>
+        normalizeName(file.title) === normalizedTitle ||
+        (file.titleTranslit && normalizeName(file.titleTranslit) === normalizedTitle)
     );
 };
 
 const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap) => {
     if (!courses) return [];
     const processedCourses = [];
-
-    const counters = { single: new Map(), double: new Map() };
 
     for (const course of courses) {
         const processedSongs = [];
@@ -481,17 +542,16 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap)
 
             const chartDetails = simfileData.charts[chart.slug];
             const bpms = chartDetails.bpm.map(b => b.bpm).filter(b => b > 0);
-            const bpmDisplay = bpms.length === 1 
-                ? String(Math.round(bpms[0])) 
+            const bpmDisplay = bpms.length === 1
+                ? String(Math.round(bpms[0]))
                 : `${Math.round(Math.min(...bpms))}-${Math.round(Math.max(...bpms))}`;
 
             const game = songFile.path.split('/')[1] || 'N/A';
 
-            const ratingArr = chart.mode === 'single' ? singleRankMap.get(simfileData.title) || [] : doubleRankMap.get(simfileData.title) || [];
-            const key = `${simfileData.title}:${chart.mode}`;
-            const idx = counters[chart.mode].get(key) || 0;
-            const rankedRating = ratingArr[idx];
-            counters[chart.mode].set(key, idx + 1);
+            const ratingsSingle = getRatingsForTitle(simfileData.title, singleRankMap);
+            const ratingsDouble = getRatingsForTitle(simfileData.title, doubleRankMap);
+            const ratingArrByMode = { single: ratingsSingle, double: ratingsDouble };
+            const rankedRating = pickRatingForLevel(ratingArrByMode[chart.mode], chart.feet);
 
             processedSongs.push({
                 title: simfileData.title,
