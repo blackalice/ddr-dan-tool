@@ -170,14 +170,18 @@ const MobileDropdownIndicator = (props) => {
         const select = selectRef?.current;
         if (!select) return;
 
+        const input = select.inputRef;
+
         if (select.state.menuIsOpen) {
-            select.setState({ inputIsHiddenAfterUpdate: !select.props.isMulti });
+            if (input) input.readOnly = false;
             select.onMenuClose();
+            select.blurInput();
         } else {
+            if (input) input.readOnly = true;
+            select.focusInput();
             select.openMenu('first');
         }
 
-        select.blurInput();
     };
 
     const innerProps = {
@@ -220,6 +224,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const selectRef = useRef(null);
+    const handleMenuClose = () => {
+        const input = selectRef.current?.inputRef;
+        if (input) {
+            input.readOnly = false;
+            input.blur();
+        }
+    };
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -880,6 +891,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                     MenuList,
                                     ...(isMobile && { DropdownIndicator: MobileDropdownIndicator })
                                 }}
+                                onMenuClose={handleMenuClose}
                                 inputValue={inputValue}
                                 onInputChange={setInputValue}
                                 selectRef={selectRef}
