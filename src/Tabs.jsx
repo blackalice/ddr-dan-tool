@@ -13,7 +13,7 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
-    const { playStyle, setPlayStyle, showLists, showRankedRatings } = useContext(SettingsContext);
+    const { playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
 
     return (
         <nav className="tabs-container">
@@ -35,11 +35,9 @@ const Tabs = () => {
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faCalculator} />
                     </NavLink>
-                    {showRankedRatings && (
-                        <NavLink to={`/rankings${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                            <FontAwesomeIcon icon={faRankingStar} />
-                        </NavLink>
-                    )}
+                    <NavLink to={`/rankings${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        <FontAwesomeIcon icon={faRankingStar} />
+                    </NavLink>
                     {showLists && (
                         <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                             <FontAwesomeIcon icon={faList} />

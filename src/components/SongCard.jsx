@@ -31,7 +31,7 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, forceShowRankedRating = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const navigate = useNavigate();
 
@@ -76,6 +76,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false }) =
     );
   }
 
+  const showRanked = forceShowRankedRating || showRankedRatings;
+
   return (
     <div className="song-card-link" onClick={() => {
       if (resetFilters) resetFilters();
@@ -112,7 +114,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false }) =
             </div>
           </div>
           <div className="song-level-container">
-              <span className="song-level">Lv.{showRankedRatings && song.rankedRating ? song.rankedRating.toFixed(1) : song.level}</span>
+              <span className="song-level">Lv.{showRanked && song.rankedRating ? song.rankedRating.toFixed(1) : song.level}</span>
               {difficultyInfo && (
                    <span 
                       className="difficulty-badge"

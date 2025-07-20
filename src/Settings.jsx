@@ -105,6 +105,8 @@ const Settings = () => {
                         </div>
                     </div>
 
+                    <h2 className="settings-sub-header">Beta Features</h2>
+
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Google AI Studio API Key</h3>

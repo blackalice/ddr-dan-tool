@@ -18,7 +18,7 @@ const RatingSection = ({ rating, charts }) => {
       {!isCollapsed && (
         <div className="song-grid">
           {charts.map((chart, idx) => (
-            <SongCard key={idx} song={chart} />
+            <SongCard key={idx} song={chart} forceShowRankedRating />
           ))}
         </div>
       )}
