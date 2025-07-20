@@ -101,6 +101,13 @@
     background-color: var(--accent-color-light);
 }
 
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
 /* Mobile Layout */
 @media (max-width: 1024px) {
     .settings-content {

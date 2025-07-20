@@ -9,5 +9,11 @@
   },
   "build": {
     "command": "npm run build"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ddr-toolkit-db"
+    }
+  ]
 }
