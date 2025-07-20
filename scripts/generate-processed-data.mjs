@@ -397,8 +397,7 @@ const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
 const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
 const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
-const SINGLE_RANKED_PATH = path.join(PUBLIC_DIR, 'single_ranked.json');
-const DOUBLE_RANKED_PATH = path.join(PUBLIC_DIR, 'doubles_ranked.json');
+const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
 
 
 const readJson = async (filePath) => {
@@ -441,7 +440,12 @@ function buildRatingMap(data, key) {
     for (const entry of data) {
         const norm = normalizeName(entry.song_name);
         if (!map.has(norm)) map.set(norm, []);
-        map.get(norm).push(Number(entry[key]));
+        const val = entry[key];
+        if (Array.isArray(val)) {
+            map.get(norm).push(...val.map(Number));
+        } else if (val !== undefined) {
+            map.get(norm).push(Number(val));
+        }
     }
     return map;
 }
@@ -574,10 +578,9 @@ async function main() {
         console.log('Starting data processing...');
         const smFiles = await readJson(SM_FILES_PATH);
         const courseData = await readJson(COURSE_DATA_PATH);
-        const singleRanked = await readJson(SINGLE_RANKED_PATH).catch(() => []);
-        const doubleRanked = await readJson(DOUBLE_RANKED_PATH).catch(() => []);
-        const singleRankMap = buildRatingMap(singleRanked, 'v10_rating');
-        const doubleRankMap = buildRatingMap(doubleRanked, 'ranked_rating');
+        const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
+        const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
+        const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
 
         // Process Dan data
         const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap);
