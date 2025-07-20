@@ -38,6 +38,11 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [showRankedRatings, setShowRankedRatings] = useState(() => {
+        const saved = localStorage.getItem('showRankedRatings');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     useEffect(() => {
         localStorage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -64,6 +69,10 @@ export const SettingsProvider = ({ children }) => {
     }, [showLists]);
 
     useEffect(() => {
+        localStorage.setItem('showRankedRatings', JSON.stringify(showRankedRatings));
+    }, [showRankedRatings]);
+
+    useEffect(() => {
         localStorage.setItem('songlistOverride', songlistOverride);
     }, [songlistOverride]);
 
@@ -83,6 +92,8 @@ export const SettingsProvider = ({ children }) => {
         setPlayStyle,
         showLists,
         setShowLists,
+        showRankedRatings,
+        setShowRankedRatings,
         songlistOverride,
         setSonglistOverride,
     };

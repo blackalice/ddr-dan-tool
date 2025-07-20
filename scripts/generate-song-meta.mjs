@@ -74,6 +74,7 @@ const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
 const OUTPUT_PATH = path.join(PUBLIC_DIR, 'song-meta.json');
+const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
 
 async function readJson(p) {
   const data = await fs.readFile(p, 'utf-8');
@@ -85,9 +86,94 @@ async function readSmFile(p) {
   return parseSm(text);
 }
 
+function normalizeName(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () =>
+    new Array(b.length + 1).fill(0),
+  );
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost,
+      );
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function buildRatingMap(data, key) {
+  const map = new Map();
+  for (const entry of data) {
+    const norm = normalizeName(entry.song_name);
+    if (!map.has(norm)) map.set(norm, []);
+    const val = entry[key];
+    if (Array.isArray(val)) {
+      map.get(norm).push(...val.map(Number));
+    } else if (val !== undefined) {
+      map.get(norm).push(Number(val));
+    }
+  }
+  return map;
+}
+
+const ratingCache = new Map();
+
+function getRatingsForTitle(title, map) {
+  const norm = normalizeName(title);
+  if (ratingCache.has(norm)) return [...ratingCache.get(norm)];
+  if (map.has(norm)) {
+    const arr = map.get(norm);
+    ratingCache.set(norm, arr);
+    return [...arr];
+  }
+  let bestKey = null;
+  let bestDist = Infinity;
+  for (const key of map.keys()) {
+    const dist = levenshtein(norm, key);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestKey = key;
+    }
+  }
+  if (bestKey && bestDist <= 2) {
+    const arr = map.get(bestKey);
+    ratingCache.set(norm, arr);
+    return [...arr];
+  }
+  ratingCache.set(norm, []);
+  return [];
+}
+
+function pickRatingForLevel(ratings, level) {
+  const idx = ratings.findIndex((r) => Math.floor(r) === level);
+  if (idx !== -1) {
+    const val = ratings[idx];
+    ratings.splice(idx, 1);
+    return val;
+  }
+  return ratings.shift();
+}
+
+const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
+
 async function main() {
   try {
     const smList = await readJson(SM_FILES_PATH);
+    const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
+    const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
+    const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
     const results = [];
     for (const file of smList.files) {
       try {
@@ -97,7 +183,17 @@ async function main() {
         const uniqueBpms = [...new Set(allBpms)];
         const bpmMin = uniqueBpms.length ? Math.min(...uniqueBpms) : 0;
         const bpmMax = uniqueBpms.length ? Math.max(...uniqueBpms) : 0;
-        const difficulties = simfile.availableTypes.map(c => ({ mode: c.mode, difficulty: c.difficulty, feet: c.feet }));
+        const singleRatings = getRatingsForTitle(simfile.title, singleRankMap);
+        const doubleRatings = getRatingsForTitle(simfile.title, doubleRankMap);
+        const ratingsByMode = { single: singleRatings, double: doubleRatings };
+
+        const difficulties = simfile.availableTypes
+          .sort((a,b) => DIFF_ORDER.indexOf(a.difficulty) - DIFF_ORDER.indexOf(b.difficulty))
+          .map(c => {
+            const arr = ratingsByMode[c.mode];
+            const rating = pickRatingForLevel(arr, c.feet);
+            return { mode: c.mode, difficulty: c.difficulty, feet: c.feet, rankedRating: rating };
+          });
         const game = file.path.split('/')[1] || 'Unknown';
 
         const chartKeys = Object.keys(simfile.charts);

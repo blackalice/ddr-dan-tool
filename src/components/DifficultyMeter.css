@@ -9,3 +9,7 @@
     font-weight: bold;
     font-size: 1rem;
 }
+
+.decimal-part {
+    opacity:0.7;
+}

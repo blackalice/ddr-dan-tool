@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Tabs.css';
 
@@ -34,6 +34,9 @@ const Tabs = () => {
                     </NavLink>
                     <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faCalculator} />
+                    </NavLink>
+                    <NavLink to={`/rankings${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+                        <FontAwesomeIcon icon={faRankingStar} />
                     </NavLink>
                     {showLists && (
                         <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>

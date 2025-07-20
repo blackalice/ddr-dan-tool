@@ -159,7 +159,7 @@ const MenuList = ({ options, children, maxHeight, getValue }) => {
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, theme } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const location = useLocation();
@@ -178,6 +178,28 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const [overrideSongs, setOverrideSongs] = useState(null);
+
+    // Recompute colors when the theme changes
+    const themeColors = useMemo(() => {
+        const style = getComputedStyle(document.documentElement);
+        return {
+            accentColor: style.getPropertyValue('--accent-color').trim(),
+            accentColorRgb: style.getPropertyValue('--accent-color-rgb').trim(),
+        };
+        // `theme` is included so colors update when the user changes the theme
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [theme]);
+
+    const simfileWithRatings = useMemo(() => {
+        if (!simfileData) return null;
+        const meta = songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
+        if (!meta) return simfileData;
+        const at = simfileData.availableTypes.map(c => {
+            const diffMeta = meta.difficulties.find(d => d.mode === c.mode && d.difficulty === c.difficulty);
+            return { ...c, rankedRating: diffMeta?.rankedRating };
+        });
+        return { ...simfileData, availableTypes: at };
+    }, [simfileData, songMeta]);
     const filtersActive = Boolean(
         filters.bpmMin !== '' ||
         filters.bpmMax !== '' ||
@@ -233,9 +255,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [songlistOverride]);
 
     useEffect(() => {
-        if (!simfileData) return;
+        if (!simfileWithRatings) return;
 
-        const chartsInMode = simfileData.availableTypes.filter(c => c.mode === playStyle);
+        const chartsInMode = simfileWithRatings.availableTypes.filter(c => c.mode === playStyle);
         if (chartsInMode.length === 0) {
             // If no charts for this play style, do nothing and let the song be filtered out
             return;
@@ -282,7 +304,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [filters, playStyle, simfileData]);
 
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
-        if (!simfileData) {
+        if (!simfileWithRatings) {
             return {
                 songTitle: 'Please select a song',
                 artist: '...',
@@ -296,11 +318,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
 
         const diffs = { singles: {}, doubles: {} };
-        simfileData.availableTypes.forEach(chart => {
+        const metaEntry = songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
+        simfileWithRatings.availableTypes.forEach(chart => {
+            const diffMeta = metaEntry?.difficulties.find(d => d.mode === chart.mode && d.difficulty === chart.difficulty);
+            const info = { feet: chart.feet, rankedRating: diffMeta?.rankedRating };
             if (chart.mode === 'single') {
-                diffs.singles[chart.difficulty] = chart.feet;
+                diffs.singles[chart.difficulty] = info;
             } else if (chart.mode === 'double') {
-                diffs.doubles[chart.difficulty] = chart.feet;
+                diffs.doubles[chart.difficulty] = info;
             }
         });
 
@@ -309,8 +334,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let data = null;
         let length = 0;
 
-        if (currentChart && simfileData.charts) {
-            const chartDetails = simfileData.charts[currentChart.slug];
+        if (currentChart && simfileWithRatings.charts) {
+            const chartDetails = simfileWithRatings.charts[currentChart.slug];
             if (chartDetails) {
                 const bpmChanges = chartDetails.bpm;
                 const lastBeat = getLastBeat(chartDetails);
@@ -333,16 +358,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
 
         return {
-            songTitle: simfileData.title.titleName,
-            artist: simfileData.artist,
-            gameVersion: simfileData.mix.mixName,
+            songTitle: simfileWithRatings.title.titleName,
+            artist: simfileWithRatings.artist,
+            gameVersion: simfileWithRatings.mix.mixName,
             difficulties: diffs,
             bpmDisplay: display,
             coreBpm: core,
             chartData: data,
             songLength: length,
         };
-    }, [simfileData, currentChart]);
+    }, [simfileWithRatings, currentChart]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;
@@ -479,7 +504,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (currentChartIsValid) return;
 
         // Find a better chart that matches the filters
-        const availableCharts = simfileData.availableTypes.filter(c => c.mode === playStyle);
+        const availableCharts = simfileWithRatings.availableTypes.filter(c => c.mode === playStyle);
         const matchingCharts = availableCharts.filter(c =>
             (!filters.difficultyMin || c.feet >= Number(filters.difficultyMin)) &&
             (!filters.difficultyMax || c.feet <= Number(filters.difficultyMax)) &&
@@ -503,10 +528,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [simfileData, filters]);
 
     useEffect(() => {
-        if (!simfileData || !currentChart) return;
+        if (!simfileWithRatings || !currentChart) return;
 
         const mode = playStyle;
-        const chartsInMode = simfileData.availableTypes.filter(c => c.mode === mode);
+        const chartsInMode = simfileWithRatings.availableTypes.filter(c => c.mode === mode);
 
         const matchesFilters = (chart) => {
             if (filters.difficultyMin !== '' && chart.feet < Number(filters.difficultyMin)) return false;
@@ -575,9 +600,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!groups.some(g => g.name === name)) {
             createGroup(name);
         }
+        const metaEntry = songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
+        const diffMeta = metaEntry?.difficulties.find(d => d.mode === currentChart.mode && d.difficulty === currentChart.difficulty);
         const chart = {
             title: simfileData.title.titleName,
             level: currentChart.feet,
+            rankedRating: diffMeta?.rankedRating,
             bpm: bpmDisplay,
             difficulty: currentChart.difficulty.toLowerCase(),
             mode: currentChart.mode,
@@ -652,6 +680,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 .map(d => ({
                     title: meta.title,
                     level: d.feet,
+                    rankedRating: d.rankedRating,
                     bpm: `${meta.bpmMin}-${meta.bpmMax}`,
                     difficulty: d.difficulty.toLowerCase(),
                     mode: d.mode,
@@ -765,12 +794,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                     datasets: [{
                                         label: 'BPM',
                                         data: chartData,
-                                        borderColor: 'rgba(59, 130, 246, 1)',
-                                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                        borderColor: themeColors.accentColor,
+                                        backgroundColor: `rgba(${themeColors.accentColorRgb}, 0.2)`,
                                         stepped: true,
                                         fill: true,
                                         pointRadius: 4,
-                                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                        pointBackgroundColor: themeColors.accentColor,
                                         pointBorderColor: '#fff',
                                         pointHoverRadius: 7,
                                         borderWidth: 2.5
@@ -806,8 +835,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     </div>
                 ) : (
                     <StepchartPage
-                        simfile={simfileData}
-                        currentType={currentChart ? currentChart.slug : (simfileData?.availableTypes?.[0]?.slug)}
+                        simfile={simfileWithRatings}
+                        currentType={currentChart ? currentChart.slug : (simfileWithRatings?.availableTypes?.[0]?.slug)}
                         setCurrentChart={setCurrentChart}
                         isCollapsed={isCollapsed}
                         setIsCollapsed={setIsCollapsed}

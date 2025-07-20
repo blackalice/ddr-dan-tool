@@ -15,7 +15,8 @@
           "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 10.6
         },
         {
           "title": "虹色",
@@ -23,7 +24,8 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "single",
-          "game": "Supernova"
+          "game": "Supernova",
+          "rankedRating": 11.5
         },
         {
           "title": "HAPPY☆ANGEL",
@@ -31,7 +33,8 @@
           "bpm": "179-180",
           "difficulty": "expert",
           "mode": "single",
-          "game": "Supernova"
+          "game": "Supernova",
+          "rankedRating": 12.2
         }
       ]
     },
@@ -50,7 +53,8 @@
           "bpm": "150",
           "difficulty": "expert",
           "mode": "single",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 14.35
         },
         {
           "title": "Debug Dance",
@@ -58,7 +62,8 @@
           "bpm": "151",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A3"
+          "game": "A3",
+          "rankedRating": 15.35
         },
         {
           "title": "GROOVE 04",
@@ -66,7 +71,8 @@
           "bpm": "155",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A3"
+          "game": "A3",
+          "rankedRating": 16.05
         }
       ]
     },
@@ -83,7 +89,8 @@
           "bpm": "180-720",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 19
         }
       ]
     }

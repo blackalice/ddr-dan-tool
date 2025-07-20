@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import styles from './AddToListModal.module.css';
 
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   const [selected, setSelected] = useState(chart?.difficulty || '');
   const scrollRef = useRef(0);
+  const { showRankedRatings } = useContext(SettingsContext);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -52,7 +54,7 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
             >
               {options.map(o => (
                 <option key={o.difficulty} value={o.difficulty}>
-                  {o.difficulty} (Lv.{o.feet})
+                  {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating : o.feet})
                 </option>
               ))}
             </select>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DifficultyMeter } from './DifficultyMeter';
 import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.js';
 import { useFilters } from '../contexts/FilterContext.jsx';
+import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -27,6 +28,7 @@ const SongInfoBar = ({
 }) => {
 
   const { filters } = useFilters();
+  const { showRankedRatings } = useContext(SettingsContext);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData || !difficulties) return null;
@@ -41,7 +43,7 @@ const SongInfoBar = ({
         // Find the chart for the current difficulty level (e.g., 'Expert')
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
-                level = difficultySet[name];
+                level = showRankedRatings && difficultySet[name].rankedRating != null ? difficultySet[name].rankedRating : difficultySet[name].feet;
                 chartType = chartDifficulties.find(t => t.difficulty === name);
                 if (chartType) break;
             }
@@ -107,7 +109,7 @@ const SongInfoBar = ({
         <div className="details-grid bpm-tool-grid">
           <div className={`grid-item difficulty-container ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
               <span className="difficulty-label">Difficulty:</span>
-              <div className="difficulty-meters-container">
+              <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
                 {renderDifficulties(playStyle)}
               </div>
           </div>

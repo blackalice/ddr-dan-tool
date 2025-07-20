@@ -11,6 +11,7 @@ import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
 import ListsPage from './ListsPage.jsx';
+import RankingsPage from './RankingsPage.jsx';
 import './App.css';
 import './Tabs.css';
 
@@ -155,6 +156,7 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier />} />
+          <Route path="/rankings" element={<RankingsPage />} />
           {showLists && <Route path="/lists" element={<ListsPage />} />}
           <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
