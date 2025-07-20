@@ -31,6 +31,25 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
+const renderLevel = (level) => {
+    const hasDecimal = typeof level === 'number' && level % 1 !== 0;
+    if (!hasDecimal) {
+        return `Lv.${level}`;
+    }
+
+    const levelStr = level.toString();
+    const decimalIndex = levelStr.indexOf('.');
+    const integerPart = levelStr.substring(0, decimalIndex);
+    const decimalPart = levelStr.substring(decimalIndex);
+
+    return (
+        <>
+            Lv.{integerPart}
+            <span className="decimal-part">{decimalPart}</span>
+        </>
+    );
+};
+
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, forceShowRankedRating = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const navigate = useNavigate();
@@ -77,6 +96,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, for
   }
 
   const showRanked = forceShowRankedRating || showRankedRatings;
+  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
 
   return (
     <div className="song-card-link" onClick={() => {
@@ -114,7 +134,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, for
             </div>
           </div>
           <div className="song-level-container">
-              <span className="song-level">Lv.{showRanked && song.rankedRating != null ? song.rankedRating : song.level}</span>
+              <span className="song-level">{renderLevel(levelToDisplay)}</span>
               {difficultyInfo && (
                    <span 
                       className="difficulty-badge"

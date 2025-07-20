@@ -68,6 +68,8 @@
     z-index: 100;
 }
 
+
+
 .api-key-modal-content {
     background-color: var(--bg-color-light);
     padding: 2rem;
@@ -683,4 +685,12 @@
         flex-direction: column;
         align-items: center;
     }
+
+    .difficulty-meters-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
 }
+
+

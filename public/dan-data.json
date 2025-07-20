@@ -16,7 +16,8 @@
           "bpm": "175",
           "difficulty": "basic",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 9.4
         },
         {
           "title": "Starry Sky",
@@ -24,7 +25,8 @@
           "bpm": "150",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 9.65
         },
         {
           "title": "Bang Pad(Werk Mix)",
@@ -32,7 +34,8 @@
           "bpm": "160",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 9.65
         },
         {
           "title": "LEVEL UP",
@@ -40,7 +43,8 @@
           "bpm": "180",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 10.3
         }
       ]
     },
@@ -60,7 +64,8 @@
           "bpm": "140",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 10.55
         },
         {
           "title": "からふるぱすてる",
@@ -68,7 +73,8 @@
           "bpm": "186",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "2013"
+          "game": "2013",
+          "rankedRating": 9.5
         },
         {
           "title": "siberite",
@@ -76,7 +82,8 @@
           "bpm": "128",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 10.4
         },
         {
           "title": "Show me your moves",
@@ -84,7 +91,8 @@
           "bpm": "155",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 11.15
         }
       ]
     },
@@ -104,7 +112,8 @@
           "bpm": "128",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 11.35
         },
         {
           "title": "Starlight in the Snow",
@@ -112,7 +121,8 @@
           "bpm": "150",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 11.2
         },
         {
           "title": "Stay 4 Ever",
@@ -120,7 +130,8 @@
           "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 11.15
         },
         {
           "title": "Astrogazer",
@@ -128,7 +139,8 @@
           "bpm": "154",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 15.55
         }
       ]
     },
@@ -148,7 +160,8 @@
           "bpm": "84-167",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 12.55
         },
         {
           "title": "SODA GALAXY",
@@ -156,7 +169,8 @@
           "bpm": "178",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 12.1
         },
         {
           "title": "In the past",
@@ -164,7 +178,8 @@
           "bpm": "81-162",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 12.35
         },
         {
           "title": "DEADLOCK -Out Of Reach-",
@@ -172,7 +187,8 @@
           "bpm": "205",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 13.6
         }
       ]
     },
@@ -192,7 +208,8 @@
           "bpm": "157-628",
           "difficulty": "expert",
           "mode": "single",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 13.55
         },
         {
           "title": "Mythomane",
@@ -200,7 +217,8 @@
           "bpm": "140-180",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 13.65
         },
         {
           "title": "DeStRuCtIvE FoRcE",
@@ -208,7 +226,8 @@
           "bpm": "89-177",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 13.65
         },
         {
           "title": "London EVOLVED ver.C",
@@ -216,7 +235,8 @@
           "bpm": "170-340",
           "difficulty": "expert",
           "mode": "single",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 14.4
         }
       ]
     },
@@ -236,7 +256,8 @@
           "bpm": "177",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 14.2
         },
         {
           "title": "IRON HEART",
@@ -244,7 +265,8 @@
           "bpm": "155",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 14.3
         },
         {
           "title": "STEP MACHINE",
@@ -252,7 +274,8 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 14.55
         },
         {
           "title": "MAX 300",
@@ -260,7 +283,8 @@
           "bpm": "64-303",
           "difficulty": "expert",
           "mode": "single",
-          "game": "6thMix"
+          "game": "6thMix",
+          "rankedRating": 15.4
         }
       ]
     },
@@ -280,7 +304,8 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 15.35
         },
         {
           "title": "Next Phase",
@@ -288,7 +313,8 @@
           "bpm": "174",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 15.45
         },
         {
           "title": "Last Card",
@@ -296,7 +322,8 @@
           "bpm": "85-170",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 15.8
         },
         {
           "title": "Cosy Catastrophe",
@@ -304,7 +331,8 @@
           "bpm": "90-360",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 16.65
         }
       ]
     },
@@ -324,7 +352,8 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 16.6
         },
         {
           "title": "Golden Arrow",
@@ -332,7 +361,8 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 16.15
         },
         {
           "title": "Splash Gold",
@@ -340,7 +370,8 @@
           "bpm": "75-300",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 16.7
         },
         {
           "title": "The History of the Future",
@@ -348,7 +379,8 @@
           "bpm": "100-200",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 17.7
         }
       ]
     },
@@ -368,7 +400,8 @@
           "bpm": "180",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 17
         },
         {
           "title": "東京神話",
@@ -376,7 +409,8 @@
           "bpm": "98-197",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 17
         },
         {
           "title": "Avenger",
@@ -384,7 +418,8 @@
           "bpm": "100-400",
           "difficulty": "expert",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 17.65
         },
         {
           "title": "EGOISM 440",
@@ -392,7 +427,8 @@
           "bpm": "55-880",
           "difficulty": "expert",
           "mode": "single",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 18.6
         }
       ]
     },
@@ -412,7 +448,8 @@
           "bpm": "169",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 18.4
         },
         {
           "title": "HyperTwist",
@@ -420,7 +457,8 @@
           "bpm": "190",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 18.55
         },
         {
           "title": "Neutrino",
@@ -428,7 +466,8 @@
           "bpm": "75-300",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 18.7
         },
         {
           "title": "PARANOiA Revolution",
@@ -436,7 +475,8 @@
           "bpm": "180-360",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 19.1
         }
       ]
     },
@@ -456,7 +496,8 @@
           "bpm": "236",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 19.6
         },
         {
           "title": "Over The “Period”",
@@ -464,7 +505,8 @@
           "bpm": "23-840",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 19.3
         },
         {
           "title": "Valkyrie dimension",
@@ -472,7 +514,8 @@
           "bpm": "47-744",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 19.2
         },
         {
           "title": "ENDYMION",
@@ -480,7 +523,8 @@
           "bpm": "110-880",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 19.7
         }
       ]
     }
@@ -502,7 +546,8 @@
           "bpm": "135",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 9.35
         },
         {
           "title": "Second Heaven",
@@ -510,7 +555,8 @@
           "bpm": "150",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 9.55
         },
         {
           "title": "snow prism",
@@ -518,7 +564,8 @@
           "bpm": "196",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 9.55
         },
         {
           "title": "TRIP MACHINE",
@@ -526,7 +573,8 @@
           "bpm": "160",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "DDR"
+          "game": "DDR",
+          "rankedRating": 10.2
         }
       ]
     },
@@ -546,7 +594,8 @@
           "bpm": "140",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 2.3
         },
         {
           "title": "Anthurium",
@@ -554,7 +603,8 @@
           "bpm": "142",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "A3"
+          "game": "A3",
+          "rankedRating": 10.45
         },
         {
           "title": "SEXY PLANET",
@@ -562,7 +612,8 @@
           "bpm": "181",
           "difficulty": "expert",
           "mode": "double",
-          "game": "4thMix"
+          "game": "4thMix",
+          "rankedRating": 3.4
         },
         {
           "title": "sakura storm",
@@ -570,7 +621,8 @@
           "bpm": "184",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 2.2
         }
       ]
     },
@@ -590,7 +642,8 @@
           "bpm": "182",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 11.5
         },
         {
           "title": "The Lonely Streets",
@@ -598,7 +651,8 @@
           "bpm": "115",
           "difficulty": "expert",
           "mode": "double",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 11.35
         },
         {
           "title": "SUNKiSS♥DROP",
@@ -606,7 +660,8 @@
           "bpm": "186",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova 2"
+          "game": "Supernova 2",
+          "rankedRating": 3.25
         },
         {
           "title": "Dance Dance Revolution",
@@ -614,7 +669,8 @@
           "bpm": "150",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Extreme"
+          "game": "Extreme",
+          "rankedRating": 12.4
         }
       ]
     },
@@ -634,7 +690,8 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 12.15
         },
         {
           "title": "CENTAUR",
@@ -642,7 +699,8 @@
           "bpm": "132-140",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova"
+          "game": "Supernova",
+          "rankedRating": 12.7
         },
         {
           "title": "DoLL",
@@ -650,7 +708,8 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova"
+          "game": "Supernova",
+          "rankedRating": 12.35
         },
         {
           "title": "MARS WAR 3",
@@ -658,7 +717,8 @@
           "bpm": "200",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova 2"
+          "game": "Supernova 2",
+          "rankedRating": 3.4
         }
       ]
     },
@@ -678,7 +738,8 @@
           "bpm": "146",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 2.3
         },
         {
           "title": "exotic ethnic",
@@ -686,7 +747,8 @@
           "bpm": "190",
           "difficulty": "expert",
           "mode": "double",
-          "game": "6thMix"
+          "game": "6thMix",
+          "rankedRating": 13.2
         },
         {
           "title": "デッドボヲルdeホームラン",
@@ -694,7 +756,8 @@
           "bpm": "145",
           "difficulty": "expert",
           "mode": "double",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 13.8
         },
         {
           "title": "Ishtar",
@@ -702,7 +765,8 @@
           "bpm": "156",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 14.25
         }
       ]
     },
@@ -722,7 +786,8 @@
           "bpm": "150",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X"
+          "game": "X",
+          "rankedRating": 14.25
         },
         {
           "title": "Let's DANCE aROUND!!",
@@ -730,7 +795,8 @@
           "bpm": "63-252",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A3"
+          "game": "A3",
+          "rankedRating": 14.85
         },
         {
           "title": "Pierce The Sky",
@@ -738,7 +804,8 @@
           "bpm": "85-170",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 14.55
         },
         {
           "title": "PARANOIA survivor",
@@ -746,7 +813,8 @@
           "bpm": "135-271",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Extreme"
+          "game": "Extreme",
+          "rankedRating": 15.65
         }
       ]
     },
@@ -766,7 +834,8 @@
           "bpm": "156",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A20 Plus"
+          "game": "A20 Plus",
+          "rankedRating": 15.35
         },
         {
           "title": "out of focus",
@@ -774,7 +843,8 @@
           "bpm": "84-167",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 15.7
         },
         {
           "title": "Skywalking",
@@ -782,7 +852,8 @@
           "bpm": "90-180",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 15.65
         },
         {
           "title": "UNBELIEVABLE (Sparky remix)",
@@ -790,7 +861,8 @@
           "bpm": "88-175",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 4.25
         }
       ]
     },
@@ -810,7 +882,8 @@
           "bpm": "83-165",
           "difficulty": "expert",
           "mode": "double",
-          "game": "2014"
+          "game": "2014",
+          "rankedRating": 3.6
         },
         {
           "title": "Helios",
@@ -818,7 +891,8 @@
           "bpm": "182",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 16.45
         },
         {
           "title": "KIMONO♥PRINCESS",
@@ -826,7 +900,8 @@
           "bpm": "95-190",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 5.15
         },
         {
           "title": "The legend of MAX(X-Special)",
@@ -834,7 +909,8 @@
           "bpm": "83-666",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X"
+          "game": "X",
+          "rankedRating": 17.4
         }
       ]
     },
@@ -854,7 +930,8 @@
           "bpm": "30-240",
           "difficulty": "expert",
           "mode": "double",
-          "game": "A20"
+          "game": "A20",
+          "rankedRating": 17.1
         },
         {
           "title": "Fascination ～eternal love mix～",
@@ -862,7 +939,8 @@
           "bpm": "100-400",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "Supernova"
+          "game": "Supernova",
+          "rankedRating": 9.6
         },
         {
           "title": "RISING FIRE HAWK",
@@ -870,7 +948,8 @@
           "bpm": "157",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 17.4
         },
         {
           "title": "PARANOiA Revolution",
@@ -878,7 +957,8 @@
           "bpm": "180-360",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 18.4
         }
       ]
     },
@@ -898,7 +978,8 @@
           "bpm": "180",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "2013"
+          "game": "2013",
+          "rankedRating": 3.45
         },
         {
           "title": "Astrogazer",
@@ -906,7 +987,8 @@
           "bpm": "154",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "A"
+          "game": "A",
+          "rankedRating": 18.15
         },
         {
           "title": "New Decade",
@@ -914,7 +996,8 @@
           "bpm": "100-400",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 18.55
         },
         {
           "title": "PARANOiA ～HADES～",
@@ -922,7 +1005,8 @@
           "bpm": "75-300",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "Supernova 2"
+          "game": "Supernova 2",
+          "rankedRating": 18.6
         }
       ]
     },
@@ -942,7 +1026,8 @@
           "bpm": "95-380",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "2013"
+          "game": "2013",
+          "rankedRating": 18.45
         },
         {
           "title": "Tohoku EVOLVED",
@@ -950,7 +1035,8 @@
           "bpm": "43-1020",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X3 vs 2ndMix"
+          "game": "X3 vs 2ndMix",
+          "rankedRating": 18.55
         },
         {
           "title": "Valkyrie dimension",
@@ -958,7 +1044,8 @@
           "bpm": "47-744",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 19.2
         },
         {
           "title": "POSSESSION",
@@ -966,7 +1053,8 @@
           "bpm": "185-370",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X2"
+          "game": "X2",
+          "rankedRating": 7.45
         }
       ]
     }

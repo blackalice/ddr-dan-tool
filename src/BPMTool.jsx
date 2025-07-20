@@ -783,12 +783,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                     datasets: [{
                                         label: 'BPM',
                                         data: chartData,
-                                        borderColor: 'rgba(59, 130, 246, 1)',
-                                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                        borderColor: `var(--accent-color)`,
+                                        backgroundColor: `rgba(var(--accent-color-rgb), 0.2)`,
                                         stepped: true,
                                         fill: true,
                                         pointRadius: 4,
-                                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                        pointBackgroundColor: `var(--accent-color)`,
                                         pointBorderColor: '#fff',
                                         pointHoverRadius: 7,
                                         borderWidth: 2.5
