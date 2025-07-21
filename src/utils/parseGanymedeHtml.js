@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 const lampMapping = {
   'MARVELOUS FC': 'MARVELOUS FULL COMBO',
@@ -25,7 +25,7 @@ const romanNumeralMap = {
 };
 
 export function parseGanymedeHtml(html, playtype = 'SP') {
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const tbody = $(`tbody#${playtype.toLowerCase()}-tbody`);
   const scoresData = {
     meta: { game: 'ddr', playtype, service: 'Ganymede' },
