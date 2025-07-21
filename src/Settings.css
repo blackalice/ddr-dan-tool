@@ -160,3 +160,10 @@
     border-radius: 0.5rem;
     margin-top: 1rem;
 }
+
+.debug-output {
+    white-space: pre-wrap;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    word-break: break-word;
+}

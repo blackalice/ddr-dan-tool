@@ -95,6 +95,18 @@ app.post('/api/lists', async c => {
   return c.json({ ok: true });
 });
 
+// Simple endpoint to test writing to the database
+app.post('/api/test-db', async c => {
+  try {
+    const body = await c.req.json();
+    const msg = body.message || 'test';
+    const result = await c.env.DB.prepare('INSERT INTO test_entries (message) VALUES (?)').bind(msg).run();
+    return c.json({ ok: true, meta: result.meta });
+  } catch (err) {
+    return c.json({ error: err.message }, 500);
+  }
+});
+
 // Fallback to serve static assets from the "dist" directory
 app.use('*', async (c) => {
   return c.env.ASSETS.fetch(c.req.raw);
