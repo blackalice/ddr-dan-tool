@@ -26,10 +26,19 @@ const Settings = () => {
     const { scores, setScores } = useScores();
 
     const [songMeta, setSongMeta] = useState([]);
+    const [songLookup, setSongLookup] = useState({});
     useEffect(() => {
         fetch('/song-meta.json')
             .then(res => res.json())
-            .then(setSongMeta)
+            .then((data) => {
+                setSongMeta(data);
+                const map = {};
+                for (const song of data) {
+                    if (song.title) map[song.title.toLowerCase()] = song;
+                    if (song.titleTranslit) map[song.titleTranslit.toLowerCase()] = song;
+                }
+                setSongLookup(map);
+            })
             .catch(() => {});
     }, []);
 
@@ -50,19 +59,18 @@ const Settings = () => {
         };
         let unmatched = 0;
         const unmatchedEntries = [];
-        const looseThreshold = 0.3;
         for (const entry of data.scores) {
-            const target = entry.identifier;
-            let best = null;
+            const identifier = entry.identifier.toLowerCase();
+            let best = songLookup[identifier] || null;
             let bestSim = 0;
-            for (const song of songMeta) {
-                const sim = similarity(target, song.title);
-                if (sim > bestSim) { bestSim = sim; best = song; }
+            if (!best) {
+                for (const song of songMeta) {
+                    const sim = similarity(identifier, song.title);
+                    if (sim > bestSim) { bestSim = sim; best = song; }
+                }
+                if (bestSim < 0.4) best = null;
             }
-            if (best && bestSim > 0.4) {
-                const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
-                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
-            } else if (best && bestSim >= looseThreshold) {
+            if (best) {
                 const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
             } else {
@@ -84,11 +92,19 @@ const Settings = () => {
                 throw new Error('File too large');
             }
             const text = await file.text();
+            const lowerName = file.name.toLowerCase();
             let result;
-            if (file.type.includes('json') || file.name.endsWith('.json')) {
-                const data = JSON.parse(text);
+            const isJson = file.type === 'application/json' || lowerName.endsWith('.json') || text.trim().startsWith('{');
+            const isHtml = file.type === 'text/html' || lowerName.endsWith('.html') || text.trim().startsWith('<');
+            if (isJson) {
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    throw new Error('Invalid JSON');
+                }
                 result = importParsedScores(data);
-            } else if (file.type.includes('html') || file.name.endsWith('.html') || text.trim().startsWith('<')) {
+            } else if (isHtml) {
                 const res = await fetch(`/api/parse-scores?playtype=${uploadPlaytype}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/html' },
@@ -102,7 +118,7 @@ const Settings = () => {
             }
             if (result) {
                 setUploadMessage(`Imported ${result.total - result.unmatched} of ${result.total} scores.`);
-                setUnmatchedLines(result.unmatchedEntries || []);
+                setUnmatchedLines((result.unmatchedEntries || []).slice(0, 100));
             }
         } catch (err) {
             console.error('Failed to import scores:', err);
@@ -272,12 +288,12 @@ const Settings = () => {
                             </p>
                         </div>
                         <div className="setting-control upload-control">
-                            <input type="file" accept=".json,application/json,text/html" onChange={handleUploadFile} className="settings-input" />
-                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select">
+                            <input type="file" accept=".json,application/json,text/html" onChange={handleUploadFile} className="settings-input" disabled={processing} />
+                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
                                 <option value="SP">SP</option>
                                 <option value="DP">DP</option>
                             </select>
-                            <button onClick={clearScores} className="settings-button">Delete Stats</button>
+                            <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
                         </div>
                         {processing && (<div className="upload-status">Processing...</div>)}
                         {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
