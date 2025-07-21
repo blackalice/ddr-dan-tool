@@ -86,4 +86,17 @@ This project uses a Cloudflare Worker to serve the built React application and e
 
 2.  The worker exposes an example endpoint at `/api/hello` returning a greeting in JSON.
 
+3.  You can also POST a Ganymede score HTML dump to `/api/parse-scores`. The body
+    may be raw HTML or `multipart/form-data` with a `file` field. Pass an optional
+    `playtype` query parameter (`SP` or `DP`) to choose which table is parsed. The
+    response is JSON in BATCH-MANUAL format.
+
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
+
+### Parsing Scores Locally
+
+Run the following script to convert a Ganymede score HTML file into JSON:
+
+```sh
+npm run parse:scores <path/to/file.html> [output.json] [SP|DP]
+```
