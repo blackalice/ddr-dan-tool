@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await login(username, password);
+    const result = await login(username.trim(), password.trim());
     if (result.success) {
       setMessage('Login successful.');
       navigate('/settings');
@@ -31,6 +31,7 @@ const Login = () => {
             placeholder="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
           />
           <input
             className="settings-input"
@@ -38,6 +39,7 @@ const Login = () => {
             placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
           <button className="settings-button" type="submit">Login</button>
         </form>

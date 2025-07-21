@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { SettingsContext } from './SettingsContext.jsx';
 import { GroupsContext } from './GroupsContext.jsx';
 
@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
   const settings = useContext(SettingsContext);
   const groupsCtx = useContext(GroupsContext);
 
-  const loadUser = async (t) => {
+  const loadUser = useCallback(async (t) => {
     try {
       const res = await fetch('/api/user', {
         headers: { Authorization: `Bearer ${t}` },
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [settings, groupsCtx]);
 
   useEffect(() => {
     if (token) {

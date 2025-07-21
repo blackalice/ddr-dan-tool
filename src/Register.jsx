@@ -12,7 +12,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await register(username, password);
+    const result = await register(username.trim(), password.trim());
     if (result.success) {
       setMessage('Registration successful.');
       navigate('/settings');
@@ -31,6 +31,7 @@ const Register = () => {
             placeholder="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
           />
           <input
             className="settings-input"
@@ -38,6 +39,7 @@ const Register = () => {
             placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
           />
           <button className="settings-button" type="submit">Register</button>
         </form>
