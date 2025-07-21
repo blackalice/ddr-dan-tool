@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
+import { similarity } from './utils/stringSimilarity.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import './Settings.css';
 
@@ -20,6 +22,49 @@ const Settings = () => {
         songlistOverride,
         setSonglistOverride,
     } = useContext(SettingsContext);
+
+    const { scores, setScores } = useScores();
+
+    const [songMeta, setSongMeta] = useState([]);
+    useEffect(() => {
+        fetch('/song-meta.json')
+            .then(res => res.json())
+            .then(setSongMeta)
+            .catch(() => {});
+    }, []);
+
+    const handleUploadScores = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            if (!Array.isArray(data.scores)) return;
+            const newScores = { ...scores };
+            for (const entry of data.scores) {
+                const target = entry.identifier;
+                let best = null;
+                let bestSim = 0;
+                for (const song of songMeta) {
+                    const sim = similarity(target, song.title);
+                    if (sim > bestSim) { bestSim = sim; best = song; }
+                }
+                if (best && bestSim > 0.4) {
+                    const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
+                    newScores[key] = { score: entry.score, lamp: entry.lamp };
+                }
+            }
+            setScores(newScores);
+        } catch {
+            // ignore
+        }
+    };
+
+    const clearScores = () => {
+        if (window.confirm('Delete all stored scores?')) {
+            setScores({});
+        }
+    };
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
 
@@ -160,6 +205,20 @@ const Settings = () => {
                                 <option value="Enable">Enable</option>
                                 <option value="Disable">Disable</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <h2 className="settings-sub-header">Scores</h2>
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Upload Score JSON</h3>
+                            <p>
+                                Import your DDR scores to display them on the Ranking page. Your browser currently stores {Object.keys(scores).length} scores.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <input type="file" accept="application/json" onChange={handleUploadScores} className="settings-input" />
+                            <button onClick={clearScores} className="settings-button">Delete Stats</button>
                         </div>
                     </div>
 
