@@ -3,10 +3,12 @@ import SongCard from './components/SongCard.jsx';
 import { loadDanData } from './utils/course-loader.js';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import './App.css';
 import './components/SongCard.css';
 
 const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
+  const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
@@ -29,9 +31,20 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
       </h2>
       {!isCollapsed && (
         <div className="song-grid">
-          {danCourse.songs.map((song, index) => (
-            <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} playMode={playMode} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
-          ))}
+          {danCourse.songs.map((song, index) => {
+            const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
+            const score = scores[song.mode]?.[chartKey]?.score;
+            return (
+              <SongCard
+                key={`${danCourse.name}-${song.title}-${index}`}
+                song={song}
+                playMode={playMode}
+                setSelectedGame={setSelectedGame}
+                resetFilters={resetFilters}
+                score={score}
+              />
+            );
+          })}
         </div>
       )}
     </section>

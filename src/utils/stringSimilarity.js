@@ -1,4 +1,9 @@
-export const normalizeString = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, '');
+export const normalizeString = (str) =>
+    str
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\p{L}\p{N}]/gu, '');
 
 export const levenshtein = (a, b) => {
     const m = a.length;
