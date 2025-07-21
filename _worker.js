@@ -4,23 +4,6 @@ import bcrypt from 'bcryptjs';
 
 const app = new Hono();
 
-// This function creates your database tables if they don't exist.
-// Added `NOT NULL` to ensure username and password must be provided.
-const initDB = async (db) => {
-  await db.exec(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-  );`);
-  await db.exec(`CREATE TABLE IF NOT EXISTS settings (
-    user_id INTEGER PRIMARY KEY,
-    data TEXT
-  );`);
-  await db.exec(`CREATE TABLE IF NOT EXISTS lists (
-    user_id INTEGER PRIMARY KEY,
-    data TEXT
-  );`);
-};
 
 // Middleware for handling CORS and OPTIONS requests
 app.use('/api/*', async (c, next) => {
@@ -36,7 +19,6 @@ app.post('/api/register', async c => {
   const { username, password } = await c.req.json();
   if (!username || !password) return c.json({ error: 'invalid' }, 400);
 
-  await initDB(c.env.DB);
   const hash = await bcrypt.hash(password, 10);
 
   try {
@@ -52,8 +34,6 @@ app.post('/api/register', async c => {
 
 app.post('/api/login', async c => {
   const { username, password } = await c.req.json();
-  await initDB(c.env.DB);
-
   const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
   if (!user) return c.json({ error: 'invalid' }, 400);
 
@@ -83,7 +63,6 @@ app.get('/api/user', async c => {
   const payload = await auth(c);
   if (!payload) return c.json({ error: 'unauthorized' }, 401);
 
-  await initDB(c.env.DB);
   const settingsRow = await c.env.DB.prepare('SELECT data FROM settings WHERE user_id = ?').bind(payload.id).first();
   const listsRow = await c.env.DB.prepare('SELECT data FROM lists WHERE user_id = ?').bind(payload.id).first();
 
@@ -99,7 +78,6 @@ app.post('/api/settings', async c => {
   if (!payload) return c.json({ error: 'unauthorized' }, 401);
 
   const body = await c.req.json();
-  await initDB(c.env.DB);
   const data = JSON.stringify(body.settings);
 
   await c.env.DB.prepare('INSERT INTO settings (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data').bind(payload.id, data).run();
@@ -111,7 +89,6 @@ app.post('/api/lists', async c => {
   if (!payload) return c.json({ error: 'unauthorized' }, 401);
 
   const body = await c.req.json();
-  await initDB(c.env.DB);
   const data = JSON.stringify(body.lists);
 
   await c.env.DB.prepare('INSERT INTO lists (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data').bind(payload.id, data).run();
