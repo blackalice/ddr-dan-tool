@@ -166,3 +166,19 @@
     overflow-y: auto;
     margin-top: 0.5rem;
 }
+
+.upload-control > input[type="file"],
+.upload-control > select,
+.upload-control > button {
+    flex: 1 1 0;
+    width: auto;
+    min-height: 2.5rem;
+}
+
+@media (max-width: 1024px) {
+    .upload-control > input[type="file"],
+    .upload-control > select,
+    .upload-control > button {
+        width: 100%;
+    }
+}

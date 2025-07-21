@@ -91,14 +91,14 @@ This project uses a Cloudflare Worker to serve the built React application and e
     `playtype` query parameter (`SP` or `DP`) to choose which table is parsed. The
     response is JSON in BATCH-MANUAL format.
 
-4.  The Settings page provides a single upload box that accepts either a JSON
-    score dump or a raw Ganymede HTML file. You can get this HTML by right
-    clicking and saving your scores page at
-    `https://ganymede-cg.net/ddr/scores/**/********`. When uploading HTML,
-    choose SP or DP so the correct table is parsed. Scores parsed as SP or DP are
-    stored separately and will only appear when that play style is selected. Any
-    unmatched songs are listed in a console-style block below the upload button
-    so you can easily check for issues.
+4.  The Settings page provides a single upload box—found under **Beta Features**—
+    that accepts either a JSON score dump or a raw Ganymede HTML file. You can
+    get this HTML by right clicking and saving your scores page at
+    `https://ganymede-cg.net/ddr/scores/**/********`. When uploading HTML, choose
+    SP or DP so the correct table is parsed. Scores parsed as SP or DP are stored
+    separately and only appear when that play style is selected. Any unmatched
+    songs are listed in a console-style block below the upload button so you can
+    easily check for issues.
 
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
 

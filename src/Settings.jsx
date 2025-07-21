@@ -261,7 +261,6 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <h2 className="settings-sub-header">Scores</h2>
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Upload Scores</h3>
@@ -272,13 +271,13 @@ const Settings = () => {
                                 {Object.keys(scores.double).length} DP scores.
                             </p>
                         </div>
-                        <div className="setting-control">
+                        <div className="setting-control upload-control">
                             <input type="file" accept=".json,application/json,text/html" onChange={handleUploadFile} className="settings-input" />
-                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" style={{ marginLeft: '0.5rem' }}>
+                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select">
                                 <option value="SP">SP</option>
                                 <option value="DP">DP</option>
                             </select>
-                            <button onClick={clearScores} className="settings-button" style={{ marginLeft: '0.5rem' }}>Delete Stats</button>
+                            <button onClick={clearScores} className="settings-button">Delete Stats</button>
                         </div>
                         {processing && (<div className="upload-status">Processing...</div>)}
                         {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
