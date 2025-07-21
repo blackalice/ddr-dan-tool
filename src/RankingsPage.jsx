@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownWideShort, faArrowUpWideShort } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
@@ -21,7 +22,13 @@ const RatingSection = ({ rating, charts }) => {
       {!isCollapsed && (
         <div className="song-grid">
           {charts.map((chart, idx) => (
-            <SongCard key={idx} song={chart} forceShowRankedRating />
+            <SongCard
+              key={idx}
+              song={chart}
+              score={chart.score}
+              scoreHighlight={chart.score > 990000}
+              forceShowRankedRating
+            />
           ))}
         </div>
       )}
@@ -32,6 +39,7 @@ const RatingSection = ({ rating, charts }) => {
 const RankingsPage = () => {
   const { playStyle } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
+  const { scores } = useScores();
   const [songMeta, setSongMeta] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState(() => {
     const stored = localStorage.getItem('selectedRankingLevel');
@@ -92,7 +100,7 @@ const RankingsPage = () => {
           Math.floor(diff.rankedRating) === selectedLevel
         ) {
           const bpm = song.hasMultipleBpms ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}` : String(Math.round(song.bpmMin));
-          charts.push({
+          const chart = {
             title: song.title,
             bpm,
             level: diff.feet,
@@ -101,12 +109,17 @@ const RankingsPage = () => {
             game: song.game,
             rankedRating: diff.rankedRating,
             resetFilters,
-          });
+          };
+          const key = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
+          if (scores[key]) {
+            chart.score = scores[key].score;
+          }
+          charts.push(chart);
         }
       }
     }
     return charts;
-  }, [songMeta, playStyle, selectedLevel, resetFilters]);
+  }, [songMeta, playStyle, selectedLevel, resetFilters, scores]);
 
   const groupedCharts = useMemo(() => {
     const map = new Map();
