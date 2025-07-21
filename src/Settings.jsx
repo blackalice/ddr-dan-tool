@@ -24,6 +24,22 @@ const Settings = () => {
     const { user, login, logout, register } = useUser();
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
+    const [testDbResult, setTestDbResult] = useState('');
+
+    const handleTestDb = async () => {
+        setTestDbResult('');
+        try {
+            const res = await fetch('/api/test-db', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: 'test' }),
+            });
+            const data = await res.json();
+            setTestDbResult(JSON.stringify(data, null, 2));
+        } catch (err) {
+            setTestDbResult(`Error: ${err.message}`);
+        }
+    };
 
     const handleSaveKey = () => {
         setApiKey(newApiKey);
@@ -201,6 +217,19 @@ const Settings = () => {
                                 <option value="Enable">Enable</option>
                                 <option value="Disable">Disable</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Database Test</h3>
+                            <p>
+                                Write a sample entry to the database to verify your setup.
+                            </p>
+                            {testDbResult && <pre className="debug-output">{testDbResult}</pre>}
+                        </div>
+                        <div className="setting-control">
+                            <button onClick={handleTestDb} className="settings-button">Run Test</button>
                         </div>
                     </div>
 
