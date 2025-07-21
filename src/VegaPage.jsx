@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import { loadVegaData } from './utils/course-loader.js';
 import './App.css';
 import './VegaPage.css';
 
 const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
+    const { scores } = useScores();
     const [isCollapsed, setIsCollapsed] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
@@ -34,9 +36,19 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
             </h2>
             {!isCollapsed && (
               <div className={songGridClasses}>
-                  {danCourse.songs.map((song, index) => (
-                      <SongCard key={`${danCourse.name}-${song.title}-${index}`} song={song} setSelectedGame={setSelectedGame} resetFilters={resetFilters} />
-                  ))}
+                  {danCourse.songs.map((song, index) => {
+                      const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
+                      const score = scores[song.mode]?.[chartKey]?.score;
+                      return (
+                          <SongCard
+                              key={`${danCourse.name}-${song.title}-${index}`}
+                              song={song}
+                              setSelectedGame={setSelectedGame}
+                              resetFilters={resetFilters}
+                              score={score}
+                          />
+                      );
+                  })}
               </div>
             )}
         </section>

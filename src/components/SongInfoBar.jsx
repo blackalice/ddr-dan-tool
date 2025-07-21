@@ -3,6 +3,7 @@ import { DifficultyMeter } from './DifficultyMeter';
 import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.js';
 import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { useScores } from '../contexts/ScoresContext.jsx';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -29,6 +30,13 @@ const SongInfoBar = ({
 
   const { filters } = useFilters();
   const { showRankedRatings } = useContext(SettingsContext);
+  const { scores } = useScores();
+
+  const currentScore = React.useMemo(() => {
+    if (!currentChart) return null;
+    const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
+    return scores[currentChart.mode]?.[key]?.score || null;
+  }, [scores, currentChart, songTitle]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData || !difficulties) return null;
@@ -108,10 +116,12 @@ const SongInfoBar = ({
       {!isCollapsed && (
         <div className="details-grid bpm-tool-grid">
           <div className={`grid-item difficulty-container ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
-              <span className="difficulty-label">Difficulty:</span>
               <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
                 {renderDifficulties(playStyle)}
               </div>
+              {currentScore != null && (
+                <div className="score-badge">{currentScore.toLocaleString()}</div>
+              )}
           </div>
           <div className="bpm-core-container">
             <div className="grid-item grid-item-bpm">

@@ -86,4 +86,28 @@ This project uses a Cloudflare Worker to serve the built React application and e
 
 2.  The worker exposes an example endpoint at `/api/hello` returning a greeting in JSON.
 
+3.  You can also POST a Ganymede score HTML dump to `/api/parse-scores`. The body
+    may be raw HTML or `multipart/form-data` with a `file` field. Pass an optional
+    `playtype` query parameter (`SP` or `DP`) to choose which table is parsed. The
+    response is JSON in BATCH-MANUAL format.
+
+4.  The Settings page provides a single upload box—found under **Beta Features**—
+    that accepts either a JSON score dump or a raw Ganymede HTML file. You can
+    get this HTML by right clicking and saving your scores page at
+    `https://ganymede-cg.net/ddr/scores/**/********`. When uploading HTML, choose
+    SP or DP so the correct table is parsed. Scores parsed as SP or DP are stored
+    separately and only appear when that play style is selected. Any unmatched
+    songs are listed in a console-style block below the upload button so you can
+    easily check for issues.
+
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
+
+### Parsing Scores Locally
+
+Run the following script to convert a Ganymede score HTML file into JSON. You
+can optionally choose the output filename and whether to parse the SP or DP
+table:
+
+```sh
+npm run parse:scores <path/to/file.html> [output.json] [SP|DP]
+```

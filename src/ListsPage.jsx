@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPalette, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import CreateListModal from './components/CreateListModal.jsx';
@@ -11,6 +12,7 @@ import './VegaPage.css';
 import './ListsPage.css';
 
 const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart, highlightKey }) => {
+  const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
@@ -90,7 +92,9 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
       {!isCollapsed && (
         <div className="song-grid">
           {group.charts.map((chart, idx) => {
-            const key = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
+            const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
+            const chartKey = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+            const score = scores[chart.mode]?.[chartKey]?.score;
             return (
               <SongCard
                 key={idx}
@@ -98,7 +102,8 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
                 resetFilters={resetFilters}
                 onRemove={showActions ? () => removeChart(group.name, chart) : undefined}
                 onEdit={showActions ? () => onEditChart(group.name, chart) : undefined}
-                highlight={highlightKey === key}
+                highlight={highlightKey === highlightId}
+                score={score}
               />
             );
           })}

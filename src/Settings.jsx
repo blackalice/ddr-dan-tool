@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
+import { similarity } from './utils/stringSimilarity.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import './Settings.css';
 
@@ -20,6 +22,118 @@ const Settings = () => {
         songlistOverride,
         setSonglistOverride,
     } = useContext(SettingsContext);
+
+    const { scores, setScores } = useScores();
+
+    const [songMeta, setSongMeta] = useState([]);
+    const [songLookup, setSongLookup] = useState({});
+    useEffect(() => {
+        fetch('/song-meta.json')
+            .then(res => res.json())
+            .then((data) => {
+                setSongMeta(data);
+                const map = {};
+                for (const song of data) {
+                    if (song.title) map[song.title.toLowerCase()] = song;
+                    if (song.titleTranslit) map[song.titleTranslit.toLowerCase()] = song;
+                }
+                setSongLookup(map);
+            })
+            .catch(() => {});
+    }, []);
+
+    const [uploadPlaytype, setUploadPlaytype] = useState('SP');
+    const [processing, setProcessing] = useState(false);
+    const [uploadMessage, setUploadMessage] = useState('');
+    const [unmatchedLines, setUnmatchedLines] = useState([]);
+
+    const importParsedScores = (data) => {
+        if (!Array.isArray(data.scores)) return { total: 0, unmatched: 0, unmatchedEntries: [] };
+        const play = (data.meta && data.meta.playtype)
+            ? data.meta.playtype.toUpperCase()
+            : uploadPlaytype;
+        const keyName = play === 'DP' ? 'double' : 'single';
+        const newScores = {
+            ...scores,
+            [keyName]: { ...(scores[keyName] || {}) },
+        };
+        let unmatched = 0;
+        const unmatchedEntries = [];
+        for (const entry of data.scores) {
+            const identifier = entry.identifier.toLowerCase();
+            let best = songLookup[identifier] || null;
+            let bestSim = 0;
+            if (!best) {
+                for (const song of songMeta) {
+                    const sim = similarity(identifier, song.title);
+                    if (sim > bestSim) { bestSim = sim; best = song; }
+                }
+                if (bestSim < 0.4) best = null;
+            }
+            if (best) {
+                const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
+                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
+            } else {
+                unmatched++;
+                unmatchedEntries.push(`${entry.identifier} - ${entry.difficulty}`);
+            }
+        }
+        setScores(newScores);
+        console.warn(`Imported ${data.scores.length - unmatched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
+        return { total: data.scores.length, unmatched, unmatchedEntries };
+    };
+
+    const handleUploadFile = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        setProcessing(true);
+        try {
+            if (file.size > 5 * 1024 * 1024) {
+                throw new Error('File too large');
+            }
+            const text = await file.text();
+            const lowerName = file.name.toLowerCase();
+            let result;
+            const isJson = file.type === 'application/json' || lowerName.endsWith('.json') || text.trim().startsWith('{');
+            const isHtml = file.type === 'text/html' || lowerName.endsWith('.html') || text.trim().startsWith('<');
+            if (isJson) {
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    throw new Error('Invalid JSON');
+                }
+                result = importParsedScores(data);
+            } else if (isHtml) {
+                const res = await fetch(`/api/parse-scores?playtype=${uploadPlaytype}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/html' },
+                    body: text,
+                });
+                if (!res.ok) throw new Error('Server parse failed');
+                const data = await res.json();
+                result = importParsedScores(data);
+            } else {
+                throw new Error('Unsupported file type');
+            }
+            if (result) {
+                setUploadMessage(`Imported ${result.total - result.unmatched} of ${result.total} scores.`);
+                setUnmatchedLines((result.unmatchedEntries || []).slice(0, 100));
+            }
+        } catch (err) {
+            console.error('Failed to import scores:', err);
+            setUploadMessage('Failed to import scores');
+        } finally {
+            setProcessing(false);
+            e.target.value = '';
+        }
+    };
+
+    const clearScores = () => {
+        if (window.confirm('Delete all stored scores?')) {
+            setScores({ single: {}, double: {} });
+        }
+    };
 
     const [newApiKey, setNewApiKey] = useState(apiKey);
 
@@ -161,6 +275,33 @@ const Settings = () => {
                                 <option value="Disable">Disable</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Upload Scores</h3>
+                            <p>
+                                Import your DDR scores in JSON or HTML format. Right click and save the
+                                HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
+                                Your browser currently stores {Object.keys(scores.single).length} SP and
+                                {Object.keys(scores.double).length} DP scores.
+                            </p>
+                        </div>
+                        <div className="setting-control upload-control">
+                            <input type="file" accept=".json,application/json,text/html" onChange={handleUploadFile} className="settings-input" disabled={processing} />
+                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
+                                <option value="SP">SP</option>
+                                <option value="DP">DP</option>
+                            </select>
+                            <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
+                        </div>
+                        {processing && (<div className="upload-status">Processing...</div>)}
+                        {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
+                        {!processing && unmatchedLines.length > 0 && (
+                            <pre className="upload-console">
+                                {unmatchedLines.join('\n')}
+                            </pre>
+                        )}
                     </div>
 
                     <h2 className="settings-sub-header">About</h2>

@@ -5,6 +5,7 @@ import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
+import { ScoresProvider } from './contexts/ScoresContext.jsx';
 import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
@@ -174,13 +175,15 @@ function AppRoutes() {
 function AppWrapper() {
   return (
     <SettingsProvider>
-      <FilterProvider>
-        <GroupsProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </GroupsProvider>
-      </FilterProvider>
+      <ScoresProvider>
+        <FilterProvider>
+          <GroupsProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </GroupsProvider>
+        </FilterProvider>
+      </ScoresProvider>
     </SettingsProvider>
   );
 }

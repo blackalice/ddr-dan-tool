@@ -129,6 +129,25 @@
   animation: highlight-fade 1.5s forwards;
 }
 
+.song-card.score-highlight {
+  border: 2px solid yellow;
+}
+
+.score-badge {
+  background-color: var(--card-hover-bg-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 @keyframes highlight-fade {
   from { box-shadow: 0 0 0 3px var(--accent-color); }
   to { box-shadow: none; }

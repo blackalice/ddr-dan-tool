@@ -50,7 +50,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, forceShowRankedRating = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const navigate = useNavigate();
 
@@ -107,7 +107,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, for
         { state: { fromSongCard: true } }
       );
     }}>
-      <div className={`song-card${highlight ? ' highlight' : ''}`}>
+      <div className={`song-card${highlight ? ' highlight' : ''}${scoreHighlight ? ' score-highlight' : ''}`}>
         {onEdit && (
           <button className="song-card-action edit" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
             <FontAwesomeIcon icon={faPen} />
@@ -120,7 +120,12 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, for
         )}
         <div className="song-card-header">
           <h3 className="song-title">{song.title}</h3>
-          {song.game && <div className="game-chip">{song.game}</div>}
+          <div className="header-right">
+            {song.game && <div className="game-chip">{song.game}</div>}
+            {score != null && (
+              <div className="score-badge">{score.toLocaleString()}</div>
+            )}
+          </div>
         </div>
         <div className="song-details">
           <div>
