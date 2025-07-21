@@ -4,6 +4,8 @@ import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
+import Login from './Login.jsx';
+import Register from './Register.jsx';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
@@ -160,8 +162,10 @@ function AppRoutes() {
           <Route path="/rankings" element={<RankingsPage />} />
           {showLists && <Route path="/lists" element={<ListsPage />} />}
           <Route path="/" element={<Navigate to="/bpm" replace />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
-            <Route path="/settings" element={<Settings />} />
+          <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           </Routes>
         </div>
         <footer className="footer">
