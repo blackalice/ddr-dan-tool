@@ -40,7 +40,12 @@ const Settings = () => {
             const text = await file.text();
             const data = JSON.parse(text);
             if (!Array.isArray(data.scores)) return;
-            const newScores = { ...scores };
+            const play = (data.meta && data.meta.playtype) ? data.meta.playtype.toUpperCase() : 'SP';
+            const keyName = play === 'DP' ? 'double' : 'single';
+            const newScores = {
+                ...scores,
+                [keyName]: { ...(scores[keyName] || {}) },
+            };
             for (const entry of data.scores) {
                 const target = entry.identifier;
                 let best = null;
@@ -51,7 +56,7 @@ const Settings = () => {
                 }
                 if (best && bestSim > 0.4) {
                     const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
-                    newScores[key] = { score: entry.score, lamp: entry.lamp };
+                    newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
                 }
             }
             setScores(newScores);
@@ -64,7 +69,12 @@ const Settings = () => {
 
     const importParsedScores = (data) => {
         if (!Array.isArray(data.scores)) return;
-        const newScores = { ...scores };
+        const play = (data.meta && data.meta.playtype) ? data.meta.playtype.toUpperCase() : 'SP';
+        const keyName = play === 'DP' ? 'double' : 'single';
+        const newScores = {
+            ...scores,
+            [keyName]: { ...(scores[keyName] || {}) },
+        };
         for (const entry of data.scores) {
             const target = entry.identifier;
             let best = null;
@@ -75,7 +85,7 @@ const Settings = () => {
             }
             if (best && bestSim > 0.4) {
                 const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
-                newScores[key] = { score: entry.score, lamp: entry.lamp };
+                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
             }
         }
         setScores(newScores);
@@ -101,7 +111,7 @@ const Settings = () => {
 
     const clearScores = () => {
         if (window.confirm('Delete all stored scores?')) {
-            setScores({});
+            setScores({ single: {}, double: {} });
         }
     };
 
@@ -252,7 +262,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Upload Score JSON</h3>
                             <p>
-                                Import your DDR scores to display them on the Ranking page. Your browser currently stores {Object.keys(scores).length} scores.
+                                Import your DDR scores to display them on the Ranking page. Your browser currently stores {Object.keys(scores.single).length + Object.keys(scores.double).length} scores.
                             </p>
                         </div>
                         <div className="setting-control">

@@ -111,8 +111,8 @@ const RankingsPage = () => {
             resetFilters,
           };
           const key = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
-          if (scores[key]) {
-            chart.score = scores[key].score;
+          if (scores[playStyle]?.[key]) {
+            chart.score = scores[playStyle][key].score;
           }
           charts.push(chart);
         }

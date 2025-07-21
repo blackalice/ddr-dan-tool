@@ -92,13 +92,16 @@ This project uses a Cloudflare Worker to serve the built React application and e
     response is JSON in BATCH-MANUAL format.
 
 4.  The Settings page includes an upload form that sends a Ganymede HTML file to
-    this endpoint and automatically stores the parsed scores locally.
+    this endpoint. Scores parsed as SP or DP are stored separately and will only
+    appear when that play style is selected.
 
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
 
 ### Parsing Scores Locally
 
-Run the following script to convert a Ganymede score HTML file into JSON:
+Run the following script to convert a Ganymede score HTML file into JSON. You
+can optionally choose the output filename and whether to parse the SP or DP
+table:
 
 ```sh
 npm run parse:scores <path/to/file.html> [output.json] [SP|DP]
