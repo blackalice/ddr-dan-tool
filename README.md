@@ -79,11 +79,18 @@ The application will now be running locally, typically at `http://localhost:5173
 
 This project uses a Cloudflare Worker to serve the built React application and expose a simple API powered by the [Hono](https://hono.dev/) framework.
 
-1.  Build and deploy using Wrangler:
+1.  Run the database migrations so the required tables exist:
+    ```sh
+    wrangler d1 migrations apply ddr-toolkit-db
+    # Or if you prefer
+    # wrangler d1 execute ddr-toolkit-db --file ./migrations/001_init.sql
+    ```
+
+2.  Build and deploy using Wrangler:
     ```sh
     npm run deploy
     ```
 
-2.  The worker exposes an example endpoint at `/api/hello` returning a greeting in JSON.
+3.  The worker exposes an example endpoint at `/api/hello` returning a greeting in JSON.
 
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
