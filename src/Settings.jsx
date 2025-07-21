@@ -60,6 +60,45 @@ const Settings = () => {
         }
     };
 
+    const [htmlPlaytype, setHtmlPlaytype] = useState('SP');
+
+    const importParsedScores = (data) => {
+        if (!Array.isArray(data.scores)) return;
+        const newScores = { ...scores };
+        for (const entry of data.scores) {
+            const target = entry.identifier;
+            let best = null;
+            let bestSim = 0;
+            for (const song of songMeta) {
+                const sim = similarity(target, song.title);
+                if (sim > bestSim) { bestSim = sim; best = song; }
+            }
+            if (best && bestSim > 0.4) {
+                const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
+                newScores[key] = { score: entry.score, lamp: entry.lamp };
+            }
+        }
+        setScores(newScores);
+    };
+
+    const handleUploadHtml = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        try {
+            const html = await file.text();
+            const res = await fetch(`/api/parse-scores?playtype=${htmlPlaytype}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/html' },
+                body: html,
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            importParsedScores(data);
+        } catch {
+            // ignore
+        }
+    };
+
     const clearScores = () => {
         if (window.confirm('Delete all stored scores?')) {
             setScores({});
@@ -219,6 +258,21 @@ const Settings = () => {
                         <div className="setting-control">
                             <input type="file" accept="application/json" onChange={handleUploadScores} className="settings-input" />
                             <button onClick={clearScores} className="settings-button">Delete Stats</button>
+                        </div>
+                    </div>
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Upload Ganymede HTML</h3>
+                            <p>
+                                Send a raw HTML dump from the Ganymede website to Cloudflare for parsing. Choose SP or DP to match the table type.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <input type="file" accept="text/html" onChange={handleUploadHtml} className="settings-input" />
+                            <select value={htmlPlaytype} onChange={(e) => setHtmlPlaytype(e.target.value)} className="settings-select" style={{ marginLeft: '0.5rem' }}>
+                                <option value="SP">SP</option>
+                                <option value="DP">DP</option>
+                            </select>
                         </div>
                     </div>
 

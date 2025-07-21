@@ -91,6 +91,9 @@ This project uses a Cloudflare Worker to serve the built React application and e
     `playtype` query parameter (`SP` or `DP`) to choose which table is parsed. The
     response is JSON in BATCH-MANUAL format.
 
+4.  The Settings page includes an upload form that sends a Ganymede HTML file to
+    this endpoint and automatically stores the parsed scores locally.
+
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
 
 ### Parsing Scores Locally
