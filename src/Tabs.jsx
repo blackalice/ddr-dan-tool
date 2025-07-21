@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useUser } from './contexts/UserContext.jsx';
 import './Tabs.css';
 
 const Logo = () => (
@@ -14,6 +15,7 @@ const Logo = () => (
 const Tabs = () => {
     const location = useLocation();
     const { playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
+    const { user, logout } = useUser();
 
     return (
         <nav className="tabs-container">
@@ -50,6 +52,14 @@ const Tabs = () => {
                 <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
                     <FontAwesomeIcon icon={faCog} />
                 </NavLink>
+                {user ? (
+                    <div className="user-info">
+                        <span className="username">{user.username}</span>
+                        <button onClick={logout} className="logout-button">Logout</button>
+                    </div>
+                ) : (
+                    <NavLink to="/login" className="settings-tab">Login</NavLink>
+                )}
             </div>
         </nav>
     );
