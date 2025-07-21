@@ -23,6 +23,8 @@ const Settings = () => {
     } = useContext(SettingsContext);
     const { user, login, logout, register } = useUser();
 
+    const [accountStatus, setAccountStatus] = useState('');
+
     const [newApiKey, setNewApiKey] = useState(apiKey);
     const [testDbResult, setTestDbResult] = useState('');
 
@@ -130,10 +132,11 @@ const Settings = () => {
                             ) : (
                                 <p>Create an account to sync your settings and lists across devices.</p>
                             )}
+                            {accountStatus && <p className="account-status">{accountStatus}</p>}
                         </div>
                         <div className="setting-control">
                             {user ? (
-                                <button onClick={logout} className="settings-button">Logout</button>
+                                <button onClick={() => { logout(); setAccountStatus('Logged out'); }} className="settings-button">Logout</button>
                             ) : (
                                 <form
                                     onSubmit={e => {
@@ -141,19 +144,23 @@ const Settings = () => {
                                         const form = e.target;
                                         const username = form.username.value;
                                         const password = form.password.value;
-                                        login(username, password).catch(() => alert('Login failed'));
+                                        login(username, password)
+                                            .then(ok => setAccountStatus(ok ? 'Logged in!' : 'Login failed'));
                                     }}
                                     className="login-form"
                                 >
-                                    <input name="username" placeholder="username" className="settings-input" />
+                                    <input name="username" placeholder="username or email" className="settings-input" />
+                                    <input name="email" type="email" placeholder="email" className="settings-input" />
                                     <input type="password" name="password" placeholder="password" className="settings-input" />
                                     <div style={{display:'flex',gap:'0.5rem'}}>
                                         <button type="submit" className="settings-button">Login</button>
                                         <button type="button" onClick={() => {
                                             const form = document.querySelector('.login-form');
                                             const username = form.username.value;
+                                            const email = form.email.value;
                                             const password = form.password.value;
-                                            register(username, password).catch(() => alert('Register failed'));
+                                            register(username, email, password)
+                                                .then(ok => setAccountStatus(ok ? 'Account created!' : 'Register failed'));
                                         }} className="settings-button">Register</button>
                                     </div>
                                 </form>

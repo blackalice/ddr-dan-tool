@@ -108,6 +108,11 @@
     gap: 0.5rem;
 }
 
+.account-status {
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
 /* Mobile Layout */
 @media (max-width: 1024px) {
     .settings-content {

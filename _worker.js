@@ -16,16 +16,16 @@ app.use('/api/*', async (c, next) => {
 // --- API Routes ---
 
 app.post('/api/register', async c => {
-  const { username, password } = await c.req.json();
-  if (!username || !password) return c.json({ error: 'invalid' }, 400);
+  const { username, email, password } = await c.req.json();
+  if (!username || !email || !password) return c.json({ error: 'invalid' }, 400);
 
   const hash = await bcrypt.hash(password, 10);
 
   try {
-    const result = await c.env.DB.prepare('INSERT INTO users (username, password) VALUES (?, ?)').bind(username, hash).run();
+    const result = await c.env.DB.prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?)').bind(username, email, hash).run();
     const id = result.meta.last_row_id;
     // Reads the secret from the environment instead of a hardcoded constant
-    const token = await sign({ id, username }, c.env.JWT_SECRET);
+    const token = await sign({ id, username, email }, c.env.JWT_SECRET);
     return c.json({ token });
   } catch {
     return c.json({ error: 'user exists' }, 400);
@@ -34,14 +34,14 @@ app.post('/api/register', async c => {
 
 app.post('/api/login', async c => {
   const { username, password } = await c.req.json();
-  const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
+  const user = await c.env.DB.prepare('SELECT * FROM users WHERE username = ? OR email = ?').bind(username, username).first();
   if (!user) return c.json({ error: 'invalid' }, 400);
 
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) return c.json({ error: 'invalid' }, 400);
 
   // Reads the secret from the environment
-  const token = await sign({ id: user.id, username }, c.env.JWT_SECRET);
+  const token = await sign({ id: user.id, username: user.username, email: user.email }, c.env.JWT_SECRET);
   return c.json({ token });
 });
 
@@ -67,7 +67,7 @@ app.get('/api/user', async c => {
   const listsRow = await c.env.DB.prepare('SELECT data FROM lists WHERE user_id = ?').bind(payload.id).first();
 
   return c.json({
-    user: { username: payload.username },
+    user: { username: payload.username, email: payload.email },
     settings: settingsRow ? JSON.parse(settingsRow.data) : null,
     lists: listsRow ? JSON.parse(listsRow.data) : null,
   });
