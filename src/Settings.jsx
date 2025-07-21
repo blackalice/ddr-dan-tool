@@ -36,6 +36,13 @@ const Settings = () => {
     const [uploadPlaytype, setUploadPlaytype] = useState('SP');
     const [processing, setProcessing] = useState(false);
     const [uploadMessage, setUploadMessage] = useState('');
+    const [fuzzyPercent, setFuzzyPercent] = useState(() => {
+        const stored = localStorage.getItem('fuzzyPercent');
+        return stored ? Number(stored) : 30;
+    });
+    useEffect(() => {
+        localStorage.setItem('fuzzyPercent', fuzzyPercent);
+    }, [fuzzyPercent]);
 
     const importParsedScores = (data) => {
         if (!Array.isArray(data.scores)) return { total: 0, unmatched: 0 };
@@ -48,6 +55,7 @@ const Settings = () => {
             [keyName]: { ...(scores[keyName] || {}) },
         };
         let unmatched = 0;
+        const looseThreshold = fuzzyPercent / 100;
         for (const entry of data.scores) {
             const target = entry.identifier;
             let best = null;
@@ -57,6 +65,9 @@ const Settings = () => {
                 if (sim > bestSim) { bestSim = sim; best = song; }
             }
             if (best && bestSim > 0.4) {
+                const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
+                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
+            } else if (best && bestSim >= looseThreshold) {
                 const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
             } else {
@@ -254,6 +265,27 @@ const Settings = () => {
                     </div>
 
                     <h2 className="settings-sub-header">Scores</h2>
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Fuzzy Match Threshold</h3>
+                            <p>
+                                Set how loose the importer should be when matching song titles. Remaining
+                                unmatched scores will try again with this percentage after a first strict pass.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                step="5"
+                                value={fuzzyPercent}
+                                onChange={(e) => setFuzzyPercent(Number(e.target.value))}
+                                className="settings-input"
+                                style={{ width: '5rem' }}
+                            />%
+                        </div>
+                    </div>
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Upload Scores</h3>
