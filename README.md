@@ -92,10 +92,11 @@ This project uses a Cloudflare Worker to serve the built React application and e
     response is JSON in BATCH-MANUAL format.
 
 4.  The Settings page provides a single upload box that accepts either a JSON
-    score dump or a raw Ganymede HTML file. When uploading HTML, choose SP or DP
-    to match the table type. Scores parsed as SP or DP are stored separately and
-    will only appear when that play style is selected. A separate control lets
-    you adjust the fuzzy match percentage used when importing scores. Any
+    score dump or a raw Ganymede HTML file. You can get this HTML by right
+    clicking and saving your scores page at
+    `https://ganymede-cg.net/ddr/scores/**/********`. When uploading HTML,
+    choose SP or DP so the correct table is parsed. Scores parsed as SP or DP are
+    stored separately and will only appear when that play style is selected. Any
     unmatched songs are listed in a console-style block below the upload button
     so you can easily check for issues.
 

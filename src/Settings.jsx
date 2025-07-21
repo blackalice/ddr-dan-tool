@@ -37,13 +37,6 @@ const Settings = () => {
     const [processing, setProcessing] = useState(false);
     const [uploadMessage, setUploadMessage] = useState('');
     const [unmatchedLines, setUnmatchedLines] = useState([]);
-    const [fuzzyPercent, setFuzzyPercent] = useState(() => {
-        const stored = localStorage.getItem('fuzzyPercent');
-        return stored ? Number(stored) : 30;
-    });
-    useEffect(() => {
-        localStorage.setItem('fuzzyPercent', fuzzyPercent);
-    }, [fuzzyPercent]);
 
     const importParsedScores = (data) => {
         if (!Array.isArray(data.scores)) return { total: 0, unmatched: 0, unmatchedEntries: [] };
@@ -57,7 +50,7 @@ const Settings = () => {
         };
         let unmatched = 0;
         const unmatchedEntries = [];
-        const looseThreshold = fuzzyPercent / 100;
+        const looseThreshold = 0.3;
         for (const entry of data.scores) {
             const target = entry.identifier;
             let best = null;
@@ -271,30 +264,12 @@ const Settings = () => {
                     <h2 className="settings-sub-header">Scores</h2>
                     <div className="setting-card">
                         <div className="setting-text">
-                            <h3>Fuzzy Match Threshold</h3>
-                            <p>
-                                Set how loose the importer should be when matching song titles. Remaining
-                                unmatched scores will try again with this percentage after a first strict pass.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <input
-                                type="number"
-                                min="0"
-                                max="100"
-                                step="5"
-                                value={fuzzyPercent}
-                                onChange={(e) => setFuzzyPercent(Number(e.target.value))}
-                                className="settings-input"
-                                style={{ width: '5rem' }}
-                            />%
-                        </div>
-                    </div>
-                    <div className="setting-card">
-                        <div className="setting-text">
                             <h3>Upload Scores</h3>
                             <p>
-                                Import your DDR scores in JSON or HTML format. Your browser currently stores {Object.keys(scores.single).length} SP and {Object.keys(scores.double).length} DP scores.
+                                Import your DDR scores in JSON or HTML format. Right click and save the
+                                HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
+                                Your browser currently stores {Object.keys(scores.single).length} SP and
+                                {Object.keys(scores.double).length} DP scores.
                             </p>
                         </div>
                         <div className="setting-control">
