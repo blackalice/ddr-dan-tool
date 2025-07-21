@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { SettingsContext } from './SettingsContext.jsx';
 import { GroupsContext } from './GroupsContext.jsx';
 
@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
   const settings = useContext(SettingsContext);
   const groupsCtx = useContext(GroupsContext);
 
-  const loadUser = async (t) => {
+  const loadUser = useCallback(async (t) => {
     try {
       const res = await fetch('/api/user', {
         headers: { Authorization: `Bearer ${t}` },
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [settings, groupsCtx]);
 
   useEffect(() => {
     if (token) {
@@ -77,35 +77,45 @@ export const UserProvider = ({ children }) => {
   }, [token, groupsCtx.groups]);
 
   const login = async (username, password) => {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setToken(data.token);
-      localStorage.setItem('authToken', data.token);
-      await loadUser(data.token);
-      return true;
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token);
+        localStorage.setItem('authToken', data.token);
+        await loadUser(data.token);
+        return { success: true };
+      }
+      const err = await res.json().catch(() => ({}));
+      return { success: false, message: err.error };
+    } catch (e) {
+      return { success: false, message: e.message };
     }
-    return false;
   };
 
   const register = async (username, password) => {
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setToken(data.token);
-      localStorage.setItem('authToken', data.token);
-      await loadUser(data.token);
-      return true;
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token);
+        localStorage.setItem('authToken', data.token);
+        await loadUser(data.token);
+        return { success: true };
+      }
+      const err = await res.json().catch(() => ({}));
+      return { success: false, message: err.error };
+    } catch (e) {
+      return { success: false, message: e.message };
     }
-    return false;
   };
 
   const logout = async () => {
