@@ -4,6 +4,7 @@ import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.j
 import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
+import { getGrade } from '../utils/grades.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -32,11 +33,16 @@ const SongInfoBar = ({
   const { showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
 
-  const currentScore = React.useMemo(() => {
+  const currentScoreData = React.useMemo(() => {
     if (!currentChart) return null;
     const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
-    return scores[currentChart.mode]?.[key]?.score || null;
+    return scores[currentChart.mode]?.[key] || null;
   }, [scores, currentChart, songTitle]);
+
+  const currentScore = currentScoreData?.score ?? null;
+  const currentLamp = currentScoreData?.lamp ?? null;
+  const currentFlare = currentScoreData?.flare ?? null;
+  const currentGrade = React.useMemo(() => getGrade(currentScore), [currentScore]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData || !difficulties) return null;
@@ -120,7 +126,14 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="score-badge">{currentScore.toLocaleString()}</div>
+                <div className="score-badge">
+                  <div>{currentScore.toLocaleString()}</div>
+                  <div className="score-extra">
+                    {currentGrade}
+                    {currentLamp ? ` - ${currentLamp}` : ''}
+                    {currentFlare ? ` ${currentFlare}` : ''}
+                  </div>
+                </div>
               )}
           </div>
           <div className="bpm-core-container">

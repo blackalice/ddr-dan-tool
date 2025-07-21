@@ -73,6 +73,9 @@ const Settings = () => {
             if (best) {
                 const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
+                if (entry.optional && entry.optional.flare) {
+                    newScores[keyName][key].flare = entry.optional.flare;
+                }
             } else {
                 unmatched++;
                 unmatchedEntries.push(`${entry.identifier} - ${entry.difficulty}`);

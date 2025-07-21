@@ -702,4 +702,10 @@
     text-align: right;
 }
 
+.score-badge .score-extra {
+    font-size: 0.65rem;
+    color: var(--text-muted-color);
+    margin-top: 0.1rem;
+}
+
 

@@ -1,6 +1,8 @@
 import React, { useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { useScores } from '../contexts/ScoresContext.jsx';
+import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
@@ -52,7 +54,19 @@ const renderLevel = (level) => {
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
+  const { scores } = useScores();
   const navigate = useNavigate();
+
+  const scoreData = React.useMemo(() => {
+    if (!song || !song.title || !song.difficulty || !song.mode) return null;
+    const key = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
+    return scores[song.mode]?.[key] || null;
+  }, [scores, song]);
+
+  const displayScore = scoreData?.score ?? score ?? null;
+  const lamp = scoreData?.lamp ?? null;
+  const flare = scoreData?.flare ?? null;
+  const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
 
   const calculation = useMemo(() => {
     if (song.error) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
@@ -122,8 +136,15 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           <h3 className="song-title">{song.title}</h3>
           <div className="header-right">
             {song.game && <div className="game-chip">{song.game}</div>}
-            {score != null && (
-              <div className="score-badge">{score.toLocaleString()}</div>
+            {displayScore != null && (
+              <div className="score-badge">
+                <div>{displayScore.toLocaleString()}</div>
+                <div className="score-extra">
+                  {grade}
+                  {lamp ? ` - ${lamp}` : ''}
+                  {flare ? ` ${flare}` : ''}
+                </div>
+              </div>
             )}
           </div>
         </div>
