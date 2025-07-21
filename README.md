@@ -95,7 +95,9 @@ This project uses a Cloudflare Worker to serve the built React application and e
     score dump or a raw Ganymede HTML file. When uploading HTML, choose SP or DP
     to match the table type. Scores parsed as SP or DP are stored separately and
     will only appear when that play style is selected. A separate control lets
-    you adjust the fuzzy match percentage used when importing scores.
+    you adjust the fuzzy match percentage used when importing scores. Any
+    unmatched songs are listed in a console-style block below the upload button
+    so you can easily check for issues.
 
 The Worker configuration in `wrangler.jsonc` sets `not_found_handling` to `single_page_application` so that React Router can handle client-side routes.
 

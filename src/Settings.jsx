@@ -36,6 +36,7 @@ const Settings = () => {
     const [uploadPlaytype, setUploadPlaytype] = useState('SP');
     const [processing, setProcessing] = useState(false);
     const [uploadMessage, setUploadMessage] = useState('');
+    const [unmatchedLines, setUnmatchedLines] = useState([]);
     const [fuzzyPercent, setFuzzyPercent] = useState(() => {
         const stored = localStorage.getItem('fuzzyPercent');
         return stored ? Number(stored) : 30;
@@ -45,7 +46,7 @@ const Settings = () => {
     }, [fuzzyPercent]);
 
     const importParsedScores = (data) => {
-        if (!Array.isArray(data.scores)) return { total: 0, unmatched: 0 };
+        if (!Array.isArray(data.scores)) return { total: 0, unmatched: 0, unmatchedEntries: [] };
         const play = (data.meta && data.meta.playtype)
             ? data.meta.playtype.toUpperCase()
             : uploadPlaytype;
@@ -55,6 +56,7 @@ const Settings = () => {
             [keyName]: { ...(scores[keyName] || {}) },
         };
         let unmatched = 0;
+        const unmatchedEntries = [];
         const looseThreshold = fuzzyPercent / 100;
         for (const entry of data.scores) {
             const target = entry.identifier;
@@ -72,11 +74,12 @@ const Settings = () => {
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
             } else {
                 unmatched++;
+                unmatchedEntries.push(`${entry.identifier} - ${entry.difficulty}`);
             }
         }
         setScores(newScores);
         console.warn(`Imported ${data.scores.length - unmatched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
-        return { total: data.scores.length, unmatched };
+        return { total: data.scores.length, unmatched, unmatchedEntries };
     };
 
     const handleUploadFile = async (e) => {
@@ -106,6 +109,7 @@ const Settings = () => {
             }
             if (result) {
                 setUploadMessage(`Imported ${result.total - result.unmatched} of ${result.total} scores.`);
+                setUnmatchedLines(result.unmatchedEntries || []);
             }
         } catch (err) {
             console.error('Failed to import scores:', err);
@@ -303,6 +307,11 @@ const Settings = () => {
                         </div>
                         {processing && (<div className="upload-status">Processing...</div>)}
                         {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
+                        {!processing && unmatchedLines.length > 0 && (
+                            <pre className="upload-console">
+                                {unmatchedLines.join('\n')}
+                            </pre>
+                        )}
                     </div>
 
                     <h2 className="settings-sub-header">About</h2>
