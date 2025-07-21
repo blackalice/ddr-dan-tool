@@ -1,6 +1,7 @@
 export const getGrade = (score) => {
   if (score == null) return null;
-  if (score >= 950000) return 'AAA+';
+  if (score >= 990000) return 'AAA';
+  if (score >= 950000) return 'AA+';
   if (score >= 900000) return 'AA';
   if (score >= 890000) return 'AA-';
   if (score >= 850000) return 'A+';
