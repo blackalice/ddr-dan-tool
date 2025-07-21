@@ -96,6 +96,29 @@
     background-color: var(--card-hover-bg-color);
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+    color: var(--text-color);
+}
+
+.logout-button {
+    background: none;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.logout-button:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
 @media (max-width: 640px) {
     .tabs-container {
         margin-bottom:1rem;
