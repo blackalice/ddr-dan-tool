@@ -5,28 +5,29 @@ import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownWideShort, faArrowUpWideShort } from '@fortawesome/free-solid-svg-icons';
+import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
+import { normalizeString } from './utils/stringSimilarity.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const RatingSection = ({ rating, charts }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
     <section className="dan-section">
-      <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: 'var(--accent-color)' }}>
+      <h2 className={`dan-header ${collapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: 'var(--accent-color)' }}>
         <div className="dan-header-title">Lv.{rating.toFixed(2)}</div>
-        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+        <button className="collapse-button" onClick={() => onToggle(rating)}>
+          <i className={`fa-solid ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
         </button>
       </h2>
-      {!isCollapsed && (
+      {!collapsed && (
         <div className="song-grid">
           {charts.map((chart, idx) => (
             <SongCard
               key={idx}
               song={chart}
               score={chart.score}
-              scoreHighlight={chart.score > 990000}
+              scoreHighlight={chart.score > 989999}
               forceShowRankedRating
             />
           ))}
@@ -37,10 +38,11 @@ const RatingSection = ({ rating, charts }) => {
 };
 
 const RankingsPage = () => {
-  const { playStyle } = useContext(SettingsContext);
+  const { playStyle, songlistOverride } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
   const { scores } = useScores();
   const [songMeta, setSongMeta] = useState([]);
+  const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(() => {
     const stored = localStorage.getItem('selectedRankingLevel');
     return stored ? Number(stored) : null;
@@ -90,6 +92,37 @@ const RankingsPage = () => {
     localStorage.setItem('rankingsAscending', JSON.stringify(ascendingOrder));
   }, [ascendingOrder]);
 
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('rankingsCollapsed')) || {};
+    } catch {
+      return {};
+    }
+  });
+
+  const toggleCollapse = (rating) => {
+    setCollapsed(prev => {
+      const newState = { ...prev, [rating]: !prev[rating] };
+      localStorage.setItem('rankingsCollapsed', JSON.stringify(newState));
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
+    if (!option || !option.file) {
+      setOverrideSongs(null);
+      return;
+    }
+    fetch(option.file)
+      .then(res => res.json())
+      .then(data => {
+        const songs = (data.songs || []).map(normalizeString);
+        setOverrideSongs(new Set(songs));
+      })
+      .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
+  }, [songlistOverride]);
+
   const chartsForLevel = useMemo(() => {
     const charts = [];
     for (const song of songMeta) {
@@ -99,6 +132,12 @@ const RankingsPage = () => {
           diff.rankedRating != null &&
           Math.floor(diff.rankedRating) === selectedLevel
         ) {
+          if (overrideSongs && overrideSongs.size > 0) {
+            const titles = [song.title];
+            if (song.titleTranslit) titles.push(song.titleTranslit);
+            const normalized = titles.map(normalizeString);
+            if (!normalized.some(t => overrideSongs.has(t))) continue;
+          }
           const bpm = song.hasMultipleBpms ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}` : String(Math.round(song.bpmMin));
           const chart = {
             title: song.title,
@@ -119,7 +158,7 @@ const RankingsPage = () => {
       }
     }
     return charts;
-  }, [songMeta, playStyle, selectedLevel, resetFilters, scores]);
+  }, [songMeta, playStyle, selectedLevel, resetFilters, scores, overrideSongs]);
 
   const groupedCharts = useMemo(() => {
     const map = new Map();
@@ -133,6 +172,8 @@ const RankingsPage = () => {
     );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
   }, [chartsForLevel, ascendingOrder]);
+
+  const topCount = useMemo(() => chartsForLevel.filter(c => c.score > 989999).length, [chartsForLevel]);
 
   if (!selectedLevel) return null;
 
@@ -148,18 +189,25 @@ const RankingsPage = () => {
                 ))}
               </select>
             </div>
-            <button
-              className="filter-button"
-              onClick={() => setAscendingOrder(a => !a)}
-              title="Flip order"
-            >
-              <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
-            </button>
-          </div>
+          <button
+            className="filter-button"
+            onClick={() => setAscendingOrder(a => !a)}
+            title="Flip order"
+          >
+            <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
+          </button>
+          <div className="ranking-counter">{topCount}/{chartsForLevel.length} ≥990k</div>
         </div>
-        {groupedCharts.map(group => (
-          <RatingSection key={group.rating} rating={group.rating} charts={group.charts} />
-        ))}
+      </div>
+      {groupedCharts.map(group => (
+          <RatingSection
+            key={group.rating}
+            rating={group.rating}
+            charts={group.charts}
+            collapsed={!!collapsed[group.rating]}
+            onToggle={toggleCollapse}
+          />
+      ))}
       </main>
     </div>
   );
