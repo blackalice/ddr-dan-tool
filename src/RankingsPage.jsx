@@ -173,7 +173,22 @@ const RankingsPage = () => {
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
   }, [chartsForLevel, ascendingOrder]);
 
-  const topCount = useMemo(() => chartsForLevel.filter(c => c.score > 989999).length, [chartsForLevel]);
+  const hasScores = useMemo(() => {
+    return (
+      Object.keys(scores.single || {}).length > 0 ||
+      Object.keys(scores.double || {}).length > 0
+    );
+  }, [scores]);
+
+  const topCount = useMemo(
+    () => chartsForLevel.filter((c) => c.score > 989999).length,
+    [chartsForLevel]
+  );
+
+  const topPercent = useMemo(() => {
+    if (chartsForLevel.length === 0) return 0;
+    return ((topCount / chartsForLevel.length) * 100).toFixed(1);
+  }, [topCount, chartsForLevel.length]);
 
   if (!selectedLevel) return null;
 
@@ -196,7 +211,11 @@ const RankingsPage = () => {
           >
             <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
           </button>
-          <div className="ranking-counter">{topCount}/{chartsForLevel.length} ≥990k</div>
+          {hasScores && (
+            <div className="ranking-counter">
+              {topCount}/{chartsForLevel.length} ({topPercent}%)
+            </div>
+          )}
         </div>
       </div>
       {groupedCharts.map(group => (
