@@ -437,7 +437,7 @@
     .bpm-title-mobile {
         display: grid;
         grid-template-areas:
-            ". chip ."
+            ". chip button"
             "title title title";
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
@@ -469,6 +469,7 @@
     }
 
     .collapse-button {
+        grid-area: button;
         justify-self: end;
         background-color: transparent;
     }

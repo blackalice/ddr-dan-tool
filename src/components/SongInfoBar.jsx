@@ -114,10 +114,10 @@ const SongInfoBar = ({
             )}
           </div>
         </div>
+        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+        </button>
       </h2>
-      <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-        <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-      </button>
       </div>
       {!isCollapsed && (
         <div className="details-grid bpm-tool-grid">
