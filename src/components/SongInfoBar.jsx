@@ -4,7 +4,6 @@ import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.j
 import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
-import { getGrade } from '../utils/grades.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -33,16 +32,11 @@ const SongInfoBar = ({
   const { showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
 
-  const currentScoreData = React.useMemo(() => {
+  const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
     const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
-    return scores[currentChart.mode]?.[key] || null;
+    return scores[currentChart.mode]?.[key]?.score || null;
   }, [scores, currentChart, songTitle]);
-
-  const currentScore = currentScoreData?.score ?? null;
-  const currentLamp = currentScoreData?.lamp ?? null;
-  const currentFlare = currentScoreData?.flare ?? null;
-  const currentGrade = React.useMemo(() => getGrade(currentScore), [currentScore]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData || !difficulties) return null;
@@ -100,24 +94,24 @@ const SongInfoBar = ({
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="song-title-container">
-      <h2 className="song-title bpm-title-mobile">
-        <div className="title-content-wrapper">
-          {gameVersion && <span className="song-game-version">{gameVersion}</span>}
-          <div className="title-artist-group">
-            <span className="song-title-main">{songTitle}</span>
-            <span className="song-title-separator"> - </span>
-            <span className="song-title-artist">{artist}</span>
-            {songLength && (
-              <span className="song-length">
-                {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
-              </span>
-            )}
+        <h2 className="song-title bpm-title-mobile">
+          <div className="title-content-wrapper">
+            {gameVersion && <span className="song-game-version">{gameVersion}</span>}
+            <div className="title-artist-group">
+              <span className="song-title-main">{songTitle}</span>
+              <span className="song-title-separator"> - </span>
+              <span className="song-title-artist">{artist}</span>
+              {songLength && (
+                <span className="song-length">
+                  {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-        </button>
-      </h2>
+          <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+          </button>
+        </h2>
       </div>
       {!isCollapsed && (
         <div className="details-grid bpm-tool-grid">
@@ -126,14 +120,7 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="score-badge">
-                  <span className="score-value">{currentScore.toLocaleString()}</span>
-                  <span className="score-extra">
-                    {currentGrade}
-                    {currentLamp ? ` - ${currentLamp}` : ''}
-                    {currentFlare ? ` ${currentFlare}` : ''}
-                  </span>
-                </div>
+                <div className="score-badge">{currentScore.toLocaleString()}</div>
               )}
           </div>
           <div className="bpm-core-container">
