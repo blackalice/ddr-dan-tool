@@ -100,24 +100,24 @@ const SongInfoBar = ({
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="song-title-container">
-        <h2 className="song-title bpm-title-mobile">
-          <div className="title-content-wrapper">
-            {gameVersion && <span className="song-game-version">{gameVersion}</span>}
-            <div className="title-artist-group">
-              <span className="song-title-main">{songTitle}</span>
-              <span className="song-title-separator"> - </span>
-              <span className="song-title-artist">{artist}</span>
-              {songLength && (
-                <span className="song-length">
-                  {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
-                </span>
-              )}
-            </div>
+      <h2 className="song-title bpm-title-mobile">
+        <div className="title-content-wrapper">
+          {gameVersion && <span className="song-game-version">{gameVersion}</span>}
+          <div className="title-artist-group">
+            <span className="song-title-main">{songTitle}</span>
+            <span className="song-title-separator"> - </span>
+            <span className="song-title-artist">{artist}</span>
+            {songLength && (
+              <span className="song-length">
+                {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+              </span>
+            )}
           </div>
-          <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-          </button>
-        </h2>
+        </div>
+      </h2>
+      <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+        <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+      </button>
       </div>
       {!isCollapsed && (
         <div className="details-grid bpm-tool-grid">
