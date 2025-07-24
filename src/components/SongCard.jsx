@@ -161,17 +161,17 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
               )}
           </div>
         </div>
-        {displayScore != null && (
-          <div className="song-score-slice">
-            <div>{displayScore.toLocaleString()}</div>
-            <div className="score-extra">
-              {grade}
-              {lamp ? ` - ${lamp}` : ''}
-              {flare ? ` ${flare}` : ''}
-            </div>
-          </div>
-        )}
       </div>
+      {displayScore != null && (
+        <div className="song-score-slice">
+          {displayScore.toLocaleString()} 
+          <span className="score-extra">
+            {grade}
+            {lamp ? ` - ${lamp}` : ''}
+            {flare ? ` ${flare}` : ''}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
