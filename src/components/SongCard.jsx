@@ -136,16 +136,6 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           <h3 className="song-title">{song.title}</h3>
           <div className="header-right">
             {song.game && <div className="game-chip">{song.game}</div>}
-            {displayScore != null && (
-              <div className="score-badge">
-                <div>{displayScore.toLocaleString()}</div>
-                <div className="score-extra">
-                  {grade}
-                  {lamp ? ` - ${lamp}` : ''}
-                  {flare ? ` ${flare}` : ''}
-                </div>
-              </div>
-            )}
           </div>
         </div>
         <div className="song-details">
@@ -171,6 +161,16 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
               )}
           </div>
         </div>
+        {displayScore != null && (
+          <div className="song-score-slice">
+            <div>{displayScore.toLocaleString()}</div>
+            <div className="score-extra">
+              {grade}
+              {lamp ? ` - ${lamp}` : ''}
+              {flare ? ` ${flare}` : ''}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

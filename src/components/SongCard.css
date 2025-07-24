@@ -2,7 +2,7 @@
 .song-card {
     background-color: var(--card-bg-color);
     padding: 1.25rem;
-    border-radius: 0.5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -131,6 +131,19 @@
 
 .song-card.score-highlight {
   border: 2px solid yellow;
+}
+
+.song-score-slice {
+  background-color: var(--card-hover-bg-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-size: 0.75rem;
+  text-align: right;
+}
+.song-score-slice .score-extra {
+  font-size: 0.65rem;
+  color: var(--text-muted-color);
+  margin-top: 0.1rem;
 }
 
 .score-badge {
