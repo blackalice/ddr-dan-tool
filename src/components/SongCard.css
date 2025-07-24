@@ -21,19 +21,11 @@
     text-decoration: none;
     color: inherit;
     min-width: 0;
+    display: block;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.song-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-/* ensure slice hover triggers card animation */
-.song-card-link:hover .song-card {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-.song-card-link:hover .song-score-slice {
+.song-card-link:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
@@ -43,6 +35,11 @@
   line-height: 1.25;
   margin: 0 0 0.5rem 0;
   word-break: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 2.5em;
 }
 .song-details {
   display: flex;
@@ -146,7 +143,7 @@
 
 
 .song-card-link.score-highlight {
-  border: 2px solid yellow;
+  border: 1px solid yellow;
   border-radius: 0.5rem;
   display: block;
 }
