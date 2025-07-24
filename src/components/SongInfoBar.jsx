@@ -127,12 +127,12 @@ const SongInfoBar = ({
               </div>
               {currentScore != null && (
                 <div className="score-badge">
-                  <div>{currentScore.toLocaleString()}</div>
-                  <div className="score-extra">
+                  <span className="score-value">{currentScore.toLocaleString()}</span>
+                  <span className="score-extra">
                     {currentGrade}
                     {currentLamp ? ` - ${currentLamp}` : ''}
                     {currentFlare ? ` ${currentFlare}` : ''}
-                  </div>
+                  </span>
                 </div>
               )}
           </div>

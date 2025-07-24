@@ -699,13 +699,16 @@
     border-radius: 0.25rem;
     font-size: 0.75rem;
     margin-top: 0.25rem;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
+.score-badge .score-value {
+    flex: 1 1 auto;
+}
 .score-badge .score-extra {
     font-size: 0.65rem;
     color: var(--text-muted-color);
-    margin-top: 0.1rem;
 }
 
 

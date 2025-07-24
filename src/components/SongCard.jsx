@@ -164,7 +164,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
       </div>
       {displayScore != null && (
         <div className="song-score-slice">
-          {displayScore.toLocaleString()} 
+          <span className="score-value">{displayScore.toLocaleString()}</span>
           <span className="score-extra">
             {grade}
             {lamp ? ` - ${lamp}` : ''}
