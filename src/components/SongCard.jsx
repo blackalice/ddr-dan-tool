@@ -121,7 +121,11 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
 
   return (
-    <div className="song-card-link" onClick={() => {
+    <div
+      className={
+        'song-card-link' + (scoreHighlight ? ' score-highlight' : '')
+      }
+      onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);
       navigate(
@@ -133,7 +137,6 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         className={
           'song-card' +
           (highlight ? ' highlight' : '') +
-          (scoreHighlight ? ' score-highlight' : '') +
           (showSlice ? ' with-score-slice' : '')
         }
       >

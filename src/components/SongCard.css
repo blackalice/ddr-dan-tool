@@ -144,9 +144,13 @@
   animation: highlight-fade 1.5s forwards;
 }
 
-.song-card.score-highlight {
+
+.song-card-link.score-highlight {
   border: 2px solid yellow;
+  border-radius: 0.5rem;
+  display: block;
 }
+
 
 .song-score-slice {
   background-color: var(--card-hover-bg-color);
