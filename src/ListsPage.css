@@ -4,6 +4,14 @@
   flex-wrap: nowrap; /* Prevent wrapping on mobile */
 }
 
+.ranking-counter {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-muted-color);
+  margin-left: 0.5rem;
+}
+
 /* Target the input specifically within this group */
 .list-page-filter-group > .dan-select {
   flex-grow: 1; /* Allow it to take up available space */
