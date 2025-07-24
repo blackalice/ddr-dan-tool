@@ -68,6 +68,14 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const flare = scoreData?.flare ?? null;
   const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
 
+  const hasScores = React.useMemo(
+    () =>
+      Object.keys(scores.single || {}).length > 0 ||
+      Object.keys(scores.double || {}).length > 0,
+    [scores]
+  );
+  const showSlice = hasScores;
+
   const calculation = useMemo(() => {
     if (song.error) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
     
@@ -121,7 +129,14 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         { state: { fromSongCard: true } }
       );
     }}>
-      <div className={`song-card${highlight ? ' highlight' : ''}${scoreHighlight ? ' score-highlight' : ''}`}>
+      <div
+        className={
+          'song-card' +
+          (highlight ? ' highlight' : '') +
+          (scoreHighlight ? ' score-highlight' : '') +
+          (showSlice ? ' with-score-slice' : '')
+        }
+      >
         {onEdit && (
           <button className="song-card-action edit" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
             <FontAwesomeIcon icon={faPen} />
@@ -162,13 +177,15 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           </div>
         </div>
       </div>
-      {displayScore != null && (
+      {showSlice && (
         <div className="song-score-slice">
-          <span className="score-value">{displayScore.toLocaleString()}</span>
+          <span className="score-value">
+            {displayScore != null ? displayScore.toLocaleString() : '0,000,000'}
+          </span>
           <span className="score-extra">
-            {grade}
-            {lamp ? ` - ${lamp}` : ''}
-            {flare ? ` ${flare}` : ''}
+            {displayScore != null
+              ? `${grade}${lamp ? ` - ${lamp}` : ''}${flare ? ` ${flare}` : ''}`
+              : 'No score'}
           </span>
         </div>
       )}
