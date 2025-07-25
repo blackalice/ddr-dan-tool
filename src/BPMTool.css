@@ -198,7 +198,7 @@
     margin-bottom: 0;
 }
 
-.song-title {
+.bpm-song-title {
     display: flex;
     align-items: center;
     justify-content: space-between;

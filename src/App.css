@@ -438,6 +438,9 @@ body {
   .song-grid {
         grid-template-columns: repeat(3, 1fr);
   }
+    .dan-song-grid {
+        grid-template-columns: repeat(4, 1fr)!important;
+  }
 }
 
     .dan-header:not(.is-collapsed) {

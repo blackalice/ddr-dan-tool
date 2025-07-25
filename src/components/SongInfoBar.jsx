@@ -94,7 +94,7 @@ const SongInfoBar = ({
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="song-title-container">
-        <h2 className="song-title bpm-title-mobile">
+        <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
             {gameVersion && <span className="song-game-version">{gameVersion}</span>}
             <div className="title-artist-group">
