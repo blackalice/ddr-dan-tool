@@ -338,7 +338,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         (filters.difficultyNames && filters.difficultyNames.length > 0) ||
         filters.artist !== '' ||
         (filters.title && filters.title !== '') ||
-        filters.multiBpm !== 'any'
+        filters.multiBpm !== 'any' ||
+        filters.playedStatus !== 'all'
     );
 
     useEffect(() => {
