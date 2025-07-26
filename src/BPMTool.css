@@ -198,13 +198,18 @@
     margin-bottom: 0;
 }
 
-.song-title {
+.bpm-song-title {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     margin: 0;
     width: 100%;
+}
+
+.score-extra{
+    font-size:0.75rem!important;
+    
 }
 
 .title-content-wrapper {

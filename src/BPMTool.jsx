@@ -17,6 +17,7 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
 import SortModal from './components/SortModal.jsx';
 import { getBpmRange } from './utils/bpm.js';
+import { useScores } from './contexts/ScoresContext.jsx';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -212,7 +213,41 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings } = useContext(SettingsContext);
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
+    const { scores } = useScores();
     const location = useLocation();
+
+    const isChartFilteredOut = (chart, currentFilters, currentPlayStyle, allScores, simfileWithRatings) => {
+        // Check level range filter
+        if ((currentFilters.difficultyMin && chart.feet < Number(currentFilters.difficultyMin)) ||
+            (currentFilters.difficultyMax && chart.feet > Number(currentFilters.difficultyMax))) {
+            return true;
+        }
+        // Check difficulty name filter
+        const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
+        if (lowerCaseFilterNames.length > 0) {
+            if (!lowerCaseFilterNames.includes(chart.difficulty.toLowerCase())) {
+                return true;
+            }
+        }
+        // Check played status filter
+        if (currentFilters.playedStatus !== 'all') {
+            // Ensure songMetaEntry.title and songMetaEntry.title.titleName exist
+            if (!simfileWithRatings || !simfileWithRatings.title) {
+                return true;
+            }
+            const chartKey = `${simfileWithRatings.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+            const hasPlayed = allScores[currentPlayStyle]?.[chartKey] != null;
+
+            if (filters.playedStatus === 'played' && !hasPlayed) {
+                return true;
+            }
+            if (filters.playedStatus === 'notPlayed' && hasPlayed) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
@@ -303,7 +338,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         (filters.difficultyNames && filters.difficultyNames.length > 0) ||
         filters.artist !== '' ||
         (filters.title && filters.title !== '') ||
-        filters.multiBpm !== 'any'
+        filters.multiBpm !== 'any' ||
+        filters.playedStatus !== 'all'
     );
 
     useEffect(() => {
@@ -365,23 +401,40 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
         const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
 
+        const isChartFilteredOut = (chart) => {
+            // Check level range filter
+            if ((filters.difficultyMin && chart.feet < Number(filters.difficultyMin)) ||
+                (filters.difficultyMax && chart.feet > Number(filters.difficultyMax))) {
+                return true;
+            }
+            // Check difficulty name filter
+            if (lowerCaseFilterNames.length > 0) {
+                if (!lowerCaseFilterNames.includes(chart.difficulty.toLowerCase())) {
+                    return true;
+                }
+            }
+            // Check played status filter
+            const chartKey = `${simfileWithRatings.title.titleName.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+            const hasPlayed = scores[playStyle]?.[chartKey] != null;
+
+            if (filters.playedStatus === 'played' && !hasPlayed) {
+                return true;
+            }
+            if (filters.playedStatus === 'notPlayed' && hasPlayed) {
+                return true;
+            }
+            return false;
+        };
+
         // Check if the current chart is valid
-        const isCurrentChartValid = currentChart &&
-            chartsInMode.some(c => c.slug === currentChart.slug) &&
-            (!filters.difficultyMin || currentChart.feet >= Number(filters.difficultyMin)) &&
-            (!filters.difficultyMax || currentChart.feet <= Number(filters.difficultyMax)) &&
-            (lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(currentChart.difficulty.toLowerCase()));
+        const isCurrentChartValid = currentChart && !isChartFilteredOut(currentChart, filters, playStyle, scores, simfileWithRatings);
 
         if (isCurrentChartValid) {
             return; // Current chart is fine, no need to change
         }
 
         // Current chart is not valid, find a new one
-        const validCharts = chartsInMode.filter(c =>
-            (!filters.difficultyMin || c.feet >= Number(filters.difficultyMin)) &&
-            (!filters.difficultyMax || c.feet <= Number(filters.difficultyMax)) &&
-            (lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(c.difficulty.toLowerCase()))
-        );
+        const validCharts = chartsInMode.filter(c => !isChartFilteredOut(c, filters, playStyle, scores, simfileWithRatings));
 
         if (validCharts.length > 0) {
             let newChart = null;
@@ -389,16 +442,49 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (lowerCaseFilterNames.length > 0) {
                 newChart = validCharts.find(c => c.difficulty.toLowerCase() === lowerCaseFilterNames[0]);
             }
+            // Fallback to the closest chart by feet value
+            if (!newChart && currentChart) {
+                const targetFeet = currentChart.feet;
+                newChart = validCharts.reduce((prev, curr) => 
+                    Math.abs(curr.feet - targetFeet) < Math.abs(prev.feet - targetFeet) ? curr : prev
+                );
+            }
             // Fallback to the first valid chart
             if (!newChart) {
                 newChart = validCharts[0];
             }
             setCurrentChart(newChart);
         } else {
-            // The song itself will be filtered out by the other effect,
-            // but we can try to find *any* chart for the new playstyle if the mode was just switched.
-            if (currentChart && currentChart.mode !== playStyle && chartsInMode.length > 0) {
-                setCurrentChart(chartsInMode[0]);
+            // No valid charts for the current song, try to select a new song
+            if (songOptions.length > 0) {
+                const currentSongIndex = songOptions.findIndex(opt => opt.title === simfileWithRatings.title.titleName);
+                let nextSongIndex = currentSongIndex;
+                let newSongFound = false;
+
+                // Iterate through songs to find the next valid one
+                for (let i = 0; i < songOptions.length; i++) {
+                    nextSongIndex = (currentSongIndex + 1 + i) % songOptions.length;
+                    const nextSongOption = songOptions[nextSongIndex];
+                    const nextSongMeta = songMeta.find(m => m.title === nextSongOption.title && m.game === nextSongOption.game);
+
+                    if (nextSongMeta) {
+                        const nextSongChartsInMode = nextSongMeta.difficulties.filter(d => d.mode === playStyle);
+                        const nextSongValidCharts = nextSongChartsInMode.filter(c => !isChartFilteredOut(c, filters, playStyle, scores, nextSongMeta));
+                        if (nextSongValidCharts.length > 0) {
+                            onSongSelect(nextSongOption);
+                            setCurrentChart(nextSongValidCharts[0]); // Select the first valid chart in the new song
+                            newSongFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!newSongFound) {
+                    // If no valid song found at all, clear current song
+                    onSongSelect(null);
+                }
+            } else {
+                onSongSelect(null);
             }
         }
     }, [filters, playStyle, simfileData]);
@@ -406,9 +492,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
         if (!simfileWithRatings) {
             return {
-                songTitle: 'Please select a song',
-                artist: '...',
-                gameVersion: '',
+                songTitle: 'Please select',
+                artist: 'a song',
+                gameVersion: 'NOMIX',
                 difficulties: { singles: {}, doubles: {} },
                 bpmDisplay: 'N/A',
                 coreBpm: null,
@@ -457,6 +543,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
         }
 
+        console.log("Game Version:", simfileWithRatings.mix.mixName);
         return {
             songTitle: simfileWithRatings.title.titleName,
             artist: simfileWithRatings.artist,
@@ -569,6 +656,19 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
             if (filters.lengthMin !== '' && meta.length !== undefined && meta.length < Number(filters.lengthMin)) return false;
             if (filters.lengthMax !== '' && meta.length !== undefined && meta.length > Number(filters.lengthMax)) return false;
+
+            // Played vs Not Played filter
+            if (filters.playedStatus !== 'all') {
+                const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
+                    if (d.mode !== playStyle) return false; // Only consider charts of the current playStyle
+                    const key = `${meta.title.toLowerCase()}-${d.difficulty.toLowerCase()}`;
+                    return scores[d.mode]?.[key] != null;
+                });
+
+                if (filters.playedStatus === 'played' && !hasPlayedInCurrentPlaystyle) return false;
+                if (filters.playedStatus === 'notPlayed' && hasPlayedInCurrentPlaystyle) return false;
+            }
+
             return true;
         });
 
@@ -999,7 +1099,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             />
                         ) : (
                             <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted-color)', textAlign: 'center', padding: '1rem' }}>
-                                <p>{isLoading ? 'Loading chart...' : 'The BPM chart for the selected song will be displayed here.'}</p>
+                                <p>{isLoading ? '' : 'The BPM chart for the selected song will be displayed here.'}</p>
                             </div>
                         )}
                     </div>

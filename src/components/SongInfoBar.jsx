@@ -4,6 +4,8 @@ import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.j
 import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
+import { getGrade } from '../utils/grades.js';
+import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -35,11 +37,25 @@ const SongInfoBar = ({
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
     const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
-    return scores[currentChart.mode]?.[key]?.score || null;
+    return scores[currentChart.mode]?.[key] || null;
   }, [scores, currentChart, songTitle]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
-    if (!simfileData || !difficulties) return null;
+    if (!simfileData) {
+        // Render placeholders if no song is selected
+        return difficultyLevels.map(levelName => (
+            <DifficultyMeter
+                key={`${style}-${levelName}`}
+                level={'X'}
+                difficultyName={levelName}
+                isMissing={true}
+                onClick={() => {}}
+                isSelected={false}
+            />
+        ));
+    }
+
+    if (!difficulties) return null;
 
     const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
     const chartDifficulties = simfileData.availableTypes.filter(t => t.mode === style);
@@ -74,6 +90,17 @@ const SongInfoBar = ({
                     filteredOut = true;
                 }
             }
+
+            // Check played status filter
+            const chartKey = `${songTitle.toLowerCase()}-${chartType.difficulty.toLowerCase()}`;
+            const hasScore = scores[chartType.mode]?.[chartKey] != null;
+
+            if (filters.playedStatus === 'played' && !hasScore) {
+                filteredOut = true;
+            }
+            if (filters.playedStatus === 'notPlayed' && hasScore) {
+                filteredOut = true;
+            }
         }
 
         const isSelected = currentChart && chartType && currentChart.slug === chartType.slug;
@@ -94,16 +121,21 @@ const SongInfoBar = ({
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="song-title-container">
-        <h2 className="song-title bpm-title-mobile">
+        <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
-            {gameVersion && <span className="song-game-version">{gameVersion}</span>}
+            {gameVersion && <span className="song-game-version" style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}>{gameVersion}</span>}
             <div className="title-artist-group">
               <span className="song-title-main">{songTitle}</span>
               <span className="song-title-separator"> - </span>
               <span className="song-title-artist">{artist}</span>
-              {songLength && (
+              {(songLength != null && songLength > 0) && (
                 <span className="song-length">
                   {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                </span>
+              )}
+              {(songLength === 0) && (
+                <span className="song-length">
+                    0:00
                 </span>
               )}
             </div>
@@ -120,7 +152,13 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="score-badge">{currentScore.toLocaleString()}</div>
+                <div className="score-badge">
+                  <span className="score-value">{currentScore.score.toLocaleString()}</span>
+                  <span className="score-separator">   </span>
+                  <span className="score-extra">
+                    {`${getGrade(currentScore.score)}${currentScore.lamp ? ` - ${currentScore.lamp}` : ''}${currentScore.flare ? ` ${currentScore.flare}` : ''}`}
+                  </span>
+                </div>
               )}
           </div>
           <div className="bpm-core-container">

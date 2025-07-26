@@ -30,7 +30,7 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
         </button>
       </h2>
       {!isCollapsed && (
-        <div className="song-grid">
+        <div className="dan-song-grid song-grid">
           {danCourse.songs.map((song, index) => {
             const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
             const score = scores[song.mode]?.[chartKey]?.score;

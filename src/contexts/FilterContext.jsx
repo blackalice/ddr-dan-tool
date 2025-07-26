@@ -12,6 +12,7 @@ const defaultFilters = {
   artist: '',
   title: '',
   multiBpm: 'any',
+  playedStatus: 'all',
   difficultyNames: [],
 };
 

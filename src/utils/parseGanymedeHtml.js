@@ -1,12 +1,12 @@
 import { load } from 'cheerio';
 
 const lampMapping = {
-  'MARVELOUS FC': 'MARVELOUS FULL COMBO',
-  'PERFECT FC': 'PERFECT FULL COMBO',
-  'GREAT FC': 'GREAT FULL COMBO',
-  'GOOD FC': 'FULL COMBO',
+  'MARVELOUS FC': 'MARVELOUS FC',
+  'PERFECT FC': 'PERFECT FC',
+  'GREAT FC': 'GREAT FC',
+  'GOOD FC': 'GOOD FC',
   'ASSIST CLEAR': 'ASSIST',
-  'LIFE CLEAR': 'CLEAR',
+  'LIFE CLEAR': 'LIFE CLEAR',
   CLEAR: 'CLEAR',
   FAILED: 'FAILED',
 };

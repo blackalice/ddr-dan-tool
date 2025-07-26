@@ -7,4 +7,10 @@ export default defineConfig({
     react(),
     // PWA plugin removed due to caching issues
   ],
+  server: {
+    proxy: {
+      // This ONLY affects local dev with `vite dev`
+      '/api': 'http://localhost:8787',
+    },
+  },
 })
