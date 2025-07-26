@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && vite",
+    "dev": "concurrently \"npm:dev:prepare\" \"npm:dev:wrangler\"",
+    "dev:prepare": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && vite",
+    "dev:wrangler": "wrangler dev",
     "build": "vite build",
     "prebuild": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs",
     "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs",
@@ -37,6 +39,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.2.0",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

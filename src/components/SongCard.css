@@ -149,7 +149,7 @@
 
 
 .song-card-link.score-highlight {
-  border: 1px solid yellow;
+  border: 1.5px solid var(--text-color);
   border-radius: 0.5rem;
   display: block;
   box-sizing: border-box;
@@ -158,7 +158,7 @@
 
 .song-score-slice {
   background-color: var(--card-hover-bg-color);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 0 0 0.5rem 0.5rem;
   font-size: 0.75rem;
   display: flex;
@@ -167,12 +167,12 @@
   width: 100%;
   box-sizing: border-box;
   transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: bold;
 }
 .song-score-slice .score-value {
   flex: 1 1 auto;
 }
 .song-score-slice .score-extra {
-  font-size: 0.65rem;
   color: var(--text-muted-color);
 }
 
