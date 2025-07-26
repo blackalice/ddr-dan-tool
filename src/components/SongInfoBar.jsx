@@ -5,6 +5,7 @@ import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
 import { getGrade } from '../utils/grades.js';
+import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -111,7 +112,7 @@ const SongInfoBar = ({
       <div className="song-title-container">
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
-            {gameVersion && <span className="song-game-version">{gameVersion}</span>}
+            {gameVersion && <span className="song-game-version" style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}>{gameVersion}</span>}
             <div className="title-artist-group">
               <span className="song-title-main">{songTitle}</span>
               <span className="song-title-separator"> - </span>

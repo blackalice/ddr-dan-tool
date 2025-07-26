@@ -6,6 +6,7 @@ import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
+import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 
 const difficultyDisplayMap = {
     single: {
@@ -153,7 +154,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         <div className="song-card-header">
           <h3 className="song-title">{song.title}</h3>
           <div className="header-right">
-            {song.game && <div className="game-chip">{song.game}</div>}
+            {song.game && <div className="game-chip" style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}>{song.game}</div>}
           </div>
         </div>
         <div className="song-details">

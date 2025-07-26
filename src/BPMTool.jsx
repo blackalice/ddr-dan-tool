@@ -457,6 +457,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
         }
 
+        console.log("Game Version:", simfileWithRatings.mix.mixName);
         return {
             songTitle: simfileWithRatings.title.titleName,
             artist: simfileWithRatings.artist,
