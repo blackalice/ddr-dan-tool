@@ -70,6 +70,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
       artist: '',
       title: '',
       multiBpm: 'any',
+      playedStatus: 'all',
       difficultyNames: [],
     });
   };
@@ -81,6 +82,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const titleActive = localFilters.title !== '';
   const gamesActive = localFilters.games.length > 0;
   const multiBpmActive = localFilters.multiBpm !== 'any';
+  const playedStatusActive = localFilters.playedStatus !== 'all';
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
@@ -218,17 +220,31 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 })}
               </div>
             </div>
-            <div className={styles.formGroup}>
-              <label>Multiple BPMs</label>
-              <select
-                value={localFilters.multiBpm}
-                onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))}
-                className={`${styles.select} ${multiBpmActive ? styles.activeInput : ''}`}
-              >
-                <option value="any">Any</option>
-                <option value="single">Single BPM only</option>
-                <option value="multiple">Multiple BPM only</option>
-              </select>
+            <div className={styles.halfWidthContainer}>
+              <div className={`${styles.formGroup} ${multiBpmActive ? styles.activeGroup : ''}`}>
+                <label>Multiple BPMs</label>
+                <select
+                  value={localFilters.multiBpm}
+                  onChange={e => setLocalFilters(f => ({ ...f, multiBpm: e.target.value }))}
+                  className={`${styles.select} ${multiBpmActive ? styles.activeInput : ''}`}
+                >
+                  <option value="any">Any</option>
+                  <option value="single">Single BPM only</option>
+                  <option value="multiple">Multiple BPM only</option>
+                </select>
+              </div>
+              <div className={`${styles.formGroup} ${playedStatusActive ? styles.activeGroup : ''}`}>
+                <label>Played Status</label>
+                <select
+                  value={localFilters.playedStatus}
+                  onChange={e => setLocalFilters(f => ({ ...f, playedStatus: e.target.value }))}
+                  className={`${styles.select} ${playedStatusActive ? styles.activeInput : ''}`}
+                >
+                  <option value="all">All</option>
+                  <option value="played">Played</option>
+                  <option value="notPlayed">Not Played</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>

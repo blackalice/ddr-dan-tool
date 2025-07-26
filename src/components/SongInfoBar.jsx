@@ -90,6 +90,17 @@ const SongInfoBar = ({
                     filteredOut = true;
                 }
             }
+
+            // Check played status filter
+            const chartKey = `${songTitle.toLowerCase()}-${chartType.difficulty.toLowerCase()}`;
+            const hasScore = scores[chartType.mode]?.[chartKey] != null;
+
+            if (filters.playedStatus === 'played' && !hasScore) {
+                filteredOut = true;
+            }
+            if (filters.playedStatus === 'notPlayed' && hasScore) {
+                filteredOut = true;
+            }
         }
 
         const isSelected = currentChart && chartType && currentChart.slug === chartType.slug;

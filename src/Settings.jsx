@@ -5,6 +5,8 @@ import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { similarity } from './utils/stringSimilarity.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
 
 const Settings = () => {
@@ -291,7 +293,17 @@ const Settings = () => {
                             </p>
                         </div>
                         <div className="setting-control upload-control">
-                            <input type="file" accept=".json,application/json,text/html" onChange={handleUploadFile} className="settings-input" disabled={processing} />
+                            <input
+                                id="file-upload"
+                                type="file"
+                                accept=".json,application/json,text/html"
+                                onChange={handleUploadFile}
+                                className="hidden-file-input"
+                                disabled={processing}
+                            />
+                            <label htmlFor="file-upload" className="custom-file-upload settings-button" disabled={processing}>
+                                <FontAwesomeIcon icon={faUpload} /> Choose File
+                            </label>
                             <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
                                 <option value="SP">SP</option>
                                 <option value="DP">DP</option>

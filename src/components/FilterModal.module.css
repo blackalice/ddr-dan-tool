@@ -158,6 +158,15 @@
     transition: background-color 0.2s;
 }
 
+.halfWidthContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+.halfWidthContainer > .formGroup {
+    flex: 1;
+}
+
 .applyButton {
     background-color: var(--accent-color);
     color: white;
