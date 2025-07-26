@@ -27,14 +27,13 @@
 }
 
 .song-card-link:hover {
-}
-
-.song-card-link:hover .song-card {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
+
+.song-card-link:hover .song-card {
+}
 .song-card-link:hover .song-score-slice {
-    transform: translateY(-5px);
 }
 .song-title {
   font-weight: 700;
