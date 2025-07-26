@@ -207,6 +207,11 @@
     width: 100%;
 }
 
+.score-extra{
+    font-size:0.75rem!important;
+    
+}
+
 .title-content-wrapper {
     display: flex;
     align-items: center;

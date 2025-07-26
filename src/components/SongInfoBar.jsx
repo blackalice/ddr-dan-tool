@@ -4,6 +4,7 @@ import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.j
 import { useFilters } from '../contexts/FilterContext.jsx';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
+import { getGrade } from '../utils/grades.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -35,7 +36,7 @@ const SongInfoBar = ({
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
     const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
-    return scores[currentChart.mode]?.[key]?.score || null;
+    return scores[currentChart.mode]?.[key] || null;
   }, [scores, currentChart, songTitle]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
@@ -139,7 +140,13 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="score-badge">{currentScore.toLocaleString()}</div>
+                <div className="score-badge">
+                  <span className="score-value">{currentScore.score.toLocaleString()}</span>
+                  <span className="score-separator">   </span>
+                  <span className="score-extra">
+                    {`${getGrade(currentScore.score)}${currentScore.lamp ? ` - ${currentScore.lamp}` : ''}${currentScore.flare ? ` ${currentScore.flare}` : ''}`}
+                  </span>
+                </div>
               )}
           </div>
           <div className="bpm-core-container">
