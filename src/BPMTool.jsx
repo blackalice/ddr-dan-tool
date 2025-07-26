@@ -406,9 +406,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
         if (!simfileWithRatings) {
             return {
-                songTitle: 'Please select a song',
-                artist: '...',
-                gameVersion: '',
+                songTitle: 'Please select',
+                artist: 'a song',
+                gameVersion: 'NOMIX',
                 difficulties: { singles: {}, doubles: {} },
                 bpmDisplay: 'N/A',
                 coreBpm: null,
@@ -999,7 +999,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             />
                         ) : (
                             <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted-color)', textAlign: 'center', padding: '1rem' }}>
-                                <p>{isLoading ? 'Loading chart...' : 'The BPM chart for the selected song will be displayed here.'}</p>
+                                <p>{isLoading ? '' : 'The BPM chart for the selected song will be displayed here.'}</p>
                             </div>
                         )}
                     </div>

@@ -39,7 +39,21 @@ const SongInfoBar = ({
   }, [scores, currentChart, songTitle]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
-    if (!simfileData || !difficulties) return null;
+    if (!simfileData) {
+        // Render placeholders if no song is selected
+        return difficultyLevels.map(levelName => (
+            <DifficultyMeter
+                key={`${style}-${levelName}`}
+                level={'X'}
+                difficultyName={levelName}
+                isMissing={true}
+                onClick={() => {}}
+                isSelected={false}
+            />
+        ));
+    }
+
+    if (!difficulties) return null;
 
     const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
     const chartDifficulties = simfileData.availableTypes.filter(t => t.mode === style);
@@ -101,9 +115,14 @@ const SongInfoBar = ({
               <span className="song-title-main">{songTitle}</span>
               <span className="song-title-separator"> - </span>
               <span className="song-title-artist">{artist}</span>
-              {songLength && (
+              {(songLength != null && songLength > 0) && (
                 <span className="song-length">
                   {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                </span>
+              )}
+              {(songLength === 0) && (
+                <span className="song-length">
+                    0:00
                 </span>
               )}
             </div>
