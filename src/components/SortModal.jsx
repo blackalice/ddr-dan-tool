@@ -43,10 +43,12 @@ const SortModal = ({ isOpen, onClose, sortKey, setSortKey, ascending, setAscendi
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <h3 className={styles.modalHeader}>Sort Songs</h3>
+        <div className={styles.modalHeader}>
+          <h3>Sort Songs</h3>
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
         <div className={styles.modalBody}>
           <div className={styles.formGroup}>
             <label>Sort By</label>

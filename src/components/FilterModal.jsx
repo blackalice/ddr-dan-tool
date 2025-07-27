@@ -87,10 +87,12 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <h3 className={styles.modalHeader}>Song Filters</h3>
+        <div className={styles.modalHeader}>
+          <h3>Song Filters</h3>
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
         <div className={styles.modalBody}>
           <div className={styles.column}>
             <div className={styles.formGroup}>
