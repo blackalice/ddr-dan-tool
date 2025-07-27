@@ -27,11 +27,17 @@
 }
 
 .modalHeader {
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+}
+
+.modalHeader h3 {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-color);
     margin: 0;
-    padding: 0 1.5rem;
+    flex: 1;
 }
 
 .modalBody {
@@ -92,9 +98,6 @@
 }
 
 .closeButton {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
     background: transparent;
     border: none;
     color: var(--text-color);
@@ -121,11 +124,10 @@
 
     .modalHeader {
         padding-top: env(safe-area-inset-top, 1.5rem);
-        text-align: center;
     }
 
-    .closeButton {
-        top: calc(env(safe-area-inset-top, 0) + 0.5rem);
+    .modalHeader h3 {
+        text-align: center;
     }
 
     .modalBody {
