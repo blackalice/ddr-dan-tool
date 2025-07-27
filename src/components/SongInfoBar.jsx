@@ -152,7 +152,7 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="score-badge">
+                <div className="bpm-score-badge">
                   <span className="score-value">{currentScore.score.toLocaleString()}</span>
                   <span className="score-separator">   </span>
                   <span className="score-extra">
