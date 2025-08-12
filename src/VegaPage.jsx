@@ -128,10 +128,10 @@ const ResultsSection = ({ results, selectedMonth }) => {
                                                 {entry.position}. {entry.name}
                                             </span>
                                             <span className="result-score">
-                                                {entry.score}
                                                 {diff > 0 && (
                                                     <span className="song-bpm score-gap">(-{diff})</span>
                                                 )}
+                                                {entry.score}
                                             </span>
                                         </li>
                                     );
