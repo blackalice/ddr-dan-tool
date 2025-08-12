@@ -80,17 +80,17 @@
       "name": "EXTRA CHALLENGE",
       "color": "#c846a6",
       "charts": [
-        "MAX 360:challenge:single"
+        "MAX 360:expert:single"
       ],
       "songs": [
         {
           "title": "MAX 360",
-          "level": 19,
+          "level": 18,
           "bpm": "180-720",
-          "difficulty": "challenge",
+          "difficulty": "expert",
           "mode": "single",
           "game": "A",
-          "rankedRating": 19
+          "rankedRating": 18
         }
       ]
     }
