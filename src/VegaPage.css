@@ -39,18 +39,21 @@
 }
 
 .results-section {
-    margin: 2rem 0;
+    margin-bottom: 1rem;
 }
 
 .results-header {
     text-align: center;
-    margin-bottom: 1rem;
 }
 
 .results-container {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    padding: 0.75rem;
+    background-color: var(--bg-color-light);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
 .results-category {

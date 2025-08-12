@@ -94,29 +94,50 @@ const ResultsSection = ({ results, selectedMonth }) => {
         timeZone: 'UTC',
     });
     return (
-        <section className="results-section">
-            <h2 className="results-header">Ranking Results – {monthLabel}</h2>
+        <section className="dan-section results-section">
+            <h2
+                className="dan-header results-header"
+                style={{ backgroundColor: 'var(--accent-color)' }}
+            >
+                Ranking Results – {monthLabel}
+            </h2>
             <div className="results-container">
-                {Object.entries(results).map(([category, data]) => (
-                    <div key={category} className="results-category">
-                        <h3>
-                            {category}
-                            {data.video && (
-                                <a href={data.video} target="_blank" rel="noopener noreferrer" className="results-video-link">
-                                    <FontAwesomeIcon icon={faVideo} />
-                                </a>
-                            )}
-                        </h3>
-                        <ol>
-                            {data.results.map((entry) => (
-                                <li key={entry.position}>
-                                    <span className="result-name">{entry.position}. {entry.name}</span>
-                                    <span className="result-score">{entry.score}</span>
-                                </li>
-                            ))}
-                        </ol>
-                    </div>
-                ))}
+                {Object.entries(results).map(([category, data]) => {
+                    const firstScore = data.results[0]?.score || 0;
+                    return (
+                        <div key={category} className="results-category">
+                            <h3>
+                                {category}
+                                {data.video && (
+                                    <a
+                                        href={data.video}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="results-video-link"
+                                    >
+                                        <FontAwesomeIcon icon={faVideo} />
+                                    </a>
+                                )}
+                            </h3>
+                            <ol>
+                                {data.results.map((entry) => {
+                                    const diff = firstScore - entry.score;
+                                    return (
+                                        <li key={entry.position}>
+                                            <span className="result-name">
+                                                {entry.position}. {entry.name}
+                                            </span>
+                                            <span className="result-score">
+                                                {entry.score}
+                                                {diff > 0 && ` (-${diff})`}
+                                            </span>
+                                        </li>
+                                    );
+                                })}
+                            </ol>
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );
