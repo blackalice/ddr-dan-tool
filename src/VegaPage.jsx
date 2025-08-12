@@ -4,7 +4,7 @@ import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
-import { loadVegaData } from './utils/course-loader.js';
+import { loadVegaData, loadVegaResults } from './utils/course-loader.js';
 import './App.css';
 import './VegaPage.css';
 
@@ -86,13 +86,64 @@ const FilterBar = ({ activeCourse, setCourse, courseLevels, selectedMonth, setSe
     </div>
 );
 
+const ResultsSection = ({ results, selectedMonth }) => {
+    if (!results || Object.keys(results).length === 0) return null;
+    const monthLabel = new Date(selectedMonth).toLocaleString('default', {
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC',
+    });
+    return (
+        <section className="results-section">
+            <h2 className="results-header">Ranking Results – {monthLabel}</h2>
+            <div className="results-container">
+                {Object.entries(results).map(([category, data]) => (
+                    <div key={category} className="results-category">
+                        <h3>
+                            {category}
+                            {data.video && (
+                                <a href={data.video} target="_blank" rel="noopener noreferrer" className="results-video-link">
+                                    <FontAwesomeIcon icon={faVideo} />
+                                </a>
+                            )}
+                        </h3>
+                        <ol>
+                            {data.results.map((entry) => (
+                                <li key={entry.position}>
+                                    <span className="result-name">{entry.position}. {entry.name}</span>
+                                    <span className="result-score">{entry.score}</span>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};
+
 const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
   const [vegaData, setVegaData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [vegaResults, setVegaResults] = useState({});
   const { resetFilters } = useFilters();
-  
-  const availableMonths = useMemo(() => Object.keys(vegaData).sort((a, b) => new Date(b) - new Date(a)), [vegaData]);
+
+  const availableMonths = useMemo(() => {
+    const courseMonths = Object.keys(vegaData);
+    const resultMonths = Object.keys(vegaResults);
+    const months = [...new Set([...courseMonths, ...resultMonths])];
+    return months.sort((a, b) => new Date(b) - new Date(a));
+  }, [vegaData, vegaResults]);
+
+  useEffect(() => {
+    if (availableMonths.length > 0) {
+      const latest = availableMonths[0];
+      if (!selectedMonth || new Date(selectedMonth) < new Date(latest)) {
+        setSelectedMonth(latest);
+      }
+    }
+  }, [availableMonths, selectedMonth]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -107,7 +158,14 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
       }
       setIsLoading(false);
     };
+    const fetchResults = async () => {
+      const resultsData = await loadVegaResults();
+      if (resultsData) {
+        setVegaResults(resultsData);
+      }
+    };
     fetchCourses();
+    fetchResults();
   }, []);
 
   const coursesToShow = useMemo(() => {
@@ -130,7 +188,9 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
                 setSelectedMonth={setSelectedMonth}
                 availableMonths={availableMonths}
             />
-          
+
+          <ResultsSection results={vegaResults[selectedMonth]} selectedMonth={selectedMonth} />
+
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '4rem 0' }}>
               <p style={{ color: 'var(--text-muted-color)' }}>Loading courses...</p>
