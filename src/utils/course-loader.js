@@ -30,3 +30,19 @@ export const loadVegaData = async () => {
     }
 };
 
+// Fetches the pre-processed Vega ranking results.
+export const loadVegaResults = async () => {
+    try {
+        const response = await fetch('/vega-results.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Loaded Vega ranking results.");
+        return data;
+    } catch (error) {
+        console.error("Error fetching Vega ranking results:", error);
+        return {};
+    }
+};
+

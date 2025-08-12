@@ -698,13 +698,16 @@
     }
 }
 
-.score-badge {
+.bpm-score-badge {
     background-color: var(--card-hover-bg-color);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    border-radius: .375rem;
+    font-size: 1rem;
     margin-top: 0.25rem;
-    text-align: right;
+    text-align: center;
+    width:100%;
+
 }
 
 

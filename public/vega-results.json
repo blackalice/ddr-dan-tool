@@ -1,0 +1,37 @@
+{
+  "2025-07": {
+    "Light": {
+      "video": "https://www.youtube.com/watch?v=u5NOCla1GQw",
+      "results": [
+        {"position": 1, "name": "AL2K4", "score": 2933},
+        {"position": 2, "name": "PASCALX2", "score": 2847},
+        {"position": 3, "name": "SCADGE", "score": 2689},
+        {"position": 4, "name": "STANK", "score": 1941},
+        {"position": 5, "name": "NIBLET", "score": 1536}
+      ]
+    },
+    "Heavy": {
+      "video": "https://www.youtube.com/watch?v=SWUNH7MjaBA",
+      "results": [
+        {"position": 1, "name": "HAL", "score": 4588},
+        {"position": 2, "name": "CCD", "score": 4426},
+        {"position": 3, "name": "ALICE", "score": 4340},
+        {"position": 4, "name": "BADATDDR", "score": 4268},
+        {"position": 5, "name": "OEA", "score": 4037},
+        {"position": 6, "name": "OSKARTM", "score": 3811},
+        {"position": 7, "name": "SAM-JWBT", "score": 1328}
+      ]
+    },
+    "Extra": {
+      "video": "https://www.youtube.com/watch?v=DRhCeHFBe6M",
+      "results": [
+        {"position": 1, "name": "JYNXATU", "score": 2531},
+        {"position": 2, "name": "BADATDDR", "score": 2239},
+        {"position": 3, "name": "OEA", "score": 2120},
+        {"position": 4, "name": "ALICE", "score": 1852},
+        {"position": 5, "name": "STARKY", "score": 1690},
+        {"position": 6, "name": "SCADGE", "score": 1}
+      ]
+    }
+  }
+}

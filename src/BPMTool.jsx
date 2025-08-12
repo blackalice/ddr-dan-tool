@@ -216,37 +216,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { scores } = useScores();
     const location = useLocation();
 
-    const isChartFilteredOut = (chart, currentFilters, currentPlayStyle, allScores, simfileWithRatings) => {
-        // Check level range filter
-        if ((currentFilters.difficultyMin && chart.feet < Number(currentFilters.difficultyMin)) ||
-            (currentFilters.difficultyMax && chart.feet > Number(currentFilters.difficultyMax))) {
-            return true;
-        }
-        // Check difficulty name filter
-        const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
-        if (lowerCaseFilterNames.length > 0) {
-            if (!lowerCaseFilterNames.includes(chart.difficulty.toLowerCase())) {
-                return true;
-            }
-        }
-        // Check played status filter
-        if (currentFilters.playedStatus !== 'all') {
-            // Ensure songMetaEntry.title and songMetaEntry.title.titleName exist
-            if (!simfileWithRatings || !simfileWithRatings.title) {
-                return true;
-            }
-            const chartKey = `${simfileWithRatings.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-            const hasPlayed = allScores[currentPlayStyle]?.[chartKey] != null;
-
-            if (filters.playedStatus === 'played' && !hasPlayed) {
-                return true;
-            }
-            if (filters.playedStatus === 'notPlayed' && hasPlayed) {
-                return true;
-            }
-        }
-        return false;
-    };
 
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
