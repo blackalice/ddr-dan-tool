@@ -38,6 +38,68 @@
     background-color: var(--accent-color-light);
 }
 
+.results-section {
+    margin-bottom: 1rem;
+}
+
+.results-header {
+    text-align: center;
+}
+
+.results-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    background-color: var(--bg-color-light);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.results-category {
+    flex: 1;
+    min-width: 200px;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.results-category h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+.results-category ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.results-category li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-category li:last-child {
+    border-bottom: none;
+}
+
+.results-video-link {
+    color: var(--accent-color);
+    margin-left: 0.5rem;
+    text-decoration: none;
+}
+
+.song-bpm.score-gap {
+    display: inline;
+    margin-right: 0.25rem;
+}
+
 
 .mobile-record-buttons {
     display: none;
