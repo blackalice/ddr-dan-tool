@@ -129,7 +129,9 @@ const ResultsSection = ({ results, selectedMonth }) => {
                                             </span>
                                             <span className="result-score">
                                                 {entry.score}
-                                                {diff > 0 && ` (-${diff})`}
+                                                {diff > 0 && (
+                                                    <span className="song-bpm score-gap">(-{diff})</span>
+                                                )}
                                             </span>
                                         </li>
                                     );

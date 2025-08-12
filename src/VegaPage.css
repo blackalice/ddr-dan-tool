@@ -95,6 +95,11 @@
     text-decoration: none;
 }
 
+.song-bpm.score-gap {
+    display: inline;
+    margin-left: 0.25rem;
+}
+
 
 .mobile-record-buttons {
     display: none;
