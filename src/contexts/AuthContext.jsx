@@ -26,12 +26,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refreshToken = async () => {
-    const res = await fetch('/refresh', { method: 'POST' });
+    const res = await fetch('/refresh', { method: 'POST', credentials: 'include' });
     return res.ok;
   };
 
   const fetchUserData = async () => {
-    const res = await fetch('/user/data');
+    const res = await fetch('/user/data', { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
       setUser({ email: data.email || user?.email || '' });
@@ -58,7 +58,8 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch('/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -73,7 +74,8 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch('/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -83,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch('/logout', { method: 'POST' });
+    await fetch('/logout', { method: 'POST', credentials: 'include' });
     setUser(null);
     setScores({ single: {}, double: {} });
     storage.clear();

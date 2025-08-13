@@ -13,6 +13,10 @@ authApp.post('/signup', async (c) => {
     return c.json({ error: 'Email and password required' }, 400)
   }
 
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL)'
+  ).run()
+
   const salt = crypto.getRandomValues(new Uint8Array(16))
   const { encoded } = await argon2.hash({
     pass: password,
@@ -20,9 +24,16 @@ authApp.post('/signup', async (c) => {
     type: argon2.ArgonType.Argon2id,
   })
 
-  await c.env.DB.prepare(
-    'INSERT INTO users (email, password_hash) VALUES (?, ?)'
-  ).bind(email, encoded).run()
+  try {
+    await c.env.DB.prepare(
+      'INSERT INTO users (email, password_hash) VALUES (?, ?)'
+    ).bind(email, encoded).run()
+  } catch (err) {
+    if (err.message?.includes('UNIQUE')) {
+      return c.json({ error: 'Email already registered' }, 400)
+    }
+    throw err
+  }
 
   return c.json({ success: true })
 })
@@ -32,6 +43,10 @@ authApp.post('/login', async (c) => {
   if (!email || !password) {
     return c.json({ error: 'Email and password required' }, 400)
   }
+
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL)'
+  ).run()
 
   const user = await c.env.DB.prepare(
     'SELECT id, password_hash FROM users WHERE email = ?'
@@ -57,9 +72,11 @@ authApp.post('/login', async (c) => {
     .setExpirationTime('7d')
     .sign(textEncoder.encode(c.env.JWT_SECRET))
 
+  const secure = c.req.url.startsWith('https://')
+
   setCookie(c, 'token', token, {
     httpOnly: true,
-    secure: true,
+    secure,
     sameSite: 'Strict',
     path: '/',
   })
@@ -75,9 +92,11 @@ authApp.post('/refresh', authMiddleware, async (c) => {
     .setExpirationTime('7d')
     .sign(textEncoder.encode(c.env.JWT_SECRET))
 
+  const secure = c.req.url.startsWith('https://')
+
   setCookie(c, 'token', token, {
     httpOnly: true,
-    secure: true,
+    secure,
     sameSite: 'Strict',
     path: '/',
   })
@@ -86,9 +105,10 @@ authApp.post('/refresh', authMiddleware, async (c) => {
 })
 
 authApp.post('/logout', (c) => {
+  const secure = c.req.url.startsWith('https://')
   setCookie(c, 'token', '', {
     httpOnly: true,
-    secure: true,
+    secure,
     sameSite: 'Strict',
     path: '/',
     maxAge: 0,
