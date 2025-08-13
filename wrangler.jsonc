@@ -14,8 +14,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "users",
-      "database_id": "users-db"
+      "database_name": "ddr-toolkit-db",
+      "database_id": "f9ec8bbc-24c9-4fcf-b2b5-b016e992277a"
     }
   ]
 }
