@@ -35,6 +35,32 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
   return c.json(data);
 })
 
+app.get('/user/data', authMiddleware, async (c) => {
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
+  ).run()
+  const userId = c.get('user').sub
+  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
+    .bind(userId)
+    .first()
+  const data = row ? JSON.parse(row.data) : {}
+  return c.json(data)
+})
+
+app.put('/user/data', authMiddleware, async (c) => {
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
+  ).run()
+  const userId = c.get('user').sub
+  const body = await c.req.json()
+  await c.env.DB.prepare(
+    'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
+  )
+    .bind(userId, JSON.stringify(body))
+    .run()
+  return c.json({ success: true })
+})
+
 app.use('*', async (c) => {
   return c.env.ASSETS.fetch(c.req.raw)
 })

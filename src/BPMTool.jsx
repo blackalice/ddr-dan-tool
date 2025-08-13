@@ -18,6 +18,7 @@ import AddToListModal from './components/AddToListModal.jsx';
 import SortModal from './components/SortModal.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import { useScores } from './contexts/ScoresContext.jsx';
+import { storage } from './utils/remoteStorage.js';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -221,7 +222,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [inputValue, setInputValue] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(() => {
-        const savedState = localStorage.getItem('isCollapsed');
+        const savedState = storage.getItem('isCollapsed');
         return savedState ? JSON.parse(savedState) : false;
     });
     const [showAltBpm, setShowAltBpm] = useState(false);
@@ -240,9 +241,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
     const [overrideSongs, setOverrideSongs] = useState(null);
-    const [sortKey, setSortKey] = useState(() => localStorage.getItem('bpmSortKey') || 'title');
+    const [sortKey, setSortKey] = useState(() => storage.getItem('bpmSortKey') || 'title');
     const [sortAscending, setSortAscending] = useState(() => {
-        const saved = localStorage.getItem('bpmSortAsc');
+        const saved = storage.getItem('bpmSortAsc');
         return saved ? JSON.parse(saved) : true;
     });
     const [showSortModal, setShowSortModal] = useState(false);
@@ -312,15 +313,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     );
 
     useEffect(() => {
-        localStorage.setItem('isCollapsed', JSON.stringify(isCollapsed));
+        storage.setItem('isCollapsed', JSON.stringify(isCollapsed));
     }, [isCollapsed]);
 
     useEffect(() => {
-        localStorage.setItem('bpmSortKey', sortKey);
+        storage.setItem('bpmSortKey', sortKey);
     }, [sortKey]);
 
     useEffect(() => {
-        localStorage.setItem('bpmSortAsc', JSON.stringify(sortAscending));
+        storage.setItem('bpmSortAsc', JSON.stringify(sortAscending));
     }, [sortAscending]);
 
     const isLoading = !simfileData;

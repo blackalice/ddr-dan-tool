@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPalette, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
 import CreateListModal from './components/CreateListModal.jsx';
 import EditChartModal from './components/EditChartModal.jsx';
+import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
@@ -15,7 +16,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem(`dan-header-collapsed-${group.name}`)) || false;
+      return JSON.parse(storage.getItem(`dan-header-collapsed-${group.name}`)) || false;
     } catch {
       return false;
     }
@@ -25,7 +26,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   const [showActions, setShowActions] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
+    storage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
   }, [isCollapsed, group.name]);
 
   useEffect(() => {

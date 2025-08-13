@@ -1,11 +1,12 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { storage } from '../utils/remoteStorage.js';
 
 export const ScoresContext = createContext();
 
 export const ScoresProvider = ({ children }) => {
   const [scores, setScores] = useState(() => {
-    const saved = localStorage.getItem('ddrScores');
+    const saved = storage.getItem('ddrScores');
     if (saved) {
       const parsed = JSON.parse(saved);
       // Migrate old flat structure to new playstyle-separated format
@@ -18,7 +19,7 @@ export const ScoresProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('ddrScores', JSON.stringify(scores));
+    storage.setItem('ddrScores', JSON.stringify(scores));
   }, [scores]);
 
   return (

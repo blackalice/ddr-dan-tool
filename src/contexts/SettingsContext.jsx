@@ -2,49 +2,50 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides';
+import { storage } from '../utils/remoteStorage.js';
 
 export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
     const [targetBPM, setTargetBPM] = useState(() => {
-        const saved = localStorage.getItem('targetBPM');
+        const saved = storage.getItem('targetBPM');
         return saved ? parseInt(saved, 10) : 300;
     });
 
     const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
 
     const [multiplierMode, setMultiplierMode] = useState(() => {
-        const saved = localStorage.getItem('multiplierMode');
+        const saved = storage.getItem('multiplierMode');
         return saved || MULTIPLIER_MODES.A_A3;
     });
 
     const [theme, setTheme] = useState(() => {
-        const saved = localStorage.getItem('theme');
+        const saved = storage.getItem('theme');
         return saved || 'dark';
     });
 
     const [playStyle, setPlayStyle] = useState(() => {
-        const saved = localStorage.getItem('playStyle');
+        const saved = storage.getItem('playStyle');
         return saved || 'single';
     });
 
     const [songlistOverride, setSonglistOverride] = useState(() => {
-        const saved = localStorage.getItem('songlistOverride');
+        const saved = storage.getItem('songlistOverride');
         return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
     });
 
     const [showLists, setShowLists] = useState(() => {
-        const saved = localStorage.getItem('showLists');
+        const saved = storage.getItem('showLists');
         return saved ? JSON.parse(saved) : false;
     });
 
     const [showRankedRatings, setShowRankedRatings] = useState(() => {
-        const saved = localStorage.getItem('showRankedRatings');
+        const saved = storage.getItem('showRankedRatings');
         return saved ? JSON.parse(saved) : false;
     });
 
     useEffect(() => {
-        localStorage.setItem('targetBPM', targetBPM);
+        storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
 
     useEffect(() => {
@@ -52,28 +53,28 @@ export const SettingsProvider = ({ children }) => {
     }, [apiKey]);
 
     useEffect(() => {
-        localStorage.setItem('multiplierMode', multiplierMode);
+        storage.setItem('multiplierMode', multiplierMode);
     }, [multiplierMode]);
 
     useEffect(() => {
-        localStorage.setItem('theme', theme);
+        storage.setItem('theme', theme);
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme]);
 
     useEffect(() => {
-        localStorage.setItem('playStyle', playStyle);
+        storage.setItem('playStyle', playStyle);
     }, [playStyle]);
 
     useEffect(() => {
-        localStorage.setItem('showLists', JSON.stringify(showLists));
+        storage.setItem('showLists', JSON.stringify(showLists));
     }, [showLists]);
 
     useEffect(() => {
-        localStorage.setItem('showRankedRatings', JSON.stringify(showRankedRatings));
+        storage.setItem('showRankedRatings', JSON.stringify(showRankedRatings));
     }, [showRankedRatings]);
 
     useEffect(() => {
-        localStorage.setItem('songlistOverride', songlistOverride);
+        storage.setItem('songlistOverride', songlistOverride);
     }, [songlistOverride]);
 
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);

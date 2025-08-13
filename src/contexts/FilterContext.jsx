@@ -1,5 +1,6 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { storage } from '../utils/remoteStorage.js';
 
 const defaultFilters = {
   bpmMin: '',
@@ -24,7 +25,7 @@ export const FilterContext = createContext({
 
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState(() => {
-    const savedFilters = localStorage.getItem('filters');
+    const savedFilters = storage.getItem('filters');
     if (savedFilters) {
       const parsed = JSON.parse(savedFilters);
       // Ensure all keys from defaultFilters are present
@@ -34,7 +35,7 @@ export const FilterProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('filters', JSON.stringify(filters));
+    storage.setItem('filters', JSON.stringify(filters));
   }, [filters]);
 
   const updateFilter = (key, value) => {
