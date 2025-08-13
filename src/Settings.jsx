@@ -8,6 +8,7 @@ import ThemeSwitcher from './components/ThemeSwitcher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
+import { useAuth } from './contexts/AuthContext.jsx';
 
 const Settings = () => {
     const {
@@ -26,6 +27,7 @@ const Settings = () => {
     } = useContext(SettingsContext);
 
     const { scores, setScores } = useScores();
+    const { user, logout } = useAuth();
 
     const [songMeta, setSongMeta] = useState([]);
     const [songLookup, setSongLookup] = useState({});
@@ -150,6 +152,13 @@ const Settings = () => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
+                    {user && (
+                        <div className="setting-card">
+                            <div className="setting-control">
+                                <button onClick={logout} className="settings-button">Logout</button>
+                            </div>
+                        </div>
+                    )}
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>

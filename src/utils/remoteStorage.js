@@ -48,4 +48,16 @@ function setItem(key, value) {
   });
 }
 
-export const storage = { init, getItem, setItem };
+function clear() {
+  for (const key of Object.keys(cache)) {
+    delete cache[key];
+  }
+  fetch('/user/data', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({}),
+  });
+}
+
+export const storage = { init, getItem, setItem, clear };

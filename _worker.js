@@ -44,7 +44,8 @@ app.get('/user/data', authMiddleware, async (c) => {
     .bind(userId)
     .first()
   const data = row ? JSON.parse(row.data) : {}
-  return c.json(data)
+  const email = c.get('user').email
+  return c.json({ email, ...data })
 })
 
 app.put('/user/data', authMiddleware, async (c) => {

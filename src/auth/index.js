@@ -67,6 +67,35 @@ authApp.post('/login', async (c) => {
   return c.json({ success: true })
 })
 
+authApp.post('/refresh', authMiddleware, async (c) => {
+  const user = c.get('user')
+  const token = await new SignJWT({ sub: user.sub, email: user.email })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('7d')
+    .sign(textEncoder.encode(c.env.JWT_SECRET))
+
+  setCookie(c, 'token', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Strict',
+    path: '/',
+  })
+
+  return c.json({ success: true })
+})
+
+authApp.post('/logout', (c) => {
+  setCookie(c, 'token', '', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Strict',
+    path: '/',
+    maxAge: 0,
+  })
+  return c.json({ success: true })
+})
+
 export const authMiddleware = async (c, next) => {
   const bearer = c.req.header('Authorization')
   const token = getCookie(c, 'token') || bearer?.replace('Bearer ', '')
