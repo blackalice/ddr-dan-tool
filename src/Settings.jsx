@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
     const {
@@ -28,6 +29,7 @@ const Settings = () => {
 
     const { scores, setScores } = useScores();
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const [songMeta, setSongMeta] = useState([]);
     const [songLookup, setSongLookup] = useState({});
@@ -152,10 +154,16 @@ const Settings = () => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
-                    {user && (
+                    {user ? (
                         <div className="setting-card">
                             <div className="setting-control">
                                 <button onClick={logout} className="settings-button">Logout</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="setting-card">
+                            <div className="setting-control">
+                                <button onClick={() => navigate('/login')} className="settings-button">Login</button>
                             </div>
                         </div>
                     )}
