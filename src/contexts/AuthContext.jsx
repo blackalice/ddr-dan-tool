@@ -61,7 +61,8 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ email, password })
     });
     if (!res.ok) {
-      throw new Error('Login failed');
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || 'Login failed');
     }
     setUser({ email });
     await fetchUserData();
@@ -75,7 +76,8 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ email, password })
     });
     if (!res.ok) {
-      throw new Error('Signup failed');
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || 'Signup failed');
     }
     await login(email, password);
   };
