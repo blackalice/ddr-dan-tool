@@ -16,9 +16,13 @@ import RankingsPage from './RankingsPage.jsx';
 import './App.css';
 import './Tabs.css';
 import { storage } from './utils/remoteStorage.js';
+import LoginPage from './LoginPage.jsx';
+import SignupPage from './SignupPage.jsx';
+import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 
 function AppRoutes() {
   const { theme, showLists, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
+  const { user } = useAuth();
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -163,6 +167,8 @@ function AppRoutes() {
           <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
+            <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
           </Routes>
         </div>
         <footer className="footer">
@@ -180,7 +186,9 @@ function AppWrapper() {
         <FilterProvider>
           <GroupsProvider>
             <Router>
-              <AppRoutes />
+              <AuthProvider>
+                <AppRoutes />
+              </AuthProvider>
             </Router>
           </GroupsProvider>
         </FilterProvider>
