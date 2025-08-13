@@ -9,5 +9,12 @@
   },
   "build": {
     "command": "npm run build"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "users",
+      "database_id": "users-db"
+    }
+  ]
 }
