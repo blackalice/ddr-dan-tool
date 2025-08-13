@@ -2,6 +2,7 @@
   "name": "ddr-toolkit",
   "main": "./_worker.js",
   "compatibility_date": "2025-06-05",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
