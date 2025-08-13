@@ -4,6 +4,7 @@ import { loadDanData } from './utils/course-loader.js';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
+import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './components/SongCard.css';
 
@@ -11,14 +12,14 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
+      return JSON.parse(storage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
     } catch {
       return false;
     }
   });
 
   useEffect(() => {
-    localStorage.setItem(`dan-header-collapsed-${danCourse.name}`, JSON.stringify(isCollapsed));
+    storage.setItem(`dan-header-collapsed-${danCourse.name}`, JSON.stringify(isCollapsed));
   }, [isCollapsed, danCourse.name]);
 
   return (

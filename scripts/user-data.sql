@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS user_data (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id),
+  data TEXT NOT NULL DEFAULT '{}'
+);

@@ -15,6 +15,7 @@ import ListsPage from './ListsPage.jsx';
 import RankingsPage from './RankingsPage.jsx';
 import './App.css';
 import './Tabs.css';
+import { storage } from './utils/remoteStorage.js';
 
 function AppRoutes() {
   const { theme, showLists, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
@@ -22,8 +23,8 @@ function AppRoutes() {
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
-  const [activeDan, setActiveDan] = useState(() => localStorage.getItem('activeDan') || 'All');
-  const [activeVegaCourse, setActiveVegaCourse] = useState(() => localStorage.getItem('activeVegaCourse') || 'All');
+  const [activeDan, setActiveDan] = useState(() => storage.getItem('activeDan') || 'All');
+  const [activeVegaCourse, setActiveVegaCourse] = useState(() => storage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
 
   const { resetFilters } = useFilters();
@@ -144,8 +145,8 @@ function AppRoutes() {
     navigate(`${location.pathname}?${queryParams.toString()}${location.hash}`);
   };
 
-  useEffect(() => { localStorage.setItem('activeDan', activeDan); }, [activeDan]);
-  useEffect(() => { localStorage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);
+  useEffect(() => { storage.setItem('activeDan', activeDan); }, [activeDan]);
+  useEffect(() => { storage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);
 
   return (
     <div data-theme={theme}>

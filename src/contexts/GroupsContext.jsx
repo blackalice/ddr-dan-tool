@@ -1,5 +1,6 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { storage } from '../utils/remoteStorage.js';
 
 const defaultGroups = [];
 const MAX_GROUPS = 20;
@@ -8,19 +9,19 @@ export const GroupsContext = createContext();
 
 export const GroupsProvider = ({ children }) => {
   const [groups, setGroups] = useState(() => {
-    const saved = localStorage.getItem('groups');
+    const saved = storage.getItem('groups');
     return saved ? JSON.parse(saved) : defaultGroups;
   });
   const [activeGroup, setActiveGroup] = useState(() =>
-    localStorage.getItem('activeGroup') || 'All'
+    storage.getItem('activeGroup') || 'All'
   );
 
   useEffect(() => {
-    localStorage.setItem('groups', JSON.stringify(groups));
+    storage.setItem('groups', JSON.stringify(groups));
   }, [groups]);
 
   useEffect(() => {
-    localStorage.setItem('activeGroup', activeGroup);
+    storage.setItem('activeGroup', activeGroup);
   }, [activeGroup]);
 
   useEffect(() => {

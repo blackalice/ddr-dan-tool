@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownWideShort, faArrowUpWideShort } from '@fortawesome/free-solid-svg-icons';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity.js';
+import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
@@ -44,11 +45,11 @@ const RankingsPage = () => {
   const [songMeta, setSongMeta] = useState([]);
   const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(() => {
-    const stored = localStorage.getItem('selectedRankingLevel');
+    const stored = storage.getItem('selectedRankingLevel');
     return stored ? Number(stored) : null;
   });
   const [ascendingOrder, setAscendingOrder] = useState(() => {
-    const stored = localStorage.getItem('rankingsAscending');
+    const stored = storage.getItem('rankingsAscending');
     return stored ? JSON.parse(stored) : false;
   });
 
@@ -74,7 +75,7 @@ const RankingsPage = () => {
   useEffect(() => {
     if (availableLevels.length === 0) return;
     if (selectedLevel == null) {
-      const stored = localStorage.getItem('selectedRankingLevel');
+      const stored = storage.getItem('selectedRankingLevel');
       const level = stored ? Number(stored) : availableLevels[0];
       setSelectedLevel(availableLevels.includes(level) ? level : availableLevels[0]);
     } else if (!availableLevels.includes(selectedLevel)) {
@@ -84,17 +85,17 @@ const RankingsPage = () => {
 
   useEffect(() => {
     if (selectedLevel != null) {
-      localStorage.setItem('selectedRankingLevel', selectedLevel);
+      storage.setItem('selectedRankingLevel', selectedLevel);
     }
   }, [selectedLevel]);
 
   useEffect(() => {
-    localStorage.setItem('rankingsAscending', JSON.stringify(ascendingOrder));
+    storage.setItem('rankingsAscending', JSON.stringify(ascendingOrder));
   }, [ascendingOrder]);
 
   const [collapsed, setCollapsed] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('rankingsCollapsed')) || {};
+      return JSON.parse(storage.getItem('rankingsCollapsed')) || {};
     } catch {
       return {};
     }
@@ -103,7 +104,7 @@ const RankingsPage = () => {
   const toggleCollapse = (rating) => {
     setCollapsed(prev => {
       const newState = { ...prev, [rating]: !prev[rating] };
-      localStorage.setItem('rankingsCollapsed', JSON.stringify(newState));
+      storage.setItem('rankingsCollapsed', JSON.stringify(newState));
       return newState;
     });
   };
