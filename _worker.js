@@ -1,11 +1,14 @@
 import { Hono } from 'hono'
 import { parseGanymedeHtml } from './src/utils/parseGanymedeHtml.js'
+import authApp, { authMiddleware } from './src/auth/index.js'
 
 const app = new Hono()
 
+app.route('/', authApp)
+
 app.get('/api/hello', (c) => c.json({ message: 'Hello from Hono!' }))
 
-app.post('/api/parse-scores', async (c) => {
+app.post('/api/parse-scores', authMiddleware, async (c) => {
   const play = (c.req.query('playtype') || 'SP').toUpperCase();
   const playtype = play === 'DP' ? 'DP' : 'SP';
 

@@ -2,6 +2,7 @@
   "name": "ddr-toolkit",
   "main": "./_worker.js",
   "compatibility_date": "2025-06-05",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -9,5 +10,12 @@
   },
   "build": {
     "command": "npm run build"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ddr-toolkit-db",
+      "database_id": "f9ec8bbc-24c9-4fcf-b2b5-b016e992277a"
+    }
+  ]
 }
