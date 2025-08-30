@@ -40,3 +40,6 @@ public/vega-data.json
 .dev.vars
 /.wrangler
 /dist
+/DDR bits
+/.local/
+/ddrbits/

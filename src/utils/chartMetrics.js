@@ -93,7 +93,6 @@ function approximateRadar(arrows, freezes, bpmRanges, stops, lastBeat) {
     }
   }
   const freeze = length > 0 ? Math.min(1, freezeSeconds / length) : 0;
-
   return { stream, voltage, air, freeze, chaos: null };
 }
 
@@ -116,4 +115,3 @@ export function computeChartMetrics(chart) {
 }
 
 export { timeAtOffset, songLengthSeconds };
-

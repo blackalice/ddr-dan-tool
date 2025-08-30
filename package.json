@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "cf:dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "parse:scores": "node scripts/parse-ganymede-html.mjs"
+    "parse:scores": "node scripts/parse-ganymede-html.mjs",
+    "build:audio": "node scripts/build-audio-lengths.mjs ddrbits"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -46,6 +47,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "music-metadata": "^11.8.3",
     "vite": "^7.0.0",
     "wrangler": "^4.25.0"
   }
