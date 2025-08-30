@@ -133,7 +133,7 @@ const SongInfoBar = ({
                 <span className="song-length">
                   {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
                   {metrics?.firstNoteSeconds != null && (
-                    <> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</>
+                    <span className="song-first-note"> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</span>
                   )}
                 </span>
               )}
@@ -141,7 +141,7 @@ const SongInfoBar = ({
                 <span className="song-length">
                     0:00
                     {metrics?.firstNoteSeconds != null && (
-                      <> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</>
+                      <span className="song-first-note"> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</span>
                     )}
                 </span>
               )}

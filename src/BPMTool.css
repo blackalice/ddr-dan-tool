@@ -252,6 +252,12 @@
   color: var(--text-color-lighter);
 }
 
+.song-first-note {
+    color: var(--text-muted-color);
+    font-size: 0.9em;
+    margin-left: 0.25rem;
+}
+
 .collapse-button {
     background-color: var(--button-bg);
     color: var(--button-icon);
