@@ -149,6 +149,8 @@ const RankingsPage = () => {
             game: song.game,
             rankedRating: diff.rankedRating,
             resetFilters,
+            path: song.path,
+            slug: `${diff.mode}-${String(diff.difficulty).toLowerCase()}`,
           };
           const key = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
           if (scores[playStyle]?.[key]) {

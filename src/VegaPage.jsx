@@ -8,8 +8,9 @@ import { loadVegaData, loadVegaResults } from './utils/course-loader.js';
 import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
+import { normalizeString } from './utils/stringSimilarity.js';
 
-const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
+const DanSection = ({ danCourse, setSelectedGame, resetFilters, titleToPath }) => {
     const { scores } = useScores();
     const [isCollapsed, setIsCollapsed] = useState(() => {
         try {
@@ -48,10 +49,12 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
                   {danCourse.songs.map((song, index) => {
                       const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
                       const score = scores[song.mode]?.[chartKey]?.score;
+                      const path = titleToPath.get(normalizeString(song.title)) || null;
+                      const songWithPath = path ? { ...song, path } : song;
                       return (
                           <SongCard
                               key={`${danCourse.name}-${song.title}-${index}`}
-                              song={song}
+                              song={songWithPath}
                               setSelectedGame={setSelectedGame}
                               resetFilters={resetFilters}
                               score={score}
@@ -154,7 +157,7 @@ const ResultsSection = ({ results, selectedMonth }) => {
     );
 };
 
-const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
+const VegaPage = ({ smData, activeVegaCourse, setActiveVegaCourse, setSelectedGame }) => {
   const [vegaData, setVegaData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState('');
@@ -208,6 +211,15 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
 
   const courseLevels = useMemo(() => ["LIGHT", "HEAVY", "EXTRA"], []);
 
+  const titleToPath = useMemo(() => {
+    const map = new Map();
+    for (const f of smData.files || []) {
+      if (f.title) map.set(normalizeString(f.title), f.path);
+      if (f.titleTranslit) map.set(normalizeString(f.titleTranslit), f.path);
+    }
+    return map;
+  }, [smData.files]);
+
   return (
     <>
       <div className="app-container">
@@ -234,6 +246,7 @@ const VegaPage = ({ activeVegaCourse, setActiveVegaCourse, setSelectedGame }) =>
                   danCourse={course}
                   setSelectedGame={setSelectedGame}
                   resetFilters={resetFilters}
+                  titleToPath={titleToPath}
                 />
             ))
           ) : (

@@ -1011,7 +1011,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 ref={selectRef}
                                 className="song-select"
                                 options={songOptions}
-                                value={simfileData ? { label: simfileData.title.titleName, value: simfileData.title.titleName } : null}
+                                value={simfileData ? { label: simfileData.title.titleName, value: simfileData.path } : null}
                                 onChange={(selected) => onSongSelect(selected)}
                                 styles={selectStyles}
                                 placeholder="Search for a song..."

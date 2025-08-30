@@ -129,10 +129,14 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
       onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);
-      navigate(
-        `/bpm?difficulty=${song.difficulty}&mode=${song.mode}#${encodeURIComponent(song.title)}`,
-        { state: { fromSongCard: true } }
-      );
+      const songId = song.path || song.value;
+      const chartId = song.slug; // may be undefined in Dan/Vega data
+      if (songId && chartId) {
+        navigate(`/bpm?s=${encodeURIComponent(songId)}&c=${encodeURIComponent(chartId)}&m=${song.mode}`, { state: { fromSongCard: true } });
+      } else {
+        // Fallback to legacy via query param 't' (title) plus mode/difficulty
+        navigate(`/bpm?mode=${encodeURIComponent(song.mode)}&difficulty=${encodeURIComponent(song.difficulty)}&t=${encodeURIComponent(song.title)}`, { state: { fromSongCard: true, title: song.title } });
+      }
     }}>
       <div
         className={

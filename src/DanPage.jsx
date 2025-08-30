@@ -5,10 +5,11 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
+import { normalizeString } from './utils/stringSimilarity.js';
 import './App.css';
 import './components/SongCard.css';
 
-const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
+const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleToPath }) => {
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
@@ -43,10 +44,12 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters }) => {
           {danCourse.songs.map((song, index) => {
             const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
             const score = scores[song.mode]?.[chartKey]?.score;
+            const path = titleToPath.get(normalizeString(song.title)) || null;
+            const songWithPath = path ? { ...song, path } : song;
             return (
               <SongCard
                 key={`${danCourse.name}-${song.title}-${index}`}
-                song={song}
+                song={songWithPath}
                 playMode={playMode}
                 setSelectedGame={setSelectedGame}
                 resetFilters={resetFilters}
@@ -79,7 +82,7 @@ const FilterBar = ({ activeDan, setDan, danLevels }) => (
     </div>
 );
 
-const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
+const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
   const [danCourses, setDanCourses] = useState({ single: [], double: [] });
   const [isLoading, setIsLoading] = useState(true);
   const { playStyle, setPlayStyle } = useContext(SettingsContext);
@@ -109,6 +112,15 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
     setActiveDan('All');
   }, [playStyle, setActiveDan]);
 
+  const titleToPath = useMemo(() => {
+    const map = new Map();
+    for (const f of smData.files || []) {
+      if (f.title) map.set(normalizeString(f.title), f.path);
+      if (f.titleTranslit) map.set(normalizeString(f.titleTranslit), f.path);
+    }
+    return map;
+  }, [smData.files]);
+
   return (
     <>
       
@@ -134,6 +146,7 @@ const DanPage = ({ activeDan, setActiveDan, setSelectedGame }) => {
                   playMode={playStyle}
                   setSelectedGame={setSelectedGame}
                   resetFilters={resetFilters}
+                  titleToPath={titleToPath}
                 />
             ))
           ) : (
