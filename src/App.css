@@ -526,19 +526,6 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), .15);
 }
 
-button {
-  background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 84%, black));
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 0.55rem 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  box-shadow: 0 6px 16px rgba(var(--accent-color-rgb), .35);
-  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
-}
-button:hover { filter: brightness(1.05); }
-button:active { transform: translateY(1px); box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), .28); }
 
 /* Subtle app fade-in */
 @keyframes fade-in {
