@@ -63,6 +63,53 @@ app.put('/api/user/data', authMiddleware, async (c) => {
   return c.json({ success: true })
 })
 
+// Accept POST for sendBeacon merge (treated like PATCH/merge)
+app.post('/api/user/data', authMiddleware, async (c) => {
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
+  ).run()
+  const userId = c.get('user').sub
+  const patch = await c.req.json()
+  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
+    .bind(userId)
+    .first()
+  const current = row ? JSON.parse(row.data) : {}
+  for (const [k, v] of Object.entries(patch)) {
+    if (v === null) delete current[k]
+    else current[k] = v
+  }
+  await c.env.DB.prepare(
+    'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
+  )
+    .bind(userId, JSON.stringify(current))
+    .run()
+  return c.json({ success: true })
+})
+
+// Merge-only updates: accepts a partial JSON object; null values delete keys.
+app.patch('/api/user/data', authMiddleware, async (c) => {
+  await c.env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
+  ).run()
+  const userId = c.get('user').sub
+  const patch = await c.req.json()
+  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
+    .bind(userId)
+    .first()
+  const current = row ? JSON.parse(row.data) : {}
+  // Apply patch: set keys; if value is null, delete the key
+  for (const [k, v] of Object.entries(patch)) {
+    if (v === null) delete current[k]
+    else current[k] = v
+  }
+  await c.env.DB.prepare(
+    'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
+  )
+    .bind(userId, JSON.stringify(current))
+    .run()
+  return c.json({ success: true })
+})
+
 app.use('*', async (c) => {
   return c.env.ASSETS.fetch(c.req.raw)
 })

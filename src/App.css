@@ -10,7 +10,7 @@ html {
   --color-challenge: #7D72FE;
 }
 
-html[data-theme='dark'] {
+[data-theme='dark'] {
   --bg-color: #111827;
   --bg-color-light: #1F2937;
   --bg-color-dark: #2D3748;
@@ -23,9 +23,9 @@ html[data-theme='dark'] {
   --text-color-lighter: #F9FAFB;
   --text-color-lightest: #d1d5db;
   --text-muted-color: #9CA3AF;
-  --accent-color: #2484c3;
-  --accent-color-rgb: 36, 132, 195;
-  --accent-color-light: #9d7aea;
+  --accent-color: #7C3AED;
+  --accent-color-rgb: 124, 58, 237;
+  --accent-color-light: #A78BFA;
   --cyan-color: #67E8F9;
   --green-color: #4ADE80;
   --pink-color: #F472B6;
@@ -33,6 +33,16 @@ html[data-theme='dark'] {
   --yellow-color: #FBBF24;
   --button-icon: white;
   --button-bg: #4B5563;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
+  --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
+  --glass-bg: rgba(0, 0, 0, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: saturate(140%) blur(12px);
 
   --difficulty-beginner-color: #4A90E2;
   --difficulty-light-color: #F5A623;
@@ -65,7 +75,7 @@ html[data-theme='dark'] {
   --color-link: var(--color-expert);
 }
 
-html[data-theme='light'] {
+[data-theme='light'] {
   --bg-color: #FAFAFA;
   --bg-color-light: #EAEAEB;
   --bg-color-dark: #DCDDDE;
@@ -78,9 +88,9 @@ html[data-theme='light'] {
   --text-color-lighter: #383A42;
   --text-color-lightest: #5C5E66;
   --text-muted-color: #808289;
-  --accent-color: #4078F2;
-  --accent-color-rgb: 64, 120, 242;
-  --accent-color-light: #6995F5;
+  --accent-color: #3B82F6;
+  --accent-color-rgb: 59, 130, 246;
+  --accent-color-light: #93C5FD;
   --cyan-color: #0184BC;
   --green-color: #50A14F;
   --pink-color: #A626A4;
@@ -88,6 +98,16 @@ html[data-theme='light'] {
   --yellow-color: #C18401;
   --button-bg: #5C5E66;
   --button-icon: white;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 26px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 18px 52px rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: saturate(140%) blur(12px);
 
   --difficulty-beginner-color: #4078F2;
   --difficulty-light-color: #C18401;
@@ -120,7 +140,7 @@ html[data-theme='light'] {
   --color-link: var(--color-challenge);
 }
 
-html[data-theme='cg'] {
+[data-theme='cg'] {
   --bg-color: #111111;
   --bg-color-dark: #333333;
   --bg-color-light: #222222;
@@ -144,6 +164,16 @@ html[data-theme='cg'] {
   --yellow-color: white;
   --button-bg: #3a3a3c;
   --button-icon: #ffffff;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
+  --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
+  --glass-bg: rgba(0, 0, 0, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: saturate(140%) blur(12px);
 
   --difficulty-beginner-color: #00bcd4;
   --difficulty-light-color: #ff9800;
@@ -175,7 +205,7 @@ html[data-theme='cg'] {
   --color-link: var(--primary-color);
 }
 
-html[data-theme='dark-pink'] {
+[data-theme='dark-pink'] {
   --bg-color: #1b1120;
   --bg-color-light: #25192d;
   --bg-color-dark: #2e1d3b;
@@ -198,6 +228,16 @@ html[data-theme='dark-pink'] {
   --yellow-color: #FBBF24;
   --button-icon: white;
   --button-bg: #53325f;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
+  --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
+  --glass-bg: rgba(0, 0, 0, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: saturate(140%) blur(12px);
 
   --difficulty-beginner-color: #4A90E2;
   --difficulty-light-color: #F5A623;
@@ -241,22 +281,30 @@ html, body, #root {
 
 body {
   margin: 0;
-  background-color: var(--bg-color);
+  /* Background color is applied on the theme container so gradients work */
   color: var(--text-color);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.1px;
+}
+
+/* Ensure the theme container paints the page background */
+[data-theme] {
+  background-color: var(--bg-color);
+  min-height: 100vh;
 }
 
 /* --- Layout Containers --- */
 .app-container {
-  max-width: 1152px; /* 72rem */
+  max-width: 1200px; /* 75rem */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  padding: 0 1.25rem;
 }
 .app-content {
   flex-grow: 1;
-
+  animation: fade-in 300ms ease-out;
 }
 @media (max-width: 1024px) {
   .dan-select{
@@ -304,8 +352,9 @@ body {
 .filter-bar {
   background-color: var(--bg-color-light);
   padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
   margin-bottom: 1rem;
 }
 .target-bpm-bar {
@@ -329,7 +378,7 @@ body {
   background-color: var(--card-bg-color);
   color: var(--text-color);
   padding: 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   border: 2px solid transparent;
   text-align: center;
   font-size: 1.25rem;
@@ -349,6 +398,8 @@ body {
   background-color: var(--card-bg-color);
   border-radius: 9999px;
   padding: 0.25rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
 }
 .play-mode-toggle button {
   padding: 0.5rem 1.5rem;
@@ -361,9 +412,9 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
-.play-mode-toggle button:hover {
-	background-color: var(--card-hover-bg-color);
-	color: var(--text-color);
+.play-mode-toggle button:not(.active):hover {
+    background-color: var(--card-hover-bg-color);
+    color: var(--text-color);
 }
 
 .play-mode-toggle button.active {
@@ -383,7 +434,7 @@ body {
   color: var(--text-color);
   font-weight: 600;
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   border: none;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   width:100%;
@@ -458,6 +509,41 @@ body {
   margin-top: 1rem;
   color: var(--text-muted-color);
   font-size: 0.875rem;
+}
+
+/* Inputs and buttons: modern and tactile, but lightweight */
+input, select, textarea {
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), .15);
+}
+
+button {
+  background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 84%, black));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 16px rgba(var(--accent-color-rgb), .35);
+  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+}
+button:hover { filter: brightness(1.05); }
+button:active { transform: translateY(1px); box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), .28); }
+
+/* Subtle app fade-in */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 640px) {

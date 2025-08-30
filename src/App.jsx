@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
@@ -121,7 +121,7 @@ function AppRoutes() {
     }
   }, [location.hash, location.search, smData]);
 
-  const handleSongSelect = (song) => {
+  const handleSongSelect = useCallback((song) => {
     if (song) {
       navigate(`/bpm#${encodeURIComponent(song.title)}`);
     } else {
@@ -130,21 +130,21 @@ function AppRoutes() {
         navigate('/bpm');
       }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     if (firstOverride.current) {
       firstOverride.current = false;
       return;
     }
-    resetFilters();
-    // Avoid forcing a redirect to /bpm when the user is elsewhere; just clear selection if on the BPM page
+    // No automatic filter reset; switching overrides should not wipe user filters.
+    // If needed, we can provide a prompt or a manual reset.
     if (location.pathname.startsWith('/bpm')) {
       handleSongSelect(null);
     }
-  }, [songlistOverride]);
+  }, [songlistOverride, location.pathname, handleSongSelect]);
 
-  const handleChartSelect = (chart) => {
+  const handleChartSelect = useCallback((chart) => {
     setCurrentChart(chart);
     if (chart && chart.mode) {
       setPlayStyle(chart.mode);
@@ -153,7 +153,7 @@ function AppRoutes() {
     queryParams.set('difficulty', chart.difficulty);
     queryParams.set('mode', chart.mode);
     navigate(`${location.pathname}?${queryParams.toString()}${location.hash}`);
-  };
+  }, [navigate, setPlayStyle, location.pathname, location.search, location.hash]);
 
   useEffect(() => { storage.setItem('activeDan', activeDan); }, [activeDan]);
   useEffect(() => { storage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);

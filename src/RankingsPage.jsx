@@ -81,7 +81,7 @@ const RankingsPage = () => {
     } else if (!availableLevels.includes(selectedLevel)) {
       setSelectedLevel(availableLevels[0]);
     }
-  }, [availableLevels]);
+  }, [availableLevels, selectedLevel]);
 
   useEffect(() => {
     if (selectedLevel != null) {

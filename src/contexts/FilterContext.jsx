@@ -25,11 +25,15 @@ export const FilterContext = createContext({
 
 export const FilterProvider = ({ children }) => {
   const [filters, setFilters] = useState(() => {
-    const savedFilters = storage.getItem('filters');
-    if (savedFilters) {
-      const parsed = JSON.parse(savedFilters);
-      // Ensure all keys from defaultFilters are present
-      return { ...defaultFilters, ...parsed };
+    const saved = storage.getItem('filters');
+    if (saved) {
+      try {
+        const parsed = typeof saved === 'string' ? JSON.parse(saved) : saved;
+        return { ...defaultFilters, ...parsed };
+      } catch {
+        // If bad data, fall back to defaults
+        return defaultFilters;
+      }
     }
     return defaultFilters;
   });

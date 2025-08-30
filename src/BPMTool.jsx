@@ -509,7 +509,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 onSongSelect(null);
             }
         }
-    }, [filters, playStyle, simfileData]);
+    }, [filters, playStyle, simfileData, scores, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings]);
 
     const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
         if (!simfileWithRatings) {
@@ -583,7 +583,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             chartData: data,
             songLength: length,
         };
-    }, [simfileWithRatings, currentChart, radarMap]);
+    }, [simfileWithRatings, currentChart, radarMap, songMeta]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;
@@ -765,7 +765,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!isValid) {
             onSongSelect(songOptions[0]);
         }
-    }, [songOptions, simfileData]);
+    }, [songOptions, simfileData, onSongSelect]);
 
     useEffect(() => {
         if (!simfileData || !currentChart || !filters) return;
@@ -800,7 +800,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
             setCurrentChart(newChart);
         }
-    }, [simfileData, filters]);
+    }, [simfileData, simfileWithRatings, filters, playStyle, setCurrentChart]);
 
     useEffect(() => {
         if (!simfileWithRatings || !currentChart) return;
@@ -828,7 +828,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             const closest = matchingCharts.reduce((prev, c) => Math.abs(c.feet - targetFeet) < Math.abs(prev.feet - targetFeet) ? c : prev, matchingCharts[0]);
             setCurrentChart(closest);
         }
-    }, [filters, playStyle, simfileData, currentChart, songOptions]);
+    }, [filters, playStyle, simfileData, currentChart, songOptions, onSongSelect, setCurrentChart, simfileWithRatings]);
 
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),

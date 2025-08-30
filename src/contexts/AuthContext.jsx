@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScores } from './ScoresContext.jsx';
 import { SettingsContext } from './SettingsContext.jsx';
@@ -11,20 +11,28 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const { setScores } = useScores();
-  const settings = useContext(SettingsContext);
+  const {
+    setTargetBPM,
+    setApiKey,
+    setMultiplierMode,
+    setTheme,
+    setPlayStyle,
+    setShowLists,
+    setShowRankedRatings,
+    setSonglistOverride,
+  } = useContext(SettingsContext);
 
   const applySettings = (data = {}) => {
-    if (!settings) return;
     const bool = (v) => v === true || v === 'true';
     const num = (v, d) => (v !== undefined && v !== null ? Number(v) : d);
-    if (data.targetBPM !== undefined) settings.setTargetBPM(num(data.targetBPM, 300));
-    if (data.apiKey !== undefined) settings.setApiKey(data.apiKey);
-    if (data.multiplierMode !== undefined) settings.setMultiplierMode(data.multiplierMode);
-    if (data.theme !== undefined) settings.setTheme(data.theme);
-    if (data.playStyle !== undefined) settings.setPlayStyle(data.playStyle);
-    if (data.showLists !== undefined) settings.setShowLists(bool(data.showLists));
-    if (data.showRankedRatings !== undefined) settings.setShowRankedRatings(bool(data.showRankedRatings));
-    if (data.songlistOverride !== undefined) settings.setSonglistOverride(data.songlistOverride);
+    if (data.targetBPM !== undefined) setTargetBPM(num(data.targetBPM, 300));
+    if (data.apiKey !== undefined) setApiKey(data.apiKey);
+    if (data.multiplierMode !== undefined) setMultiplierMode(data.multiplierMode);
+    if (data.theme !== undefined) setTheme(data.theme);
+    if (data.playStyle !== undefined) setPlayStyle(data.playStyle);
+    if (data.showLists !== undefined) setShowLists(bool(data.showLists));
+    if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
+    if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
   };
 
   const refreshToken = async () => {
@@ -32,11 +40,11 @@ export const AuthProvider = ({ children }) => {
     return res.ok;
   };
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     const res = await fetch('/api/user/data', { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
-      setUser({ email: data.email || user?.email || '' });
+      setUser(u => ({ email: data.email || u?.email || '' }));
       // Scores
       if (data.scores) setScores(data.scores);
       else if (data.ddrScores) {
@@ -60,6 +68,8 @@ export const AuthProvider = ({ children }) => {
         };
         applySettings(flat);
       }
+      // Prime remote storage sync state now that we’re authenticated
+      try { const { storage } = await import('../utils/remoteStorage.js'); await storage.refresh(); } catch {}
       return true;
     }
     if (res.status === 401) {
@@ -71,11 +81,11 @@ export const AuthProvider = ({ children }) => {
       navigate('/login');
     }
     return false;
-  };
+  }, [navigate, setScores, setTargetBPM, setApiKey, setMultiplierMode, setTheme, setPlayStyle, setShowLists, setShowRankedRatings, setSonglistOverride]);
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
   const login = async (email, password) => {
     const res = await fetch('/api/login', {

@@ -1,110 +1,119 @@
 .tabs-container {
-    background-color: var(--bg-color-light);
-    margin-bottom:1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin-bottom: 1rem;
+    /* Glass nav bar */
+    background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.0));
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .tabs-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1152px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 
 .logo-container {
     padding: 0 1rem;
     font-size: 1.5rem;
     color: var(--text-color);
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
 }
 
-.logo-container svg {
-    width: 24px;
-    height: 24px;
-}
+.logo-container svg { width: 22px; height: 22px; transition: transform .2s ease; }
+.logo-container:hover svg { transform: scale(1.06) rotate(-3deg); }
 
 .tabs-group {
     display: flex;
     justify-content: center;
     flex-grow: 1;
-    
+    gap: 6px;
 }
 
 .settings-tab {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 0.5rem;
-    font-size: 1.25rem;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
     color: var(--text-muted-color);
     text-decoration: none;
     transition: all 0.2s ease-in-out;
-    
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    line-height: 1;
 }
 
-.settings-tab:hover {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
-}
+.settings-tab:hover { filter: brightness(1.1); color: var(--text-color); }
 
 .settings-tab.active {
-    background-color: var(--accent-color);
+    background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 84%, black));
     color: var(--text-color);
+    box-shadow: 0 8px 18px rgba(var(--accent-color-rgb), .3);
 }
 
 
 .tab {
-    padding: 0.75rem 1.5rem;
-    margin: 0 0.25rem;
-    border-radius: 0.5rem;
+    position: relative;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     color: var(--text-muted-color);
-    font-weight: 600;
-    transition: all 0.2s ease-in-out;
-    
+    font-weight: 700;
+    transition: color .2s ease, transform .08s ease, background .2s ease;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    line-height: 1;
 }
 
-.tab:hover {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
-}
+.tab:hover { filter: brightness(1.08); color: var(--text-color); }
 
 .tab.active {
-    background-color: var(--accent-color);
+    background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 84%, black));
     color: var(--text-color);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 22px rgba(var(--accent-color-rgb), .28);
 }
 
 .play-style-toggle-tab {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background-color: var(--card-bg-color);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     color: var(--text-color);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: transform .08s ease, filter .2s ease;
+    line-height: 1;
 }
 
-.play-style-toggle-tab:hover {
-    background-color: var(--card-hover-bg-color);
-}
+.play-style-toggle-tab:hover { filter: brightness(1.08); }
 
 @media (max-width: 640px) {
     .tabs-container {
         margin-bottom:1rem;
         
     }
-    .tab {
-        flex-grow: 1;
-        text-align: center;
-        padding: 0.75rem 0.5rem;
-        font-size: 0.875rem;
-    }
+    .tab { flex-grow: 1; text-align: center; padding: 0; font-size: 0.975rem; }
 }
