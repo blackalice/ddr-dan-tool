@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, '..')
 const PUBLIC_DIR = path.join(ROOT, 'public')
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json')
 const OUTPUT_PATH = path.join(PUBLIC_DIR, 'radar-values.json')
+const AUDIO_MAP_PATH = path.join(ROOT, '.local', 'audio-lengths.json')
 
 const toFixed = (n, d = 2) => Number.isFinite(n) ? Number(n.toFixed(d)) : 0
 
@@ -109,44 +110,64 @@ function computeAir(mode, arrows, songSec) {
   return { value: air, jumps, shocks, density }
 }
 
-function computeAverageBpm(chart) {
+function computeAverageBpm(chart, secOverride) {
   const beats = lastBeatForChart(chart)
-  const sec = computeSongSeconds(chart) || 1
+  const sec = secOverride != null ? Math.max(0.001, secOverride) : (computeSongSeconds(chart) || 1)
   const avgBpm = (60 * beats) / sec
   return { beats, sec, avgBpm }
 }
 
-function computeVoltage(chart, mode) {
-  const { avgBpm } = computeAverageBpm(chart)
-  // Peak Density: max notes (taps+hold/roll heads), counting shock rows as per-lane notes
-  const evts = (chart.arrows || []).map(a => ({ beat: (a.offset || 0) * 4, dir: a.direction || '' }))
-  // Precompute per-event notes count: taps (1/2/4) + shock panel count (M)
-  const perEvtNotes = evts.map(e => {
-    let cnt = 0
-    let shockPanels = 0
-    for (const ch of e.dir) {
-      if (ch === '1' || ch === '2' || ch === '4') cnt += 1
-      if (ch === 'M') shockPanels += 1
+function expandNoteRows(notesText, mode) {
+  const ROWS_PER_MEASURE = 192
+  const measures = (notesText || '').split(',')
+  const rows = []
+  for (const measure of measures) {
+    const lines = measure.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0)
+    if (lines.length === 0) continue
+    const sanitized = lines.map(l => l.replace(/F/g, '0'))
+    const firstRow = sanitized[0]
+    const emptyRow = firstRow.replace(/[0-9MLFAKNHGOETU]/g, '0')
+    const repeat = Math.max(1, Math.floor(ROWS_PER_MEASURE / sanitized.length))
+    const expanded = []
+    for (const r of sanitized) {
+      expanded.push(r)
+      for (let i = 0; i < repeat - 1; i++) expanded.push(emptyRow)
     }
-    return cnt + shockPanels
+    if (expanded.length < ROWS_PER_MEASURE) {
+      while (expanded.length < ROWS_PER_MEASURE) expanded.push(emptyRow)
+    } else if (expanded.length > ROWS_PER_MEASURE) {
+      expanded.length = ROWS_PER_MEASURE
+    }
+    rows.push(...expanded)
+  }
+  return rows
+}
+
+function computeVoltage(chart, mode, notesText, secOverride) {
+  const { avgBpm } = computeAverageBpm(chart, secOverride)
+  const rows = expandNoteRows(notesText, mode)
+  const perRow = rows.map(r => {
+    let cnt = 0
+    let shocks = 0
+    for (const ch of r) {
+      if (ch === '1' || ch === '2' || ch === '4') cnt++
+      if (ch === 'M') shocks++
+    }
+    return cnt + shocks
   })
-  let maxIn4Beats = 0
-  let j = 0
-  for (let i = 0; i < evts.length; i++) {
-    const startBeat = evts[i].beat
-    while (j < evts.length && evts[j].beat <= startBeat + 4 + 1e-6) j++
+  // Beat-aligned 4-beat windows (start at multiples of 48 rows)
+  const window = 192
+  let maxSum = 0
+  for (let start = 0; start + window <= perRow.length; start += 48) {
     let sum = 0
-    for (let k = i; k < j; k++) sum += perEvtNotes[k]
-    if (sum > maxIn4Beats) maxIn4Beats = sum
+    for (let i = start; i < start + window; i++) sum += perRow[i]
+    if (sum > maxSum) maxSum = sum
   }
-  const avgPeakDensity = Math.floor((avgBpm * maxIn4Beats) / 4)
+  const avgPeakDensity = Math.floor((avgBpm * maxSum) / 4)
   let voltage
-  if (avgPeakDensity <= 600) {
-    voltage = Math.floor(avgPeakDensity / 6)
-  } else {
-    voltage = Math.floor(((avgPeakDensity + 594) * 100) / 1194)
-  }
-  return { value: voltage, peakNotes4Beats: maxIn4Beats, avgPeakDensity }
+  if (avgPeakDensity <= 600) voltage = Math.floor(avgPeakDensity / 6)
+  else voltage = Math.floor(((avgPeakDensity + 594) * 100) / 1194)
+  return { value: voltage, peakNotes4Beats: maxSum, avgPeakDensity }
 }
 
 function computeFreeze(chart, mode) {
@@ -193,55 +214,84 @@ function colorValueForDenom(d) {
   return 1.25 // 12th/24th/32nd/48th/64th etc
 }
 
-function computeChaos(chart, mode, songSec) {
-  const evts = (chart.arrows || []).map(a => ({ beat: (a.offset || 0) * 4, dir: a.direction || '' }))
-  if (evts.length === 0 || !songSec) return { value: 0 }
-  let base = 0
-  for (let i = 0; i < evts.length; i++) {
-    if (i === 0) continue
-    const cur = evts[i]
-    const prev = evts[i - 1]
-    const deltaBeats = Math.max(1e-6, cur.beat - prev.beat)
-    const denom = quantDenomForBeat(cur.beat)
-    const colorVal = colorValueForDenom(denom)
-    // number of arrows on this row including shocks
+function computeChaos(chart, mode, songSec, notesText) {
+  const rows = expandNoteRows(notesText, mode)
+  const ROWS_PER_BEAT = 48
+  const noteRowIdx = []
+  const arrowsOnRow = []
+
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i]
     let taps = 0
-    let shockPanels = 0
-    for (const ch of cur.dir) {
-      if (ch === '1' || ch === '2' || ch === '4') taps += 1
-      if (ch === 'M') shockPanels += 1
+    let shocks = 0
+    for (const ch of r) {
+      if (ch === '1' || ch === '2' || ch === '4') taps++
+      if (ch === 'M') shocks++
     }
-    let numArrows = 0
-    if (shockPanels > 0) {
-      const baseShock = mode === 'single' ? 4 : 8
-      const tapCount = taps >= 2 ? 2 : (taps >= 1 ? 1 : 0)
-      numArrows = baseShock + tapCount
-    } else {
-      numArrows = taps >= 2 ? 2 : (taps >= 1 ? 1 : 0)
+    if (taps > 0 || shocks > 0) {
+      noteRowIdx.push(i)
+      let numArrows = 0
+      if (shocks > 0) numArrows = (mode === 'single' ? 4 : 8) + (taps >= 2 ? 2 : (taps >= 1 ? 1 : 0))
+      else numArrows = taps >= 2 ? 2 : (taps >= 1 ? 1 : 0)
+      arrowsOnRow.push(numArrows)
     }
-    base += (denom / deltaBeats) * colorVal * numArrows
+  }
+  if (noteRowIdx.length === 0 || !songSec) return { value: 0 }
+
+  // Total Chaos Base Value
+  let base = 0
+  for (let i = 1; i < noteRowIdx.length; i++) {
+    const cur = noteRowIdx[i]
+    const prev = noteRowIdx[i - 1]
+    const deltaRows = Math.max(1, cur - prev)
+    const beat = cur / ROWS_PER_BEAT
+    const denom = quantDenomForBeat(beat)
+    const colorVal = colorValueForDenom(denom)
+    const numArrows = arrowsOnRow[i]
+    // Interval in units of the current note's quantization (e.g., number of 16th notes since last note)
+    const intervalBeats = deltaRows / ROWS_PER_BEAT
+    const intervalUnits = Math.max(1e-6, intervalBeats * denom)
+    // Base increment: (Note Quantization / Interval units) * Color * Arrows
+    base += (denom / intervalUnits) * colorVal * numArrows
   }
 
-  // Total BPM delta: sum of absolute diffs between successive bpm values
+  // Total BPM Delta: compress monotonic runs (so gradual ramps count as max-min)
   let totalBpmDelta = 0
   const bpmRanges = Array.isArray(chart.bpm) ? chart.bpm : []
-  for (let i = 1; i < bpmRanges.length; i++) {
-    const diff = Math.abs((bpmRanges[i]?.bpm || 0) - (bpmRanges[i - 1]?.bpm || 0))
-    totalBpmDelta += diff
+  if (bpmRanges.length > 1) {
+    let runMin = bpmRanges[0].bpm || 0
+    let runMax = bpmRanges[0].bpm || 0
+    let last = bpmRanges[0].bpm || 0
+    let lastDir = 0 // -1, 0, +1
+    for (let i = 1; i < bpmRanges.length; i++) {
+      const cur = bpmRanges[i].bpm || 0
+      const dir = cur > last ? 1 : (cur < last ? -1 : lastDir)
+      if (lastDir === 0) {
+        runMin = Math.min(runMin, cur)
+        runMax = Math.max(runMax, cur)
+      } else if (dir === lastDir || dir === 0) {
+        runMin = Math.min(runMin, cur)
+        runMax = Math.max(runMax, cur)
+      } else {
+        totalBpmDelta += Math.abs(runMax - runMin)
+        runMin = Math.min(last, cur)
+        runMax = Math.max(last, cur)
+      }
+      lastDir = dir
+      last = cur
+    }
+    totalBpmDelta += Math.abs(runMax - runMin)
   }
   const avgBpmDelta = (60 * totalBpmDelta) / songSec
+
+  // Chaos Degree and Unit Chaos Degree
   const chaosDegree = base * (1 + (avgBpmDelta / 1500))
   const unitChaos = Math.floor((chaosDegree * 100) / songSec)
+
+  // CHAOS value mapping
   let chaos
-  if (unitChaos <= 2000) {
-    chaos = Math.floor(unitChaos / 20)
-  } else {
-    if (mode === 'single') {
-      chaos = Math.floor(((unitChaos + 21605) * 100) / 23605)
-    } else {
-      chaos = Math.floor(((unitChaos + 16628) * 100) / 18628)
-    }
-  }
+  if (unitChaos < 2000) chaos = Math.floor(unitChaos / 20)
+  else chaos = Math.floor(((unitChaos + (mode === 'single' ? 21605 : 16628)) * 100) / (mode === 'single' ? 23605 : 18628))
   return { value: chaos, unitChaos, avgBpmDelta: Math.floor(avgBpmDelta) }
 }
 
@@ -253,6 +303,12 @@ async function main() {
   try {
     const smListRaw = await fs.readFile(SM_FILES_PATH, 'utf-8')
     const smList = JSON.parse(smListRaw)
+    let audioMap = {}
+    try {
+      const audioRaw = await fs.readFile(AUDIO_MAP_PATH, 'utf-8')
+      audioMap = JSON.parse(audioRaw)
+      console.log(`Loaded audio lengths from ${AUDIO_MAP_PATH}`)
+    } catch {}
     const out = {}
     for (const file of smList.files) {
       const full = path.join(PUBLIC_DIR, file.path)
@@ -262,29 +318,35 @@ async function main() {
       } catch {
         continue
       }
-      let sim
-      try {
-        sim = parseSm(text)
-      } catch (e) {
-        console.warn('Failed to parse', file.path)
-        continue
+      // Parse optional OFFSET tag from raw text
+      let offsetSec = 0
+      const mOff = text.match(/#OFFSET:([^;]+);/i)
+      if (mOff) {
+        const v = Number(mOff[1])
+        if (!Number.isNaN(v)) offsetSec = v
       }
+      // Always use the public/sm simfile for calculations (audio lengths still come from ddrbits)
+      let sim
+      try { sim = parseSm(text) } catch (e) { console.warn('Failed to parse', file.path); continue }
       for (const at of sim.availableTypes) {
         const chart = sim.charts[at.slug]
         if (!chart) continue
-        const sec = computeSongSeconds(chart) || 0
-        const { beats } = computeAverageBpm(chart)
-        const stream = computeStream(at.mode, chart.arrows, chart.bpm, chart.stops, sec)
-        const voltage = computeVoltage(chart, at.mode)
-        const air = computeAir(at.mode, chart.arrows, sec)
+        const computedSec = computeSongSeconds(chart) || 0
+        const override = audioMap[file.path]?.lengthSeconds
+        const secUsed = override && override > 0 ? override : computedSec
+        const { beats } = computeAverageBpm(chart, secUsed)
+        const stream = computeStream(at.mode, chart.arrows, chart.bpm, chart.stops, secUsed)
+        const voltage = computeVoltage(chart, at.mode, chart.notes || '', secUsed)
+        const air = computeAir(at.mode, chart.arrows, secUsed)
         const freeze = computeFreeze(chart, at.mode)
-        const chaos = computeChaos(chart, at.mode, sec)
-        const firstSec = (chart.arrows && chart.arrows.length) ? timeAtOffset(chart.bpm || [], chart.stops || [], chart.arrows[0].offset) : 0
+        const chaos = computeChaos(chart, at.mode, secUsed, chart.notes || '')
+        const firstSecBeats = (chart.arrows && chart.arrows.length) ? timeAtOffset(chart.bpm || [], chart.stops || [], chart.arrows[0].offset) : 0
+        const firstSec = Math.max(0, firstSecBeats + offsetSec)
         const steps = stream.steps
         out[keyFor(sim.title, at.mode, at.difficulty)] = {
           steps,
           firstNoteSeconds: toFixed(firstSec, 3),
-          songSeconds: toFixed(sec, 3),
+          songSeconds: toFixed(secUsed, 3),
           songBeats: Math.round(beats),
           stream: stream.value,
           voltage: voltage.value,

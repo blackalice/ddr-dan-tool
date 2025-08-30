@@ -710,4 +710,44 @@
 
 }
 
+/* Stats badge layout (2 columns of label/value pairs) */
+.stats-badge {
+    /* Match score badge width; add left padding for readability */
+    text-align: left; /* override center from base badge */
+    padding-left: 0.75rem;
+}
+
+.stats-badge-grid {
+    display: grid;
+    /* Two pairs (label, value) with fixed column widths */
+    grid-template-columns: 7rem 10ch 7rem 10ch;
+    column-gap: 1rem;
+    row-gap: 0.25rem;
+    justify-content: start;
+    align-items: baseline;
+}
+
+/* Match smaller badge text and colors */
+.stats-badge .song-speed, 
+.stats-badge .song-modifier {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.stats-badge .song-speed { /* label */
+    color: var(--text-muted-color);
+}
+
+.stats-badge .song-modifier { /* value */
+    color: var(--text-color);
+    white-space: nowrap; /* keep values stable */
+}
+
+@media (max-width: 640px) {
+    .stats-badge-grid {
+        /* Single pair per row on small screens, still fixed widths */
+        grid-template-columns: 7rem 10ch;
+    }
+}
+
 

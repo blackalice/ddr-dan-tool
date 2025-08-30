@@ -162,8 +162,8 @@ const SongInfoBar = ({
                 </div>
               )}
               {metrics && (
-                <div style={{ marginTop: '0.5rem' }}>
-                  <div className="song-calculation" style={{ display: 'grid', gridTemplateColumns: 'auto auto', columnGap: '1rem', rowGap: '0.25rem' }}>
+                <div className="bpm-score-badge stats-badge">
+                  <div className="stats-badge-grid">
                     <span className="song-speed">Steps:</span>
                     <span className="song-modifier">{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span>
 
