@@ -1,5 +1,5 @@
 .aboveStepChart {
-    z-index: 999999;
+    z-index: 900; /* keep below top nav tabs */
 }
 
 .stepchartSections {

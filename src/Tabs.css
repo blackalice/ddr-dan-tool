@@ -1,7 +1,7 @@
 .tabs-container {
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 1000; /* above content layers; keep modals higher */
     margin-bottom: 1rem;
     /* Glass nav bar */
     background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.0));

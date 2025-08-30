@@ -34,10 +34,7 @@ export const SettingsProvider = ({ children }) => {
         return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
     });
 
-    const [showLists, setShowLists] = useState(() => {
-        const saved = storage.getItem('showLists');
-        return saved ? JSON.parse(saved) : false;
-    });
+    const [showLists] = useState(true);
 
     const [showRankedRatings, setShowRankedRatings] = useState(() => {
         const saved = storage.getItem('showRankedRatings');
@@ -65,9 +62,7 @@ export const SettingsProvider = ({ children }) => {
         storage.setItem('playStyle', playStyle);
     }, [playStyle]);
 
-    useEffect(() => {
-        storage.setItem('showLists', JSON.stringify(showLists));
-    }, [showLists]);
+    // showLists is always enabled; no persistence needed
 
     useEffect(() => {
         storage.setItem('showRankedRatings', JSON.stringify(showRankedRatings));
@@ -92,7 +87,6 @@ export const SettingsProvider = ({ children }) => {
         playStyle,
         setPlayStyle,
         showLists,
-        setShowLists,
         showRankedRatings,
         setShowRankedRatings,
         songlistOverride,

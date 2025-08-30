@@ -138,11 +138,23 @@ async function init() {
 }
 
 function getItem(key) {
-  return cache[key] ?? null;
+  if (cache[key] != null) return cache[key];
+  try {
+    if (typeof window !== 'undefined') {
+      const v = window.localStorage.getItem(key);
+      return v ?? null;
+    }
+  } catch {}
+  return null;
 }
 
 function setItem(key, value) {
   cache[key] = value;
+  try {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(key, String(value));
+    }
+  } catch {}
   scheduleFlush();
 }
 
@@ -154,6 +166,7 @@ function clear() {
   lastSynced = {};
   lastSent = JSON.stringify(lastSynced);
   if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
+  try { if (typeof window !== 'undefined') window.localStorage.clear(); } catch {}
   fetch('/api/user/data', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },

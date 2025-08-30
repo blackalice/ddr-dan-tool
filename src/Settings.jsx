@@ -19,8 +19,7 @@ const Settings = () => {
         setTargetBPM,
         multiplierMode,
         setMultiplierMode,
-        showLists,
-        setShowLists,
+        // showLists is always enabled now
         showRankedRatings,
         setShowRankedRatings,
         songlistOverride,
@@ -91,6 +90,7 @@ const Settings = () => {
         console.warn(`Imported ${data.scores.length - unmatched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
         return { total: data.scores.length, unmatched, unmatchedEntries };
     };
+
 
     const handleUploadFile = async (e) => {
         const file = e.target.files && e.target.files[0];
@@ -261,24 +261,7 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Custom List Function</h3>
-                            <p>
-                                BETA - Create custom lists of songs, with the abilty to build from custom filters. Maximum 150 songs per list. Your lists are currently stored in your browser and could be lost easily.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <select
-                                value={showLists ? 'Enable' : 'Disable'}
-                                onChange={(e) => setShowLists(e.target.value === 'Enable')}
-                                className="settings-select"
-                            >
-                                <option value="Enable">Enable</option>
-                                <option value="Disable">Disable</option>
-                            </select>
-                        </div>
-                    </div>
+                    {/* Custom List Function is always enabled; toggle removed */}
 
                     <div className="setting-card">
                         <div className="setting-text">
