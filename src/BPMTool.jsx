@@ -6,6 +6,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select, { components as RSComponents } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useAuth } from './contexts/AuthContext.jsx';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity';
 import { useFilters } from './contexts/FilterContext.jsx';
@@ -212,7 +213,9 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, showLists, songlistOverride, showRankedRatings } = useContext(SettingsContext);
+    const { targetBPM, multipliers, apiKey, playStyle, songlistOverride, showRankedRatings } = useContext(SettingsContext);
+    const { user } = useAuth();
+    const showLists = !!user;
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const { scores } = useScores();

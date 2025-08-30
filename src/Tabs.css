@@ -20,20 +20,14 @@
 }
 
 .logo-container {
-    padding: 0 1rem;
-    font-size: 1.5rem;
+    padding: 0 0.25rem;
+    font-size: 1.25rem;
     color: var(--text-color);
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-sm);
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
 }
 
-.logo-container svg { width: 22px; height: 22px; transition: transform .2s ease; }
-.logo-container:hover svg { transform: scale(1.06) rotate(-3deg); }
+.logo-container svg { width: 22px; height: 22px; }
 
 .tabs-group {
     display: flex;

@@ -1,7 +1,10 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { MULTIPLIER_MODES } from '../utils/multipliers';
+import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides';
 import { useNavigate } from 'react-router-dom';
 import { useScores } from './ScoresContext.jsx';
+import { useGroups } from './GroupsContext.jsx';
 import { SettingsContext } from './SettingsContext.jsx';
 import { storage } from '../utils/remoteStorage.js';
 
@@ -11,13 +14,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const { setScores } = useScores();
+  const { setGroups, setActiveGroup } = useGroups();
   const {
     setTargetBPM,
     setApiKey,
     setMultiplierMode,
     setTheme,
     setPlayStyle,
-    setShowLists,
     setShowRankedRatings,
     setSonglistOverride,
   } = useContext(SettingsContext);
@@ -30,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     if (data.multiplierMode !== undefined) setMultiplierMode(data.multiplierMode);
     if (data.theme !== undefined) setTheme(data.theme);
     if (data.playStyle !== undefined) setPlayStyle(data.playStyle);
-    if (data.showLists !== undefined) setShowLists(bool(data.showLists));
+    // showLists is always enabled now
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
     if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
   };
@@ -69,7 +72,17 @@ export const AuthProvider = ({ children }) => {
         applySettings(flat);
       }
       // Prime remote storage sync state now that we’re authenticated
-      try { const { storage } = await import('../utils/remoteStorage.js'); await storage.refresh(); } catch {}
+      try {
+        const { storage } = await import('../utils/remoteStorage.js');
+        await storage.refresh();
+        // Hydrate groups from server into context
+        try {
+          const raw = storage.getItem('groups');
+          const parsed = raw ? JSON.parse(raw) : [];
+          setGroups(Array.isArray(parsed) ? parsed : []);
+          setActiveGroup('All');
+        } catch {}
+      } catch {}
       return true;
     }
     if (res.status === 401) {
@@ -77,11 +90,12 @@ export const AuthProvider = ({ children }) => {
       if (refreshed) {
         return fetchUserData();
       }
+      // Unauthenticated: keep user null and do not force navigation.
+      // This avoids redirecting away from /signup when the user is trying to register.
       setUser(null);
-      navigate('/login');
     }
     return false;
-  }, [navigate, setScores, setTargetBPM, setApiKey, setMultiplierMode, setTheme, setPlayStyle, setShowLists, setShowRankedRatings, setSonglistOverride]);
+  }, [navigate, setScores, setTargetBPM, setApiKey, setMultiplierMode, setTheme, setPlayStyle, setShowRankedRatings, setSonglistOverride]);
 
   useEffect(() => {
     fetchUserData();
@@ -119,9 +133,22 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+    await fetch('/api/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
+    // Reset auth and data
     setUser(null);
     setScores({ single: {}, double: {} });
+    setGroups([]);
+    setActiveGroup('All');
+    // Reset settings to defaults in-memory
+    setTargetBPM(300);
+    setApiKey('');
+    setMultiplierMode(MULTIPLIER_MODES.A_A3);
+    setTheme('dark');
+    setPlayStyle('single');
+    setShowRankedRatings(false);
+    setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
+    // Clear persisted storage (remote + local + session)
+    try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch {}
     storage.clear();
     navigate('/login');
   };

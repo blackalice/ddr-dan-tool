@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useAuth } from './contexts/AuthContext.jsx';
 import './Tabs.css';
 
 const Logo = () => (
@@ -13,7 +14,8 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
-    const { playStyle, setPlayStyle, showLists } = useContext(SettingsContext);
+    const { playStyle, setPlayStyle } = useContext(SettingsContext);
+    const { user } = useAuth();
 
     return (
         <nav className="tabs-container">
@@ -38,7 +40,7 @@ const Tabs = () => {
                     <NavLink to={`/rankings${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                         <FontAwesomeIcon icon={faRankingStar} />
                     </NavLink>
-                    {showLists && (
+                    {!!user && (
                         <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                             <FontAwesomeIcon icon={faList} />
                         </NavLink>

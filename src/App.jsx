@@ -23,7 +23,7 @@ import SignupPage from './SignupPage.jsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 
 function AppRoutes() {
-  const { theme, showLists, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
+  const { theme, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
   const { user } = useAuth();
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
@@ -192,7 +192,7 @@ function AppRoutes() {
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
           <Route path="/multiplier" element={<Multiplier />} />
           <Route path="/rankings" element={<RankingsPage />} />
-          {showLists && <Route path="/lists" element={<ListsPage />} />}
+          {user && <Route path="/lists" element={<ListsPage />} />}
           <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
