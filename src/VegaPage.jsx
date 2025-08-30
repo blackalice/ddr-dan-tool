@@ -13,14 +13,22 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters }) => {
     const { scores } = useScores();
     const [isCollapsed, setIsCollapsed] = useState(() => {
         try {
-            return JSON.parse(storage.getItem(`dan-header-collapsed-${danCourse.name}`)) || false;
+            const keyNew = `collapsed:vega:${danCourse.name}`;
+            const keyOld = `dan-header-collapsed-${danCourse.name}`;
+            const vNew = storage.getItem(keyNew);
+            const vOld = storage.getItem(keyOld);
+            const parsed = vNew != null ? JSON.parse(vNew) : (vOld != null ? JSON.parse(vOld) : false);
+            return !!parsed;
         } catch {
             return false;
         }
     });
 
     useEffect(() => {
-        storage.setItem(`dan-header-collapsed-${danCourse.name}`, JSON.stringify(isCollapsed));
+        const keyNew = `collapsed:vega:${danCourse.name}`;
+        const keyOld = `dan-header-collapsed-${danCourse.name}`; // legacy
+        storage.setItem(keyNew, JSON.stringify(isCollapsed));
+        storage.setItem(keyOld, JSON.stringify(isCollapsed));
     }, [isCollapsed, danCourse.name]);
 
     const songGridClasses = `song-grid ${

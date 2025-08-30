@@ -125,7 +125,10 @@ function AppRoutes() {
     if (song) {
       navigate(`/bpm#${encodeURIComponent(song.title)}`);
     } else {
-      navigate('/bpm');
+      // Only adjust the URL if we're already on the BPM view; otherwise leave the current route unchanged
+      if (location.pathname.startsWith('/bpm')) {
+        navigate('/bpm');
+      }
     }
   };
 
@@ -135,7 +138,10 @@ function AppRoutes() {
       return;
     }
     resetFilters();
-    handleSongSelect(null);
+    // Avoid forcing a redirect to /bpm when the user is elsewhere; just clear selection if on the BPM page
+    if (location.pathname.startsWith('/bpm')) {
+      handleSongSelect(null);
+    }
   }, [songlistOverride]);
 
   const handleChartSelect = (chart) => {

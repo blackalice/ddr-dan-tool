@@ -10,6 +10,7 @@ export default defineConfig({
   server: {
     proxy: {
       // This ONLY affects local dev with `vite dev`
+      // Everything backend lives under /api and is proxied to Wrangler dev server
       '/api': 'http://localhost:8787',
     },
   },

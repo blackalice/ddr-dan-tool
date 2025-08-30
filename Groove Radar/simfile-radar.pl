@@ -1,0 +1,1633 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+#Copyright 2020 Elliot Wolk
+#License: GPLv3
+
+use IPC::Open2 qw(open2);
+use File::Basename qw(dirname);
+use Cwd qw(abs_path);
+
+my $ROWS_PER_MEASURE = 192;
+my $BEATS_PER_MEASURE = 4;
+my $ROWS_PER_BEAT = int($ROWS_PER_MEASURE/$BEATS_PER_MEASURE); #48
+
+my $CACHE_BASE_DIR_SUFFIX = ".cache/simfile-radar";
+
+my $SM_CHARS = '[01234MLFAKNHGOETU]';
+
+my @COMPRESSED_VARIABLE_NAMES = qw( NOTE_ROWS );
+
+sub formatStats($$$);
+sub getSongRowCount($);
+sub getSongDuration($$$);
+sub getNoteCounts($);
+sub getTotalFreezeRowCount($);
+sub getMaxMeasureDensity($);
+sub getTotalNoteIrregularity($);
+sub getBPMChangeAmount($$);
+sub formatDDRGame($);
+sub formatDDRDiff($);
+sub getNoteSetStats($$$$$);
+sub readNoteSetStatsCache($$);
+sub writeNoteSetStatsCache($$$);
+sub calculateNoteSetStats($$);
+sub getSMInfo($$$);
+sub readSMInfoCache($);
+sub writeSMInfoCache($$);
+sub songChecksum($$$);
+sub parseSMFile($);
+sub extractSongNameId($);
+sub convertValuesByBeatToValuesByRow($);
+sub generateGameDiffKey($$);
+sub getExpandedNoteRows($);
+sub formatTimeMSS($);
+sub boingCompressString($);
+sub boingDecompressString($);
+sub pipeCmdData($$);
+sub readFile($);
+sub getChecksumStr($);
+sub getChecksumFile($);
+sub isExecAvailable($);
+
+my $DEFAULT_MACHINE = "DDRA";
+
+# my $DEFAULT_FORMAT_SPEC = ""
+  # . "%-7s-GAME"
+  # . " | %-10s-DIFF"
+  # . " | S%-3d-STREAM"
+  # . " | V%-3d-VOLTAGE"
+  # . " | A%-3d-AIR"
+  # . " | F%-3d-FREEZE"
+  # . " | C%-3d-CHAOS"
+  # . " |%n"
+# ;
+
+my $DEFAULT_FORMAT_SPEC = ""
+  . "\t\t\t[\"%-GAME-"
+  . "%-DIFF\"] = {"
+  . " %-d-STREAM,"
+  . " %-d-VOLTAGE,"
+  . " %-d-AIR,"
+  . " %-d-FREEZE,"
+  . " %-d-CHAOS"
+  . " },%n"
+;
+
+my $usage = "Usage:
+  $0 -h|--help
+    show this message
+
+  $0 [OPTS] SM_FILE
+    analyze SM_FILE (NOTES, BPMS, and STOPS),
+      gather statistics for each VARIABLE below,
+      and print the result using FORMAT_SPEC
+
+    NOTE: groove radar values STREAM/VOLTAGE/AIR/FREEZE/CHAOS
+          are calculated directly using the NOTES arrow patterns + BPMS + STOPS,
+          NOT read from the simfile 'radar' attribute. as a result, the values
+          may not exactly match any particular version of DDR, as the simfile may
+          not exactly match DDR. in practice, they are within a point or two.
+          Much of the numerical calculations were lifted from:
+          https://dancedancerevolution.fandom.com/wiki/Groove_Radar
+
+      e.g.:
+        > $0 GAIA.sm
+        singles | beginner   | S22  | V22  | A12  | F8   | C0   |
+        singles | basic      | S55  | V52  | A15  | F37  | C12  |
+        singles | difficult  | S79  | V74  | A27  | F25  | C46  |
+        singles | expert     | S122 | V109 | A0   | F0   | C108 |
+        doubles | basic      | S55  | V52  | A24  | F37  | C12  |
+        doubles | difficult  | S76  | V59  | A26  | F21  | C40  |
+        doubles | expert     | S123 | V109 | A0   | F0   | C108 |
+
+        > $0 --singles --expert --format=%07.2f-STREAM%n GAIA.sm
+        0122.32
+
+
+  VARIABLE
+    GAME
+      game type in simfile, with replacements to match DDR:
+        dance-single => singles
+        dance-double => doubles
+      all other values are left as-is (e.g.: dance-couple, pump-single)
+    DIFF
+      difficulty level in simfile, with replacments to match DDR:
+        Beginner  => beginner
+        Easy      => basic
+        Medium    => difficult
+        Hard      => expert
+        Expert    => challenge
+        Challenge => challenge
+      all other values are left as-is (e.g.: Edit, Fingers)
+    SONG_NAME
+      parsed out of '#TITLE' in simfile
+    SONG_NAME_TRANSLIT
+      parsed out of '#TITLETRANLIST' if present, or '#TITLE' if not, in simfile
+    SONG_NAME_ID
+      song name ID, with lowercase-letters/numbers/hyphens only (e.g.: max-300)
+      start with #TITLETRANSLIT (or #TITLE if no #TITLETRANLIST is present)
+      invoke `zenius-ddrsonglist --extract-name-id TITLETRANSLIT`, if available
+      if not or if output is malformed:
+        lowercase TITLETRANLIST,
+        perform some simple special replacements,
+        replace all other invalid chars with '-',
+        replace multiple '-'s with one '-',
+        and trim leading/trailing '-'s
+    SM_FEET
+      parsed out of '#METER' (*.ssc) or '#NOTES' (*.sm) in simfile
+      always a non-negative integer (or else ignored)
+      presumably a DDR/ITG/PIU feet-meter/difficulty-rating, usually 1-20
+    SONG_DUR
+      song duration, in fractional seconds
+      this is calculated using BPM_ROWS, STOP_ROWS and SONG_ROW_COUNT
+      e.g.: 121.000666666667
+    SONG_DUR_FMT
+      SONG_DUR formatted M:SS (e.g.: 2:01)
+    NOTE_ROWS
+      a comma-separated list of *expanded* note rows in one game+difficulty of the song
+      there are $ROWS_PER_MEASURE rows for each measure
+      each row is exactly 1/$ROWS_PER_BEAT of a beat ($BEATS_PER_MEASURE beats per measure)
+        (note that there are no measure dividers or newlines. also, this value is very large)
+      this list is expanded from the measure-separated rows in the simfile
+        (the simfile has between 4 and $ROWS_PER_MEASURE rows per measure,
+         which is expanded to exactly $ROWS_PER_MEASURE rows per measure)
+      a single row is a list of characters (4 for singles, 5 for pump, 6 for solo, 8 for doubles)
+      each character represents one arrow/panel, and is one of: $SM_CHARS
+      these characters are used for calculations:
+        0 - nothing for this arrow
+        1 - a 'tap' arrow (regular arrow)
+        2 - a 'hold' arrow (start hold)
+        3 - hold/roll release (same character for 'hold' or 'roll')
+        4 - a 'roll' arrow
+        M - a 'mine' (note: shock rows are rows containing only 'mine')
+      these are ignored:
+        L - lift
+        F - fake
+        A - attack
+        K - automatic keysound
+        N - minefield (was never a real thing)
+        H - hidden
+        G - ???
+        O - ???
+        E - ???
+        T - ???
+        U - ???
+    BPM_ROWS
+      a comma-separated list of ROW=BPM pairs
+      (this is converted from the BEAT=BPM pairs stored in the simfile)
+        BEAT = fractional index of 1/4 note, as defined in the simfile
+        BPM = beats per minute, as defined in the simfile
+        ROW = BEAT*$ROWS_PER_BEAT
+      e.g.: \"#BPMS:0=180,4=180,142=90,143=180,149=180,149.5=180,156=90,157=180;\"
+            =>
+            0=180,192=180,6816=90,6864=180,7152=180,7176=180,7488=90,7536=180
+    STOP_ROWS
+      a comma-separated list of ROW=STOP_DURATION pairs
+      (this is converted from the BEAT=STOP_DURATION pairs stored in the simfile)
+        BEAT = fractional index of 1/4 note, as defined in the simfile
+        STOP_DURATION = stop duration in seconds, as defined in the simfile
+        ROW = BEAT*$ROWS_PER_BEAT
+      e.g.: \"#STOPS:149=0.167,149.5=0.167;\"
+            =>
+            7152=0.167,7176=0.167
+    CHECKSUM
+      checksum of the song arrow contents for one game/difficulty
+        concatenate NOTE_ROWS, BPM_ROWS, and STOP_ROWS, with a % character between
+        take the sha256sum of the result
+    SONG_ROW_COUNT
+      this is the total number of rows in NOTE_ROWS,
+        with each row being 1/$ROWS_PER_MEASURE of a measure,
+        and is equivalent to the number of beats in the song times $ROWS_PER_BEAT
+      note that leading empty rows DO count towards the count or song duration,
+        but trailing empty rows do NOT count towards the count or song duration
+        (all empty rows at the end of a song are ignored)
+      e.g.: 17281
+    SONG_BEAT_COUNT
+      SONG_ROW_COUNT divided by $ROWS_PER_BEAT, rounded to the nearest integer
+      e.g.: 360
+    MAX_MEASURE_DENSITY
+      for every contiguous chain of $ROWS_PER_MEASURE rows in NOTE_ROWS,
+        count the number of non-empty ROWS (not the number of arrows in those rows),
+        where non-empty rows contain at least one arrow with a tap, hold, roll, or mine
+      take the maximum count of non-empty rows of any contiguous chain
+      if NOTE_ROWS has fewer than $ROWS_PER_MEASURE rows (song is shorter than one measure),
+        count the total number of non-empty rows
+    TOTAL_FREEZE_ROW_COUNT
+      find every hold-row, count the number of rows until its released, and sum the counts
+        a hold-row is a row with a single-arrow-hold-start or a multi-arrow-hold-start
+        a hold-row is released when ALL of its arrows have a hold-release
+          i.e.: the last hold-release for all the arrows in the hold-start
+      note:
+        holds on different arrows that start at different times can overlap,
+          and each is counted independently
+        multi-arrow holds only count once, and the longest-held arrow is used
+    TOTAL_NOTE_IRREGULARITY
+      sum( ARROW_COUNT * TIMING_IRREGULARITY / INTERVAL_MEASURES ) for each row in NOTE_ROWS
+      an arbitrary measure of how closely packed notes with weird timings are
+        (this is one of two components of CHAOS, along with BPM_CHANGE_AMOUNT)
+        this value typically ranges from 0 to 6000
+      for each row in NOTE_ROWS:
+        find the ARROW_COUNT, the number of taps/holds/rolls/mines in the row
+          e.g.: 0 for empty row (contributes nothing to the total)
+                1 for single-arrow taps/holds/rolls/mines
+                2 for regular two-arrow jumps
+                4 for shocks/all-mines on singles play
+                8 for shocks/all-mines on doubles play
+        find the TIMING_IRREGULARITY, based on the timing of the row within a measure
+          (sometimes called 'arrow color', as some noteskins assign different colors)
+          timings have arbitrarily-defined TIMING_IRREGULARITY values:
+            1/4 notes (red arrows)     => 0
+            1/8 notes (blue arrows)    => 0.5
+            1/16 notes (yellow arrows) => 1
+            everything else            => 1.25
+          note that this is counted the same for taps, holds, rolls, and mines/shocks,
+            regardless of what 'arrow color' the noteskin uses for these
+        find the INTERVAL_MEASURES, in fractional measures,
+          between this note-row and the previous note-row
+          (count the number of rows between, and divide by $ROWS_PER_MEASURE)
+        divide the arbitrary timing-irregularity based on
+          the timing of each note within a measure (arrow color),
+          by the fractional number of measures between that note and the previous note,
+          and multiply by the ARROW_COUNT
+      finally, take the sum for each row
+    BPM_CHANGE_AMOUNT
+      sum( BPM_CHANGE_DIFF )
+      the sum of the amount that BPMs change in a song
+        (this is one of two components of CHAOS, along with TOTAL_NOTE_IRREGULARITY)
+      the absolute value of the difference between the old BPM and the new BPM,
+        for each change AND stop, all added together
+        this does NOT count the first BPM
+          (a song with one fixed BPM and no stops has a BPM_CHANGE_AMOUNT of 0)
+        a stop is equivalent to a change from 0 BPM back to the current BPM,
+          though NOT the current BPM to 0 BPM, which is ignored
+          (a stop counts only once, not twice, and the length of the stop is ignored)
+        a stop and a BPM change on the same row (1/$ROWS_PER_MEASURE of a measure)
+          counts only as a change from 0BPM to the new BPM
+          (i.e.: stop+change counts only once)
+      e.g.:
+        BPM=100, BPM=300, BPM=100           => BPM_CHANGE_AMOUNT=400
+        BPM=100, stop, stop, stop           => BPM_CHANGE_AMOUNT=300
+        BPM=100, BPM=300, stop, BPM=100     => BPM_CHANGE_AMOUNT=700
+        BPM=50, stop&BPM=100, stop, BPM=120 => BPM_CHANGE_AMOUNT=170
+    COUNT_NOTE_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        single-arrow-tap,        multi-arrow-tap,
+        single-arrow-hold-start, multi-arrow-hold-start,
+        single-arrow-roll-start, multi-arrow-roll-start
+      e.g.: '0001', '1100', '0002', '0202', '0400', '4400'
+    COUNT_TAP_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        single-arrow-tap,        multi-arrow-tap
+      e.g.: '0001', '1100'
+    COUNT_HOLD_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        single-arrow-hold-start, multi-arrow-hold-start
+      e.g.: '0002', '0202'
+    COUNT_ROLL_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        single-arrow-roll-start, multi-arrow-roll-start
+      e.g.: '0400', '4400'
+    COUNT_JUMP_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        mutli-arrow-tap,
+        multi-arrow-hold-start
+        multi-arrow-roll-start
+      e.g.: '1100', '0202', '4400'
+    COUNT_MINE_ROWS
+      total number of rows in NOTE_ROWS that contain:
+        single-mine,              multi-mine
+      e.g.: '0M00', 'MM00'
+    COUNT_SHOCK_ROWS
+      total number of rows in NOTE_ROWS that contain ONLY mines, for all arrows
+        (no 'empty' arrows, no taps, etc)
+      e.g.: 'MMMM'
+    COUNT_TAPS
+      total number of tap ARROWS in all rows in NOTE_ROWS
+        e.g.: a row with a jump ('1100') increases COUNT_TAPS by 2, and COUNT_TAP_ROWS by 1
+    COUNT_HOLDS
+      total number of hold ARROWS in all rows in NOTE_ROWS
+        e.g.: a row with a jump-hold ('0202') increases COUNT_HOLDS by 2, and COUNT_HOLD_ROWS by 1
+    COUNT_ROLLS
+      total number of roll ARROWS in all rows in NOTE_ROWS
+        e.g.: a row with a jump-roll ('4400') increases COUNT_ROLLS by 2, and COUNT_ROLL_ROWS by 1
+    COUNT_MINES
+      total number of MINES in all rows in NOTE_ROWS
+        e.g.: a row with 3 mines ('0MMM') increases COUNT_MINES by 3, and COUNT_MINE_ROWS by 1
+
+    TOTAL_NOTES                = COUNT_NOTE_ROWS + COUNT_SHOCK_ROWS
+    TOTAL_JUMPS_SHOCKS         = COUNT_JUMP_ROWS + COUNT_SHOCK_ROWS
+    NOTES_PER_MIN              = 60 * TOTAL_NOTES / SONG_DUR
+    AVG_BPM                    = 60 * (SONG_ROW_COUNT/$ROWS_PER_BEAT) / SONG_DUR
+    MAX_DENSITY_PER_MIN        = AVG_BPM * (MAX_MEASURE_DENSITY/4)
+    JUMPS_SHOCKS_PER_MIN       = 60 * TOTAL_JUMPS_SHOCKS / SONG_DUR
+    FREEZE_BEAT_COUNT          = TOTAL_FREEZE_ROW_COUNT/$ROWS_PER_BEAT
+    FREEZE_RATIO_10K           = 10000 * FREEZE_BEAT_COUNT / SONG_BEAT_COUNT
+    BPM_CHANGE_AMOUNT_PER_MIN  = 60 * BPM_CHANGE_AMOUNT / SONG_DUR
+    OVERALL_IRREGULARITY       = TOTAL_NOTE_IRREGULARITY * (1 + (BPM_CHANGE_AMOUNT_PER_MIN/1500))
+    IRREG_PER_CENTISECOND      = 100 * OVERALL_IRREGULARITY / SONG_DUR
+
+    STREAM_DDRA    (singles, NOTES_PER_MIN >= 300) = (NOTES_PER_MIN-139)*100/161
+    STREAM_DDRA    (doubles, NOTES_PER_MIN >= 300) = (NOTES_PER_MIN-183)*100/117
+    STREAM_DDRA    (any,     NOTES_PER_MIN < 300 ) = NOTES_PER_MIN/3
+    STREAM_DDRSN2  (singles, NOTES_PER_MIN >= 300) = (NOTES_PER_MIN-203)*100/97
+    STREAM_DDRSN2  (doubles, NOTES_PER_MIN >= 300) = (NOTES_PER_MIN-205)*20/19
+    STREAM_DDRSN2  (any,     NOTES_PER_MIN < 300 ) = NOTES_PER_MIN/3
+
+    VOLTAGE_DDRA    (any, MAX_DENSITY_PER_MIN >= 600) = (MAX_DENSITY_PER_MIN+594)*100/1194
+    VOLTAGE_DDRA    (any, MAX_DENSITY_PER_MIN < 600 ) = MAX_DENSITY_PER_MIN/6
+    VOLTAGE_DDRSN2  (any, MAX_DENSITY_PER_MIN >= 600) = (MAX_DENSITY_PER_MIN+102)*100/702
+    VOLTAGE_DDRSN2  (any, MAX_DENSITY_PER_MIN < 600 ) = MAX_DENSITY_PER_MIN/6
+
+    AIR_DDRA    (singles, JUMPS_SHOCKS_PER_MIN >= 55) = (JUMPS_SHOCKS_PER_MIN+36)*100/91
+    AIR_DDRA    (doubles, JUMPS_SHOCKS_PER_MIN >= 55) = (JUMPS_SHOCKS_PER_MIN+35)*10/9
+    AIR_DDRA    (any,     JUMPS_SHOCKS_PER_MIN < 55 ) = JUMPS_SHOCKS_PER_MIN*20/11
+    AIR_DDRSN2  (any,     JUMPS_SHOCKS_PER_MIN >= 55) = (JUMPS_SHOCKS_PER_MIN-1)*50/27
+    AIR_DDRSN2  (any,     JUMPS_SHOCKS_PER_MIN < 55 ) = JUMPS_SHOCKS_PER_MIN*20/11
+
+    FREEZE_DDRA    (singles, FREEZE_RATIO_10K >= 3500) = (FREEZE_RATIO_10K+2484)*100/5984
+    FREEZE_DDRA    (doubles, FREEZE_RATIO_10K >= 3500) = (FREEZE_RATIO_10K+2246)*100/5746
+    FREEZE_DDRA    (any,     FREEZE_RATIO_10K < 3500 ) = FREEZE_RATIO_10K/35
+    FREEZE_DDRSN2  (singles, FREEZE_RATIO_10K >= 3500) = (FREEZE_RATIO_10K+2484)*100/5984
+    FREEZE_DDRSN2  (doubles, FREEZE_RATIO_10K >= 3500) = (FREEZE_RATIO_10K+2246)*100/5746
+    FREEZE_DDRSN2  (any,     FREEZE_RATIO_10K < 3500 ) = FREEZE_RATIO_10K/35
+
+    CHAOS_DDRA    (singles, IRREG_PER_CENTISECOND >= 2000) = (IRREG_PER_CENTISECOND+21605)*100/23605
+    CHAOS_DDRA    (doubles, IRREG_PER_CENTISECOND >= 2000) = (IRREG_PER_CENTISECOND+16628)*100/18629
+    CHAOS_DDRA    (any,     IRREG_PER_CENTISECOND < 2000 ) = IRREG_PER_CENTISECOND/20
+    CHAOS_DDRSN2  (singles, IRREG_PER_CENTISECOND >= 2000) = (IRREG_PER_CENTISECOND+21605)*100/23605
+    CHAOS_DDRSN2  (doubles, IRREG_PER_CENTISECOND >= 2000) = (IRREG_PER_CENTISECOND+16628)*100/18628
+    CHAOS_DDRSN2  (any,     IRREG_PER_CENTISECOND < 2000 ) = IRREG_PER_CENTISECOND/20
+
+    STREAM  = STREAM_<MACHINE> (default MACHINE is $DEFAULT_MACHINE)
+    VOLTAGE = VOLTAGE_<MACHINE> (default MACHINE is $DEFAULT_MACHINE)
+    AIR     = AIR_<MACHINE> (default MACHINE is $DEFAULT_MACHINE)
+    FREEZE  = FREEZE_<MACHINE> (default MACHINE is $DEFAULT_MACHINE)
+    CHAOS   = CHAOS_<MACHINE> (default MACHINE is $DEFAULT_MACHINE)
+
+  OPTS
+    -c | --no-cache
+      same as '--no-read-cache --no-write-cache'
+    -w | --no-read-cache | --overwrite-cache
+      skip reading from the cache (does not affect writing to the cache)
+    -r | --no-write-cache | --read-only-cache
+      skip writing to the cache (does not affect reading from the cache)
+
+    --singles | singles | --single | single | --dance-single | dance-single
+      same as: --game='^singles\$'
+    --doubles | doubles | --double | double | --dance-double | dance-double
+      same as: --game='^doubles\$'
+    --game=GAME_REGEX
+      ignore (and skip calculations for) all note-sets where GAME does not match
+      the regular expression GAME_REGEX (case-insensitive)
+
+    --beginner | beginner
+      same as: --difficulty='^beginner\$'
+    --basic | basic
+      same as: --difficulty='^basic\$'
+    --difficult | difficult
+      same as: --difficulty='^difficult\$'
+    --expert | expert
+      same as: --difficulty='^expert\$'
+    --challenge | challenge
+      same as: --difficulty='^challenge\$'
+    --diff=DIFFICULTY_REGEX --difficulty=DIFFICULTY_REGEX
+      ignore (and skip calculations for) all note-sets where DIFF does not match
+      the regular expression DIFFICULTY_REGEX (case-insensitive)
+
+    --machine=MACHINE
+      MACHINE is one of the following values (case-insensitive):
+        DDRA DDRSN2
+      this changes the value of the following variables:
+        STREAM  = STREAM_<MACHINE>
+        VOLTAGE = VOLTAGE_<MACHINE>
+        AIR     = AIR_<MACHINE>
+        FREEZE  = FREEZE_<MACHINE>
+        CHAOS   = CHAOS_<MACHINE>
+      e.g.: --machine=ddrsn2
+            => STREAM = STREAM_DDRSN2
+
+    --dump
+      print all variables for each GAME and DIFF (overrides --format)
+      equivalent to setting FORMAT_SPEC to the concatentation of:
+        %GAME.%DIFF.<VARIABLE>=%<VARIABLE>%n
+      for each VARIABLE (one per line, sorted asciibetically)
+
+    --format=FORMAT_SPEC
+      FORMAT_SPEC can be any string, with the following printf-like replacements:
+        %%                       = a literal % character
+        %n                       = a newline character (\\n)
+        %<VARIABLE>              = VARIABLE value
+                                   e.g.: %STREAM
+        %<PRINTF_MOD><VARIABLE>  = VARIABLE value, formatted with PRINTF_MOD
+                                   e.g.: %05.2fSTREAM
+        %<PRINTF_MOD>-<VARIABLE> = VARIABLE value, formatted with PRINTF_MOD
+                                   e.g.: %05.2f-STREAM
+      default=$DEFAULT_FORMAT_SPEC
+         e.g.: singles | expert     | S122 | V109 | A0   | F0   | C108
+
+      if format does not end in at least one newline, one is appended,
+        unless --no-force-newline is given
+
+      PRINTF_MOD = FLAGS|WIDTH|PRECISION|SPECIFIER
+        almost any printf string, like '+08.2f',
+          except:
+            'width' must be a number, not '*'
+            'precision' must be a number, not '.*'
+            'length' (C datatype) is not allowed
+            'specifier' n is not allowed
+            'specifier' % is not allowed
+
+        FLAGS
+          any (or none) of \"-\", \"+\", \" \", \"#\", \"0\"
+          e.g.: - 0
+        WIDTH:
+          missing, or a positive integer
+          e.g.: 32
+        PRECISION:
+          missing, or a decimal point followed by a positive integer
+          e.g.: .2
+        SPECIFIER:
+          exactly one of: d i u o x X f F e E g G a A c s
+          e.g.: f
+
+    -n | --no-force-newline
+      do not append newlines automatically
+      without this option, if FORMAT_SPEC results in output that does not end in a newline,
+        a newline is appended to each formatted output
+";
+
+sub main(@){
+  my $smFile;
+  my $gameFilterRegex;
+  my $diffFilterRegex;
+  my $defaultVarsMachine = $DEFAULT_MACHINE;
+  my $dump = 0;
+  my $formatSpec = $DEFAULT_FORMAT_SPEC;
+  my $forceNewlines = 1;
+  my $readCache = 1;
+  my $writeCache = 1;
+  while(@_ > 0){
+    my $arg = shift;
+    if($arg =~ /^(-h|--help)$/){
+      print $usage;
+      exit 0;
+    }elsif($arg =~ /^(-c|--no-cache)$/){
+      $readCache = 0;
+      $writeCache = 0;
+    }elsif($arg =~ /^(-w|--no-read-cache|--overwrite-cache)$/){
+      $readCache = 0;
+    }elsif($arg =~ /^(-r|--no-write-cache|--read-only-cache)$/){
+      $writeCache = 0;
+    }elsif($arg =~ /^(?:--)?(?:dance-)?(single|double|couple|routine|solo)s$/){
+      $gameFilterRegex = "^$1s\$";
+    }elsif($arg =~ /^--game=(.+)$/){
+      $gameFilterRegex = $1;
+    }elsif($arg =~ /^(?:--)?(beginner|basic|difficult|expert|challenge|edit)$/){
+      $diffFilterRegex = "^$1\$";
+    }elsif($arg =~ /^--(?:diff|-difficulty)=(.+)$/){
+      $diffFilterRegex = $1;
+    }elsif($arg =~ /^--machine=(DDRA|DDRSN2)$/i){
+      $defaultVarsMachine = uc $1;
+    }elsif($arg =~ /^--dump$/){
+      $dump = 1;
+    }elsif($arg =~ /^--format=(.+)$/){
+      $formatSpec = $1;
+    }elsif($arg =~ /^(-n|--no-force-newlines)$/){
+      $forceNewlines = 0;
+    }elsif(-f $arg){
+      die "$usage\nERROR: multiple SM_FILE args \"$arg\" + \"$smFile\"\n" if defined $smFile;
+      $smFile = $arg;
+    }else{
+      die "$usage\nERROR: unknown arg $arg\n";
+    }
+  }
+  die "$usage\nERROR: missing SM_FILE\n" if not defined $smFile;
+
+  my $smInfo = getSMInfo($smFile, $readCache, $writeCache);
+
+  my @gameDiffKeys = @{$$smInfo{gameDiffKeyOrder}};
+
+  my $stats = {};
+  
+  my $filename = '../../radar.txt';
+  open(FH, '>', $filename) or die $!;
+  
+  for my $gameDiffKey(@gameDiffKeys){
+    my $noteSetInfo = $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey};
+    next if defined $gameFilterRegex and $$noteSetInfo{ddrGame} !~ /$gameFilterRegex/i;
+    next if defined $diffFilterRegex and $$noteSetInfo{ddrDiff} !~ /$diffFilterRegex/i;
+    $$stats{$gameDiffKey} = getNoteSetStats($smFile, $smInfo, $gameDiffKey, $readCache, $writeCache);
+  }
+
+  for my $gameDiffKey(@gameDiffKeys){
+    my $s = $$stats{$gameDiffKey};
+    if(defined $s){
+      #copy default machine values into plain radar variables
+      for my $radarStat(qw(STREAM VOLTAGE AIR FREEZE CHAOS)){
+        my $machineVal = $$s{"${radarStat}_${defaultVarsMachine}"};
+        $$s{$radarStat} = $machineVal;
+      }
+
+      if($dump){
+        $formatSpec = "";
+        for my $varName(sort keys %{$$stats{$gameDiffKey}}){
+          $formatSpec .= "%GAME.%DIFF.$varName=%$varName%n";
+        }
+      }
+
+      print FH formatStats($formatSpec, $forceNewlines, $s);
+    }
+  }
+  close(FH)
+}
+
+sub formatStats($$$){
+  my ($formatSpec, $forceNewlines, $stats) = @_;
+
+  my $s = $formatSpec;
+  $s =~ s/&/&amp;/g;
+  $s =~ s/%%/&boing;/g;
+
+  $s =~ s/%n/\n/g;
+
+  my %okCompressedVarnames = map {$_ => 1} @COMPRESSED_VARIABLE_NAMES;
+
+  my $varRegex = join "|", sort {length $b <=> length $a} keys %$stats;
+  my $printfModRegex = '[ \-+#0]*\d*(?:\.\d+)?[diuoxXfFeEgGaAcs]';
+  while($s =~ s/%((?:$printfModRegex)?)-?($varRegex)/&var;/){
+    my ($printfMod, $varName) = ($1, $2);
+    my $val = $$stats{$varName};
+    if(defined $okCompressedVarnames{$varName}){
+      $val = boingDecompressString($val);
+    }
+    $val =~ s/&/&amp;/g;
+    $val =~ s/%/&boing;/g;
+    if(length $printfMod > 0){
+      $val = sprintf "%$printfMod", $val;
+    }
+    $s =~ s/&var;/$val/g;
+  }
+
+  if($s =~ /%/){
+    die "ERROR: format-spec contains unknown replacement var \"$formatSpec\"\n";
+  }
+
+  $s =~ s/&boing;/%/g;
+  $s =~ s/&amp;/&/g;
+
+  if($forceNewlines and $s !~ /[\r\n]+$/){
+    $s .= "\n";
+  }
+
+  return $s;
+}
+
+sub getSongRowCount($){
+  my ($rows) = @_;
+
+  my $rowCount = @$rows;
+  #remove trailing 0-only-rows (empty rows after the last note)
+  #  leading rows before the first note DO count for the song duration
+  for(my $i=$#$rows; $i>=0; $i--){
+    if($$rows[$i] !~ /^0+$/){
+      last;
+    }
+    $rowCount--;
+  }
+
+  return $rowCount;
+}
+
+sub getSongDuration($$$){
+  my ($rows, $bpmsByRow, $stopsByRow) = @_;
+  my $songDurS = 0;
+
+  my $rowCount = getSongRowCount($rows);
+
+  my @bpmRows = sort {$a <=> $b} keys %$bpmsByRow;
+  for(my $i=0; $i<@bpmRows; $i++){
+    my $startRow = $bpmRows[$i];
+    my $endRow;
+    if($i+1 < @bpmRows){
+      $endRow = $bpmRows[$i+1];
+    }else{
+      $endRow = $rowCount - 1; #the last row happens instantaneously, apparently
+    }
+
+    my $bpm = $$bpmsByRow{$startRow};
+    my $beatsPerSecond = $bpm/60.0;
+
+    my $elapsedRows = $endRow - $startRow;
+    my $elapsedBeats = $elapsedRows / $ROWS_PER_BEAT; #rows are 1/192 notes in 4/4 measures
+
+    $songDurS += $elapsedBeats / $beatsPerSecond;
+  }
+
+  for my $stopValS(values %$stopsByRow){
+    $songDurS += $stopValS;
+  }
+
+  return $songDurS;
+}
+
+sub getNoteCounts($){
+  my ($rows) = @_;
+
+  my $noteCounts = {
+    COUNT_NOTE_ROWS  => 0,
+    COUNT_TAP_ROWS   => 0,
+    COUNT_HOLD_ROWS  => 0,
+    COUNT_ROLL_ROWS  => 0,
+    COUNT_JUMP_ROWS  => 0,
+    COUNT_MINE_ROWS  => 0,
+    COUNT_SHOCK_ROWS => 0,
+    COUNT_TAPS       => 0,
+    COUNT_HOLDS      => 0,
+    COUNT_ROLLS      => 0,
+    COUNT_MINES      => 0,
+  };
+  for my $row(@$rows){
+    $$noteCounts{COUNT_NOTE_ROWS}++  if $row =~ /[124]/;
+    $$noteCounts{COUNT_TAP_ROWS}++   if $row =~ /[1]/;
+    $$noteCounts{COUNT_HOLD_ROWS}++  if $row =~ /[2]/;
+    $$noteCounts{COUNT_ROLL_ROWS}++  if $row =~ /[4]/;
+    $$noteCounts{COUNT_JUMP_ROWS}++  if $row =~ /[124].*[124]/;
+    $$noteCounts{COUNT_MINE_ROWS}++  if $row =~ /[M]/;
+    $$noteCounts{COUNT_SHOCK_ROWS}++ if $row =~ /^M+$/; #"shocks" are mine-only rows
+
+    $$noteCounts{COUNT_TAPS}  += $row =~ /1/;
+    $$noteCounts{COUNT_HOLDS} += $row =~ /2/;
+    $$noteCounts{COUNT_ROLLS} += $row =~ /4/;
+    $$noteCounts{COUNT_MINES} += $row =~ /M/;
+  }
+
+  return $noteCounts;
+}
+
+sub getTotalFreezeRowCount($){
+  my ($rows) = @_;
+  my @curFreezes;
+
+  my $frozenRowCount = 0;
+  for my $row(@$rows){
+    my @holdArrows;
+    my @releaseArrows;
+
+    my @arrows = split '', $row;
+    for(my $i=0; $i<@arrows; $i++){
+      if($arrows[$i] =~ /[24]/){    #hold or roll start
+        push @holdArrows, $i;
+      }elsif($arrows[$i] =~ /[3]/){ #hold or roll end
+        push @releaseArrows, $i;
+      }
+    }
+
+    #count this new row for all current freezes, regardless of holds/releases
+    for my $freeze(@curFreezes){
+      $frozenRowCount++;
+    }
+
+    #remove released freezes
+    for my $arrow(@releaseArrows){
+      for my $freeze(@curFreezes){
+        $freeze = [grep {$_ ne $arrow} @$freeze];
+      }
+      @curFreezes = grep {@$_ > 0} @curFreezes;
+    }
+
+    #add new held freeze
+    if(@holdArrows > 0){
+      my $freeze = [@holdArrows];
+      push @curFreezes, $freeze;
+    }
+  }
+  return $frozenRowCount;
+}
+
+sub getMaxMeasureDensity($){
+  my ($rows) = @_;
+
+  my $startRow = 0;
+  my $endRow = $ROWS_PER_MEASURE-1;
+
+  if($endRow > $#$rows){
+    $endRow = $#$rows;
+  }
+
+  my $curDensity = 0 + grep {/[124M]/} @$rows[$startRow..$endRow];
+
+  my $maxDensity = $curDensity;
+  while($endRow < @$rows - 1){
+    my $removedMeasure = $$rows[$startRow];
+    $startRow++;
+    $endRow++;
+    my $addedMeasure = $$rows[$endRow];
+
+    $curDensity-- if $removedMeasure =~ /[124M]/;
+    $curDensity++ if $addedMeasure =~ /[124M]/;
+    if($curDensity > $maxDensity){
+      $maxDensity = $curDensity;
+    }
+  }
+
+  return $maxDensity;
+}
+
+sub getTotalNoteIrregularity($){
+  my ($rows) = @_;
+  my $totalIrregularity = 0;
+
+  my $previousNoteIndex = undef;
+  for(my $i=0; $i<@$rows; $i++){
+    my $row = $$rows[$i];
+    next if $row !~ /[124M]/; #ignore rows without jumps, taps or mines
+
+    #timing of the notes within a measure
+    #  this corresponds to arrow 'color' in certain noteskins,
+    #  although mines/shocks work the same way and dont have color
+    my $noteTypeIrregularity;
+    if($i % int($ROWS_PER_MEASURE/4) == 0){
+      #1/4 note row => red arrows
+      $noteTypeIrregularity = 0; #1/4 notes have zero irregularity
+    }elsif($i % int($ROWS_PER_MEASURE/8) == 0){
+      #1/8 note row => blue arrows
+      $noteTypeIrregularity = 0.5;
+    }elsif($i % int($ROWS_PER_MEASURE/16) == 0){
+      #1/16 note row => yellow arrows
+      $noteTypeIrregularity = 1.0;
+    }else{
+      #anything else (1/12, 1/24, 1/32, 1/48, 1/64, 1/92) => purple/green/gray arrows
+      $noteTypeIrregularity = 1.25;
+    }
+
+    my $irregularity;
+    if(defined $previousNoteIndex){
+      #how many rows of 1/192 notes between this note and the previous
+      my $intervalRows = $i-$previousNoteIndex;
+
+      #how much of a measure is between this note and the previous
+      #larger values mean less irregularity
+      #  a single 1/4 note is 0.25
+      #  a single 1/16 note is 0.0625
+      #  three 1/16 notes is 0.1875
+      #  eight 1/4 notes is 2
+      my $intervalFractionalMeasures = $intervalRows/$ROWS_PER_MEASURE;
+
+      #each arrow has its own irregularity, so 2-arrow jumps count twice,
+      #  and shocks count 4x in singles and 8x in doubles
+      my $arrowCount = 0 + grep {$_ =~ /[124M]/} split //, $row;
+
+      $irregularity = $arrowCount * ($noteTypeIrregularity/$intervalFractionalMeasures);
+    }else{
+      #first note has no irregularity
+      $irregularity = 0;
+    }
+
+    $totalIrregularity += $irregularity;
+    $previousNoteIndex = $i;
+  }
+  return $totalIrregularity;
+}
+
+sub getBPMChangeAmount($$){
+  my ($bpmsByRow, $stopsByRow) = @_;
+  my $bpmChangeAmount = 0;
+
+  my %bpmStopRows = map {$_ => 1} (keys %$bpmsByRow, keys %$stopsByRow);
+
+  my @allBPMOrStopRows = sort {$a <=> $b} keys %bpmStopRows;
+
+  my $curBPM = undef;
+  for my $row(@allBPMOrStopRows){
+    my $newBPM;
+    my $bpmDiff = 0;
+    if(defined $$bpmsByRow{$row}){
+      $newBPM = $$bpmsByRow{$row};
+
+      if(defined $curBPM){
+        $bpmDiff = $newBPM - $curBPM;
+        $bpmDiff = 0-$bpmDiff if $bpmDiff < 0;
+      }
+    }
+
+    if(defined $$stopsByRow{$row}){
+      $bpmDiff = defined $newBPM ? $newBPM : $curBPM;
+    }
+
+    my $firstBPMChange = defined $newBPM && not defined $curBPM ? 1 : 0;
+
+    if(not $firstBPMChange){
+      $bpmChangeAmount += $bpmDiff;
+    }
+    $curBPM = $newBPM if defined $newBPM;
+  }
+
+  return $bpmChangeAmount;
+}
+
+sub formatDDRGame($){
+  my ($game) = @_;
+  if($game =~ /^dance-(single|double|couple-p1|couple-p2|routine-p1|routine-p2|solo)s?$/i){
+    return lc "$1";
+  }else{
+    return $game;
+  }
+}
+sub formatDDRDiff($){
+  my ($diff) = @_;
+  if($diff =~ /^(Beginner)$/i){
+    return "beginner";
+  }elsif($diff =~ /^(Easy)$/i){
+    return "basic";
+  }elsif($diff =~ /^(Medium)$/i){
+    return "difficult";
+  }elsif($diff =~ /^(Hard)$/i){
+    return "expert";
+  }elsif($diff =~ /^(Expert)$/i){
+    return "challenge";
+  }elsif($diff =~ /^(Challenge)$/i){
+    return "challenge";
+  }elsif($diff =~ /^(Edit)$/i){
+    return "edit";
+  }else{
+    return $diff;
+  }
+}
+
+sub getNoteSetStats($$$$$){
+  my ($smFile, $smInfo, $gameDiffKey, $readCache, $writeCache) = @_;
+  my $stats = undef;
+  $stats = readNoteSetStatsCache($smFile, $gameDiffKey) if $readCache;
+  if(not defined $stats){
+    $stats = calculateNoteSetStats($smInfo, $gameDiffKey);
+    writeNoteSetStatsCache($smFile, $gameDiffKey, $stats) if $writeCache;
+  }
+  return $stats;
+}
+
+sub readNoteSetStatsCache($$){
+  my ($smFile, $gameDiffKey) = @_;
+  my $cacheDir = getCacheDir($smFile);
+  if(not -f "$cacheDir/stats-$gameDiffKey"){
+    return undef;
+  }
+  open FH, "<", "$cacheDir/stats-$gameDiffKey";
+  my @lines = <FH>;
+  close FH;
+  my $stats = {};
+  for my $line(@lines){
+    if($line =~ /^(\w+)=(.+)$/){
+      $$stats{$1} = $2;
+    }
+  }
+  return $stats;
+}
+sub writeNoteSetStatsCache($$$){
+  my ($smFile, $gameDiffKey, $stats) = @_;
+  my $cacheDir = getCacheDir($smFile);
+  open FH, ">", "$cacheDir/stats-$gameDiffKey";
+  print FH "$_=$$stats{$_}\n" foreach sort keys %$stats;
+  close FH;
+}
+
+sub calculateNoteSetStats($$){
+  my ($smInfo, $gameDiffKey) = @_;
+  my $noteSetInfo = $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey};
+  my $s = {
+    GAME                      => $$noteSetInfo{ddrGame},
+    DIFF                      => $$noteSetInfo{ddrDiff},
+    SM_FEET                   => $$noteSetInfo{smFeet},
+    SONG_NAME                 => $$smInfo{songName},
+    SONG_NAME_TRANSLIT        => $$smInfo{songNameTranslit},
+    SONG_NAME_ID              => $$smInfo{songNameId},
+  };
+
+  my $rows = $$noteSetInfo{expandedNoteRows};
+
+  my $bpmsByRow;
+  if(defined $$noteSetInfo{bpmsByRow}){
+    $bpmsByRow = $$noteSetInfo{bpmsByRow};
+  }else{
+    $bpmsByRow = $$smInfo{bpmsByRow};
+  }
+
+  my $stopsByRow;
+  if(defined $$noteSetInfo{stopsByRow}){
+    $stopsByRow = $$noteSetInfo{stopsByRow};
+  }else{
+    $stopsByRow = $$smInfo{stopsByRow};
+  }
+
+  #analysis + data-collection
+  $s = {%$s,                     %{getNoteCounts($rows)},
+    SONG_DUR                  => getSongDuration($rows, $bpmsByRow, $stopsByRow),
+    SONG_ROW_COUNT            => getSongRowCount($rows),
+    MAX_MEASURE_DENSITY       => getMaxMeasureDensity $rows,
+    TOTAL_FREEZE_ROW_COUNT    => getTotalFreezeRowCount $rows,
+    TOTAL_NOTE_IRREGULARITY   => getTotalNoteIrregularity $rows,
+    BPM_CHANGE_AMOUNT         => getBPMChangeAmount($bpmsByRow, $stopsByRow),
+  };
+
+  #meaningful calculated values
+  $$s{SONG_DUR_FMT}              = formatTimeMSS $$s{SONG_DUR};
+  $$s{NOTE_ROWS}                 = join ",", @$rows;
+  $$s{BPM_ROWS}                  = join ",", map {"$_=$$bpmsByRow{$_}"} sort {$a <=> $b} keys %$bpmsByRow;
+  $$s{STOP_ROWS}                 = join ",", map {"$_=$$stopsByRow{$_}"} sort {$a <=> $b} keys %$stopsByRow;
+  $$s{CHECKSUM}                  = songChecksum($$s{NOTE_ROWS}, $$s{BPM_ROWS}, $$s{STOP_ROWS});
+  $$s{SONG_BEAT_COUNT}           = int($$s{SONG_ROW_COUNT}/$ROWS_PER_BEAT + 0.5);
+  $$s{TOTAL_NOTES}               = $$s{COUNT_NOTE_ROWS} + $$s{COUNT_SHOCK_ROWS};
+  $$s{TOTAL_JUMPS_SHOCKS}        = $$s{COUNT_JUMP_ROWS} + $$s{COUNT_SHOCK_ROWS};
+  $$s{NOTES_PER_MIN}             = 60 * ($$s{TOTAL_NOTES}) / $$s{SONG_DUR};
+  $$s{AVG_BPM}                   = 60 * ($$s{SONG_ROW_COUNT}/$ROWS_PER_BEAT) / $$s{SONG_DUR};
+  $$s{MAX_DENSITY_PER_MIN}       = $$s{AVG_BPM}*$$s{MAX_MEASURE_DENSITY}/4;
+  $$s{JUMPS_SHOCKS_PER_MIN}      = 60 * $$s{TOTAL_JUMPS_SHOCKS} / $$s{SONG_DUR};
+  $$s{FREEZE_BEAT_COUNT}         = $$s{TOTAL_FREEZE_ROW_COUNT}/$ROWS_PER_BEAT;
+  $$s{FREEZE_RATIO_10K}          = $$s{SONG_BEAT_COUNT} == 0 ? 0 : 10000 * $$s{FREEZE_BEAT_COUNT} / $$s{SONG_BEAT_COUNT};
+  $$s{BPM_CHANGE_AMOUNT_PER_MIN} = 60 * $$s{BPM_CHANGE_AMOUNT} / $$s{SONG_DUR};
+  $$s{OVERALL_IRREGULARITY}      = $$s{TOTAL_NOTE_IRREGULARITY} * (1 + $$s{BPM_CHANGE_AMOUNT_PER_MIN}/1500);
+  $$s{IRREG_PER_CENTISECOND}     = 100 * $$s{OVERALL_IRREGULARITY} / $$s{SONG_DUR};
+
+  my $singles = $$s{GAME} =~ /doubles/i ? 0 : 1;
+  my $doubles = $$s{GAME} =~ /doubles/i ? 1 : 0;
+  my $any = 1;
+
+  my @radarPermutations = (
+    ["STREAM_DDRA",   [$singles, $$s{NOTES_PER_MIN} >= 300] => ($$s{NOTES_PER_MIN}-139)*100/161],
+    ["STREAM_DDRA",   [$doubles, $$s{NOTES_PER_MIN} >= 300] => ($$s{NOTES_PER_MIN}-183)*100/117],
+    ["STREAM_DDRA",   [$any,     $$s{NOTES_PER_MIN} < 300]  => $$s{NOTES_PER_MIN}/3],
+    ["STREAM_DDRSN2", [$singles, $$s{NOTES_PER_MIN} >= 300] => ($$s{NOTES_PER_MIN}-203)*100/97],
+    ["STREAM_DDRSN2", [$doubles, $$s{NOTES_PER_MIN} >= 300] => ($$s{NOTES_PER_MIN}-205)*20/19],
+    ["STREAM_DDRSN2", [$any,     $$s{NOTES_PER_MIN} < 300]  => $$s{NOTES_PER_MIN}/3],
+
+    ["VOLTAGE_DDRA",   [$any, $$s{MAX_DENSITY_PER_MIN} >= 600] => ($$s{MAX_DENSITY_PER_MIN}+594)*100/1194],
+    ["VOLTAGE_DDRA",   [$any, $$s{MAX_DENSITY_PER_MIN} < 600]  => $$s{MAX_DENSITY_PER_MIN}/6],
+    ["VOLTAGE_DDRSN2", [$any, $$s{MAX_DENSITY_PER_MIN} >= 600] => ($$s{MAX_DENSITY_PER_MIN}+102)*100/702],
+    ["VOLTAGE_DDRSN2", [$any, $$s{MAX_DENSITY_PER_MIN} < 600]  => $$s{MAX_DENSITY_PER_MIN}/6],
+
+    ["AIR_DDRA",   [$singles, $$s{JUMPS_SHOCKS_PER_MIN} >= 55] => ($$s{JUMPS_SHOCKS_PER_MIN}+36)*100/91],
+    ["AIR_DDRA",   [$doubles, $$s{JUMPS_SHOCKS_PER_MIN} >= 55] => ($$s{JUMPS_SHOCKS_PER_MIN}+35)*10/9],
+    ["AIR_DDRA",   [$any,     $$s{JUMPS_SHOCKS_PER_MIN} < 55]  => $$s{JUMPS_SHOCKS_PER_MIN}*20/11],
+    ["AIR_DDRSN2", [$any,     $$s{JUMPS_SHOCKS_PER_MIN} >= 55] => ($$s{JUMPS_SHOCKS_PER_MIN}-1)*50/27],
+    ["AIR_DDRSN2", [$any,     $$s{JUMPS_SHOCKS_PER_MIN} < 55]  => $$s{JUMPS_SHOCKS_PER_MIN}*20/11],
+
+    ["FREEZE_DDRA",   [$singles, $$s{FREEZE_RATIO_10K} >= 3500] => ($$s{FREEZE_RATIO_10K}+2484)*100/5984],
+    ["FREEZE_DDRA",   [$doubles, $$s{FREEZE_RATIO_10K} >= 3500] => ($$s{FREEZE_RATIO_10K}+2246)*100/5746],
+    ["FREEZE_DDRA",   [$any,     $$s{FREEZE_RATIO_10K} < 3500]  => $$s{FREEZE_RATIO_10K}/35],
+    ["FREEZE_DDRSN2", [$singles, $$s{FREEZE_RATIO_10K} >= 3500] => ($$s{FREEZE_RATIO_10K}+2484)*100/5984],
+    ["FREEZE_DDRSN2", [$doubles, $$s{FREEZE_RATIO_10K} >= 3500] => ($$s{FREEZE_RATIO_10K}+2246)*100/5746],
+    ["FREEZE_DDRSN2", [$any,     $$s{FREEZE_RATIO_10K} < 3500]  => $$s{FREEZE_RATIO_10K}/35],
+
+    ["CHAOS_DDRA",   [$singles, $$s{IRREG_PER_CENTISECOND} >= 2000] => ($$s{IRREG_PER_CENTISECOND}+21605)*100/23605],
+    ["CHAOS_DDRA",   [$doubles, $$s{IRREG_PER_CENTISECOND} >= 2000] => ($$s{IRREG_PER_CENTISECOND}+16628)*100/18629],
+    ["CHAOS_DDRA",   [$any,     $$s{IRREG_PER_CENTISECOND} < 2000]  => $$s{IRREG_PER_CENTISECOND}/20],
+    ["CHAOS_DDRSN2", [$singles, $$s{IRREG_PER_CENTISECOND} >= 2000] => ($$s{IRREG_PER_CENTISECOND}+21605)*100/23605],
+    ["CHAOS_DDRSN2", [$doubles, $$s{IRREG_PER_CENTISECOND} >= 2000] => ($$s{IRREG_PER_CENTISECOND}+16628)*100/18628],
+    ["CHAOS_DDRSN2", [$any,     $$s{IRREG_PER_CENTISECOND} < 2000]  => $$s{IRREG_PER_CENTISECOND}/20],
+  );
+  for my $radarPerm(@radarPermutations){
+    my ($radarStat, $conditions, $val) = @$radarPerm;
+    my $countCondOK = grep {$_} @$conditions;
+    my $countCondTotal = @$conditions;
+    $$s{$radarStat} = $val if $countCondOK == $countCondTotal;
+  }
+
+  for my $varName(@COMPRESSED_VARIABLE_NAMES){
+    if(defined $$s{$varName}){
+      $$s{$varName} = boingCompressString($$s{$varName});
+    }
+  }
+
+  return $s;
+}
+
+sub getSMInfo($$$){
+  my ($smFile, $readCache, $writeCache) = @_;
+  my $smInfo = undef;
+  $smInfo = readSMInfoCache $smFile if $readCache;
+  if(not defined $smInfo){
+    $smInfo = parseSMFile $smFile;
+    writeSMInfoCache($smFile, $smInfo) if $writeCache;
+  }
+  return $smInfo;
+}
+
+sub readSMInfoCache($){
+  my ($smFile) = @_;
+  my $cacheDir = getCacheDir($smFile);
+  if(not -f "$cacheDir/smInfo"){
+    return undef;
+  }
+
+  my $smInfoTxt = `cat "$cacheDir/smInfo" 2>/NUL`;
+  my $smInfo = {};
+  $$smInfo{songName} = $1         if $smInfoTxt =~ /^songName=(.*)$/m;
+  $$smInfo{songNameTranslit} = $1 if $smInfoTxt =~ /^songNameTranslit=(.*)$/m;
+  $$smInfo{songNameId} = $1       if $smInfoTxt =~ /^songNameId=(.*)$/m;
+  $$smInfo{bpms} = $1             if $smInfoTxt =~ /^bpms=(.*)$/m;
+  $$smInfo{stops} = $1            if $smInfoTxt =~ /^stops=(.*)$/m;
+  my $gameDiffKeyOrderCsv = $1    if $smInfoTxt =~ /^gameDiffKeyOrder=(.*)$/m;
+
+  $$smInfo{gameDiffKeyOrder} = [split /,/, $gameDiffKeyOrderCsv];
+  $$smInfo{bpmsByRow} = convertValuesByBeatToValuesByRow($$smInfo{bpms});
+  $$smInfo{stopsByRow} = convertValuesByBeatToValuesByRow($$smInfo{stops});
+
+  $$smInfo{noteSetInfoByGameDiffKey} = {};
+  for my $gameDiffKey(@{$$smInfo{gameDiffKeyOrder}}){
+    if(not -f "$cacheDir/noteSetInfo-$gameDiffKey"){
+      return undef;
+    }
+    my $noteSetInfoTxt = `cat "$cacheDir/noteSetInfo-$gameDiffKey" 2>/NUL`;
+    my $noteSetInfo = {};
+    $$noteSetInfo{game} = $1    if $noteSetInfoTxt =~ /^game=(.+)$/m;
+    $$noteSetInfo{diff} = $1    if $noteSetInfoTxt =~ /^diff=(.+)$/m;
+    $$noteSetInfo{ddrGame} = $1 if $noteSetInfoTxt =~ /^ddrGame=(.+)$/m;
+    $$noteSetInfo{ddrDiff} = $1 if $noteSetInfoTxt =~ /^ddrDiff=(.+)$/m;
+    $$noteSetInfo{smFeet} = $1  if $noteSetInfoTxt =~ /^smFeet=(.+)$/m;
+    $$noteSetInfo{bpms} = $1    if $noteSetInfoTxt =~ /^bpms=(.+)$/m;
+    $$noteSetInfo{stops} = $1   if $noteSetInfoTxt =~ /^stops=(.+)$/m;
+
+    my $bpmsByRow = undef;
+    if(defined $$noteSetInfo{bpms}){
+      $bpmsByRow = convertValuesByBeatToValuesByRow($$noteSetInfo{bpms});
+    }
+    $$noteSetInfo{bpmsByRow} = $bpmsByRow;
+
+    my $stopsByRow = undef;
+    if(defined $$noteSetInfo{stops}){
+      $stopsByRow = convertValuesByBeatToValuesByRow($$noteSetInfo{stops});
+    }
+    $$noteSetInfo{stopsByRow} = $stopsByRow;
+
+    my $noteRowsCacheFilePrefix = "$cacheDir/expandedNoteRows-$gameDiffKey";
+
+    my @expandedNoteRows;
+    if(-f "$noteRowsCacheFilePrefix"){
+      open FH, "<", $noteRowsCacheFilePrefix
+        or die "ERROR: could not read $noteRowsCacheFilePrefix\n$!\n";
+      @expandedNoteRows = <FH>;
+      close FH;
+    }elsif(-f "$noteRowsCacheFilePrefix.gz" and isExecAvailable("gunzip")){
+      open FH, "-|", "gunzip", "-c", "$cacheDir/expandedNoteRows-$gameDiffKey";
+      @expandedNoteRows = <FH>;
+      close FH;
+    }
+
+    chomp foreach @expandedNoteRows;
+
+    $$noteSetInfo{expandedNoteRows} = [@expandedNoteRows];
+
+    $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey} = $noteSetInfo;
+  }
+
+  return $smInfo;
+}
+sub writeSMInfoCache($$){
+  my ($smFile, $smInfo) = @_;
+  my $cacheDir = getCacheDir($smFile);
+  system "rm", "-rf", $cacheDir;
+  system "mkdir", "-p", $cacheDir;
+  open FH, "> $cacheDir/smInfo";
+  print FH ""
+    . "songName=$$smInfo{songName}\n"
+    . "songNameTranslit=$$smInfo{songNameTranslit}\n"
+    . "songNameId=$$smInfo{songNameId}\n"
+    . "bpms=$$smInfo{bpms}\n"
+    . "stops=$$smInfo{stops}\n"
+    . "gameDiffKeyOrder=" . join(",", @{$$smInfo{gameDiffKeyOrder}}) . "\n"
+    ;
+  close FH;
+
+  for my $gameDiffKey(@{$$smInfo{gameDiffKeyOrder}}){
+    my $noteSetInfo = $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey};
+    open FH, "> $cacheDir/noteSetInfo-$gameDiffKey";
+    print FH ""
+      . "game=$$noteSetInfo{game}\n"
+      . "diff=$$noteSetInfo{diff}\n"
+      . "ddrGame=$$noteSetInfo{ddrGame}\n"
+      . "ddrDiff=$$noteSetInfo{ddrDiff}\n"
+      . "smFeet=$$noteSetInfo{smFeet}\n"
+      ;
+    print FH "bpms=$$noteSetInfo{bpms}\n" if defined $$noteSetInfo{bpms};
+    print FH "stops=$$noteSetInfo{stops}\n" if defined $$noteSetInfo{stops};
+    close FH;
+
+    open FH, "> $cacheDir/expandedNoteRows-$gameDiffKey";
+    print FH "$_\n" foreach @{$$noteSetInfo{expandedNoteRows}};
+    close FH;
+
+    if(isExecAvailable("gzip")){
+      system "gzip", "$cacheDir/expandedNoteRows-$gameDiffKey";
+    }
+  }
+}
+
+sub songChecksum($$$){
+  my ($noteRows, $bpmRows, $stopRows) = @_;
+
+  if(isExecAvailable("sha256sum")){
+    return getChecksumStr("$noteRows\%$bpmRows\%$stopRows");
+  }else{
+    return undef;
+  }
+}
+
+sub parseSMFile($){
+  my ($smFile) = @_;
+  my $sm = readFile $smFile;
+
+  my $smInfo = {
+    songName                 => undef,
+    songNameTranslit         => undef,
+    songNameId               => undef,
+    bpms                     => undef,
+    bpmsByRow                => undef,
+    stops                    => undef,
+    stopsByRow               => undef,
+    noteSetInfoByGameDiffKey => {},
+    gameDiffKeyOrder         => [],
+  };
+
+  if($sm !~ /#TITLE:([^\r\n]+);/i){
+    my $fileName = $smFile;
+    $fileName =~ s/.*\///;
+    $fileName =~ s/\.\w+$//;
+    $$smInfo{songName} = $fileName;
+    print STDERR "WARNING: could not read TITLE from $smFile, using $fileName\n";
+  }else{
+    $$smInfo{songName} = $1;
+  }
+  if($sm !~ /#TITLETRANSLIT:([^\r\n]+);/i){
+    $$smInfo{songNameTranslit} = $$smInfo{songName}; #copy out of title if tranlist not set
+  }else{
+    $$smInfo{songNameTranslit} = $1;
+  }
+
+  $$smInfo{songNameId} = extractSongNameId($$smInfo{songNameTranslit});
+
+  if($sm !~ /#BPMS:([^;]+);/i){
+    die "ERROR: could not read BPMs from $smFile\n";
+  }else{
+    $$smInfo{bpms} = $1;
+  }
+  $$smInfo{bpmsByRow} = convertValuesByBeatToValuesByRow($$smInfo{bpms});
+
+  if($sm !~ /#STOPS:([^;]*);/i){
+    $$smInfo{stops} = ""; #STOPS is optional
+  }else{
+    $$smInfo{stops} = $1;
+  }
+  $$smInfo{stopsByRow} = convertValuesByBeatToValuesByRow($$smInfo{stops});
+
+  my $reName = '(?:[a-zA-Z0-9\-_]+)';
+
+  #in case one #NOTES doesnt have a ";", add it before the next
+  $sm =~ s/^#NOTES/;\n#NOTES/gm;
+
+  my @noteSetInfos;
+
+  #SM files
+  while($sm =~ /
+    \#NOTES                  \s*:\s*
+    (?<game>$reName)         \s*:\s*
+    [^:]*?                   \s*:\s*
+    (?<difficulty>$reName)   \s*:\s*
+    (?<smFeet>[^:]*?)        \s*:\s*
+    [^:]*?                   \s*:\s*
+    (?<notes>[^;:]+?)        (?:[;:]|$)
+  /gsxi){
+    my ($game, $difficulty, $smFeet, $notes) = ($+{game}, $+{difficulty}, $+{smFeet}, $+{notes});
+
+    $smFeet = "" if $smFeet !~ /^\d+$/;
+
+    if($notes =~ /^\s*$/s){
+      print STDERR "WARNING: skipping empty note set for game=$game diff=$difficulty\n";
+      next;
+    }
+
+    push @noteSetInfos, {
+      game   => $game,
+      diff   => $difficulty,
+      smFeet => $smFeet,
+      notes  => $notes,
+      bpms   => undef,
+      stops  => undef,
+    };
+  }
+
+  #SSC files
+  my @sscNoteSets = $sm =~ /\#NOTEDATA\s*:.*?#NOTES\s*:[^;]*;/gsi;
+  for my $noteSet(@sscNoteSets){
+    my $game = $1       if $noteSet =~ /\#STEPSTYPE    \s*:\s*   ($reName)   \s*;\s*/sxi;
+    my $difficulty = $1 if $noteSet =~ /\#DIFFICULTY   \s*:\s*   ($reName)   \s*;\s*/sxi;
+    my $smFeet = $1     if $noteSet =~ /\#METER        \s*:\s*   (\d+)       \s*;\s*/sxi;
+    my $notes = $1      if $noteSet =~ /\#NOTES        \s*:\s*   ([^;]+)     \s*;\s*/sxi;
+    my $bpms = $1       if $noteSet =~ /\#BPMS         \s*:\s*   ([^;]+)     \s*;\s*/sxi;
+    my $stops = $1      if $noteSet =~ /\#STOPS        \s*:\s*   ([^;]+)     \s*;\s*/sxi;
+
+    $smFeet = "" if not defined $smFeet;
+
+    die "ERROR: missing STEPSTYPE from $smFile $noteSet\n" if not defined $game;
+    die "ERROR: missing DIFFICULTY from $smFile\n" if not defined $difficulty;
+    die "ERROR: missing NOTES from $smFile\n" if not defined $notes;
+
+    push @noteSetInfos, {
+      game   => $game,
+      diff   => $difficulty,
+      smFeet => $smFeet,
+      notes  => $notes,
+      bpms   => $bpms,
+      stops  => $stops,
+    };
+  }
+
+  my @playerNoteSetInfos;
+  for my $noteSetInfo(@noteSetInfos){
+    my $game = $$noteSetInfo{game};
+    my $notes = $$noteSetInfo{notes};
+
+    if($game =~ /^(dance-couple)$/i and $notes =~ /${SM_CHARS}{8}/){
+      my $notesP1 = $notes;
+      my $notesP2 = $notes;
+      $notesP1 =~ s/(${SM_CHARS}{4})(${SM_CHARS}{4})/$1/g;
+      $notesP2 =~ s/(${SM_CHARS}{4})(${SM_CHARS}{4})/$2/g;
+      push @playerNoteSetInfos, {
+        %$noteSetInfo,
+        game => "$$noteSetInfo{game}-p1",
+        notes => $notesP1,
+      };
+      push @playerNoteSetInfos, {
+        %$noteSetInfo,
+        game => "$$noteSetInfo{game}-p2",
+        notes => $notesP2,
+      };
+    }elsif($game =~ /^(dance-routine)$/i and $notes =~ /&/){
+      my $notesP1 = $notes;
+      my $notesP2 = $notes;
+      $notesP1 =~ s/^(.*)&(.*)$/$1/s;
+      $notesP2 =~ s/^(.*)&(.*)$/$2/s;
+      push @playerNoteSetInfos, {
+        %$noteSetInfo,
+        game => "$$noteSetInfo{game}-p1",
+        notes => $notesP1,
+      };
+      push @playerNoteSetInfos, {
+        %$noteSetInfo,
+        game => "$$noteSetInfo{game}-p2",
+        notes => $notesP2,
+      };
+    }else{
+      push @playerNoteSetInfos, $noteSetInfo;
+    }
+  }
+
+  @noteSetInfos = @playerNoteSetInfos;
+
+  #process/expand/format note-set data
+  for my $noteSetInfo(@noteSetInfos){
+    $$noteSetInfo{expandedNoteRows} = getExpandedNoteRows $$noteSetInfo{notes};
+    $$noteSetInfo{bpmsByRow} = convertValuesByBeatToValuesByRow($$noteSetInfo{bpms});
+    $$noteSetInfo{stopsByRow} = convertValuesByBeatToValuesByRow($$noteSetInfo{stops});
+    $$noteSetInfo{ddrGame} = formatDDRGame($$noteSetInfo{game});
+    $$noteSetInfo{ddrDiff} = formatDDRDiff($$noteSetInfo{diff});
+  }
+
+
+  #generate a unique game-diff-key for each note-set in the file
+  for my $noteSetInfo(@noteSetInfos){
+    my $game = $$noteSetInfo{game};
+    my $difficulty = $$noteSetInfo{diff};
+    my $gameDiffKey = generateGameDiffKey($game, $difficulty);
+    while(defined $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey}){
+      my $index = 1;
+      $index = $1 if $difficulty =~ s/(\d+)$//;
+      $index++;
+      $difficulty = "$difficulty$index";
+      my $dupeGameDiffKey = $gameDiffKey;
+      $gameDiffKey = generateGameDiffKey($game, $difficulty);
+      print STDERR "WARNING: duplicate game/difficulty: "
+        ." $dupeGameDiffKey (using $gameDiffKey)\n";
+    }
+
+    $$smInfo{noteSetInfoByGameDiffKey}{$gameDiffKey} = $noteSetInfo;
+    push @{$$smInfo{gameDiffKeyOrder}}, $gameDiffKey;
+  }
+
+  my $gameDiffKeyCount = @{$$smInfo{gameDiffKeyOrder}};
+  if($gameDiffKeyCount == 0){
+    die "ERROR: could not parse any note sets in $smFile\n";
+  }
+
+  return $smInfo;
+}
+
+sub extractSongNameId($){
+  my ($title) = @_;
+
+  my $songNameId;
+  if(isExecAvailable("zenius-ddrsonglist")){
+    open CMD, "-|", "zenius-ddrsonglist", "--extract-name-id", $title;
+    $songNameId = join '', <CMD>;
+    close CMD;
+    chomp $songNameId;
+  }
+
+  if(not defined $songNameId or $songNameId !~ /^[a-z0-9\-]+$/){
+    $songNameId = lc $title;
+    $songNameId =~ s/&/-and-/g;
+    $songNameId =~ s/[^a-z0-9]/-/g;
+    $songNameId =~ s/--+/-/;
+    $songNameId =~ s/^-*//;
+    $songNameId =~ s/-*$//;
+  }
+
+  return $songNameId;
+}
+
+#convert simfile atts like "#BPMS:" and "#STOPS:", which are by beat,
+# to values like BPM_ROWS and STOP_ROWS, which are by row
+sub convertValuesByBeatToValuesByRow($){
+  my ($csvBeatValPairs) = @_;
+
+  if(not defined $csvBeatValPairs){
+    return undef;
+  }
+
+  my $valsByRow = {};
+  my @beatValPairs = split /,/, $csvBeatValPairs;
+  for my $beatValPair(@beatValPairs){
+    $beatValPair =~ s/[ \t\r\n]*//g;
+    next if $beatValPair eq "";
+
+    my ($beat, $val);
+    if($beatValPair =~ /^(\d+|\d*\.\d+)=(-?\d+|-?\d*\.\d+)$/){
+      ($beat, $val) = ($1, $2);
+    }else{
+      if($beatValPair =~ /^-/){
+        print STDERR "WARNING: skipping negative-beat for BEAT=VALUE entry"
+          . "(this is a BPM/STOP before the song starts, sometimes used instead of #OFFSET\n";
+        next;
+      }else{
+        die "ERROR: invalid BEAT=VALUE entry \"$beatValPair\"\n";
+      }
+    }
+    my $fracRow = $beat * $ROWS_PER_BEAT;
+    my $row = int($fracRow + 0.5);
+
+    my $fracDiff = $fracRow - $row;
+    $fracDiff = 0 - $fracDiff if $fracDiff < 0;
+    if($fracDiff > 0.001){
+      my $msg = "WARNING: invalid BEAT in BPM"
+        . " (not close to 1/$ROWS_PER_MEASURE note; forced to the nearest anyway)"
+        . " beat\"$beat\" => row\"$fracRow\" ~> row\"$row\""
+        . "\n"
+        ;
+      #print STDERR $msg;
+    }
+
+    $$valsByRow{$row} = $val;
+  }
+  return $valsByRow;
+}
+
+sub generateGameDiffKey($$){
+  my ($game, $diff) = @_;
+  return lc "$game-$diff";
+}
+
+#SM files contain a list of MEASUREs for each game-difficulty pair
+#  each MEASURE is a list of 192 NOTE_ROWs (which is usually condensed as below),
+#    one per line, with a comma separating MEASUREs on its own line
+#
+#  each NOTE_ROW contains one chracter per arrow
+#    e.g.:  1100   for left-down jump
+#
+#  each MEASURE is also divided into 4 BEATs, which are 48 NOTE_ROWs each
+#    (stepmania actively assumes 4/4 time signature for some reason,
+#     instead of not having a time sig)
+#
+#  MEASUREs are condensed to only 4/8/12/16/24/32/48/64/192 rows where possible
+#    (if a measure has only 1/32 notes, it will have 32 rows instead of 192)
+#
+#  this method expands it back up to 192 NOTE_ROWs per MEASURE,
+#    by inserting all-zero blank rows,
+#    and then joins all the rows together in a simple list, ignoring MEASURE
+#
+#  e.g.:
+#    this measure:
+#      1000
+#      0100
+#      0010
+#      0001
+#      ,
+#    will expand from 4 to 192 rows, inserting 47 rows of '0000' after each of the 4 rows
+#    the resulting rows will be all '0000's, except for:
+#      row#0, row#48, row#96, and row#144
+sub getExpandedNoteRows($){
+  my ($noteSetText) = @_;
+
+  #remove empty last measure(s)
+  $noteSetText =~ s/,\s*$//;
+  #remove comments
+  $noteSetText =~ s/\/\/.*(\n|$)/$1/g;
+
+  my @measures = split /,/, $noteSetText;
+
+  my @noteRows;
+  for my $measure(@measures){
+    my @lines = split /[\r\n]+/, $measure;
+
+    s/F/0/g foreach @lines;               #remove fakes
+    @lines = grep {$_ !~ /^\s*$/} @lines; #remove whitespace-only/empty lines
+
+    for my $line(@lines){
+      $line =~ s/^\s*//;
+      $line =~ s/\s*$//;
+      if($line !~ /^${SM_CHARS}+$/){
+        die "ERROR: malformed measure row $line\n";
+      }
+    }
+
+    my @collapsedMeasureRows = @lines;
+    my $collapsedMeasureRowCount = @collapsedMeasureRows;
+
+    die "ERROR: empty measure $measure\n" if $collapsedMeasureRowCount == 0;
+
+    my $firstRow = $collapsedMeasureRows[0];
+    my $emptyRow = $firstRow;
+    $emptyRow =~ s/${SM_CHARS}/0/g;
+    if($emptyRow !~ /^0+$/){
+      die "ERROR: malformed first measure row $firstRow\n";
+    }
+
+    my $repeatRowCount = int($ROWS_PER_MEASURE/$collapsedMeasureRowCount);
+
+    my @expandedMeasureRows;
+    for my $row(@collapsedMeasureRows){
+      if($row !~ /^${SM_CHARS}+$/){
+        die "ERROR: malformed note row: $row\n";
+      }
+      push @expandedMeasureRows, $row;
+      for(my $i=0; $i<$repeatRowCount-1; $i++){
+        push @expandedMeasureRows, $emptyRow;
+      }
+    }
+
+    if(@expandedMeasureRows != $ROWS_PER_MEASURE){
+      die "ERROR: malformed measure (rowCount=$collapsedMeasureRowCount):\n$measure";
+    }
+    @noteRows = (@noteRows, @expandedMeasureRows);
+  }
+
+  return \@noteRows;
+}
+
+sub getCacheDir($){
+  my ($file) = @_;
+  my $checksum = isExecAvailable("sha256sum") ? getChecksumFile($file) : "nochecksum";
+  my $fileName = $file;
+  $fileName =~ s/^.*\///;
+  $fileName = lc $fileName;
+  $fileName =~ s/\.([a-z0-9]+)$//;
+  $fileName =~ s/[^a-z0-9]/-/g;
+  $fileName =~ s/--+/-/g;
+  $fileName =~ s/^-*//g;
+  $fileName =~ s/-*$//g;
+
+  if($fileName eq ""){
+    $fileName = abs_path(dirname($file));
+    $fileName =~ s/^.*\///;
+    $fileName = lc $fileName;
+    $fileName =~ s/\.([a-z0-9]+)$//;
+    $fileName =~ s/[^a-z0-9]/-/g;
+    $fileName =~ s/--+/-/g;
+    $fileName =~ s/^-*//g;
+    $fileName =~ s/-*$//g;
+  }
+
+  if($fileName eq ""){
+    $fileName = "unknown";
+  }
+
+  my $baseDir = defined $ENV{HOME} ? $ENV{HOME} : ".";
+
+  my $cacheDir = "$baseDir/$CACHE_BASE_DIR_SUFFIX";
+
+  return "$cacheDir/$fileName-$checksum";
+}
+
+sub formatTimeMSS($){
+  my ($time) = @_;
+  my $m = int($time/60.0);
+  my $s = $time - $m*60;
+  return sprintf "%d:%02d", $m, $s;
+}
+
+sub boingCompressString($){
+  my ($str) = @_;
+  my @operations = qw(GZIP BASE64 BOING);
+
+  if(not isExecAvailable("gzip") or not isExecAvailable("base64")){
+    return $str;
+  }
+
+  my $data = $str;
+  for my $operation(@operations){
+    if($operation =~ /^(GZIP)$/i){
+      $data = pipeCmdData("gzip -f", $data);
+    }elsif($operation =~ /^(BASE64)$/i){
+      $data = pipeCmdData("base64 -w 0", $data);
+    }elsif($operation =~ /^(BOING)$/i){
+      $data =~ s/&/&amp;/g;
+      $data =~ s/\n/&nl;/g;
+      $data =~ s/\r/&cr;/g;
+      $data =~ s/%/&boing;/g;
+    }else{
+      die "ERROR: unknown compress-string operation $operation\n";
+    }
+  }
+
+  $data = "%" . join("", map{"$_%"} @operations) . $data . "%";
+
+  return $data;
+}
+
+#e.g.: %BOING%abc&boing;def%   =>  abc%def
+sub boingDecompressString($){
+  my ($str) = @_;
+  if($str !~ /^%((?:GZIP%|BASE64%|BOING%)+)([^%]+)%$/i){
+    #not a boingCompressString() string
+    return $str;
+  }
+  my ($operationsStr, $data) = ($1, $2);
+  my @operations = split /%/, $operationsStr;
+  @operations = reverse @operations; #apply operation closest to the data first
+
+  for my $operation(@operations){
+    if($operation =~ /^(GZIP)$/i){
+      $data = pipeCmdData("gzip -f --decompress", $data);
+    }elsif($operation =~ /^(BASE64)$/i){
+      $data = pipeCmdData("base64 -w 0 --decode", $data);
+    }elsif($operation =~ /^(BOING)$/i){
+      $data =~ s/&boing;/%/g;
+      $data =~ s/&cr;/\r/g;
+      $data =~ s/&nl;/\n/g;
+      $data =~ s/&amp;/&/g;
+    }else{
+      die "ERROR: unknown compress-string operation $operation\n";
+    }
+  }
+
+  return $data;
+}
+
+sub pipeCmdData($$){
+  my ($cmd, $data) = @_;
+
+  open2(my $OUT, my $IN, $cmd);
+  print $IN $data;
+  close $IN;
+  $data = join '', <$OUT>;
+  close $OUT;
+
+  return $data;
+}
+
+sub readFile($){
+  my ($file) = @_;
+  open FH, "< $file" or die "ERROR: could not read $file\n";
+  my $contents = join '', <FH>;
+  close FH;
+  return $contents;
+}
+
+sub getChecksumStr($){
+  my ($str) = @_;
+  my $checksum = pipeCmdData("sha256sum", $str);
+  if($checksum =~ /^([0-9a-f]{64})(?:\s.*)$/){
+    return $1;
+  }else{
+    die "ERROR: sha256sum failed\n";
+  }
+}
+
+sub getChecksumFile($){
+  my ($file) = @_;
+  open CMD, "-|", "sha256sum", $file or die "ERROR: sha256sum failed for $file\n$!\n";
+  my $checksum = <CMD>;
+  close CMD;
+  if($checksum =~ /^([0-9a-f]{64})(?:\s.*)$/){
+    return $1;
+  }else{
+    die "ERROR: sha256sum failed for $file\n";
+  }
+}
+
+sub isExecAvailable($){
+  my ($exec) = @_;
+  return 0 if $^O =~ /win/i;
+  system "type \"$exec\" >/NUL 2>/NUL";
+  return $? == 0 ? 1 : 0;
+}
+
+&main(@ARGV);

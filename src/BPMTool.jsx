@@ -19,6 +19,7 @@ import SortModal from './components/SortModal.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
+import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -225,8 +226,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const savedState = storage.getItem('isCollapsed');
         return savedState ? JSON.parse(savedState) : false;
     });
-    const [showAltBpm, setShowAltBpm] = useState(false);
-    const [showAltCoreBpm, setShowAltCoreBpm] = useState(false);
+    const [showAltBpm, setShowAltBpm] = useState(() => {
+        const saved = storage.getItem('bpmShowAlt');
+        return saved ? JSON.parse(saved) : false;
+    });
+    const [showAltCoreBpm, setShowAltCoreBpm] = useState(() => {
+        const saved = storage.getItem('bpmShowAltCore');
+        return saved ? JSON.parse(saved) : false;
+    });
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const selectRef = useRef(null);
     const handleMenuClose = () => {
@@ -240,6 +247,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
+    const [radarMap, setRadarMap] = useState(null);
     const [overrideSongs, setOverrideSongs] = useState(null);
     const [sortKey, setSortKey] = useState(() => storage.getItem('bpmSortKey') || 'title');
     const [sortAscending, setSortAscending] = useState(() => {
@@ -317,6 +325,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [isCollapsed]);
 
     useEffect(() => {
+        storage.setItem('bpmShowAlt', JSON.stringify(showAltBpm));
+    }, [showAltBpm]);
+
+    useEffect(() => {
+        storage.setItem('bpmShowAltCore', JSON.stringify(showAltCoreBpm));
+    }, [showAltCoreBpm]);
+
+    useEffect(() => {
         storage.setItem('bpmSortKey', sortKey);
     }, [sortKey]);
 
@@ -344,6 +360,42 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             .then(setSongMeta)
             .catch(err => console.error('Failed to load song meta:', err));
     }, []);
+
+    useEffect(() => {
+        fetch('/radar-values.json')
+            .then(res => (res.ok ? res.json() : null))
+            .then(data => setRadarMap(data || null))
+            .catch(() => setRadarMap(null));
+    }, []);
+
+    const chartMetrics = useMemo(() => {
+        if (!simfileData || !currentChart) return null;
+        // Prefer precomputed radar values when available
+        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty}`;
+        const pre = radarMap && radarMap[key];
+        if (pre) {
+            return {
+                steps: pre.steps,
+                firstNoteSeconds: pre.firstNoteSeconds,
+                radar: {
+                    stream: pre.stream,
+                    voltage: pre.voltage,
+                    air: pre.air,
+                    freeze: pre.freeze,
+                    chaos: pre.chaos ?? null,
+                },
+                lastBeat: null,
+            };
+        }
+        const chart = simfileData.charts?.[currentChart.slug];
+        if (!chart) return null;
+        try {
+            return computeChartMetrics(chart);
+        } catch (e) {
+            console.warn('Failed to compute chart metrics:', e);
+            return null;
+        }
+    }, [simfileData, currentChart, radarMap]);
 
     useEffect(() => {
         const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
@@ -1012,6 +1064,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     showAltCoreBpm={showAltCoreBpm}
                     setShowAltCoreBpm={setShowAltCoreBpm}
                     songLength={songLength}
+                    metrics={chartMetrics}
                     view={view}
                 />
                 {view === 'bpm' ? (

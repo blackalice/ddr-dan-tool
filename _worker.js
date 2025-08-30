@@ -4,7 +4,8 @@ import authApp, { authMiddleware } from './src/auth/index.js'
 
 const app = new Hono()
 
-app.route('/', authApp)
+// Mount auth routes under /api (e.g., /api/login, /api/signup, /api/refresh, /api/logout)
+app.route('/api', authApp)
 
 app.get('/api/hello', (c) => c.json({ message: 'Hello from Hono!' }))
 
@@ -35,7 +36,7 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
   return c.json(data);
 })
 
-app.get('/user/data', authMiddleware, async (c) => {
+app.get('/api/user/data', authMiddleware, async (c) => {
   await c.env.DB.prepare(
     'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
   ).run()
@@ -48,7 +49,7 @@ app.get('/user/data', authMiddleware, async (c) => {
   return c.json({ email, ...data })
 })
 
-app.put('/user/data', authMiddleware, async (c) => {
+app.put('/api/user/data', authMiddleware, async (c) => {
   await c.env.DB.prepare(
     'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
   ).run()

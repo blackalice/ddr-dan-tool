@@ -75,6 +75,31 @@ You will need [Node.js](https://nodejs.org/en/) installed on your machine.
 
 The application will now be running locally, typically at `http://localhost:5173`.
 
+### Auth & Database
+
+- Backend endpoints live under `/api`:
+  - `/api/signup`, `/api/login`, `/api/refresh`, `/api/logout`
+  - `/api/user/data` for syncing settings and scores
+  - `/api/parse-scores` for parsing Ganymede HTML (requires auth)
+
+- Local development uses Cloudflare Wrangler with a local D1 DB. Ensure:
+  - Node.js 18+ installed
+  - Wrangler installed: `npm i -g wrangler` and logged in: `wrangler login`
+  - A local JWT secret in `.dev.vars`:
+    - `JWT_SECRET="your-super-secret-jwt-key"`
+
+- Start dev: `npm run dev` (runs Vite and Wrangler). Vite proxies `/api/*` to the Worker at `http://localhost:8787`.
+
+- Workflow:
+  1. Visit `/signup` to create an account.
+  2. Log in at `/login`.
+  3. The app sets an `httpOnly` cookie and syncs settings/scores via `/api/user/data`.
+
+- Production:
+  - Create/bind a D1 database (update `wrangler.jsonc` if needed).
+  - Add `JWT_SECRET` with `wrangler secret put JWT_SECRET`.
+  - Deploy with `npm run deploy`.
+
 ## Deploying to Cloudflare Workers
 
 This project uses a Cloudflare Worker to serve the built React application and expose a simple API powered by the [Hono](https://hono.dev/) framework.

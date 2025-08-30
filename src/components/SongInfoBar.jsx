@@ -28,6 +28,7 @@ const SongInfoBar = ({
   showAltCoreBpm,
   setShowAltCoreBpm,
   songLength,
+  metrics,
 }) => {
 
   const { filters } = useFilters();
@@ -160,6 +161,32 @@ const SongInfoBar = ({
                   </span>
                 </div>
               )}
+              {metrics && (
+                <div style={{ marginTop: '0.5rem' }}>
+                  <div className="song-calculation" style={{ display: 'grid', gridTemplateColumns: 'auto auto', columnGap: '1rem', rowGap: '0.25rem' }}>
+                    <span className="song-speed">Steps:</span>
+                    <span className="song-modifier">{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span>
+
+                    <span className="song-speed">First Note:</span>
+                    <span className="song-modifier">{metrics.firstNoteSeconds != null ? Number(metrics.firstNoteSeconds).toFixed(2) + 's' : 'N/A'}</span>
+
+                    <span className="song-speed">Stream:</span>
+                    <span className="song-modifier">{metrics.radar?.stream ?? 'N/A'}</span>
+
+                    <span className="song-speed">Voltage:</span>
+                    <span className="song-modifier">{metrics.radar?.voltage ?? 'N/A'}</span>
+
+                    <span className="song-speed">Air:</span>
+                    <span className="song-modifier">{metrics.radar?.air ?? 'N/A'}</span>
+
+                    <span className="song-speed">Freeze:</span>
+                    <span className="song-modifier">{metrics.radar?.freeze ?? 'N/A'}</span>
+
+                    <span className="song-speed">Chaos:</span>
+                    <span className="song-modifier">{metrics.radar?.chaos ?? 'N/A'}</span>
+                  </div>
+                </div>
+              )}
           </div>
           <div className="bpm-core-container">
             <div className="grid-item grid-item-bpm">
@@ -202,6 +229,7 @@ const SongInfoBar = ({
                 )}
                 </div>
               </div>
+              
             </div>
           </div>
         )}

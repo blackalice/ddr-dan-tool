@@ -16,7 +16,12 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
-      return JSON.parse(storage.getItem(`dan-header-collapsed-${group.name}`)) || false;
+      const keyNew = `collapsed:list:${group.name}`;
+      const keyOld = `dan-header-collapsed-${group.name}`;
+      const vNew = storage.getItem(keyNew);
+      const vOld = storage.getItem(keyOld);
+      const parsed = vNew != null ? JSON.parse(vNew) : (vOld != null ? JSON.parse(vOld) : false);
+      return !!parsed;
     } catch {
       return false;
     }
@@ -26,7 +31,10 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   const [showActions, setShowActions] = useState(false);
 
   useEffect(() => {
-    storage.setItem(`dan-header-collapsed-${group.name}`, JSON.stringify(isCollapsed));
+    const keyNew = `collapsed:list:${group.name}`;
+    const keyOld = `dan-header-collapsed-${group.name}`; // legacy
+    storage.setItem(keyNew, JSON.stringify(isCollapsed));
+    storage.setItem(keyOld, JSON.stringify(isCollapsed));
   }, [isCollapsed, group.name]);
 
   useEffect(() => {
