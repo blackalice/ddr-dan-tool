@@ -561,7 +561,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 
                 core = calculateCoreBpm(bpmChanges, lastBeat);
                 data = calculateChartData(bpmChanges, lastBeat);
-                length = calculateSongLength(bpmChanges, lastBeat, chartDetails.stops);
+                // Prefer generated song length from radar-values (ogg lengths), fallback to BPM+stops
+                const preKey = `${simfileWithRatings.title.titleName}||${currentChart.mode}||${currentChart.difficulty}`;
+                const pre = radarMap && radarMap[preKey];
+                if (pre && typeof pre.songSeconds === 'number' && pre.songSeconds > 0) {
+                    length = pre.songSeconds;
+                } else {
+                    length = calculateSongLength(bpmChanges, lastBeat, chartDetails.stops);
+                }
             }
         }
 
@@ -576,7 +583,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             chartData: data,
             songLength: length,
         };
-    }, [simfileWithRatings, currentChart]);
+    }, [simfileWithRatings, currentChart, radarMap]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;

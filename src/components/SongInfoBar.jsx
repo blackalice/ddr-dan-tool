@@ -132,11 +132,17 @@ const SongInfoBar = ({
               {(songLength != null && songLength > 0) && (
                 <span className="song-length">
                   {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+                  {metrics?.firstNoteSeconds != null && (
+                    <> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</>
+                  )}
                 </span>
               )}
               {(songLength === 0) && (
                 <span className="song-length">
                     0:00
+                    {metrics?.firstNoteSeconds != null && (
+                      <> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</>
+                    )}
                 </span>
               )}
             </div>
@@ -166,9 +172,6 @@ const SongInfoBar = ({
                   <div className="stats-badge-grid">
                     <span className="song-speed">Steps:</span>
                     <span className="song-modifier">{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span>
-
-                    <span className="song-speed">First Note:</span>
-                    <span className="song-modifier">{metrics.firstNoteSeconds != null ? Number(metrics.firstNoteSeconds).toFixed(2) + 's' : 'N/A'}</span>
 
                     <span className="song-speed">Stream:</span>
                     <span className="song-modifier">{metrics.radar?.stream ?? 'N/A'}</span>

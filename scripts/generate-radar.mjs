@@ -215,84 +215,71 @@ function colorValueForDenom(d) {
 }
 
 function computeChaos(chart, mode, songSec, notesText) {
-  const rows = expandNoteRows(notesText, mode)
+  const ROWS_PER_MEASURE = 192
   const ROWS_PER_BEAT = 48
-  const noteRowIdx = []
-  const arrowsOnRow = []
+  if (!chart || !Array.isArray(chart.arrows) || !songSec) return { value: 0 }
 
-  for (let i = 0; i < rows.length; i++) {
-    const r = rows[i]
+  // Collapse events by exact row (1/192 of a measure)
+  const rowMap = new Map()
+  for (const ev of chart.arrows) {
+    const row = Math.round((ev.offset || 0) * ROWS_PER_MEASURE)
     let taps = 0
-    let shocks = 0
-    for (const ch of r) {
+    let shockLanes = 0
+    const dir = ev.direction || ''
+    for (const ch of dir) {
       if (ch === '1' || ch === '2' || ch === '4') taps++
-      if (ch === 'M') shocks++
+      if (ch === 'M') shockLanes++
     }
-    if (taps > 0 || shocks > 0) {
-      noteRowIdx.push(i)
-      let numArrows = 0
-      if (shocks > 0) numArrows = (mode === 'single' ? 4 : 8) + (taps >= 2 ? 2 : (taps >= 1 ? 1 : 0))
-      else numArrows = taps >= 2 ? 2 : (taps >= 1 ? 1 : 0)
-      arrowsOnRow.push(numArrows)
-    }
+    const prev = rowMap.get(row) || { taps: 0, shockLanes: 0 }
+    rowMap.set(row, { taps: prev.taps + taps, shockLanes: prev.shockLanes + shockLanes })
   }
-  if (noteRowIdx.length === 0 || !songSec) return { value: 0 }
+  const noteRowIdx = [...rowMap.keys()].sort((a, b) => a - b)
+  if (noteRowIdx.length < 2) return { value: 0 }
 
-  // Total Chaos Base Value
-  let base = 0
+  // IBV: sum over non-red notes of (arrows × color / interval_in_beats)
+  let ibv = 0
   for (let i = 1; i < noteRowIdx.length; i++) {
     const cur = noteRowIdx[i]
     const prev = noteRowIdx[i - 1]
-    const deltaRows = Math.max(1, cur - prev)
-    const beat = cur / ROWS_PER_BEAT
-    const denom = quantDenomForBeat(beat)
-    const colorVal = colorValueForDenom(denom)
-    const numArrows = arrowsOnRow[i]
-    // Interval in units of the current note's quantization (e.g., number of 16th notes since last note)
-    const intervalBeats = deltaRows / ROWS_PER_BEAT
-    const intervalUnits = Math.max(1e-6, intervalBeats * denom)
-    // Base increment: (Note Quantization / Interval units) * Color * Arrows
-    base += (denom / intervalUnits) * colorVal * numArrows
+    const intervalBeats = Math.max(1e-6, (cur - prev) / ROWS_PER_BEAT)
+    const curBeat = cur / ROWS_PER_BEAT
+    const denom = quantDenomForBeat(curBeat)
+    // Red=0, Blue=2, Yellow=4, Green=5
+    const color = (denom === 4 ? 0 : denom === 8 ? 2 : denom === 16 ? 4 : 5)
+    if (color <= 0) continue
+    const { taps, shockLanes } = rowMap.get(cur)
+    const arrows = shockLanes > 0 ? (mode === 'double' ? 8 : 4) : (taps >= 2 ? 2 : (taps >= 1 ? 1 : 0))
+    ibv += (arrows * color) / intervalBeats
   }
 
-  // Total BPM Delta: compress monotonic runs (so gradual ramps count as max-min)
-  let totalBpmDelta = 0
+  // f = sum of absolute BPM jumps + BPM-after-stop for each stop
   const bpmRanges = Array.isArray(chart.bpm) ? chart.bpm : []
-  if (bpmRanges.length > 1) {
-    let runMin = bpmRanges[0].bpm || 0
-    let runMax = bpmRanges[0].bpm || 0
-    let last = bpmRanges[0].bpm || 0
-    let lastDir = 0 // -1, 0, +1
-    for (let i = 1; i < bpmRanges.length; i++) {
-      const cur = bpmRanges[i].bpm || 0
-      const dir = cur > last ? 1 : (cur < last ? -1 : lastDir)
-      if (lastDir === 0) {
-        runMin = Math.min(runMin, cur)
-        runMax = Math.max(runMax, cur)
-      } else if (dir === lastDir || dir === 0) {
-        runMin = Math.min(runMin, cur)
-        runMax = Math.max(runMax, cur)
-      } else {
-        totalBpmDelta += Math.abs(runMax - runMin)
-        runMin = Math.min(last, cur)
-        runMax = Math.max(last, cur)
-      }
-      lastDir = dir
-      last = cur
-    }
-    totalBpmDelta += Math.abs(runMax - runMin)
+  let jumpSum = 0
+  for (let i = 1; i < bpmRanges.length; i++) {
+    const a = bpmRanges[i - 1]?.bpm || 0
+    const b = bpmRanges[i]?.bpm || 0
+    jumpSum += Math.abs(b - a)
   }
-  const avgBpmDelta = (60 * totalBpmDelta) / songSec
+  let stopSum = 0
+  for (const s of (chart.stops || [])) {
+    const pos = (s.offset ?? 0) + 1e-9
+    let after = 0
+    for (const seg of bpmRanges) {
+      if ((seg.startOffset ?? 0) <= pos && (seg.endOffset == null || seg.endOffset > pos)) { after = seg.bpm || 0; break }
+      if ((seg.startOffset ?? 0) <= pos) after = seg.bpm || after
+    }
+    stopSum += after
+  }
+  const f = jumpSum + stopSum
+  const x = (60 * f) / songSec
 
-  // Chaos Degree and Unit Chaos Degree
-  const chaosDegree = base * (1 + (avgBpmDelta / 1500))
-  const unitChaos = Math.floor((chaosDegree * 100) / songSec)
-
-  // CHAOS value mapping
+  // s, u, and Chaos mapping
+  const s = ibv * (1 + x / 1500)
+  const unitChaos = Math.round((100 * s) / songSec)
   let chaos
-  if (unitChaos < 2000) chaos = Math.floor(unitChaos / 20)
+  if (unitChaos <= 2000) chaos = Math.floor(unitChaos / 20)
   else chaos = Math.floor(((unitChaos + (mode === 'single' ? 21605 : 16628)) * 100) / (mode === 'single' ? 23605 : 18628))
-  return { value: chaos, unitChaos, avgBpmDelta: Math.floor(avgBpmDelta) }
+  return { value: chaos, unitChaos, avgBpmDelta: Math.floor(x) }
 }
 
 function keyFor(title, mode, difficulty) {
