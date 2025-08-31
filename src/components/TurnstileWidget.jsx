@@ -16,7 +16,7 @@ export default function TurnstileWidget({ siteKey, onVerify, theme = 'auto' }) {
           'expired-callback': () => onVerify?.(''),
           theme,
         });
-      } catch {}
+      } catch { /* noop */ }
     }
 
     if (window.turnstile) {

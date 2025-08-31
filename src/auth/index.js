@@ -112,7 +112,7 @@ async function checkRateLimit(c, key, limit, windowSeconds) {
     if (!row) return true
     const count = typeof row.count === 'number' ? row.count : Number(row.count)
     return count <= limit
-  } catch (_e) {
+  } catch {
     // On errors, do not block auth
     return true
   }
@@ -167,7 +167,7 @@ authApp.post('/signup', async (c) => {
     const okIp = await checkRateLimit(c, ipKey, 5, 10 * 60) // 5 per 10 minutes per IP
     const okEmail = await checkRateLimit(c, emailKey, 2, 60 * 60) // 2 per hour per email
     if (!okIp || !okEmail) return c.json({ error: 'Too many attempts, try later' }, 429)
-  } catch {}
+  } catch { /* noop */ }
 
   const encoded = await hashPasswordPBKDF2(password)
 
@@ -210,7 +210,7 @@ authApp.post('/login', async (c) => {
     const okIp = await checkRateLimit(c, ipKey, 20, 5 * 60) // 20 per 5 minutes per IP
     const okEmail = await checkRateLimit(c, emailKey, 5, 5 * 60) // 5 per 5 minutes per email
     if (!okIp || !okEmail) return c.json({ error: 'Too many attempts, try later' }, 429)
-  } catch {}
+  } catch { /* noop */ }
 
   const user = await c.env.DB.prepare(
     'SELECT id, password_hash, COALESCE(token_version, 1) AS token_version FROM users WHERE email = ?'
@@ -330,7 +330,7 @@ export const authMiddleware = async (c, next) => {
     let payload
     try {
       payload = (await jwtVerify(token, secret, { issuer: origin, audience: origin })).payload
-    } catch (_e) {
+    } catch {
       payload = (await jwtVerify(token, secret)).payload
     }
     // Enforce token version (logout-all)
@@ -356,7 +356,7 @@ authApp.post('/logout-all', authMiddleware, async (c) => {
   try {
     await c.env.DB.prepare('UPDATE users SET token_version = COALESCE(token_version, 1) + 1 WHERE id = ?')
       .bind(user.sub).run()
-  } catch {}
+  } catch { /* noop */ }
   const isProd = (c.env?.ENV || '').toLowerCase() === 'production'
   const secure = isProd || c.req.url.startsWith('https://')
   for (const name of ['token', '__Host-token']) {
