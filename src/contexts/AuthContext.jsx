@@ -81,8 +81,8 @@ export const AuthProvider = ({ children }) => {
           const parsed = raw ? JSON.parse(raw) : [];
           setGroups(Array.isArray(parsed) ? parsed : []);
           setActiveGroup('All');
-        } catch {}
-      } catch {}
+        } catch { /* noop */ }
+      } catch { /* noop */ }
       return true;
     }
     if (res.status === 401) {
@@ -148,10 +148,10 @@ export const AuthProvider = ({ children }) => {
     setShowRankedRatings(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
     // Clear persisted storage (remote + local + session)
-    try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch {}
+    try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch { /* noop */ }
     storage.clear();
     // Reset storage namespace to anonymous after logout
-    try { await storage.refresh(); } catch {}
+    try { await storage.refresh(); } catch { /* noop */ }
     navigate('/login');
   };
 

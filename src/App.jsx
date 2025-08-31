@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useSearchParams, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate } from 'react-router-dom';
 import Multiplier from './Multiplier';
 import BPMTool from './BPMTool';
 import Tabs from './Tabs';
 import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { ScoresProvider } from './contexts/ScoresContext.jsx';
-import { FilterProvider, useFilters } from './contexts/FilterContext.jsx';
+import { FilterProvider } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
-import { parseSelection, buildBpmUrl, replaceLegacyUrl } from './utils/urlState.js';
+import { parseSelection } from './utils/urlState.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
 import DanPage from './DanPage.jsx';
 import VegaPage from './VegaPage.jsx';
@@ -23,7 +23,7 @@ import SignupPage from './SignupPage.jsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 
 function AppRoutes() {
-  const { theme, setPlayStyle, songlistOverride, playStyle } = useContext(SettingsContext);
+  const { theme, setPlayStyle, playStyle } = useContext(SettingsContext);
   const { user } = useAuth();
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
@@ -33,14 +33,9 @@ function AppRoutes() {
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => storage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
 
-  const { resetFilters } = useFilters();
-  const firstOverride = useRef(true);
-  
   const location = useLocation();
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
-  const [lastAction, setLastAction] = useState('');
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -93,7 +88,7 @@ function AppRoutes() {
           next.set('s', songFile.path);
           next.set('c', chart.slug);
           next.set('m', chart.mode);
-          if (debugEnabled) { try { console.log('[Route] replace s/c/m ->', next.toString()); } catch {} }
+          if (debugEnabled) { try { console.log('[Route] replace s/c/m ->', next.toString()); } catch { /* noop */ } }
           setSearchParams(next, { replace: true });
         }
         return;
@@ -119,7 +114,7 @@ function AppRoutes() {
         next.delete('difficulty');
         next.delete('mode');
         next.delete('t');
-        if (debugEnabled) { try { console.log('[Route] upgrade legacy ->', next.toString()); } catch {} }
+        if (debugEnabled) { try { console.log('[Route] upgrade legacy ->', next.toString()); } catch { /* noop */ } }
         setSearchParams(next, { replace: true });
       } else {
         // No selection in URL
@@ -184,7 +179,6 @@ function AppRoutes() {
           chartMode: currentChart?.mode,
           chartDiff: currentChart?.difficulty,
           playStyle,
-          lastAction,
         }} />
         <div className="app-content">
           <Routes>

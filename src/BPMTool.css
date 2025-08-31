@@ -217,6 +217,7 @@
     align-items: center;
     gap: 1rem;
     text-align: left;
+    min-width: 0;
 }
 
 .song-game-version {
@@ -231,31 +232,41 @@
 }
 
 .title-artist-group {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    min-width: 0;
 }
 
 .song-title-main {
     font-weight: bold;
     font-size: 1.5rem;
     color: var(--text-color-lighter);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 20rem;
 }
 
 .song-title-artist {
     font-weight: normal;
     color: var(--text-color-lightest);
     font-size: 1.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 20rem;
 }
 
-.song-length {
-  font-size: 0.8em;
-  margin-left: 8px;
-  color: var(--text-color-lighter);
+.song-length, .song-first-note {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .song-first-note {
     color: var(--text-muted-color);
-    font-size: 0.9em;
-    margin-left: 0.25rem;
 }
 
 .collapse-button {
@@ -281,19 +292,48 @@
     height: 600px;
 }
 
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, auto);
+/* New song info layout */
+.info-content {
+    display: flex;
     gap: 1rem;
-    justify-items: start;
-    min-height:120px;
 }
 
-.grid-item {
+.info-left,
+.info-right {
+    flex: 1;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 0.5rem 1rem;
+    justify-items: center;
+}
+
+.bpm-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.bpm-row {
+    display: grid;
+    grid-template-columns: auto repeat(3, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.bpm-row.header {
+    font-weight: 600;
+}
+
+.row-title {
+    font-weight: 600;
+    text-align: left;
 }
 
 .play-style,
@@ -474,11 +514,6 @@
         gap: 0.1rem;
     }
 
-    .song-length {
-      margin-left: 0;
-      margin-top: 4px;
-    }
-
     .collapse-button {
         grid-area: button;
         justify-self: end;
@@ -489,10 +524,6 @@
         color: var(--text-muted-color);
     }
 
-    .song-title-separator {
-        display: none;
-    }
-
     .song-title-main {
         font-size: 1.5rem;
     }
@@ -501,29 +532,12 @@
         font-size: 1rem;
     }
 
-    .details-grid {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        padding: 0 1rem;
-    }
-
-    .grid-item {
-        display: flex;
+    .info-content {
         flex-direction: column;
-        gap: 0.5rem;
+    }
+    .info-right {
         align-items: center;
     }
-
-    .bpm-core-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .grid-item-sp { order: 1; }
-    .grid-item-dp { order: 1; }
-    .bpm-core-container { order: 2; }
 
     .chart-container {
         margin-top: 0px;
@@ -536,27 +550,8 @@
 }
 
 @media (min-width: 1025px) {
-    .details-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: auto;
-        justify-items: start;
-    }
-
-    .bpm-core-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .difficulty-label {
-        display: block; /* Shown on desktop */
-    }
-
-    .difficulty-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+    .info-content {
+        flex-direction: row;
     }
 
     .controls-container {
@@ -722,56 +717,81 @@
     }
 }
 
+
 .bpm-score-badge {
     background-color: var(--card-hover-bg-color);
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+    padding: 0.3rem 0.75rem;
     border-radius: .375rem;
     font-size: 1rem;
     margin-top: 0.25rem;
     text-align: center;
     width:100%;
-
+    min-width:6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
-/* Stats badge layout (2 columns of label/value pairs) */
+.score-lamp {
+    font-weight: 600;
+}
+
+.score-value {
+    font-weight: 700;
+}
+
+.score-placeholder {
+    color: var(--text-muted-color);
+    font-style: italic;
+}
+
+.glow-marvelous { box-shadow: 0 0 8px #ffffff; }
+.glow-perfect { box-shadow: 0 0 8px #ffe066; }
+.glow-great { box-shadow: 0 0 8px #2ecc71; }
+.glow-good { box-shadow: 0 0 8px #3498db; }
+
+/* Stats badge layout */
 .stats-badge {
-    /* Match score badge width; add left padding for readability */
-    text-align: left; /* override center from base badge */
-    padding-left: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    min-width:10rem;
 }
 
-.stats-badge-grid {
-    display: grid;
-    /* Two pairs (label, value) with fixed column widths */
-    grid-template-columns: 7rem 10ch 7rem 10ch;
-    column-gap: 1rem;
-    row-gap: 0.25rem;
-    justify-content: start;
-    align-items: baseline;
+.stats-top {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-color-lighter);
+    margin-bottom: 0.25rem;
 }
 
-/* Match smaller badge text and colors */
-.stats-badge .song-speed, 
-.stats-badge .song-modifier {
+.stats-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-.stats-badge .song-speed { /* label */
+.stat-item i {
     color: var(--text-muted-color);
 }
 
-.stats-badge .song-modifier { /* value */
+.stat-item span {
     color: var(--text-color);
-    white-space: nowrap; /* keep values stable */
-}
-
-@media (max-width: 640px) {
-    .stats-badge-grid {
-        /* Single pair per row on small screens, still fixed widths */
-        grid-template-columns: 7rem 10ch;
-    }
+    white-space: nowrap;
 }
 
 

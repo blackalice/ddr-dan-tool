@@ -36,7 +36,7 @@ const Settings = () => {
         setLogoutAllBusy(true);
         try {
             await fetch('/api/logout-all', { method: 'POST', credentials: 'include' });
-        } catch {}
+        } catch { /* noop */ }
         setLogoutAllBusy(false);
         await logout();
     };
@@ -56,7 +56,7 @@ const Settings = () => {
                 }
                 setSongLookup(map);
             })
-            .catch(() => {});
+            .catch(() => { /* noop */ });
     }, []);
 
     const [uploadPlaytype, setUploadPlaytype] = useState('SP');
