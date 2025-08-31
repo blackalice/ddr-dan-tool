@@ -250,25 +250,21 @@ const SongInfoBar = ({
           <div className="info-right">
             <div className="bpm-table">
               <div className="bpm-row header">
-                <span></span>
                 <span>Min</span>
                 <span>Core</span>
                 <span>Max</span>
               </div>
               <div className="bpm-row">
-                <span className="row-title">BPM</span>
                 <span>{bpmRange.min != null ? bpmRange.min : 'N/A'}</span>
                 <span>{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                 <span>{bpmRange.max != null ? bpmRange.max : 'N/A'}</span>
               </div>
               <div className="bpm-row">
-                <span className="row-title">Mod BPM</span>
                 <span>{minAdjusted != null ? minAdjusted : 'N/A'}</span>
                 <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
                 <span>{maxAdjusted != null ? maxAdjusted : 'N/A'}</span>
               </div>
               <div className="bpm-row">
-                <span className="row-title">Multiplier</span>
                 <span>{multiplier != null ? `${multiplier}x` : 'N/A'}</span>
                 <span>{coreMultiplier != null ? `${coreMultiplier}x` : 'N/A'}</span>
                 <span>{multiplier != null ? `${multiplier}x` : 'N/A'}</span>

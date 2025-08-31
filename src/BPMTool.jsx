@@ -1070,6 +1070,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     currentChart={currentChart}
                     setCurrentChart={setCurrentChart}
                     simfileData={simfileData}
+                    bpmRange={getBpmRange(bpmDisplay)}
                     bpmDisplay={bpmDisplay}
                     calculation={calculation}
                     showAltBpm={showAltBpm}
