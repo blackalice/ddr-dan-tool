@@ -41,6 +41,16 @@ const SongInfoBar = ({
     return scores[currentChart.mode]?.[key] || null;
   }, [scores, currentChart, songTitle]);
 
+  const lampClass = React.useMemo(() => {
+    if (!currentScore?.lamp) return '';
+    const lamp = currentScore.lamp.toLowerCase();
+    if (lamp.includes('marvelous')) return 'glow-marvelous';
+    if (lamp.includes('perfect')) return 'glow-perfect';
+    if (lamp.includes('great')) return 'glow-great';
+    if (lamp.includes('good')) return 'glow-good';
+    return '';
+  }, [currentScore]);
+
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData) {
         // Render placeholders if no song is selected
@@ -126,24 +136,16 @@ const SongInfoBar = ({
           <div className="title-content-wrapper">
             {gameVersion && <span className="song-game-version" style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}>{gameVersion}</span>}
             <div className="title-artist-group">
-              <span className="song-title-main">{songTitle}</span>
+              <span className="song-title-main" title={songTitle}>{songTitle}</span>
               <span className="song-title-separator"> - </span>
-              <span className="song-title-artist">{artist}</span>
-              {(songLength != null && songLength > 0) && (
-                <span className="song-length">
-                  {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
+              <span className="song-title-artist" title={artist}>{artist}</span>
+              {songLength != null && (
+                <div className="song-length-group">
+                  <span className="song-length"><i className="fa-solid fa-clock"></i>{`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}</span>
                   {metrics?.firstNoteSeconds != null && (
-                    <span className="song-first-note"> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</span>
+                    <span className="song-first-note"><i className="fa-solid fa-play"></i>{Number(metrics.firstNoteSeconds).toFixed(2)}s</span>
                   )}
-                </span>
-              )}
-              {(songLength === 0) && (
-                <span className="song-length">
-                    0:00
-                    {metrics?.firstNoteSeconds != null && (
-                      <span className="song-first-note"> ({Number(metrics.firstNoteSeconds).toFixed(2)}s)</span>
-                    )}
-                </span>
+                </div>
               )}
             </div>
           </div>
@@ -159,28 +161,23 @@ const SongInfoBar = ({
                 {renderDifficulties(playStyle)}
               </div>
               {currentScore != null && (
-                <div className="bpm-score-badge">
+                <div className={`bpm-score-badge ${lampClass}`}>
+                  {currentScore.lamp && (
+                    <span className="score-lamp">{currentScore.lamp}</span>
+                  )}
                   <span className="score-value">{currentScore.score.toLocaleString()}</span>
-                  <span className="score-separator">   </span>
                   <span className="score-extra">
-                    {`${getGrade(currentScore.score)}${currentScore.lamp ? ` - ${currentScore.lamp}` : ''}${currentScore.flare ? ` ${currentScore.flare}` : ''}`}
+                    {getGrade(currentScore.score)}{currentScore.flare ? ` ${currentScore.flare}` : ''}
                   </span>
                 </div>
               )}
               {metrics && (
                 <div className="bpm-score-badge stats-badge">
                   <div className="stats-badge-grid">
-                    <span className="song-speed">Steps:</span>
-                    <span className="song-modifier">{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span>
-
-                    <span className="song-speed">Holds:</span>
-                    <span className="song-modifier">{metrics.holds?.toLocaleString?.() ?? 'N/A'}</span>
-
-                    <span className="song-speed">Jumps:</span>
-                    <span className="song-modifier">{metrics.jumps?.toLocaleString?.() ?? 'N/A'}</span>
-
-                    <span className="song-speed">Shocks:</span>
-                    <span className="song-modifier">{metrics.shocks?.toLocaleString?.() ?? 'N/A'}</span>
+                    <div className="stat-item"><i className="fa-solid fa-shoe-prints"></i><span>{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span></div>
+                    <div className="stat-item"><i className="fa-solid fa-snowflake"></i><span>{metrics.holds?.toLocaleString?.() ?? 'N/A'}</span></div>
+                    <div className="stat-item"><i className="fa-solid fa-bolt"></i><span>{metrics.shocks?.toLocaleString?.() ?? 'N/A'}</span></div>
+                    <div className="stat-item"><i className="fa-solid fa-arrow-up"></i><span>{metrics.jumps?.toLocaleString?.() ?? 'N/A'}</span></div>
                   </div>
                 </div>
               )}
