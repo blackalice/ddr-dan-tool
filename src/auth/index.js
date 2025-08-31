@@ -305,7 +305,7 @@ authApp.post('/logout', (c) => {
   for (const name of ['token', '__Host-token']) {
     setCookie(c, name, '', {
       httpOnly: true,
-      secure,
+      secure: name.startsWith('__Host-') ? true : secure,
       sameSite: 'Strict',
       path: '/',
       maxAge: 0,
@@ -360,7 +360,13 @@ authApp.post('/logout-all', authMiddleware, async (c) => {
   const isProd = (c.env?.ENV || '').toLowerCase() === 'production'
   const secure = isProd || c.req.url.startsWith('https://')
   for (const name of ['token', '__Host-token']) {
-    setCookie(c, name, '', { httpOnly: true, secure, sameSite: 'Strict', path: '/', maxAge: 0 })
+    setCookie(c, name, '', {
+      httpOnly: true,
+      secure: name.startsWith('__Host-') ? true : secure,
+      sameSite: 'Strict',
+      path: '/',
+      maxAge: 0,
+    })
   }
   return c.json({ success: true })
 })
