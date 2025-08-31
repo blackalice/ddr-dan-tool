@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
+import { useGroups } from './contexts/GroupsContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
@@ -27,6 +28,7 @@ const Settings = () => {
     } = useContext(SettingsContext);
 
     const { scores, setScores } = useScores();
+    const { groups } = useGroups();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -156,6 +158,14 @@ const Settings = () => {
                 <div className="settings-inner-container">
                     {user ? (
                         <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Account</h3>
+                                <p>
+                                    Signed in as {user.email || 'unknown'} · {groups.length} lists · {
+                                        Object.keys(scores.single).length + Object.keys(scores.double).length
+                                    } scores
+                                </p>
+                            </div>
                             <div className="setting-control">
                                 <button onClick={logout} className="settings-button">Logout</button>
                             </div>
