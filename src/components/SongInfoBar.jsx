@@ -173,20 +173,14 @@ const SongInfoBar = ({
                     <span className="song-speed">Steps:</span>
                     <span className="song-modifier">{metrics.steps?.toLocaleString?.() ?? 'N/A'}</span>
 
-                    <span className="song-speed">Stream:</span>
-                    <span className="song-modifier">{metrics.radar?.stream ?? 'N/A'}</span>
+                    <span className="song-speed">Holds:</span>
+                    <span className="song-modifier">{metrics.holds?.toLocaleString?.() ?? 'N/A'}</span>
 
-                    <span className="song-speed">Voltage:</span>
-                    <span className="song-modifier">{metrics.radar?.voltage ?? 'N/A'}</span>
+                    <span className="song-speed">Jumps:</span>
+                    <span className="song-modifier">{metrics.jumps?.toLocaleString?.() ?? 'N/A'}</span>
 
-                    <span className="song-speed">Air:</span>
-                    <span className="song-modifier">{metrics.radar?.air ?? 'N/A'}</span>
-
-                    <span className="song-speed">Freeze:</span>
-                    <span className="song-modifier">{metrics.radar?.freeze ?? 'N/A'}</span>
-
-                    <span className="song-speed">Chaos:</span>
-                    <span className="song-modifier">{metrics.radar?.chaos ?? 'N/A'}</span>
+                    <span className="song-speed">Shocks:</span>
+                    <span className="song-modifier">{metrics.shocks?.toLocaleString?.() ?? 'N/A'}</span>
                   </div>
                 </div>
               )}
