@@ -373,27 +373,32 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
     const chartMetrics = useMemo(() => {
         if (!simfileData || !currentChart) return null;
-        // Prefer precomputed radar values when available
-        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty}`;
-        const pre = radarMap && radarMap[key];
-        if (pre) {
-            return {
-                steps: pre.steps,
-                firstNoteSeconds: pre.firstNoteSeconds,
-                radar: {
-                    stream: pre.stream,
-                    voltage: pre.voltage,
-                    air: pre.air,
-                    freeze: pre.freeze,
-                    chaos: pre.chaos ?? null,
-                },
-                lastBeat: null,
-            };
-        }
         const chart = simfileData.charts?.[currentChart.slug];
         if (!chart) return null;
+        // Prefer precomputed radar values when available, but always compute
+        // local metrics like holds/jumps/shocks from the chart data
+        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty}`;
+        const pre = radarMap && radarMap[key];
         try {
-            return computeChartMetrics(chart);
+            const computed = computeChartMetrics(chart);
+            if (pre) {
+                return {
+                    steps: pre.steps ?? computed.steps,
+                    holds: computed.holds,
+                    jumps: computed.jumps,
+                    shocks: computed.shocks,
+                    firstNoteSeconds: pre.firstNoteSeconds ?? computed.firstNoteSeconds,
+                    radar: {
+                        stream: pre.stream ?? computed.radar.stream,
+                        voltage: pre.voltage ?? computed.radar.voltage,
+                        air: pre.air ?? computed.radar.air,
+                        freeze: pre.freeze ?? computed.radar.freeze,
+                        chaos: pre.chaos ?? computed.radar.chaos,
+                    },
+                    lastBeat: computed.lastBeat,
+                };
+            }
+            return computed;
         } catch (e) {
             console.warn('Failed to compute chart metrics:', e);
             return null;

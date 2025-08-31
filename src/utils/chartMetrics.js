@@ -106,12 +106,29 @@ function computeLastBeat(chart) {
 
 export function computeChartMetrics(chart) {
   if (!chart) return null;
-  const steps = (chart.arrows || []).reduce((acc, a) => acc + countTapsInRow(a.direction || ''), 0);
+  const arrows = chart.arrows || [];
+  const steps = arrows.reduce((acc, a) => acc + countTapsInRow(a.direction || ''), 0);
+  // Holds represent freeze/roll notes
+  const holds = Array.isArray(chart.freezes) ? chart.freezes.length : 0;
+  // Jumps: exactly two notes in a single row
+  let jumps = 0;
+  // Shocks: rows consisting solely of 'M' (DDR shock arrow)
+  let shocks = 0;
+  for (const a of arrows) {
+    const dir = a.direction || '';
+    const taps = countTapsInRow(dir);
+    const isShockRow = dir.length > 0 && [...dir].every((c) => c === 'M');
+    if (isShockRow) {
+      shocks += 1;
+    } else if (taps >= 2) {
+      jumps += 1;
+    }
+  }
   const firstOffset = chart.arrows && chart.arrows.length > 0 ? chart.arrows[0].offset : 0;
   const firstNoteSeconds = timeAtOffset(chart.bpm || [], chart.stops || [], firstOffset);
   const lastBeat = computeLastBeat(chart);
   const radar = approximateRadar(chart.arrows || [], chart.freezes || [], chart.bpm || [], chart.stops || [], lastBeat);
-  return { steps, firstNoteSeconds, radar, lastBeat };
+  return { steps, holds, jumps, shocks, firstNoteSeconds, radar, lastBeat };
 }
 
 export { timeAtOffset, songLengthSeconds };
