@@ -116,7 +116,7 @@ const SongInfoBar = ({
 
         const isSelected = currentChart && chartType && currentChart.slug === chartType.slug;
 
-        return (
+    return (
             <DifficultyMeter
                 key={`${style}-${levelName}`}
                 level={isMissing || filteredOut ? 'X' : level}
@@ -127,6 +127,48 @@ const SongInfoBar = ({
             />
         );
     });
+  };
+
+  const bpmRange = React.useMemo(() => {
+    if (!bpmDisplay || bpmDisplay === 'N/A') return { min: null, max: null };
+    if (bpmDisplay.includes('-')) {
+      const [min, max] = bpmDisplay.split('-').map(v => Number(v.trim()));
+      return { min, max };
+    }
+    const val = Number(bpmDisplay);
+    return { min: val, max: val };
+  }, [bpmDisplay]);
+
+  const minAdjusted = calculation
+    ? (showAltBpm && calculation.alternative
+        ? calculation.alternative.minSpeed
+        : calculation.primary.minSpeed)
+    : null;
+  const maxAdjusted = calculation
+    ? (showAltBpm && calculation.alternative
+        ? calculation.alternative.maxSpeed
+        : calculation.primary.maxSpeed)
+    : null;
+  const coreAdjusted = coreCalculation
+    ? (showAltCoreBpm && coreCalculation.alternative
+        ? coreCalculation.alternative.speed
+        : coreCalculation.primary.speed)
+    : null;
+  const multiplier = calculation
+    ? (showAltBpm && calculation.alternative
+        ? calculation.alternative.modifier
+        : calculation.primary.modifier)
+    : null;
+  const coreMultiplier = coreCalculation
+    ? (showAltCoreBpm && coreCalculation.alternative
+        ? coreCalculation.alternative.modifier
+        : coreCalculation.primary.modifier)
+    : null;
+
+  const hasAlt = (calculation && calculation.alternative) || (coreCalculation && coreCalculation.alternative);
+  const toggleAlt = () => {
+    if (calculation && calculation.alternative) setShowAltBpm(!showAltBpm);
+    if (coreCalculation && coreCalculation.alternative) setShowAltCoreBpm(!showAltCoreBpm);
   };
 
   return (
@@ -157,11 +199,39 @@ const SongInfoBar = ({
         </h2>
       </div>
       {!isCollapsed && (
-        <div className="details-grid bpm-tool-grid">
-          <div className={`grid-item difficulty-container ${playStyle === 'single' ? 'grid-item-sp' : 'grid-item-dp'}`}>
+        <div className="info-content">
+          <div className="info-left">
             <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
               {renderDifficulties(playStyle)}
             </div>
+            {(songLength != null || metrics) && (
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <i className="fa-solid fa-clock"></i>
+                  <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : 'N/A'}</span>
+                </div>
+                <div className="stat-item">
+                  <i className="fa-solid fa-play"></i>
+                  <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : 'N/A'}</span>
+                </div>
+                <div className="stat-item">
+                  <i className="fa-solid fa-shoe-prints"></i>
+                  <span>{metrics?.steps?.toLocaleString?.() ?? 'N/A'}</span>
+                </div>
+                <div className="stat-item">
+                  <i className="fa-solid fa-snowflake"></i>
+                  <span>{metrics?.holds?.toLocaleString?.() ?? 'N/A'}</span>
+                </div>
+                <div className="stat-item">
+                  <i className="fa-solid fa-bolt"></i>
+                  <span>{metrics?.shocks?.toLocaleString?.() ?? 'N/A'}</span>
+                </div>
+                <div className="stat-item">
+                  <i className="fa-solid fa-arrow-up"></i>
+                  <span>{metrics?.jumps?.toLocaleString?.() ?? 'N/A'}</span>
+                </div>
+              </div>
+            )}
             <div className={`bpm-score-badge score-badge ${lampClass}`}>
               {currentScore ? (
                 <>
@@ -177,134 +247,51 @@ const SongInfoBar = ({
               )}
             </div>
           </div>
-
-          <div className="grid-item grid-item-bpm">
-            <span className="bpm-label">BPM:</span>
-            <div className="bpm-value-container">
-              <span className="bpm-value">{bpmDisplay}</span>
-              {calculation && (
-                <div className="song-calculation">
-                  <span className="song-speed">
-                    {(showAltBpm && calculation.alternative)
-                      ? (calculation.alternative.isRange
-                        ? `${calculation.alternative.minSpeed}-${calculation.alternative.maxSpeed}`
-                        : calculation.alternative.maxSpeed)
-                      : (calculation.primary.isRange
-                        ? `${calculation.primary.minSpeed}-${calculation.primary.maxSpeed}`
-                        : calculation.primary.maxSpeed)}
-                  </span>
-                  <span className="song-separator">@</span>
-                  <span className="song-modifier">
-                    {(showAltBpm && calculation.alternative)
-                      ? calculation.alternative.modifier
-                      : calculation.primary.modifier}
-                    x
-                  </span>
-                </div>
-              )}
-              {calculation && calculation.alternative && (
-                <button
-                  className={`toggle-button ${
-                    showAltBpm && calculation.alternative
-                      ? calculation.alternative.direction === 'up'
-                        ? 'up'
-                        : 'down'
-                      : ''
-                  }`}
-                  onClick={() => setShowAltBpm(!showAltBpm)}
-                >
-                  <i
-                    className={`fa-solid ${
-                      calculation.alternative.direction === 'up'
-                        ? 'fa-arrow-up'
-                        : 'fa-arrow-down'
-                    }`}
-                  ></i>
-                </button>
-              )}
-            </div>
-          </div>
-
-          {(songLength != null || metrics) && (
-            <div className="grid-item stats-container">
-              <div className="bpm-score-badge stats-badge">
-                <div className="stats-top">
-                  {songLength != null && (
-                    <span className="song-length">
-                      <i className="fa-solid fa-clock"></i>
-                      {`${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}`}
-                    </span>
-                  )}
-                  {metrics?.firstNoteSeconds != null && (
-                    <span className="song-first-note">
-                      <i className="fa-solid fa-play"></i>
-                      {Number(metrics.firstNoteSeconds).toFixed(2)}s
-                    </span>
-                  )}
-                </div>
-                <div className="stats-bottom">
-                  <div className="stat-item">
-                    <i className="fa-solid fa-shoe-prints"></i>
-                    <span>{metrics?.steps?.toLocaleString?.() ?? 'N/A'}</span>
-                  </div>
-                  <div className="stat-item">
-                    <i className="fa-solid fa-snowflake"></i>
-                    <span>{metrics?.holds?.toLocaleString?.() ?? 'N/A'}</span>
-                  </div>
-                  <div className="stat-item">
-                    <i className="fa-solid fa-bolt"></i>
-                    <span>{metrics?.shocks?.toLocaleString?.() ?? 'N/A'}</span>
-                  </div>
-                  <div className="stat-item">
-                    <i className="fa-solid fa-arrow-up"></i>
-                    <span>{metrics?.jumps?.toLocaleString?.() ?? 'N/A'}</span>
-                  </div>
-                </div>
+          <div className="info-right">
+            <div className="bpm-table">
+              <div className="bpm-row header">
+                <span></span>
+                <span>Min</span>
+                <span>Core</span>
+                <span>Max</span>
+              </div>
+              <div className="bpm-row">
+                <span className="row-title">BPM</span>
+                <span>{bpmRange.min != null ? bpmRange.min : 'N/A'}</span>
+                <span>{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
+                <span>{bpmRange.max != null ? bpmRange.max : 'N/A'}</span>
+              </div>
+              <div className="bpm-row">
+                <span className="row-title">Mod BPM</span>
+                <span>{minAdjusted != null ? minAdjusted : 'N/A'}</span>
+                <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
+                <span>{maxAdjusted != null ? maxAdjusted : 'N/A'}</span>
+              </div>
+              <div className="bpm-row">
+                <span className="row-title">Multiplier</span>
+                <span>{multiplier != null ? `${multiplier}x` : 'N/A'}</span>
+                <span>{coreMultiplier != null ? `${coreMultiplier}x` : 'N/A'}</span>
+                <span>{multiplier != null ? `${multiplier}x` : 'N/A'}</span>
               </div>
             </div>
-          )}
-
-          <div className="grid-item grid-item-core">
-            <span className="core-bpm-label">CORE:</span>
-            <div className="core-bpm-value-container">
-              <span className="core-bpm-value">{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
-              {coreCalculation && (
-                <div className="song-calculation">
-                  <span className="song-speed">
-                    {(showAltCoreBpm && coreCalculation.alternative)
-                      ? coreCalculation.alternative.speed
-                      : coreCalculation.primary.speed}
-                  </span>
-                  <span className="song-separator">@</span>
-                  <span className="song-modifier">
-                    {(showAltCoreBpm && coreCalculation.alternative)
-                      ? coreCalculation.alternative.modifier
-                      : coreCalculation.primary.modifier}
-                    x
-                  </span>
-                </div>
-              )}
-              {coreCalculation && coreCalculation.alternative && (
-                <button
-                  className={`toggle-button ${
-                    showAltCoreBpm && coreCalculation.alternative
-                      ? coreCalculation.alternative.direction === 'up'
-                        ? 'up'
-                        : 'down'
-                      : ''
+            {hasAlt && (
+              <button
+                className={`toggle-button ${
+                  (showAltBpm || showAltCoreBpm) && ((calculation?.alternative?.direction || coreCalculation?.alternative?.direction) === 'up'
+                    ? 'up'
+                    : 'down')
+                }`}
+                onClick={toggleAlt}
+              >
+                <i
+                  className={`fa-solid ${
+                    (calculation?.alternative?.direction || coreCalculation?.alternative?.direction) === 'up'
+                      ? 'fa-arrow-up'
+                      : 'fa-arrow-down'
                   }`}
-                  onClick={() => setShowAltCoreBpm(!showAltCoreBpm)}
-                >
-                  <i
-                    className={`fa-solid ${
-                      coreCalculation.alternative.direction === 'up'
-                        ? 'fa-arrow-up'
-                        : 'fa-arrow-down'
-                    }`}
-                  ></i>
-                </button>
-              )}
-            </div>
+                ></i>
+              </button>
+            )}
           </div>
         </div>
       )}
