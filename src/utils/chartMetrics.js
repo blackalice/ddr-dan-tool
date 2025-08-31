@@ -112,11 +112,13 @@ export function computeChartMetrics(chart) {
   const holds = Array.isArray(chart.freezes) ? chart.freezes.length : 0;
   // Jumps: exactly two notes in a single row
   let jumps = 0;
-  // Shocks: four or more notes in a single row (DDR "shock arrow")
+  // Shocks: rows consisting solely of 'M' (DDR shock arrow)
   let shocks = 0;
   for (const a of arrows) {
-    const taps = countTapsInRow(a.direction || '');
-    if (taps >= 4) {
+    const dir = a.direction || '';
+    const taps = countTapsInRow(dir);
+    const isShockRow = dir.length > 0 && [...dir].every((c) => c === 'M');
+    if (isShockRow) {
       shocks += 1;
     } else if (taps >= 2) {
       jumps += 1;
