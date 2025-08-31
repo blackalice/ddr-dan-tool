@@ -271,6 +271,10 @@ html {
 }
 
 /* --- Global Styles & Resets --- */
+:root {
+  /* Height of the glass tab bar (44px icon buttons + 1rem vertical padding) */
+  --tabs-offset: calc(44px + 1rem);
+}
 html {
   overflow-y: scroll;
 }
@@ -496,9 +500,8 @@ body {
 
     .dan-header:not(.is-collapsed) {
         position: sticky;
-        top: 0;
+        top: var(--tabs-offset);
         z-index: 5;
-      
     }
 
 

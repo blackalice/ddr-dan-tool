@@ -150,6 +150,8 @@ export const AuthProvider = ({ children }) => {
     // Clear persisted storage (remote + local + session)
     try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch {}
     storage.clear();
+    // Reset storage namespace to anonymous after logout
+    try { await storage.refresh(); } catch {}
     navigate('/login');
   };
 

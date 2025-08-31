@@ -1,7 +1,19 @@
-const cache = {};
+let cache = {};
 let lastSynced = {}; // snapshot of last known server state
 let initialized = false;
 let syncEnabled = false;
+let currentEmail = null;
+let namespace = 'anon'; // localStorage namespace: 'anon' or 'user:<email>'
+
+function nsKey(key) {
+  return `${namespace}:${key}`;
+}
+
+function resetState() {
+  cache = {};
+  lastSynced = {};
+  lastSent = null;
+}
 
 // Debounced batching for writes
 let flushTimer = null;
@@ -55,9 +67,7 @@ async function flush() {
     lastSent = payload;
     lastSynced = { ...cache };
     lastFlushTime = Date.now();
-  } catch {
-    // ignore network errors; next write will retry
-  }
+  } catch (_e) { void _e; }
 }
 
 function flushNow(useBeacon = false) {
@@ -79,7 +89,7 @@ function flushNow(useBeacon = false) {
       lastSynced = { ...cache };
       lastFlushTime = Date.now();
       return;
-    } catch {}
+    } catch (_e) { void _e; }
   }
   // Fire and forget
   fetch('/api/user/data', {
@@ -98,35 +108,42 @@ async function init() {
   try {
     const res = await fetch('/api/user/data', { credentials: 'include' });
     if (res.ok) {
+      // Authenticated: enable sync and switch to user namespace
+      const raw = await res.json();
+      // extract email without polluting key space
+      currentEmail = typeof raw.email === 'string' ? raw.email : null;
+      namespace = currentEmail ? `user:${currentEmail}` : 'user:unknown';
       syncEnabled = true;
-      const data = await res.json();
-      if (Object.keys(data).length === 0) {
-        for (let i = 0; i < window.localStorage.length; i++) {
-          const key = window.localStorage.key(i);
-          const value = window.localStorage.getItem(key);
-          if (value !== null) {
-            cache[key] = value;
-          }
-        }
-        if (Object.keys(cache).length > 0) {
-          // Migrate local storage to server once
-          await fetch('/api/user/data', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(cache),
-          });
-          window.localStorage.clear();
-        }
-      } else {
-        Object.assign(cache, data);
-        lastSynced = { ...cache };
-        lastSent = JSON.stringify(lastSynced);
-      }
+      // Reset local cache for this session and hydrate from server data (excluding email)
+      resetState();
+      const { email: _skipEmail, ...serverData } = raw || {}; void _skipEmail;
+      Object.assign(cache, serverData);
+      lastSynced = { ...cache };
+      lastSent = JSON.stringify(lastSynced);
+      // Do NOT auto-migrate anonymous localStorage into user account to avoid leakage
     } else if (res.status === 401) {
+      // Unauthenticated: disable sync and use anonymous namespace
       syncEnabled = false;
+      currentEmail = null;
+      namespace = 'anon';
+      resetState();
+      // Hydrate from namespaced localStorage only (avoid cross-account pollution)
+      try {
+        if (typeof window !== 'undefined') {
+          for (let i = 0; i < window.localStorage.length; i++) {
+            const key = window.localStorage.key(i);
+            if (!key || !key.startsWith(`${namespace}:`)) continue;
+            const unprefixed = key.slice(namespace.length + 1);
+            const value = window.localStorage.getItem(key);
+            if (value !== null) cache[unprefixed] = value;
+          }
+          lastSynced = { ...cache }; // local snapshot only
+          lastSent = null;
+        }
+      } catch (_e) { void _e; }
     }
-  } catch {
+  } catch (_e) {
+    void _e;
     // ignore errors
   }
   // Ensure we attempt to persist on tab close
@@ -141,10 +158,16 @@ function getItem(key) {
   if (cache[key] != null) return cache[key];
   try {
     if (typeof window !== 'undefined') {
-      const v = window.localStorage.getItem(key);
-      return v ?? null;
+      // Read namespaced key first
+      const v = window.localStorage.getItem(nsKey(key));
+      if (v != null) return v;
+      // Legacy fallback only for anonymous sessions to avoid account leakage
+      if (namespace === 'anon') {
+        const legacy = window.localStorage.getItem(key);
+        if (legacy != null) return legacy;
+      }
     }
-  } catch {}
+  } catch (_e) { void _e; }
   return null;
 }
 
@@ -152,27 +175,38 @@ function setItem(key, value) {
   cache[key] = value;
   try {
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem(key, String(value));
+      window.localStorage.setItem(nsKey(key), String(value));
     }
-  } catch {}
+  } catch (_e) { void _e; }
   scheduleFlush();
 }
 
 function clear() {
-  for (const key of Object.keys(cache)) {
-    delete cache[key];
-  }
-  // Clear on server using a full PUT of {} to avoid ambiguity
+  // Clear in-memory
+  for (const key of Object.keys(cache)) delete cache[key];
+  // Clear only current namespace in localStorage
+  try {
+    if (typeof window !== 'undefined') {
+      const toRemove = [];
+      for (let i = 0; i < window.localStorage.length; i++) {
+        const k = window.localStorage.key(i);
+        if (k && k.startsWith(`${namespace}:`)) toRemove.push(k);
+      }
+      for (const k of toRemove) window.localStorage.removeItem(k);
+    }
+  } catch (_e) { void _e; }
+  // Clear server copy for authenticated users
   lastSynced = {};
   lastSent = JSON.stringify(lastSynced);
   if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
-  try { if (typeof window !== 'undefined') window.localStorage.clear(); } catch {}
-  fetch('/api/user/data', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({}),
-  }).catch(() => {})
+  if (syncEnabled) {
+    fetch('/api/user/data', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({}),
+    }).catch(() => {})
+  }
 }
 async function refresh() {
   initialized = false;
