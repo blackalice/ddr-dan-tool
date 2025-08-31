@@ -30,6 +30,16 @@ const Settings = () => {
     const { scores, setScores } = useScores();
     const { groups } = useGroups();
     const { user, logout } = useAuth();
+    const [logoutAllBusy, setLogoutAllBusy] = useState(false);
+    const onLogoutAll = async () => {
+        if (logoutAllBusy) return;
+        setLogoutAllBusy(true);
+        try {
+            await fetch('/api/logout-all', { method: 'POST', credentials: 'include' });
+        } catch {}
+        setLogoutAllBusy(false);
+        await logout();
+    };
     const navigate = useNavigate();
 
     const [songMeta, setSongMeta] = useState([]);
@@ -328,6 +338,21 @@ const Settings = () => {
                             </pre>
                         )}
                     </div>
+
+                    {user ? (
+                        <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Account</h3>
+                                <p>Manage your session and sign out of other devices.</p>
+                            </div>
+                            <div className="setting-control">
+                                <button onClick={logout} className="settings-button">Logout</button>
+                                <button onClick={onLogoutAll} className="settings-button" disabled={logoutAllBusy}>
+                                    {logoutAllBusy ? 'Logging out...' : 'Logout all devices'}
+                                </button>
+                            </div>
+                        </div>
+                    ) : null}
 
                     <h2 className="settings-sub-header">About</h2>
                     <div className="setting-card">

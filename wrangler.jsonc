@@ -3,6 +3,10 @@
   "main": "./_worker.js",
   "compatibility_date": "2025-06-05",
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "ENV": "development",
+    "ALLOW_BEARER": "false"
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -17,5 +21,13 @@
       "database_name": "ddr-toolkit-db",
       "database_id": "f9ec8bbc-24c9-4fcf-b2b5-b016e992277a"
     }
-  ]
+  ],
+  "env": {
+    "production": {
+      "vars": {
+        "ENV": "production",
+        "ALLOW_BEARER": "false"
+      }
+    }
+  }
 }

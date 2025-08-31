@@ -4,6 +4,28 @@ import authApp, { authMiddleware } from './src/auth/index.js'
 
 const app = new Hono()
 
+// Global security headers (added to all responses)
+app.use('*', async (c, next) => {
+  await next()
+  try {
+    const isProd = (c.env?.ENV || '').toLowerCase() === 'production'
+    const res = c.res
+    if (!res || !res.headers) return
+    res.headers.set('X-Content-Type-Options', 'nosniff')
+    res.headers.set('Referrer-Policy', 'no-referrer')
+    res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
+    res.headers.set('X-Frame-Options', 'DENY')
+    if (isProd) {
+      // Keep CSP moderate to avoid breaking the app; refine as needed
+      // Allow Turnstile (scripts and frames) and general HTTPS connects.
+      res.headers.set(
+        'Content-Security-Policy',
+        "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https:; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+      )
+    }
+  } catch { /* ignore header set errors */ }
+})
+
 // --- Encryption utils (AES-GCM) for user data at-rest ---
 async function getDataKey(env) {
   const keyB64 = env?.DATA_KEY || null
@@ -78,10 +100,9 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
   return c.json(data);
 })
 
+const MAX_USER_DATA_BYTES = 256 * 1024 // 256 KiB
+
 app.get('/api/user/data', authMiddleware, async (c) => {
-  await c.env.DB.prepare(
-    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
-  ).run()
   const userId = c.get('user').sub
   const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
     .bind(userId)
@@ -94,11 +115,12 @@ app.get('/api/user/data', authMiddleware, async (c) => {
 })
 
 app.put('/api/user/data', authMiddleware, async (c) => {
-  await c.env.DB.prepare(
-    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
-  ).run()
   const userId = c.get('user').sub
   const body = await c.req.json()
+  try {
+    const size = new TextEncoder().encode(JSON.stringify(body)).length
+    if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
+  } catch { /* ignore size calc errors */ }
   const key = await getDataKey(c.env)
   const payload = key ? await encryptJson(body, key) : body
   await c.env.DB.prepare(
@@ -111,11 +133,12 @@ app.put('/api/user/data', authMiddleware, async (c) => {
 
 // Accept POST for sendBeacon merge (treated like PATCH/merge)
 app.post('/api/user/data', authMiddleware, async (c) => {
-  await c.env.DB.prepare(
-    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
-  ).run()
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  try {
+    const size = new TextEncoder().encode(JSON.stringify(patch)).length
+    if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
+  } catch { /* ignore size calc errors */ }
   const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
     .bind(userId)
     .first()
@@ -137,11 +160,12 @@ app.post('/api/user/data', authMiddleware, async (c) => {
 
 // Merge-only updates: accepts a partial JSON object; null values delete keys.
 app.patch('/api/user/data', authMiddleware, async (c) => {
-  await c.env.DB.prepare(
-    'CREATE TABLE IF NOT EXISTS user_data (user_id INTEGER PRIMARY KEY, data TEXT NOT NULL)'
-  ).run()
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  try {
+    const size = new TextEncoder().encode(JSON.stringify(patch)).length
+    if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
+  } catch { /* ignore size calc errors */ }
   const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
     .bind(userId)
     .first()
@@ -163,7 +187,8 @@ app.patch('/api/user/data', authMiddleware, async (c) => {
 })
 
 app.use('*', async (c) => {
-  return c.env.ASSETS.fetch(c.req.raw)
+  const resp = await c.env.ASSETS.fetch(c.req.raw)
+  return resp
 })
 
 export default app

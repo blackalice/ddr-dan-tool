@@ -87,6 +87,14 @@ The application will now be running locally, typically at `http://localhost:5173
   - Wrangler installed: `npm i -g wrangler` and logged in: `wrangler login`
   - A local JWT secret in `.dev.vars`:
     - `JWT_SECRET="your-super-secret-jwt-key"`
+  - Optional data-at-rest key (AES-GCM) in `.dev.vars`:
+    - `DATA_KEY="base64-encoded-32-byte-key"`
+  - Optional Turnstile for human verification (recommended in prod):
+    - Frontend: set `VITE_TURNSTILE_SITE_KEY="your-site-key"` in your shell or `.env`
+    - Worker secret: `wrangler secret put TURNSTILE_SECRET`
+  - Runtime vars (already defaulted in `wrangler.jsonc`):
+    - `ENV=development` (set to `production` for deploys)
+    - `ALLOW_BEARER=false` (set `true` only if you need Authorization header auth)
 
 - Start dev: `npm run dev` (runs Vite and Wrangler). Vite proxies `/api/*` to the Worker at `http://localhost:8787`.
 
@@ -94,11 +102,32 @@ The application will now be running locally, typically at `http://localhost:5173
   1. Visit `/signup` to create an account.
   2. Log in at `/login`.
   3. The app sets an `httpOnly` cookie and syncs settings/scores via `/api/user/data`.
+  - Requirements for signup: a valid email and a password with at least 8 characters.
 
 - Production:
   - Create/bind a D1 database (update `wrangler.jsonc` if needed).
   - Add `JWT_SECRET` with `wrangler secret put JWT_SECRET`.
+  - (Recommended) Add `DATA_KEY` with `wrangler secret put DATA_KEY` for AES-GCM encryption of user data at rest.
+  - (Recommended) Add `TURNSTILE_SECRET` with `wrangler secret put TURNSTILE_SECRET` and set `VITE_TURNSTILE_SITE_KEY` in your build environment.
+  - Apply D1 migrations before first deploy:
+    - `wrangler d1 migrations apply <binding or database_name>`
   - Deploy with `npm run deploy`.
+
+#### Notes on Cookies & JWTs
+- The server issues an HttpOnly cookie for auth. In production it uses the host-only `__Host-token` cookie with `SameSite=Strict`, `Secure`, and a 7-day `maxAge`.
+- In development it falls back to a non-`__Host-` cookie name for local HTTP.
+- JWTs include `iss` and `aud` matching the current origin; middleware verifies these in production. Existing sessions without these claims are still accepted during a short transition period.
+
+#### Human Verification and Rate Limiting
+- Signup/Login support Cloudflare Turnstile. By default it is enforced only in production (based on `ENV=production`). In development, Turnstile checks are skipped even if configured.
+- If you want to test Turnstile locally, set `VITE_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET` and switch `ENV=production` temporarily, or modify the code to force-enable.
+- Basic D1-backed rate limits are enforced:
+  - Login: 20 attempts per IP per 5 min, 5 attempts per email per 5 min
+  - Signup: 5 attempts per IP per 10 min, 2 per email per hour
+
+#### Session Management
+- Single logout clears the auth cookie on the current device (`/api/logout`).
+- Logout all devices is available at `/api/logout-all` and invalidates all existing tokens by bumping a per-user `token_version` stored in D1. All old tokens become unauthorized on next request.
 
 ## Deploying to Cloudflare Workers
 

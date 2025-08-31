@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { Link } from 'react-router-dom';
 import './Auth.css';
+import TurnstileWidget from './components/TurnstileWidget.jsx';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -9,13 +10,21 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
+  const enableTurnstile = import.meta.env.MODE === 'production' && !!siteKey;
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (!EMAIL_RE.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
     setLoading(true);
     try {
-      await login(email, password);
+      await login(email, password, enableTurnstile ? turnstileToken : undefined);
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -48,6 +57,11 @@ const LoginPage = () => {
           <button type="submit" className="settings-button auth-button" disabled={loading}>
             {loading ? 'Logging in...' : 'Log In'}
           </button>
+          {enableTurnstile && (
+            <div style={{ marginTop: '12px' }}>
+              <TurnstileWidget siteKey={siteKey} onVerify={setTurnstileToken} />
+            </div>
+          )}
           {error && <p className="auth-error">{error}</p>}
         </form>
         <div className="auth-switch">

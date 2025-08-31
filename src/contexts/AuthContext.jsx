@@ -101,11 +101,11 @@ export const AuthProvider = ({ children }) => {
     fetchUserData();
   }, [fetchUserData]);
 
-  const login = async (email, password) => {
+  const login = async (email, password, turnstileToken) => {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, turnstileToken }),
       credentials: 'include'
     });
     if (!res.ok) {
@@ -118,11 +118,11 @@ export const AuthProvider = ({ children }) => {
     navigate('/');
   };
 
-  const signup = async (email, password) => {
+  const signup = async (email, password, turnstileToken) => {
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, turnstileToken }),
       credentials: 'include'
     });
     if (!res.ok) {
