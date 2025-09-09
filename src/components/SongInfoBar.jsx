@@ -233,18 +233,9 @@ const SongInfoBar = ({
               </div>
             )}
             <div className={`bpm-score-badge score-badge ${lampClass}`}>
-              {currentScore ? (
-                <>
-                  {currentScore.lamp && <span className="score-lamp">{currentScore.lamp}</span>}
-                  <span className="score-value">{currentScore.score.toLocaleString()}</span>
-                  <span className="score-extra">
-                    {getGrade(currentScore.score)}
-                    {currentScore.flare ? ` ${currentScore.flare}` : ''}
-                  </span>
-                </>
-              ) : (
-                <span className="score-placeholder">--</span>
-              )}
+              <span className="score-lamp">{currentScore?.lamp ?? ''}</span>
+              <span className="score-value">{currentScore ? currentScore.score.toLocaleString() : '--'}</span>
+              <span className="score-extra">{currentScore ? `${getGrade(currentScore.score)}${currentScore.flare ? ` ${currentScore.flare}` : ''}` : ''}</span>
             </div>
           </div>
           <div className="info-right">

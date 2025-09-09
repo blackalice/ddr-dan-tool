@@ -272,8 +272,8 @@
 }
 
 .collapse-button {
-    background-color: var(--button-bg);
-    color: var(--button-icon);
+    background-color: var(--bg-color-dark);
+    color: white;
     width: 32px;
     height: 32px;
     border-radius: 0.375rem;
@@ -287,7 +287,7 @@
 }
 
 .collapse-button:hover {
-    background-color: var(--card-hover-bg-color-light);
+    background-color: rgba(var(--accent-color-rgb), .85);
 }
 
 .chart-section.collapsed .chart-container {
@@ -336,18 +336,26 @@
     border-radius: 0.375rem;
 }
 
+
 .bpm-table {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     margin:10px;
+    text-align: center;
+    height: 100px;
 }
+
 
 .bpm-row {
     display: grid;
-    grid-template-columns: auto repeat(3, 1fr);
-    gap: 0.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+   
     text-align: center;
+    height: 33%;
 }
 
 .bpm-row.header {
@@ -356,7 +364,7 @@
 
 .row-title {
     font-weight: 600;
-    text-align: left;
+    text-align: center;
 }
 
 .play-style,
@@ -374,11 +382,18 @@
 
 .difficulty-meters-container {
     display: flex;
-    
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.difficulty-meters-container .difficulty-meter {
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 .difficulty-meters-container.ranked .difficulty-meter {
-    width: 100px;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 
@@ -526,6 +541,7 @@
         grid-column: 1 / -1; /* Span all columns */
         justify-self: center;
         text-align: center!important;
+        align-items: center;
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
@@ -534,11 +550,12 @@
     .collapse-button {
         grid-area: button;
         justify-self: end;
-        background-color: transparent;
+        background-color: var(--bg-color-dark);
+        color: white;
     }
     .collapse-button:hover {
-        background-color: transparent;
-        color: var(--text-muted-color);
+        background-color: rgba(var(--accent-color-rgb), .85);
+        color: white;
     }
 
     .song-title-main {
@@ -570,6 +587,12 @@
 @media (min-width: 1025px) {
     .info-content {
         flex-direction: row;
+    }
+
+    /* Allow longer titles on desktop before truncating */
+    .song-title-main,
+    .song-title-artist {
+        max-width: 36rem;
     }
 
     .controls-container {
@@ -732,8 +755,7 @@
     }
 
     .difficulty-meters-container {
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
         width: 100%;
     }
 }
@@ -743,16 +765,28 @@
     background-color: var(--card-hover-bg-color);
     padding: 0.3rem 0.75rem;
     border-radius: .375rem;
-    font-size: 1rem;
+    font-size: 1rem; /* Match difficulty meters */
     margin-top: 0.25rem;
-    text-align: center;
     width:100%;
     min-width:6rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
     white-space: nowrap;
+}
+
+.bpm-score-badge .score-lamp {
+    justify-self: start;
+    padding-left: 0.5rem;
+}
+
+.bpm-score-badge .score-value {
+    justify-self: center;
+}
+
+.bpm-score-badge .score-extra {
+    justify-self: end;
+    padding-right: 0.5rem;
 }
 
 .score-lamp {
@@ -768,10 +802,29 @@
     font-style: italic;
 }
 
-.glow-marvelous { box-shadow: 0 0 8px #ffffff; }
-.glow-perfect { box-shadow: 0 0 8px #ffe066; }
-.glow-great { box-shadow: 0 0 8px #2ecc71; }
-.glow-good { box-shadow: 0 0 8px #3498db; }
+.glow-marvelous { 
+  box-shadow: 
+    0 0 8px #ffffff,    /* outer glow */
+    inset 0 0 8px #ffffff; /* inner glow */
+}
+
+.glow-perfect { 
+  box-shadow: 
+    0 0 8px #ffe066,
+    inset 0 0 8px #ffe066;
+}
+
+.glow-great { 
+  box-shadow: 
+    0 0 8px #2ecc71,
+    inset 0 0 8px #2ecc71;
+}
+
+.glow-good { 
+  box-shadow: 
+    0 0 8px #3498db,
+    inset 0 0 8px #3498db;
+}
 
 /* Stats badge layout */
 .stats-badge {

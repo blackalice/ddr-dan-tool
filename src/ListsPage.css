@@ -136,7 +136,7 @@
 }
 
 .collapse-button {
-  background-color: var(--button-bg);
+  background-color: var(--bg-color-dark;
   color: var(--button-icon);
   width: 32px;
   height: 32px;
