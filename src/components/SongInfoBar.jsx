@@ -251,30 +251,9 @@ const SongInfoBar = ({
                   <span>{bpmRange.max != null ? bpmRange.max : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
-                  <span>
-                    {minAdjusted != null ? minAdjusted : 'N/A'}
-                    {hasAlt && calculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${calculation.alternative.direction} ${showAltBpm ? 'active' : ''}`}
-                      ></i>
-                    )}
-                  </span>
-                  <span>
-                    {coreAdjusted != null ? coreAdjusted : 'N/A'}
-                    {hasAlt && coreCalculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${coreCalculation.alternative.direction} ${showAltCoreBpm ? 'active' : ''}`}
-                      ></i>
-                    )}
-                  </span>
-                  <span>
-                    {maxAdjusted != null ? maxAdjusted : 'N/A'}
-                    {hasAlt && calculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${calculation.alternative.direction} ${showAltBpm ? 'active' : ''}`}
-                      ></i>
-                    )}
-                  </span>
+                  <span>{minAdjusted != null ? minAdjusted : 'N/A'}</span>
+                  <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
+                  <span>{maxAdjusted != null ? maxAdjusted : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
                   <span>

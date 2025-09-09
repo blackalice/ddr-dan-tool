@@ -353,7 +353,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0 0; /* remove row gap to let divider touch next row */
-    margin: 10px 0; /* avoid extra left offset */
+    margin-top: 5px;
+    margin-bottom:5px;
+    margin-right:10px;
     text-align: center;
     cursor: pointer;
     user-select: none;
@@ -661,9 +663,13 @@
         max-width: 36rem;
     }
 
-    /* Fill column height; table sizes to content */
+    /* Fill column height and distribute rows with extra emphasis on last */
     .info-right { align-self: stretch; }
-    .bpm-table { height: auto; }
+    .bpm-table {
+        height: 100%;
+        grid-template-rows: 1fr 1fr 1fr 1.5fr; /* last row larger */
+        align-content: stretch;
+    }
 
     .controls-container {
         flex-direction: row;
