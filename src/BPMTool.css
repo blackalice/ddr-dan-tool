@@ -324,11 +324,9 @@
         background-image: linear-gradient(
             to right,
             transparent 0,
-            transparent 33.333%,
-            var(--card-bg-color) 33.333%,
-            var(--card-bg-color) 66.666%,
-            transparent 66.666%,
-            transparent 100%
+            transparent 60%,
+            var(--card-bg-color) 60%,
+            var(--card-bg-color) 100%
         );
         background-clip: padding-box;
 
@@ -351,7 +349,7 @@
 
 .bpm-table {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 30% 30% 40%;
     gap: 0 0; /* remove row gap to let divider touch next row */
     margin-top: 5px;
     margin-bottom:5px;
@@ -372,7 +370,7 @@
 /* Header row spans all columns so we can draw a full-width divider */
 .bpm-row.header {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 30% 30% 40%;
     grid-column: 1 / -1;
     margin-bottom: 0;
 }
@@ -388,6 +386,7 @@
     justify-content: center;
     align-items: center;
     padding: 0.5rem 0.5rem 0.25rem;
+    
 }
 
 /* Add space above non-header rows since row-gap is 0 */

@@ -242,21 +242,21 @@ const SongInfoBar = ({
             <div className="bpm-table" onClick={hasAlt ? toggleAlt : undefined} title={hasAlt ? 'Toggle alt speeds' : undefined}>
                 <div className="bpm-row header">
                   <span>Min</span>
-                  <span>Core</span>
                   <span>Max</span>
+                  <span>Core</span>
                 </div>
                 <div className="bpm-row">
                   <span>{bpmRange.min != null ? bpmRange.min : 'N/A'}</span>
-                  <span>{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                   <span>{bpmRange.max != null ? bpmRange.max : 'N/A'}</span>
+                  <span>{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
                   <span>{minAdjusted != null ? minAdjusted : 'N/A'}</span>
-                  <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
                   <span>{maxAdjusted != null ? maxAdjusted : 'N/A'}</span>
+                  <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
-                  <span>
+                  <span style={{ gridColumn: '1 / span 2' }}>
                     {multiplier != null ? `${multiplier}x` : 'N/A'}
                     {hasAlt && calculation?.alternative?.direction && (
                       <i
@@ -269,14 +269,6 @@ const SongInfoBar = ({
                     {hasAlt && coreCalculation?.alternative?.direction && (
                       <i
                         className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${coreCalculation.alternative.direction} ${showAltCoreBpm ? 'active' : ''}`}
-                      ></i>
-                    )}
-                  </span>
-                  <span>
-                    {multiplier != null ? `${multiplier}x` : 'N/A'}
-                    {hasAlt && calculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${calculation.alternative.direction} ${showAltBpm ? 'active' : ''}`}
                       ></i>
                     )}
                   </span>
