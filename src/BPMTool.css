@@ -320,6 +320,17 @@
         background-color:var(--card-hover-bg-color);
         border-radius: 0.375rem;
         padding: 0 10px; /* balance inner spacing */
+        /* Continuous middle column background across full height of info-right */
+        background-image: linear-gradient(
+            to right,
+            transparent 0,
+            transparent 33.333%,
+            var(--card-bg-color) 33.333%,
+            var(--card-bg-color) 66.666%,
+            transparent 66.666%,
+            transparent 100%
+        );
+        background-clip: padding-box;
 
 }
 
@@ -341,7 +352,7 @@
 .bpm-table {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.25rem 0; /* no column gap so header border is continuous */
+    gap: 0 0; /* remove row gap to let divider touch next row */
     margin: 10px 0; /* avoid extra left offset */
     text-align: center;
     cursor: pointer;
@@ -356,24 +367,36 @@
     display: contents; /* allow children to populate the parent grid */
 }
 
-.bpm-row.header span { font-weight: 600; }
-/* Continuous divider under header */
-.bpm-table > span:nth-child(-n + 3) {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.35rem;
+/* Header row spans all columns so we can draw a full-width divider */
+.bpm-row.header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1 / -1;
+    margin-bottom: 0;
 }
 
-.bpm-table > span { justify-self: center; padding: 0.25rem 0.5rem; }
+.bpm-row.header span
+{ font-weight: 600;
+    opacity:50%; }
 
-/* Middle column background (Core) */
-.bpm-table > span:nth-child(3n + 2) {
-    background-color: var(--card-bg-color)!important;
-    border-radius: .25rem;
+
+.bpm-table .bpm-row span {
+    justify-self: stretch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0.5rem 0.25rem;
 }
+
+/* Add space above non-header rows since row-gap is 0 */
+.bpm-row:not(.header) span { padding-top: 0.5rem; }
+
+/* Remove per-cell background; handled by table gradient */
 
 /* Emphasize bottom line (modifiers) */
 .bpm-table .bpm-row:last-of-type span {
     font-weight: 700;
+    font-size: 1.5rem;
 }
 
 /* Direction indicators beside BPM values */
@@ -638,15 +661,9 @@
         max-width: 36rem;
     }
 
-    /* Fill available height and distribute rows evenly */
-    .info-right {
-        align-self: stretch;
-    }
-    .bpm-table {
-        height: 100%;
-        grid-auto-rows: 1fr;
-        align-content: stretch;
-    }
+    /* Fill column height; table sizes to content */
+    .info-right { align-self: stretch; }
+    .bpm-table { height: auto; }
 
     .controls-container {
         flex-direction: row;
