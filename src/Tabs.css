@@ -37,27 +37,25 @@
 }
 
 .settings-tab {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-sm);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--text-muted-color);
     text-decoration: none;
-    transition: all 0.2s ease-in-out;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    transition: color 0.2s ease-in-out;
+    background: none;
+    border: none;
+    width: auto;
+    height: auto;
+    padding: 0;
     line-height: 1;
 }
 
-.settings-tab:hover { filter: brightness(1.1); color: var(--text-color); }
+.settings-tab:hover { color: var(--text-color); }
 
 .settings-tab.active {
-    background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 84%, black));
-    color: var(--text-color);
-    box-shadow: 0 8px 18px rgba(var(--accent-color-rgb), .3);
+    color: var(--accent-color);
 }
 
 
@@ -86,28 +84,13 @@
     box-shadow: 0 10px 22px rgba(var(--accent-color-rgb), .28);
 }
 
-.play-style-toggle-tab {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-color);
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform .08s ease, filter .2s ease;
-    line-height: 1;
-}
-
-.play-style-toggle-tab:hover { filter: brightness(1.08); }
 
 @media (max-width: 640px) {
     .tabs-container {
         margin-bottom:1rem;
         
     }
+    .logo-container { display: none; }
+    .settings-tab { margin-left: 6px; }
     .tab { flex-grow: 1; text-align: center; padding: 0; font-size: 0.975rem; }
 }

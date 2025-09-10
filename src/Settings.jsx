@@ -18,6 +18,8 @@ const Settings = () => {
         setApiKey,
         targetBPM,
         setTargetBPM,
+        playStyle,
+        setPlayStyle,
         multiplierMode,
         setMultiplierMode,
         // showLists is always enabled now
@@ -217,6 +219,24 @@ const Settings = () => {
                                 className="settings-input"
                                 placeholder="e.g. 300"
                             />
+                        </div>
+                    </div>
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Play Style</h3>
+                            <p>
+                                Choose Single (SP) or Double (DP) for charts, rankings and filters.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={playStyle === 'double' ? 'DP' : 'SP'}
+                                onChange={(e) => setPlayStyle(e.target.value === 'DP' ? 'double' : 'single')}
+                                className="settings-select"
+                            >
+                                <option value="SP">Single (SP)</option>
+                                <option value="DP">Double (DP)</option>
+                            </select>
                         </div>
                     </div>
                     <div className="setting-card">

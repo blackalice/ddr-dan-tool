@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar } from '@fortawesome/free-solid-svg-icons';
-import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useAuth } from './contexts/AuthContext.jsx';
 import './Tabs.css';
 
@@ -14,7 +13,6 @@ const Logo = () => (
 
 const Tabs = () => {
     const location = useLocation();
-    const { playStyle, setPlayStyle } = useContext(SettingsContext);
     const { user } = useAuth();
 
     return (
@@ -45,9 +43,6 @@ const Tabs = () => {
                             <FontAwesomeIcon icon={faList} />
                         </NavLink>
                     )}
-                </div>
-                <div className="play-style-toggle-tab" onClick={() => setPlayStyle(s => s === 'single' ? 'double' : 'single')}>
-                    {playStyle === 'single' ? 'SP' : 'DP'}
                 </div>
                 <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
                     <FontAwesomeIcon icon={faCog} />
