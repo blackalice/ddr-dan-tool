@@ -346,7 +346,7 @@
 
 .bpm-table {
     display: grid;
-    grid-template-columns: 30% 30% 40%;
+    grid-template-columns: 28% 4% 28% 40%;
     gap: 0 0; /* remove row gap to let divider touch next row */
     margin-top: 5px;
     margin-bottom:5px;
@@ -367,7 +367,7 @@
 /* Header row spans all columns so we can draw a full-width divider */
 .bpm-row.header {
     display: grid;
-    grid-template-columns: 30% 30% 40%;
+    grid-template-columns: 28% 4% 28% 40%;
     grid-column: 1 / -1;
     margin-bottom: 0;
 }
@@ -388,6 +388,9 @@
 
 /* Add space above non-header rows since row-gap is 0 */
 .bpm-row:not(.header) span { padding-top: 0.5rem; }
+
+/* Separator dash column */
+.bpm-sep { color: var(--text-muted-color); pointer-events: none; }
 
 /* Remove per-cell background; handled by table gradient */
 

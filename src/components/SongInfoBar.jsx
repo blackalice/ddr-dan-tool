@@ -242,21 +242,24 @@ const SongInfoBar = ({
             <div className="bpm-table" onClick={hasAlt ? toggleAlt : undefined} title={hasAlt ? 'Toggle alt speeds' : undefined}>
                 <div className="bpm-row header">
                   <span>Min</span>
+                  <span className="bpm-sep"></span>
                   <span>Max</span>
                   <span>Core</span>
                 </div>
                 <div className="bpm-row">
                   <span>{bpmRange.min != null ? bpmRange.min : 'N/A'}</span>
+                  <span className="bpm-sep">—</span>
                   <span>{bpmRange.max != null ? bpmRange.max : 'N/A'}</span>
                   <span>{coreBpm ? coreBpm.toFixed(0) : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
                   <span>{minAdjusted != null ? minAdjusted : 'N/A'}</span>
+                  <span className="bpm-sep">—</span>
                   <span>{maxAdjusted != null ? maxAdjusted : 'N/A'}</span>
                   <span>{coreAdjusted != null ? coreAdjusted : 'N/A'}</span>
                 </div>
                 <div className="bpm-row">
-                  <span style={{ gridColumn: '1 / span 2' }}>
+                  <span style={{ gridColumn: '1 / span 3' }}>
                     {multiplier != null ? `${multiplier}x` : 'N/A'}
                     {hasAlt && calculation?.alternative?.direction && (
                       <i
