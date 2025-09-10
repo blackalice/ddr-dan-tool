@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
       }
       // Prime remote storage sync state now that we’re authenticated
       try {
-        const { storage } = await import('../utils/remoteStorage.js');
+        // storage is already statically imported; just refresh
         await storage.refresh();
         // Hydrate groups from server into context
         try {

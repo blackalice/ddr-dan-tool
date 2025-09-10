@@ -7,6 +7,20 @@ export default defineConfig({
     react(),
     // PWA plugin removed due to caching issues
   ],
+  build: {
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          chart: ['chart.js', 'react-chartjs-2'],
+          select: ['react-select'],
+          window: ['react-window'],
+          fa: ['@fortawesome/react-fontawesome', '@fortawesome/free-solid-svg-icons'],
+        },
+      },
+    },
+  },
   server: {
     proxy: {
       // This ONLY affects local dev with `vite dev`

@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate } from 'react-router-dom';
-import Multiplier from './Multiplier';
-import BPMTool from './BPMTool';
 import Tabs from './Tabs';
-import Settings from './Settings';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
 import { ScoresProvider } from './contexts/ScoresContext.jsx';
 import { FilterProvider } from './contexts/FilterContext.jsx';
@@ -11,16 +8,21 @@ import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import { parseSelection } from './utils/urlState.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
-import DanPage from './DanPage.jsx';
-import VegaPage from './VegaPage.jsx';
-import ListsPage from './ListsPage.jsx';
-import RankingsPage from './RankingsPage.jsx';
 import './App.css';
 import './Tabs.css';
 import { storage } from './utils/remoteStorage.js';
-import LoginPage from './LoginPage.jsx';
-import SignupPage from './SignupPage.jsx';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
+
+// Route-level code splitting
+const Multiplier = lazy(() => import('./Multiplier'));
+const BPMTool = lazy(() => import('./BPMTool'));
+const Settings = lazy(() => import('./Settings'));
+const DanPage = lazy(() => import('./DanPage.jsx'));
+const VegaPage = lazy(() => import('./VegaPage.jsx'));
+const ListsPage = lazy(() => import('./ListsPage.jsx'));
+const RankingsPage = lazy(() => import('./RankingsPage.jsx'));
+const LoginPage = lazy(() => import('./LoginPage.jsx'));
+const SignupPage = lazy(() => import('./SignupPage.jsx'));
 
 function AppRoutes() {
   const { theme, setPlayStyle, playStyle } = useContext(SettingsContext);
@@ -181,6 +183,7 @@ function AppRoutes() {
           playStyle,
         }} />
         <div className="app-content">
+          <Suspense fallback={<div className="app-loading">Loading…</div>}>
           <Routes>
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
@@ -193,6 +196,7 @@ function AppRoutes() {
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
             <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
           </Routes>
+          </Suspense>
         </div>
         <footer className="footer">
             <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>

@@ -124,8 +124,7 @@
 }
 
 .api-key-button,
-.camera-button,
-.filter-button {
+.camera-button {
     background-color: var(--card-bg-color);
     border: 0px solid var(--border-color);
     color: var(--text-color);
@@ -140,10 +139,7 @@
     transition: background-color 0.2s;
 }
 
-.filter-button.active {
-    background-color: var(--accent-color);
-    color: var(--text-color);
-}
+/* .filter-button base and .active styles are defined globally in App.css */
 
 
 .camera-modal {
@@ -271,7 +267,7 @@
     color: var(--text-muted-color);
 }
 
-.collapse-button {
+.song-info-bar .collapse-button {
     background-color: var(--bg-color-dark);
     color: white;
     width: 32px;
@@ -286,7 +282,7 @@
     flex-shrink: 0;
 }
 
-.collapse-button:hover {
+.song-info-bar .collapse-button:hover {
     background-color: rgba(var(--accent-color-rgb), .85);
 }
 
@@ -607,13 +603,13 @@
         gap: 0.1rem;
     }
 
-    .collapse-button {
+    .song-info-bar .bpm-title-mobile .collapse-button {
         grid-area: button;
         justify-self: end;
         background-color: var(--bg-color-dark);
         color: white;
     }
-    .collapse-button:hover {
+    .song-info-bar .collapse-button:hover {
         background-color: rgba(var(--accent-color-rgb), .85);
         color: white;
     }
@@ -842,7 +838,7 @@
     border-radius: .375rem;
     font-size: 1rem; /* Match difficulty meters */
     margin-top: 0.25rem;
-    width:100%;
+   
     min-width:6rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
