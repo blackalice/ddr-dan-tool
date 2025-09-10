@@ -390,7 +390,7 @@
 .bpm-row:not(.header) span { padding-top: 0.5rem; }
 
 /* Separator dash column */
-.bpm-sep { color: var(--text-muted-color); pointer-events: none; }
+.bpm-sep { color: var(--text-muted-color); pointer-events: none; font-weight: normal!important; }
 
 /* Remove per-cell background; handled by table gradient */
 
@@ -706,50 +706,9 @@
     }
 }
 
-.play-mode-toggle {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    border: 1px solid var(--border-color);
-    border-radius: 9999px;
-    background-color: var(--card-bg-color);
-    padding: 2px;
-    box-shadow: var(--shadow-sm);
-}
+/* play-mode-toggle styles are defined globally in App.css */
 
-.play-mode-toggle button {
-    appearance: none;
-    background-color: transparent;
-    border: none;
-    color: var(--text-color);
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    min-width: 72px;
-}
-
-/* Unselected: still readable against dark themes */
-.play-mode-toggle button:not(.active) {
-    background-color: var(--card-hover-bg-color);
-    color: var(--text-color);
-}
-
-.play-mode-toggle button.active {
-    background-color: var(--accent-color);
-    color: white;
-}
-
-.play-mode-toggle button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), .35);
-}
-
-.playstyle-toggle-container {
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem 0;
-}
+/* Removed duplicate playstyle-toggle-container (unused) */
 @media (max-width: 1024px) {
     .controls-container {
         display: flex;
@@ -764,9 +723,7 @@
         order: 1;
     }
 
-    .play-style-toggle {
-        order: 3;
-    }
+    /* Removed obsolete .play-style-toggle ordering */
 
     .mobile-only {
         display: flex;
