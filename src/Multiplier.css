@@ -1,7 +1,8 @@
 .multiplier-content {
   background-color: var(--bg-color-light);
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
+  border:1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 

@@ -343,10 +343,12 @@ body {
   flex-direction: column;
   min-height: 100%;
   padding: 0 1.25rem;
+
 }
 .app-content {
   flex-grow: 1;
   animation: fade-in 300ms ease-out;
+  
 }
 @media (max-width: 1024px) {
   .dan-select { text-align: center; }
