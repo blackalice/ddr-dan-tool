@@ -36,8 +36,6 @@
 }
 
 /* Drag-and-drop cues for reordering lists */
-.reorder-mode .dan-section .dan-header { cursor: grab; }
-.reorder-mode .dan-section .dan-header:active { cursor: grabbing; }
 .dan-section.drag-over-before { outline: 2px dashed var(--accent-color); outline-offset: -6px; }
 .dan-section.drag-over-after { outline: 2px dashed var(--accent-color); outline-offset: -6px; }
 .dan-section.drag-over-before { box-shadow: inset 0 4px 0 0 var(--accent-color); }

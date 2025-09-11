@@ -4,7 +4,7 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPalette, faPlus, faPen, faArrowsUpDownLeftRight, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPalette, faPlus, faPen, faSort, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import {
   DndContext,
   PointerSensor,
@@ -148,7 +148,7 @@ const GroupSection = ({
             {...dragAttributes}
             {...dragListeners}
           >
-            <FontAwesomeIcon icon={faGripVertical} />
+            <FontAwesomeIcon icon={faGripLines} />
           </button>
         ) : (
           <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -285,7 +285,7 @@ const ListsPage = () => {
               aria-pressed={reorderMode}
               title={reorderMode ? 'Exit reorder mode' : 'Reorder lists'}
             >
-              <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+              <FontAwesomeIcon icon={faSort} />
             </button>
             <button
               className="filter-button"
