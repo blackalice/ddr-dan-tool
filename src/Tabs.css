@@ -40,6 +40,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     font-size: 1.2rem;
     color: var(--text-muted-color);
     text-decoration: none;
@@ -47,8 +48,8 @@
     background: none;
     border: none;
     width: auto;
-    height: auto;
-    padding: 0;
+    height: 44px;
+    padding: 0 8px;
     line-height: 1;
 }
 
@@ -68,13 +69,18 @@
     transition: color .2s ease, transform .08s ease, background .2s ease;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    width: 44px;
+    min-width: 44px;
     height: 44px;
-    display: grid;
-    place-items: center;
-    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
     line-height: 1;
 }
+
+.tab-icon { display: inline-flex; align-items: center; justify-content: center; }
+.tab-label { white-space: nowrap; font-size: 0.95rem; }
 
 .tab:hover { filter: brightness(1.08); color: var(--text-color); }
 
@@ -92,5 +98,7 @@
     }
     .logo-container { display: none; }
     .settings-tab { margin-left: 6px; }
-    .tab { flex-grow: 1; text-align: center; padding: 0; font-size: 0.975rem; }
+    .tab { flex-grow: 1; justify-content: center; padding: 0; font-size: 0.975rem; }
+    .tab-label { display: none; }
+    .settings-tab .tab-label { display: none; }
 }

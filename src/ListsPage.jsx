@@ -4,7 +4,22 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPalette, faPlus, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPalette, faPlus, faPen, faArrowsUpDownLeftRight, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import {
+  DndContext,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  useSortable,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import CreateListModal from './components/CreateListModal.jsx';
 import EditChartModal from './components/EditChartModal.jsx';
 import { storage } from './utils/remoteStorage.js';
@@ -12,7 +27,24 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 
-const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName, resetFilters, onEditChart, highlightKey }) => {
+const GroupSection = ({
+  group,
+  removeChart,
+  deleteGroup,
+  updateColor,
+  updateName,
+  resetFilters,
+  onEditChart,
+  highlightKey,
+  // DnD props
+  reorderMode,
+  dragAttributes = {},
+  dragListeners = {},
+  setNodeRef,
+  transform,
+  transition,
+  isDragging = false,
+}) => {
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
@@ -29,6 +61,12 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showActions, setShowActions] = useState(false);
+  const onHeaderTitleClick = (e) => {
+    if (reorderMode) return;
+    const interactive = e.target.closest('button, input, select, textarea, label, a, [contenteditable="true"]');
+    if (interactive) return;
+    setIsCollapsed(prev => !prev);
+  };
 
   useEffect(() => {
     const keyNew = `collapsed:list:${group.name}`;
@@ -58,10 +96,18 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
     setIsEditing(false);
   };
 
+  const style = {
+    transform: transform ? CSS.Transform.toString(transform) : undefined,
+    transition,
+  };
+
   return (
-    <section className="dan-section">
-      <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: group.color }}>
-        <div className="dan-header-title">
+    <section ref={setNodeRef} className={`dan-section${isDragging ? ' is-dragging' : ''}`} style={style}>
+      <h2
+        className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`}
+        style={{ backgroundColor: group.color }}
+      >
+        <div className="dan-header-title" onClick={onHeaderTitleClick}>
           <label className="color-picker-label">
             <FontAwesomeIcon icon={faPalette} />
             <input
@@ -94,9 +140,21 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
             <span onDoubleClick={() => setIsEditing(true)}>{group.name}</span>
           )}
         </div>
-        <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
-        </button>
+        {reorderMode ? (
+          <button
+            className="drag-handle"
+            title="Drag to reorder"
+            aria-label="Drag to reorder"
+            {...dragAttributes}
+            {...dragListeners}
+          >
+            <FontAwesomeIcon icon={faGripVertical} />
+          </button>
+        ) : (
+          <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+          </button>
+        )}
       </h2>
       {!isCollapsed && (
         <div className="song-grid">
@@ -128,6 +186,7 @@ const GroupSection = ({ group, removeChart, deleteGroup, updateColor, updateName
 const ListsPage = () => {
   const {
     groups,
+    setGroups,
     createGroup,
     removeChartFromGroup,
     deleteGroup,
@@ -142,6 +201,8 @@ const ListsPage = () => {
   const [songMeta, setSongMeta] = useState([]);
   const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
   const [highlightKey, setHighlightKey] = useState(null);
+  const [reorderMode, setReorderMode] = useState(false);
+  const [localOrder, setLocalOrder] = useState([]);
 
   useEffect(() => {
     fetch('/song-meta.json')
@@ -174,11 +235,33 @@ const ListsPage = () => {
     return meta.difficulties.filter(d => d.mode === editInfo.chart.mode);
   }, [editInfo, songMeta]);
 
-  const groupsToShow =
-    activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
+  const groupsToShow = activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
+
+  useEffect(() => {
+    setLocalOrder(groupsToShow.map(g => g.name));
+  }, [groupsToShow.map(g => g.name).join('|')]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor)
+  );
+
+  const onDragEndDnd = (event) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = localOrder.indexOf(active.id);
+    const newIndex = localOrder.indexOf(over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    const newOrder = arrayMove(localOrder, oldIndex, newIndex);
+    setLocalOrder(newOrder);
+    const reordered = newOrder.map(name => groups.find(g => g.name === name)).filter(Boolean);
+    setGroups(reordered);
+  };
+
+  // (Legacy custom drag logic removed in favor of dnd-kit)
 
   return (
-    <div className="app-container">
+    <div className={`app-container${reorderMode ? ' reorder-mode' : ''}`}>
       <main>
         <div className="filter-bar">
           <div className="filter-group list-page-filter-group">
@@ -197,6 +280,14 @@ const ListsPage = () => {
               </select>
             </div>
             <button
+              className={`filter-button${reorderMode ? ' active' : ''}`}
+            onClick={() => setReorderMode(m => !m)}
+              aria-pressed={reorderMode}
+              title={reorderMode ? 'Exit reorder mode' : 'Reorder lists'}
+            >
+              <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+            </button>
+            <button
               className="filter-button"
               onClick={() => setShowCreateModal(true)}
               title="Add list"
@@ -205,19 +296,46 @@ const ListsPage = () => {
             </button>
           </div>
         </div>
-        {groupsToShow.map(g => (
-          <GroupSection
-            key={g.name}
-            group={g}
-            removeChart={removeChartFromGroup}
-            deleteGroup={deleteGroup}
-            updateColor={updateGroupColor}
-            updateName={updateGroupName}
-            resetFilters={resetFilters}
-            onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
-            highlightKey={highlightKey}
-          />
-        ))}
+        {reorderMode && activeGroup === 'All' ? (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEndDnd}>
+            <SortableContext items={localOrder} strategy={verticalListSortingStrategy}>
+              {localOrder.map(id => {
+                const g = groupsToShow.find(x => x.name === id);
+                if (!g) return null;
+                return (
+                  <SortableGroupSection
+                    key={g.name}
+                    id={g.name}
+                    group={g}
+                    removeChart={removeChartFromGroup}
+                    deleteGroup={deleteGroup}
+                    updateColor={updateGroupColor}
+                    updateName={updateGroupName}
+                    resetFilters={resetFilters}
+                    onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
+                    highlightKey={highlightKey}
+                    reorderMode={true}
+                  />
+                );
+              })}
+            </SortableContext>
+          </DndContext>
+        ) : (
+          groupsToShow.map(g => (
+            <GroupSection
+              key={g.name}
+              group={g}
+              removeChart={removeChartFromGroup}
+              deleteGroup={deleteGroup}
+              updateColor={updateGroupColor}
+              updateName={updateGroupName}
+              resetFilters={resetFilters}
+              onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
+              highlightKey={highlightKey}
+              reorderMode={false}
+            />
+          ))
+        )}
         <CreateListModal
           isOpen={showCreateModal}
           onClose={() => setShowCreateModal(false)}
@@ -236,3 +354,28 @@ const ListsPage = () => {
 };
 
 export default ListsPage;
+
+// Sortable wrapper for GroupSection using dnd-kit
+function SortableGroupSection({ id, ...props }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  return (
+    <GroupSection
+      {...props}
+      dragAttributes={attributes}
+      dragListeners={listeners}
+      setNodeRef={setNodeRef}
+      transform={transform}
+      transition={transition}
+      isDragging={isDragging}
+      reorderMode
+    />
+  );
+}

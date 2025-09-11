@@ -22,30 +22,68 @@ const Tabs = () => {
                     <Logo />
                 </div>
                 <div className="tabs-group">
-                    <NavLink to={`/bpm${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+                    <NavLink
+                        to={`/bpm${location.hash}`}
+                        aria-label="BPM Tool"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon"><FontAwesomeIcon icon={faArrowsUpDownLeftRight} /></span>
+                        <span className="tab-label">BPM</span>
                     </NavLink>
 
-                    <NavLink to={`/dan${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        段
+                    <NavLink
+                        to={`/dan${location.hash}`}
+                        aria-label="Dan"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon">段</span>
+                        <span className="tab-label">Dan</span>
                     </NavLink>
-                    <NavLink to={`/vega${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        <FontAwesomeIcon icon={faTrophy} />
+
+                    <NavLink
+                        to={`/vega${location.hash}`}
+                        aria-label="Vega"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon"><FontAwesomeIcon icon={faTrophy} /></span>
+                        <span className="tab-label">Vega</span>
                     </NavLink>
-                    <NavLink to={`/multiplier${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        <FontAwesomeIcon icon={faCalculator} />
+
+                    <NavLink
+                        to={`/multiplier${location.hash}`}
+                        aria-label="Multiplier"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon"><FontAwesomeIcon icon={faCalculator} /></span>
+                        <span className="tab-label">Multiplier</span>
                     </NavLink>
-                    <NavLink to={`/rankings${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                        <FontAwesomeIcon icon={faRankingStar} />
+
+                    <NavLink
+                        to={`/rankings${location.hash}`}
+                        aria-label="Rankings"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon"><FontAwesomeIcon icon={faRankingStar} /></span>
+                        <span className="tab-label">Rankings</span>
                     </NavLink>
+
                     {!!user && (
-                        <NavLink to={`/lists${location.hash}`} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
-                            <FontAwesomeIcon icon={faList} />
+                        <NavLink
+                            to={`/lists${location.hash}`}
+                            aria-label="Lists"
+                            className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                        >
+                            <span className="tab-icon"><FontAwesomeIcon icon={faList} /></span>
+                            <span className="tab-label">Lists</span>
                         </NavLink>
                     )}
                 </div>
-                <NavLink to={`/settings${location.hash}`} className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}>
-                    <FontAwesomeIcon icon={faCog} />
+                <NavLink
+                    to={`/settings${location.hash}`}
+                    aria-label="Settings"
+                    className={({ isActive }) => (isActive ? 'settings-tab active' : 'settings-tab')}
+                >
+                    <span className="tab-icon"><FontAwesomeIcon icon={faCog} /></span>
                 </NavLink>
             </div>
         </nav>
