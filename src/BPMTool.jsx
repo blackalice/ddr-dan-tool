@@ -1086,8 +1086,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 {view === 'bpm' ? (
                     <div className="chart-container">
                         {chartData ? (
-                            <Line
-                                data={{
+                            <Line datasetIdKey="bpm" redraw data={{
  datasets: [
       {
         label: 'BPM',
@@ -1098,15 +1097,25 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
           const chart = context.chart;
           const { ctx, chartArea } = chart;
 
-          if (!chartArea) return null; // chart not yet ready
+          if (!chartArea) return themeColors.accentColor || 'rgba(0,0,0,0.1)';
 
           const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          // top → 0.7 opacity
-          gradient.addColorStop(0, `rgba(${themeColors.accentColorRgb}, 0.4)`);
-          // bottom → 0.1 opacity
-          gradient.addColorStop(1, `rgba(${themeColors.accentColorRgb}, 0.0)`);
+let rgb = themeColors.accentColorRgb;
+if (!rgb && themeColors.accentColor?.startsWith('#')) {
+  let c = themeColors.accentColor.replace('#', '');
+  if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
+  const n = parseInt(c, 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+          rgb = `${r}, ${g}, ${b}`;
+          }
+          if (!rgb) rgb = '0,0,0';
+          gradient.addColorStop(0, `rgba(${rgb}, 0.4)`);
+          gradient.addColorStop(1, `rgba(${rgb}, 0.0)`);
           return gradient;
         },
+        
         stepped: true,
         fill: true,
         pointRadius: 1,
@@ -1203,3 +1212,5 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 };
 
 export default BPMTool;
+
+

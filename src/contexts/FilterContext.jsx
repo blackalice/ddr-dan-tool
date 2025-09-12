@@ -29,7 +29,15 @@ export const FilterProvider = ({ children }) => {
     if (saved) {
       try {
         const parsed = typeof saved === 'string' ? JSON.parse(saved) : saved;
-        return { ...defaultFilters, ...parsed };
+        // Migrate renamed game folders (e.g., "+" -> "Plus")
+        const gameRenames = {
+          '4th+': '4th Plus',
+          'A20+': 'A20 Plus',
+        };
+        const migratedGames = Array.isArray(parsed.games)
+          ? parsed.games.map(g => gameRenames[g] || g)
+          : [];
+        return { ...defaultFilters, ...parsed, games: migratedGames };
       } catch {
         // If bad data, fall back to defaults
         return defaultFilters;
