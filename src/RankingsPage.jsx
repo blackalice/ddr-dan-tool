@@ -4,7 +4,7 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownWideShort, faArrowUpWideShort } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity.js';
 import { storage } from './utils/remoteStorage.js';
@@ -52,6 +52,14 @@ const RankingsPage = () => {
     const stored = storage.getItem('rankingsAscending');
     return stored ? JSON.parse(stored) : false;
   });
+  const [hideTopScores, setHideTopScores] = useState(() => {
+    const stored = storage.getItem('rankingsHideTop');
+    return stored ? JSON.parse(stored) : false;
+  });
+  const [closeOnly, setCloseOnly] = useState(() => {
+    const stored = storage.getItem('rankingsCloseOnly');
+    return stored ? JSON.parse(stored) : false;
+  });
 
   useEffect(() => {
     fetch('/song-meta.json')
@@ -92,6 +100,12 @@ const RankingsPage = () => {
   useEffect(() => {
     storage.setItem('rankingsAscending', JSON.stringify(ascendingOrder));
   }, [ascendingOrder]);
+  useEffect(() => {
+    storage.setItem('rankingsHideTop', JSON.stringify(hideTopScores));
+  }, [hideTopScores]);
+  useEffect(() => {
+    storage.setItem('rankingsCloseOnly', JSON.stringify(closeOnly));
+  }, [closeOnly]);
 
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -164,8 +178,14 @@ const RankingsPage = () => {
   }, [songMeta, playStyle, selectedLevel, resetFilters, scores, overrideSongs]);
 
   const groupedCharts = useMemo(() => {
+    let visibleCharts = hideTopScores
+      ? chartsForLevel.filter(c => !(c.score > 989999))
+      : chartsForLevel;
+    if (closeOnly) {
+      visibleCharts = visibleCharts.filter(c => c.score != null && c.score >= 980000 && c.score <= 989999);
+    }
     const map = new Map();
-    for (const chart of chartsForLevel) {
+    for (const chart of visibleCharts) {
       const ratingKey = Math.round(chart.rankedRating * 20) / 20; // 0.05 steps
       if (!map.has(ratingKey)) map.set(ratingKey, []);
       map.get(ratingKey).push(chart);
@@ -174,7 +194,7 @@ const RankingsPage = () => {
       ascendingOrder ? a - b : b - a
     );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
-  }, [chartsForLevel, ascendingOrder]);
+  }, [chartsForLevel, ascendingOrder, hideTopScores, closeOnly]);
 
   const hasScores = useMemo(() => {
     return (
@@ -213,6 +233,22 @@ const RankingsPage = () => {
             title="Flip order"
           >
             <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
+          </button>
+          <button
+            className={`filter-button ${hideTopScores ? 'active' : ''}`}
+            onClick={() => setHideTopScores(h => !h)}
+            title={hideTopScores ? 'Show cleared (>989,999)' : 'Hide cleared (>989,999)'}
+            aria-pressed={hideTopScores}
+          >
+            <span className="aaa-icon" aria-hidden="true">AAA</span>
+          </button>
+          <button
+            className={`filter-button ${closeOnly ? 'active' : ''}`}
+            onClick={() => setCloseOnly(c => !c)}
+            title={closeOnly ? 'Show all scores' : 'Filter close (980k–989,999)'}
+            aria-pressed={closeOnly}
+          >
+            <FontAwesomeIcon icon={faCircleExclamation} />
           </button>
           {hasScores && (
             <div className="ranking-counter">

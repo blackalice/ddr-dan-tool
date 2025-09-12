@@ -243,6 +243,14 @@ html {
   color: var(--text-color);
 }
 
+/* Simple text icon for hiding AAA scores */
+.filter-button .aaa-icon {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: line-through;
+  user-select: none;
+}
+
 [data-theme='dark-pink'] {
   --bg-color: #1b1120;
   --bg-color-light: #25192d;

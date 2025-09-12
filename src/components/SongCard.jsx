@@ -4,7 +4,7 @@ import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
 import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPen, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 
@@ -53,7 +53,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -145,6 +145,18 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           (showSlice ? ' with-score-slice' : '')
         }
       >
+        {showDragHandle && (
+          <button
+            className="song-card-action drag"
+            onClick={(e) => e.stopPropagation()}
+            title="Drag to reorder"
+            aria-label="Drag to reorder"
+            {...dragAttributes}
+            {...dragListeners}
+          >
+            <FontAwesomeIcon icon={faGripVertical} />
+          </button>
+        )}
         {onEdit && (
           <button className="song-card-action edit" onClick={(e) => { e.stopPropagation(); onEdit(); }}>
             <FontAwesomeIcon icon={faPen} />

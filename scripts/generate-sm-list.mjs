@@ -41,9 +41,30 @@ try {
     );
 
     // Manual sort order for games
+    // Folder names have been normalized in this repo; keep sort order aligned to folder names
     const manualSortOrder = [
-        'World', 'A3', 'A20 Plus', 'A20', 'A', '2014', '2013', 'X3 vs 2ndMix', 'X2', 'X', 
-        'Supernova 2', 'Supernova', 'Extreme', '7thMix', '6thMix', '5thMix', '4thMix Plus', '4thMix', '3rdMix', '2ndMix', 'DDR'
+        'World',
+        'A3',
+        'A20 Plus',
+        'A20',
+        'A',
+        '2014',
+        '2013',
+        'X3 vs 2nd',
+        'X2',
+        'X',
+        'SN2',
+        'SN1',
+        'EX',
+        '7th',
+        '6th',
+        '5th',
+        '4th Plus',
+        '4th',
+        '3rd',
+        '2nd',
+        'DDR',
+        'ITG 1'
     ];
 
     // Sort folders based on the manual order

@@ -34,6 +34,7 @@ const SongInfoBar = ({
   const { filters } = useFilters();
   const { showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
+  const isDesktop = useIsDesktop();
 
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
@@ -177,12 +178,36 @@ const SongInfoBar = ({
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
             {gameVersion && (
-              <span
-                className="song-game-version"
-                style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
-              >
-                {gameVersion}
-              </span>
+              <>
+                {gameVersion === 'NOMIX' ? (
+                  // Placeholder only: show text chip on all viewports
+                  <span
+                    className="song-game-version text-chip"
+                    style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                  >
+                    {gameVersion}
+                  </span>
+                ) : (
+                  <>
+                    {/* Desktop: show logo inside styled chip with background color */}
+                    {isDesktop && (
+                      <span
+                        className="song-game-version desktop-only"
+                        style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                      >
+                        <GameLogo key={gameVersion} name={gameVersion} />
+                      </span>
+                    )}
+                    {/* Mobile: keep text chip */}
+                    <span
+                      className="song-game-version mobile-only"
+                      style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                    >
+                      {gameVersion}
+                    </span>
+                  </>
+                )}
+              </>
             )}
             <div className="title-artist-group">
               <span className="song-title-main" title={songTitle}>
@@ -285,3 +310,40 @@ const SongInfoBar = ({
 };
 
 export default SongInfoBar;
+// Desktop-only logo component with extension fallback from public/img/logos
+function GameLogo({ name }) {
+  if (!name) return null;
+  const fileName = encodeURIComponent(name);
+  const src = `/img/logos/${fileName}.jpg`;
+  return (
+    <img
+      className="game-logo-img"
+      src={src}
+      alt={name}
+      width={70}
+      height={70}
+      loading="eager"
+      decoding="sync"
+      draggable={false}
+    />
+  );
+}
+
+// Hook: true on desktop viewports only; prevents rendering on mobile
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = React.useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 1025px)').matches : true
+  );
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(min-width: 1025px)');
+    const handler = (e) => setIsDesktop(e.matches);
+    if (mq.addEventListener) mq.addEventListener('change', handler);
+    else mq.addListener(handler);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', handler);
+      else mq.removeListener(handler);
+    };
+  }, []);
+  return isDesktop;
+}

@@ -141,6 +141,13 @@
   background-color: var(--button-down-color);
   color: white;
 }
+.song-card-action.drag {
+  background-color: var(--accent-color);
+  left: 0.5rem;
+  right: auto;
+  cursor: grab;
+}
+.song-card-action.drag:active { cursor: grabbing; }
 
 .song-card.highlight {
   box-shadow: 0 0 0 3px var(--accent-color);
@@ -201,4 +208,3 @@
   from { box-shadow: 0 0 0 3px var(--accent-color); }
   to { box-shadow: none; }
 }
-

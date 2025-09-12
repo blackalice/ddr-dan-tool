@@ -96,6 +96,25 @@ export const GroupsProvider = ({ children }) => {
     } : g));
   };
 
+  const reorderGroupCharts = (name, newOrderIds) => {
+    const idOf = (c) => `${c.title}::${c.mode}::${c.difficulty}`;
+    setGroups(prev => prev.map(g => {
+      if (g.name !== name) return g;
+      const byId = new Map(g.charts.map(c => [idOf(c), c]));
+      const reordered = [];
+      for (const id of newOrderIds) {
+        const c = byId.get(id);
+        if (c) {
+          reordered.push(c);
+          byId.delete(id);
+        }
+      }
+      // Append any charts not present in newOrderIds to preserve data
+      for (const c of byId.values()) reordered.push(c);
+      return { ...g, charts: reordered };
+    }));
+  };
+
   return (
     <GroupsContext.Provider value={{
       groups,
@@ -108,6 +127,7 @@ export const GroupsProvider = ({ children }) => {
       addChartsToGroup,
       updateGroupName,
       updateChartDifficulty,
+      reorderGroupCharts,
       activeGroup,
       setActiveGroup,
     }}>

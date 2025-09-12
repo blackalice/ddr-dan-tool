@@ -6,10 +6,12 @@ import clsx from 'clsx';
 export const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isSelected }) => {
     const style = {
         backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
-        color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? '#111827' : 'white',
+        color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? 'black' : 'white',
         cursor: isMissing ? 'default' : 'pointer',
         border: isSelected ? '2px solid white' : '2px solid transparent',
+        boxShadow: isSelected ? `inset 0 0 8px rgba(0,0,0,0.2)` : 'none',
         boxSizing: 'border-box',
+       
     };
 
     const hasDecimal = typeof level === 'number' && level % 1 !== 0;

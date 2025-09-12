@@ -168,27 +168,7 @@ const Settings = () => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
-                    {user ? (
-                        <div className="setting-card">
-                            <div className="setting-text">
-                                <h3>Account</h3>
-                                <p>
-                                    Signed in as {user.email || 'unknown'} · {groups.length} lists · {
-                                        Object.keys(scores.single).length + Object.keys(scores.double).length
-                                    } scores
-                                </p>
-                            </div>
-                            <div className="setting-control">
-                                <button onClick={logout} className="settings-button">Logout</button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="setting-card">
-                            <div className="setting-control">
-                                <button onClick={() => navigate('/login')} className="settings-button">Login</button>
-                            </div>
-                        </div>
-                    )}
+                    {/* Account section unified below */}
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>
@@ -363,7 +343,9 @@ const Settings = () => {
                         <div className="setting-card">
                             <div className="setting-text">
                                 <h3>Account</h3>
-                                <p>Manage your session and sign out of other devices.</p>
+                                <p>
+                                    Signed in as {user.email || 'unknown'} · {groups.length} lists · {Object.keys(scores.single).length + Object.keys(scores.double).length} scores. Manage your session and sign out of other devices.
+                                </p>
                             </div>
                             <div className="setting-control">
                                 <button onClick={logout} className="settings-button">Logout</button>
@@ -372,7 +354,13 @@ const Settings = () => {
                                 </button>
                             </div>
                         </div>
-                    ) : null}
+                    ) : (
+                        <div className="setting-card">
+                            <div className="setting-control">
+                                <button onClick={() => navigate('/login')} className="settings-button">Login</button>
+                            </div>
+                        </div>
+                    )}
 
                     <h2 className="settings-sub-header">About</h2>
                     <div className="setting-card">

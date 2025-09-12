@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm:dev:prepare\" \"npm:dev:wrangler\"",
-    "dev:prepare": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && vite",
+    "dev:prepare": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && vite",
     "dev:wrangler": "wrangler dev",
     "build": "vite build",
-    "prebuild": "node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-radar.mjs",
+    "prebuild": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-radar.mjs",
     "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-radar.mjs",
     "lint": "eslint .",
     "preview": "vite preview",

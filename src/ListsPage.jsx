@@ -18,6 +18,7 @@ import {
   useSortable,
   arrayMove,
   verticalListSortingStrategy,
+  rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CreateListModal from './components/CreateListModal.jsx';
@@ -46,6 +47,7 @@ const GroupSection = ({
   isDragging = false,
 }) => {
   const { scores } = useScores();
+  const { reorderGroupCharts } = useGroups();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       const keyNew = `collapsed:list:${group.name}`;
@@ -61,12 +63,12 @@ const GroupSection = ({
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showActions, setShowActions] = useState(false);
-  const onHeaderTitleClick = (e) => {
-    if (reorderMode) return;
-    const interactive = e.target.closest('button, input, select, textarea, label, a, [contenteditable="true"]');
-    if (interactive) return;
-    setIsCollapsed(prev => !prev);
-  };
+  const [chartOrder, setChartOrder] = useState(() => group.charts.map(c => `${c.title}::${c.mode}::${c.difficulty}`));
+  const chartSensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor)
+  );
+  // Collapse should only toggle via the explicit button, matching other pages.
 
   useEffect(() => {
     const keyNew = `collapsed:list:${group.name}`;
@@ -78,6 +80,10 @@ const GroupSection = ({
   useEffect(() => {
     setName(group.name);
   }, [group.name]);
+
+  useEffect(() => {
+    setChartOrder(group.charts.map(c => `${c.title}::${c.mode}::${c.difficulty}`));
+  }, [group.charts]);
 
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete the list "${group.name}"?`)) {
@@ -107,7 +113,7 @@ const GroupSection = ({
         className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`}
         style={{ backgroundColor: group.color }}
       >
-        <div className="dan-header-title" onClick={onHeaderTitleClick}>
+        <div className="dan-header-title">
           <label className="color-picker-label">
             <FontAwesomeIcon icon={faPalette} />
             <input
@@ -158,7 +164,45 @@ const GroupSection = ({
       </h2>
       {!isCollapsed && (
         <div className="song-grid">
-          {group.charts.map((chart, idx) => {
+          {showActions ? (
+            <DndContext
+              sensors={chartSensors}
+              collisionDetection={closestCenter}
+              autoScroll
+              onDragEnd={({ active, over }) => {
+                if (!over || active.id === over.id) return;
+                const oldIndex = chartOrder.indexOf(active.id);
+                const newIndex = chartOrder.indexOf(over.id);
+                if (oldIndex === -1 || newIndex === -1) return;
+                const newOrder = arrayMove(chartOrder, oldIndex, newIndex);
+                setChartOrder(newOrder);
+                reorderGroupCharts(group.name, newOrder);
+              }}
+            >
+              <SortableContext items={chartOrder} strategy={rectSortingStrategy}>
+                {chartOrder.map(id => {
+                  const chart = group.charts.find(c => `${c.title}::${c.mode}::${c.difficulty}` === id);
+                  if (!chart) return null;
+                  const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
+                  const chartKey = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+                  const score = scores[chart.mode]?.[chartKey]?.score;
+                  return (
+                    <SortableSongCard
+                      key={id}
+                      id={id}
+                      song={chart}
+                      resetFilters={resetFilters}
+                      onRemove={() => removeChart(group.name, chart)}
+                      onEdit={() => onEditChart(group.name, chart)}
+                      highlight={highlightKey === highlightId}
+                      score={score}
+                    />
+                  );
+                })}
+              </SortableContext>
+            </DndContext>
+          ) : (
+          group.charts.map((chart, idx) => {
             const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
             const chartKey = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
             const score = scores[chart.mode]?.[chartKey]?.score;
@@ -167,13 +211,14 @@ const GroupSection = ({
                 key={idx}
                 song={chart}
                 resetFilters={resetFilters}
-                onRemove={showActions ? () => removeChart(group.name, chart) : undefined}
-                onEdit={showActions ? () => onEditChart(group.name, chart) : undefined}
+                onRemove={undefined}
+                onEdit={undefined}
                 highlight={highlightKey === highlightId}
                 score={score}
               />
             );
-          })}
+          })
+          )}
           {group.charts.length === 0 && (
             <p style={{ padding: '1rem', color: 'var(--text-muted-color)' }}>No charts in this list.</p>
           )}
@@ -236,10 +281,11 @@ const ListsPage = () => {
   }, [editInfo, songMeta]);
 
   const groupsToShow = activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
+  const visibleNames = React.useMemo(() => groupsToShow.map(g => g.name), [groupsToShow]);
 
   useEffect(() => {
-    setLocalOrder(groupsToShow.map(g => g.name));
-  }, [groupsToShow.map(g => g.name).join('|')]);
+    setLocalOrder(visibleNames);
+  }, [visibleNames]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -377,5 +423,30 @@ function SortableGroupSection({ id, ...props }) {
       isDragging={isDragging}
       reorderMode
     />
+  );
+}
+
+// Sortable wrapper for SongCard
+function SortableSongCard({ id, song, resetFilters, onRemove, onEdit, highlight, score }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style = {
+    transform: transform ? CSS.Transform.toString(transform) : undefined,
+    transition,
+    zIndex: isDragging ? 2 : 1,
+  };
+  return (
+    <div ref={setNodeRef} style={style}>
+      <SongCard
+        song={song}
+        resetFilters={resetFilters}
+        onRemove={onRemove}
+        onEdit={onEdit}
+        highlight={highlight}
+        score={score}
+        showDragHandle
+        dragAttributes={attributes}
+        dragListeners={listeners}
+      />
+    </div>
   );
 }

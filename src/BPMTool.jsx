@@ -206,9 +206,9 @@ const DEFAULT_DIFF_ORDER = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult',
 
 const GAME_VERSION_ORDER = [
     'World', 'A3', 'A20 Plus', 'A20', 'A', '2014', '2013',
-    'X3 vs 2ndMix', 'X2', 'X', 'Supernova 2', 'Supernova',
-    'Extreme', '7thMix', '6thMix', '5thMix', '4thMix Plus',
-    '4thMix', '3rdMix', '2ndMix', 'DDR'
+    'X3 v 2nd', 'X2', 'X', 'SN 2', 'SN',
+    'EX', '7th', '6th', '5th', '4th Plus',
+    '4th', '3rd', '2nd', 'DDR'
 ];
 
 
@@ -1088,20 +1088,35 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         {chartData ? (
                             <Line
                                 data={{
-                                    datasets: [{
-                                        label: 'BPM',
-                                        data: chartData,
-                                        borderColor: themeColors.accentColor,
-                                        backgroundColor: `rgba(${themeColors.accentColorRgb}, 0.2)`,
-                                        stepped: true,
-                                        fill: true,
-                                        pointRadius: 4,
-                                        pointBackgroundColor: themeColors.accentColor,
-                                        pointBorderColor: '#fff',
-                                        pointHoverRadius: 7,
-                                        borderWidth: 2.5
-                                    }]
-                                }}
+ datasets: [
+      {
+        label: 'BPM',
+        data: chartData,
+        borderColor: themeColors.accentColor,
+        // backgroundColor as a function that receives the chart context
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+
+          if (!chartArea) return null; // chart not yet ready
+
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          // top → 0.7 opacity
+          gradient.addColorStop(0, `rgba(${themeColors.accentColorRgb}, 0.4)`);
+          // bottom → 0.1 opacity
+          gradient.addColorStop(1, `rgba(${themeColors.accentColorRgb}, 0.0)`);
+          return gradient;
+        },
+        stepped: true,
+        fill: true,
+        pointRadius: 1,
+        pointBackgroundColor: themeColors.accentColor,
+        pointBorderColor: '#fff',
+        pointHoverRadius: 7,
+        borderWidth: 2.5
+      }
+    ]
+  }}
                                 options={{
                                     responsive: true,
                                     maintainAspectRatio: false,

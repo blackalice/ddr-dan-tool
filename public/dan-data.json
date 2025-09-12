@@ -235,7 +235,7 @@
           "bpm": "170-340",
           "difficulty": "expert",
           "mode": "single",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 14.4
         }
       ]
@@ -283,7 +283,7 @@
           "bpm": "64-303",
           "difficulty": "expert",
           "mode": "single",
-          "game": "6thMix",
+          "game": "6th",
           "rankedRating": 15.4
         }
       ]
@@ -475,7 +475,7 @@
           "bpm": "180-360",
           "difficulty": "challenge",
           "mode": "single",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 19.1
         }
       ]
@@ -564,7 +564,7 @@
           "bpm": "196",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 9.55
         },
         {
@@ -612,7 +612,7 @@
           "bpm": "181",
           "difficulty": "expert",
           "mode": "double",
-          "game": "4thMix",
+          "game": "4th",
           "rankedRating": 3.4
         },
         {
@@ -660,7 +660,7 @@
           "bpm": "186",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova 2",
+          "game": "SN2",
           "rankedRating": 3.25
         },
         {
@@ -669,7 +669,7 @@
           "bpm": "150",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Extreme",
+          "game": "EX",
           "rankedRating": 12.4
         }
       ]
@@ -690,7 +690,7 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 12.15
         },
         {
@@ -699,7 +699,7 @@
           "bpm": "132-140",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova",
+          "game": "SN1",
           "rankedRating": 12.7
         },
         {
@@ -708,7 +708,7 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova",
+          "game": "SN1",
           "rankedRating": 12.35
         },
         {
@@ -717,7 +717,7 @@
           "bpm": "200",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Supernova 2",
+          "game": "SN2",
           "rankedRating": 3.4
         }
       ]
@@ -747,7 +747,7 @@
           "bpm": "190",
           "difficulty": "expert",
           "mode": "double",
-          "game": "6thMix",
+          "game": "6th",
           "rankedRating": 13.2
         },
         {
@@ -813,7 +813,7 @@
           "bpm": "135-271",
           "difficulty": "expert",
           "mode": "double",
-          "game": "Extreme",
+          "game": "EX",
           "rankedRating": 15.65
         }
       ]
@@ -861,7 +861,7 @@
           "bpm": "88-175",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 4.25
         }
       ]
@@ -939,7 +939,7 @@
           "bpm": "100-400",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "Supernova",
+          "game": "SN1",
           "rankedRating": 9.6
         },
         {
@@ -957,7 +957,7 @@
           "bpm": "180-360",
           "difficulty": "expert",
           "mode": "double",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 18.4
         }
       ]
@@ -1005,7 +1005,7 @@
           "bpm": "75-300",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "Supernova 2",
+          "game": "SN2",
           "rankedRating": 18.6
         }
       ]
@@ -1035,7 +1035,7 @@
           "bpm": "43-1020",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "X3 vs 2ndMix",
+          "game": "X3 vs 2nd",
           "rankedRating": 18.55
         },
         {
