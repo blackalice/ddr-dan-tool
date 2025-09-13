@@ -12,6 +12,7 @@ const SongInfoBar = ({
   isCollapsed,
   setIsCollapsed,
   gameVersion,
+  jacket,
   songTitle,
   artist,
   playStyle, // 'single' or 'double'
@@ -179,37 +180,47 @@ const SongInfoBar = ({
           <div className="title-content-wrapper">
             {gameVersion && (
               <>
-                {gameVersion === 'NOMIX' ? (
-                  // Placeholder only: show text chip on all viewports
+                {/* Desktop: show jacket image in chip area (fallback to logo) */}
+                {isDesktop && (
                   <span
-                    className="song-game-version text-chip"
+                    className="song-game-version desktop-only"
                     style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
                   >
-                    {gameVersion}
-                  </span>
-                ) : (
-                  <>
-                    {/* Desktop: show logo inside styled chip with background color */}
-                    {isDesktop && (
-                      <span
-                        className="song-game-version desktop-only"
-                        style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
-                      >
-                        <GameLogo key={gameVersion} name={gameVersion} />
-                      </span>
+                    {jacket ? (
+                      <img
+                        className="game-logo-img"
+                        src={`/${jacket}`}
+                        alt={`${songTitle} jacket`}
+                        width={70}
+                        height={70}
+                        loading="eager"
+                        decoding="sync"
+                        draggable={false}
+                      />
+                    ) : (
+                      <GameLogo key={gameVersion} name={gameVersion} />
                     )}
-                    {/* Mobile: keep text chip */}
-                    <span
-                      className="song-game-version mobile-only"
-                      style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
-                    >
-                      {gameVersion}
-                    </span>
-                  </>
+                  </span>
                 )}
+                {/* Mobile: text chip remains */}
+                <span
+                  className="song-game-version mobile-only"
+                  style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                >
+                  {gameVersion}
+                </span>
               </>
             )}
             <div className="title-artist-group">
+              {/* Desktop: show version chip above song title */}
+              {isDesktop && gameVersion && (
+                <span
+                  className="song-game-version text-chip desktop-only"
+                  style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                >
+                  {gameVersion}
+                </span>
+              )}
               <span className="song-title-main" title={songTitle}>
                 {songTitle}
               </span>

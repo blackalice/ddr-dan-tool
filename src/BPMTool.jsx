@@ -519,7 +519,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }, [filters, playStyle, simfileData, scores, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings]);
 
-    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength } = useMemo(() => {
+    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength, jacket } = useMemo(() => {
         if (!simfileWithRatings) {
             return {
                 songTitle: 'Please select',
@@ -530,6 +530,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 coreBpm: null,
                 chartData: null,
                 songLength: 0,
+                jacket: null,
             };
         }
 
@@ -549,6 +550,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let core = null;
         let data = null;
         let length = 0;
+        const jacketPath = metaEntry?.jacket || null;
 
         if (currentChart && simfileWithRatings.charts) {
             const chartDetails = simfileWithRatings.charts[currentChart.slug];
@@ -590,6 +592,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             coreBpm: core,
             chartData: data,
             songLength: length,
+            jacket: jacketPath,
         };
     }, [simfileWithRatings, currentChart, radarMap, songMeta]);
 
@@ -1063,6 +1066,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     isCollapsed={isCollapsed}
                     setIsCollapsed={setIsCollapsed}
                     gameVersion={gameVersion}
+                    jacket={jacket}
                     songTitle={songTitle}
                     artist={artist}
                     playStyle={playStyle}
