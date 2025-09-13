@@ -491,7 +491,7 @@
       ],
       "songs": [
         {
-          "title": "Lachryma《Re:Queen’M》",
+          "title": "Lachryma《Re\\:Queen’M》",
           "level": 19,
           "bpm": "236",
           "difficulty": "challenge",
@@ -660,7 +660,7 @@
           "bpm": "186",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 3.25
         },
         {
@@ -699,7 +699,7 @@
           "bpm": "132-140",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 12.7
         },
         {
@@ -708,7 +708,7 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 12.35
         },
         {
@@ -717,7 +717,7 @@
           "bpm": "200",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 3.4
         }
       ]
@@ -939,7 +939,7 @@
           "bpm": "100-400",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 9.6
         },
         {
@@ -1005,7 +1005,7 @@
           "bpm": "75-300",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 18.6
         }
       ]

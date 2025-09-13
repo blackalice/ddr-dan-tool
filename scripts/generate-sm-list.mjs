@@ -21,10 +21,23 @@ function findSongFiles(dir, baseDir) {
             const content = fs.readFileSync(fullPath, 'utf-8');
             const title = content.match(/#TITLE:([^;]+);/)?.[1] || 'Unknown Title';
             const titleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1] || '';
+            // Look for a "*-jacket.*" file in the same folder as the simfile
+            const songDir = path.dirname(fullPath);
+            let jacket = null;
+            try {
+                const dirItems = fs.readdirSync(songDir);
+                const jacketFile = dirItems.find((f) => /-jacket\.(png|jpg|jpeg|webp)$/i.test(f));
+                if (jacketFile) {
+                    jacket = path.relative(baseDir, path.join(songDir, jacketFile)).replace(/\\/g, '/');
+                }
+            } catch {
+                // ignore
+            }
             files.push({
                 path: relativePath,
                 title: title.trim(),
-                titleTranslit: titleTranslit.trim()
+                titleTranslit: titleTranslit.trim(),
+                jacket: jacket || null,
             });
         }
     }

@@ -219,6 +219,7 @@ async function main() {
           hasMultipleBpms: bpmMax - bpmMin > 5,
           difficulties,
           length,
+          jacket: file.jacket || null,
         });
       } catch (err) {
         console.warn('Failed to process', file.path, err.message);
