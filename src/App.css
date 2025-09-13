@@ -610,6 +610,22 @@ input:focus, select:focus, textarea:focus {
         flex-grow: 1;
         min-width: 150px;
     }
+
+    /* Rankings page: allow wrapping and push counter below controls */
+    .rankings-page .list-page-filter-group {
+        flex-wrap: wrap !important;
+        align-items: center;
+    }
+    .rankings-page .ranking-counter {
+        order: 99;
+        flex-basis: 100%;
+        margin-left: 0;
+        justify-content: flex-start;
+    }
+    /* Keep select + buttons on the first row */
+    .rankings-page .dan-select-wrapper { flex: 1 1 0; min-width: 0; }
+    .rankings-page .dan-select { width: 100%; max-width: none; }
+    .rankings-page .filter-button { flex: 0 0 auto; }
 }
 
 .difficulty-beginner { background-color: var(--difficulty-beginner-color); }

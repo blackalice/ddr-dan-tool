@@ -36,6 +36,11 @@ const SongInfoBar = ({
   const { showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const isDesktop = useIsDesktop();
+  const chipStyle = React.useMemo(() => (
+    gameVersion === 'NOMIX'
+      ? { backgroundColor: 'var(--bg-color-dark)' }
+      : (GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT)
+  ), [gameVersion]);
 
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
@@ -176,27 +181,52 @@ const SongInfoBar = ({
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="song-title-container">
+        {jacket && (
+          <>
+            <div
+              className="jacket-bg"
+              style={{ backgroundImage: `url("/${encodeURI(jacket)}")` }}
+            />
+            <div className="jacket-fade" />
+          </>
+        )}
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
             {gameVersion && (
               <>
-                {/* Desktop: show jacket image in chip area (fallback to logo) */}
+                {/* Desktop: show jacket image/legacy logo chip at left */}
                 {isDesktop && (
                   <span
                     className="song-game-version desktop-only"
-                    style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                    style={chipStyle}
+                    title={gameVersion}
                   >
-                    {jacket ? (
-                      <img
-                        className="game-logo-img"
-                        src={`/${jacket}`}
-                        alt={`${songTitle} jacket`}
-                        width={70}
-                        height={70}
-                        loading="eager"
-                        decoding="sync"
-                        draggable={false}
-                      />
+                    {gameVersion === 'NOMIX' ? (
+                      <div className="chip-placeholder" aria-hidden></div>
+                    ) : jacket ? (
+                      <div className="chip-img-stack" aria-hidden>
+                        <img
+                          className="game-logo-img chip-img base"
+                          src={`/${encodeURI(jacket)}`}
+                          alt=""
+                          width={90}
+                          height={90}
+                          loading="eager"
+                          decoding="sync"
+                          draggable={false}
+                        />
+                        {/* Overlay logo appears on hover */}
+                        <img
+                          className="game-logo-img chip-img logo"
+                          src={`/img/logos/${encodeURIComponent(gameVersion)}.jpg`}
+                          alt=""
+                          width={90}
+                          height={90}
+                          loading="eager"
+                          decoding="sync"
+                          draggable={false}
+                        />
+                      </div>
                     ) : (
                       <GameLogo key={gameVersion} name={gameVersion} />
                     )}
@@ -205,7 +235,7 @@ const SongInfoBar = ({
                 {/* Mobile: text chip remains */}
                 <span
                   className="song-game-version mobile-only"
-                  style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                  style={chipStyle}
                 >
                   {gameVersion}
                 </span>
@@ -216,7 +246,7 @@ const SongInfoBar = ({
               {isDesktop && gameVersion && (
                 <span
                   className="song-game-version text-chip desktop-only"
-                  style={GAME_CHIP_STYLES[gameVersion] || GAME_CHIP_STYLES.DEFAULT}
+                  style={chipStyle}
                 >
                   {gameVersion}
                 </span>
@@ -331,8 +361,8 @@ function GameLogo({ name }) {
       className="game-logo-img"
       src={src}
       alt={name}
-      width={70}
-      height={70}
+      width={90}
+      height={90}
       loading="eager"
       decoding="sync"
       draggable={false}

@@ -216,7 +216,7 @@ const RankingsPage = () => {
   if (!selectedLevel) return null;
 
   return (
-    <div className="app-container">
+    <div className="app-container rankings-page">
       <main>
         <div className="filter-bar">
           <div className="filter-group list-page-filter-group">
