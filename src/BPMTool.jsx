@@ -1090,7 +1090,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 {view === 'bpm' ? (
                     <div className="chart-container">
                         {chartData ? (
-                            <Line datasetIdKey="bpm" redraw data={{
+                            <Line datasetIdKey="bpm" data={{
  datasets: [
       {
         label: 'BPM',
