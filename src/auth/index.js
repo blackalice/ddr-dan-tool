@@ -162,6 +162,42 @@ async function verifyTurnstile(c, token) {
   }
 }
 
+export async function authMiddleware(c, next) {
+  const allowBearer = (c.env?.ALLOW_BEARER || '').toLowerCase() === 'true'
+  const bearer = allowBearer ? c.req.header('Authorization') : null
+  const token = getCookie(c, '__Host-token') || getCookie(c, 'token') || (bearer?.startsWith('Bearer ') ? bearer.slice(7) : null)
+
+  if (!token) {
+    return c.json({ error: 'Unauthorized' }, 401)
+  }
+
+  try {
+    const secret = textEncoder.encode(c.env.JWT_SECRET)
+    const origin = new URL(c.req.url).origin
+    // Prefer strict iss/aud checks; fall back once for legacy tokens
+    let payload
+    try {
+      payload = (await jwtVerify(token, secret, { issuer: origin, audience: origin })).payload
+    } catch {
+      payload = (await jwtVerify(token, secret)).payload
+    }
+    // Enforce token version (logout-all)
+    try {
+      const row = await c.env.DB.prepare('SELECT COALESCE(token_version, 1) AS token_version FROM users WHERE id = ?')
+        .bind(payload.sub).first()
+      const currentVer = row?.token_version || 1
+      if (payload.ver != null && payload.ver !== currentVer) {
+        return c.json({ error: 'Unauthorized' }, 401)
+      }
+    } catch { /* default allow on read error */ }
+    c.set('user', payload)
+    return next()
+  } catch {
+    console.debug('[auth] jwt verification failed')
+    return c.json({ error: 'Unauthorized' }, 401)
+  }
+}
+
 authApp.post('/signup', async (c) => {
   const body = await parseRequestBody(c)
   const rawEmail = body?.email
@@ -339,43 +375,6 @@ authApp.post('/logout', (c) => {
   }
   return c.json({ success: true })
 })
-
-export const authMiddleware = async (c, next) => {
-  const allowBearer = (c.env?.ALLOW_BEARER || '').toLowerCase() === 'true'
-  const bearer = allowBearer ? c.req.header('Authorization') : null
-  const token = getCookie(c, '__Host-token') || getCookie(c, 'token') || (bearer?.startsWith('Bearer ') ? bearer.slice(7) : null)
-
-  if (!token) {
-    return c.json({ error: 'Unauthorized' }, 401)
-  }
-
-  try {
-    const secret = textEncoder.encode(c.env.JWT_SECRET)
-    const origin = new URL(c.req.url).origin
-    // Prefer strict iss/aud checks; fall back once for legacy tokens
-    let payload
-    try {
-      payload = (await jwtVerify(token, secret, { issuer: origin, audience: origin })).payload
-    } catch {
-      payload = (await jwtVerify(token, secret)).payload
-    }
-    // Enforce token version (logout-all)
-    try {
-      const row = await c.env.DB.prepare('SELECT COALESCE(token_version, 1) AS token_version FROM users WHERE id = ?')
-        .bind(payload.sub).first()
-      const currentVer = row?.token_version || 1
-      if (payload.ver != null && payload.ver !== currentVer) {
-        return c.json({ error: 'Unauthorized' }, 401)
-      }
-    } catch { /* default allow on read error */ }
-    c.set('user', payload)
-    return next()
-  } catch {
-    console.debug('[auth] jwt verification failed')
-    return c.json({ error: 'Unauthorized' }, 401)
-  }
-}
-
 // Invalidate all sessions by bumping token_version
 authApp.post('/logout-all', authMiddleware, async (c) => {
   const user = c.get('user')
