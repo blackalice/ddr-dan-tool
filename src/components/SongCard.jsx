@@ -1,4 +1,5 @@
 import React, { useMemo, useContext } from 'react';
+import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
@@ -60,8 +61,9 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
 
   const scoreData = React.useMemo(() => {
     if (!song || !song.title || !song.difficulty || !song.mode) return null;
-    const key = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
-    return scores[song.mode]?.[key] || null;
+    const keyNew = song.artist ? makeScoreKey({ title: song.title, artist: song.artist, difficulty: song.difficulty }) : null;
+    const keyLegacy = legacyScoreKey({ title: song.title, difficulty: song.difficulty });
+    return (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy] || null;
   }, [scores, song]);
 
   const displayScore = scoreData?.score ?? score ?? null;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
+import { makeScoreKey, legacyScoreKey } from './utils/scoreKey.js';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { loadVegaData, loadVegaResults } from './utils/course-loader.js';
@@ -47,8 +48,10 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters, titleToPath }) =
             {!isCollapsed && (
               <div className={songGridClasses}>
                   {danCourse.songs.map((song, index) => {
-                      const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
-                      const score = scores[song.mode]?.[chartKey]?.score;
+                      const keyNew = song.artist ? makeScoreKey({ title: song.title, artist: song.artist, difficulty: song.difficulty }) : null;
+                      const keyLegacy = legacyScoreKey({ title: song.title, difficulty: song.difficulty });
+                      const hit = (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy];
+                      const score = hit?.score;
                       const path = titleToPath.get(normalizeString(song.title)) || null;
                       const songWithPath = path ? { ...song, path } : song;
                       return (

@@ -185,8 +185,10 @@ const GroupSection = ({
                   const chart = group.charts.find(c => `${c.title}::${c.mode}::${c.difficulty}` === id);
                   if (!chart) return null;
                   const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
-                  const chartKey = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-                  const score = scores[chart.mode]?.[chartKey]?.score;
+                  const keyNew = chart.artist ? `${chart.title.toLowerCase()}::${chart.artist.toLowerCase()}::${chart.difficulty.toLowerCase()}` : null;
+                  const keyLegacy = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+                  const hit = (keyNew && scores[chart.mode]?.[keyNew]) || scores[chart.mode]?.[keyLegacy];
+                  const score = hit?.score;
                   return (
                     <SortableSongCard
                       key={id}
@@ -205,8 +207,10 @@ const GroupSection = ({
           ) : (
           group.charts.map((chart, idx) => {
             const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
-            const chartKey = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-            const score = scores[chart.mode]?.[chartKey]?.score;
+            const keyNew = chart.artist ? `${chart.title.toLowerCase()}::${chart.artist.toLowerCase()}::${chart.difficulty.toLowerCase()}` : null;
+            const keyLegacy = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
+            const hit = (keyNew && scores[chart.mode]?.[keyNew]) || scores[chart.mode]?.[keyLegacy];
+            const score = hit?.score;
             return (
               <SongCard
                 key={idx}

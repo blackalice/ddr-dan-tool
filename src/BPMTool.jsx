@@ -458,8 +458,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 }
             }
             // Check played status filter
-            const chartKey = `${simfileWithRatings.title.titleName.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-            const hasPlayed = scores[playStyle]?.[chartKey] != null;
+            const titleLc = simfileWithRatings.title.titleName.toLowerCase();
+            const artistLc = (simfileWithRatings.artist || '').toLowerCase();
+            const keyNew = `${titleLc}::${artistLc}::${chart.difficulty.toLowerCase()}`;
+            const keyLegacy = `${titleLc}-${chart.difficulty.toLowerCase()}`;
+            const hasPlayed = (scores[playStyle]?.[keyNew] != null) || (scores[playStyle]?.[keyLegacy] != null);
 
             if (filters.playedStatus === 'played' && !hasPlayed) {
                 return true;
@@ -719,8 +722,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (filters.playedStatus !== 'all') {
                 const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false; // Only consider charts of the current playStyle
-                    const key = `${meta.title.toLowerCase()}-${d.difficulty.toLowerCase()}`;
-                    return scores[d.mode]?.[key] != null;
+                    const keyNew = `${meta.title.toLowerCase()}::${(meta.artist || '').toLowerCase()}::${d.difficulty.toLowerCase()}`;
+                    const keyLegacy = `${meta.title.toLowerCase()}-${d.difficulty.toLowerCase()}`;
+                    return (scores[d.mode]?.[keyNew] != null) || (scores[d.mode]?.[keyLegacy] != null);
                 });
 
                 if (filters.playedStatus === 'played' && !hasPlayedInCurrentPlaystyle) return false;

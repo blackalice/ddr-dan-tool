@@ -160,14 +160,17 @@ const RankingsPage = () => {
             difficulty: diff.difficulty,
             mode: diff.mode,
             game: song.game,
+            artist: song.artist,
             rankedRating: diff.rankedRating,
             resetFilters,
             path: song.path,
             slug: `${diff.mode}-${String(diff.difficulty).toLowerCase()}`,
           };
-          const key = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
-          if (scores[playStyle]?.[key]) {
-            chart.score = scores[playStyle][key].score;
+          const keyNew = song.artist ? `${song.title.toLowerCase()}::${song.artist.toLowerCase()}::${diff.difficulty.toLowerCase()}` : null;
+          const keyLegacy = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
+          const hit = scores[playStyle]?.[keyNew] || scores[playStyle]?.[keyLegacy];
+          if (hit) {
+            chart.score = hit.score;
           }
           charts.push(chart);
         }

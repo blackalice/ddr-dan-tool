@@ -42,8 +42,10 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleT
       {!isCollapsed && (
         <div className="dan-song-grid song-grid">
           {danCourse.songs.map((song, index) => {
-            const chartKey = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
-            const score = scores[song.mode]?.[chartKey]?.score;
+            const keyNew = song.artist ? `${song.title.toLowerCase()}::${song.artist.toLowerCase()}::${song.difficulty.toLowerCase()}` : null;
+            const keyLegacy = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
+            const hit = (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy];
+            const score = hit?.score;
             const path = titleToPath.get(normalizeString(song.title)) || null;
             const songWithPath = path ? { ...song, path } : song;
             return (

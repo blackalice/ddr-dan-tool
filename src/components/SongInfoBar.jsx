@@ -6,6 +6,7 @@ import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
 import { getGrade } from '../utils/grades.js';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
+import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -44,9 +45,10 @@ const SongInfoBar = ({
 
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
-    const key = `${songTitle.toLowerCase()}-${currentChart.difficulty.toLowerCase()}`;
-    return scores[currentChart.mode]?.[key] || null;
-  }, [scores, currentChart, songTitle]);
+    const keyNew = makeScoreKey({ title: songTitle, artist, difficulty: currentChart.difficulty });
+    const keyLegacy = legacyScoreKey({ title: songTitle, difficulty: currentChart.difficulty });
+    return scores[currentChart.mode]?.[keyNew] || scores[currentChart.mode]?.[keyLegacy] || null;
+  }, [scores, currentChart, songTitle, artist]);
 
   const lampClass = React.useMemo(() => {
     if (!currentScore?.lamp) return '';

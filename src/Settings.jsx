@@ -3,7 +3,8 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
-import { similarity } from './utils/stringSimilarity.js';
+import { similarity, normalizeString } from './utils/stringSimilarity.js';
+import { makeScoreKey } from './utils/scoreKey.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -46,17 +47,19 @@ const Settings = () => {
     const navigate = useNavigate();
 
     const [songMeta, setSongMeta] = useState([]);
-    const [songLookup, setSongLookup] = useState({});
+    const [songLookupStrict, setSongLookupStrict] = useState({});
     useEffect(() => {
         getSongMeta()
             .then((data) => {
                 setSongMeta(data);
-                const map = {};
+                const strictMap = {};
                 for (const song of data) {
-                    if (song.title) map[song.title.toLowerCase()] = song;
-                    if (song.titleTranslit) map[song.titleTranslit.toLowerCase()] = song;
+                    if (song.title && song.artist) {
+                        const k = `${normalizeString(song.title)}::${normalizeString(song.artist)}`;
+                        strictMap[k] = song;
+                    }
                 }
-                setSongLookup(map);
+                setSongLookupStrict(strictMap);
             })
             .catch(() => { /* noop */ });
     }, []);
@@ -79,18 +82,27 @@ const Settings = () => {
         let unmatched = 0;
         const unmatchedEntries = [];
         for (const entry of data.scores) {
-            const identifier = entry.identifier.toLowerCase();
-            let best = songLookup[identifier] || null;
-            let bestSim = 0;
+            const idNorm = normalizeString(entry.identifier || '');
+            const artistNorm = normalizeString(entry.artist || '');
+            let best = null;
+            // Strict: title + artist exact normalized match
+            if (idNorm && artistNorm) {
+                const strictKey = `${idNorm}::${artistNorm}`;
+                best = songLookupStrict[strictKey] || null;
+            }
+            let bestScore = -1;
             if (!best) {
+                // Try loose matching across all songs using combined similarity of title and artist
                 for (const song of songMeta) {
-                    const sim = similarity(identifier, song.title);
-                    if (sim > bestSim) { bestSim = sim; best = song; }
+                    const titleSim = similarity(entry.identifier || '', song.title || '');
+                    const artistSim = similarity(entry.artist || '', song.artist || '');
+                    const combined = 0.6 * titleSim + 0.4 * artistSim;
+                    if (combined > bestScore) { bestScore = combined; best = song; }
                 }
-                if (bestSim < 0.4) best = null;
+                if (bestScore < 0.55) best = null;
             }
             if (best) {
-                const key = `${best.title.toLowerCase()}-${entry.difficulty.toLowerCase()}`;
+                const key = makeScoreKey({ title: best.title, artist: best.artist, difficulty: entry.difficulty });
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
                 if (entry.optional && entry.optional.flare) {
                     newScores[keyName][key].flare = entry.optional.flare;
