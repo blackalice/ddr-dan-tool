@@ -27,6 +27,7 @@ import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
+import { getSongMeta } from './utils/cachedFetch.js';
 
 const GroupSection = ({
   group,
@@ -250,8 +251,7 @@ const ListsPage = () => {
   const [localOrder, setLocalOrder] = useState([]);
 
   useEffect(() => {
-    fetch('/song-meta.json')
-      .then(res => res.json())
+    getSongMeta()
       .then(setSongMeta)
       .catch(err => console.error('Failed to load song meta:', err));
   }, []);

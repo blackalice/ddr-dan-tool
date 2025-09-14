@@ -1,23 +1,11 @@
 import { parseSm } from './smParser.js';
+import { getJsonCached, getTextCached } from './cachedFetch.js';
 
 let smFilesCache = null;
 
-const fetchJson = async (url) => {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching JSON from ${url}:`, error);
-        return null;
-    }
-};
-
 export const findSongByTitle = async (title) => {
     if (!smFilesCache) {
-        smFilesCache = await fetchJson('/sm-files.json');
+        smFilesCache = await getJsonCached('/sm-files.json');
     }
     if (!smFilesCache) return null;
 
@@ -35,11 +23,7 @@ export const loadSimfileData = async (songFile) => {
     }
 
     try {
-        const response = await fetch(encodeURI(`/${songFile.path}`));
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
+        const text = await getTextCached(encodeURI(`/${songFile.path}`));
         const parsed = parseSm(text);
         
         const mixName = songFile.path.split('/')[1] || 'Unknown Mix';

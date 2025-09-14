@@ -1,6 +1,7 @@
 let cache = {};
 let lastSynced = {}; // snapshot of last known server state
 let initialized = false;
+let listenersAttached = false;
 let syncEnabled = false;
 let currentEmail = null;
 let namespace = 'anon'; // localStorage namespace: 'anon' or 'user:<email>'
@@ -147,10 +148,11 @@ async function init() {
     // ignore errors
   }
   // Ensure we attempt to persist on tab close
-  if (typeof window !== 'undefined') {
+  if (!listenersAttached && typeof window !== 'undefined') {
     const onHide = () => flushNow(true);
     window.addEventListener('visibilitychange', onHide, { once: false });
     window.addEventListener('beforeunload', onHide, { once: false });
+    listenersAttached = true;
   }
 }
 
@@ -209,8 +211,30 @@ function clear() {
   }
 }
 async function refresh() {
-  initialized = false;
-  await init();
+  // Avoid refetch churn; prefer hydrateFrom when data already available
+  if (!initialized) await init();
 }
 
-export const storage = { init, refresh, getItem, setItem, clear };
+// Hydrate storage directly from a server payload (avoids extra GET)
+function hydrateFrom(raw) {
+  if (!raw || typeof raw !== 'object') return;
+  // Switch to user namespace and enable sync
+  currentEmail = typeof raw.email === 'string' ? raw.email : null;
+  namespace = currentEmail ? `user:${currentEmail}` : 'user:unknown';
+  syncEnabled = true;
+  resetState();
+  // Exclude email from key space
+  const { email: _skip, ...serverData } = raw || {}; void _skip;
+  Object.assign(cache, serverData);
+  lastSynced = { ...cache };
+  lastSent = JSON.stringify(lastSynced);
+  initialized = true;
+  if (!listenersAttached && typeof window !== 'undefined') {
+    const onHide = () => flushNow(true);
+    window.addEventListener('visibilitychange', onHide, { once: false });
+    window.addEventListener('beforeunload', onHide, { once: false });
+    listenersAttached = true;
+  }
+}
+
+export const storage = { init, refresh, hydrateFrom, getItem, setItem, clear };

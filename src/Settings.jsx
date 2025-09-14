@@ -11,6 +11,7 @@ import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { getSongMeta } from './utils/cachedFetch.js';
 
 const Settings = () => {
     const {
@@ -47,8 +48,7 @@ const Settings = () => {
     const [songMeta, setSongMeta] = useState([]);
     const [songLookup, setSongLookup] = useState({});
     useEffect(() => {
-        fetch('/song-meta.json')
-            .then(res => res.json())
+        getSongMeta()
             .then((data) => {
                 setSongMeta(data);
                 const map = {};

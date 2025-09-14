@@ -11,6 +11,7 @@ import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
+import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
 
 const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
@@ -62,8 +63,7 @@ const RankingsPage = () => {
   });
 
   useEffect(() => {
-    fetch('/song-meta.json')
-      .then(res => res.json())
+    getSongMeta()
       .then(setSongMeta)
       .catch(err => console.error('Failed to load song meta:', err));
   }, []);
@@ -129,8 +129,7 @@ const RankingsPage = () => {
       setOverrideSongs(null);
       return;
     }
-    fetch(option.file)
-      .then(res => res.json())
+    getJsonCached(option.file)
       .then(data => {
         const songs = (data.songs || []).map(normalizeString);
         setOverrideSongs(new Set(songs));

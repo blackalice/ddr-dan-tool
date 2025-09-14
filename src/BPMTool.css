@@ -178,7 +178,7 @@
 
 .song-info-bar {
     border-radius: .5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0rem;
     overflow: hidden; /* Ensures children conform to border-radius */
     padding: 0; /* Remove padding to allow header to span full width */
 }
@@ -196,6 +196,7 @@
     padding-bottom: 1rem;
     position: relative;
     overflow: hidden;
+    cursor: pointer; /* entire header toggles collapse */
 }
 
 .chart-section.collapsed .song-title-container {
@@ -395,6 +396,19 @@
 
 .song-info-bar .collapse-button:hover {
     background-color: rgba(var(--accent-color-rgb), .85);
+}
+
+/* Desktop: place collapse button at top-right of header */
+@media (min-width: 1025px) {
+    .song-info-bar .collapse-button {
+        position: absolute;
+        top: 0;           /* align with header top padding edge */
+        right: 0;         /* align with header right padding edge */
+    }
+    /* Reserve space so content doesn't run under absolute button */
+    .bpm-song-title {
+        padding-right: calc(32px + 0.5rem); /* button width + small gap */
+    }
 }
 
 .chart-section.collapsed .chart-container {
@@ -647,9 +661,9 @@
 }
 
 .chart-container {
-    height: 400px;
+    height: 500px;
     position: relative;
-    margin-top: 2rem;
+   
     padding: 1rem; /* Add breathing room around chart */
 }
 
@@ -777,7 +791,7 @@
     /* Allow longer titles on desktop before truncating */
     .song-title-main,
     .song-title-artist {
-        max-width: 36rem;
+        max-width: 46rem;
     }
 
     /* Fill column height and distribute rows with extra emphasis on last */

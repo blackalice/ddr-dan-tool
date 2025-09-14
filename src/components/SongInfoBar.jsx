@@ -180,7 +180,19 @@ const SongInfoBar = ({
 
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="song-title-container">
+      <div
+        className="song-title-container"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        role="button"
+        aria-expanded={!isCollapsed}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsCollapsed(!isCollapsed);
+          }
+        }}
+      >
         {jacket && (
           <>
             <div
@@ -259,7 +271,14 @@ const SongInfoBar = ({
               </span>
             </div>
           </div>
-          <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
+          <button
+            className="collapse-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsCollapsed(!isCollapsed);
+            }}
+            aria-label={isCollapsed ? 'Expand section' : 'Collapse section'}
+          >
             <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
           </button>
         </h2>

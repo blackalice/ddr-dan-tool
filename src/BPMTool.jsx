@@ -22,6 +22,7 @@ import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
 import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
+import { getSongMeta, getRadarValues, getJsonCached } from './utils/cachedFetch.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -258,6 +259,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return saved ? JSON.parse(saved) : true;
     });
     const [showSortModal, setShowSortModal] = useState(false);
+    const [audioSeconds, setAudioSeconds] = useState(null);
 
     const hexToRgba = (hex, alpha) => {
         let c = hex.replace('#', '').trim();
@@ -351,6 +353,21 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Probe exact audio length from server (Worker parses OGG), cached at edge
+    useEffect(() => {
+        setAudioSeconds(null);
+        const musicFile = simfileData?.music;
+        const smPath = simfileData?.path;
+        if (!musicFile || !smPath) return;
+        const u = `/api/song-length?smPath=${encodeURIComponent(smPath)}&music=${encodeURIComponent(musicFile)}`;
+        getJsonCached(u, { ttlMs: 7 * 24 * 60 * 60 * 1000 })
+            .then(res => {
+                const secs = res && (res.roundedSeconds ?? Math.round(res.seconds));
+                if (secs && isFinite(secs)) setAudioSeconds(secs);
+            })
+            .catch(() => {});
+    }, [simfileData?.music, simfileData?.path, simfileWithRatings]);
+
     useEffect(() => {
         if (location.state?.fromSongCard) {
             window.scrollTo(0, 0);
@@ -358,15 +375,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [location.state?.fromSongCard]);
 
     useEffect(() => {
-        fetch('/song-meta.json')
-            .then(res => res.json())
+        getSongMeta()
             .then(setSongMeta)
             .catch(err => console.error('Failed to load song meta:', err));
     }, []);
 
     useEffect(() => {
-        fetch('/radar-values.json')
-            .then(res => (res.ok ? res.json() : null))
+        getRadarValues()
             .then(data => setRadarMap(data || null))
             .catch(() => setRadarMap(null));
     }, []);
@@ -377,7 +392,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!chart) return null;
         // Prefer precomputed radar values when available, but always compute
         // local metrics like holds/jumps/shocks from the chart data
-        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty}`;
+        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty?.toLowerCase?.()}`;
         const pre = radarMap && radarMap[key];
         try {
             const computed = computeChartMetrics(chart);
@@ -411,8 +426,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             setOverrideSongs(null);
             return;
         }
-        fetch(option.file)
-            .then(res => res.json())
+        getJsonCached(option.file)
             .then(data => {
                 const songs = (data.songs || []).map(normalizeString);
                 setOverrideSongs(new Set(songs));
@@ -571,10 +585,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 
                 core = calculateCoreBpm(bpmChanges, lastBeat);
                 data = calculateChartData(bpmChanges, lastBeat);
-                // Prefer generated song length from radar-values (ogg lengths), fallback to BPM+stops
-                const preKey = `${simfileWithRatings.title.titleName}||${currentChart.mode}||${currentChart.difficulty}`;
+                // Prefer canonical length from songMeta when present (ogg-based),
+                // then radar-values, then BPM+stops fallback
+                const preKey = `${simfileWithRatings.title.titleName}||${currentChart.mode}||${currentChart.difficulty?.toLowerCase?.()}`;
                 const pre = radarMap && radarMap[preKey];
-                if (pre && typeof pre.songSeconds === 'number' && pre.songSeconds > 0) {
+                const metaEntry = songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
+                if (metaEntry && typeof metaEntry.length === 'number' && metaEntry.length > 0) {
+                    length = metaEntry.length;
+                } else if (pre && typeof pre.songSeconds === 'number' && pre.songSeconds > 0) {
                     length = pre.songSeconds;
                 } else {
                     length = calculateSongLength(bpmChanges, lastBeat, chartDetails.stops);
@@ -1083,7 +1101,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     coreCalculation={coreCalculation}
                     showAltCoreBpm={showAltCoreBpm}
                     setShowAltCoreBpm={setShowAltCoreBpm}
-                    songLength={songLength}
+                    songLength={audioSeconds ?? songLength}
                     metrics={chartMetrics}
                     view={view}
                 />

@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       // Prime remote storage sync state now that we’re authenticated
       try {
         // storage is already statically imported; just refresh
-        await storage.refresh();
+        storage.hydrateFrom(data);
         // Hydrate groups from server into context
         try {
           const raw = storage.getItem('groups');
@@ -113,7 +113,6 @@ export const AuthProvider = ({ children }) => {
       throw new Error(data.error || 'Login failed');
     }
     setUser({ email });
-    await storage.refresh();
     await fetchUserData();
     navigate('/');
   };
@@ -150,8 +149,7 @@ export const AuthProvider = ({ children }) => {
     // Clear persisted storage (remote + local + session)
     try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch { /* noop */ }
     storage.clear();
-    // Reset storage namespace to anonymous after logout
-    try { await storage.refresh(); } catch { /* noop */ }
+    // Reset storage namespace to anonymous after logout (handled lazily by storage on next init)
     navigate('/login');
   };
 
@@ -163,4 +161,9 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+
+
+
+
 

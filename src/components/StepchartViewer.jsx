@@ -3,6 +3,7 @@ import { StepchartSection } from './StepchartSection';
 import { parseSm } from '../utils/smParser';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import './StepchartViewer.css';
+import { getTextCached } from '../utils/cachedFetch.js';
 
 const StepchartViewer = ({ smFileUrl }) => {
   const [simfile, setSimfile] = useState(null);
@@ -15,8 +16,7 @@ const StepchartViewer = ({ smFileUrl }) => {
     const loadChart = async () => {
       if (smFileUrl) {
         try {
-          const res = await fetch(smFileUrl);
-          const text = await res.text();
+          const text = await getTextCached(smFileUrl);
           const parsedSimfile = parseSm(text);
           setSimfile(parsedSimfile);
           if (parsedSimfile.availableTypes.length > 0) {
