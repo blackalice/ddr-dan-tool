@@ -88,6 +88,26 @@ async function verifyPasswordPBKDF2(password, encoded) {
 
 // Tables are managed via D1 migrations.
 
+async function parseRequestBody(c) {
+  const ct = (c.req.header('content-type') || '').toLowerCase()
+  try {
+    if (ct.includes('application/json')) {
+      return await c.req.json()
+    }
+    if (ct.includes('application/x-www-form-urlencoded')) {
+      const form = await c.req.formData()
+      const obj = {}
+      for (const [k, v] of form.entries()) obj[k] = typeof v === 'string' ? v : (v?.name || '')
+      return obj
+    }
+    // Fallback: try to parse raw text as JSON
+    const text = await c.req.text()
+    try { return JSON.parse(text) } catch { return {} }
+  } catch {
+    return {}
+  }
+}
+
 async function sha256Base64(s) {
   const data = textEncoder.encode(s)
   const digest = await crypto.subtle.digest('SHA-256', data)
@@ -143,7 +163,10 @@ async function verifyTurnstile(c, token) {
 }
 
 authApp.post('/signup', async (c) => {
-  const { email: rawEmail, password, turnstileToken } = await c.req.json()
+  const body = await parseRequestBody(c)
+  const rawEmail = body?.email
+  const password = body?.password
+  const turnstileToken = body?.turnstileToken
   const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : ''
   if (!email || !password) {
     return c.json({ error: 'Email and password required' }, 400)
@@ -189,7 +212,10 @@ authApp.post('/signup', async (c) => {
 })
 
 authApp.post('/login', async (c) => {
-  const { email: rawEmail, password, turnstileToken } = await c.req.json()
+  const body = await parseRequestBody(c)
+  const rawEmail = body?.email
+  const password = body?.password
+  const turnstileToken = body?.turnstileToken
   const email = typeof rawEmail === 'string' ? rawEmail.trim().toLowerCase() : ''
   if (!email || !password) {
     return c.json({ error: 'Email and password required' }, 400)
