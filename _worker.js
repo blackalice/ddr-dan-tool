@@ -187,51 +187,8 @@ app.patch('/api/user/data', authMiddleware, async (c) => {
 })
 
 // Static asset caching with Cache-Control + edge cache
-app.use('*', async (c) => {
-  const url = new URL(c.req.url)
-  const p = url.pathname
-
-  const isJson = (
-    p === '/song-meta.json' ||
-    p === '/radar-values.json' ||
-    p === '/dan-data.json' ||
-    p === '/vega-data.json' ||
-    p === '/vega-results.json' ||
-    p === '/sm-files.json'
-  )
-  const isLogo = p.startsWith('/img/logos/') && (p.endsWith('.jpg') || p.endsWith('.jpeg') || p.endsWith('.png') || p.endsWith('.webp'))
-  const isJacket = p.startsWith('/sm/') && (p.endsWith('.png') || p.endsWith('.jpg') || p.endsWith('.jpeg') || p.endsWith('.webp'))
-  const isFingerprintedAsset = p.startsWith('/assets/')
-
-  const cacheable = isJson || isLogo || isJacket || isFingerprintedAsset
-
-  if (!cacheable) {
-    return await c.env.ASSETS.fetch(c.req.raw)
-  }
-
-  const cache = caches.default
-  const cached = await cache.match(c.req.raw)
-  if (cached) return cached
-
-  // Fetch from R2/ASSETS then add Cache-Control
-  const originRes = await c.env.ASSETS.fetch(c.req.raw)
-  const headers = new Headers(originRes.headers)
-
-  if (isJson) {
-    // static JSON generated at build-time; refresh daily and allow SWR
-    headers.set('Cache-Control', 'public, max-age=86400, stale-while-revalidate=86400')
-  } else if (isLogo || isJacket || isFingerprintedAsset) {
-    // images and fingerprinted assets: long cache, immutable
-    headers.set('Cache-Control', 'public, max-age=31536000, immutable')
-  }
-
-  // Normalize content-type for known JSON if not already set
-  if (isJson && !headers.get('content-type')) headers.set('Content-Type', 'application/json; charset=utf-8')
-
-  const res = new Response(originRes.body, { status: originRes.status, headers })
-  try { c.executionCtx?.waitUntil(cache.put(c.req.raw, res.clone())) } catch { /* ignore cache put errors */ }
-  return res
-})
+// Note: Static assets are now served by Cloudflare Pages.
+// This Worker intentionally handles only /api/* routes.
 
 export default app
 // Compute OGG Vorbis duration from asset bytes (on-demand, cached at edge)
@@ -252,11 +209,12 @@ app.get('/api/song-length', async (c) => {
     const cached = await cache.match(cacheKey)
     if (cached) return cached
 
-    // Helpers
+    // Helpers: fetch audio from the static site origin (Pages in prod, Vite in dev)
+    const staticOrigin = (c.env?.STATIC_ORIGIN && c.env.STATIC_ORIGIN.trim()) || new URL(c.req.url).origin
     const fetchBytes = async (method, range) => {
-      const url = new URL(audioPath, c.req.url)
+      const url = new URL(audioPath, staticOrigin)
       const req = new Request(url.toString(), { method, headers: range ? { Range: range } : {} })
-      const res = await c.env.ASSETS.fetch(req)
+      const res = await fetch(req)
       return res
     }
 

@@ -1,20 +1,15 @@
 {
   "name": "ddr-toolkit",
   "main": "./_worker.js",
+  "account_id": "ada4db27213859a629712c36807cd707",
   "compatibility_date": "2025-06-05",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "ENV": "development",
-    "ALLOW_BEARER": "false"
+    "ALLOW_BEARER": "false",
+    "STATIC_ORIGIN": "http://localhost:5173"
   },
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "not_found_handling": "single-page-application"
-  },
-  "build": {
-    "command": "npm run build"
-  },
+  
   "d1_databases": [
     {
       "binding": "DB",
@@ -24,6 +19,7 @@
   ],
   "env": {
     "production": {
+      "name": "ddr-toolkit",
       "d1_databases": [
         {
           "binding": "DB",
@@ -31,11 +27,6 @@
           "database_id": "f9ec8bbc-24c9-4fcf-b2b5-b016e992277a"
         }
       ],
-      "assets": {
-        "directory": "./dist",
-        "binding": "ASSETS",
-        "not_found_handling": "single-page-application"
-      },
       "vars": {
         "ENV": "production",
         "ALLOW_BEARER": "false"
