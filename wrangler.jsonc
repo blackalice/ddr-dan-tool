@@ -32,6 +32,11 @@
     },
     "production": {
       "name": "ddr-toolkit",
+      "zone_name": "rtfoy.co.uk",
+      "routes": [
+        "ddr.rtfoy.co.uk/api/*",
+        "ddr-dan-tool.rtfoy.co.uk/api/*"
+      ],
       "d1_databases": [
         {
           "binding": "DB",
@@ -41,7 +46,8 @@
       ],
       "vars": {
         "ENV": "production",
-        "ALLOW_BEARER": "false"
+        "ALLOW_BEARER": "false",
+        "STATIC_ORIGIN": ""
       }
     }
   }

@@ -1,8 +1,11 @@
 import { Hono } from 'hono'
+import { setCookie } from 'hono/cookie'
+import { SignJWT } from 'jose'
 import { parseGanymedeHtml } from './src/utils/parseGanymedeHtml.js'
 import authApp, { authMiddleware } from './src/auth/index.js'
 
 const app = new Hono()
+const textEncoder = new TextEncoder()
 
 // Global security headers (added to all responses)
 app.use('*', async (c, next) => {
@@ -72,6 +75,41 @@ async function decryptJson(record, key) {
 app.route('/api', authApp)
 
 app.get('/api/hello', (c) => c.json({ message: 'Hello from Hono!' }))
+
+// Explicit refresh route to avoid any sub-app mounting quirks
+app.post('/api/refresh', authMiddleware, async (c) => {
+  const user = c.get('user')
+  if (!c.env.JWT_SECRET) {
+    console.error('[auth] missing JWT_SECRET in environment (refresh)')
+    return c.json({ error: 'Server misconfiguration' }, 500)
+  }
+  try {
+    const row = await c.env.DB.prepare('SELECT COALESCE(token_version, 1) AS token_version FROM users WHERE id = ?')
+      .bind(user.sub).first()
+    const tokenVersion = row?.token_version || 1
+    const origin = new URL(c.req.url).origin
+    const token = await new SignJWT({ sub: user.sub, email: user.email, iss: origin, aud: origin, ver: tokenVersion })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('7d')
+      .sign(textEncoder.encode(c.env.JWT_SECRET))
+
+    const isProd = (c.env?.ENV || '').toLowerCase() === 'production'
+    const secure = isProd || c.req.url.startsWith('https://')
+    const cookieName = isProd ? '__Host-token' : 'token'
+    setCookie(c, cookieName, token, {
+      httpOnly: true,
+      secure,
+      sameSite: 'Strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+    })
+    return c.json({ success: true })
+  } catch (e) {
+    console.error('[auth] refresh error', String(e))
+    return c.json({ error: 'Server error' }, 500)
+  }
+})
 
 app.post('/api/parse-scores', authMiddleware, async (c) => {
   const play = (c.req.query('playtype') || 'SP').toUpperCase();
