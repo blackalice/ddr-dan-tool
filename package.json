@@ -52,6 +52,6 @@
     "globals": "^16.2.0",
     "music-metadata": "^11.8.3",
     "vite": "^7.0.0",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.36.0"
   }
 }
