@@ -18,6 +18,18 @@
     }
   ],
   "env": {
+    "preview": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "ddr-toolkit-db",
+          "database_id": "f9ec8bbc-24c9-4fcf-b2b5-b016e992277a"
+        }
+      ],
+      "vars": {
+        "ENV": "preview"
+      }
+    },
     "production": {
       "name": "ddr-toolkit",
       "d1_databases": [
