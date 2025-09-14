@@ -1,5 +1,6 @@
 import React, { useMemo, useContext } from 'react';
-import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
+import { resolveScore } from '../utils/scoreKey.js';
+import { getSongMeta } from '../utils/cachedFetch.js';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
@@ -58,13 +59,29 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
+  const [derivedArtist, setDerivedArtist] = React.useState(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    async function derive() {
+      if (song?.artist || !song?.path) { setDerivedArtist(null); return; }
+      try {
+        const meta = await getSongMeta();
+        const m = meta.find(x => x.path === song.path);
+        if (!cancelled) setDerivedArtist(m?.artist || null);
+      } catch {
+        if (!cancelled) setDerivedArtist(null);
+      }
+    }
+    derive();
+    return () => { cancelled = true; };
+  }, [song?.artist, song?.path]);
 
   const scoreData = React.useMemo(() => {
     if (!song || !song.title || !song.difficulty || !song.mode) return null;
-    const keyNew = song.artist ? makeScoreKey({ title: song.title, artist: song.artist, difficulty: song.difficulty }) : null;
-    const keyLegacy = legacyScoreKey({ title: song.title, difficulty: song.difficulty });
-    return (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy] || null;
-  }, [scores, song]);
+    const artist = song.artist || derivedArtist || undefined;
+    return resolveScore(scores, song.mode, { title: song.title, artist, difficulty: song.difficulty });
+  }, [scores, song, derivedArtist]);
 
   const displayScore = scoreData?.score ?? score ?? null;
   const lamp = scoreData?.lamp ?? null;
