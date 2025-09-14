@@ -48,18 +48,37 @@ const Settings = () => {
 
     const [songMeta, setSongMeta] = useState([]);
     const [songLookupStrict, setSongLookupStrict] = useState({});
+    const [titleIndex, setTitleIndex] = useState(new Map());
     useEffect(() => {
         getSongMeta()
             .then((data) => {
                 setSongMeta(data);
                 const strictMap = {};
+                const titleIdx = new Map(); // normalized title -> array of songs
                 for (const song of data) {
+                    if (song.title) {
+                        const nt = normalizeString(song.title);
+                        const arr = titleIdx.get(nt) || [];
+                        arr.push(song);
+                        titleIdx.set(nt, arr);
+                    }
+                    if (song.titleTranslit) {
+                        const nt = normalizeString(song.titleTranslit);
+                        const arr = titleIdx.get(nt) || [];
+                        arr.push(song);
+                        titleIdx.set(nt, arr);
+                    }
                     if (song.title && song.artist) {
                         const k = `${normalizeString(song.title)}::${normalizeString(song.artist)}`;
                         strictMap[k] = song;
                     }
+                    if (song.titleTranslit && song.artist) {
+                        const k2 = `${normalizeString(song.titleTranslit)}::${normalizeString(song.artist)}`;
+                        strictMap[k2] = song;
+                    }
                 }
                 setSongLookupStrict(strictMap);
+                setTitleIndex(titleIdx);
             })
             .catch(() => { /* noop */ });
     }, []);
@@ -94,12 +113,35 @@ const Settings = () => {
             if (!best) {
                 // Try loose matching across all songs using combined similarity of title and artist
                 for (const song of songMeta) {
-                    const titleSim = similarity(entry.identifier || '', song.title || '');
+                    const titleSim = Math.max(
+                        similarity(entry.identifier || '', song.title || ''),
+                        similarity(entry.identifier || '', song.titleTranslit || '')
+                    );
                     const artistSim = similarity(entry.artist || '', song.artist || '');
-                    const combined = 0.6 * titleSim + 0.4 * artistSim;
+                    // Heavier weight on title, but artist matters
+                    const combined = 0.7 * titleSim + 0.3 * artistSim;
                     if (combined > bestScore) { bestScore = combined; best = song; }
                 }
-                if (bestScore < 0.55) best = null;
+                // Base threshold for acceptance
+                const titleSimBest = best ? Math.max(
+                    similarity(entry.identifier || '', best.title || ''),
+                    similarity(entry.identifier || '', best.titleTranslit || '')
+                ) : 0;
+                const artistSimBest = best ? similarity(entry.artist || '', best.artist || '') : 0;
+
+                // If multiple songs share the exact normalized title, require a stronger artist match
+                const sameTitleCount = titleIndex.get(idNorm)?.length || 0;
+                const requireArtistStrong = sameTitleCount > 1;
+
+                const pass = (
+                    // Very strong title match always OK
+                    (titleSimBest >= 0.92) ||
+                    // Good title + decent artist
+                    (titleSimBest >= 0.82 && artistSimBest >= 0.5) ||
+                    // If duplicate titles exist, require stronger artist
+                    (requireArtistStrong && titleSimBest >= 0.80 && artistSimBest >= 0.65)
+                );
+                if (!pass) best = null;
             }
             if (best) {
                 const key = makeScoreKey({ title: best.title, artist: best.artist, difficulty: entry.difficulty });

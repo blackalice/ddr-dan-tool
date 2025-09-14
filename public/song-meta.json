@@ -13205,6 +13205,55 @@
     "jacket": "sm/2nd/e-motion/e-motion-jacket.png"
   },
   {
+    "path": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL.sm",
+    "title": "EL RITMO TROPICAL",
+    "titleTranslit": "",
+    "artist": "DIXIE'S GANG",
+    "game": "2nd",
+    "bpmMin": 125,
+    "bpmMax": 140.625,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 1
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 2
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 4
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 6
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 7
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 7
+      }
+    ],
+    "length": 103,
+    "jacket": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL-jacket.png"
+  },
+  {
     "path": "sm/2nd/GENOM SCREAMS/GENOM SCREAMS.sm",
     "title": "GENOM SCREAMS",
     "titleTranslit": "",
@@ -13494,6 +13543,118 @@
     "jacket": "sm/2nd/IF YOU WERE HERE/IF YOU WERE HERE-jacket.png"
   },
   {
+    "path": "sm/2nd/LOVE/LOVE.sm",
+    "title": "LOVE",
+    "titleTranslit": "",
+    "artist": "SONIC DREAM",
+    "game": "2nd",
+    "bpmMin": 128.906,
+    "bpmMax": 128.906,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3,
+        "rankedRating": 3.3
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3,
+        "rankedRating": 3.3
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 5,
+        "rankedRating": 5.2
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5,
+        "rankedRating": 5.2
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 7,
+        "rankedRating": 8.4
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 7,
+        "rankedRating": 8.4
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 9,
+        "rankedRating": 11
+      }
+    ],
+    "length": 91,
+    "jacket": "sm/2nd/LOVE/LOVE-jacket.png"
+  },
+  {
+    "path": "sm/2nd/MAKE A JAM!/MAKE A JAM!.sm",
+    "title": "MAKE A JAM!",
+    "titleTranslit": "",
+    "artist": "U1",
+    "game": "2nd",
+    "bpmMin": 124.4,
+    "bpmMax": 124.4,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.55
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.7
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 2.55
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 7,
+        "rankedRating": 7.7
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 8,
+        "rankedRating": 5.7
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 9,
+        "rankedRating": 9.45
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 7.7
+      }
+    ],
+    "length": 103,
+    "jacket": "sm/2nd/MAKE A JAM!/MAKE A JAM!-jacket.png"
+  },
+  {
     "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm",
     "title": "MAKE IT BETTER (So-REAL Mix)",
     "titleTranslit": "",
@@ -13560,6 +13721,74 @@
     ],
     "length": 97,
     "jacket": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix)-jacket.png"
+  },
+  {
+    "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+    "title": "PARANOiA KCET ～clean mix～",
+    "titleTranslit": "",
+    "artist": "2MB",
+    "game": "2nd",
+    "bpmMin": 178.727,
+    "bpmMax": 180,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "rankedRating": 4.1
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.5
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.5
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 9,
+        "rankedRating": 9.4
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 4.1
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 11.3
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 9.4
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.15
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.15
+      }
+    ],
+    "length": 98,
+    "jacket": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~-jacket.png"
   },
   {
     "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm",
@@ -13976,6 +14205,55 @@
     "jacket": "sm/2nd/stomp to my beat/stomp to my beat-jacket.png"
   },
   {
+    "path": "sm/2nd/TUBTHUMPING/TUBTHUMPING.sm",
+    "title": "TUBTHUMPING",
+    "titleTranslit": "",
+    "artist": "CHUMBAWAMBA",
+    "game": "2nd",
+    "bpmMin": 103.5,
+    "bpmMax": 103.5,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 1
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 4
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 4
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 6
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 6
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 6
+      }
+    ],
+    "length": 88,
+    "jacket": "sm/2nd/TUBTHUMPING/TUBTHUMPING-jacket.png"
+  },
+  {
     "path": "sm/3rd/20,NOVEMBER (D.D.R. version)/20,NOVEMBER (D.D.R. version).sm",
     "title": "20,NOVEMBER (D.D.R. version)",
     "titleTranslit": "",
@@ -14081,6 +14359,62 @@
     "jacket": "sm/3rd/AFRONOVA/AFRONOVA-jacket.png"
   },
   {
+    "path": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE.sm",
+    "title": "AFTER THE GAME OF LOVE",
+    "titleTranslit": "",
+    "artist": "NPD3",
+    "game": "3rd",
+    "bpmMin": 104.956,
+    "bpmMax": 104.956,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.2
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3,
+        "rankedRating": 3.35
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 2.2
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 6,
+        "rankedRating": 6.35
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 6,
+        "rankedRating": 6.35
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 8,
+        "rankedRating": 8.15
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 8,
+        "rankedRating": 8.15
+      }
+    ],
+    "length": 105,
+    "jacket": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE-jacket.png"
+  },
+  {
     "path": "sm/3rd/BEATS LIKE THIS/BEATS LIKE THIS.sm",
     "title": "BEATS LIKE THIS",
     "titleTranslit": "",
@@ -14172,6 +14506,50 @@
     ],
     "length": 93,
     "jacket": "sm/3rd/BOOM BOOM DOLLAR (K.O.G G3 MIX)/BOOM BOOM DOLLAR (K.O.G G3 MIX)-jacket.png"
+  },
+  {
+    "path": "sm/3rd/BUMBLE BEE/BUMBLE BEE.sm",
+    "title": "BUMBLE BEE",
+    "titleTranslit": "",
+    "artist": "bambee",
+    "game": "3rd",
+    "bpmMin": 138,
+    "bpmMax": 138,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 7
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 7
+      }
+    ],
+    "length": 99,
+    "jacket": "sm/3rd/BUMBLE BEE/BUMBLE BEE-jacket.png"
   },
   {
     "path": "sm/3rd/butterfly (UPSWING MIX)/butterfly (UPSWING MIX).sm",
@@ -14324,6 +14702,62 @@
     ],
     "length": 97,
     "jacket": "sm/3rd/CAPTAIN JACK (GRANDALE REMIX)/CAPTAIN JACK (GRANDALE REMIX)-jacket.png"
+  },
+  {
+    "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
+    "title": "CUTIE CHASER",
+    "titleTranslit": "",
+    "artist": "CLUB SPICE",
+    "game": "3rd",
+    "bpmMin": 126.227,
+    "bpmMax": 126.227,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.4
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.4
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 7,
+        "rankedRating": 7.5
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 7,
+        "rankedRating": 7.5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 10.5
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 10.5
+      }
+    ],
+    "length": 95,
+    "jacket": "sm/3rd/CUTIE CHASER/CUTIE CHASER-jacket.png"
   },
   {
     "path": "sm/3rd/DAM DARIRAM/DAM DARIRAM.sm",
@@ -14488,6 +14922,62 @@
     ],
     "length": 96,
     "jacket": "sm/3rd/DO IT ALL NIGHT/DO IT ALL NIGHT-jacket.png"
+  },
+  {
+    "path": "sm/3rd/DROP THE BOMB/DROP THE BOMB.sm",
+    "title": "DROP THE BOMB",
+    "titleTranslit": "",
+    "artist": "Scotty D.",
+    "game": "3rd",
+    "bpmMin": 150.313,
+    "bpmMax": 150.313,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.45
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.35
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 3.45
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 7,
+        "rankedRating": 7.45
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 8,
+        "rankedRating": 5.35
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 10.35
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 10.35
+      }
+    ],
+    "length": 96,
+    "jacket": "sm/3rd/DROP THE BOMB/DROP THE BOMB-jacket.png"
   },
   {
     "path": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm",
@@ -14857,6 +15347,50 @@
     "jacket": "sm/3rd/GET UP AND DANCE/GET UP AND DANCE-jacket.png"
   },
   {
+    "path": "sm/3rd/GIMME GIMME GIMME/GIMME GIMME GIMME.sm",
+    "title": "GIMME GIMME GIMME",
+    "titleTranslit": "",
+    "artist": "E-ROTIC",
+    "game": "3rd",
+    "bpmMin": 148.5,
+    "bpmMax": 148.5,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 4
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 6
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 7
+      }
+    ],
+    "length": 102,
+    "jacket": "sm/3rd/GIMME GIMME GIMME/GIMME GIMME GIMME-jacket.png"
+  },
+  {
     "path": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~.sm",
     "title": "GRADIUSIC CYBER ～AMD G5 MIX～",
     "titleTranslit": "",
@@ -14911,6 +15445,50 @@
     ],
     "length": 105,
     "jacket": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~-jacket.png"
+  },
+  {
+    "path": "sm/3rd/HERO (KCP DISCOTIQUE MIX)/HERO (KCP DISCOTIQUE MIX).sm",
+    "title": "HERO (KCP DISCOTIQUE MIX)",
+    "titleTranslit": "",
+    "artist": "PAPAYA",
+    "game": "3rd",
+    "bpmMin": 128.01,
+    "bpmMax": 128.01,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 4
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 6
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 6
+      }
+    ],
+    "length": 103,
+    "jacket": "sm/3rd/HERO (KCP DISCOTIQUE MIX)/HERO (KCP DISCOTIQUE MIX)-jacket.png"
   },
   {
     "path": "sm/3rd/HOLIDAY/HOLIDAY.sm",
@@ -15260,6 +15838,62 @@
     "jacket": "sm/3rd/La Senorita/La Senorita-jacket.png"
   },
   {
+    "path": "sm/3rd/La Senorita Virtual/La Senorita Virtual.sm",
+    "title": "La Señorita Virtual",
+    "titleTranslit": "",
+    "artist": "2MB",
+    "game": "3rd",
+    "bpmMin": 182.186,
+    "bpmMax": 182.186,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "rankedRating": 4.25
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.45
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 4.25
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.4
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.4
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 12,
+        "rankedRating": 12.25
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 12,
+        "rankedRating": 12.25
+      }
+    ],
+    "length": 100,
+    "jacket": "sm/3rd/La Senorita Virtual/La Senorita Virtual-jacket.png"
+  },
+  {
     "path": "sm/3rd/LET THEM MOVE/LET THEM MOVE.sm",
     "title": "LET THEM MOVE",
     "titleTranslit": "",
@@ -15307,6 +15941,78 @@
     ],
     "length": 88,
     "jacket": "sm/3rd/LET THEM MOVE/LET THEM MOVE-jacket.png"
+  },
+  {
+    "path": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'.sm",
+    "title": "LOVE THIS FEELIN'",
+    "titleTranslit": "",
+    "artist": "Chang ma",
+    "game": "3rd",
+    "bpmMin": 95.3,
+    "bpmMax": 190.2,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "rankedRating": 4.65
+      },
+      {
+        "mode": "double",
+        "difficulty": "beginner",
+        "feet": 1,
+        "rankedRating": 4.65
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 9.7
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 10,
+        "rankedRating": 10.75
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.75
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.65
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 11.65
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 12,
+        "rankedRating": 9.7
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17
+      }
+    ],
+    "length": 97,
+    "jacket": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'-jacket.png"
   },
   {
     "path": "sm/3rd/LUV TO ME (AMD MIX)/LUV TO ME (AMD MIX).sm",
@@ -15747,6 +16453,184 @@
     ],
     "length": 94,
     "jacket": "sm/3rd/THE RACE/THE RACE-jacket.png"
+  },
+  {
+    "path": "sm/3rd/think ya better D/think ya better D.sm",
+    "title": "think ya better D",
+    "titleTranslit": "",
+    "artist": "sAmi",
+    "game": "3rd",
+    "bpmMin": 136.364,
+    "bpmMax": 136.364,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.35
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.6
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.6
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 6,
+        "rankedRating": 6.6
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 7,
+        "rankedRating": 3.35
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 9,
+        "rankedRating": 9.2
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 10,
+        "rankedRating": 5.6
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 14
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 14,
+        "rankedRating": 9.2
+      }
+    ],
+    "length": 100,
+    "jacket": "sm/3rd/think ya better D/think ya better D-jacket.png"
+  },
+  {
+    "path": "sm/3rd/TOTAL RECALL/TOTAL RECALL.sm",
+    "title": "TOTAL RECALL",
+    "titleTranslit": "",
+    "artist": "ULTIMATE HEIGHTS",
+    "game": "3rd",
+    "bpmMin": 132.5,
+    "bpmMax": 132.5,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 4
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 6
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 5
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 8
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 8
+      }
+    ],
+    "length": 103,
+    "jacket": "sm/3rd/TOTAL RECALL/TOTAL RECALL-jacket.png"
+  },
+  {
+    "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+    "title": "TRIP MACHINE～luv mix～",
+    "titleTranslit": "",
+    "artist": "2MB",
+    "game": "3rd",
+    "bpmMin": 160.178,
+    "bpmMax": 160.178,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.15
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 9.25
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 9.25
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.35
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.35
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 12,
+        "rankedRating": 12.1
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 3.15
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 15
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 12.1
+      }
+    ],
+    "length": 103,
+    "jacket": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~-jacket.png"
   },
   {
     "path": "sm/3rd/TURN ME ON (HEAVENLY MIX)/TURN ME ON (HEAVENLY MIX).sm",

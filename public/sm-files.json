@@ -1350,6 +1350,12 @@
       "jacket": "sm/2nd/e-motion/e-motion-jacket.png"
     },
     {
+      "path": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL.sm",
+      "title": "EL RITMO TROPICAL",
+      "titleTranslit": "",
+      "jacket": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL-jacket.png"
+    },
+    {
       "path": "sm/2nd/GENOM SCREAMS/GENOM SCREAMS.sm",
       "title": "GENOM SCREAMS",
       "titleTranslit": "",
@@ -1380,10 +1386,28 @@
       "jacket": "sm/2nd/IF YOU WERE HERE/IF YOU WERE HERE-jacket.png"
     },
     {
+      "path": "sm/2nd/LOVE/LOVE.sm",
+      "title": "LOVE",
+      "titleTranslit": "",
+      "jacket": "sm/2nd/LOVE/LOVE-jacket.png"
+    },
+    {
+      "path": "sm/2nd/MAKE A JAM!/MAKE A JAM!.sm",
+      "title": "MAKE A JAM!",
+      "titleTranslit": "",
+      "jacket": "sm/2nd/MAKE A JAM!/MAKE A JAM!-jacket.png"
+    },
+    {
       "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm",
       "title": "MAKE IT BETTER (So-REAL Mix)",
       "titleTranslit": "",
       "jacket": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix)-jacket.png"
+    },
+    {
+      "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+      "title": "PARANOiA KCET ～clean mix～",
+      "titleTranslit": "",
+      "jacket": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~-jacket.png"
     },
     {
       "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm",
@@ -1428,6 +1452,12 @@
       "jacket": "sm/2nd/stomp to my beat/stomp to my beat-jacket.png"
     },
     {
+      "path": "sm/2nd/TUBTHUMPING/TUBTHUMPING.sm",
+      "title": "TUBTHUMPING",
+      "titleTranslit": "",
+      "jacket": "sm/2nd/TUBTHUMPING/TUBTHUMPING-jacket.png"
+    },
+    {
       "path": "sm/3rd/20,NOVEMBER (D.D.R. version)/20,NOVEMBER (D.D.R. version).sm",
       "title": "20,NOVEMBER (D.D.R. version)",
       "titleTranslit": "",
@@ -1440,6 +1470,12 @@
       "jacket": "sm/3rd/AFRONOVA/AFRONOVA-jacket.png"
     },
     {
+      "path": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE.sm",
+      "title": "AFTER THE GAME OF LOVE",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE-jacket.png"
+    },
+    {
       "path": "sm/3rd/BEATS LIKE THIS/BEATS LIKE THIS.sm",
       "title": "BEATS LIKE THIS",
       "titleTranslit": "",
@@ -1450,6 +1486,12 @@
       "title": "BOOM BOOM DOLLAR (K.O.G G3 MIX)",
       "titleTranslit": "",
       "jacket": "sm/3rd/BOOM BOOM DOLLAR (K.O.G G3 MIX)/BOOM BOOM DOLLAR (K.O.G G3 MIX)-jacket.png"
+    },
+    {
+      "path": "sm/3rd/BUMBLE BEE/BUMBLE BEE.sm",
+      "title": "BUMBLE BEE",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/BUMBLE BEE/BUMBLE BEE-jacket.png"
     },
     {
       "path": "sm/3rd/butterfly (UPSWING MIX)/butterfly (UPSWING MIX).sm",
@@ -1470,6 +1512,12 @@
       "jacket": "sm/3rd/CAPTAIN JACK (GRANDALE REMIX)/CAPTAIN JACK (GRANDALE REMIX)-jacket.png"
     },
     {
+      "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
+      "title": "CUTIE CHASER",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/CUTIE CHASER/CUTIE CHASER-jacket.png"
+    },
+    {
       "path": "sm/3rd/DAM DARIRAM/DAM DARIRAM.sm",
       "title": "DAM DARIRAM",
       "titleTranslit": "",
@@ -1486,6 +1534,12 @@
       "title": "DO IT ALL NIGHT",
       "titleTranslit": "",
       "jacket": "sm/3rd/DO IT ALL NIGHT/DO IT ALL NIGHT-jacket.png"
+    },
+    {
+      "path": "sm/3rd/DROP THE BOMB/DROP THE BOMB.sm",
+      "title": "DROP THE BOMB",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/DROP THE BOMB/DROP THE BOMB-jacket.png"
     },
     {
       "path": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm",
@@ -1530,10 +1584,22 @@
       "jacket": "sm/3rd/GET UP AND DANCE/GET UP AND DANCE-jacket.png"
     },
     {
+      "path": "sm/3rd/GIMME GIMME GIMME/GIMME GIMME GIMME.sm",
+      "title": "GIMME GIMME GIMME",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/GIMME GIMME GIMME/GIMME GIMME GIMME-jacket.png"
+    },
+    {
       "path": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~.sm",
       "title": "GRADIUSIC CYBER ～AMD G5 MIX～",
       "titleTranslit": "",
       "jacket": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~-jacket.png"
+    },
+    {
+      "path": "sm/3rd/HERO (KCP DISCOTIQUE MIX)/HERO (KCP DISCOTIQUE MIX).sm",
+      "title": "HERO (KCP DISCOTIQUE MIX)",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/HERO (KCP DISCOTIQUE MIX)/HERO (KCP DISCOTIQUE MIX)-jacket.png"
     },
     {
       "path": "sm/3rd/HOLIDAY/HOLIDAY.sm",
@@ -1578,10 +1644,22 @@
       "jacket": "sm/3rd/La Senorita/La Senorita-jacket.png"
     },
     {
+      "path": "sm/3rd/La Senorita Virtual/La Senorita Virtual.sm",
+      "title": "La Señorita Virtual",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/La Senorita Virtual/La Senorita Virtual-jacket.png"
+    },
+    {
       "path": "sm/3rd/LET THEM MOVE/LET THEM MOVE.sm",
       "title": "LET THEM MOVE",
       "titleTranslit": "",
       "jacket": "sm/3rd/LET THEM MOVE/LET THEM MOVE-jacket.png"
+    },
+    {
+      "path": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'.sm",
+      "title": "LOVE THIS FEELIN'",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'-jacket.png"
     },
     {
       "path": "sm/3rd/LUV TO ME (AMD MIX)/LUV TO ME (AMD MIX).sm",
@@ -1636,6 +1714,24 @@
       "title": "THE RACE",
       "titleTranslit": "",
       "jacket": "sm/3rd/THE RACE/THE RACE-jacket.png"
+    },
+    {
+      "path": "sm/3rd/think ya better D/think ya better D.sm",
+      "title": "think ya better D",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/think ya better D/think ya better D-jacket.png"
+    },
+    {
+      "path": "sm/3rd/TOTAL RECALL/TOTAL RECALL.sm",
+      "title": "TOTAL RECALL",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/TOTAL RECALL/TOTAL RECALL-jacket.png"
+    },
+    {
+      "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+      "title": "TRIP MACHINE～luv mix～",
+      "titleTranslit": "",
+      "jacket": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~-jacket.png"
     },
     {
       "path": "sm/3rd/TURN ME ON (HEAVENLY MIX)/TURN ME ON (HEAVENLY MIX).sm",
