@@ -13,7 +13,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "cf:dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "npm run build && npm run deploy:worker && npm run deploy:pages",
+    "deploy:worker": "wrangler deploy --env production",
+    "deploy:pages": "wrangler pages deploy dist",
     "parse:scores": "node scripts/parse-ganymede-html.mjs",
     "build:audio": "node scripts/build-audio-lengths.mjs ddrbits"
   },

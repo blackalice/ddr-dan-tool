@@ -1,6 +1,6 @@
 {
   "name": "ddr-toolkit",
-  "main": "./_worker.js",
+  "main": "./worker.js",
   "account_id": "ada4db27213859a629712c36807cd707",
   "compatibility_date": "2025-06-05",
   "compatibility_flags": ["nodejs_compat"],

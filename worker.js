@@ -76,6 +76,17 @@ app.route('/api', authApp)
 
 app.get('/api/hello', (c) => c.json({ message: 'Hello from Hono!' }))
 
+// Minimal environment/bindings diagnostics (no secret values exposed)
+app.get('/api/env-check', (c) => {
+  const env = (c.env?.ENV || '').toString()
+  const hasJWT_SECRET = Boolean(c.env?.JWT_SECRET)
+  const hasDATA_KEY = Boolean(c.env?.DATA_KEY)
+  const hasDB = Boolean(c.env?.DB)
+  const allowBearer = (c.env?.ALLOW_BEARER || '').toLowerCase() === 'true'
+  const staticOriginConfigured = typeof c.env?.STATIC_ORIGIN === 'string' && c.env.STATIC_ORIGIN.length > 0
+  return c.json({ env, hasJWT_SECRET, hasDATA_KEY, hasDB, allowBearer, staticOriginConfigured })
+})
+
 // Explicit refresh route to avoid any sub-app mounting quirks
 app.post('/api/refresh', authMiddleware, async (c) => {
   const user = c.get('user')
