@@ -1,0 +1,196 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  padding: 1.5rem;
+}
+
+.modalContent {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  width: 100%;
+  max-width: 500px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex: 1;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modalBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sectionDescription {
+  margin: 0;
+  color: var(--text-muted-color);
+  font-size: 0.95rem;
+}
+
+.presetGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.presetButton {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.presetButton:hover {
+  background-color: var(--card-hover-bg-color);
+}
+
+.presetButtonActive {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputLabel {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted-color);
+}
+
+.input {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+}
+
+.error {
+  font-size: 0.9rem;
+  color: var(--button-down-color, #ef4444);
+  font-weight: 600;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.button {
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.resetButton {
+  background: transparent;
+  border-color: var(--border-color);
+  color: var(--text-muted-color);
+}
+
+.cancelButton {
+  background-color: var(--card-hover-bg-color);
+  color: var(--text-color);
+}
+
+.applyButton {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.resetButton:hover {
+  color: var(--text-color);
+}
+
+.cancelButton:hover {
+  background-color: var(--card-hover-bg-color-light);
+}
+
+.applyButton:hover {
+  background-color: var(--accent-color-light);
+}
+
+@media (max-width: 768px) {
+  .modalBackdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modalContent {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 95vh;
+  }
+
+  .modalHeader {
+    padding: 1.25rem 1.5rem 1rem;
+  }
+
+  .modalBody {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  .buttonGroup {
+    padding: 0 1.5rem 1.5rem;
+  }
+}

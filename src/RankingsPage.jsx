@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
+import RankingsSettingsModal from './components/RankingsSettingsModal.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation, faGear } from '@fortawesome/free-solid-svg-icons';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity.js';
 import { storage } from './utils/remoteStorage.js';
@@ -13,6 +14,25 @@ import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
+
+const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
+const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
+
+const loadCloseRange = () => {
+  try {
+    const stored = storage.getItem('rankingsCloseRange');
+    if (!stored) return { ...CLOSE_FILTER_DEFAULT };
+    const parsed = JSON.parse(stored);
+    const min = Math.round(Number(parsed?.min));
+    const max = Math.round(Number(parsed?.max));
+    if (!Number.isNaN(min) && !Number.isNaN(max)) {
+      return { min, max };
+    }
+  } catch (_e) {
+    void _e;
+  }
+  return { ...CLOSE_FILTER_DEFAULT };
+};
 
 const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
@@ -62,6 +82,38 @@ const RankingsPage = () => {
     const stored = storage.getItem('rankingsCloseOnly');
     return stored ? JSON.parse(stored) : false;
   });
+  const [closeRange, setCloseRange] = useState(() => loadCloseRange());
+  const normalizedCloseRange = useMemo(() => {
+    const min = Number.isFinite(closeRange?.min) ? closeRange.min : CLOSE_FILTER_DEFAULT.min;
+    const max = Number.isFinite(closeRange?.max) ? closeRange.max : CLOSE_FILTER_DEFAULT.max;
+    return {
+      min: Math.min(min, max),
+      max: Math.max(min, max),
+    };
+  }, [closeRange]);
+
+  const closeRangeLabel = useMemo(() => {
+    const { min, max } = normalizedCloseRange;
+    return SCORE_FORMATTER.format(min) + '-' + SCORE_FORMATTER.format(max);
+  }, [normalizedCloseRange]);
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const handleCloseRangeSave = (range) => {
+    const parseScore = (value, fallback) => {
+      const numeric = Math.round(Number(value));
+      return Number.isNaN(numeric) ? fallback : numeric;
+    };
+    const minValue = parseScore(range?.min, CLOSE_FILTER_DEFAULT.min);
+    const maxValue = parseScore(range?.max, CLOSE_FILTER_DEFAULT.max);
+    setCloseRange(prev => {
+      if (prev?.min === minValue && prev?.max === maxValue) {
+        return prev;
+      }
+      return { min: minValue, max: maxValue };
+    });
+  };
+
 
   useEffect(() => {
     getSongMeta()
@@ -107,6 +159,9 @@ const RankingsPage = () => {
   useEffect(() => {
     storage.setItem('rankingsCloseOnly', JSON.stringify(closeOnly));
   }, [closeOnly]);
+  useEffect(() => {
+    storage.setItem('rankingsCloseRange', JSON.stringify(normalizedCloseRange));
+  }, [normalizedCloseRange]);
 
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -191,7 +246,8 @@ const RankingsPage = () => {
       ? chartsForLevel.filter(c => !(c.score > 989999))
       : chartsForLevel;
     if (closeOnly) {
-      visibleCharts = visibleCharts.filter(c => c.score != null && c.score >= 980000 && c.score <= 989999);
+      const { min, max } = normalizedCloseRange;
+      visibleCharts = visibleCharts.filter(c => c.score != null && c.score >= min && c.score <= max);
     }
     const map = new Map();
     for (const chart of visibleCharts) {
@@ -203,7 +259,7 @@ const RankingsPage = () => {
       ascendingOrder ? a - b : b - a
     );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
-  }, [chartsForLevel, ascendingOrder, hideTopScores, closeOnly]);
+  }, [chartsForLevel, ascendingOrder, hideTopScores, closeOnly, normalizedCloseRange]);
 
   const hasScores = useMemo(() => {
     return (
@@ -254,10 +310,20 @@ const RankingsPage = () => {
           <button
             className={`filter-button ${closeOnly ? 'active' : ''}`}
             onClick={() => setCloseOnly(c => !c)}
-            title={closeOnly ? 'Show all scores' : 'Filter close (980k–989,999)'}
+            title={closeOnly ? 'Show all scores' : 'Filter close (' + closeRangeLabel + ')'}
             aria-pressed={closeOnly}
           >
             <FontAwesomeIcon icon={faCircleExclamation} />
+          </button>
+          <button
+            className="filter-button"
+            type="button"
+            onClick={() => setSettingsOpen(true)}
+            title="Open rankings settings"
+            aria-label="Open rankings settings"
+            aria-haspopup="dialog"
+          >
+            <FontAwesomeIcon icon={faGear} />
           </button>
           {hasScores && (
             <div className="ranking-counter">
@@ -276,6 +342,13 @@ const RankingsPage = () => {
           />
       ))}
       </main>
+      <RankingsSettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        closeRange={normalizedCloseRange}
+        defaultCloseRange={CLOSE_FILTER_DEFAULT}
+        onApply={handleCloseRangeSave}
+      />
     </div>
   );
 };
