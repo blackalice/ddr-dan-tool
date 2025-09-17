@@ -19,9 +19,11 @@ function isValidPasswordForSignup(pw) {
   return pw.length >= 8 && pw.length <= 1024
 }
 
-// Password hashing via PBKDF2 (Worker-friendly)
-// Target ~300k+ iterations (tune based on latency budgets)
-const PBKDF2_ITERATIONS = 310000
+// Password hashing via PBKDF2 (Worker-compatible)
+// Cloudflare Workers currently limit PBKDF2 to <= 100000 iterations.
+// Use 100k in production to avoid NotSupportedError.
+const PBKDF2_ITERATIONS = 100000
+const MAX_PBKDF2_ITERATIONS = 100000
 const PBKDF2_HASH_LEN_BITS = 256
 
 const toBase64 = (buf) => {
@@ -47,14 +49,31 @@ async function hashPasswordPBKDF2(password) {
     false,
     ['deriveBits']
   )
-  const bits = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', hash: 'SHA-256', salt, iterations: PBKDF2_ITERATIONS },
-    keyMaterial,
-    PBKDF2_HASH_LEN_BITS
-  )
-  const hashB64 = toBase64(bits)
-  const saltB64 = toBase64(salt)
-  return `pbkdf2$${PBKDF2_ITERATIONS}$${saltB64}$${hashB64}`
+  let iterations = PBKDF2_ITERATIONS
+  try {
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', hash: 'SHA-256', salt, iterations },
+      keyMaterial,
+      PBKDF2_HASH_LEN_BITS
+    )
+    const hashB64 = toBase64(bits)
+    const saltB64 = toBase64(salt)
+    return `pbkdf2$${iterations}$${saltB64}$${hashB64}`
+  } catch (e) {
+    // Fallback if environment rejects higher iteration counts
+    if (iterations > MAX_PBKDF2_ITERATIONS) {
+      iterations = MAX_PBKDF2_ITERATIONS
+      const bits = await crypto.subtle.deriveBits(
+        { name: 'PBKDF2', hash: 'SHA-256', salt, iterations },
+        keyMaterial,
+        PBKDF2_HASH_LEN_BITS
+      )
+      const hashB64 = toBase64(bits)
+      const saltB64 = toBase64(salt)
+      return `pbkdf2$${iterations}$${saltB64}$${hashB64}`
+    }
+    throw e
+  }
 }
 
 function constantTimeEqual(a, b) {

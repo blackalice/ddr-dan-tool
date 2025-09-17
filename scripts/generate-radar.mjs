@@ -10,6 +10,7 @@ const ROOT = path.resolve(__dirname, '..')
 const PUBLIC_DIR = path.join(ROOT, 'public')
 const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json')
 const OUTPUT_PATH = path.join(PUBLIC_DIR, 'radar-values.json')
+const SONG_LENGTHS_PATH = path.join(PUBLIC_DIR, 'song-lengths.json')
 const AUDIO_MAP_PATH = path.join(ROOT, '.local', 'audio-lengths.json')
 
 const toFixed = (n, d = 2) => Number.isFinite(n) ? Number(n.toFixed(d)) : 0
@@ -297,6 +298,7 @@ async function main() {
       console.log(`Loaded audio lengths from ${AUDIO_MAP_PATH}`)
     } catch {}
     const out = {}
+    const lengthsOut = {}
     for (const file of smList.files) {
       const full = path.join(PUBLIC_DIR, file.path)
       let text
@@ -321,6 +323,16 @@ async function main() {
         const computedSec = computeSongSeconds(chart) || 0
         const override = audioMap[file.path]?.lengthSeconds
         const secUsed = override && override > 0 ? override : computedSec
+        // Store per-simfile length (seconds + rounded) for deployment
+        if (!lengthsOut[file.path]) {
+          lengthsOut[file.path] = { seconds: toFixed(secUsed, 3), roundedSeconds: Math.round(secUsed) }
+        } else {
+          // Keep the max if multiple charts iterate same simfile (should be identical)
+          const prev = lengthsOut[file.path]
+          if ((secUsed || 0) > (prev.seconds || 0)) {
+            lengthsOut[file.path] = { seconds: toFixed(secUsed, 3), roundedSeconds: Math.round(secUsed) }
+          }
+        }
         const { beats } = computeAverageBpm(chart, secUsed)
         const stream = computeStream(at.mode, chart.arrows, chart.bpm, chart.stops, secUsed)
         const voltage = computeVoltage(chart, at.mode, chart.notes || '', secUsed)
@@ -344,7 +356,9 @@ async function main() {
       }
     }
     await fs.writeFile(OUTPUT_PATH, JSON.stringify(out))
+    await fs.writeFile(SONG_LENGTHS_PATH, JSON.stringify(lengthsOut))
     console.log(`Wrote ${OUTPUT_PATH} with ${Object.keys(out).length} entries`)
+    console.log(`Wrote ${SONG_LENGTHS_PATH} with ${Object.keys(lengthsOut).length} song length entries`)
   } catch (e) {
     console.error('Error generating radar values:', e)
     process.exit(1)

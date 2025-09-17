@@ -62,8 +62,11 @@ async function main() {
   try {
     await fs.access(sourceRoot)
   } catch {
-    console.error(`Source root not found: ${sourceRoot}`)
-    process.exit(2)
+    console.warn(`Source root not found: ${sourceRoot} — skipping audio length build.`)
+    await fs.mkdir(LOCAL_DIR, { recursive: true })
+    await fs.writeFile(OUT_PATH, JSON.stringify({}, null, 2))
+    console.log(`Wrote ${OUT_PATH} (0 entries)`)
+    return
   }
 
   await fs.mkdir(LOCAL_DIR, { recursive: true })

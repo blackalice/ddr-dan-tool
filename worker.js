@@ -240,96 +240,60 @@ app.patch('/api/user/data', authMiddleware, async (c) => {
 // This Worker intentionally handles only /api/* routes.
 
 export default app
-// Compute OGG Vorbis duration from asset bytes (on-demand, cached at edge)
+// Serve precomputed song lengths (built during predeploy) from static JSON
+let cachedSongLengths = null
+let cachedFetchedAt = 0
+async function getSongLengths(c) {
+  const now = Date.now()
+  if (cachedSongLengths && (now - cachedFetchedAt < 6 * 60 * 60 * 1000)) return cachedSongLengths
+  const staticOrigin = (c.env?.STATIC_ORIGIN && c.env.STATIC_ORIGIN.trim()) || new URL(c.req.url).origin
+  const url = new URL('/song-lengths.json', staticOrigin)
+  const res = await fetch(url.toString(), { method: 'GET' })
+  if (!res.ok) throw new Error(`song-lengths.json fetch failed: ${res.status}`)
+  const data = await res.json()
+  cachedSongLengths = data || {}
+  cachedFetchedAt = now
+  return cachedSongLengths
+}
+
 app.get('/api/song-length', async (c) => {
   try {
     const smPath = c.req.query('smPath') || '' // e.g., sm/A20/Ace out/Ace out.sm
-    const music = c.req.query('music') || ''   // e.g., Ace out.ogg
-    if (!smPath || !music) return c.json({ error: 'smPath and music required' }, 400)
-
-    // Build absolute asset path
-    const lastSlash = smPath.lastIndexOf('/')
-    if (lastSlash < 0) return c.json({ error: 'invalid smPath' }, 400)
-    const folder = smPath.slice(0, lastSlash)
-    const audioPath = `/${folder}/${music}`
-
+    if (!smPath) return c.json({ error: 'smPath required' }, 400)
     const cache = caches.default
-    const cacheKey = new Request(new URL(`/api/song-length?smPath=${encodeURIComponent(smPath)}&music=${encodeURIComponent(music)}`, c.req.url), c.req)
-    const cached = await cache.match(cacheKey)
-    if (cached) return cached
+    const cacheKey = new Request(new URL(`/api/song-length?smPath=${encodeURIComponent(smPath)}`, c.req.url), c.req)
+    const hit = await cache.match(cacheKey)
+    if (hit) return hit
 
-    // Helpers: fetch audio from the static site origin (Pages in prod, Vite in dev)
-    const staticOrigin = (c.env?.STATIC_ORIGIN && c.env.STATIC_ORIGIN.trim()) || new URL(c.req.url).origin
-    const fetchBytes = async (method, range) => {
-      const url = new URL(audioPath, staticOrigin)
-      const req = new Request(url.toString(), { method, headers: range ? { Range: range } : {} })
-      const res = await fetch(req)
-      return res
-    }
-
-    // Try HEAD for Content-Length
-    let size = 0
-    try {
-      const head = await fetchBytes('HEAD')
-      const len = head.headers.get('content-length')
-      size = len ? parseInt(len, 10) : 0
-    } catch { /* ignore */ }
-
-    const FIRST_CHUNK = 64 * 1024
-    const LAST_CHUNK = 64 * 1024
-
-    // Fetch first chunk to get Vorbis sample rate
-    let firstRes = await fetchBytes('GET', `bytes=0-${FIRST_CHUNK - 1}`)
-    if (firstRes.status === 416) firstRes = await fetchBytes('GET') // no range support
-    const firstBuf = await firstRes.arrayBuffer()
-
-    // Find identification header [0x01,'vorbis'] and read sample rate (LE uint32 at offset +12)
-    const firstArr = new Uint8Array(firstBuf)
-    const pat = [0x01, 0x76, 0x6f, 0x72, 0x62, 0x69, 0x73]
-    const findPattern = (arr, pattern) => {
-      outer: for (let i = 0; i <= arr.length - pattern.length; i++) {
-        for (let j = 0; j < pattern.length; j++) if (arr[i + j] !== pattern[j]) continue outer
-        return i
-      }
-      return -1
-    }
-    const pos = findPattern(firstArr, pat)
-    if (pos < 0) return c.json({ error: 'not ogg/vorbis id header found' }, 422)
-    const viewFirst = new DataView(firstBuf)
-    const sampleRate = viewFirst.getUint32(pos + 12, true)
-    if (!sampleRate) return c.json({ error: 'invalid sampleRate' }, 422)
-
-    // Fetch last chunk to get last Ogg page granule position
-    let lastBuf
-    if (size > 0) {
-      const start = Math.max(0, size - LAST_CHUNK)
-      const lastRes = await fetchBytes('GET', `bytes=${start}-`)
-      lastBuf = await lastRes.arrayBuffer()
-    } else {
-      // Range not available; fallback to full fetch (may be large)
-      const fullRes = await fetchBytes('GET')
-      lastBuf = await fullRes.arrayBuffer()
-    }
-    const lastArr = new Uint8Array(lastBuf)
-    const findLastOggS = (arr) => {
-      for (let i = arr.length - 4; i >= 0; i--) {
-        if (arr[i] === 0x4f && arr[i + 1] === 0x67 && arr[i + 2] === 0x67 && arr[i + 3] === 0x53) return i
-      }
-      return -1
-    }
-    const oggPos = findLastOggS(lastArr)
-    if (oggPos < 0) return c.json({ error: 'no OggS header at end' }, 422)
-    const viewLast = new DataView(lastBuf)
-    const granule = Number(viewLast.getBigUint64(oggPos + 6, true)) // LE uint64
-    if (!isFinite(granule) || granule <= 0) return c.json({ error: 'invalid granule' }, 422)
-
-    const seconds = granule / sampleRate
-    const body = JSON.stringify({ seconds, roundedSeconds: Math.round(seconds), sampleRate, granule })
+    const map = await getSongLengths(c)
+    const entry = map[smPath]
+    if (!entry) return c.json({ error: 'not found' }, 404)
+    const seconds = Number(entry.seconds || entry.roundedSeconds || 0)
+    const body = JSON.stringify({ seconds, roundedSeconds: Math.round(seconds) })
     const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=604800, stale-while-revalidate=604800' })
     const res = new Response(body, { status: 200, headers })
     try { c.executionCtx?.waitUntil(cache.put(cacheKey, res.clone())) } catch { /* ignore */ }
     return res
   } catch (e) {
     return c.json({ error: 'failed', message: String(e) }, 500)
+  }
+})
+
+// Minimal DB diagnostics to verify schema without exposing data
+app.get('/api/db-check', async (c) => {
+  try {
+    const db = c.env?.DB
+    if (!db) return c.json({ hasDB: false })
+    const tbls = await db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()
+    const names = new Set((tbls?.results || tbls?.rows || []).map((r) => r.name || r[0]).filter(Boolean))
+    const usersInfo = await db.prepare('PRAGMA table_info(users)').all().catch(() => ({ results: [] }))
+    const userCols = new Set((usersInfo?.results || usersInfo?.rows || []).map((r) => r.name || r[1]).filter(Boolean))
+    const hasUsers = names.has('users')
+    const hasUserData = names.has('user_data')
+    const hasRate = names.has('rate_limits')
+    const hasTokenVersion = userCols.has('token_version')
+    return c.json({ hasDB: true, hasUsers, hasUserData, hasRate, hasTokenVersion })
+  } catch (e) {
+    return c.json({ error: 'db-check failed', message: String(e) }, 500)
   }
 })
