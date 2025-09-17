@@ -356,42 +356,51 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Upload Scores</h3>
-                            <p>
-                                Import your DDR scores in JSON or HTML format. Right click and save the
-                                HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
-                                Your browser currently stores {Object.keys(scores.single).length} SP and
-                                {Object.keys(scores.double).length} DP scores.
-                            </p>
+                    {user ? (
+                        <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Upload Scores</h3>
+                                <p>
+                                    Import your DDR scores in JSON or HTML format. Right click and save the
+                                    HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
+                                    Your browser currently stores {Object.keys(scores.single).length} SP and
+                                    {Object.keys(scores.double).length} DP scores.
+                                </p>
+                            </div>
+                            <div className="setting-control upload-control">
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept=".json,application/json,text/html"
+                                    onChange={handleUploadFile}
+                                    className="hidden-file-input"
+                                    disabled={processing}
+                                />
+                                <label htmlFor="file-upload" className="custom-file-upload settings-button" disabled={processing}>
+                                    <FontAwesomeIcon icon={faUpload} /> Choose File
+                                </label>
+                                <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
+                                    <option value="SP">SP</option>
+                                    <option value="DP">DP</option>
+                                </select>
+                                <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
+                            </div>
+                            {processing && (<div className="upload-status">Processing...</div>)}
+                            {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
+                            {!processing && unmatchedLines.length > 0 && (
+                                <pre className="upload-console">
+                                    {unmatchedLines.join('\n')}
+                                </pre>
+                            )}
                         </div>
-                        <div className="setting-control upload-control">
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept=".json,application/json,text/html"
-                                onChange={handleUploadFile}
-                                className="hidden-file-input"
-                                disabled={processing}
-                            />
-                            <label htmlFor="file-upload" className="custom-file-upload settings-button" disabled={processing}>
-                                <FontAwesomeIcon icon={faUpload} /> Choose File
-                            </label>
-                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
-                                <option value="SP">SP</option>
-                                <option value="DP">DP</option>
-                            </select>
-                            <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
+                    ) : (
+                        <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Upload Scores</h3>
+                                <p>Log in to upload your scores from this device.</p>
+                            </div>
                         </div>
-                        {processing && (<div className="upload-status">Processing...</div>)}
-                        {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
-                        {!processing && unmatchedLines.length > 0 && (
-                            <pre className="upload-console">
-                                {unmatchedLines.join('\n')}
-                            </pre>
-                        )}
-                    </div>
+                    )}
 
                     {user ? (
                         <div className="setting-card">
