@@ -49,8 +49,7 @@ function AppRoutes() {
   useEffect(() => {
     const loadFromUrl = async () => {
       const sel = parseSelection({ search: location.search, hash: location.hash });
-      // New format: ?s=<songId>&c=<chartId>&m=<mode>
-      if (sel.mode) setPlayStyle(sel.mode);
+      // New format: ?song=<songId>&chart=<chartId>
       if (sel.songId) {
         const songFile = smData.files.find(f => f.id === sel.songId || f.path === sel.songId) || null;
         if (!songFile) {
@@ -66,8 +65,8 @@ function AppRoutes() {
         if (!chart) {
           // choose default chart in current playStyle
           const defaultOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
-          const preferred = data.availableTypes.filter(c => c.mode === (sel.mode || playStyle));
-          const fallback = data.availableTypes.filter(c => c.mode !== (sel.mode || playStyle));
+          const preferred = data.availableTypes.filter(c => c.mode === playStyle);
+          const fallback = data.availableTypes.filter(c => c.mode !== playStyle);
           for (const d of defaultOrder) {
             chart = preferred.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
             if (chart) break;
@@ -81,17 +80,22 @@ function AppRoutes() {
           if (!chart) chart = data.availableTypes[0];
         }
         setCurrentChart(chart);
+        if (chart?.mode && chart.mode !== playStyle) {
+          setPlayStyle(chart.mode);
+        }
         // Ensure URL reflects selected chart (replace to avoid history spam)
-        const curS = searchParams.get('s');
-        const curC = searchParams.get('c');
-        const curM = searchParams.get('m');
+        const curSong = searchParams.get('song');
+        const curChart = searchParams.get('chart');
+        const hasLegacyParams = searchParams.has('s') || searchParams.has('c') || searchParams.has('m');
         const identifier = songFile.id || songFile.path;
-        if (identifier && chart?.slug && (curS !== identifier || curC !== chart.slug || curM !== chart.mode)) {
+        if (identifier && chart?.slug && (curSong !== identifier || curChart !== chart.slug || hasLegacyParams)) {
           const next = new URLSearchParams(searchParams);
-          next.set('s', identifier);
-          next.set('c', chart.slug);
-          next.set('m', chart.mode);
-          if (debugEnabled) { try { console.log('[Route] replace s/c/m ->', next.toString()); } catch { /* noop */ } }
+          next.set('song', identifier);
+          next.set('chart', chart.slug);
+          next.delete('s');
+          next.delete('c');
+          next.delete('m');
+          if (debugEnabled) { try { console.log('[Route] replace song/chart ->', next.toString()); } catch { /* noop */ } }
           setSearchParams(next, { replace: true });
         }
         return;
@@ -109,12 +113,17 @@ function AppRoutes() {
         }
         if (!chart && data.availableTypes.length) chart = data.availableTypes[0];
         setCurrentChart(chart);
+        if (chart?.mode && chart.mode !== playStyle) {
+          setPlayStyle(chart.mode);
+        }
         // Upgrade legacy to new search params (clear legacy keys)
         const next = new URLSearchParams(searchParams);
         const identifier = songFile.id || songFile.path;
-        if (identifier) next.set('s', identifier);
-        if (chart?.slug) next.set('c', chart.slug);
-        if (chart?.mode) next.set('m', chart.mode);
+        if (identifier) next.set('song', identifier);
+        if (chart?.slug) next.set('chart', chart.slug);
+        next.delete('s');
+        next.delete('c');
+        next.delete('m');
         next.delete('difficulty');
         next.delete('mode');
         next.delete('t');
@@ -126,25 +135,29 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, smData]);
+  }, [location.search, location.hash, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled]);
 
   const handleSongSelect = useCallback((song) => {
     if (song) {
       const songId = song.id || song.songId || song.value || song.path || null;
-      const mode = playStyle; // keep current mode for now
       if (songId) {
         const next = new URLSearchParams(searchParams);
-        next.set('s', songId);
-        next.delete('c'); // let the effect pick default chart for new song
-        next.set('m', mode);
+        next.set('song', songId);
+        next.delete('chart'); // let the effect pick default chart for new song
+        next.delete('s');
+        next.delete('c');
+        next.delete('m');
         setSearchParams(next);
       }
     } else if (location.pathname.startsWith('/bpm')) {
       const next = new URLSearchParams(searchParams);
-      next.delete('s'); next.delete('c');
+      next.delete('song'); next.delete('chart');
+      next.delete('s');
+      next.delete('c');
+      next.delete('m');
       setSearchParams(next);
     }
-  }, [searchParams, setSearchParams, playStyle, location.pathname]);
+  }, [searchParams, setSearchParams, location.pathname]);
 
   // Avoid modifying the URL or selection when songlistOverride changes to prevent flicker.
 
@@ -153,12 +166,14 @@ function AppRoutes() {
     if (chart && chart.mode) {
       setPlayStyle(chart.mode);
     }
-    const songId = simfileData?.songId || simfileData?.path || simfileData?.filePath || searchParams.get('s') || null;
+    const songId = simfileData?.songId || simfileData?.path || simfileData?.filePath || searchParams.get('song') || null;
     if (songId && chart?.slug) {
       const next = new URLSearchParams(searchParams);
-      next.set('s', songId);
-      next.set('c', chart.slug);
-      next.set('m', chart.mode);
+      next.set('song', songId);
+      next.set('chart', chart.slug);
+      next.delete('s');
+      next.delete('c');
+      next.delete('m');
       setSearchParams(next);
     }
   }, [setPlayStyle, simfileData, searchParams, setSearchParams]);

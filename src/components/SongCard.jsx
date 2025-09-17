@@ -156,8 +156,12 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
       if (setPlayStyle) setPlayStyle(song.mode);
       const songId = song.songId || song.id || song.path || song.value;
       const chartId = song.chartId || song.slug; // may be undefined in Dan/Vega data
-      if (songId && chartId) {
-        navigate(`/bpm?s=${encodeURIComponent(songId)}&c=${encodeURIComponent(chartId)}&m=${song.mode}`, { state: { fromSongCard: true } });
+      if (songId) {
+        const params = new URLSearchParams();
+        params.set('song', songId);
+        if (chartId) params.set('chart', chartId);
+        const query = params.toString();
+        navigate(`/bpm${query ? `?${query}` : ''}`, { state: { fromSongCard: true } });
       } else {
         // Fallback to legacy via query param 't' (title) plus mode/difficulty
         navigate(`/bpm?mode=${encodeURIComponent(song.mode)}&difficulty=${encodeURIComponent(song.difficulty)}&t=${encodeURIComponent(song.title)}`, { state: { fromSongCard: true, title: song.title } });

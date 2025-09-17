@@ -3,15 +3,13 @@
 // Chart ID: slug from simfileData.availableTypes[].slug
 
 export function parseSelection(location) {
-  const out = { songId: null, chartId: null, mode: null, legacy: null };
+  const out = { songId: null, chartId: null, legacy: null };
   const search = new URLSearchParams(location.search || '');
-  const s = search.get('s');
-  const c = search.get('c');
-  const m = search.get('m');
+  const song = search.get('song') || search.get('s');
+  const chart = search.get('chart') || search.get('c');
   // URLSearchParams.get already returns decoded strings
-  if (s) out.songId = s;
-  if (c) out.chartId = c;
-  if (m === 'single' || m === 'double') out.mode = m;
+  if (song) out.songId = song;
+  if (chart) out.chartId = chart;
 
   // Legacy support: hash holds encoded title; query holds difficulty/mode
   const legacyTitle = location.hash ? decodeURIComponent(location.hash.substring(1)) : null;
@@ -24,15 +22,15 @@ export function parseSelection(location) {
   return out;
 }
 
-export function buildBpmUrl({ pathname = '/bpm', songId, chartId, mode }) {
+export function buildBpmUrl({ pathname = '/bpm', songId, chartId }) {
   const params = new URLSearchParams();
-  if (songId) params.set('s', songId);
-  if (chartId) params.set('c', chartId);
-  if (mode && (mode === 'single' || mode === 'double')) params.set('m', mode);
-  return `${pathname}?${params.toString()}`;
+  if (songId) params.set('song', songId);
+  if (chartId) params.set('chart', chartId);
+  const query = params.toString();
+  return query ? `${pathname}?${query}` : pathname;
 }
 
-export function replaceLegacyUrl(navigate, location, songId, chartId, mode) {
-  const url = buildBpmUrl({ pathname: location.pathname, songId, chartId, mode });
+export function replaceLegacyUrl(navigate, location, songId, chartId) {
+  const url = buildBpmUrl({ pathname: location.pathname, songId, chartId });
   navigate(url, { replace: true });
 }
