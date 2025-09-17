@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +22,6 @@ function findSongFiles(dir, baseDir) {
             const content = fs.readFileSync(fullPath, 'utf-8');
             const title = content.match(/#TITLE:([^;]+);/)?.[1] || 'Unknown Title';
             const titleTranslit = content.match(/#TITLETRANSLIT:([^;]+);/)?.[1] || '';
-            // Look for a "*-jacket.*" file in the same folder as the simfile
             const songDir = path.dirname(fullPath);
             let jacket = null;
             try {
@@ -44,76 +44,82 @@ function findSongFiles(dir, baseDir) {
     return files;
 }
 
-try {
-    const publicDir = path.join(__dirname, '..', 'public');
-    const allFiles = findSongFiles(smDir, publicDir);
-    
-    // Dynamically get game folders from the 'sm' directory
-    const allGameFolders = fs.readdirSync(smDir).filter(item => 
-        fs.statSync(path.join(smDir, item)).isDirectory()
-    );
+async function main() {
+    try {
+        const publicDir = path.join(__dirname, '..', 'public');
+        const allFiles = findSongFiles(smDir, publicDir);
 
-    // Manual sort order for games
-    // Folder names have been normalized in this repo; keep sort order aligned to folder names
-    const manualSortOrder = [
-        'World',
-        'A3',
-        'A20 Plus',
-        'A20',
-        'A',
-        '2014',
-        '2013',
-        'X3 vs 2nd',
-        'X2',
-        'X',
-        'SN2',
-        'SN1',
-        'EX',
-        '7th',
-        '6th',
-        '5th',
-        '4th Plus',
-        '4th',
-        '3rd',
-        '2nd',
-        'DDR',
-        'ITG 1'
-    ];
-
-    // Sort folders based on the manual order
-    const gameFolders = allGameFolders.sort((a, b) => {
-        const indexA = manualSortOrder.indexOf(a);
-        const indexB = manualSortOrder.indexOf(b);
-
-        if (indexA !== -1 && indexB !== -1) {
-            return indexA - indexB; // Both are in the manual list, sort by its order
+        const songIdMap = await loadSongIdMap();
+        let mapChanged = false;
+        const filesWithIds = allFiles.map(file => {
+            const { id, created } = ensureSongId(songIdMap, file.path);
+            if (created) mapChanged = true;
+            return { ...file, id };
+        });
+        if (mapChanged) {
+            await saveSongIdMap(songIdMap);
         }
-        if (indexA !== -1) {
-            return -1; // Only A is in the list, it comes first
+
+        const allGameFolders = fs.readdirSync(smDir).filter(item =>
+            fs.statSync(path.join(smDir, item)).isDirectory()
+        );
+
+        const manualSortOrder = [
+            'World',
+            'A3',
+            'A20 Plus',
+            'A20',
+            'A',
+            '2014',
+            '2013',
+            'X3 vs 2nd',
+            'X2',
+            'X',
+            'SN2',
+            'SN1',
+            'EX',
+            '7th',
+            '6th',
+            '5th',
+            '4th Plus',
+            '4th',
+            '3rd',
+            '2nd',
+            'DDR',
+            'ITG 1'
+        ];
+
+        const gameFolders = allGameFolders.sort((a, b) => {
+            const indexA = manualSortOrder.indexOf(a);
+            const indexB = manualSortOrder.indexOf(b);
+
+            if (indexA !== -1 && indexB !== -1) {
+                return indexA - indexB;
+            }
+            if (indexA !== -1) {
+                return -1;
+            }
+            if (indexB !== -1) {
+                return 1;
+            }
+            return a.localeCompare(b);
+        });
+
+        const output = {
+            games: gameFolders,
+            files: filesWithIds
+        };
+
+        fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
+        console.log(`Successfully generated sm-files.json with ${gameFolders.length} games and ${filesWithIds.length} files.`);
+
+    } catch (error) {
+        console.error('Error generating sm-files.json:', error);
+        if (error.code === 'ENOENT') {
+            console.error("Please ensure the 'public/sm' directory exists and contains game folders.");
+            fs.writeFileSync(outputFile, JSON.stringify({ games: [], files: [] }, null, 2));
         }
-        if (indexB !== -1) {
-            return 1; // Only B is in the list, it comes first
-        }
-        return a.localeCompare(b); // Neither are in the list, sort alphabetically
-    });
-
-    const output = {
-        games: gameFolders,
-        files: allFiles
-    };
-
-    fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
-    console.log(`Successfully generated sm-files.json with ${gameFolders.length} games and ${allFiles.length} files.`);
-
-} catch (error) {
-    console.error('Error generating sm-files.json:', error);
-    if (error.code === 'ENOENT') {
-        console.error("Please ensure the 'public/sm' directory exists and contains game folders.");
-        // Create an empty file to prevent build failures
-        fs.writeFileSync(outputFile, JSON.stringify({ games: [], files: [] }, null, 2));
     }
-    // Don't exit with an error if the folder doesn't exist, just log it. 
-    // process.exit(1); 
 }
 
-
+main();

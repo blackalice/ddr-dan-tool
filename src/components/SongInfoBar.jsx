@@ -6,7 +6,7 @@ import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
 import { getGrade } from '../utils/grades.js';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
-import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
+import { resolveScore } from '../utils/scoreKey.js';
 import '../BPMTool.css';
 
 const SongInfoBar = ({
@@ -45,10 +45,14 @@ const SongInfoBar = ({
 
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
-    const keyNew = makeScoreKey({ title: songTitle, artist, difficulty: currentChart.difficulty });
-    const keyLegacy = legacyScoreKey({ title: songTitle, difficulty: currentChart.difficulty });
-    return scores[currentChart.mode]?.[keyNew] || scores[currentChart.mode]?.[keyLegacy] || null;
-  }, [scores, currentChart, songTitle, artist]);
+    return resolveScore(scores, currentChart.mode, {
+      chartId: currentChart.chartId,
+      songId: simfileData?.songId,
+      title: songTitle,
+      artist,
+      difficulty: currentChart.difficulty,
+    });
+  }, [scores, currentChart, songTitle, artist, simfileData?.songId]);
 
   const lampClass = React.useMemo(() => {
     if (!currentScore?.lamp) return '';
@@ -112,8 +116,14 @@ const SongInfoBar = ({
             }
 
             // Check played status filter
-            const chartKey = `${songTitle.toLowerCase()}-${chartType.difficulty.toLowerCase()}`;
-            const hasScore = scores[chartType.mode]?.[chartKey] != null;
+            const scoreHit = resolveScore(scores, chartType.mode, {
+              chartId: chartType.chartId,
+              songId: simfileData?.songId,
+              title: songTitle,
+              artist,
+              difficulty: chartType.difficulty,
+            });
+            const hasScore = scoreHit != null;
 
             if (filters.playedStatus === 'played' && !hasScore) {
                 filteredOut = true;

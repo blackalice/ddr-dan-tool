@@ -12,6 +12,7 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
+import { resolveScore } from './utils/scoreKey.js';
 
 const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
@@ -165,10 +166,16 @@ const RankingsPage = () => {
             resetFilters,
             path: song.path,
             slug: `${diff.mode}-${String(diff.difficulty).toLowerCase()}`,
+            chartId: diff.chartId,
+            songId: song.id,
           };
-          const keyNew = song.artist ? `${song.title.toLowerCase()}::${song.artist.toLowerCase()}::${diff.difficulty.toLowerCase()}` : null;
-          const keyLegacy = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
-          const hit = scores[playStyle]?.[keyNew] || scores[playStyle]?.[keyLegacy];
+          const hit = resolveScore(scores, diff.mode, {
+            chartId: diff.chartId,
+            songId: song.id,
+            title: song.title,
+            artist: song.artist,
+            difficulty: diff.difficulty,
+          });
           if (hit) {
             chart.score = hit.score;
           }

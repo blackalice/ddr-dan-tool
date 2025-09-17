@@ -2,6 +2,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { parseSm } from '../src/utils/smParser.js';
+import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
+import { buildChartId } from '../src/utils/chartIds.js';
 
 function getLastBeat(notes) {
   if (!notes) return 0;
@@ -174,9 +176,13 @@ async function main() {
     const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
     const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
     const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
+    const songIdMap = await loadSongIdMap();
+    let mapChanged = false;
     const results = [];
     for (const file of smList.files) {
       try {
+        const { id: songId, created } = ensureSongId(songIdMap, file.path);
+        if (created) mapChanged = true;
         const fullPath = path.join(PUBLIC_DIR, file.path);
         const simfile = await readSmFile(fullPath);
         const allBpms = Object.values(simfile.charts).flatMap(c => c.bpm.map(b => b.bpm)).filter(b => b > 0);
@@ -192,7 +198,8 @@ async function main() {
           .map(c => {
             const arr = ratingsByMode[c.mode];
             const rating = pickRatingForLevel(arr, c.feet);
-            return { mode: c.mode, difficulty: c.difficulty, feet: c.feet, rankedRating: rating };
+            const chartId = buildChartId(songId, c.mode, c.difficulty);
+            return { mode: c.mode, difficulty: c.difficulty, feet: c.feet, rankedRating: rating, chartId };
           });
         const game = file.path.split('/')[1] || 'Unknown';
 
@@ -209,6 +216,7 @@ async function main() {
         const length = calculateSongLength(referenceChart.bpm, lastBeat, referenceChart.stops);
 
         results.push({
+          id: songId,
           path: file.path,
           title: simfile.title,
           titleTranslit: simfile.titletranslit,
@@ -224,6 +232,9 @@ async function main() {
       } catch (err) {
         console.warn('Failed to process', file.path, err.message);
       }
+    }
+    if (mapChanged) {
+      await saveSongIdMap(songIdMap);
     }
     await fs.writeFile(OUTPUT_PATH, JSON.stringify(results, null, 2));
     console.log(`Generated song metadata for ${results.length} songs.`);
