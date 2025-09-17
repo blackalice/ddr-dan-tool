@@ -28,6 +28,27 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta } from './utils/cachedFetch.js';
+import { resolveScore } from './utils/scoreKey.js';
+import {
+  normalizeDifficultyName,
+  normalizeMode,
+  upgradeChartId,
+} from './utils/chartIds.js';
+import { normalizeSongIdValue } from './utils/songId.js';
+
+const identifierForChart = (chart) => {
+  if (!chart) return '';
+  const upgraded = chart.chartId ? upgradeChartId(chart.chartId) : null;
+  if (upgraded) return upgraded;
+  const songId = normalizeSongIdValue(chart.songId);
+  const mode = normalizeMode(chart.mode);
+  const difficulty = normalizeDifficultyName(chart.difficulty);
+  if (songId && mode && difficulty) {
+    return `${songId}#${mode}#${difficulty}`;
+  }
+  const title = String(chart.title || '').toLowerCase();
+  return `${title}::${mode || ''}::${difficulty || ''}`;
+};
 
 const GroupSection = ({
   group,
@@ -64,7 +85,8 @@ const GroupSection = ({
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showActions, setShowActions] = useState(false);
-  const [chartOrder, setChartOrder] = useState(() => group.charts.map(c => `${c.title}::${c.mode}::${c.difficulty}`));
+  const chartIdFor = (chart) => identifierForChart(chart);
+  const [chartOrder, setChartOrder] = useState(() => group.charts.map(c => chartIdFor(c)));
   const chartSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor)
@@ -83,7 +105,7 @@ const GroupSection = ({
   }, [group.name]);
 
   useEffect(() => {
-    setChartOrder(group.charts.map(c => `${c.title}::${c.mode}::${c.difficulty}`));
+    setChartOrder(group.charts.map(c => chartIdFor(c)));
   }, [group.charts]);
 
   const handleDelete = () => {
@@ -182,12 +204,16 @@ const GroupSection = ({
             >
               <SortableContext items={chartOrder} strategy={rectSortingStrategy}>
                 {chartOrder.map(id => {
-                  const chart = group.charts.find(c => `${c.title}::${c.mode}::${c.difficulty}` === id);
+                  const chart = group.charts.find(c => chartIdFor(c) === id);
                   if (!chart) return null;
-                  const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
-                  const keyNew = chart.artist ? `${chart.title.toLowerCase()}::${chart.artist.toLowerCase()}::${chart.difficulty.toLowerCase()}` : null;
-                  const keyLegacy = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-                  const hit = (keyNew && scores[chart.mode]?.[keyNew]) || scores[chart.mode]?.[keyLegacy];
+                  const highlightId = `${group.name}-${chartIdFor(chart)}`;
+                  const hit = resolveScore(scores, chart.mode, {
+                    chartId: chart.chartId,
+                    songId: chart.songId,
+                    title: chart.title,
+                    artist: chart.artist,
+                    difficulty: chart.difficulty,
+                  });
                   const score = hit?.score;
                   return (
                     <SortableSongCard
@@ -206,10 +232,14 @@ const GroupSection = ({
             </DndContext>
           ) : (
           group.charts.map((chart, idx) => {
-            const highlightId = `${group.name}-${chart.title}-${chart.mode}-${chart.difficulty}`;
-            const keyNew = chart.artist ? `${chart.title.toLowerCase()}::${chart.artist.toLowerCase()}::${chart.difficulty.toLowerCase()}` : null;
-            const keyLegacy = `${chart.title.toLowerCase()}-${chart.difficulty.toLowerCase()}`;
-            const hit = (keyNew && scores[chart.mode]?.[keyNew]) || scores[chart.mode]?.[keyLegacy];
+            const highlightId = `${group.name}-${chart.chartId || `${chart.title}-${chart.mode}-${chart.difficulty}`}`;
+            const hit = resolveScore(scores, chart.mode, {
+              chartId: chart.chartId,
+              songId: chart.songId,
+              title: chart.title,
+              artist: chart.artist,
+              difficulty: chart.difficulty,
+            });
             const score = hit?.score;
             return (
               <SongCard

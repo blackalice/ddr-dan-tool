@@ -1,6 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import Fraction from "fraction.js";
+import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
+import { buildChartId } from '../src/utils/chartIds.js';
 
 // --- Start of smParserUtils.js content ---
 const beats = [
@@ -497,7 +499,7 @@ const findSongFile = (title, smFiles) => {
     );
 };
 
-const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap) => {
+const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap, songIdMapState) => {
     if (!courses) return [];
     const processedCourses = [];
 
@@ -533,6 +535,10 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap)
                 continue;
             }
 
+            const { id: ensuredId, created } = ensureSongId(songIdMapState.map, songFile.path);
+            if (created) songIdMapState.changed = true;
+            const songId = songFile.id || ensuredId;
+
             const chart = simfileData.availableTypes.find(c => c.difficulty === difficulty && c.mode === mode);
             if (!chart) {
                 processedSongs.push({
@@ -556,6 +562,7 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap)
             const ratingsDouble = getRatingsForTitle(simfileData.title, doubleRankMap);
             const ratingArrByMode = { single: ratingsSingle, double: ratingsDouble };
             const rankedRating = pickRatingForLevel(ratingArrByMode[chart.mode], chart.feet);
+            const chartId = buildChartId(songId, chart.mode, chart.difficulty);
 
             processedSongs.push({
                 title: simfileData.title,
@@ -565,9 +572,14 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap)
                 mode: chart.mode,
                 game: game,
                 rankedRating,
+                songId,
+                chartId,
+                path: songFile.path,
+                artist: simfileData.artist,
             });
         }
-        processedCourses.push({ ...course, songs: processedSongs });
+        const chartIds = processedSongs.map(s => s.chartId).filter(Boolean);
+        processedCourses.push({ ...course, songs: processedSongs, chartIds });
     }
     return processedCourses;
 };
@@ -581,10 +593,12 @@ async function main() {
         const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
         const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
         const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
+        const songIdMap = await loadSongIdMap();
+        const songIdMapState = { map: songIdMap, changed: false };
 
         // Process Dan data
-        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap);
-        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles, singleRankMap, doubleRankMap);
+        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap, songIdMapState);
+        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles, singleRankMap, doubleRankMap, songIdMapState);
         const danResult = {
             single: processedDanSingle,
             double: processedDanDouble,
@@ -596,11 +610,14 @@ async function main() {
         const vegaResult = {};
         for (const month in courseData.vega) {
             if (Object.hasOwnProperty.call(courseData.vega, month)) {
-                vegaResult[month] = await processCourseList(courseData.vega[month], smFiles, singleRankMap, doubleRankMap);
+                vegaResult[month] = await processCourseList(courseData.vega[month], smFiles, singleRankMap, doubleRankMap, songIdMapState);
             }
         }
         await fs.writeFile(VEGA_OUTPUT_PATH, JSON.stringify(vegaResult, null, 2));
         console.log(`Successfully generated Vega data at ${VEGA_OUTPUT_PATH}`);
+        if (songIdMapState.changed) {
+            await saveSongIdMap(songIdMapState.map);
+        }
 
     } catch (error) {
         console.error('Error generating processed data:', error);

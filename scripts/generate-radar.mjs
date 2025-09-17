@@ -2,6 +2,8 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { parseSm } from '../src/utils/smParser.js'
+import { loadSongIdMap } from './songIdUtils.mjs'
+import { buildChartId } from '../src/utils/chartIds.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -283,14 +285,11 @@ function computeChaos(chart, mode, songSec, notesText) {
   return { value: chaos, unitChaos, avgBpmDelta: Math.floor(x) }
 }
 
-function keyFor(title, mode, difficulty) {
-  return `${title}||${mode}||${difficulty}`
-}
-
 async function main() {
   try {
     const smListRaw = await fs.readFile(SM_FILES_PATH, 'utf-8')
     const smList = JSON.parse(smListRaw)
+    const songIdMap = await loadSongIdMap()
     let audioMap = {}
     try {
       const audioRaw = await fs.readFile(AUDIO_MAP_PATH, 'utf-8')
@@ -342,7 +341,14 @@ async function main() {
         const firstSecBeats = (chart.arrows && chart.arrows.length) ? timeAtOffset(chart.bpm || [], chart.stops || [], chart.arrows[0].offset) : 0
         const firstSec = Math.max(0, firstSecBeats + offsetSec)
         const steps = stream.steps
-        out[keyFor(sim.title, at.mode, at.difficulty)] = {
+        const songId = songIdMap[file.path]
+        if (!songId) {
+          console.warn(`Missing song ID for ${file.path}`)
+          continue
+        }
+        const chartId = buildChartId(songId, at.mode, at.difficulty)
+        if (!chartId) continue
+        out[chartId] = {
           steps,
           firstNoteSeconds: toFixed(firstSec, 3),
           songSeconds: toFixed(secUsed, 3),

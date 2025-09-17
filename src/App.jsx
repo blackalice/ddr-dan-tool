@@ -52,7 +52,7 @@ function AppRoutes() {
       // New format: ?s=<songId>&c=<chartId>&m=<mode>
       if (sel.mode) setPlayStyle(sel.mode);
       if (sel.songId) {
-        const songFile = smData.files.find(f => f.path === sel.songId) || null;
+        const songFile = smData.files.find(f => f.id === sel.songId || f.path === sel.songId) || null;
         if (!songFile) {
           setSimfileData(null); setCurrentChart(null);
           return;
@@ -85,9 +85,10 @@ function AppRoutes() {
         const curS = searchParams.get('s');
         const curC = searchParams.get('c');
         const curM = searchParams.get('m');
-        if (songFile.path && chart?.slug && (curS !== songFile.path || curC !== chart.slug || curM !== chart.mode)) {
+        const identifier = songFile.id || songFile.path;
+        if (identifier && chart?.slug && (curS !== identifier || curC !== chart.slug || curM !== chart.mode)) {
           const next = new URLSearchParams(searchParams);
-          next.set('s', songFile.path);
+          next.set('s', identifier);
           next.set('c', chart.slug);
           next.set('m', chart.mode);
           if (debugEnabled) { try { console.log('[Route] replace s/c/m ->', next.toString()); } catch { /* noop */ } }
@@ -110,7 +111,8 @@ function AppRoutes() {
         setCurrentChart(chart);
         // Upgrade legacy to new search params (clear legacy keys)
         const next = new URLSearchParams(searchParams);
-        next.set('s', songFile.path);
+        const identifier = songFile.id || songFile.path;
+        if (identifier) next.set('s', identifier);
         if (chart?.slug) next.set('c', chart.slug);
         if (chart?.mode) next.set('m', chart.mode);
         next.delete('difficulty');
@@ -128,7 +130,7 @@ function AppRoutes() {
 
   const handleSongSelect = useCallback((song) => {
     if (song) {
-      const songId = song.path || song.value || null;
+      const songId = song.id || song.songId || song.value || song.path || null;
       const mode = playStyle; // keep current mode for now
       if (songId) {
         const next = new URLSearchParams(searchParams);
@@ -151,7 +153,7 @@ function AppRoutes() {
     if (chart && chart.mode) {
       setPlayStyle(chart.mode);
     }
-    const songId = simfileData?.path || simfileData?.filePath || searchParams.get('s') || null;
+    const songId = simfileData?.songId || simfileData?.path || simfileData?.filePath || searchParams.get('s') || null;
     if (songId && chart?.slug) {
       const next = new URLSearchParams(searchParams);
       next.set('s', songId);

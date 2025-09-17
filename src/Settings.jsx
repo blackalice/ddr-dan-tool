@@ -144,10 +144,23 @@ const Settings = () => {
                 if (!pass) best = null;
             }
             if (best) {
-                const key = makeScoreKey({ title: best.title, artist: best.artist, difficulty: entry.difficulty });
-                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
-                if (entry.optional && entry.optional.flare) {
-                    newScores[keyName][key].flare = entry.optional.flare;
+                const diffNorm = normalizeString(entry.difficulty || '');
+                const chartMatch = (best.difficulties || []).find(d => normalizeString(d.difficulty || '') === diffNorm);
+                const modeForChart = chartMatch?.mode || (keyName === 'double' ? 'double' : 'single');
+                const key = makeScoreKey({
+                    chartId: chartMatch?.chartId,
+                    songId: best.id,
+                    mode: modeForChart,
+                    difficulty: chartMatch?.difficulty || entry.difficulty,
+                    title: best.title,
+                    artist: best.artist,
+                });
+                if (key) {
+                    const targetMode = modeForChart === 'double' ? 'double' : 'single';
+                    newScores[targetMode][key] = { score: entry.score, lamp: entry.lamp };
+                    if (entry.optional && entry.optional.flare) {
+                        newScores[targetMode][key].flare = entry.optional.flare;
+                    }
                 }
             } else {
                 unmatched++;

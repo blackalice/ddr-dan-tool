@@ -78,9 +78,15 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   }, [song?.artist, song?.path]);
 
   const scoreData = React.useMemo(() => {
-    if (!song || !song.title || !song.difficulty || !song.mode) return null;
+    if (!song || !song.difficulty || !song.mode) return null;
     const artist = song.artist || derivedArtist || undefined;
-    return resolveScore(scores, song.mode, { title: song.title, artist, difficulty: song.difficulty });
+    return resolveScore(scores, song.mode, {
+      chartId: song.chartId,
+      songId: song.songId || song.id,
+      title: song.title,
+      artist,
+      difficulty: song.difficulty,
+    });
   }, [scores, song, derivedArtist]);
 
   const displayScore = scoreData?.score ?? score ?? null;
@@ -148,8 +154,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
       onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);
-      const songId = song.path || song.value;
-      const chartId = song.slug; // may be undefined in Dan/Vega data
+      const songId = song.songId || song.id || song.path || song.value;
+      const chartId = song.chartId || song.slug; // may be undefined in Dan/Vega data
       if (songId && chartId) {
         navigate(`/bpm?s=${encodeURIComponent(songId)}&c=${encodeURIComponent(chartId)}&m=${song.mode}`, { state: { fromSongCard: true } });
       } else {

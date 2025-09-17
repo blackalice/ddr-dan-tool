@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
-import { makeScoreKey, legacyScoreKey } from './utils/scoreKey.js';
+import { resolveScore } from './utils/scoreKey.js';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { loadVegaData, loadVegaResults } from './utils/course-loader.js';
@@ -48,15 +48,19 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters, titleToPath }) =
             {!isCollapsed && (
               <div className={songGridClasses}>
                   {danCourse.songs.map((song, index) => {
-                      const keyNew = song.artist ? makeScoreKey({ title: song.title, artist: song.artist, difficulty: song.difficulty }) : null;
-                      const keyLegacy = legacyScoreKey({ title: song.title, difficulty: song.difficulty });
-                      const hit = (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy];
+                      const hit = resolveScore(scores, song.mode, {
+                          chartId: song.chartId,
+                          songId: song.songId,
+                          title: song.title,
+                          artist: song.artist,
+                          difficulty: song.difficulty,
+                      });
                       const score = hit?.score;
                       const path = titleToPath.get(normalizeString(song.title)) || null;
                       const songWithPath = path ? { ...song, path } : song;
                       return (
                           <SongCard
-                              key={`${danCourse.name}-${song.title}-${index}`}
+                              key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
                               song={songWithPath}
                               setSelectedGame={setSelectedGame}
                               resetFilters={resetFilters}

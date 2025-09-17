@@ -1,5 +1,7 @@
 import { parseSm } from './smParser.js';
 import { getJsonCached, getTextCached } from './cachedFetch.js';
+import { buildChartId } from './chartIds.js';
+import { normalizeSongIdValue } from './songId.js';
 
 let smFilesCache = null;
 
@@ -25,11 +27,24 @@ export const loadSimfileData = async (songFile) => {
     try {
         const text = await getTextCached(encodeURI(`/${songFile.path}`));
         const parsed = parseSm(text);
-        
+        const songId = normalizeSongIdValue(songFile.id || songFile.songId || null);
+        const availableTypes = parsed.availableTypes.map(c => ({
+            ...c,
+            chartId: buildChartId(songId, c.mode, c.difficulty),
+        }));
+        const charts = {};
+        for (const [slug, chart] of Object.entries(parsed.charts || {})) {
+            const meta = availableTypes.find(c => c.slug === slug);
+            charts[slug] = { ...chart, chartId: meta?.chartId || null };
+        }
+
         const mixName = songFile.path.split('/')[1] || 'Unknown Mix';
 
         return {
             ...parsed,
+            songId,
+            availableTypes,
+            charts,
             path: songFile.path,
             title: {
                 titleName: parsed.title,
