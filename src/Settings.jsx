@@ -93,12 +93,58 @@ const Settings = () => {
         const play = (data.meta && data.meta.playtype)
             ? data.meta.playtype.toUpperCase()
             : uploadPlaytype;
-        const keyName = play === 'DP' ? 'double' : 'single';
-        const newScores = {
-            ...scores,
-            [keyName]: { ...(scores[keyName] || {}) },
+
+        const collected = {
+            single: new Map(),
+            double: new Map(),
         };
+
+        const normalizeUploadedEntry = (entry) => {
+            if (entry == null || typeof entry !== 'object') return null;
+            const normalized = {};
+            if (entry.score != null) {
+                const parsed = Number(entry.score);
+                if (Number.isFinite(parsed)) normalized.score = parsed;
+            }
+            if (entry.lamp != null) normalized.lamp = entry.lamp;
+            if (entry.optional && entry.optional.flare != null) {
+                const parsedFlare = Number(entry.optional.flare);
+                if (Number.isFinite(parsedFlare)) normalized.flare = parsedFlare;
+            }
+            return Object.keys(normalized).length > 0 ? normalized : null;
+        };
+
+        const entriesEqual = (a, b) => {
+            if (!a || !b) return false;
+            if (a.score !== b.score || a.lamp !== b.lamp) return false;
+            const aFlare = Object.prototype.hasOwnProperty.call(a, 'flare') ? a.flare : undefined;
+            const bFlare = Object.prototype.hasOwnProperty.call(b, 'flare') ? b.flare : undefined;
+            return aFlare === bFlare;
+        };
+
+        const haveSameEntries = (prev = {}, next = {}) => {
+            const prevKeys = Object.keys(prev);
+            const nextKeys = Object.keys(next);
+            if (prevKeys.length !== nextKeys.length) return false;
+            for (const key of nextKeys) {
+                const prevEntry = prev[key];
+                const nextEntry = next[key];
+                if (!prevEntry || !nextEntry) return false;
+                if (!entriesEqual(prevEntry, nextEntry)) return false;
+            }
+            return true;
+        };
+
+        const buildObjectFromMap = (map) => {
+            const obj = {};
+            for (const [key, value] of map.entries()) {
+                obj[key] = value;
+            }
+            return obj;
+        };
+
         let unmatched = 0;
+        let matched = 0;
         const unmatchedEntries = [];
         for (const entry of data.scores) {
             const idNorm = normalizeString(entry.identifier || '');
@@ -146,7 +192,7 @@ const Settings = () => {
             if (best) {
                 const diffNorm = normalizeString(entry.difficulty || '');
                 const chartMatch = (best.difficulties || []).find(d => normalizeString(d.difficulty || '') === diffNorm);
-                const modeForChart = chartMatch?.mode || (keyName === 'double' ? 'double' : 'single');
+                const modeForChart = chartMatch?.mode || (play === 'DP' ? 'double' : 'single');
                 const key = makeScoreKey({
                     chartId: chartMatch?.chartId,
                     songId: best.id,
@@ -157,9 +203,25 @@ const Settings = () => {
                 });
                 if (key) {
                     const targetMode = modeForChart === 'double' ? 'double' : 'single';
-                    newScores[targetMode][key] = { score: entry.score, lamp: entry.lamp };
-                    if (entry.optional && entry.optional.flare) {
-                        newScores[targetMode][key].flare = entry.optional.flare;
+                    const normalizedEntry = normalizeUploadedEntry(entry);
+                    if (normalizedEntry) {
+                        matched++;
+                        const bucket = collected[targetMode];
+                        const prev = bucket.get(key);
+                        const prevScore = typeof prev?.score === 'number' ? prev.score : null;
+                        const nextScore = typeof normalizedEntry.score === 'number' ? normalizedEntry.score : null;
+                        const shouldReplace = (
+                            !prev ||
+                            (nextScore != null && (prevScore == null || nextScore > prevScore)) ||
+                            (nextScore != null && prevScore === nextScore && !entriesEqual(prev, normalizedEntry)) ||
+                            (nextScore == null && prevScore == null && !entriesEqual(prev, normalizedEntry))
+                        );
+                        if (shouldReplace) {
+                            bucket.set(key, normalizedEntry);
+                        }
+                    } else {
+                        unmatched++;
+                        unmatchedEntries.push(`${entry.identifier} - invalid score data`);
                     }
                 }
             } else {
@@ -167,9 +229,21 @@ const Settings = () => {
                 unmatchedEntries.push(`${entry.identifier} - ${entry.difficulty}`);
             }
         }
-        setScores(newScores);
-        console.warn(`Imported ${data.scores.length - unmatched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
-        return { total: data.scores.length, unmatched, unmatchedEntries };
+
+        const nextSingle = collected.single.size > 0 ? buildObjectFromMap(collected.single) : scores.single;
+        const nextDouble = collected.double.size > 0 ? buildObjectFromMap(collected.double) : scores.double;
+        const shouldUpdateSingle = collected.single.size > 0 && !haveSameEntries(scores.single || {}, nextSingle);
+        const shouldUpdateDouble = collected.double.size > 0 && !haveSameEntries(scores.double || {}, nextDouble);
+
+        if (shouldUpdateSingle || shouldUpdateDouble) {
+            setScores({
+                single: shouldUpdateSingle ? nextSingle : scores.single,
+                double: shouldUpdateDouble ? nextDouble : scores.double,
+            });
+        }
+
+        console.warn(`Imported ${matched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
+        return { total: data.scores.length, unmatched, unmatchedEntries, matched };
     };
 
 
@@ -207,7 +281,10 @@ const Settings = () => {
                 throw new Error('Unsupported file type');
             }
             if (result) {
-                setUploadMessage(`Imported ${result.total - result.unmatched} of ${result.total} scores.`);
+                const importedCount = typeof result.matched === 'number'
+                    ? result.matched
+                    : Math.max(0, result.total - result.unmatched);
+                setUploadMessage(`Imported ${importedCount} of ${result.total} scores.`);
                 setUnmatchedLines((result.unmatchedEntries || []).slice(0, 100));
             }
         } catch (err) {
