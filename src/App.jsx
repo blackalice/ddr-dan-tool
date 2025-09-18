@@ -7,6 +7,7 @@ import { FilterProvider } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import { parseSelection } from './utils/urlState.js';
+import { parseChartId } from './utils/chartIds.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
 import './App.css';
 import './Tabs.css';
@@ -61,6 +62,13 @@ function AppRoutes() {
         let chart = null;
         if (sel.chartId) {
           chart = data.availableTypes.find(c => c.slug === sel.chartId) || null;
+          if (!chart) {
+            const parsedChart = parseChartId(sel.chartId);
+            if (parsedChart?.mode && parsedChart?.difficulty) {
+              const slug = [parsedChart.mode, parsedChart.difficulty].filter(Boolean).join('-');
+              chart = data.availableTypes.find(c => c.slug === slug) || null;
+            }
+          }
         }
         if (!chart) {
           // choose default chart in current playStyle
