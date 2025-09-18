@@ -105,7 +105,9 @@ export const ScoresProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    storage.setItem('ddrScores', JSON.stringify(scores));
+    const payload = JSON.stringify(scores);
+    storage.setItem('ddrScores', payload);
+    storage.setItem('scores', payload);
   }, [scores]);
 
   useEffect(() => {
