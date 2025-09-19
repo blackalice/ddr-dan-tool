@@ -8,6 +8,8 @@ import { getGrade } from '../utils/grades.js';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 import { resolveScore } from '../utils/scoreKey.js';
 import '../BPMTool.css';
+import '../styles/glow.css';
+import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 
 const SongInfoBar = ({
   isCollapsed,
@@ -54,15 +56,9 @@ const SongInfoBar = ({
     });
   }, [scores, currentChart, songTitle, artist, simfileData?.songId]);
 
-  const lampClass = React.useMemo(() => {
-    if (!currentScore?.lamp) return '';
-    const lamp = currentScore.lamp.toLowerCase();
-    if (lamp.includes('marvelous')) return 'glow-marvelous';
-    if (lamp.includes('perfect')) return 'glow-perfect';
-    if (lamp.includes('great')) return 'glow-great';
-    if (lamp.includes('good')) return 'glow-good';
-    return '';
-  }, [currentScore]);
+  const badgeGlowClasses = React.useMemo(() => {
+    return getScoreGlowClasses({ lamp: currentScore?.lamp });
+  }, [currentScore?.lamp]);
 
   const renderDifficulties = (style) => { // style is 'single' or 'double'
     if (!simfileData) {
@@ -329,7 +325,7 @@ const SongInfoBar = ({
                 </div>
               </div>
             )}
-            <div className={`bpm-score-badge score-badge ${lampClass}`}>
+            <div className={`bpm-score-badge score-badge ${badgeGlowClasses}`}>
               <span className="score-lamp">{currentScore?.lamp ?? ''}</span>
               <span className="score-value">{currentScore ? currentScore.score.toLocaleString() : '--'}</span>
               <span className="score-extra">{currentScore ? `${getGrade(currentScore.score)}${currentScore.flare ? ` ${currentScore.flare}` : ''}` : ''}</span>

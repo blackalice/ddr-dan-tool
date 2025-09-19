@@ -9,6 +9,7 @@ import { storage } from './utils/remoteStorage.js';
 import { normalizeString } from './utils/stringSimilarity.js';
 import './App.css';
 import './components/SongCard.css';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
 const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleToPath }) => {
   const { scores } = useScores();
@@ -51,16 +52,20 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleT
               difficulty: song.difficulty,
             });
             const score = hit?.score;
+            const scoreHighlight = shouldHighlightScore(score);
+            const lamp = hit?.lamp;
             const path = titleToPath.get(normalizeString(song.title)) || null;
             const songWithPath = path ? { ...song, path } : song;
+            const songForCard = lamp ? { ...songWithPath, lamp } : songWithPath;
             return (
               <SongCard
                 key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
-                song={songWithPath}
+                song={songForCard}
                 playMode={playMode}
                 setSelectedGame={setSelectedGame}
                 resetFilters={resetFilters}
                 score={score}
+                scoreHighlight={scoreHighlight}
               />
             );
           })}

@@ -8,7 +8,9 @@ import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
+import '../styles/glow.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
+import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 
 const difficultyDisplayMap = {
     single: {
@@ -90,7 +92,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   }, [scores, song, derivedArtist]);
 
   const displayScore = scoreData?.score ?? score ?? null;
-  const lamp = scoreData?.lamp ?? null;
+  const lamp = scoreData?.lamp ?? song?.lamp ?? null;
   const flare = scoreData?.flare ?? null;
   const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
 
@@ -128,9 +130,22 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
 
   const difficultyInfo = song.mode && song.difficulty ? difficultyDisplayMap[song.mode]?.[song.difficulty] : null;
 
+  const showRanked = forceShowRankedRating || showRankedRatings;
+  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
+
+  const cardLinkClassName = useMemo(() => {
+    const classes = ['song-card-link'];
+    if (!song?.error && scoreHighlight) {
+      classes.push('score-highlight');
+      const glow = getScoreGlowClasses({ lamp });
+      if (glow) classes.push(glow);
+    }
+    return classes.join(' ');
+  }, [song?.error, scoreHighlight, lamp]);
+
   if (song.error) {
     return (
-      <div className="song-card-link">
+      <div className={cardLinkClassName}>
         <div className="song-card error-card">
           <div className="song-card-header">
             <h3 className="song-title">{song.title}</h3>
@@ -143,14 +158,9 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     );
   }
 
-  const showRanked = forceShowRankedRating || showRankedRatings;
-  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
-
   return (
     <div
-      className={
-        'song-card-link' + (scoreHighlight ? ' score-highlight' : '')
-      }
+      className={cardLinkClassName}
       onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);

@@ -14,6 +14,7 @@ import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
 const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
 const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
@@ -142,7 +143,7 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
               key={idx}
               song={chart}
               score={chart.score}
-              scoreHighlight={chart.score > 989999}
+              scoreHighlight={shouldHighlightScore(chart.score)}
               forceShowRankedRating
             />
           ))}

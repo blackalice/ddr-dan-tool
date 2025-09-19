@@ -29,6 +29,7 @@ import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
 import {
   normalizeDifficultyName,
   normalizeMode,
@@ -215,16 +216,20 @@ const GroupSection = ({
                     difficulty: chart.difficulty,
                   });
                   const score = hit?.score;
+                  const lamp = hit?.lamp;
+                  const scoreHighlight = shouldHighlightScore(score);
+                  const songForCard = lamp ? { ...chart, lamp } : chart;
                   return (
                     <SortableSongCard
                       key={id}
                       id={id}
-                      song={chart}
+                      song={songForCard}
                       resetFilters={resetFilters}
                       onRemove={() => removeChart(group.name, chart)}
                       onEdit={() => onEditChart(group.name, chart)}
                       highlight={highlightKey === highlightId}
                       score={score}
+                      scoreHighlight={scoreHighlight}
                     />
                   );
                 })}
@@ -241,15 +246,19 @@ const GroupSection = ({
               difficulty: chart.difficulty,
             });
             const score = hit?.score;
+            const lamp = hit?.lamp;
+            const scoreHighlight = shouldHighlightScore(score);
+            const songForCard = lamp ? { ...chart, lamp } : chart;
             return (
               <SongCard
                 key={idx}
-                song={chart}
+                song={songForCard}
                 resetFilters={resetFilters}
                 onRemove={undefined}
                 onEdit={undefined}
                 highlight={highlightKey === highlightId}
                 score={score}
+                scoreHighlight={scoreHighlight}
               />
             );
           })
@@ -461,7 +470,7 @@ function SortableGroupSection({ id, ...props }) {
 }
 
 // Sortable wrapper for SongCard
-function SortableSongCard({ id, song, resetFilters, onRemove, onEdit, highlight, score }) {
+function SortableSongCard({ id, song, resetFilters, onRemove, onEdit, highlight, score, scoreHighlight }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   const style = {
     transform: transform ? CSS.Transform.toString(transform) : undefined,
@@ -477,6 +486,7 @@ function SortableSongCard({ id, song, resetFilters, onRemove, onEdit, highlight,
         onEdit={onEdit}
         highlight={highlight}
         score={score}
+        scoreHighlight={scoreHighlight}
         showDragHandle
         dragAttributes={attributes}
         dragListeners={listeners}

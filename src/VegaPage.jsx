@@ -10,6 +10,7 @@ import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import { normalizeString } from './utils/stringSimilarity.js';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
 const DanSection = ({ danCourse, setSelectedGame, resetFilters, titleToPath }) => {
     const { scores } = useScores();
@@ -56,15 +57,19 @@ const DanSection = ({ danCourse, setSelectedGame, resetFilters, titleToPath }) =
                           difficulty: song.difficulty,
                       });
                       const score = hit?.score;
+                      const lamp = hit?.lamp;
+                      const scoreHighlight = shouldHighlightScore(score);
                       const path = titleToPath.get(normalizeString(song.title)) || null;
                       const songWithPath = path ? { ...song, path } : song;
+                      const songForCard = lamp ? { ...songWithPath, lamp } : songWithPath;
                       return (
                           <SongCard
                               key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
-                              song={songWithPath}
+                              song={songForCard}
                               setSelectedGame={setSelectedGame}
                               resetFilters={resetFilters}
                               score={score}
+                              scoreHighlight={scoreHighlight}
                           />
                       );
                   })}

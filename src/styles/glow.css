@@ -1,0 +1,7 @@
+.glow-marvelous,
+.glow-perfect,
+.glow-great,
+.glow-good {
+  transition: box-shadow 0.25s ease, outline 0.25s ease;
+  box-shadow: none;
+}
