@@ -21,6 +21,7 @@ const Settings = lazy(() => import('./Settings'));
 const DanPage = lazy(() => import('./DanPage.jsx'));
 const VegaPage = lazy(() => import('./VegaPage.jsx'));
 const ListsPage = lazy(() => import('./ListsPage.jsx'));
+const StatsPage = lazy(() => import('./StatsPage.jsx'));
 const RankingsPage = lazy(() => import('./RankingsPage.jsx'));
 const LoginPage = lazy(() => import('./LoginPage.jsx'));
 const SignupPage = lazy(() => import('./SignupPage.jsx'));
@@ -212,10 +213,11 @@ function AppRoutes() {
           <Routes>
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
-          <Route path="/multiplier" element={<Multiplier />} />
-          <Route path="/rankings" element={<RankingsPage />} />
-          {user && <Route path="/lists" element={<ListsPage />} />}
-          <Route path="/" element={<Navigate to="/bpm" replace />} />
+            <Route path="/multiplier" element={<Multiplier />} />
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/rankings" element={<RankingsPage />} />
+            {user && <Route path="/lists" element={<ListsPage />} />}
+            <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />

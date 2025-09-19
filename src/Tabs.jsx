@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar, faChartColumn } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './contexts/AuthContext.jsx';
 import './Tabs.css';
 
@@ -56,6 +56,15 @@ const Tabs = () => {
                     >
                         <span className="tab-icon"><FontAwesomeIcon icon={faCalculator} /></span>
                         <span className="tab-label">Multiplier</span>
+                    </NavLink>
+
+                    <NavLink
+                        to={`/stats${location.hash}`}
+                        aria-label="Stats"
+                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                    >
+                        <span className="tab-icon"><FontAwesomeIcon icon={faChartColumn} /></span>
+                        <span className="tab-label">Stats</span>
                     </NavLink>
 
                     <NavLink
