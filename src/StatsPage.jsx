@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -40,7 +40,7 @@ const readCssVariable = (name, fallback) => {
 
 const StatsPage = () => {
   const { playStyle, theme } = useContext(SettingsContext);
-  const { stats, scores } = useScores();
+  const { stats, scores, ensureStats } = useScores();
   const { user } = useAuth();
 
   const normalizedPlayStyle = playStyle === 'double' ? 'double' : 'single';
@@ -64,6 +64,15 @@ const StatsPage = () => {
       return entries && typeof entries === 'object' && Object.keys(entries).length > 0;
     });
   }, [scores]);
+
+  useEffect(() => {
+    if (!user || typeof ensureStats !== 'function') return undefined;
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    ensureStats({ signal: controller?.signal }).catch(() => {});
+    return () => {
+      controller?.abort();
+    };
+  }, [ensureStats, scores, user]);
 
   const chartColors = useMemo(() => {
     const tooltipFallback = theme === 'light'

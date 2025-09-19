@@ -1,5 +1,13 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { storage } from '../utils/remoteStorage.js';
 import { getSongMeta } from '../utils/cachedFetch.js';
 import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
@@ -105,7 +113,6 @@ export const ScoresProvider = ({ children }) => {
     const saved = storage.getItem('ddrScores');
     if (saved) {
       const parsed = JSON.parse(saved);
-      // Migrate old flat structure to new playstyle-separated format
       if (!parsed.single && !parsed.double) {
         return { single: parsed, double: {} };
       }
@@ -120,59 +127,87 @@ export const ScoresProvider = ({ children }) => {
   });
 
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
+  const chartMetaPromiseRef = useRef(null);
+  const scoresRef = useRef(scores);
+  const statsDirtyRef = useRef(true);
 
   useEffect(() => {
     const payload = JSON.stringify(scores);
     storage.setItem('ddrScores', payload);
-    storage.setItem('scores', payload);
   }, [scores]);
 
   useEffect(() => {
-    let cancelled = false;
-    getSongMeta()
-      .then(meta => {
-        if (cancelled) return;
-        setChartMetaLookup(buildChartMetaLookup(meta));
-        setScores(prev => migrateScores(prev, meta));
-      })
-      .catch(() => { /* noop */ });
-    return () => { cancelled = true; };
-  }, []);
-
-  useEffect(() => {
-    if (!(chartMetaLookup instanceof Map) || chartMetaLookup.size === 0) {
-      setStats(prev => {
-        if (prev.ready) return prev;
-        return { ...prev, ready: true };
-      });
-      return;
-    }
-
-    const computed = computeStats(scores, chartMetaLookup);
-    setStats(prev => {
-      const next = {
-        single: computed.single,
-        double: computed.double,
-        updatedAt: Date.now(),
-        ready: true,
-      };
-      if (statsStatesEqual(prev, next) && prev.ready) {
-        return prev;
-      }
-      return next;
-    });
-  }, [scores, chartMetaLookup]);
+    scoresRef.current = scores;
+    statsDirtyRef.current = true;
+  }, [scores]);
 
   useEffect(() => {
     if (!stats || typeof stats !== 'object') return;
     storage.setItem(STATS_STORAGE_KEY, serializeStatsState(stats));
   }, [stats]);
 
+  const loadChartMeta = useCallback(async () => {
+    if (chartMetaLookup instanceof Map && chartMetaLookup.size > 0) {
+      return chartMetaLookup;
+    }
+    if (chartMetaPromiseRef.current) {
+      return chartMetaPromiseRef.current;
+    }
+    const promise = getSongMeta()
+      .then(meta => {
+        const lookup = buildChartMetaLookup(meta);
+        setChartMetaLookup(lookup);
+        setScores(prev => migrateScores(prev, meta));
+        statsDirtyRef.current = true;
+        return lookup;
+      })
+      .finally(() => {
+        chartMetaPromiseRef.current = null;
+      });
+    chartMetaPromiseRef.current = promise;
+    return promise;
+  }, [chartMetaLookup, setScores]);
+
+  const runStatsComputation = useCallback(async (options = {}) => {
+    const { signal } = options;
+    const lookup = await loadChartMeta();
+    if (signal?.aborted) return stats;
+    const latestScores = scoresRef.current;
+    const computed = computeStats(latestScores, lookup);
+    const next = {
+      single: computed.single,
+      double: computed.double,
+      updatedAt: Date.now(),
+      ready: true,
+    };
+    statsDirtyRef.current = false;
+    setStats(prev => {
+      if (statsStatesEqual(prev, next) && prev.ready) {
+        return prev;
+      }
+      return next;
+    });
+    return next;
+  }, [loadChartMeta, stats]);
+
+  const ensureStats = useCallback(async (options = {}) => {
+    const { force = false, signal } = options;
+    if (!force && !statsDirtyRef.current && stats?.ready) {
+      return stats;
+    }
+    if (signal?.aborted) {
+      return stats;
+    }
+    return runStatsComputation(options);
+  }, [runStatsComputation, stats]);
+
   const contextValue = useMemo(() => ({
     scores,
     setScores,
     stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
-  }), [scores, stats]);
+    ensureStats,
+    loadChartMeta,
+  }), [scores, stats, ensureStats, loadChartMeta]);
 
   return (
     <ScoresContext.Provider value={contextValue}>
