@@ -152,15 +152,41 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
 const MAX_USER_DATA_BYTES = 256 * 1024 // 256 KiB
 
 app.get('/api/user/data', authMiddleware, async (c) => {
-  const userId = c.get('user').sub
-  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
-    .bind(userId)
-    .first()
-  const raw = row ? JSON.parse(row.data) : {}
-  const key = await getDataKey(c.env)
-  const data = key ? await decryptJson(raw, key) : raw
-  const email = c.get('user').email
-  return c.json({ email, ...data })
+  const user = c.get('user') || {}
+  const email = user.email
+  const userId = user.sub
+  const fallback = { email }
+
+  try {
+    const db = c.env?.DB
+    if (!db) {
+      console.warn('[user-data] DB binding missing')
+      return c.json(fallback, 503)
+    }
+
+    const row = await db.prepare('SELECT data FROM user_data WHERE user_id = ?')
+      .bind(userId)
+      .first()
+
+    if (!row || row.data == null) {
+      return c.json(fallback)
+    }
+
+    let raw = {}
+    if (typeof row.data === 'string') {
+      raw = JSON.parse(row.data)
+    } else if (typeof row.data === 'object') {
+      raw = row.data
+    }
+
+    const key = await getDataKey(c.env)
+    const decrypted = key ? await decryptJson(raw, key) : raw
+    const payload = decrypted && typeof decrypted === 'object' ? decrypted : {}
+    return c.json({ ...fallback, ...payload })
+  } catch (err) {
+    console.error('[user-data] fetch failed', err)
+    return c.json(fallback, 503)
+  }
 })
 
 app.put('/api/user/data', authMiddleware, async (c) => {

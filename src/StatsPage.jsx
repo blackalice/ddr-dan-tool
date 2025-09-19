@@ -11,7 +11,8 @@ import {
 import { useScores } from './contexts/ScoresContext.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { getSongMeta } from './utils/cachedFetch.js';
-import { resolveScore } from './utils/scoreKey.js';
+import { buildChartId, normalizeMode, upgradeChartId } from './utils/chartIds.js';
+import { legacyScoreKey, makeScoreKey } from './utils/scoreKey.js';
 import './StatsPage.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -78,6 +79,62 @@ const StatsPage = () => {
     };
   }, []);
 
+  const chartMetaLookup = useMemo(() => {
+    const map = new Map();
+    if (!Array.isArray(songMeta)) return map;
+
+    for (const song of songMeta) {
+      const difficulties = Array.isArray(song?.difficulties) ? song.difficulties : [];
+      for (const diff of difficulties) {
+        const normalizedMode = normalizeMode(diff?.mode);
+        if (normalizedMode !== 'single' && normalizedMode !== 'double') continue;
+
+        const level = Number(diff?.feet);
+        if (!Number.isFinite(level) || level < 1 || level > 19) continue;
+
+        const entry = {
+          level,
+          mode: normalizedMode,
+          difficulty: diff?.difficulty,
+          songId: song?.id,
+          title: song?.title,
+          artist: song?.artist,
+        };
+
+        const addKey = (key) => {
+          if (typeof key !== 'string') return;
+          const trimmed = key.trim();
+          if (!trimmed || map.has(trimmed)) return;
+          map.set(trimmed, entry);
+        };
+
+        const chartId = diff?.chartId;
+        if (chartId) {
+          addKey(chartId);
+          const upgraded = upgradeChartId(chartId);
+          if (upgraded) addKey(upgraded);
+        }
+        const builtId = buildChartId(song?.id, normalizedMode, diff?.difficulty);
+        if (builtId) addKey(builtId);
+
+        const withArtist = makeScoreKey({
+          title: song?.title,
+          artist: song?.artist,
+          difficulty: diff?.difficulty,
+        });
+        addKey(withArtist);
+
+        const legacy = legacyScoreKey({
+          title: song?.title,
+          difficulty: diff?.difficulty,
+        });
+        addKey(legacy);
+      }
+    }
+
+    return map;
+  }, [songMeta]);
+
   const { levelSummaries, totals, hasOther } = useMemo(() => {
     const buckets = LEVELS.reduce((acc, level) => {
       acc[level] = { level, total: 0, mfc: 0, pfc: 0, aaa: 0, fail: 0, other: 0 };
@@ -85,44 +142,39 @@ const StatsPage = () => {
     }, {});
 
     const normalizedPlayStyle = playStyle === 'double' ? 'double' : 'single';
+    const byMode = (scores && scores[normalizedPlayStyle]) || {};
 
-    for (const song of songMeta) {
-      const difficulties = song?.difficulties;
-      if (!Array.isArray(difficulties)) continue;
+    for (const [scoreKey, result] of Object.entries(byMode)) {
+      if (!result) continue;
 
-      for (const diff of difficulties) {
-        if (!diff || diff.mode !== normalizedPlayStyle) continue;
-        const level = Number(diff.feet);
-        if (!Number.isFinite(level) || level < 1 || level > 19) continue;
+      const trimmedKey = typeof scoreKey === 'string' ? scoreKey.trim() : '';
+      if (!trimmedKey) continue;
 
-        const result = resolveScore(scores, diff.mode, {
-          chartId: diff.chartId,
-          songId: song.id,
-          title: song.title,
-          artist: song.artist,
-          difficulty: diff.difficulty,
-        });
+      const upgradedKey = upgradeChartId(trimmedKey);
+      const meta = chartMetaLookup.get(trimmedKey) || (upgradedKey ? chartMetaLookup.get(upgradedKey) : null);
+      if (!meta || meta.mode !== normalizedPlayStyle) continue;
 
-        if (!result) continue;
-        const normalizedLamp = typeof result.lamp === 'string' ? result.lamp.toLowerCase() : '';
-        if (normalizedLamp.includes('no play')) continue;
+      const level = Number(meta.level);
+      if (!Number.isFinite(level) || level < 1 || level > 19) continue;
 
-        const bucket = buckets[level];
-        bucket.total += 1;
+      const normalizedLamp = typeof result.lamp === 'string' ? result.lamp.toLowerCase() : '';
+      if (normalizedLamp.includes('no play')) continue;
 
-        const scoreValue = parseScore(result.score);
+      const bucket = buckets[level];
+      bucket.total += 1;
 
-        if (normalizedLamp.includes('marvelous')) {
-          bucket.mfc += 1;
-        } else if (normalizedLamp.includes('perfect')) {
-          bucket.pfc += 1;
-        } else if (normalizedLamp.includes('failed') || (!normalizedLamp && scoreValue == null)) {
-          bucket.fail += 1;
-        } else if (scoreValue != null && scoreValue >= AAA_THRESHOLD) {
-          bucket.aaa += 1;
-        } else {
-          bucket.other += 1;
-        }
+      const scoreValue = parseScore(result.score);
+
+      if (normalizedLamp.includes('marvelous')) {
+        bucket.mfc += 1;
+      } else if (normalizedLamp.includes('perfect')) {
+        bucket.pfc += 1;
+      } else if (normalizedLamp.includes('failed') || (!normalizedLamp && scoreValue == null)) {
+        bucket.fail += 1;
+      } else if (scoreValue != null && scoreValue >= AAA_THRESHOLD) {
+        bucket.aaa += 1;
+      } else {
+        bucket.other += 1;
       }
     }
 
@@ -140,7 +192,7 @@ const StatsPage = () => {
     const otherPresent = summaries.some(entry => entry.other > 0);
 
     return { levelSummaries: summaries, totals: totalsAcc, hasOther: otherPresent };
-  }, [songMeta, scores, playStyle]);
+  }, [chartMetaLookup, scores, playStyle]);
 
   const chartColors = useMemo(() => {
     const tooltipFallback = theme === 'light'
