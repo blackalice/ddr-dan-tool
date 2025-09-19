@@ -1,10 +1,18 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { storage } from '../utils/remoteStorage.js';
 import { getSongMeta } from '../utils/cachedFetch.js';
 import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
 import { buildChartId, isChartId, normalizeMode, upgradeChartId } from '../utils/chartIds.js';
 import { normalizeSongIdValue } from '../utils/songId.js';
+import {
+  buildChartMetaLookup,
+  computeStats,
+  EMPTY_STATS_STATE,
+  hydrateStatsState,
+  serializeStatsState,
+  statsStatesEqual,
+} from '../utils/scoreStats.js';
 
 const EMPTY_SCORES = { single: {}, double: {} };
 
@@ -90,6 +98,8 @@ function migrateScores(existing, meta) {
 
 export const ScoresContext = createContext();
 
+const STATS_STORAGE_KEY = 'scoreStats';
+
 export const ScoresProvider = ({ children }) => {
   const [scores, setScores] = useState(() => {
     const saved = storage.getItem('ddrScores');
@@ -104,6 +114,13 @@ export const ScoresProvider = ({ children }) => {
     return { ...EMPTY_SCORES };
   });
 
+  const [stats, setStats] = useState(() => {
+    const stored = storage.getItem(STATS_STORAGE_KEY);
+    return hydrateStatsState(stored);
+  });
+
+  const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
+
   useEffect(() => {
     const payload = JSON.stringify(scores);
     storage.setItem('ddrScores', payload);
@@ -115,14 +132,50 @@ export const ScoresProvider = ({ children }) => {
     getSongMeta()
       .then(meta => {
         if (cancelled) return;
+        setChartMetaLookup(buildChartMetaLookup(meta));
         setScores(prev => migrateScores(prev, meta));
       })
       .catch(() => { /* noop */ });
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    if (!(chartMetaLookup instanceof Map) || chartMetaLookup.size === 0) {
+      setStats(prev => {
+        if (prev.ready) return prev;
+        return { ...prev, ready: true };
+      });
+      return;
+    }
+
+    const computed = computeStats(scores, chartMetaLookup);
+    setStats(prev => {
+      const next = {
+        single: computed.single,
+        double: computed.double,
+        updatedAt: Date.now(),
+        ready: true,
+      };
+      if (statsStatesEqual(prev, next) && prev.ready) {
+        return prev;
+      }
+      return next;
+    });
+  }, [scores, chartMetaLookup]);
+
+  useEffect(() => {
+    if (!stats || typeof stats !== 'object') return;
+    storage.setItem(STATS_STORAGE_KEY, serializeStatsState(stats));
+  }, [stats]);
+
+  const contextValue = useMemo(() => ({
+    scores,
+    setScores,
+    stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
+  }), [scores, stats]);
+
   return (
-    <ScoresContext.Provider value={{ scores, setScores }}>
+    <ScoresContext.Provider value={contextValue}>
       {children}
     </ScoresContext.Provider>
   );
