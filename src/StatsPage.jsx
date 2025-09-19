@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { useAuth } from './contexts/AuthContext.jsx';
 import { LEVELS } from './utils/scoreStats.js';
 import './StatsPage.css';
 
@@ -39,7 +40,8 @@ const readCssVariable = (name, fallback) => {
 
 const StatsPage = () => {
   const { playStyle, theme } = useContext(SettingsContext);
-  const { stats } = useScores();
+  const { stats, scores } = useScores();
+  const { user } = useAuth();
 
   const normalizedPlayStyle = playStyle === 'double' ? 'double' : 'single';
   const modeStats = stats && typeof stats === 'object' ? stats[normalizedPlayStyle] : null;
@@ -54,6 +56,14 @@ const StatsPage = () => {
 
   const hasOther = Boolean(modeStats?.hasOther) || levelSummaries.some(entry => entry.other > 0);
   const statsReady = Boolean(stats?.ready);
+
+  const hasUploadedScores = useMemo(() => {
+    if (!scores || typeof scores !== 'object') return false;
+    return ['single', 'double'].some(mode => {
+      const entries = scores?.[mode];
+      return entries && typeof entries === 'object' && Object.keys(entries).length > 0;
+    });
+  }, [scores]);
 
   const chartColors = useMemo(() => {
     const tooltipFallback = theme === 'light'
@@ -87,12 +97,24 @@ const StatsPage = () => {
 
     return {
       labels: LEVELS.map(level => `Lv.${level}`),
-      datasets: datasets.map(ds => ({
+      datasets: datasets.map((ds, index) => ({
         label: ds.label,
         data: levelSummaries.map(entry => entry[ds.key] || 0),
         backgroundColor: ds.color,
         stack: 'counts',
-        borderRadius: 8,
+        borderRadius: ctx => {
+          const chartDatasets = ctx?.chart?.data?.datasets || [];
+          const value = Number(chartDatasets[index]?.data?.[ctx.dataIndex] || 0);
+          if (!Number.isFinite(value) || value <= 0) return 0;
+          const hasHigherValue = chartDatasets
+            .slice(index + 1)
+            .some(dataset => {
+              const nextValue = Number(dataset?.data?.[ctx.dataIndex] || 0);
+              return Number.isFinite(nextValue) && nextValue > 0;
+            });
+          if (hasHigherValue) return 0;
+          return { topLeft: 8, topRight: 8, bottomLeft: 0, bottomRight: 0 };
+        },
         borderSkipped: false,
         barPercentage: 0.9,
         categoryPercentage: 0.9,
@@ -155,14 +177,33 @@ const StatsPage = () => {
   const hasScores = totals.played > 0;
   const awaitingInitialStats = !statsReady && !hasScores;
 
+  if (!user) {
+    return (
+      <div className="app-container">
+        <main className="stats-page">
+          <section className="stats-card">
+            <div className="stats-empty">Log in to view your stats.</div>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
+  if (statsReady && !hasUploadedScores) {
+    return (
+      <div className="app-container">
+        <main className="stats-page">
+          <section className="stats-card">
+            <div className="stats-empty">Upload your scores from Settings to unlock stats.</div>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app-container">
       <main className="stats-page">
-        <header className="stats-header">
-          <h1>Stats Overview</h1>
-          <p>Clear distribution for your {playStyleLabel} charts across levels 1–19.</p>
-        </header>
-
         <section className="stats-card">
           <div className="stats-card-header">
             <h2>Results by Level</h2>

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTrophy, faCalculator, faArrowsUpDownLeftRight, faList, faRankingStar, faChartColumn } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from './contexts/AuthContext.jsx';
+import { useScores } from './contexts/ScoresContext.jsx';
 import './Tabs.css';
 
 const Logo = () => (
@@ -14,6 +15,15 @@ const Logo = () => (
 const Tabs = () => {
     const location = useLocation();
     const { user } = useAuth();
+    const { scores } = useScores();
+
+    const hasUploadedScores = React.useMemo(() => {
+        if (!scores || typeof scores !== 'object') return false;
+        return ['single', 'double'].some(mode => {
+            const entries = scores?.[mode];
+            return entries && typeof entries === 'object' && Object.keys(entries).length > 0;
+        });
+    }, [scores]);
 
     return (
         <nav className="tabs-container">
@@ -58,14 +68,16 @@ const Tabs = () => {
                         <span className="tab-label">Multiplier</span>
                     </NavLink>
 
-                    <NavLink
-                        to={`/stats${location.hash}`}
-                        aria-label="Stats"
-                        className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
-                    >
-                        <span className="tab-icon"><FontAwesomeIcon icon={faChartColumn} /></span>
-                        <span className="tab-label">Stats</span>
-                    </NavLink>
+                    {user && hasUploadedScores && (
+                        <NavLink
+                            to={`/stats${location.hash}`}
+                            aria-label="Stats"
+                            className={({ isActive }) => (isActive ? 'tab active' : 'tab')}
+                        >
+                            <span className="tab-icon"><FontAwesomeIcon icon={faChartColumn} /></span>
+                            <span className="tab-label">Stats</span>
+                        </NavLink>
+                    )}
 
                     <NavLink
                         to={`/rankings${location.hash}`}

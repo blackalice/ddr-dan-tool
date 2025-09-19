@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, useCallback, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useMemo, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate } from 'react-router-dom';
 import Tabs from './Tabs';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
-import { ScoresProvider } from './contexts/ScoresContext.jsx';
+import { ScoresProvider, useScores } from './contexts/ScoresContext.jsx';
 import { FilterProvider } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
@@ -29,6 +29,7 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 function AppRoutes() {
   const { theme, setPlayStyle, playStyle } = useContext(SettingsContext);
   const { user } = useAuth();
+  const { scores } = useScores();
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -40,6 +41,14 @@ function AppRoutes() {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
+
+  const hasUploadedScores = useMemo(() => {
+    if (!scores || typeof scores !== 'object') return false;
+    return ['single', 'double'].some(mode => {
+      const entries = scores?.[mode];
+      return entries && typeof entries === 'object' && Object.keys(entries).length > 0;
+    });
+  }, [scores]);
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -214,7 +223,10 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
-            <Route path="/stats" element={<StatsPage />} />
+            <Route
+              path="/stats"
+              element={user && hasUploadedScores ? <StatsPage /> : <Navigate to="/settings" replace />}
+            />
             <Route path="/rankings" element={<RankingsPage />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
