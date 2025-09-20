@@ -13,8 +13,9 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
-import { resolveScore } from './utils/scoreKey.js';
+import { resolveScore, makeScoreKey } from './utils/scoreKey.js';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
+import { normalizeMode } from './utils/chartIds.js';
 
 const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
 const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
@@ -138,15 +139,19 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
       </h2>
       {!collapsed && (
         <div className="song-grid">
-          {charts.map((chart, idx) => (
-            <SongCard
-              key={idx}
-              song={chart}
-              score={chart.score}
-              scoreHighlight={shouldHighlightScore(chart.score)}
-              forceShowRankedRating
-            />
-          ))}
+          {charts.map((chart, idx) => {
+            const cardKey = chart.uniqueKey || chart.chartId || `${chart.songId || chart.title}-${chart.slug || idx}`;
+            return (
+              <SongCard
+                key={cardKey}
+                song={chart}
+                score={chart.score}
+                scoreHighlight={shouldHighlightScore(chart.score)}
+                forceShowRankedRating
+                skipScoreLookup
+              />
+            );
+          })}
         </div>
       )}
     </section>
@@ -253,17 +258,75 @@ const RankingsPage = () => {
       .catch(err => console.error('Failed to load song meta:', err));
   }, []);
 
-  const availableLevels = useMemo(() => {
-    const levels = new Set();
+  const { availableLevels, chartsByLevel } = useMemo(() => {
+    if (!Array.isArray(songMeta) || songMeta.length === 0) {
+      return { availableLevels: [], chartsByLevel: new Map() };
+    }
+
+    const levelSet = new Set();
+    const buckets = new Map();
+    const normalizedOverride = overrideSongs && overrideSongs.size > 0 ? overrideSongs : null;
+
     for (const song of songMeta) {
-      for (const diff of song.difficulties) {
-        if (diff.mode === playStyle && diff.rankedRating != null) {
-          levels.add(Math.floor(diff.rankedRating));
+      const difficulties = Array.isArray(song?.difficulties) ? song.difficulties : [];
+      if (difficulties.length === 0) continue;
+
+      if (normalizedOverride) {
+        const titles = [];
+        if (song.title) titles.push(normalizeString(song.title));
+        if (song.titleTranslit) titles.push(normalizeString(song.titleTranslit));
+        const matchesOverride = titles.some((title) => title && normalizedOverride.has(title));
+        if (!matchesOverride) continue;
+      }
+
+      const bpmString = song.hasMultipleBpms
+        ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}`
+        : String(Math.round(song.bpmMin));
+
+      for (const diff of difficulties) {
+        const normalizedMode = normalizeMode(diff?.mode);
+        if (normalizedMode !== playStyle) continue;
+        if (diff?.rankedRating == null) continue;
+
+        const levelFloor = Math.floor(diff.rankedRating);
+        levelSet.add(levelFloor);
+
+        if (!buckets.has(levelFloor)) {
+          buckets.set(levelFloor, []);
         }
+        const bucket = buckets.get(levelFloor);
+
+        const scoreKey = makeScoreKey({
+          chartId: diff.chartId,
+          songId: song.id,
+          mode: normalizedMode,
+          difficulty: diff.difficulty,
+          title: song.title,
+          artist: song.artist,
+        });
+
+        bucket.push({
+          uniqueKey: diff.chartId || `${song.id || song.title}:${normalizedMode}:${String(diff.difficulty).toLowerCase()}`,
+          chartId: diff.chartId,
+          songId: song.id,
+          title: song.title,
+          artist: song.artist,
+          bpm: bpmString,
+          level: diff.feet,
+          difficulty: diff.difficulty,
+          mode: normalizedMode,
+          game: song.game,
+          rankedRating: diff.rankedRating,
+          path: song.path,
+          slug: `${normalizedMode}-${String(diff.difficulty).toLowerCase()}`,
+          scoreKey,
+        });
       }
     }
-    return Array.from(levels).sort((a, b) => a - b);
-  }, [songMeta, playStyle]);
+
+    const sortedLevels = Array.from(levelSet).sort((a, b) => a - b);
+    return { availableLevels: sortedLevels, chartsByLevel: buckets };
+  }, [songMeta, playStyle, overrideSongs]);
 
   useEffect(() => {
     if (availableLevels.length === 0) return;
@@ -339,53 +402,40 @@ const RankingsPage = () => {
   }, [songlistOverride]);
 
   const chartsForLevel = useMemo(() => {
-    const charts = [];
-    for (const song of songMeta) {
-      for (const diff of song.difficulties) {
-        if (
-          diff.mode === playStyle &&
-          diff.rankedRating != null &&
-          Math.floor(diff.rankedRating) === selectedLevel
-        ) {
-          if (overrideSongs && overrideSongs.size > 0) {
-            const titles = [song.title];
-            if (song.titleTranslit) titles.push(song.titleTranslit);
-            const normalized = titles.map(normalizeString);
-            if (!normalized.some(t => overrideSongs.has(t))) continue;
-          }
-          const bpm = song.hasMultipleBpms ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}` : String(Math.round(song.bpmMin));
-          const chart = {
-            title: song.title,
-            bpm,
-            level: diff.feet,
-            difficulty: diff.difficulty,
-            mode: diff.mode,
-            game: song.game,
-            artist: song.artist,
-            rankedRating: diff.rankedRating,
-            resetFilters,
-            path: song.path,
-            slug: `${diff.mode}-${String(diff.difficulty).toLowerCase()}`,
-            chartId: diff.chartId,
-            songId: song.id,
-          };
-          const hit = resolveScore(scores, diff.mode, {
-            chartId: diff.chartId,
-            songId: song.id,
-            title: song.title,
-            artist: song.artist,
-            difficulty: diff.difficulty,
-          });
-          if (hit) {
-            chart.score = hit.score;
-            if (hit.lamp) chart.lamp = hit.lamp;
-          }
-          charts.push(chart);
-        }
+    if (!selectedLevel) return [];
+    const bucket = chartsByLevel.get(selectedLevel);
+    if (!bucket || bucket.length === 0) return [];
+
+    return bucket.map((chart) => {
+      const modeScores = chart.mode && scores ? scores[chart.mode] || {} : {};
+      let hit = null;
+      if (chart.scoreKey && modeScores[chart.scoreKey]) {
+        hit = modeScores[chart.scoreKey];
+      } else if (chart.chartId && modeScores[chart.chartId]) {
+        hit = modeScores[chart.chartId];
       }
-    }
-    return charts;
-  }, [songMeta, playStyle, selectedLevel, resetFilters, scores, overrideSongs]);
+
+      if (!hit) {
+        hit = resolveScore(scores, chart.mode, {
+          chartId: chart.chartId,
+          songId: chart.songId,
+          title: chart.title,
+          artist: chart.artist,
+          difficulty: chart.difficulty,
+        });
+      }
+
+      if (!hit) {
+        return { ...chart, resetFilters };
+      }
+
+      const enriched = { ...chart, resetFilters };
+      if (hit.score != null) enriched.score = hit.score;
+      if (hit.lamp) enriched.lamp = hit.lamp;
+      if (hit.flare != null) enriched.flare = hit.flare;
+      return enriched;
+    });
+  }, [chartsByLevel, selectedLevel, scores, resetFilters]);
 
   const groupedCharts = useMemo(() => {
     let visibleCharts = chartsForLevel;

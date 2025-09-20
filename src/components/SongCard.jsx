@@ -57,7 +57,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -80,6 +80,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   }, [song?.artist, song?.path]);
 
   const scoreData = React.useMemo(() => {
+    if (skipScoreLookup) return null;
     if (!song || !song.difficulty || !song.mode) return null;
     const artist = song.artist || derivedArtist || undefined;
     return resolveScore(scores, song.mode, {
@@ -89,7 +90,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
       artist,
       difficulty: song.difficulty,
     });
-  }, [scores, song, derivedArtist]);
+  }, [skipScoreLookup, scores, song, derivedArtist]);
 
   const displayScore = scoreData?.score ?? score ?? null;
   const lamp = scoreData?.lamp ?? song?.lamp ?? null;
