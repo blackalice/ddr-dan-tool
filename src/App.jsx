@@ -101,11 +101,15 @@ function AppRoutes() {
         if (chart?.mode && chart.mode !== playStyle) {
           setPlayStyle(chart.mode);
         }
+        const identifier = songFile.id || songFile.path || sel.songId || data?.songId || '';
+        if (identifier) {
+          storage.setItem('bpmSelectedSong', identifier);
+        }
+        storage.setItem('bpmSelectedChart', chart?.slug || '');
         // Ensure URL reflects selected chart (replace to avoid history spam)
         const curSong = searchParams.get('song');
         const curChart = searchParams.get('chart');
         const hasLegacyParams = searchParams.has('s') || searchParams.has('c') || searchParams.has('m');
-        const identifier = songFile.id || songFile.path;
         if (identifier && chart?.slug && (curSong !== identifier || curChart !== chart.slug || hasLegacyParams)) {
           const next = new URLSearchParams(searchParams);
           next.set('song', identifier);
@@ -148,8 +152,29 @@ function AppRoutes() {
         if (debugEnabled) { try { console.log('[Route] upgrade legacy ->', next.toString()); } catch { /* noop */ } }
         setSearchParams(next, { replace: true });
       } else {
-        // No selection in URL
-        setSimfileData(null); setCurrentChart(null);
+        const storedSongId = storage.getItem('bpmSelectedSong');
+        const storedChartSlug = storage.getItem('bpmSelectedChart');
+        const hasStoredSong = !!(storedSongId && smData.files.some(f => f.id === storedSongId || f.path === storedSongId));
+        if (hasStoredSong) {
+          const next = new URLSearchParams(searchParams);
+          next.set('song', storedSongId);
+          if (storedChartSlug) {
+            next.set('chart', storedChartSlug);
+          } else {
+            next.delete('chart');
+          }
+          next.delete('s');
+          next.delete('c');
+          next.delete('m');
+          if (debugEnabled) { try { console.log('[Route] restore stored selection ->', next.toString()); } catch { /* noop */ } }
+          setSearchParams(next, { replace: true });
+        } else {
+          setSimfileData(null); setCurrentChart(null);
+          if (storedSongId || storedChartSlug) {
+            storage.setItem('bpmSelectedSong', '');
+            storage.setItem('bpmSelectedChart', '');
+          }
+        }
       }
     };
     if (smData.files.length > 0) loadFromUrl();
@@ -159,6 +184,8 @@ function AppRoutes() {
     if (song) {
       const songId = song.id || song.songId || song.value || song.path || null;
       if (songId) {
+        storage.setItem('bpmSelectedSong', songId);
+        storage.setItem('bpmSelectedChart', '');
         const next = new URLSearchParams(searchParams);
         next.set('song', songId);
         next.delete('chart'); // let the effect pick default chart for new song
@@ -168,6 +195,8 @@ function AppRoutes() {
         setSearchParams(next);
       }
     } else if (location.pathname.startsWith('/bpm')) {
+      storage.setItem('bpmSelectedSong', '');
+      storage.setItem('bpmSelectedChart', '');
       const next = new URLSearchParams(searchParams);
       next.delete('song'); next.delete('chart');
       next.delete('s');
@@ -185,6 +214,10 @@ function AppRoutes() {
       setPlayStyle(chart.mode);
     }
     const songId = simfileData?.songId || simfileData?.path || simfileData?.filePath || searchParams.get('song') || null;
+    if (songId) {
+      storage.setItem('bpmSelectedSong', songId);
+      storage.setItem('bpmSelectedChart', chart?.slug || '');
+    }
     if (songId && chart?.slug) {
       const next = new URLSearchParams(searchParams);
       next.set('song', songId);
