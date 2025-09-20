@@ -80,6 +80,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   return (
     <ModalShell isOpen={isOpen} onClose={onClose} title="Song Filters" size="lg">
       <ModalShell.Body className={styles.body}>
+        <div className={styles.columns}>
           <div className={styles.column}>
             <div className={styles.formGroup}>
               <label>BPM Range (1-1100)</label>
@@ -235,6 +236,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
               </div>
             </div>
           </div>
+        </div>
       </ModalShell.Body>
       <ModalShell.Footer align={footerAlign}>
         {showLists && (
