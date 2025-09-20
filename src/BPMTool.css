@@ -971,26 +971,30 @@
     font-style: italic;
 }
 
-.glow-marvelous { 
-  box-shadow: 
-    0 0 3px #ffffff,    /* outer glow */
-    inset 0 0 8px #ffffff; /* inner glow */
+.bpm-score-badge.glow-marvelous,
+.bpm-score-badge.score-badge.glow-marvelous {
+  box-shadow:
+    0 0 3px #ffffff,
+    inset 0 0 8px #ffffff;
 }
 
-.glow-perfect { 
-  box-shadow: 
+.bpm-score-badge.glow-perfect,
+.bpm-score-badge.score-badge.glow-perfect {
+  box-shadow:
     0 0 3px #ffe066,
     inset 0 0 8px #ffe066;
 }
 
-.glow-great { 
-  box-shadow: 
+.bpm-score-badge.glow-great,
+.bpm-score-badge.score-badge.glow-great {
+  box-shadow:
     0 0 3px #2ecc71,
     inset 0 0 8px #2ecc71;
 }
 
-.glow-good { 
-  box-shadow: 
+.bpm-score-badge.glow-good,
+.bpm-score-badge.score-badge.glow-good {
+  box-shadow:
     0 0 3px #3498db,
     inset 0 0 8px #3498db;
 }

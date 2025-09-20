@@ -1,36 +1,25 @@
 # Repository Guidelines
 
-Use this guide when contributing to the project.
+## Project Structure & Module Organization
+Source lives in `src/` with React function components, utilities, and auth helpers. Preprocessing scripts are in `scripts/`, static assets sit in `public/`, and the Cloudflare Worker entry point is `_worker.js`. Config files such as `vite.config.js` and `wrangler.jsonc` stay at the repo root. Build artifacts are generated into `dist/` and remain untracked.
 
-## Project Structure & Modules
-- `src/`: React app (function components, ESM). Key entries: `main.jsx`, `App.jsx`, feature pages, `utils/`, `auth/`.
-- `scripts/`: data prep utilities (`generate-processed-data.mjs`, `generate-song-meta.mjs`, `parse-ganymede-html.mjs`).
-- `public/`: static assets served as-is.
-- `_worker.js`: Cloudflare Worker using Hono; serves API routes and static assets.
-- Config: `vite.config.js`, `wrangler.jsonc`. Build output in `dist/` (git-ignored).
+## Build, Test, and Development Commands
+Use `npm run dev` to start Vite and Wrangler together for local development. Run `npm run build` to execute preprocessing scripts (`prebuild`) and produce the production bundle. Check the bundle locally with `npm run preview`. Lint the codebase with `npm run lint` to catch style or import issues before committing.
 
-## Build, Test, and Development
-- `npm run dev`: local app + worker (concurrently runs Vite and Wrangler).
-- `npm run build`: production build (runs preprocess scripts via `prebuild`).
-- `npm run preview`: serve built app locally.
-- `npm run lint`: ESLint over repo.
-- `npm run deploy`: deploy via Wrangler.
-- Data: scripts auto-run on `postinstall` and prebuild. Re-run manually if inputs change.
+## Coding Style & Naming Conventions
+Write modern ESM with React hooks and function components; keep JSX files under `src/`. Indent with two spaces and favor named exports. Components follow `PascalCase.jsx`, utilities use `camelCase.js`, and feature styles mirror the component name. ESLint is configured with React and hooks rules, so resolve all reported warnings before pushing.
 
-## Coding Style & Naming
-- Language: modern ESM, React function components, JSX in `.jsx` files.
-- Indentation: 2 spaces; prefer named exports.
-- Linting: ESLint (`@eslint/js`, react-hooks, react-refresh). Rule highlight: `no-unused-vars` with pattern exceptions.
-- Components: `PascalCase.jsx`; utilities: `camelCase.js`; CSS modules by feature file (e.g., `Feature.css`).
+## Performance & Data Access Notes
+- Use the helpers exposed from `useScores()` when you need song metadata or aggregated stats. The context now provides `loadChartMeta()` and `ensureStats()`; call them instead of fetching `/song-meta.json` or recomputing stats on mount.
+- Metadata is loaded lazily. Only trigger `loadChartMeta()` when a feature (Rankings, score migration, etc.) actually requires it, and let the shared cache handle reuse.
+- Stats aggregation runs on demand. `ensureStats()` should be invoked from views that display stats (e.g. `StatsPage`) rather than inside providers or generic components.
+- When persisting scores locally, write to `ddrScores` only—avoid creating additional `localStorage` keys so large uploads do not block the UI twice.
 
 ## Testing Guidelines
-- No formal test suite today. Validate changes by running `npm run lint` and `npm run build`, then smoke test via `npm run preview` or `npm run dev`.
-- When adding logic in `utils/` or `auth/`, include small, testable helpers and document manual steps in the PR.
+There is no formal automated test suite yet. Validate changes by running `npm run lint` and `npm run build`, then smoke test via `npm run dev` or `npm run preview`. When adding helpers in `utils/` or `auth/`, prefer small, testable functions and document manual verification steps in the PR description.
 
-## Commit & Pull Requests
-- Commits: follow Conventional Commits (e.g., `feat: add rankings filter`, `fix: handle DP parsing`). Keep subject ≤ 50 chars.
-- PRs: clear summary, linked issue, screenshots for UI changes, and results of `npm run lint` and `npm run build`. Note data script impacts.
+## Commit & Pull Request Guidelines
+Commits follow Conventional Commits (e.g., `feat: add rankings filter`, `fix: handle DP parsing`) with subjects kept to 50 characters or fewer. Pull requests should summarise the change, link the related issue, include UI screenshots when relevant, and report the results of `npm run lint` and `npm run build`. Call out any impacts to data preprocessing scripts or additional manual steps required.
 
-## Security & Config
-- Secrets: use `.dev.vars` for local development; never commit secrets. Wrangler binds (e.g., D1 DB) configured in `wrangler.jsonc`.
-- Do not commit build artifacts (`dist/`). Large assets and archives belong in `_archive/` (already ignored).
+## Security & Configuration Tips
+Store secrets in `.dev.vars`; never commit credentials. Wrangler bindings, such as D1 databases, are managed through `wrangler.jsonc`. Avoid adding large artifacts to version control; use `_archive/` for big assets if needed.

@@ -1,0 +1,177 @@
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.formSection + .formSection {
+  margin-top: 0;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sectionIcon {
+  margin: 0;
+}
+
+.sectionDescription {
+  margin: 0;
+  color: var(--text-muted-color);
+  font-size: 0.95rem;
+}
+
+.presetGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.presetButton {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.presetButton:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.selectRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.select {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.toggleGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.toggleButton {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+  width: 100%;
+}
+
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.toggleButtonActive {
+  background: linear-gradient(
+    180deg,
+    var(--accent-color),
+    color-mix(in srgb, var(--accent-color) 82%, black)
+  );
+  border-color: rgba(var(--accent-color-rgb), 0.7);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(var(--accent-color-rgb), 0.35);
+}
+
+.presetButtonActive {
+  background: linear-gradient(
+    180deg,
+    var(--accent-color),
+    color-mix(in srgb, var(--accent-color) 82%, black)
+  );
+  border-color: rgba(var(--accent-color-rgb), 0.7);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(var(--accent-color-rgb), 0.35);
+}
+
+.rangeInputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 160px;
+}
+
+.inputLabel {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted-color);
+}
+
+.disabledLabel {
+  color: var(--text-muted-color);
+  opacity: 0.7;
+}
+
+.inputDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+  font-size: 1rem;
+  width: 100%;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+}
+
+.error {
+  font-size: 0.9rem;
+  color: var(--button-down-color, #ef4444);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .presetGroup,
+  .toggleGroup {
+    grid-template-columns: 1fr;
+  }
+}

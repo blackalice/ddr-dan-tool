@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react';
 import SongCard from './components/SongCard.jsx';
 import { loadDanData } from './utils/course-loader.js';
+import { resolveScore } from './utils/scoreKey.js';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
@@ -8,6 +9,7 @@ import { storage } from './utils/remoteStorage.js';
 import { normalizeString } from './utils/stringSimilarity.js';
 import './App.css';
 import './components/SongCard.css';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
 const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleToPath }) => {
   const { scores } = useScores();
@@ -42,20 +44,28 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleT
       {!isCollapsed && (
         <div className="dan-song-grid song-grid">
           {danCourse.songs.map((song, index) => {
-            const keyNew = song.artist ? `${song.title.toLowerCase()}::${song.artist.toLowerCase()}::${song.difficulty.toLowerCase()}` : null;
-            const keyLegacy = `${song.title.toLowerCase()}-${song.difficulty.toLowerCase()}`;
-            const hit = (keyNew && scores[song.mode]?.[keyNew]) || scores[song.mode]?.[keyLegacy];
+            const hit = resolveScore(scores, song.mode, {
+              chartId: song.chartId,
+              songId: song.songId,
+              title: song.title,
+              artist: song.artist,
+              difficulty: song.difficulty,
+            });
             const score = hit?.score;
+            const scoreHighlight = shouldHighlightScore(score);
+            const lamp = hit?.lamp;
             const path = titleToPath.get(normalizeString(song.title)) || null;
             const songWithPath = path ? { ...song, path } : song;
+            const songForCard = lamp ? { ...songWithPath, lamp } : songWithPath;
             return (
               <SongCard
-                key={`${danCourse.name}-${song.title}-${index}`}
-                song={songWithPath}
+                key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
+                song={songForCard}
                 playMode={playMode}
                 setSelectedGame={setSelectedGame}
                 resetFilters={resetFilters}
                 score={score}
+                scoreHighlight={scoreHighlight}
               />
             );
           })}

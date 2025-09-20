@@ -16,7 +16,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "2014",
-          "rankedRating": 10.6
+          "rankedRating": 10.6,
+          "songId": "000106",
+          "chartId": "000106#S#4",
+          "path": "sm/2014/Din Don Dan/Din Don Dan.sm",
+          "artist": "Ryu☆ feat.Mayumi Morinaga"
         },
         {
           "title": "虹色",
@@ -25,7 +29,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "SN2",
-          "rankedRating": 11.5
+          "rankedRating": 11.5,
+          "songId": "001303",
+          "chartId": "001303#S#4",
+          "path": "sm/SN2/NIJIIRO/NIJIIRO.sm",
+          "artist": "DJ YOSHITAKA feat G.S.C license"
         },
         {
           "title": "HAPPY☆ANGEL",
@@ -34,8 +42,17 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "SN2",
-          "rankedRating": 12.2
+          "rankedRating": 12.2,
+          "songId": "001262",
+          "chartId": "001262#S#4",
+          "path": "sm/SN2/HAPPY ANGEL/HAPPY ANGEL.sm",
+          "artist": "jun with TAHIRIH"
         }
+      ],
+      "chartIds": [
+        "000106#S#4",
+        "001303#S#4",
+        "001262#S#4"
       ]
     },
     {
@@ -54,7 +71,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "2014",
-          "rankedRating": 14.35
+          "rankedRating": 14.35,
+          "songId": "000174",
+          "chartId": "000174#S#4",
+          "path": "sm/2014/Romancing Layer/Romancing Layer.sm",
+          "artist": "TAG"
         },
         {
           "title": "Debug Dance",
@@ -63,7 +84,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A3",
-          "rankedRating": 15.35
+          "rankedRating": 15.35,
+          "songId": "000915",
+          "chartId": "000915#S#4",
+          "path": "sm/A3/Debug Dance/Debug Dance.sm",
+          "artist": "lapix"
         },
         {
           "title": "GROOVE 04",
@@ -72,8 +97,17 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A3",
-          "rankedRating": 16.05
+          "rankedRating": 16.05,
+          "songId": "000933",
+          "chartId": "000933#S#4",
+          "path": "sm/A3/GROOVE 04/GROOVE 04.sm",
+          "artist": "android52"
         }
+      ],
+      "chartIds": [
+        "000174#S#4",
+        "000915#S#4",
+        "000933#S#4"
       ]
     },
     {
@@ -90,8 +124,15 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A",
-          "rankedRating": 18
+          "rankedRating": 18,
+          "songId": "000572",
+          "chartId": "000572#S#4",
+          "path": "sm/A/MAX 360/MAX 360.sm",
+          "artist": "BEMANI Sound Team \"[𝑥]\""
         }
+      ],
+      "chartIds": [
+        "000572#S#4"
       ]
     }
   ]

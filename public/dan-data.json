@@ -17,7 +17,11 @@
           "difficulty": "basic",
           "mode": "single",
           "game": "A",
-          "rankedRating": 9.4
+          "rankedRating": 9.4,
+          "songId": "000570",
+          "chartId": "000570#S#1",
+          "path": "sm/A/Love You More/Love You More.sm",
+          "artist": "BEMANI Sound Team \"Sota F.\""
         },
         {
           "title": "Starry Sky",
@@ -26,7 +30,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 9.65
+          "rankedRating": 9.65,
+          "songId": "000728",
+          "chartId": "000728#S#2",
+          "path": "sm/A20/Starry Sky/Starry Sky.sm",
+          "artist": "DJ Genki feat. Mayumi Morinaga"
         },
         {
           "title": "Bang Pad(Werk Mix)",
@@ -35,7 +43,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 9.65
+          "rankedRating": 9.65,
+          "songId": "000753",
+          "chartId": "000753#S#2",
+          "path": "sm/A20 Plus/Bang Pad(Werk Mix)/Bang Pad(Werk Mix).sm",
+          "artist": "Oyubi"
         },
         {
           "title": "LEVEL UP",
@@ -44,8 +56,18 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 10.3
+          "rankedRating": 10.3,
+          "songId": "000687",
+          "chartId": "000687#S#2",
+          "path": "sm/A20/LEVEL UP/LEVEL UP.sm",
+          "artist": "TORIENA"
         }
+      ],
+      "chartIds": [
+        "000570#S#1",
+        "000728#S#2",
+        "000753#S#2",
+        "000687#S#2"
       ]
     },
     {
@@ -65,7 +87,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A",
-          "rankedRating": 10.55
+          "rankedRating": 10.55,
+          "songId": "000526",
+          "chartId": "000526#S#2",
+          "path": "sm/A/Electric Dance System Music/Electric Dance System Music.sm",
+          "artist": "U1 overground"
         },
         {
           "title": "からふるぱすてる",
@@ -74,7 +100,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "2013",
-          "rankedRating": 9.5
+          "rankedRating": 9.5,
+          "songId": "000015",
+          "chartId": "000015#S#2",
+          "path": "sm/2013/Colorful Pastel/Colorful Pastel.sm",
+          "artist": "ki☆ki"
         },
         {
           "title": "siberite",
@@ -83,7 +113,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A",
-          "rankedRating": 10.4
+          "rankedRating": 10.4,
+          "songId": "000641",
+          "chartId": "000641#S#2",
+          "path": "sm/A/siberite/siberite.sm",
+          "artist": "Captain KING"
         },
         {
           "title": "Show me your moves",
@@ -92,8 +126,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A",
-          "rankedRating": 11.15
+          "rankedRating": 11.15,
+          "songId": "000615",
+          "chartId": "000615#S#4",
+          "path": "sm/A/Show me your moves/Show me your moves.sm",
+          "artist": "BEMANI Sound Team “TAG” feat. 柊木りお"
         }
+      ],
+      "chartIds": [
+        "000526#S#2",
+        "000015#S#2",
+        "000641#S#2",
+        "000615#S#4"
       ]
     },
     {
@@ -113,7 +157,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 11.35
+          "rankedRating": 11.35,
+          "songId": "000735",
+          "chartId": "000735#S#4",
+          "path": "sm/A20/This Beat Is/This Beat Is.sm",
+          "artist": "Shoichiro Hirata"
         },
         {
           "title": "Starlight in the Snow",
@@ -122,7 +170,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 11.2
+          "rankedRating": 11.2,
+          "songId": "000727",
+          "chartId": "000727#S#2",
+          "path": "sm/A20/Starlight in the Snow/Starlight in the Snow.sm",
+          "artist": "BEMANI Sound Team \"劇団レコード\" ft.Lisa – paint with stars"
         },
         {
           "title": "Stay 4 Ever",
@@ -131,7 +183,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 11.15
+          "rankedRating": 11.15,
+          "songId": "000729",
+          "chartId": "000729#S#4",
+          "path": "sm/A20/Stay 4 Ever/Stay 4 Ever.sm",
+          "artist": "CHEAP CREAM"
         },
         {
           "title": "Astrogazer",
@@ -140,8 +196,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A",
-          "rankedRating": 15.55
+          "rankedRating": 15.55,
+          "songId": "000501",
+          "chartId": "000501#S#4",
+          "path": "sm/A/Astrogazer/Astrogazer.sm",
+          "artist": "DJ TOTTO"
         }
+      ],
+      "chartIds": [
+        "000735#S#4",
+        "000727#S#2",
+        "000729#S#4",
+        "000501#S#4"
       ]
     },
     {
@@ -161,7 +227,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A",
-          "rankedRating": 12.55
+          "rankedRating": 12.55,
+          "songId": "000640",
+          "chartId": "000640#S#2",
+          "path": "sm/A/out of focus/out of focus.sm",
+          "artist": "Qrispy Joybox"
         },
         {
           "title": "SODA GALAXY",
@@ -170,7 +240,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 12.1
+          "rankedRating": 12.1,
+          "songId": "000716",
+          "chartId": "000716#S#4",
+          "path": "sm/A20/SODA GALAXY/SODA GALAXY.sm",
+          "artist": "KO3"
         },
         {
           "title": "In the past",
@@ -179,7 +253,11 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 12.35
+          "rankedRating": 12.35,
+          "songId": "000786",
+          "chartId": "000786#S#2",
+          "path": "sm/A20 Plus/In the past/In the past.sm",
+          "artist": "PSYQUI"
         },
         {
           "title": "DEADLOCK -Out Of Reach-",
@@ -188,8 +266,18 @@
           "difficulty": "difficult",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 13.6
+          "rankedRating": 13.6,
+          "songId": "000761",
+          "chartId": "000761#S#2",
+          "path": "sm/A20 Plus/DEADLOCK -Out Of Reach-/DEADLOCK -Out Of Reach-.sm",
+          "artist": "U1 undefined behavior"
         }
+      ],
+      "chartIds": [
+        "000640#S#2",
+        "000716#S#4",
+        "000786#S#2",
+        "000761#S#2"
       ]
     },
     {
@@ -209,7 +297,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "X2",
-          "rankedRating": 13.55
+          "rankedRating": 13.55,
+          "songId": "001646",
+          "chartId": "001646#S#4",
+          "path": "sm/X2/aftershock!!/aftershock!!.sm",
+          "artist": "DM Ashura"
         },
         {
           "title": "Mythomane",
@@ -218,7 +310,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 13.65
+          "rankedRating": 13.65,
+          "songId": "000696",
+          "chartId": "000696#S#4",
+          "path": "sm/A20/Mythomane/Mythomane.sm",
+          "artist": "Hylen"
         },
         {
           "title": "DeStRuCtIvE FoRcE",
@@ -227,7 +323,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 13.65
+          "rankedRating": 13.65,
+          "songId": "000763",
+          "chartId": "000763#S#4",
+          "path": "sm/A20 Plus/DeStRuCtIvE FoRcE/DeStRuCtIvE FoRcE.sm",
+          "artist": "BADMYTH"
         },
         {
           "title": "London EVOLVED ver.C",
@@ -236,8 +336,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "X3 vs 2nd",
-          "rankedRating": 14.4
+          "rankedRating": 14.4,
+          "songId": "001695",
+          "chartId": "001695#S#4",
+          "path": "sm/X3 vs 2nd/London EVOLVED ver.C/London EVOLVED ver.C.sm",
+          "artist": "TAG underground"
         }
+      ],
+      "chartIds": [
+        "001646#S#4",
+        "000696#S#4",
+        "000763#S#4",
+        "001695#S#4"
       ]
     },
     {
@@ -257,7 +367,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 14.2
+          "rankedRating": 14.2,
+          "songId": "000664",
+          "chartId": "000664#S#4",
+          "path": "sm/A20/Dead Heat/Dead Heat.sm",
+          "artist": "Maozon"
         },
         {
           "title": "IRON HEART",
@@ -266,7 +380,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 14.3
+          "rankedRating": 14.3,
+          "songId": "000684",
+          "chartId": "000684#S#4",
+          "path": "sm/A20/IRON HEART/IRON HEART.sm",
+          "artist": "BUNNY"
         },
         {
           "title": "STEP MACHINE",
@@ -275,7 +393,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 14.55
+          "rankedRating": 14.55,
+          "songId": "000830",
+          "chartId": "000830#S#4",
+          "path": "sm/A20 Plus/STEP MACHINE/STEP MACHINE.sm",
+          "artist": "Paisley Parks"
         },
         {
           "title": "MAX 300",
@@ -284,8 +406,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "6th",
-          "rankedRating": 15.4
+          "rankedRating": 15.4,
+          "songId": "000417",
+          "chartId": "000417#S#4",
+          "path": "sm/6th/MAX 300/MAX 300.sm",
+          "artist": "Ω"
         }
+      ],
+      "chartIds": [
+        "000664#S#4",
+        "000684#S#4",
+        "000830#S#4",
+        "000417#S#4"
       ]
     },
     {
@@ -305,7 +437,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 15.35
+          "rankedRating": 15.35,
+          "songId": "000698",
+          "chartId": "000698#S#4",
+          "path": "sm/A20/Neverland/Neverland.sm",
+          "artist": "ARM (IOSYS) feat. Nicole Curry"
         },
         {
           "title": "Next Phase",
@@ -314,7 +450,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 15.45
+          "rankedRating": 15.45,
+          "songId": "000809",
+          "chartId": "000809#S#4",
+          "path": "sm/A20 Plus/Next Phase/Next Phase.sm",
+          "artist": "Dazsta"
         },
         {
           "title": "Last Card",
@@ -323,7 +463,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 15.8
+          "rankedRating": 15.8,
+          "songId": "000800",
+          "chartId": "000800#S#4",
+          "path": "sm/A20 Plus/Last Card/Last Card.sm",
+          "artist": "kors k"
         },
         {
           "title": "Cosy Catastrophe",
@@ -332,8 +476,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A",
-          "rankedRating": 16.65
+          "rankedRating": 16.65,
+          "songId": "000516",
+          "chartId": "000516#S#4",
+          "path": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm",
+          "artist": "SYUNN"
         }
+      ],
+      "chartIds": [
+        "000698#S#4",
+        "000809#S#4",
+        "000800#S#4",
+        "000516#S#4"
       ]
     },
     {
@@ -353,7 +507,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 16.6
+          "rankedRating": 16.6,
+          "songId": "000821",
+          "chartId": "000821#S#4",
+          "path": "sm/A20 Plus/Rave Accelerator/Rave Accelerator.sm",
+          "artist": "M-Project"
         },
         {
           "title": "Golden Arrow",
@@ -362,7 +520,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 16.15
+          "rankedRating": 16.15,
+          "songId": "000675",
+          "chartId": "000675#S#4",
+          "path": "sm/A20/Golden Arrow/Golden Arrow.sm",
+          "artist": "Zekk"
         },
         {
           "title": "Splash Gold",
@@ -371,7 +533,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 16.7
+          "rankedRating": 16.7,
+          "songId": "000726",
+          "chartId": "000726#S#4",
+          "path": "sm/A20/Splash Gold/Splash Gold.sm",
+          "artist": "BEMANI Sound Team \"TAG underground\""
         },
         {
           "title": "The History of the Future",
@@ -380,8 +546,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 17.7
+          "rankedRating": 17.7,
+          "songId": "000732",
+          "chartId": "000732#S#4",
+          "path": "sm/A20/The History of the Future/The History of the Future.sm",
+          "artist": "BEMANI Sound Team\"U1×TAG\""
         }
+      ],
+      "chartIds": [
+        "000821#S#4",
+        "000675#S#4",
+        "000726#S#4",
+        "000732#S#4"
       ]
     },
     {
@@ -401,7 +577,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 17
+          "rankedRating": 17,
+          "songId": "000762",
+          "chartId": "000762#S#4",
+          "path": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm",
+          "artist": "BEMANI Sound Team \"Sota F.\""
         },
         {
           "title": "東京神話",
@@ -410,7 +590,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 17
+          "rankedRating": 17,
+          "songId": "000850",
+          "chartId": "000850#S#4",
+          "path": "sm/A20 Plus/Tokyo shinwa/Tokyo shinwa.sm",
+          "artist": "DJ TECHNORCH feat.宇宙★海月 vs BEMANI Sound Team \"U1-ASAMi\""
         },
         {
           "title": "Avenger",
@@ -419,7 +603,11 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 17.65
+          "rankedRating": 17.65,
+          "songId": "000650",
+          "chartId": "000650#S#4",
+          "path": "sm/A20/Avenger/Avenger.sm",
+          "artist": "USAO"
         },
         {
           "title": "EGOISM 440",
@@ -428,8 +616,18 @@
           "difficulty": "expert",
           "mode": "single",
           "game": "2014",
-          "rankedRating": 18.6
+          "rankedRating": 18.6,
+          "songId": "000113",
+          "chartId": "000113#S#4",
+          "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
+          "artist": "U1 High-Speed"
         }
+      ],
+      "chartIds": [
+        "000762#S#4",
+        "000850#S#4",
+        "000650#S#4",
+        "000113#S#4"
       ]
     },
     {
@@ -449,7 +647,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 18.4
+          "rankedRating": 18.4,
+          "songId": "000655",
+          "chartId": "000655#S#5",
+          "path": "sm/A20/Bi/Bi.sm",
+          "artist": "立秋 feat.ちょこ"
         },
         {
           "title": "HyperTwist",
@@ -458,7 +660,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "A20 Plus",
-          "rankedRating": 18.55
+          "rankedRating": 18.55,
+          "songId": "000781",
+          "chartId": "000781#S#5",
+          "path": "sm/A20 Plus/HyperTwist/HyperTwist.sm",
+          "artist": "TANUKI"
         },
         {
           "title": "Neutrino",
@@ -467,7 +673,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "A",
-          "rankedRating": 18.7
+          "rankedRating": 18.7,
+          "songId": "000577",
+          "chartId": "000577#S#5",
+          "path": "sm/A/Neutrino/Neutrino.sm",
+          "artist": "HuΣeR"
         },
         {
           "title": "PARANOiA Revolution",
@@ -476,8 +686,18 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "X3 vs 2nd",
-          "rankedRating": 19.1
+          "rankedRating": 19.1,
+          "songId": "001705",
+          "chartId": "001705#S#5",
+          "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+          "artist": "CLIMAX of MAXX 360"
         }
+      ],
+      "chartIds": [
+        "000655#S#5",
+        "000781#S#5",
+        "000577#S#5",
+        "001705#S#5"
       ]
     },
     {
@@ -497,7 +717,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "A20",
-          "rankedRating": 19.6
+          "rankedRating": 19.6,
+          "songId": "000689",
+          "chartId": "000689#S#5",
+          "path": "sm/A20/Lachryma (Re-Queen'M)/Lachryma (Re-Queen'M).sm",
+          "artist": "かねこちはる"
         },
         {
           "title": "Over The “Period”",
@@ -506,7 +730,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "2014",
-          "rankedRating": 19.3
+          "rankedRating": 19.3,
+          "songId": "000165",
+          "chartId": "000165#S#5",
+          "path": "sm/2014/Over The Period/Over The Period.sm",
+          "artist": "TAG underground overlay"
         },
         {
           "title": "Valkyrie dimension",
@@ -515,7 +743,11 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "X2",
-          "rankedRating": 19.2
+          "rankedRating": 19.2,
+          "songId": "001640",
+          "chartId": "001640#S#5",
+          "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+          "artist": "Spriggan"
         },
         {
           "title": "ENDYMION",
@@ -524,8 +756,18 @@
           "difficulty": "challenge",
           "mode": "single",
           "game": "A",
-          "rankedRating": 19.7
+          "rankedRating": 19.7,
+          "songId": "000525",
+          "chartId": "000525#S#5",
+          "path": "sm/A/ENDYMION/ENDYMION.sm",
+          "artist": "fallen shepherd ft. RabbiTon Strings"
         }
+      ],
+      "chartIds": [
+        "000689#S#5",
+        "000165#S#5",
+        "001640#S#5",
+        "000525#S#5"
       ]
     }
   ],
@@ -547,7 +789,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "A",
-          "rankedRating": 9.35
+          "rankedRating": 9.35,
+          "songId": "000608",
+          "chartId": "000608#D#2",
+          "path": "sm/A/Sayonara trip ~Natsuhi EDM edition~/Sayonara trip ~Natsuhi EDM edition~.sm",
+          "artist": "東雲夏陽(from ここなつ)"
         },
         {
           "title": "Second Heaven",
@@ -556,7 +802,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 9.55
+          "rankedRating": 9.55,
+          "songId": "001628",
+          "chartId": "001628#D#2",
+          "path": "sm/X2/Second Heaven/Second Heaven.sm",
+          "artist": "Ryu☆"
         },
         {
           "title": "snow prism",
@@ -565,7 +815,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "X3 vs 2nd",
-          "rankedRating": 9.55
+          "rankedRating": 9.55,
+          "songId": "001748",
+          "chartId": "001748#D#2",
+          "path": "sm/X3 vs 2nd/snow prism/snow prism.sm",
+          "artist": "Qrispy Joybox"
         },
         {
           "title": "TRIP MACHINE",
@@ -574,8 +828,18 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "DDR",
-          "rankedRating": 10.2
+          "rankedRating": 10.2,
+          "songId": "001088",
+          "chartId": "001088#D#2",
+          "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
+          "artist": "DE-SIRE"
         }
+      ],
+      "chartIds": [
+        "000608#D#2",
+        "001628#D#2",
+        "001748#D#2",
+        "001088#D#2"
       ]
     },
     {
@@ -595,7 +859,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "A",
-          "rankedRating": 2.3
+          "rankedRating": 2.3,
+          "songId": "000638",
+          "chartId": "000638#D#2",
+          "path": "sm/A/bass 2 bass/bass 2 bass.sm",
+          "artist": "Ryu☆"
         },
         {
           "title": "Anthurium",
@@ -604,7 +872,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "A3",
-          "rankedRating": 10.45
+          "rankedRating": 10.45,
+          "songId": "000878",
+          "chartId": "000878#D#2",
+          "path": "sm/A3/Anthurium/Anthurium.sm",
+          "artist": "BlackY feat. Risa Yuzuki"
         },
         {
           "title": "SEXY PLANET",
@@ -613,7 +885,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "4th",
-          "rankedRating": 3.4
+          "rankedRating": 3.4,
+          "songId": "000331",
+          "chartId": "000331#D#4",
+          "path": "sm/4th/SEXY PLANET/SEXY PLANET.sm",
+          "artist": "Crystal Aliens"
         },
         {
           "title": "sakura storm",
@@ -622,8 +898,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 2.2
+          "rankedRating": 2.2,
+          "songId": "001662",
+          "chartId": "001662#D#4",
+          "path": "sm/X2/sakura storm/sakura storm.sm",
+          "artist": "Ryu☆"
         }
+      ],
+      "chartIds": [
+        "000638#D#2",
+        "000878#D#2",
+        "000331#D#4",
+        "001662#D#4"
       ]
     },
     {
@@ -643,7 +929,11 @@
           "difficulty": "difficult",
           "mode": "double",
           "game": "2014",
-          "rankedRating": 11.5
+          "rankedRating": 11.5,
+          "songId": "000213",
+          "chartId": "000213#D#2",
+          "path": "sm/2014/starmine/starmine.sm",
+          "artist": "Ryu☆"
         },
         {
           "title": "The Lonely Streets",
@@ -652,7 +942,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "2014",
-          "rankedRating": 11.35
+          "rankedRating": 11.35,
+          "songId": "000198",
+          "chartId": "000198#D#4",
+          "path": "sm/2014/The Lonely Streets/The Lonely Streets.sm",
+          "artist": "DJ Yoshitaka feat.Robert \"RAaB\" Stevenson"
         },
         {
           "title": "SUNKiSS♥DROP",
@@ -661,7 +955,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "SN1",
-          "rankedRating": 3.25
+          "rankedRating": 3.25,
+          "songId": "001199",
+          "chartId": "001199#D#4",
+          "path": "sm/SN1/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
+          "artist": "jun with Alison"
         },
         {
           "title": "Dance Dance Revolution",
@@ -670,8 +968,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "EX",
-          "rankedRating": 12.4
+          "rankedRating": 12.4,
+          "songId": "001105",
+          "chartId": "001105#D#4",
+          "path": "sm/EX/Dance Dance Revolution/Dance Dance Revolution.sm",
+          "artist": "DDR ALL STARS"
         }
+      ],
+      "chartIds": [
+        "000213#D#2",
+        "000198#D#4",
+        "001199#D#4",
+        "001105#D#4"
       ]
     },
     {
@@ -691,7 +999,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X3 vs 2nd",
-          "rankedRating": 12.15
+          "rankedRating": 12.15,
+          "songId": "001707",
+          "chartId": "001707#D#4",
+          "path": "sm/X3 vs 2nd/Private Eye/Private Eye.sm",
+          "artist": "atomsoak ft. cerol"
         },
         {
           "title": "CENTAUR",
@@ -700,7 +1012,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "SN2",
-          "rankedRating": 12.7
+          "rankedRating": 12.7,
+          "songId": "001235",
+          "chartId": "001235#D#4",
+          "path": "sm/SN2/CENTAUR/CENTAUR.sm",
+          "artist": "Jimmy Weckl"
         },
         {
           "title": "DoLL",
@@ -709,7 +1025,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "SN2",
-          "rankedRating": 12.35
+          "rankedRating": 12.35,
+          "songId": "001245",
+          "chartId": "001245#D#4",
+          "path": "sm/SN2/DoLL/DoLL.sm",
+          "artist": "TЁЯRA"
         },
         {
           "title": "MARS WAR 3",
@@ -718,8 +1038,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "SN1",
-          "rankedRating": 3.4
+          "rankedRating": 3.4,
+          "songId": "001185",
+          "chartId": "001185#D#4",
+          "path": "sm/SN1/MARS WAR 3/MARS WAR 3.sm",
+          "artist": "JET GIRL SPIN"
         }
+      ],
+      "chartIds": [
+        "001707#D#4",
+        "001235#D#4",
+        "001245#D#4",
+        "001185#D#4"
       ]
     },
     {
@@ -739,7 +1069,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A",
-          "rankedRating": 2.3
+          "rankedRating": 2.3,
+          "songId": "000625",
+          "chartId": "000625#D#4",
+          "path": "sm/A/TECH-NOID/TECH-NOID.sm",
+          "artist": "Sota F."
         },
         {
           "title": "exotic ethnic",
@@ -748,7 +1082,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "6th",
-          "rankedRating": 13.2
+          "rankedRating": 13.2,
+          "songId": "000435",
+          "chartId": "000435#D#4",
+          "path": "sm/6th/exotic ethnic/exotic ethnic.sm",
+          "artist": "RevenG"
         },
         {
           "title": "デッドボヲルdeホームラン",
@@ -757,7 +1095,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "2014",
-          "rankedRating": 13.8
+          "rankedRating": 13.8,
+          "songId": "000104",
+          "chartId": "000104#D#4",
+          "path": "sm/2014/Deadball de homerun/Deadball de homerun.sm",
+          "artist": "猫叉Masterβ2"
         },
         {
           "title": "Ishtar",
@@ -766,8 +1108,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A",
-          "rankedRating": 14.25
+          "rankedRating": 14.25,
+          "songId": "000555",
+          "chartId": "000555#D#4",
+          "path": "sm/A/Ishtar/Ishtar.sm",
+          "artist": "劇団レコード"
         }
+      ],
+      "chartIds": [
+        "000625#D#4",
+        "000435#D#4",
+        "000104#D#4",
+        "000555#D#4"
       ]
     },
     {
@@ -787,7 +1139,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X",
-          "rankedRating": 14.25
+          "rankedRating": 14.25,
+          "songId": "001568",
+          "chartId": "001568#D#4",
+          "path": "sm/X/on the bounce/on the bounce.sm",
+          "artist": "neuras"
         },
         {
           "title": "Let's DANCE aROUND!!",
@@ -796,7 +1152,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A3",
-          "rankedRating": 14.85
+          "rankedRating": 14.85,
+          "songId": "000964",
+          "chartId": "000964#D#4",
+          "path": "sm/A3/Let's DANCE aROUND!!/Let's DANCE aROUND!!.ssc",
+          "artist": "kors k feat.Jaejun by NuevoStudio"
         },
         {
           "title": "Pierce The Sky",
@@ -805,7 +1165,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 14.55
+          "rankedRating": 14.55,
+          "songId": "001622",
+          "chartId": "001622#D#4",
+          "path": "sm/X2/Pierce The Sky/Pierce The Sky.sm",
+          "artist": "JAKAZiD feat. K.N."
         },
         {
           "title": "PARANOIA survivor",
@@ -814,8 +1178,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "EX",
-          "rankedRating": 15.65
+          "rankedRating": 15.65,
+          "songId": "001134",
+          "chartId": "001134#D#4",
+          "path": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
+          "artist": "270"
         }
+      ],
+      "chartIds": [
+        "001568#D#4",
+        "000964#D#4",
+        "001622#D#4",
+        "001134#D#4"
       ]
     },
     {
@@ -835,7 +1209,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A20 Plus",
-          "rankedRating": 15.35
+          "rankedRating": 15.35,
+          "songId": "000770",
+          "chartId": "000770#D#4",
+          "path": "sm/A20 Plus/Going Hypersonic/Going Hypersonic.sm",
+          "artist": "Mameyudoufu"
         },
         {
           "title": "out of focus",
@@ -844,7 +1222,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A",
-          "rankedRating": 15.7
+          "rankedRating": 15.7,
+          "songId": "000640",
+          "chartId": "000640#D#4",
+          "path": "sm/A/out of focus/out of focus.sm",
+          "artist": "Qrispy Joybox"
         },
         {
           "title": "Skywalking",
@@ -853,7 +1235,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A20",
-          "rankedRating": 15.65
+          "rankedRating": 15.65,
+          "songId": "000723",
+          "chartId": "000723#D#4",
+          "path": "sm/A20/Skywalking/Skywalking.sm",
+          "artist": "Nhato"
         },
         {
           "title": "UNBELIEVABLE (Sparky remix)",
@@ -862,8 +1248,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X3 vs 2nd",
-          "rankedRating": 4.25
+          "rankedRating": 4.25,
+          "songId": "001737",
+          "chartId": "001737#D#4",
+          "path": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm",
+          "artist": "jun feat. Sarah-Jane"
         }
+      ],
+      "chartIds": [
+        "000770#D#4",
+        "000640#D#4",
+        "000723#D#4",
+        "001737#D#4"
       ]
     },
     {
@@ -883,7 +1279,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "2014",
-          "rankedRating": 3.6
+          "rankedRating": 3.6,
+          "songId": "000181",
+          "chartId": "000181#D#4",
+          "path": "sm/2014/Sand Blow/Sand Blow.sm",
+          "artist": "肥塚良彦"
         },
         {
           "title": "Helios",
@@ -892,7 +1292,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A20",
-          "rankedRating": 16.45
+          "rankedRating": 16.45,
+          "songId": "000678",
+          "chartId": "000678#D#4",
+          "path": "sm/A20/Helios/Helios.sm",
+          "artist": "xac"
         },
         {
           "title": "KIMONO♥PRINCESS",
@@ -901,7 +1305,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 5.15
+          "rankedRating": 5.15,
+          "songId": "001607",
+          "chartId": "001607#D#4",
+          "path": "sm/X2/KIMONO PRINCESS/KIMONO PRINCESS.sm",
+          "artist": "jun"
         },
         {
           "title": "The legend of MAX(X-Special)",
@@ -910,8 +1318,18 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "X",
-          "rankedRating": 17.4
+          "rankedRating": 17.4,
+          "songId": "001549",
+          "chartId": "001549#D#5",
+          "path": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm",
+          "artist": "ZZ"
         }
+      ],
+      "chartIds": [
+        "000181#D#4",
+        "000678#D#4",
+        "001607#D#4",
+        "001549#D#5"
       ]
     },
     {
@@ -931,7 +1349,11 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "A20",
-          "rankedRating": 17.1
+          "rankedRating": 17.1,
+          "songId": "000699",
+          "chartId": "000699#D#4",
+          "path": "sm/A20/New Era/New Era.sm",
+          "artist": "BEMANI Sound Team \"Sota F.\""
         },
         {
           "title": "Fascination ～eternal love mix～",
@@ -940,7 +1362,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "SN2",
-          "rankedRating": 9.6
+          "rankedRating": 9.6,
+          "songId": "001250",
+          "chartId": "001250#D#5",
+          "path": "sm/SN2/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "RISING FIRE HAWK",
@@ -949,7 +1375,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "A",
-          "rankedRating": 17.4
+          "rankedRating": 17.4,
+          "songId": "000591",
+          "chartId": "000591#D#5",
+          "path": "sm/A/RISING FIRE HAWK/RISING FIRE HAWK.sm",
+          "artist": "L.E.D.-G"
         },
         {
           "title": "PARANOiA Revolution",
@@ -958,8 +1388,18 @@
           "difficulty": "expert",
           "mode": "double",
           "game": "X3 vs 2nd",
-          "rankedRating": 18.4
+          "rankedRating": 18.4,
+          "songId": "001705",
+          "chartId": "001705#D#4",
+          "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+          "artist": "CLIMAX of MAXX 360"
         }
+      ],
+      "chartIds": [
+        "000699#D#4",
+        "001250#D#5",
+        "000591#D#5",
+        "001705#D#4"
       ]
     },
     {
@@ -979,7 +1419,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "2013",
-          "rankedRating": 3.45
+          "rankedRating": 3.45,
+          "songId": "000054",
+          "chartId": "000054#D#5",
+          "path": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm",
+          "artist": "Mutsuhiko Izumi"
         },
         {
           "title": "Astrogazer",
@@ -988,7 +1432,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "A",
-          "rankedRating": 18.15
+          "rankedRating": 18.15,
+          "songId": "000501",
+          "chartId": "000501#D#5",
+          "path": "sm/A/Astrogazer/Astrogazer.sm",
+          "artist": "DJ TOTTO"
         },
         {
           "title": "New Decade",
@@ -997,7 +1445,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 18.55
+          "rankedRating": 18.55,
+          "songId": "001620",
+          "chartId": "001620#D#5",
+          "path": "sm/X2/New Decade/New Decade.sm",
+          "artist": "Sota F."
         },
         {
           "title": "PARANOiA ～HADES～",
@@ -1006,8 +1458,18 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "SN1",
-          "rankedRating": 18.6
+          "rankedRating": 18.6,
+          "songId": "001192",
+          "chartId": "001192#D#5",
+          "path": "sm/SN1/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+          "artist": "αTYPE-300"
         }
+      ],
+      "chartIds": [
+        "000054#D#5",
+        "000501#D#5",
+        "001620#D#5",
+        "001192#D#5"
       ]
     },
     {
@@ -1027,7 +1489,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "2013",
-          "rankedRating": 18.45
+          "rankedRating": 18.45,
+          "songId": "000008",
+          "chartId": "000008#D#5",
+          "path": "sm/2013/Blew My Mind/Blew My Mind.sm",
+          "artist": "Sota F."
         },
         {
           "title": "Tohoku EVOLVED",
@@ -1036,7 +1502,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "X3 vs 2nd",
-          "rankedRating": 18.55
+          "rankedRating": 18.55,
+          "songId": "001732",
+          "chartId": "001732#D#5",
+          "path": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
+          "artist": "2.1MB underground"
         },
         {
           "title": "Valkyrie dimension",
@@ -1045,7 +1515,11 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 19.2
+          "rankedRating": 19.2,
+          "songId": "001640",
+          "chartId": "001640#D#5",
+          "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+          "artist": "Spriggan"
         },
         {
           "title": "POSSESSION",
@@ -1054,8 +1528,18 @@
           "difficulty": "challenge",
           "mode": "double",
           "game": "X2",
-          "rankedRating": 7.45
+          "rankedRating": 7.45,
+          "songId": "001621",
+          "chartId": "001621#D#5",
+          "path": "sm/X2/POSSESSION/POSSESSION.sm",
+          "artist": "TAG underground"
         }
+      ],
+      "chartIds": [
+        "000008#D#5",
+        "001732#D#5",
+        "001640#D#5",
+        "001621#D#5"
       ]
     }
   ]

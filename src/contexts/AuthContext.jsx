@@ -49,8 +49,13 @@ export const AuthProvider = ({ children }) => {
       const data = await res.json();
       setUser(u => ({ email: data.email || u?.email || '' }));
       // Scores
-      if (data.scores) setScores(data.scores);
-      else if (data.ddrScores) {
+      if (data.scores) {
+        try {
+          setScores(typeof data.scores === 'string' ? JSON.parse(data.scores) : data.scores);
+        } catch (e) {
+          console.warn('Failed to parse scores from server', e);
+        }
+      } else if (data.ddrScores) {
         try {
           setScores(typeof data.ddrScores === 'string' ? JSON.parse(data.ddrScores) : data.ddrScores);
         } catch (e) {

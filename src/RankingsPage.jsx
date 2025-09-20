@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import SongCard from './components/SongCard.jsx';
+import RankingsSettingsModal from './components/RankingsSettingsModal.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation, faGear, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity.js';
 import { storage } from './utils/remoteStorage.js';
@@ -12,6 +13,120 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
+import { resolveScore, makeScoreKey } from './utils/scoreKey.js';
+import { shouldHighlightScore } from './utils/scoreHighlight.js';
+import { normalizeMode } from './utils/chartIds.js';
+
+const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
+const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
+
+const loadCloseRange = () => {
+  try {
+    const stored = storage.getItem('rankingsCloseRange');
+    if (!stored) return { ...CLOSE_FILTER_DEFAULT };
+    const parsed = JSON.parse(stored);
+    const min = Math.round(Number(parsed?.min));
+    const max = Math.round(Number(parsed?.max));
+    if (!Number.isNaN(min) && !Number.isNaN(max)) {
+      return { min, max };
+    }
+  } catch (_e) {
+    void _e;
+  }
+  return { ...CLOSE_FILTER_DEFAULT };
+};
+
+const HIDE_CLEAR_DEFAULT = 989999;
+
+const loadHideThreshold = () => {
+  try {
+    const stored = storage.getItem('rankingsHideThreshold');
+    if (stored == null) return HIDE_CLEAR_DEFAULT;
+    const parsed = Math.round(Number(JSON.parse(stored)));
+    return Number.isNaN(parsed) ? HIDE_CLEAR_DEFAULT : parsed;
+  } catch (_e) {
+    void _e;
+    const numeric = Math.round(Number(storage.getItem('rankingsHideThreshold')));
+    return Number.isNaN(numeric) ? HIDE_CLEAR_DEFAULT : numeric;
+  }
+};
+
+const sanitizeLampSelection = (value) => {
+  if (!value) return null;
+  const normalized = String(value).toLowerCase();
+  if (normalized === 'good' || normalized === 'great' || normalized === 'perfect') {
+    return normalized;
+  }
+  return null;
+};
+
+const loadHideLamp = () => {
+  try {
+    const stored = storage.getItem('rankingsHideLamp');
+    return sanitizeLampSelection(stored);
+  } catch (_e) {
+    void _e;
+    return null;
+  }
+};
+
+const LAMP_LABELS = {
+  good: 'Good FC or better',
+  great: 'Great FC or better',
+  perfect: 'Perfect FC or better',
+};
+
+const GRADE_LABELS = {
+  989999: 'AAA (≥ 990,000)',
+  949999: 'AA+ (≥ 950,000)',
+  899999: 'AA (≥ 900,000)',
+  889999: 'AA- (≥ 890,000)',
+  849999: 'A+ (≥ 850,000)',
+  799999: 'A (≥ 800,000)',
+  789999: 'A- (≥ 790,000)',
+  749999: 'B+ (≥ 750,000)',
+  699999: 'B (≥ 700,000)',
+  689999: 'B- (≥ 690,000)',
+  649999: 'C+ (≥ 650,000)',
+  599999: 'C (≥ 600,000)',
+  589999: 'C- (≥ 590,000)',
+  549999: 'D+ (≥ 550,000)',
+};
+
+const getLampRank = (lamp) => {
+  if (!lamp) return -1;
+  const normalized = String(lamp).toLowerCase();
+  if (normalized.includes('marvelous')) return 3;
+  if (normalized.includes('perfect')) return 2;
+  if (normalized.includes('great')) return 1;
+  if (normalized.includes('good')) return 0;
+  return -1;
+};
+
+const lampRankForSelection = (selection) => {
+  const sanitized = sanitizeLampSelection(selection);
+  if (sanitized === 'perfect') return 2;
+  if (sanitized === 'great') return 1;
+  if (sanitized === 'good') return 0;
+  return null;
+};
+
+const HIDE_PLAYED_DEFAULT = 'off';
+
+const loadHidePlayedMode = () => {
+  try {
+    const stored = storage.getItem('rankingsHidePlayedMode');
+    if (!stored) return HIDE_PLAYED_DEFAULT;
+    const normalized = String(stored).toLowerCase();
+    if (normalized === 'hideplayed') return 'hidePlayed';
+    if (normalized === 'hideunplayed') return 'hideUnplayed';
+    if (normalized === 'off') return 'off';
+    return HIDE_PLAYED_DEFAULT;
+  } catch (_e) {
+    void _e;
+    return HIDE_PLAYED_DEFAULT;
+  }
+};
 
 const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
@@ -24,15 +139,19 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
       </h2>
       {!collapsed && (
         <div className="song-grid">
-          {charts.map((chart, idx) => (
-            <SongCard
-              key={idx}
-              song={chart}
-              score={chart.score}
-              scoreHighlight={chart.score > 989999}
-              forceShowRankedRating
-            />
-          ))}
+          {charts.map((chart, idx) => {
+            const cardKey = chart.uniqueKey || chart.chartId || `${chart.songId || chart.title}-${chart.slug || idx}`;
+            return (
+              <SongCard
+                key={cardKey}
+                song={chart}
+                score={chart.score}
+                scoreHighlight={shouldHighlightScore(chart.score)}
+                forceShowRankedRating
+                skipScoreLookup
+              />
+            );
+          })}
         </div>
       )}
     </section>
@@ -61,6 +180,77 @@ const RankingsPage = () => {
     const stored = storage.getItem('rankingsCloseOnly');
     return stored ? JSON.parse(stored) : false;
   });
+  const [closeRange, setCloseRange] = useState(() => loadCloseRange());
+  const [hideTopThreshold, setHideTopThreshold] = useState(() => loadHideThreshold());
+  const [hideTopLamp, setHideTopLamp] = useState(() => loadHideLamp());
+  const [hidePlayedMode, setHidePlayedMode] = useState(() => loadHidePlayedMode());
+  const normalizedCloseRange = useMemo(() => {
+    const min = Number.isFinite(closeRange?.min) ? closeRange.min : CLOSE_FILTER_DEFAULT.min;
+    const max = Number.isFinite(closeRange?.max) ? closeRange.max : CLOSE_FILTER_DEFAULT.max;
+    return {
+      min: Math.min(min, max),
+      max: Math.max(min, max),
+    };
+  }, [closeRange]);
+
+  const closeRangeLabel = useMemo(() => {
+    const { min, max } = normalizedCloseRange;
+    return SCORE_FORMATTER.format(min) + '-' + SCORE_FORMATTER.format(max);
+  }, [normalizedCloseRange]);
+
+  const hideThresholdValue = useMemo(() => {
+    return Number.isFinite(hideTopThreshold) ? hideTopThreshold : HIDE_CLEAR_DEFAULT;
+  }, [hideTopThreshold]);
+
+  const hideClearedDescription = useMemo(() => {
+    if (hideTopLamp) {
+      return LAMP_LABELS[hideTopLamp] || 'FC preset';
+    }
+    const gradeLabel = GRADE_LABELS[hideThresholdValue];
+    if (gradeLabel) return gradeLabel;
+    return '>' + SCORE_FORMATTER.format(hideThresholdValue);
+  }, [hideTopLamp, hideThresholdValue]);
+
+  const hideClearedTitle = useMemo(() => {
+    return hideTopScores
+      ? 'Show cleared (' + hideClearedDescription + ')'
+      : 'Hide cleared (' + hideClearedDescription + ')';
+  }, [hideTopScores, hideClearedDescription]);
+
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const handleSettingsSave = (settings) => {
+    if (settings?.closeRange) {
+      const parseScore = (value, fallback) => {
+        const numeric = Math.round(Number(value));
+        return Number.isNaN(numeric) ? fallback : numeric;
+      };
+      const minValue = parseScore(settings.closeRange?.min, CLOSE_FILTER_DEFAULT.min);
+      const maxValue = parseScore(settings.closeRange?.max, CLOSE_FILTER_DEFAULT.max);
+      setCloseRange(prev => {
+        if (prev?.min === minValue && prev?.max === maxValue) {
+          return prev;
+        }
+        return { min: minValue, max: maxValue };
+      });
+    }
+    if (settings?.hideCleared) {
+      const sanitizedLamp = sanitizeLampSelection(settings.hideCleared.lamp);
+      setHideTopLamp(sanitizedLamp);
+      if (Number.isFinite(settings.hideCleared.threshold)) {
+        setHideTopThreshold(Math.round(settings.hideCleared.threshold));
+      } else if (!sanitizedLamp && !Number.isFinite(settings.hideCleared.threshold)) {
+        setHideTopThreshold(HIDE_CLEAR_DEFAULT);
+      }
+    }
+    if (settings?.hidePlayedMode) {
+      const normalized = String(settings.hidePlayedMode).toLowerCase();
+      if (normalized === 'hideplayed') setHidePlayedMode('hidePlayed');
+      else if (normalized === 'hideunplayed') setHidePlayedMode('hideUnplayed');
+      else setHidePlayedMode('off');
+    }
+  };
+
 
   useEffect(() => {
     getSongMeta()
@@ -68,17 +258,75 @@ const RankingsPage = () => {
       .catch(err => console.error('Failed to load song meta:', err));
   }, []);
 
-  const availableLevels = useMemo(() => {
-    const levels = new Set();
+  const { availableLevels, chartsByLevel } = useMemo(() => {
+    if (!Array.isArray(songMeta) || songMeta.length === 0) {
+      return { availableLevels: [], chartsByLevel: new Map() };
+    }
+
+    const levelSet = new Set();
+    const buckets = new Map();
+    const normalizedOverride = overrideSongs && overrideSongs.size > 0 ? overrideSongs : null;
+
     for (const song of songMeta) {
-      for (const diff of song.difficulties) {
-        if (diff.mode === playStyle && diff.rankedRating != null) {
-          levels.add(Math.floor(diff.rankedRating));
+      const difficulties = Array.isArray(song?.difficulties) ? song.difficulties : [];
+      if (difficulties.length === 0) continue;
+
+      if (normalizedOverride) {
+        const titles = [];
+        if (song.title) titles.push(normalizeString(song.title));
+        if (song.titleTranslit) titles.push(normalizeString(song.titleTranslit));
+        const matchesOverride = titles.some((title) => title && normalizedOverride.has(title));
+        if (!matchesOverride) continue;
+      }
+
+      const bpmString = song.hasMultipleBpms
+        ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}`
+        : String(Math.round(song.bpmMin));
+
+      for (const diff of difficulties) {
+        const normalizedMode = normalizeMode(diff?.mode);
+        if (normalizedMode !== playStyle) continue;
+        if (diff?.rankedRating == null) continue;
+
+        const levelFloor = Math.floor(diff.rankedRating);
+        levelSet.add(levelFloor);
+
+        if (!buckets.has(levelFloor)) {
+          buckets.set(levelFloor, []);
         }
+        const bucket = buckets.get(levelFloor);
+
+        const scoreKey = makeScoreKey({
+          chartId: diff.chartId,
+          songId: song.id,
+          mode: normalizedMode,
+          difficulty: diff.difficulty,
+          title: song.title,
+          artist: song.artist,
+        });
+
+        bucket.push({
+          uniqueKey: diff.chartId || `${song.id || song.title}:${normalizedMode}:${String(diff.difficulty).toLowerCase()}`,
+          chartId: diff.chartId,
+          songId: song.id,
+          title: song.title,
+          artist: song.artist,
+          bpm: bpmString,
+          level: diff.feet,
+          difficulty: diff.difficulty,
+          mode: normalizedMode,
+          game: song.game,
+          rankedRating: diff.rankedRating,
+          path: song.path,
+          slug: `${normalizedMode}-${String(diff.difficulty).toLowerCase()}`,
+          scoreKey,
+        });
       }
     }
-    return Array.from(levels).sort((a, b) => a - b);
-  }, [songMeta, playStyle]);
+
+    const sortedLevels = Array.from(levelSet).sort((a, b) => a - b);
+    return { availableLevels: sortedLevels, chartsByLevel: buckets };
+  }, [songMeta, playStyle, overrideSongs]);
 
   useEffect(() => {
     if (availableLevels.length === 0) return;
@@ -104,8 +352,24 @@ const RankingsPage = () => {
     storage.setItem('rankingsHideTop', JSON.stringify(hideTopScores));
   }, [hideTopScores]);
   useEffect(() => {
+    storage.setItem('rankingsHideThreshold', JSON.stringify(hideThresholdValue));
+  }, [hideThresholdValue]);
+  useEffect(() => {
+    if (hideTopLamp) {
+      storage.setItem('rankingsHideLamp', hideTopLamp);
+    } else {
+      storage.setItem('rankingsHideLamp', '');
+    }
+  }, [hideTopLamp]);
+  useEffect(() => {
+    storage.setItem('rankingsHidePlayedMode', hidePlayedMode);
+  }, [hidePlayedMode]);
+  useEffect(() => {
     storage.setItem('rankingsCloseOnly', JSON.stringify(closeOnly));
   }, [closeOnly]);
+  useEffect(() => {
+    storage.setItem('rankingsCloseRange', JSON.stringify(normalizedCloseRange));
+  }, [normalizedCloseRange]);
 
   const [collapsed, setCollapsed] = useState(() => {
     try {
@@ -138,53 +402,65 @@ const RankingsPage = () => {
   }, [songlistOverride]);
 
   const chartsForLevel = useMemo(() => {
-    const charts = [];
-    for (const song of songMeta) {
-      for (const diff of song.difficulties) {
-        if (
-          diff.mode === playStyle &&
-          diff.rankedRating != null &&
-          Math.floor(diff.rankedRating) === selectedLevel
-        ) {
-          if (overrideSongs && overrideSongs.size > 0) {
-            const titles = [song.title];
-            if (song.titleTranslit) titles.push(song.titleTranslit);
-            const normalized = titles.map(normalizeString);
-            if (!normalized.some(t => overrideSongs.has(t))) continue;
-          }
-          const bpm = song.hasMultipleBpms ? `${Math.round(song.bpmMin)}-${Math.round(song.bpmMax)}` : String(Math.round(song.bpmMin));
-          const chart = {
-            title: song.title,
-            bpm,
-            level: diff.feet,
-            difficulty: diff.difficulty,
-            mode: diff.mode,
-            game: song.game,
-            artist: song.artist,
-            rankedRating: diff.rankedRating,
-            resetFilters,
-            path: song.path,
-            slug: `${diff.mode}-${String(diff.difficulty).toLowerCase()}`,
-          };
-          const keyNew = song.artist ? `${song.title.toLowerCase()}::${song.artist.toLowerCase()}::${diff.difficulty.toLowerCase()}` : null;
-          const keyLegacy = `${song.title.toLowerCase()}-${diff.difficulty.toLowerCase()}`;
-          const hit = scores[playStyle]?.[keyNew] || scores[playStyle]?.[keyLegacy];
-          if (hit) {
-            chart.score = hit.score;
-          }
-          charts.push(chart);
-        }
+    if (!selectedLevel) return [];
+    const bucket = chartsByLevel.get(selectedLevel);
+    if (!bucket || bucket.length === 0) return [];
+
+    return bucket.map((chart) => {
+      const modeScores = chart.mode && scores ? scores[chart.mode] || {} : {};
+      let hit = null;
+      if (chart.scoreKey && modeScores[chart.scoreKey]) {
+        hit = modeScores[chart.scoreKey];
+      } else if (chart.chartId && modeScores[chart.chartId]) {
+        hit = modeScores[chart.chartId];
       }
-    }
-    return charts;
-  }, [songMeta, playStyle, selectedLevel, resetFilters, scores, overrideSongs]);
+
+      if (!hit) {
+        hit = resolveScore(scores, chart.mode, {
+          chartId: chart.chartId,
+          songId: chart.songId,
+          title: chart.title,
+          artist: chart.artist,
+          difficulty: chart.difficulty,
+        });
+      }
+
+      if (!hit) {
+        return { ...chart, resetFilters };
+      }
+
+      const enriched = { ...chart, resetFilters };
+      if (hit.score != null) enriched.score = hit.score;
+      if (hit.lamp) enriched.lamp = hit.lamp;
+      if (hit.flare != null) enriched.flare = hit.flare;
+      return enriched;
+    });
+  }, [chartsByLevel, selectedLevel, scores, resetFilters]);
 
   const groupedCharts = useMemo(() => {
-    let visibleCharts = hideTopScores
-      ? chartsForLevel.filter(c => !(c.score > 989999))
-      : chartsForLevel;
+    let visibleCharts = chartsForLevel;
+    if (hidePlayedMode === 'hidePlayed') {
+      visibleCharts = visibleCharts.filter(c => c.score == null);
+    } else if (hidePlayedMode === 'hideUnplayed') {
+      visibleCharts = visibleCharts.filter(c => c.score != null);
+    }
+    if (hideTopScores) {
+      if (hideTopLamp) {
+        const lampThreshold = lampRankForSelection(hideTopLamp);
+        if (lampThreshold != null) {
+          visibleCharts = visibleCharts.filter(c => {
+            const rank = getLampRank(c.lamp);
+            if (rank === -1) return true;
+            return rank < lampThreshold;
+          });
+        }
+      } else {
+        visibleCharts = visibleCharts.filter(c => !(c.score != null && c.score > hideThresholdValue));
+      }
+    }
     if (closeOnly) {
-      visibleCharts = visibleCharts.filter(c => c.score != null && c.score >= 980000 && c.score <= 989999);
+      const { min, max } = normalizedCloseRange;
+      visibleCharts = visibleCharts.filter(c => c.score != null && c.score >= min && c.score <= max);
     }
     const map = new Map();
     for (const chart of visibleCharts) {
@@ -196,7 +472,7 @@ const RankingsPage = () => {
       ascendingOrder ? a - b : b - a
     );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
-  }, [chartsForLevel, ascendingOrder, hideTopScores, closeOnly]);
+  }, [chartsForLevel, ascendingOrder, hideTopScores, hideTopLamp, hideThresholdValue, hidePlayedMode, closeOnly, normalizedCloseRange]);
 
   const hasScores = useMemo(() => {
     return (
@@ -206,8 +482,8 @@ const RankingsPage = () => {
   }, [scores]);
 
   const topCount = useMemo(
-    () => chartsForLevel.filter((c) => c.score > 989999).length,
-    [chartsForLevel]
+    () => chartsForLevel.filter((c) => c.score != null && c.score > hideThresholdValue).length,
+    [chartsForLevel, hideThresholdValue]
   );
 
   const topPercent = useMemo(() => {
@@ -239,18 +515,29 @@ const RankingsPage = () => {
           <button
             className={`filter-button ${hideTopScores ? 'active' : ''}`}
             onClick={() => setHideTopScores(h => !h)}
-            title={hideTopScores ? 'Show cleared (>989,999)' : 'Hide cleared (>989,999)'}
+            title={hideClearedTitle}
+            aria-label={hideClearedTitle}
             aria-pressed={hideTopScores}
           >
-            <span className="aaa-icon" aria-hidden="true">AAA</span>
+            <FontAwesomeIcon icon={faEyeSlash} className="aaa-icon" aria-hidden="true" />
           </button>
           <button
             className={`filter-button ${closeOnly ? 'active' : ''}`}
             onClick={() => setCloseOnly(c => !c)}
-            title={closeOnly ? 'Show all scores' : 'Filter close (980k–989,999)'}
+            title={closeOnly ? 'Show all scores' : 'Filter close (' + closeRangeLabel + ')'}
             aria-pressed={closeOnly}
           >
             <FontAwesomeIcon icon={faCircleExclamation} />
+          </button>
+          <button
+            className="filter-button"
+            type="button"
+            onClick={() => setSettingsOpen(true)}
+            title="Open rankings settings"
+            aria-label="Open rankings settings"
+            aria-haspopup="dialog"
+          >
+            <FontAwesomeIcon icon={faGear} />
           </button>
           {hasScores && (
             <div className="ranking-counter">
@@ -269,6 +556,17 @@ const RankingsPage = () => {
           />
       ))}
       </main>
+      <RankingsSettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        closeRange={normalizedCloseRange}
+        defaultCloseRange={CLOSE_FILTER_DEFAULT}
+        hideThreshold={hideThresholdValue}
+        defaultHideThreshold={HIDE_CLEAR_DEFAULT}
+        hideLamp={hideTopLamp}
+        hidePlayedMode={hidePlayedMode}
+        onApply={handleSettingsSave}
+      />
     </div>
   );
 };

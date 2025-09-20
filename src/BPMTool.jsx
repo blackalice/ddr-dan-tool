@@ -23,6 +23,7 @@ import { storage } from './utils/remoteStorage.js';
 import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
 import { getSongMeta, getRadarValues, getJsonCached } from './utils/cachedFetch.js';
+import { resolveScore } from './utils/scoreKey.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -458,11 +459,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 }
             }
             // Check played status filter
-            const titleLc = simfileWithRatings.title.titleName.toLowerCase();
-            const artistLc = (simfileWithRatings.artist || '').toLowerCase();
-            const keyNew = `${titleLc}::${artistLc}::${chart.difficulty.toLowerCase()}`;
-            const keyLegacy = `${titleLc}-${chart.difficulty.toLowerCase()}`;
-            const hasPlayed = (scores[playStyle]?.[keyNew] != null) || (scores[playStyle]?.[keyLegacy] != null);
+            const scoreHit = resolveScore(scores, chart.mode, {
+                chartId: chart.chartId,
+                songId: simfileWithRatings.songId,
+                title: simfileWithRatings.title.titleName,
+                artist: simfileWithRatings.artist,
+                difficulty: chart.difficulty,
+            });
+            const hasPlayed = scoreHit != null;
 
             if (filters.playedStatus === 'played' && !hasPlayed) {
                 return true;
@@ -720,11 +724,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
             // Played vs Not Played filter
             if (filters.playedStatus !== 'all') {
-                const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
+            const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false; // Only consider charts of the current playStyle
-                    const keyNew = `${meta.title.toLowerCase()}::${(meta.artist || '').toLowerCase()}::${d.difficulty.toLowerCase()}`;
-                    const keyLegacy = `${meta.title.toLowerCase()}-${d.difficulty.toLowerCase()}`;
-                    return (scores[d.mode]?.[keyNew] != null) || (scores[d.mode]?.[keyLegacy] != null);
+                    const scoreHit = resolveScore(scores, d.mode, {
+                        chartId: d.chartId,
+                        songId: meta.id,
+                        title: meta.title,
+                        artist: meta.artist,
+                        difficulty: d.difficulty,
+                    });
+                    return scoreHit != null;
                 });
 
                 if (filters.playedStatus === 'played' && !hasPlayedInCurrentPlaystyle) return false;
@@ -787,6 +796,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             label: file.title,
             title: file.title,
             titleTranslit: file.titleTranslit,
+            id: file.id,
+            songId: file.id,
         }));
         setSongOptions(options);
     }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings]);
@@ -917,7 +928,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             bpm: bpmDisplay,
             difficulty: currentChart.difficulty.toLowerCase(),
             mode: currentChart.mode,
-            game: simfileData.mix.mixName
+            game: simfileData.mix.mixName,
+            chartId: currentChart.chartId,
+            songId: simfileData.songId,
+            artist: simfileData.artist,
+            path: simfileData.path,
         };
         addChartToGroup(name, chart);
     };
@@ -993,6 +1008,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     difficulty: d.difficulty.toLowerCase(),
                     mode: d.mode,
                     game: meta.game,
+                    chartId: d.chartId,
+                    songId: meta.id,
+                    artist: meta.artist,
+                    path: meta.path,
                 }));
         });
 

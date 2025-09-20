@@ -8,7 +8,9 @@ import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
+import '../styles/glow.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
+import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 
 const difficultyDisplayMap = {
     single: {
@@ -55,7 +57,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -78,13 +80,20 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   }, [song?.artist, song?.path]);
 
   const scoreData = React.useMemo(() => {
-    if (!song || !song.title || !song.difficulty || !song.mode) return null;
+    if (skipScoreLookup) return null;
+    if (!song || !song.difficulty || !song.mode) return null;
     const artist = song.artist || derivedArtist || undefined;
-    return resolveScore(scores, song.mode, { title: song.title, artist, difficulty: song.difficulty });
-  }, [scores, song, derivedArtist]);
+    return resolveScore(scores, song.mode, {
+      chartId: song.chartId,
+      songId: song.songId || song.id,
+      title: song.title,
+      artist,
+      difficulty: song.difficulty,
+    });
+  }, [skipScoreLookup, scores, song, derivedArtist]);
 
   const displayScore = scoreData?.score ?? score ?? null;
-  const lamp = scoreData?.lamp ?? null;
+  const lamp = scoreData?.lamp ?? song?.lamp ?? null;
   const flare = scoreData?.flare ?? null;
   const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
 
@@ -122,9 +131,22 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
 
   const difficultyInfo = song.mode && song.difficulty ? difficultyDisplayMap[song.mode]?.[song.difficulty] : null;
 
+  const showRanked = forceShowRankedRating || showRankedRatings;
+  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
+
+  const cardLinkClassName = useMemo(() => {
+    const classes = ['song-card-link'];
+    if (!song?.error && scoreHighlight) {
+      classes.push('score-highlight');
+      const glow = getScoreGlowClasses({ lamp });
+      if (glow) classes.push(glow);
+    }
+    return classes.join(' ');
+  }, [song?.error, scoreHighlight, lamp]);
+
   if (song.error) {
     return (
-      <div className="song-card-link">
+      <div className={cardLinkClassName}>
         <div className="song-card error-card">
           <div className="song-card-header">
             <h3 className="song-title">{song.title}</h3>
@@ -137,21 +159,20 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     );
   }
 
-  const showRanked = forceShowRankedRating || showRankedRatings;
-  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
-
   return (
     <div
-      className={
-        'song-card-link' + (scoreHighlight ? ' score-highlight' : '')
-      }
+      className={cardLinkClassName}
       onClick={() => {
       if (resetFilters) resetFilters();
       if (setPlayStyle) setPlayStyle(song.mode);
-      const songId = song.path || song.value;
-      const chartId = song.slug; // may be undefined in Dan/Vega data
-      if (songId && chartId) {
-        navigate(`/bpm?s=${encodeURIComponent(songId)}&c=${encodeURIComponent(chartId)}&m=${song.mode}`, { state: { fromSongCard: true } });
+      const songId = song.songId || song.id || song.path || song.value;
+      const chartId = song.chartId || song.slug; // may be undefined in Dan/Vega data
+      if (songId) {
+        const params = new URLSearchParams();
+        params.set('song', songId);
+        if (chartId) params.set('chart', chartId);
+        const query = params.toString();
+        navigate(`/bpm${query ? `?${query}` : ''}`, { state: { fromSongCard: true } });
       } else {
         // Fallback to legacy via query param 't' (title) plus mode/difficulty
         navigate(`/bpm?mode=${encodeURIComponent(song.mode)}&difficulty=${encodeURIComponent(song.difficulty)}&t=${encodeURIComponent(song.title)}`, { state: { fromSongCard: true, title: song.title } });

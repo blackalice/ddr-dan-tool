@@ -1,43 +1,71 @@
-export function makeScoreKey({ title, artist, difficulty }) {
+import {
+  buildChartId,
+  isChartId,
+  normalizeDifficultyName,
+  normalizeMode,
+  upgradeChartId,
+} from './chartIds.js';
+
+function makeLegacyKey({ title, difficulty, artist }) {
   if (!title || !difficulty) return null;
   const t = String(title).toLowerCase();
-  const d = String(difficulty).toLowerCase();
+  const d = normalizeDifficultyName(difficulty);
   if (artist) {
     const a = String(artist).toLowerCase();
     return `${t}::${a}::${d}`;
   }
-  // Legacy format (no artist)
   return `${t}-${d}`;
+}
+
+export function makeScoreKey({ chartId, songId, mode, difficulty, title, artist }) {
+  if (chartId && isChartId(chartId)) {
+    const upgraded = upgradeChartId(chartId);
+    if (upgraded) return upgraded;
+    return chartId;
+  }
+  const normalizedMode = normalizeMode(mode);
+  const normalizedDifficulty = normalizeDifficultyName(difficulty);
+  if (songId && normalizedMode && normalizedDifficulty) {
+    const id = buildChartId(songId, normalizedMode, normalizedDifficulty);
+    if (id) return id;
+  }
+  return makeLegacyKey({ title, difficulty, artist });
 }
 
 export function legacyScoreKey({ title, difficulty }) {
-  if (!title || !difficulty) return null;
-  const t = String(title).toLowerCase();
-  const d = String(difficulty).toLowerCase();
-  return `${t}-${d}`;
+  return makeLegacyKey({ title, difficulty });
 }
 
-export function resolveScore(scores, mode, { title, difficulty, artist }) {
-  if (!scores || !mode || !title || !difficulty) return null;
-  const byMode = scores[mode] || {};
-  // Try explicit keys first
-  const keyNew = makeScoreKey({ title, artist, difficulty });
-  const keyLegacy = legacyScoreKey({ title, difficulty });
-  if (keyNew && byMode[keyNew]) return byMode[keyNew];
-  if (byMode[keyLegacy]) return byMode[keyLegacy];
-  // Fallback: scan artist-aware keys that match title + difficulty
-  const t = String(title).toLowerCase();
-  const d = String(difficulty).toLowerCase();
-  let found = null;
-  for (const [k, val] of Object.entries(byMode)) {
-    // Match either legacy form or artist-aware form
-    if (k === `${t}-${d}`) { found = val; break; }
-    // artist-aware form pattern: `${t}::${artist}::${d}`
-    if (k.startsWith(`${t}::`) && k.endsWith(`::${d}`)) {
-      found = val;
-      // do not break to allow last one to win; but one is fine
-      break;
+export function resolveScore(scores, mode, details = {}) {
+  if (!scores || !mode) return null;
+  const normalizedMode = normalizeMode(mode);
+  const byMode = scores[normalizedMode] || {};
+  if (!details) details = {};
+  const { chartId, songId, difficulty, title, artist } = details;
+
+  const keyFromDetails = makeScoreKey({ chartId, songId, mode: normalizedMode, difficulty, title, artist });
+  if (keyFromDetails && byMode[keyFromDetails]) return byMode[keyFromDetails];
+
+  const legacyWithArtist = makeLegacyKey({ title, difficulty, artist });
+  if (legacyWithArtist && byMode[legacyWithArtist]) return byMode[legacyWithArtist];
+
+  const legacy = legacyScoreKey({ title, difficulty });
+  if (legacy && byMode[legacy]) return byMode[legacy];
+
+  const normalizedDifficulty = normalizeDifficultyName(difficulty);
+  const builtId = buildChartId(songId, normalizedMode, normalizedDifficulty);
+  const normalizedChartId = chartId ? upgradeChartId(chartId) : null;
+  for (const [key, val] of Object.entries(byMode)) {
+    const upgradedKey = upgradeChartId(key) || key;
+    if (normalizedChartId && upgradedKey === normalizedChartId) return val;
+    if (builtId && upgradedKey === builtId) return val;
+    if (chartId && key === chartId) return val;
+    if (builtId && key === builtId) return val;
+    if (title && normalizedDifficulty) {
+      const t = String(title).toLowerCase();
+      if (key === `${t}-${normalizedDifficulty}`) return val;
+      if (key.startsWith(`${t}::`) && key.endsWith(`::${normalizedDifficulty}`)) return val;
     }
   }
-  return found;
+  return null;
 }

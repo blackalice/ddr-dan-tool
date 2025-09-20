@@ -49,7 +49,17 @@ async function getDataKey(env) {
   }
 }
 
-function toB64(bytes) { return btoa(String.fromCharCode(...new Uint8Array(bytes))) }
+function toB64(bytes) {
+  const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)
+  if (arr.length === 0) return ''
+  let binary = ''
+  const chunk = 0x8000
+  for (let i = 0; i < arr.length; i += chunk) {
+    const slice = arr.subarray(i, i + chunk)
+    binary += String.fromCharCode(...slice)
+  }
+  return btoa(binary)
+}
 function fromB64(b64) { return Uint8Array.from(atob(b64), c => c.charCodeAt(0)) }
 
 async function encryptJson(obj, key) {
@@ -69,6 +79,20 @@ async function decryptJson(record, key) {
   const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct)
   const dec = new TextDecoder()
   return JSON.parse(dec.decode(pt))
+}
+
+function parseStoredPayload(row) {
+  if (!row) return {}
+  const raw = row.data
+  if (raw == null) return {}
+  if (typeof raw === 'string') {
+    try { return JSON.parse(raw) } catch (err) {
+      console.warn('[user-data] stored JSON malformed', err)
+      return {}
+    }
+  }
+  if (typeof raw === 'object') return raw
+  return {}
 }
 
 // Mount auth routes under /api (e.g., /api/login, /api/signup, /api/refresh, /api/logout)
@@ -152,27 +176,70 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
 const MAX_USER_DATA_BYTES = 256 * 1024 // 256 KiB
 
 app.get('/api/user/data', authMiddleware, async (c) => {
-  const userId = c.get('user').sub
-  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
-    .bind(userId)
-    .first()
-  const raw = row ? JSON.parse(row.data) : {}
-  const key = await getDataKey(c.env)
-  const data = key ? await decryptJson(raw, key) : raw
-  const email = c.get('user').email
-  return c.json({ email, ...data })
+  const user = c.get('user') || {}
+  const email = user.email
+  const userId = user.sub
+  const fallback = { email }
+
+  try {
+    const db = c.env?.DB
+    if (!db) {
+      console.warn('[user-data] DB binding missing')
+      return c.json(fallback, 503)
+    }
+
+    const row = await db.prepare('SELECT data FROM user_data WHERE user_id = ?')
+      .bind(userId)
+      .first()
+
+    if (!row || row.data == null) {
+      return c.json(fallback)
+    }
+
+    const key = await getDataKey(c.env)
+    const raw = parseStoredPayload(row)
+    let payload = raw
+    if (key) {
+      try {
+        payload = await decryptJson(raw, key)
+      } catch (err) {
+        console.error('[user-data] decrypt failed', err)
+        return c.json(fallback, 503)
+      }
+    }
+    if (!payload || typeof payload !== 'object') {
+      return c.json(fallback)
+    }
+    return c.json({ ...fallback, ...payload })
+  } catch (err) {
+    console.error('[user-data] fetch failed', err)
+    return c.json(fallback, 503)
+  }
 })
 
 app.put('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const body = await c.req.json()
+  const db = c.env?.DB
+  if (!db) {
+    console.warn('[user-data] DB binding missing (PUT)')
+    return c.json({ error: 'Storage unavailable' }, 503)
+  }
   try {
     const size = new TextEncoder().encode(JSON.stringify(body)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
   } catch { /* ignore size calc errors */ }
   const key = await getDataKey(c.env)
-  const payload = key ? await encryptJson(body, key) : body
-  await c.env.DB.prepare(
+  let payload = body
+  if (key) {
+    try {
+      payload = await encryptJson(body, key)
+    } catch (err) {
+      console.error('[user-data] encrypt failed (PUT)', err)
+      return c.json({ error: 'Encrypt failed' }, 500)
+    }
+  }
+  await db.prepare(
     'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
   )
     .bind(userId, JSON.stringify(payload))
@@ -184,22 +251,43 @@ app.put('/api/user/data', authMiddleware, async (c) => {
 app.post('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  const db = c.env?.DB
+  if (!db) {
+    console.warn('[user-data] DB binding missing (POST)')
+    return c.json({ error: 'Storage unavailable' }, 503)
+  }
   try {
     const size = new TextEncoder().encode(JSON.stringify(patch)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
   } catch { /* ignore size calc errors */ }
-  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
+  const row = await db.prepare('SELECT data FROM user_data WHERE user_id = ?')
     .bind(userId)
     .first()
-  const raw = row ? JSON.parse(row.data) : {}
+  const raw = parseStoredPayload(row)
   const key = await getDataKey(c.env)
-  const current = key ? await decryptJson(raw, key) : raw
+  let current = raw
+  if (key) {
+    try {
+      current = await decryptJson(raw, key)
+    } catch (err) {
+      console.error('[user-data] decrypt failed (POST)', err)
+      current = {}
+    }
+  }
   for (const [k, v] of Object.entries(patch)) {
     if (v === null) delete current[k]
     else current[k] = v
   }
-  const payload = key ? await encryptJson(current, key) : current
-  await c.env.DB.prepare(
+  let payload = current
+  if (key) {
+    try {
+      payload = await encryptJson(current, key)
+    } catch (err) {
+      console.error('[user-data] encrypt failed (POST)', err)
+      return c.json({ error: 'Encrypt failed' }, 500)
+    }
+  }
+  await db.prepare(
     'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
   )
     .bind(userId, JSON.stringify(payload))
@@ -211,23 +299,44 @@ app.post('/api/user/data', authMiddleware, async (c) => {
 app.patch('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  const db = c.env?.DB
+  if (!db) {
+    console.warn('[user-data] DB binding missing (PATCH)')
+    return c.json({ error: 'Storage unavailable' }, 503)
+  }
   try {
     const size = new TextEncoder().encode(JSON.stringify(patch)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
   } catch { /* ignore size calc errors */ }
-  const row = await c.env.DB.prepare('SELECT data FROM user_data WHERE user_id = ?')
+  const row = await db.prepare('SELECT data FROM user_data WHERE user_id = ?')
     .bind(userId)
     .first()
-  const raw = row ? JSON.parse(row.data) : {}
+  const raw = parseStoredPayload(row)
   const key = await getDataKey(c.env)
-  const current = key ? await decryptJson(raw, key) : raw
+  let current = raw
+  if (key) {
+    try {
+      current = await decryptJson(raw, key)
+    } catch (err) {
+      console.error('[user-data] decrypt failed (PATCH)', err)
+      current = {}
+    }
+  }
   // Apply patch: set keys; if value is null, delete the key
   for (const [k, v] of Object.entries(patch)) {
     if (v === null) delete current[k]
     else current[k] = v
   }
-  const payload = key ? await encryptJson(current, key) : current
-  await c.env.DB.prepare(
+  let payload = current
+  if (key) {
+    try {
+      payload = await encryptJson(current, key)
+    } catch (err) {
+      console.error('[user-data] encrypt failed (PATCH)', err)
+      return c.json({ error: 'Encrypt failed' }, 500)
+    }
+  }
+  await db.prepare(
     'INSERT INTO user_data (user_id, data) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET data = excluded.data'
   )
     .bind(userId, JSON.stringify(payload))

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import ModalShell from './ModalShell.jsx';
 import styles from './AddToListModal.module.css';
 
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
@@ -43,35 +42,29 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   };
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>Edit Difficulty</h3>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
+    <ModalShell isOpen={isOpen} onClose={onClose} title="Edit Difficulty" lockScroll={false}>
+      <ModalShell.Body className={styles.body}>
+        <div className={styles.formGroup}>
+          <label>Difficulty</label>
+          <select
+            value={selected}
+            onChange={e => setSelected(e.target.value)}
+            className={styles.select}
+          >
+            {options.map(o => (
+              <option key={o.difficulty} value={o.difficulty}>
+                {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating : o.feet})
+              </option>
+            ))}
+          </select>
         </div>
-        <div className={styles.modalBody}>
-          <div className={styles.formGroup}>
-            <label>Difficulty</label>
-            <select
-              value={selected}
-              onChange={e => setSelected(e.target.value)}
-              className={styles.select}
-            >
-              {options.map(o => (
-                <option key={o.difficulty} value={o.difficulty}>
-                  {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating : o.feet})
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className={styles.buttonGroup}>
-          <button onClick={handleSave} className={`${styles.button} ${styles.applyButton}`}>Save</button>
-        </div>
-      </div>
-    </div>
+      </ModalShell.Body>
+      <ModalShell.Footer>
+        <ModalShell.Button variant="primary" onClick={handleSave}>
+          Save
+        </ModalShell.Button>
+      </ModalShell.Footer>
+    </ModalShell>
   );
 };
 
