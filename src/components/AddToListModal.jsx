@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import ModalShell from './ModalShell.jsx';
 import styles from './AddToListModal.module.css';
 
 const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
@@ -11,14 +10,8 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
     if (isOpen) {
       setSelected(groups[0]?.name || '');
       setNewName('');
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
     }
-    return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen, groups]);
-
-  if (!isOpen) return null;
 
   const handleAdd = () => {
     const name = newName.trim() || selected;
@@ -28,15 +21,8 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
   };
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>Add Chart to List</h3>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-        </div>
-        <div className={styles.modalBody}>
+    <ModalShell isOpen={isOpen} onClose={onClose} title="Add Chart to List">
+      <ModalShell.Body className={styles.body}>
           <div className={styles.formGroup}>
             <label>Select List</label>
             <select
@@ -62,12 +48,13 @@ const AddToListModal = ({ isOpen, onClose, groups, onAdd }) => {
             <label>Or Create New</label>
             <input type="text" value={newName} onChange={e => setNewName(e.target.value)} className={styles.input} placeholder="New list name" />
           </div>
-        </div>
-        <div className={styles.buttonGroup}>
-          <button onClick={handleAdd} className={`${styles.button} ${styles.applyButton}`}>Add</button>
-        </div>
-      </div>
-    </div>
+      </ModalShell.Body>
+      <ModalShell.Footer>
+        <ModalShell.Button variant="primary" onClick={handleAdd}>
+          Add
+        </ModalShell.Button>
+      </ModalShell.Footer>
+    </ModalShell>
   );
 };
 

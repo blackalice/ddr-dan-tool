@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCircleExclamation, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import ModalShell from './ModalShell.jsx';
 import styles from './RankingsSettingsModal.module.css';
 
 const MIN_SCORE = 0;
@@ -80,7 +81,6 @@ const RankingsSettingsModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       setMinValue(formatForInput(closeRange?.min));
       setMaxValue(formatForInput(closeRange?.max));
 
@@ -109,15 +109,8 @@ const RankingsSettingsModal = ({
       else setPlayedSelection('off');
 
       setError('');
-    } else {
-      document.body.style.overflow = 'unset';
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isOpen, closeRange, hideLamp, hideThreshold, defaultHideThreshold, hidePlayedMode]);
-
-  if (!isOpen) return null;
 
   const handleApply = () => {
     const minScore = sanitizeScore(minValue);
@@ -167,20 +160,13 @@ const RankingsSettingsModal = ({
   };
 
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modalContent} onClick={event => event.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>Rankings Settings</h3>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-        </div>
-        <div className={styles.modalBody}>
-          <section className={styles.formSection}>
-            <h4 className={styles.sectionTitle}>
-              <FontAwesomeIcon icon={faCircleExclamation} className={styles.sectionIcon} />
-              Filter Close Range
-            </h4>
+    <ModalShell isOpen={isOpen} onClose={onClose} title="Rankings Settings">
+      <ModalShell.Body>
+        <section className={styles.formSection}>
+          <h4 className={styles.sectionTitle}>
+            <FontAwesomeIcon icon={faCircleExclamation} className={styles.sectionIcon} />
+            Filter Close Range
+          </h4>
             <div className={styles.rangeInputs}>
               <div className={styles.inputRow}>
                 <label className={styles.inputLabel} htmlFor="close-range-min">Minimum score</label>
@@ -252,11 +238,11 @@ const RankingsSettingsModal = ({
               </select>
             </div>
           </section>
-          <section className={styles.formSection}>
-            <h4 className={styles.sectionTitle}>
-              Hide Played Status
-            </h4>
-            <div className={styles.toggleGroup}>
+        <section className={styles.formSection}>
+          <h4 className={styles.sectionTitle}>
+            Hide Played Status
+          </h4>
+          <div className={styles.toggleGroup}>
               {PLAYED_OPTIONS.map(option => {
                 const isActive = playedSelection === option.value;
                 return (
@@ -271,23 +257,22 @@ const RankingsSettingsModal = ({
                   </button>
                 );
               })}
-            </div>
-          </section>
-          {error && <div className={styles.error}>{error}</div>}
-        </div>
-        <div className={styles.buttonGroup}>
-          <button className={[styles.button, styles.resetButton].join(' ')} type="button" onClick={handleReset}>
-            Reset
-          </button>
-          <button className={[styles.button, styles.cancelButton].join(' ')} type="button" onClick={onClose}>
-            Cancel
-          </button>
-          <button className={[styles.button, styles.applyButton].join(' ')} type="button" onClick={handleApply}>
-            Apply
-          </button>
-        </div>
-      </div>
-    </div>
+          </div>
+        </section>
+        {error && <div className={styles.error}>{error}</div>}
+      </ModalShell.Body>
+      <ModalShell.Footer>
+        <ModalShell.Button variant="secondary" onClick={handleReset}>
+          Reset
+        </ModalShell.Button>
+        <ModalShell.Button variant="ghost" onClick={onClose}>
+          Cancel
+        </ModalShell.Button>
+        <ModalShell.Button variant="primary" onClick={handleApply}>
+          Apply
+        </ModalShell.Button>
+      </ModalShell.Footer>
+    </ModalShell>
   );
 };
 

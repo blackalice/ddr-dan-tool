@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFilters } from '../contexts/FilterContext.jsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import ModalShell from './ModalShell.jsx';
 import styles from './FilterModal.module.css';
 
 const difficultyNames = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
@@ -13,14 +12,8 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       setLocalFilters(filters);
-    } else {
-      document.body.style.overflow = 'unset';
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, [isOpen, filters]);
 
   const handleRangeBlur = (field, value, min, max) => {
@@ -75,8 +68,6 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
     });
   };
 
-  if (!isOpen) return null;
-
   const diffNamesActive = localFilters.difficultyNames.length > 0;
   const artistActive = localFilters.artist !== '';
   const titleActive = localFilters.title !== '';
@@ -84,16 +75,11 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const multiBpmActive = localFilters.multiBpm !== 'any';
   const playedStatusActive = localFilters.playedStatus !== 'all';
 
+  const footerAlign = showLists ? 'space-between' : 'right';
+
   return (
-    <div className={styles.modalBackdrop} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h3>Song Filters</h3>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-        </div>
-        <div className={styles.modalBody}>
+    <ModalShell isOpen={isOpen} onClose={onClose} title="Song Filters" size="lg">
+      <ModalShell.Body className={styles.body}>
           <div className={styles.column}>
             <div className={styles.formGroup}>
               <label>BPM Range (1-1100)</label>
@@ -249,20 +235,27 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
               </div>
             </div>
           </div>
+      </ModalShell.Body>
+      <ModalShell.Footer align={footerAlign}>
+        {showLists && (
+          <ModalShell.Button
+            variant="secondary"
+            className={styles.createListButton}
+            onClick={() => onCreateList(localFilters)}
+          >
+            Create List
+          </ModalShell.Button>
+        )}
+        <div className={styles.footerButtons}>
+          <ModalShell.Button variant="secondary" onClick={reset}>
+            Reset
+          </ModalShell.Button>
+          <ModalShell.Button variant="primary" onClick={apply}>
+            Apply
+          </ModalShell.Button>
         </div>
-        <div className={styles.buttonGroup}>
-          {showLists && (
-            <button onClick={() => onCreateList(localFilters)} className={`${styles.button} ${styles.createListButton}`}>
-              Create List
-            </button>
-          )}
-          <div className={styles.rightButtons}>
-            <button onClick={reset} className={`${styles.button} ${styles.resetButton}`}>Reset</button>
-            <button onClick={apply} className={`${styles.button} ${styles.applyButton}`}>Apply</button>
-          </div>
-        </div>
-      </div>
-    </div>
+      </ModalShell.Footer>
+    </ModalShell>
   );
 };
 
