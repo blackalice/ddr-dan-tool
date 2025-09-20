@@ -34,8 +34,6 @@ const Settings = () => {
     const { scores, setScores } = useScores();
     const { groups } = useGroups();
     const { user, logout } = useAuth();
-    const shouldShowAiApiKeySettings = false; // Hide experimental camera integration for now
-    const shouldShowBetaSettings = shouldShowAiApiKeySettings;
     const [logoutAllBusy, setLogoutAllBusy] = useState(false);
     const onLogoutAll = async () => {
         if (logoutAllBusy) return;
@@ -95,58 +93,12 @@ const Settings = () => {
         const play = (data.meta && data.meta.playtype)
             ? data.meta.playtype.toUpperCase()
             : uploadPlaytype;
-
-        const collected = {
-            single: new Map(),
-            double: new Map(),
+        const keyName = play === 'DP' ? 'double' : 'single';
+        const newScores = {
+            ...scores,
+            [keyName]: { ...(scores[keyName] || {}) },
         };
-
-        const normalizeUploadedEntry = (entry) => {
-            if (entry == null || typeof entry !== 'object') return null;
-            const normalized = {};
-            if (entry.score != null) {
-                const parsed = Number(entry.score);
-                if (Number.isFinite(parsed)) normalized.score = parsed;
-            }
-            if (entry.lamp != null) normalized.lamp = entry.lamp;
-            if (entry.optional && entry.optional.flare != null) {
-                const parsedFlare = Number(entry.optional.flare);
-                if (Number.isFinite(parsedFlare)) normalized.flare = parsedFlare;
-            }
-            return Object.keys(normalized).length > 0 ? normalized : null;
-        };
-
-        const entriesEqual = (a, b) => {
-            if (!a || !b) return false;
-            if (a.score !== b.score || a.lamp !== b.lamp) return false;
-            const aFlare = Object.prototype.hasOwnProperty.call(a, 'flare') ? a.flare : undefined;
-            const bFlare = Object.prototype.hasOwnProperty.call(b, 'flare') ? b.flare : undefined;
-            return aFlare === bFlare;
-        };
-
-        const haveSameEntries = (prev = {}, next = {}) => {
-            const prevKeys = Object.keys(prev);
-            const nextKeys = Object.keys(next);
-            if (prevKeys.length !== nextKeys.length) return false;
-            for (const key of nextKeys) {
-                const prevEntry = prev[key];
-                const nextEntry = next[key];
-                if (!prevEntry || !nextEntry) return false;
-                if (!entriesEqual(prevEntry, nextEntry)) return false;
-            }
-            return true;
-        };
-
-        const buildObjectFromMap = (map) => {
-            const obj = {};
-            for (const [key, value] of map.entries()) {
-                obj[key] = value;
-            }
-            return obj;
-        };
-
         let unmatched = 0;
-        let matched = 0;
         const unmatchedEntries = [];
         for (const entry of data.scores) {
             const idNorm = normalizeString(entry.identifier || '');
@@ -192,60 +144,19 @@ const Settings = () => {
                 if (!pass) best = null;
             }
             if (best) {
-                const diffNorm = normalizeString(entry.difficulty || '');
-                const chartMatch = (best.difficulties || []).find(d => normalizeString(d.difficulty || '') === diffNorm);
-                const modeForChart = chartMatch?.mode || (play === 'DP' ? 'double' : 'single');
-                const key = makeScoreKey({
-                    chartId: chartMatch?.chartId,
-                    songId: best.id,
-                    mode: modeForChart,
-                    difficulty: chartMatch?.difficulty || entry.difficulty,
-                    title: best.title,
-                    artist: best.artist,
-                });
-                if (key) {
-                    const targetMode = modeForChart === 'double' ? 'double' : 'single';
-                    const normalizedEntry = normalizeUploadedEntry(entry);
-                    if (normalizedEntry) {
-                        matched++;
-                        const bucket = collected[targetMode];
-                        const prev = bucket.get(key);
-                        const prevScore = typeof prev?.score === 'number' ? prev.score : null;
-                        const nextScore = typeof normalizedEntry.score === 'number' ? normalizedEntry.score : null;
-                        const shouldReplace = (
-                            !prev ||
-                            (nextScore != null && (prevScore == null || nextScore > prevScore)) ||
-                            (nextScore != null && prevScore === nextScore && !entriesEqual(prev, normalizedEntry)) ||
-                            (nextScore == null && prevScore == null && !entriesEqual(prev, normalizedEntry))
-                        );
-                        if (shouldReplace) {
-                            bucket.set(key, normalizedEntry);
-                        }
-                    } else {
-                        unmatched++;
-                        unmatchedEntries.push(`${entry.identifier} - invalid score data`);
-                    }
+                const key = makeScoreKey({ title: best.title, artist: best.artist, difficulty: entry.difficulty });
+                newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
+                if (entry.optional && entry.optional.flare) {
+                    newScores[keyName][key].flare = entry.optional.flare;
                 }
             } else {
                 unmatched++;
                 unmatchedEntries.push(`${entry.identifier} - ${entry.difficulty}`);
             }
         }
-
-        const nextSingle = collected.single.size > 0 ? buildObjectFromMap(collected.single) : scores.single;
-        const nextDouble = collected.double.size > 0 ? buildObjectFromMap(collected.double) : scores.double;
-        const shouldUpdateSingle = collected.single.size > 0 && !haveSameEntries(scores.single || {}, nextSingle);
-        const shouldUpdateDouble = collected.double.size > 0 && !haveSameEntries(scores.double || {}, nextDouble);
-
-        if (shouldUpdateSingle || shouldUpdateDouble) {
-            setScores({
-                single: shouldUpdateSingle ? nextSingle : scores.single,
-                double: shouldUpdateDouble ? nextDouble : scores.double,
-            });
-        }
-
-        console.warn(`Imported ${matched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
-        return { total: data.scores.length, unmatched, unmatchedEntries, matched };
+        setScores(newScores);
+        console.warn(`Imported ${data.scores.length - unmatched}/${data.scores.length} ${play} scores. ${unmatched} unmatched.`);
+        return { total: data.scores.length, unmatched, unmatchedEntries };
     };
 
 
@@ -283,10 +194,7 @@ const Settings = () => {
                 throw new Error('Unsupported file type');
             }
             if (result) {
-                const importedCount = typeof result.matched === 'number'
-                    ? result.matched
-                    : Math.max(0, result.total - result.unmatched);
-                setUploadMessage(`Imported ${importedCount} of ${result.total} scores.`);
+                setUploadMessage(`Imported ${result.total - result.unmatched} of ${result.total} scores.`);
                 setUnmatchedLines((result.unmatchedEntries || []).slice(0, 100));
             }
         } catch (err) {
@@ -404,6 +312,31 @@ const Settings = () => {
                             </select>
                         </div>
                     </div>
+                    <ThemeSwitcher />
+
+                    <h2 className="settings-sub-header">Beta Features</h2>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Google AI Studio API Key</h3>
+                            <p>
+                                BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <input
+                                type="password"
+                                value={newApiKey}
+                                onChange={(e) => setNewApiKey(e.target.value)}
+                                placeholder="Enter your Google AI API Key"
+                                className="settings-input"
+                            />
+                            <button onClick={handleSaveKey} className="settings-button">Save</button>
+                        </div>
+                    </div>
+
+                    {/* Custom List Function is always enabled; toggle removed */}
+
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Show Ranked Ratings</h3>
@@ -423,73 +356,51 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <ThemeSwitcher />
-
-                    {shouldShowBetaSettings && (
-                        <>
-                            <h2 className="settings-sub-header">Beta Features</h2>
-
-                            {shouldShowAiApiKeySettings && (
-                                <div className="setting-card">
-                                    <div className="setting-text">
-                                        <h3>Google AI Studio API Key</h3>
-                                        <p>
-                                            BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
-                                        </p>
-                                    </div>
-                                    <div className="setting-control">
-                                        <input
-                                            type="password"
-                                            value={newApiKey}
-                                            onChange={(e) => setNewApiKey(e.target.value)}
-                                            placeholder="Enter your Google AI API Key"
-                                            className="settings-input"
-                                        />
-                                        <button onClick={handleSaveKey} className="settings-button">Save</button>
-                                    </div>
-                                </div>
+                    {user ? (
+                        <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Upload Scores</h3>
+                                <p>
+                                    Import your DDR scores in JSON or HTML format. Right click and save the
+                                    HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
+                                    Your browser currently stores {Object.keys(scores.single).length} SP and
+                                    {Object.keys(scores.double).length} DP scores.
+                                </p>
+                            </div>
+                            <div className="setting-control upload-control">
+                                <input
+                                    id="file-upload"
+                                    type="file"
+                                    accept=".json,application/json,text/html"
+                                    onChange={handleUploadFile}
+                                    className="hidden-file-input"
+                                    disabled={processing}
+                                />
+                                <label htmlFor="file-upload" className="custom-file-upload settings-button" disabled={processing}>
+                                    <FontAwesomeIcon icon={faUpload} /> Choose File
+                                </label>
+                                <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
+                                    <option value="SP">SP</option>
+                                    <option value="DP">DP</option>
+                                </select>
+                                <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
+                            </div>
+                            {processing && (<div className="upload-status">Processing...</div>)}
+                            {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
+                            {!processing && unmatchedLines.length > 0 && (
+                                <pre className="upload-console">
+                                    {unmatchedLines.join('\n')}
+                                </pre>
                             )}
-                        </>
+                        </div>
+                    ) : (
+                        <div className="setting-card">
+                            <div className="setting-text">
+                                <h3>Upload Scores</h3>
+                                <p>Log in to upload your scores from this device.</p>
+                            </div>
+                        </div>
                     )}
-
-                    {/* Custom List Function is always enabled; toggle removed */}
-
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Upload Scores</h3>
-                            <p>
-                                Import your DDR scores in JSON or HTML format. Right click and save the
-                                HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
-                                Your browser currently stores {Object.keys(scores.single).length} SP and
-                                {Object.keys(scores.double).length} DP scores.
-                            </p>
-                        </div>
-                        <div className="setting-control upload-control">
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept=".json,application/json,text/html"
-                                onChange={handleUploadFile}
-                                className="hidden-file-input"
-                                disabled={processing}
-                            />
-                            <label htmlFor="file-upload" className="custom-file-upload settings-button" disabled={processing}>
-                                <FontAwesomeIcon icon={faUpload} /> Choose File
-                            </label>
-                            <select value={uploadPlaytype} onChange={(e) => setUploadPlaytype(e.target.value)} className="settings-select" disabled={processing}>
-                                <option value="SP">SP</option>
-                                <option value="DP">DP</option>
-                            </select>
-                            <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
-                        </div>
-                        {processing && (<div className="upload-status">Processing...</div>)}
-                        {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
-                        {!processing && unmatchedLines.length > 0 && (
-                            <pre className="upload-console">
-                                {unmatchedLines.join('\n')}
-                            </pre>
-                        )}
-                    </div>
 
                     {user ? (
                         <div className="setting-card">
