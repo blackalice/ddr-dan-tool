@@ -34,6 +34,8 @@ const Settings = () => {
     const { scores, setScores } = useScores();
     const { groups } = useGroups();
     const { user, logout } = useAuth();
+    const shouldShowAiApiKeySettings = false; // Hide experimental camera integration for now
+    const shouldShowBetaSettings = shouldShowAiApiKeySettings;
     const [logoutAllBusy, setLogoutAllBusy] = useState(false);
     const onLogoutAll = async () => {
         if (logoutAllBusy) return;
@@ -402,31 +404,6 @@ const Settings = () => {
                             </select>
                         </div>
                     </div>
-                    <ThemeSwitcher />
-
-                    <h2 className="settings-sub-header">Beta Features</h2>
-
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Google AI Studio API Key</h3>
-                            <p>
-                                BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <input
-                                type="password"
-                                value={newApiKey}
-                                onChange={(e) => setNewApiKey(e.target.value)}
-                                placeholder="Enter your Google AI API Key"
-                                className="settings-input"
-                            />
-                            <button onClick={handleSaveKey} className="settings-button">Save</button>
-                        </div>
-                    </div>
-
-                    {/* Custom List Function is always enabled; toggle removed */}
-
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Show Ranked Ratings</h3>
@@ -445,6 +422,37 @@ const Settings = () => {
                             </select>
                         </div>
                     </div>
+
+                    <ThemeSwitcher />
+
+                    {shouldShowBetaSettings && (
+                        <>
+                            <h2 className="settings-sub-header">Beta Features</h2>
+
+                            {shouldShowAiApiKeySettings && (
+                                <div className="setting-card">
+                                    <div className="setting-text">
+                                        <h3>Google AI Studio API Key</h3>
+                                        <p>
+                                            BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
+                                        </p>
+                                    </div>
+                                    <div className="setting-control">
+                                        <input
+                                            type="password"
+                                            value={newApiKey}
+                                            onChange={(e) => setNewApiKey(e.target.value)}
+                                            placeholder="Enter your Google AI API Key"
+                                            className="settings-input"
+                                        />
+                                        <button onClick={handleSaveKey} className="settings-button">Save</button>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    {/* Custom List Function is always enabled; toggle removed */}
 
                     <div className="setting-card">
                         <div className="setting-text">

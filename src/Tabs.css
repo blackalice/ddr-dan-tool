@@ -420,6 +420,20 @@ button.mobile-menu-link:hover {
   pointer-events: auto;
 }
 
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tab {
+    padding: 0;
+    width: 44px;
+  }
+  .tab-label {
+    display: none;
+  }
+  .settings-tab {
+    padding: 0;
+    width: 44px;
+  }
+}
+
 @media (max-width: 640px) {
   .tabs-container {
     margin-bottom: 1rem;

@@ -181,22 +181,56 @@ const Tabs = () => {
     return links;
   }, [hash, user, hasUploadedScores]);
 
+  const normalizedLocation = React.useMemo(
+    () => `${location.pathname}${location.search || ""}${location.hash || ""}`,
+    [location.hash, location.pathname, location.search],
+  );
+
+  const previousLocationRef = React.useRef(normalizedLocation);
+
   React.useEffect(() => {
+    const previousLocation = previousLocationRef.current;
+    if (previousLocation === normalizedLocation) {
+      return;
+    }
+
+    previousLocationRef.current = normalizedLocation;
+
+    if (!menuOpen) {
+      return;
+    }
+
     setMenuNoTransition(true);
     setMenuOpen(false);
-    const id = setTimeout(() => setMenuNoTransition(false), 0);
-    return () => clearTimeout(id);
-  }, [location.pathname, location.search, location.hash]);
+  }, [normalizedLocation, menuOpen]);
+
+  React.useEffect(() => {
+    if (!menuNoTransition) return undefined;
+    const id = window.requestAnimationFrame(() => setMenuNoTransition(false));
+    return () => window.cancelAnimationFrame(id);
+  }, [menuNoTransition]);
 
   const handleMenuToggle = () => {
     setMenuNoTransition(false);
     setMenuOpen((prev) => !prev);
   };
 
-  const handleMenuLinkClick = () => {
-    setMenuNoTransition(true);
-    setMenuOpen(false);
-  };
+  const handleMenuLinkClick = React.useCallback(
+    (event, nextHref) => {
+      if (event) {
+        event.stopPropagation();
+      }
+
+      const targetHref = typeof nextHref === "string" ? nextHref : undefined;
+
+      setMenuNoTransition(true);
+
+      if (!targetHref || targetHref === normalizedLocation) {
+        setMenuOpen(false);
+      }
+    },
+    [normalizedLocation],
+  );
 
   const handleLogout = async () => {
     setMenuNoTransition(true);
@@ -287,7 +321,7 @@ const Tabs = () => {
                   className={({ isActive }) =>
                     isActive ? "mobile-menu-link active" : "mobile-menu-link"
                   }
-                  onClick={handleMenuLinkClick}
+                  onClick={(event) => handleMenuLinkClick(event, link.to)}
                 >
                   <span className="mobile-menu-icon">{link.icon}</span>
                   <span className="mobile-menu-label">{link.label}</span>
@@ -362,7 +396,7 @@ const Tabs = () => {
                     ? "mobile-menu-link mobile-menu-action active"
                     : "mobile-menu-link mobile-menu-action"
                 }
-                onClick={handleMenuLinkClick}
+                onClick={(event) => handleMenuLinkClick(event, `/login${hash}`)}
               >
                 <span className="mobile-menu-label">Log in</span>
               </NavLink>
@@ -372,7 +406,7 @@ const Tabs = () => {
       </div>
       <div
         className={`mobile-menu-backdrop${menuOpen ? " open" : ""}`}
-        onClick={handleMenuLinkClick}
+        onClick={(event) => handleMenuLinkClick(event)}
         aria-hidden={menuOpen ? "false" : "true"}
       />
     </nav>
