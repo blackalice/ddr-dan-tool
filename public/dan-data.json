@@ -954,11 +954,11 @@
           "bpm": "186",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 3.25,
-          "songId": "001199",
-          "chartId": "001199#D#4",
-          "path": "sm/SN1/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
+          "songId": "001918",
+          "chartId": "001918#D#4",
+          "path": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
           "artist": "jun with Alison"
         },
         {
@@ -978,7 +978,7 @@
       "chartIds": [
         "000213#D#2",
         "000198#D#4",
-        "001199#D#4",
+        "001918#D#4",
         "001105#D#4"
       ]
     },
@@ -1011,11 +1011,11 @@
           "bpm": "132-140",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 12.7,
-          "songId": "001235",
-          "chartId": "001235#D#4",
-          "path": "sm/SN2/CENTAUR/CENTAUR.sm",
+          "songId": "001767",
+          "chartId": "001767#D#4",
+          "path": "sm/SN1/CENTAUR/CENTAUR.sm",
           "artist": "Jimmy Weckl"
         },
         {
@@ -1024,11 +1024,11 @@
           "bpm": "170",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 12.35,
-          "songId": "001245",
-          "chartId": "001245#D#4",
-          "path": "sm/SN2/DoLL/DoLL.sm",
+          "songId": "001775",
+          "chartId": "001775#D#4",
+          "path": "sm/SN1/DoLL/DoLL.sm",
           "artist": "TЁЯRA"
         },
         {
@@ -1037,19 +1037,19 @@
           "bpm": "200",
           "difficulty": "expert",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 3.4,
-          "songId": "001185",
-          "chartId": "001185#D#4",
-          "path": "sm/SN1/MARS WAR 3/MARS WAR 3.sm",
+          "songId": "001899",
+          "chartId": "001899#D#4",
+          "path": "sm/SN2/MARS WAR 3/MARS WAR 3.sm",
           "artist": "JET GIRL SPIN"
         }
       ],
       "chartIds": [
         "001707#D#4",
-        "001235#D#4",
-        "001245#D#4",
-        "001185#D#4"
+        "001767#D#4",
+        "001775#D#4",
+        "001899#D#4"
       ]
     },
     {
@@ -1361,11 +1361,11 @@
           "bpm": "100-400",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 9.6,
-          "songId": "001250",
-          "chartId": "001250#D#5",
-          "path": "sm/SN2/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm",
+          "songId": "001780",
+          "chartId": "001780#D#5",
+          "path": "sm/SN1/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm",
           "artist": "2MB"
         },
         {
@@ -1397,7 +1397,7 @@
       ],
       "chartIds": [
         "000699#D#4",
-        "001250#D#5",
+        "001780#D#5",
         "000591#D#5",
         "001705#D#4"
       ]
@@ -1457,11 +1457,11 @@
           "bpm": "75-300",
           "difficulty": "challenge",
           "mode": "double",
-          "game": "SN1",
+          "game": "SN2",
           "rankedRating": 18.6,
-          "songId": "001192",
-          "chartId": "001192#D#5",
-          "path": "sm/SN1/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+          "songId": "001906",
+          "chartId": "001906#D#5",
+          "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
           "artist": "αTYPE-300"
         }
       ],
@@ -1469,7 +1469,7 @@
         "000054#D#5",
         "000501#D#5",
         "001620#D#5",
-        "001192#D#5"
+        "001906#D#5"
       ]
     },
     {

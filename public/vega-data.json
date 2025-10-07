@@ -28,11 +28,11 @@
           "bpm": "160",
           "difficulty": "expert",
           "mode": "single",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 11.5,
-          "songId": "001303",
-          "chartId": "001303#S#4",
-          "path": "sm/SN2/NIJIIRO/NIJIIRO.sm",
+          "songId": "001836",
+          "chartId": "001836#S#4",
+          "path": "sm/SN1/NIJIIRO/NIJIIRO.sm",
           "artist": "DJ YOSHITAKA feat G.S.C license"
         },
         {
@@ -41,18 +41,18 @@
           "bpm": "179-180",
           "difficulty": "expert",
           "mode": "single",
-          "game": "SN2",
+          "game": "SN1",
           "rankedRating": 12.2,
-          "songId": "001262",
-          "chartId": "001262#S#4",
-          "path": "sm/SN2/HAPPY ANGEL/HAPPY ANGEL.sm",
+          "songId": "001794",
+          "chartId": "001794#S#4",
+          "path": "sm/SN1/HAPPY ANGEL/HAPPY ANGEL.sm",
           "artist": "jun with TAHIRIH"
         }
       ],
       "chartIds": [
         "000106#S#4",
-        "001303#S#4",
-        "001262#S#4"
+        "001836#S#4",
+        "001794#S#4"
       ]
     },
     {

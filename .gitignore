@@ -43,3 +43,4 @@ public/vega-data.json
 /DDR bits
 /.local/
 /ddrbits/
+public/sm/**/*.png
