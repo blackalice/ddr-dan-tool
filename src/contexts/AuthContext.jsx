@@ -6,9 +6,86 @@ import { useNavigate } from 'react-router-dom';
 import { useScores } from './ScoresContext.jsx';
 import { useGroups } from './GroupsContext.jsx';
 import { SettingsContext } from './SettingsContext.jsx';
-import { storage } from '../utils/remoteStorage.js';
+import { storage, expandStoragePayload } from '../utils/remoteStorage.js';
 
 export const AuthContext = createContext();
+
+function normalizeScoresPayload(raw) {
+  if (!raw) return null;
+  let value = raw;
+  if (typeof value === 'string') {
+    try {
+      value = JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  if (!value || typeof value !== 'object') return null;
+  const singleSource = value.single && typeof value.single === 'object'
+    ? value.single
+    : (!value.double && typeof value === 'object' ? value : {});
+  const doubleSource = value.double && typeof value.double === 'object' ? value.double : {};
+  return {
+    single: { ...singleSource },
+    double: { ...doubleSource },
+  };
+}
+
+function countScoreEntries(scores) {
+  if (!scores || typeof scores !== 'object') return 0;
+  const single = scores.single && typeof scores.single === 'object' ? scores.single : {};
+  const double = scores.double && typeof scores.double === 'object' ? scores.double : {};
+  return Object.keys(single).length + Object.keys(double).length;
+}
+
+function getLocalScoresRaw(email) {
+  if (typeof window === 'undefined') return null;
+  const candidates = [];
+  if (email) {
+    candidates.push(`user:${email}:ddrScores`);
+  }
+  candidates.push('user:unknown:ddrScores', 'anon:ddrScores', 'ddrScores');
+  for (const key of candidates) {
+    try {
+      const value = window.localStorage.getItem(key);
+      if (value) return value;
+    } catch (_e) {
+      void _e;
+    }
+  }
+  return null;
+}
+
+function choosePreferredScores(data) {
+  const serverRaw = data?.ddrScores ?? data?.scores ?? null;
+  const serverNormalized = normalizeScoresPayload(serverRaw);
+  const serverCount = countScoreEntries(serverNormalized);
+
+  const localRaw = getLocalScoresRaw(data?.email);
+  const localNormalized = normalizeScoresPayload(localRaw);
+  const localCount = countScoreEntries(localNormalized);
+
+  if (localNormalized && localCount > serverCount) {
+    return {
+      parsed: localNormalized,
+      serialized: JSON.stringify(localNormalized),
+      source: 'local',
+    };
+  }
+
+  if (serverNormalized) {
+    const serialized = typeof serverRaw === 'string'
+      ? serverRaw
+      : JSON.stringify(serverNormalized);
+    return {
+      parsed: serverNormalized,
+      serialized,
+      source: 'server',
+    };
+  }
+
+  return { parsed: null, serialized: null, source: null };
+}
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -47,39 +124,45 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch('/api/user/data', { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
-      setUser(u => ({ email: data.email || u?.email || '' }));
-      // Scores
-      if (data.scores) {
-        try {
-          setScores(typeof data.scores === 'string' ? JSON.parse(data.scores) : data.scores);
-        } catch (e) {
-          console.warn('Failed to parse scores from server', e);
-        }
-      } else if (data.ddrScores) {
-        try {
-          setScores(typeof data.ddrScores === 'string' ? JSON.parse(data.ddrScores) : data.ddrScores);
-        } catch (e) {
-          console.warn('Failed to parse ddrScores from server', e);
+      const expanded = expandStoragePayload(data);
+      setUser(u => ({ email: expanded.email || data.email || u?.email || '' }));
+      const { parsed: preferredScores, serialized: serializedScores, source: scoreSource } = choosePreferredScores(expanded);
+      if (preferredScores) {
+        setScores(preferredScores);
+        if (scoreSource === 'local') {
+          try {
+            console.warn('[auth] Using local scores because they contain more entries than the server copy.');
+          } catch (_e) {
+            void _e;
+          }
         }
       }
       // Settings (support both nested and flat payloads)
-      if (data.settings) applySettings(data.settings);
+      if (expanded.settings) applySettings(expanded.settings);
       else {
         const flat = {
-          targetBPM: data.targetBPM,
-          multiplierMode: data.multiplierMode,
-          theme: data.theme,
-          playStyle: data.playStyle,
-          showLists: data.showLists,
-          showRankedRatings: data.showRankedRatings,
-          songlistOverride: data.songlistOverride,
+          targetBPM: expanded.targetBPM,
+          multiplierMode: expanded.multiplierMode,
+          theme: expanded.theme,
+          playStyle: expanded.playStyle,
+          showLists: expanded.showLists,
+          showRankedRatings: expanded.showRankedRatings,
+          songlistOverride: expanded.songlistOverride,
         };
         applySettings(flat);
       }
       // Prime remote storage sync state now that we’re authenticated
       try {
         // storage is already statically imported; just refresh
-        storage.hydrateFrom(data);
+        const storagePayload = { ...expanded };
+        if (serializedScores != null) {
+          storagePayload.ddrScores = serializedScores;
+        } else if (expanded.ddrScores && typeof expanded.ddrScores !== 'string') {
+          storagePayload.ddrScores = JSON.stringify(expanded.ddrScores);
+        } else if (expanded.scores && typeof expanded.scores !== 'string') {
+          storagePayload.ddrScores = JSON.stringify(expanded.scores);
+        }
+        storage.hydrateFrom(storagePayload);
         // Hydrate groups from server into context
         try {
           const raw = storage.getItem('groups');
