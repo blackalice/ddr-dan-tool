@@ -4,3 +4,4 @@
 // secrets.h is excluded from version control (see CYD/.gitignore).
 static constexpr const char *WIFI_SSID = "YOUR_WIFI_SSID";
 static constexpr const char *WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
+static constexpr const char *API_BEARER_TOKEN = "YOUR_API_BEARER_TOKEN"; // Optional: set when using bearer auth

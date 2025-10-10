@@ -1,3 +1,5 @@
+codex resume 0199ce4b-eb8a-7e90-ae4a-8e7272fc544a
+
 # CYD DDR Song Viewer
 
 Starter firmware for the ESP32 "Cheap Yellow Display" (ESP32-2432S028R) that connects to Wi-Fi, pulls DDR jacket art from https://ddr.rtfoy.co.uk/, and shows basic song information.

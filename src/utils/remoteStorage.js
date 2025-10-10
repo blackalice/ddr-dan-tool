@@ -1,10 +1,38 @@
+const SESSION_NAMESPACE_KEY = 'remoteStorage:namespace';
+
 let cache = {};
 let lastSynced = {}; // snapshot of last known server state
 let initialized = false;
 let listenersAttached = false;
 let syncEnabled = false;
-let currentEmail = null;
 let namespace = 'anon'; // localStorage namespace: 'anon' or 'user:<email>'
+
+function persistActiveNamespace(ns) {
+  try {
+    if (typeof window === 'undefined') return;
+    if (ns && ns !== 'anon') {
+      window.sessionStorage.setItem(SESSION_NAMESPACE_KEY, ns);
+    } else {
+      window.sessionStorage.removeItem(SESSION_NAMESPACE_KEY);
+    }
+  } catch (_e) { void _e; }
+}
+
+function applyNamespace(nextNamespace) {
+  namespace = nextNamespace || 'anon';
+  persistActiveNamespace(namespace);
+}
+
+function restoreNamespaceFromSession() {
+  try {
+    if (typeof window === 'undefined') return;
+    const stored = window.sessionStorage.getItem(SESSION_NAMESPACE_KEY);
+    if (!stored) return;
+    namespace = stored;
+  } catch (_e) { void _e; }
+}
+
+restoreNamespaceFromSession();
 
 function nsKey(key) {
   return `${namespace}:${key}`;
@@ -136,9 +164,8 @@ async function init() {
     if (res.ok) {
       // Authenticated: enable sync and switch to user namespace
       const raw = await res.json();
-      // extract email without polluting key space
-      currentEmail = typeof raw.email === 'string' ? raw.email : null;
-      namespace = currentEmail ? `user:${currentEmail}` : 'user:unknown';
+      const email = typeof raw.email === 'string' ? raw.email : null;
+      applyNamespace(email ? `user:${email}` : 'user:unknown');
       syncEnabled = true;
       // Reset local cache for this session and hydrate from server data (excluding email)
       resetState();
@@ -150,8 +177,7 @@ async function init() {
     } else if (res.status === 401) {
       // Unauthenticated: disable sync and use anonymous namespace
       syncEnabled = false;
-      currentEmail = null;
-      namespace = 'anon';
+      applyNamespace('anon');
       resetState();
       // Hydrate from namespaced localStorage only (avoid cross-account pollution)
       try {
@@ -212,12 +238,13 @@ function clear() {
   // Clear in-memory
   for (const key of Object.keys(cache)) delete cache[key];
   // Clear only current namespace in localStorage
+  const activeNamespace = namespace;
   try {
     if (typeof window !== 'undefined') {
       const toRemove = [];
       for (let i = 0; i < window.localStorage.length; i++) {
         const k = window.localStorage.key(i);
-        if (k && k.startsWith(`${namespace}:`)) toRemove.push(k);
+        if (k && k.startsWith(`${activeNamespace}:`)) toRemove.push(k);
       }
       for (const k of toRemove) window.localStorage.removeItem(k);
     }
@@ -226,6 +253,7 @@ function clear() {
   lastSynced = {};
   lastSent = JSON.stringify(lastSynced);
   if (flushTimer) { clearTimeout(flushTimer); flushTimer = null; }
+  if (maxTimer) { clearTimeout(maxTimer); maxTimer = null; }
   if (syncEnabled) {
     fetch('/api/user/data', {
       method: 'PUT',
@@ -234,6 +262,9 @@ function clear() {
       body: JSON.stringify({}),
     }).catch(() => {})
   }
+  syncEnabled = false;
+  initialized = false;
+  applyNamespace('anon');
 }
 async function refresh() {
   // Avoid refetch churn; prefer hydrateFrom when data already available
@@ -244,8 +275,8 @@ async function refresh() {
 function hydrateFrom(raw) {
   if (!raw || typeof raw !== 'object') return;
   // Switch to user namespace and enable sync
-  currentEmail = typeof raw.email === 'string' ? raw.email : null;
-  namespace = currentEmail ? `user:${currentEmail}` : 'user:unknown';
+  const email = typeof raw.email === 'string' ? raw.email : null;
+  applyNamespace(email ? `user:${email}` : 'user:unknown');
   syncEnabled = true;
   resetState();
   // Exclude email from key space

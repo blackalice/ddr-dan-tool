@@ -24,12 +24,15 @@ async function fetchJsonCached(url, { ttlMs = 24 * 60 * 60 * 1000, init } = {}) 
 
   if (inFlight.has(key)) return inFlight.get(key);
   const p = (async () => {
-    const res = await fetch(url, init);
-    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
-    const data = await res.json();
-    memoryCache.set(key, { ts: now(), data });
-    inFlight.delete(key);
-    return data;
+    try {
+      const res = await fetch(url, init);
+      if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+      const data = await res.json();
+      memoryCache.set(key, { ts: now(), data });
+      return data;
+    } finally {
+      inFlight.delete(key);
+    }
   })();
   inFlight.set(key, p);
   return p;
@@ -42,12 +45,15 @@ async function fetchTextCached(url, { ttlMs = 24 * 60 * 60 * 1000, init } = {}) 
 
   if (inFlight.has(key)) return inFlight.get(key);
   const p = (async () => {
-    const res = await fetch(url, init);
-    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
-    const data = await res.text();
-    memoryCache.set(key, { ts: now(), data });
-    inFlight.delete(key);
-    return data;
+    try {
+      const res = await fetch(url, init);
+      if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+      const data = await res.text();
+      memoryCache.set(key, { ts: now(), data });
+      return data;
+    } finally {
+      inFlight.delete(key);
+    }
   })();
   inFlight.set(key, p);
   return p;

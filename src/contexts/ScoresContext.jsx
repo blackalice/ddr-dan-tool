@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -23,6 +24,7 @@ import {
 } from '../utils/scoreStats.js';
 
 const EMPTY_SCORES = { single: {}, double: {} };
+const MIN_CHART_META_ENTRIES = 1000;
 
 function normalizeScoresShape(data) {
   if (!data || typeof data !== 'object') return { ...EMPTY_SCORES };
@@ -123,20 +125,25 @@ export const ScoresProvider = ({ children }) => {
 
   const [stats, setStats] = useState(() => {
     const stored = storage.getItem(STATS_STORAGE_KEY);
-    return hydrateStatsState(stored);
+    const hydrated = hydrateStatsState(stored);
+    // Never trust persisted readiness; force recompute after load
+    return { ...hydrated, ready: false };
   });
 
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
   const chartMetaPromiseRef = useRef(null);
   const scoresRef = useRef(scores);
   const statsDirtyRef = useRef(true);
+  const autoStatsControllerRef = useRef(null);
+  const statsRetryTimerRef = useRef(null);
+  const [statsRetryToken, setStatsRetryToken] = useState(0);
 
   useEffect(() => {
     const payload = JSON.stringify(scores);
     storage.setItem('ddrScores', payload);
   }, [scores]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     scoresRef.current = scores;
     statsDirtyRef.current = true;
   }, [scores]);
@@ -155,11 +162,21 @@ export const ScoresProvider = ({ children }) => {
     }
     const promise = getSongMeta()
       .then(meta => {
+        if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
+          throw new Error(`[scores] chart metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
+        }
         const lookup = buildChartMetaLookup(meta);
+        if (!(lookup instanceof Map) || lookup.size < MIN_CHART_META_ENTRIES) {
+          throw new Error(`[scores] chart metadata lookup incomplete (size=${lookup instanceof Map ? lookup.size : 'n/a'})`);
+        }
         setChartMetaLookup(lookup);
         setScores(prev => migrateScores(prev, meta));
         statsDirtyRef.current = true;
         return lookup;
+      })
+      .catch(err => {
+        console.warn('[scores] Failed to load chart metadata', err);
+        throw err;
       })
       .finally(() => {
         chartMetaPromiseRef.current = null;
@@ -200,6 +217,51 @@ export const ScoresProvider = ({ children }) => {
     }
     return runStatsComputation(options);
   }, [runStatsComputation, stats]);
+
+  useEffect(() => {
+    if (!statsDirtyRef.current) return;
+
+    if (autoStatsControllerRef.current && typeof autoStatsControllerRef.current.abort === 'function') {
+      autoStatsControllerRef.current.abort();
+    }
+
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    if (controller) {
+      autoStatsControllerRef.current = controller;
+    } else {
+      autoStatsControllerRef.current = null;
+    }
+
+    if (statsRetryTimerRef.current) {
+      clearTimeout(statsRetryTimerRef.current);
+      statsRetryTimerRef.current = null;
+    }
+
+    runStatsComputation({ signal: controller?.signal }).catch((err) => {
+      if (controller?.signal?.aborted) return;
+      if (statsRetryTimerRef.current) {
+        clearTimeout(statsRetryTimerRef.current);
+      }
+      const delay = err?.message?.includes('metadata') ? 750 : 1250;
+      statsRetryTimerRef.current = setTimeout(() => {
+        statsRetryTimerRef.current = null;
+        setStatsRetryToken(token => token + 1);
+      }, delay);
+    });
+
+    return () => {
+      if (autoStatsControllerRef.current === controller) {
+        autoStatsControllerRef.current = null;
+      }
+      if (controller && typeof controller.abort === 'function') {
+        controller.abort();
+      }
+      if (statsRetryTimerRef.current) {
+        clearTimeout(statsRetryTimerRef.current);
+        statsRetryTimerRef.current = null;
+      }
+    };
+  }, [scores, runStatsComputation, statsRetryToken]);
 
   const contextValue = useMemo(() => ({
     scores,

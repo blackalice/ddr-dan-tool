@@ -48,20 +48,40 @@ export const AuthProvider = ({ children }) => {
     if (res.ok) {
       const data = await res.json();
       setUser(u => ({ email: data.email || u?.email || '' }));
-      // Scores
-      if (data.scores) {
-        try {
-          setScores(typeof data.scores === 'string' ? JSON.parse(data.scores) : data.scores);
-        } catch (e) {
-          console.warn('Failed to parse scores from server', e);
+      // Switch storage namespace first so reads/writes target the user bucket
+      try {
+        storage.hydrateFrom(data);
+      } catch { /* noop */ }
+
+      // Decide which scores to trust: prefer the larger of server vs local user bucket
+      const parseMaybeJson = (val) => {
+        if (!val) return null;
+        try { return typeof val === 'string' ? JSON.parse(val) : val; } catch { return null; }
+      };
+      const countScores = (obj) => {
+        if (!obj || typeof obj !== 'object') return 0;
+        const hasModes = obj.single || obj.double;
+        if (hasModes) {
+          const sp = obj.single && typeof obj.single === 'object' ? Object.keys(obj.single).length : 0;
+          const dp = obj.double && typeof obj.double === 'object' ? Object.keys(obj.double).length : 0;
+          return sp + dp;
         }
-      } else if (data.ddrScores) {
-        try {
-          setScores(typeof data.ddrScores === 'string' ? JSON.parse(data.ddrScores) : data.ddrScores);
-        } catch (e) {
-          console.warn('Failed to parse ddrScores from server', e);
-        }
+        return Object.keys(obj).length;
+      };
+
+      const serverRaw = data.scores ?? data.ddrScores ?? null;
+      const serverParsed = parseMaybeJson(serverRaw);
+      const localRaw = storage.getItem('ddrScores');
+      const localParsed = parseMaybeJson(localRaw);
+
+      const serverCount = countScores(serverParsed);
+      const localCount = countScores(localParsed);
+
+      const chosen = (localCount > serverCount) ? localParsed : serverParsed;
+      if (chosen) {
+        try { setScores(chosen); } catch { /* noop */ }
       }
+
       // Settings (support both nested and flat payloads)
       if (data.settings) applySettings(data.settings);
       else {
@@ -76,18 +96,15 @@ export const AuthProvider = ({ children }) => {
         };
         applySettings(flat);
       }
-      // Prime remote storage sync state now that we’re authenticated
+
+      // Hydrate groups from server into context
       try {
-        // storage is already statically imported; just refresh
-        storage.hydrateFrom(data);
-        // Hydrate groups from server into context
-        try {
-          const raw = storage.getItem('groups');
-          const parsed = raw ? JSON.parse(raw) : [];
-          setGroups(Array.isArray(parsed) ? parsed : []);
-          setActiveGroup('All');
-        } catch { /* noop */ }
+        const raw = storage.getItem('groups');
+        const parsed = raw ? JSON.parse(raw) : [];
+        setGroups(Array.isArray(parsed) ? parsed : []);
+        setActiveGroup('All');
       } catch { /* noop */ }
+
       return true;
     }
     if (res.status === 401) {
