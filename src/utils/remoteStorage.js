@@ -59,16 +59,26 @@ async function flush() {
     if (Object.keys(delta).length === 0) return;
     const payload = JSON.stringify(delta);
     if (payload === lastSent) return; // already sent
-    await fetch('/api/user/data', {
+    const res = await fetch('/api/user/data', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: payload,
     });
+    if (!res.ok) {
+      console.warn('[storage] flush failed', res.status);
+      if (res.status !== 413) {
+        scheduleFlush();
+      }
+      return;
+    }
     lastSent = payload;
     lastSynced = { ...cache };
     lastFlushTime = Date.now();
-  } catch (_e) { void _e; }
+  } catch (err) {
+    console.warn('[storage] flush error', err);
+    if (syncEnabled) scheduleFlush();
+  }
 }
 
 function flushNow(useBeacon = false) {
@@ -82,15 +92,23 @@ function flushNow(useBeacon = false) {
   if (Object.keys(delta).length === 0) return;
   const payload = JSON.stringify(delta);
   if (payload === lastSent) return;
-  if (useBeacon && typeof navigator !== 'undefined' && navigator.sendBeacon) {
+  const canUseBeacon = useBeacon
+    && typeof navigator !== 'undefined'
+    && typeof navigator.sendBeacon === 'function'
+    && payload.length <= 60000; // ~60 KiB safety cap
+  if (canUseBeacon) {
     try {
       const blob = new Blob([payload], { type: 'application/json' });
-      navigator.sendBeacon('/api/user/data', blob); // server merges POST body
-      lastSent = payload;
-      lastSynced = { ...cache };
-      lastFlushTime = Date.now();
-      return;
-    } catch (_e) { void _e; }
+      const queued = navigator.sendBeacon('/api/user/data', blob);
+      if (queued) {
+        lastSent = payload;
+        lastSynced = { ...cache };
+        lastFlushTime = Date.now();
+        return;
+      }
+    } catch (err) {
+      console.warn('[storage] sendBeacon failed', err);
+    }
   }
   // Fire and forget
   fetch('/api/user/data', {
@@ -99,8 +117,15 @@ function flushNow(useBeacon = false) {
     credentials: 'include',
     body: payload,
   })
-    .then(() => { lastSent = payload; lastSynced = { ...cache }; lastFlushTime = Date.now(); })
-    .catch(() => {});
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      lastSent = payload;
+      lastSynced = { ...cache };
+      lastFlushTime = Date.now();
+    })
+    .catch(err => {
+      console.warn('[storage] flushNow fetch failed', err);
+    });
 }
 
 async function init() {
