@@ -193,10 +193,11 @@ bool ensureCacheCapacity(size_t requiredBytes, const String &preservePath) {
     if (!path.startsWith("/jacket-")) {
       continue;
     }
-    Serial.printf("Removing cached jacket %s (%u bytes) to free space\n", path.c_str(), static_cast<unsigned>(size));
-    SPIFFS.remove(path);
-    used = SPIFFS.usedBytes();
-    free = (total > used) ? (total - used) : 0;
+    if (SPIFFS.exists(path) && SPIFFS.remove(path)) {
+      Serial.printf("Removing cached jacket %s (%u bytes) to free space\n", path.c_str(), static_cast<unsigned>(size));
+      used = SPIFFS.usedBytes();
+      free = (total > used) ? (total - used) : 0;
+    }
   }
   root.close();
   return free >= requiredBytes;
@@ -222,18 +223,89 @@ bool downloadImageToFlash(const String &url, const String &destPath) {
     http.end();
     return false;
   }
-  SPIFFS.remove(destPath);
+  if (SPIFFS.exists(destPath)) {
+    SPIFFS.remove(destPath);
+  }
   File out = SPIFFS.open(destPath, FILE_WRITE);
   if (!out) {
     Serial.printf("Failed to open %s for write\n", destPath.c_str());
     http.end();
     return false;
   }
-  const size_t written = http.writeToStream(&out);
+
+  WiFiClient *stream = http.getStreamPtr();
+  if (stream == nullptr) {
+    Serial.println("HTTP stream unavailable");
+    out.close();
+    http.end();
+    SPIFFS.remove(destPath);
+    return false;
+  }
+
+  constexpr size_t kDownloadBufferSize = 2048;
+  uint8_t buffer[kDownloadBufferSize];
+  size_t totalWritten = 0;
+  const size_t expectedBytes = (contentLength > 0) ? static_cast<size_t>(contentLength) : 0;
+
+  while (http.connected()) {
+    int available = stream->available();
+    if (available <= 0) {
+      if (expectedBytes > 0 && totalWritten >= expectedBytes) {
+        break;
+      }
+      delay(1);
+      continue;
+    }
+
+    size_t toRead = static_cast<size_t>(available);
+    if (expectedBytes > 0) {
+      size_t remaining = expectedBytes - totalWritten;
+      if (remaining == 0) {
+        break;
+      }
+      if (toRead > remaining) {
+        toRead = remaining;
+      }
+    }
+    if (toRead > kDownloadBufferSize) {
+      toRead = kDownloadBufferSize;
+    }
+
+    int read = stream->readBytes(buffer, toRead);
+    if (read <= 0) {
+      break;
+    }
+
+    size_t written = out.write(buffer, static_cast<size_t>(read));
+    if (written != static_cast<size_t>(read)) {
+      Serial.printf("SPIFFS write failed after %u bytes\n", static_cast<unsigned>(totalWritten));
+      out.close();
+      http.end();
+      SPIFFS.remove(destPath);
+      return false;
+    }
+    totalWritten += written;
+    if (expectedBytes > 0 && totalWritten >= expectedBytes) {
+      break;
+    }
+  }
+
   out.close();
   http.end();
-  Serial.printf("Saved %s (%u bytes)\n", destPath.c_str(), static_cast<unsigned>(written));
-  return written > 0;
+
+  if (expectedBytes > 0 && totalWritten != expectedBytes) {
+    Serial.printf("Download size mismatch for %s (expected %d, got %u)\n", destPath.c_str(), contentLength, static_cast<unsigned>(totalWritten));
+    SPIFFS.remove(destPath);
+    return false;
+  }
+  if (totalWritten == 0) {
+    Serial.printf("No data received for %s\n", destPath.c_str());
+    SPIFFS.remove(destPath);
+    return false;
+  }
+
+  Serial.printf("Saved %s (%u bytes)\n", destPath.c_str(), static_cast<unsigned>(totalWritten));
+  return true;
 }
 
 String secondsToTime(uint16_t seconds) {
