@@ -147,6 +147,16 @@ const Tabs = () => {
       },
     ];
 
+    // Insert Courses tab after Dan
+    links.splice(4, 0, {
+      key: "courses",
+      to: `/courses${hash}`,
+      label: "Courses",
+      shortLabel: "Courses",
+      icon: <FontAwesomeIcon icon={faList} />,
+      primary: true,
+    });
+
     if (user && hasUploadedScores) {
       links.push({
         key: "stats",

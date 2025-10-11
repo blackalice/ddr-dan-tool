@@ -20,6 +20,7 @@ const BPMTool = lazy(() => import('./BPMTool'));
 const Settings = lazy(() => import('./Settings'));
 const DanPage = lazy(() => import('./DanPage.jsx'));
 const VegaPage = lazy(() => import('./VegaPage.jsx'));
+const CoursesPage = lazy(() => import('./CoursesPage.jsx'));
 const ListsPage = lazy(() => import('./ListsPage.jsx'));
 const StatsPage = lazy(() => import('./StatsPage.jsx'));
 const RankingsPage = lazy(() => import('./RankingsPage.jsx'));
@@ -264,6 +265,7 @@ function AppRoutes() {
           <Suspense fallback={<div className="app-loading">Loading…</div>}>
           <Routes>
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
+            <Route path="/courses" element={<CoursesPage smData={smData} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
             <Route path="/stats" element={<StatsPage />} />

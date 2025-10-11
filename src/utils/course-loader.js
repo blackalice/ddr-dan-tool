@@ -36,3 +36,15 @@ export const loadVegaResults = async () => {
     }
 };
 
+// Fetches the pre-processed DDR Courses data (grouped by game).
+export const loadCoursesData = async () => {
+    try {
+        const data = await getJsonCached('/courses-data.json');
+        console.log("Loaded pre-processed Courses data.");
+        return data;
+    } catch (error) {
+        console.error("Error fetching pre-processed Courses data:", error);
+        return {};
+    }
+};
+

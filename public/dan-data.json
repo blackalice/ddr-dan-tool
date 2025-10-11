@@ -94,17 +94,17 @@
           "artist": "U1 overground"
         },
         {
-          "title": "からふるぱすてる",
-          "level": 9,
-          "bpm": "186",
+          "title": "十二星座の聖域",
+          "level": 10,
+          "bpm": "164",
           "difficulty": "difficult",
           "mode": "single",
-          "game": "2013",
-          "rankedRating": 9.5,
-          "songId": "000015",
-          "chartId": "000015#S#2",
-          "path": "sm/2013/Colorful Pastel/Colorful Pastel.sm",
-          "artist": "ki☆ki"
+          "game": "A",
+          "rankedRating": 10.8,
+          "songId": "000557",
+          "chartId": "000557#S#2",
+          "path": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm",
+          "artist": "Zodiac Fall"
         },
         {
           "title": "siberite",
@@ -135,7 +135,7 @@
       ],
       "chartIds": [
         "000526#S#2",
-        "000015#S#2",
+        "000557#S#2",
         "000641#S#2",
         "000615#S#4"
       ]

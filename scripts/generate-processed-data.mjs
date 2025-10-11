@@ -400,6 +400,10 @@ const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
 const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
 const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
 const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
+// DDR Courses source (.crs files)
+const DDR_COURSES_DIR = path.resolve(process.cwd(), 'cource', 'DDRCourses-master');
+const COURSE_DATA_HTML = path.resolve(process.cwd(), 'cource', 'Course Data.html');
+const COURSES_OUTPUT_PATH = path.join(PUBLIC_DIR, 'courses-data.json');
 
 
 const readJson = async (filePath) => {
@@ -413,11 +417,37 @@ const readSmFile = async (filePath) => {
 };
 
 function normalizeName(str) {
-    return str
+    if (!str) return '';
+    return String(str)
         .toLowerCase()
         .normalize('NFKD')
         .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ß/g, 'ss')
+        .replace(/[’‘`´]/g, "'")
+        .replace(/＆/g, '&')
+        .replace(/〜/g, '~')
+        .replace(/–|—/g, '-')
         .replace(/[^a-z0-9]/g, '');
+}
+
+// remove tokens like (TYPE1) or (type3)
+function stripTypeSuffix(name) {
+    if (!name) return '';
+    return name.replace(/\(\s*type\s*\d+\s*\)/ig, '').trim();
+}
+
+// remove tilded side markers like ~jun Side~ or ~Alison Side~
+function stripSideSuffix(name) {
+    if (!name) return '';
+    return name.replace(/~\s*[^~]*\s*side\s*~/ig, '').trim();
+}
+
+function unicodeSimple(str) {
+    if (!str) return '';
+    return String(str)
+        .toLowerCase()
+        .normalize('NFKC')
+        .replace(/[\p{P}\p{Z}\p{Cf}]/gu, '');
 }
 
 function levenshtein(a, b) {
@@ -490,16 +520,79 @@ function pickRatingForLevel(ratings, level) {
     return ratings.shift();
 }
 
-const findSongFile = (title, smFiles) => {
-    const normalizedTitle = normalizeName(title);
+function buildFileKeys(file) {
+    const title = file.title || '';
+    const translit = file.titleTranslit || '';
+    const baseKeys = new Set();
+    const pushAscii = (s) => { const n = normalizeName(s); if (n) baseKeys.add(n); };
+    const pushUni = (s) => { const n = unicodeSimple(s); if (n) baseKeys.add(n); };
+    // ASCII-like keys
+    pushAscii(title); pushAscii(translit);
+    pushAscii(stripTypeSuffix(title));
+    pushAscii(stripTypeSuffix(translit));
+    pushAscii(stripSideSuffix(title));
+    pushAscii(stripSideSuffix(translit));
+    // Unicode-simple keys
+    pushUni(title); pushUni(translit);
+    const keys = [...baseKeys];
+    return keys;
+}
 
-    return smFiles.files.find(file =>
-        normalizeName(file.title) === normalizedTitle ||
-        (file.titleTranslit && normalizeName(file.titleTranslit) === normalizedTitle)
-    );
-};
+// use the levenshtein() already defined above for ratings
 
-const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap, songIdMapState) => {
+function findSongFile(title, smFiles, gameHint = null) {
+    const t0 = normalizeName(title);
+    const t1 = normalizeName(stripTypeSuffix(title));
+    const t2 = normalizeName(stripSideSuffix(title));
+    const u0 = unicodeSimple(title);
+    const titleKeys = new Set([t0, t1, t2, u0].filter(Boolean));
+
+    let best = null;
+    let bestScore = Infinity;
+
+    for (const file of smFiles.files) {
+        const fileKeys = buildFileKeys(file);
+        // fast exact
+        if (fileKeys.some(k => titleKeys.has(k))) {
+            // prefer same game when hinted
+            if (!gameHint) return file;
+            const folderGame = (file.path.split('/')[1] || '').toLowerCase();
+            if (folderGame === gameHint.toLowerCase()) return file;
+            // otherwise keep as candidate but continue search for exact+hint
+            if (!best || bestScore > 0) { best = file; bestScore = 0; }
+            continue;
+        }
+        // fuzzy candidates
+        for (const tk of titleKeys) {
+            for (const fk of fileKeys) {
+                const dist = levenshtein(tk, fk);
+                const maxLen = Math.max(tk.length, fk.length);
+                const threshold = maxLen <= 10 ? 2 : maxLen <= 20 ? 3 : 5;
+                if (dist <= threshold) {
+                    // prefer smaller distance, and prefer game match
+                    let score = dist;
+                    if (gameHint) {
+                        const folderGame = (file.path.split('/')[1] || '').toLowerCase();
+                        if (folderGame !== gameHint.toLowerCase()) score += 0.5;
+                    }
+                    if (score < bestScore) { best = file; bestScore = score; }
+                }
+                // containment boost (substring)
+                if (tk.length > 6 && fk.includes(tk)) {
+                    let score = Math.floor((fk.length - tk.length) / 5);
+                    if (gameHint) {
+                        const folderGame = (file.path.split('/')[1] || '').toLowerCase();
+                        if (folderGame !== gameHint.toLowerCase()) score += 1;
+                    }
+                    if (score < bestScore) { best = file; bestScore = score; }
+                }
+            }
+        }
+    }
+    return best;
+}
+
+const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap, songIdMapState, gameHint = null) => {
     if (!courses) return [];
     const processedCourses = [];
 
@@ -511,7 +604,7 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
             const difficulty = parts.pop();
             const title = parts.join(':');
             
-            const songFile = findSongFile(title, smFiles);
+            const songFile = findSongFile(title, smFiles, gameHint);
             if (!songFile) {
                 console.warn(`Song not found for short code: ${shortCode}`);
                 processedSongs.push({
@@ -585,6 +678,385 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
 };
 
 
+// --- DDR Courses (.crs) parsing ---
+function normalizeCrsDifficulty(raw) {
+    if (!raw) return null;
+    const s = String(raw).trim().toLowerCase();
+    // strip common punctuation
+    const token = s.replace(/[^a-z0-9]/g, '');
+    switch (token) {
+        case 'beginner':
+        case 'novice':
+            return 'beginner';
+        case 'easy':
+        case 'basic':
+        case 'light':
+            return 'basic';
+        case 'trick':
+        case 'another':
+        case 'medium':
+        case 'standard':
+        case 'normal':
+            return 'difficult';
+        case 'difficult':
+        case 'expert':
+        case 'heavy':
+        case 'maniac':
+        case 'hard':
+        case 'ssr':
+            return 'expert';
+        case 'challenge':
+        case 'oni':
+        case 'smaniac':
+            return 'challenge';
+        case 'edit':
+            return 'edit';
+        default:
+            return null;
+    }
+}
+
+function parseCrsFileContent(text) {
+    const lines = String(text).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    let name = null;
+    let translit = null;
+    let style = 'single';
+    const songs = [];
+    for (const line of lines) {
+        if (line.startsWith('#COURSETRANSLIT:')) {
+            translit = line.slice('#COURSETRANSLIT:'.length).replace(/;.*$/, '').trim();
+        } else if (line.startsWith('#COURSE:')) {
+            name = line.slice('#COURSE:'.length).replace(/;.*$/, '').trim();
+        } else if (line.startsWith('#STYLE:')) {
+            const s = line.slice('#STYLE:'.length).replace(/;.*$/, '').trim().toLowerCase();
+            style = s === 'double' ? 'double' : 'single';
+        } else if (line.startsWith('#SONG:')) {
+            // Format variations: #SONG:Title:DIFF; or #SONG:Title:DIFF:;
+            const body = line.slice('#SONG:'.length).replace(/;.*$/, '');
+            const parts = body.split(':');
+            // Difficulty is the last non-empty part
+            let diff = null;
+            let lastIdx = parts.length - 1;
+            for (let i = parts.length - 1; i >= 0; i--) {
+                const token = parts[i].trim();
+                if (token) { diff = token; lastIdx = i; break; }
+            }
+            const difficulty = normalizeCrsDifficulty(diff);
+            // Title is everything before the last non-empty part
+            let title = parts.slice(0, Math.max(1, lastIdx)).join(':').trim();
+            if (!title) continue;
+            songs.push({ title, difficulty });
+        }
+    }
+    const finalName = !name || /\?/.test(name) ? (translit || name || 'Untitled Course') : name;
+    return { name: finalName, style, songs };
+}
+
+function mapCoursesGameToSm(gameKey) {
+    const key = (gameKey || '').toLowerCase();
+    if (key.includes('a20 plus') || key.includes('course mode a20 plus')) return 'A20 Plus';
+    if (key.includes('a20')) return 'A20';
+    if (key.includes(' a3')) return 'A3';
+    if (key.endsWith('2014')) return '2014';
+    if (key.endsWith('2013')) return '2013';
+    if (key.includes('extreme')) return 'EX';
+    if (key.includes('supernova 2')) return 'SN2';
+    if (key.includes('supernova')) return 'SN1';
+    if (key.match(/\bx3\b/) || key.includes('x3')) return 'X3 vs 2nd';
+    if (key.match(/\bx2\b/)) return 'X2';
+    if (key.match(/\bx\b/) || key.includes(' x ')) return 'X';
+    if (key.includes('4th mix plus')) return '4th Plus';
+    if (key.includes('4th mix')) return '4th';
+    if (key.includes('3rd mix')) return '3rd';
+    if (key.includes('2nd mix')) return '2nd';
+    if (key.endsWith('dance dance revolution')) return 'DDR';
+    return null;
+}
+
+async function collectCrsCourses(rootDir) {
+    const out = new Map(); // gameName -> [ { name, charts, color?, style } ]
+    async function readDirRecursive(dir, relGameName) {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        for (const ent of entries) {
+            const full = path.join(dir, ent.name);
+            if (ent.isDirectory()) {
+                // At first level under DDRCourses-master, folder name is the game
+                const game = relGameName || ent.name;
+                await readDirRecursive(full, game);
+            } else if (ent.isFile() && /\.crs$/i.test(ent.name)) {
+                const text = await fs.readFile(full, 'utf-8');
+                const parsed = parseCrsFileContent(text);
+                if (!parsed || !parsed.songs || parsed.songs.length === 0) continue;
+                const charts = parsed.songs.map(s => `${s.title}:${s.difficulty || 'expert'}:${parsed.style}`);
+                const course = {
+                    name: parsed.name,
+                    charts,
+                    style: parsed.style,
+                    // consistent header color per style
+                    color: parsed.style === 'double' ? '#9b59b6' : '#46aadc',
+                };
+                const gameKey = relGameName || path.basename(path.dirname(full));
+                if (!out.has(gameKey)) out.set(gameKey, []);
+                out.get(gameKey).push(course);
+            }
+        }
+    }
+    await readDirRecursive(rootDir, null);
+    return out; // Map
+}
+
+function stripHtml(str) {
+    return String(str || '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .trim();
+}
+
+async function parseA3Html(htmlPath) {
+    try {
+        const html = await fs.readFile(htmlPath, 'utf-8');
+        const rows = [...html.matchAll(/<tr>([\s\S]*?)<\/tr>/gi)];
+        const courses = [];
+        for (const m of rows) {
+            const row = m[1];
+            if (/colspan\s*=\s*4/i.test(row) || /<th/i.test(row)) continue; // header rows
+            const tds = [...row.matchAll(/<td[\s\S]*?>([\s\S]*?)<\/td>/gi)].map(x => x[1]);
+            if (tds.length < 5) continue;
+            const name = stripHtml(tds[0]).toUpperCase();
+            const songs = tds.slice(1, 5).map(cell => {
+                // Prefer anchor title attribute when present to avoid mojibake
+                const m = cell.match(/<a[^>]*\btitle=\"([^\"]+)\"[^>]*>([\s\S]*?)<\/a>/i);
+                if (m) {
+                    return stripHtml(m[1] || m[2]);
+                }
+                return stripHtml(cell);
+            }).filter(Boolean);
+            if (!name || songs.length === 0) continue;
+            const charts = songs.map(s => `${s}:expert:single`);
+            courses.push({ name, charts, style: 'single', color: '#46aadc' });
+        }
+        return courses;
+    } catch (err) {
+        console.warn('Failed to parse A3 HTML:', err.message);
+        return [];
+    }
+}
+
+function mapSectionHeaderToGame(header) {
+    const h = (header || '').toLowerCase();
+    if (h.includes(' a3')) return 'A3';
+    if (h.includes(' a20 plus')) return 'A20 Plus';
+    if (h.includes(' a20')) return 'A20';
+    if (h.includes(' 2014')) return '2014';
+    if (h.includes(' 2013')) return '2013';
+    if (h.includes(' x3')) return 'X3 vs 2nd';
+    if (h.includes(' x2')) return 'X2';
+    if (h.includes(' x ')) return 'X';
+    if (h.includes('sn2')) return 'SN2';
+    if (h.includes('sn1') || h.includes('supernova')) return 'SN1';
+    if (h.includes('extreme') || h.includes(' ex ')) return 'EX';
+    if (h.includes(' 7th')) return '7th';
+    if (h.includes(' 6th')) return '6th';
+    if (h.includes(' 5th')) return '5th';
+    if (h.includes(' 4th')) return '4th';
+    if (h.includes(' 3rd')) return '3rd';
+    if (h.includes(' 2nd')) return '2nd';
+    if (h.includes('ddr')) return 'DDR';
+    return 'World';
+}
+
+function extractTextOrTitle(cellHtml) {
+    const anchor = cellHtml.match(/<a[^>]*\btitle=\"([^\"]+)\"[^>]*>([\s\S]*?)<\/a>/i);
+    if (anchor) return stripHtml(anchor[1] || anchor[2]);
+    return stripHtml(cellHtml);
+}
+
+function parseSongCellForModes(cellHtml) {
+    const parts = String(cellHtml).split(/<br\s*\/?>(?![^<]*<br)/i);
+    let single = null, double = null;
+    for (const p of parts) {
+        const hasSingle = /\(\s*SINGLE\s*\)/i.test(p);
+        const hasDouble = /\(\s*DOUBLE\s*\)/i.test(p);
+        const title = extractTextOrTitle(p.replace(/<small[^>]*>[^<]*<\/small>/ig, ''));
+        if (hasSingle && !single) single = title;
+        if (hasDouble && !double) double = title;
+    }
+    if (!single || !double) {
+        const generic = extractTextOrTitle(cellHtml.replace(/<small[^>]*>[^<]*<\/small>/ig, ''));
+        if (!single) single = generic;
+        if (!double) double = generic;
+    }
+    return { single, double };
+}
+
+function parseLevelCell(cellHtml) {
+    const t = stripHtml(cellHtml);
+    const m = t.match(/(-?\d+)/);
+    return m ? Number(m[1]) : null;
+}
+
+async function parseUnifiedCourseHtml(htmlPath) {
+    const html = await fs.readFile(htmlPath, 'utf-8');
+    const sections = [];
+    const re = /(\n|^)\s*([^\n<][^\n]*?)\s*\n\s*(<table[\s\S]*?<\/table>)/gi;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+        sections.push({ header: stripHtml(m[2]), table: m[3] });
+    }
+    const result = new Map();
+    for (const sec of sections) {
+        const game = mapSectionHeaderToGame(sec.header);
+        const hasVariantHeaders = /<th[^>]*>\s*Normal\s*<\/th>[\s\S]*?<th[^>]*>\s*Difficult\s*<\/th>/i.test(sec.table);
+        const hasAStages = /<th[^>]*>\s*1st\s*<\/th>[\s\S]*?<th[^>]*>\s*2nd\s*<\/th>[\s\S]*?<th[^>]*>\s*3rd\s*<\/th>[\s\S]*?<th[^>]*>\s*FINAL\s*<\/th>/i.test(sec.table);
+        const rows = [...sec.table.matchAll(/<tr>([\s\S]*?)<\/tr>/gi)].map(x => x[1]);
+        let currentCourseName = null;
+        for (const row of rows) {
+            const th = row.match(/<th[^>]*>([\s\S]*?)<\/th>/i);
+            if (hasAStages) {
+                const tdsA = [...row.matchAll(/<td[\s\S]*?>([\s\S]*?)<\/td>/gi)].map(x => x[1]);
+                if (tdsA.length >= 5) {
+                    const name = stripHtml(tdsA[0]);
+                    const songs = tdsA.slice(1, 5).map(extractTextOrTitle).filter(Boolean);
+                    if (name && songs.length > 0) {
+                        if (!result.has(game)) result.set(game, []);
+                        result.get(game).push({ name, style: 'single', charts: songs.map(s => `${s}:expert:single`), color: '#46aadc' });
+                    }
+                }
+                continue;
+            }
+            if (th && !/Single Difficulty|Double Difficulty|Normal|Difficult|Default courses|Name|STAGE/i.test(th[1])) {
+                currentCourseName = stripHtml(th[1]);
+                continue;
+            }
+            const tds = [...row.matchAll(/<td[\s\S]*?>([\s\S]*?)<\/td>/gi)].map(x => x[1]);
+            if (!currentCourseName || tds.length === 0) continue;
+            const songCell = tds[1] || '';
+            const { single: spTitle, double: dpTitle } = parseSongCellForModes(songCell);
+            if (!spTitle && !dpTitle) continue;
+            if (hasVariantHeaders) {
+                const sn = parseLevelCell(tds[2] || '');
+                const sd = parseLevelCell(tds[3] || '');
+                const dn = parseLevelCell(tds[4] || '');
+                const dd = parseLevelCell(tds[5] || '');
+                const pushCourse = (name, variant, mode, title, level) => {
+                    if (title == null || level == null) return;
+                    if (!result.has(game)) result.set(game, []);
+                    let list = result.get(game);
+                    let c = list.find(x => x.name === `${name} (${variant})` && x.style === mode);
+                    if (!c) {
+                        c = { name: `${name} (${variant})`, style: mode, charts: [], items: [], color: mode === 'double' ? '#9b59b6' : '#46aadc' };
+                        list.push(c);
+                    }
+                    c.items.push({ title, mode, level });
+                };
+                if (sn != null) pushCourse(currentCourseName, 'Normal', 'single', spTitle, sn);
+                if (sd != null) pushCourse(currentCourseName, 'Difficult', 'single', spTitle, sd);
+                if (dn != null) pushCourse(currentCourseName, 'Normal', 'double', dpTitle, dn);
+                if (dd != null) pushCourse(currentCourseName, 'Difficult', 'double', dpTitle, dd);
+            } else {
+                const s = parseLevelCell(tds[2] || '');
+                const d = parseLevelCell(tds[3] || '');
+                if (!result.has(game)) result.set(game, []);
+                const list = result.get(game);
+                if (s != null) {
+                    let csp = list.find(x => x.name === currentCourseName && x.style === 'single');
+                    if (!csp) {
+                        csp = { name: currentCourseName, style: 'single', charts: [], items: [], color: '#46aadc' };
+                        list.push(csp);
+                    }
+                    csp.items.push({ title: spTitle, mode: 'single', level: s });
+                }
+                if (d != null) {
+                    let cdp = list.find(x => x.name === currentCourseName && x.style === 'double');
+                    if (!cdp) {
+                        cdp = { name: currentCourseName, style: 'double', charts: [], items: [], color: '#9b59b6' };
+                        list.push(cdp);
+                    }
+                    cdp.items.push({ title: dpTitle, mode: 'double', level: d });
+                }
+            }
+        }
+    }
+    return result;
+}
+
+function pickChartByFeet(simfileData, mode, targetFeet) {
+    const candidates = simfileData.availableTypes.filter(c => c.mode === mode);
+    if (candidates.length === 0) return null;
+    let best = null;
+    let bestDiff = Infinity;
+    for (const c of candidates) {
+        const diff = Math.abs((c.feet ?? 0) - targetFeet);
+        if (diff < bestDiff) { best = c; bestDiff = diff; }
+        if (diff === 0) break;
+    }
+    return best;
+}
+
+const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleRankMap, songIdMapState, gameHint = null) => {
+    if (!courses) return [];
+    const processedCourses = [];
+    for (const course of courses) {
+        const processedSongs = [];
+        for (const item of course.items || []) {
+            const { title, mode, level } = item;
+            const songFile = findSongFile(title, smFiles, gameHint);
+            if (!songFile) {
+                console.warn(`Song not found for course level item: ${title}`);
+                processedSongs.push({ title, mode, level, error: 'Song file not found' });
+                continue;
+            }
+            const smFilePath = path.join(PUBLIC_DIR, songFile.path);
+            const simfileData = await readSmFile(smFilePath);
+            if (!simfileData) {
+                processedSongs.push({ title, mode, level, error: 'Failed to load simfile' });
+                continue;
+            }
+            const { id: ensuredId, created } = ensureSongId(songIdMapState.map, songFile.path);
+            if (created) songIdMapState.changed = true;
+            const songId = songFile.id || ensuredId;
+
+            const chart = pickChartByFeet(simfileData, mode, Number(level));
+            if (!chart) {
+                processedSongs.push({ title, mode, level, error: 'Chart not found in simfile' });
+                continue;
+            }
+            const chartDetails = simfileData.charts[chart.slug];
+            const bpms = chartDetails.bpm.map(b => b.bpm).filter(b => b > 0);
+            const bpmDisplay = bpms.length === 1 ? String(Math.round(bpms[0])) : `${Math.round(Math.min(...bpms))}-${Math.round(Math.max(...bpms))}`;
+            const game = songFile.path.split('/')[1] || 'N/A';
+
+            const ratingsSingle = getRatingsForTitle(simfileData.title, singleRankMap);
+            const ratingsDouble = getRatingsForTitle(simfileData.title, doubleRankMap);
+            const ratingArrByMode = { single: ratingsSingle, double: ratingsDouble };
+            const rankedRating = pickRatingForLevel(ratingArrByMode[chart.mode], chart.feet);
+            const chartId = buildChartId(songId, chart.mode, chart.difficulty);
+
+            processedSongs.push({
+                title: simfileData.title,
+                level: chart.feet,
+                bpm: bpmDisplay,
+                difficulty: chart.difficulty,
+                mode: chart.mode,
+                game: game,
+                rankedRating,
+                songId,
+                chartId,
+                path: songFile.path,
+                artist: simfileData.artist,
+            });
+        }
+        const chartIds = processedSongs.map(s => s.chartId).filter(Boolean);
+        processedCourses.push({ name: course.name, style: course.style, color: course.color, songs: processedSongs, chartIds });
+    }
+    return processedCourses;
+};
+
+
 async function main() {
     try {
         console.log('Starting data processing...');
@@ -617,6 +1089,50 @@ async function main() {
         console.log(`Successfully generated Vega data at ${VEGA_OUTPUT_PATH}`);
         if (songIdMapState.changed) {
             await saveSongIdMap(songIdMapState.map);
+        }
+
+        // Process Courses from new HTML source if present; fallback to .crs otherwise
+        try {
+            const resultByGame = {};
+            const haveNewHtml = await fs.stat(COURSE_DATA_HTML).then(() => true).catch(() => false);
+            if (haveNewHtml) {
+                const mapByGame = await parseUnifiedCourseHtml(COURSE_DATA_HTML);
+                for (const [game, courses] of mapByGame.entries()) {
+                    const hint = game;
+                    const out = [];
+                    for (const c of courses) {
+                        if (Array.isArray(c.items) && c.items.length > 0) {
+                            const arr = await processCourseListByLevel([c], smFiles, singleRankMap, doubleRankMap, songIdMapState, hint);
+                            out.push(...arr);
+                        } else if (Array.isArray(c.charts) && c.charts.length > 0) {
+                            const arr = await processCourseList([c], smFiles, singleRankMap, doubleRankMap, songIdMapState, hint);
+                            out.push(...arr);
+                        }
+                    }
+                    resultByGame[game] = out;
+                }
+            } else {
+                const haveCourses = await fs.stat(DDR_COURSES_DIR).then(() => true).catch(() => false);
+                if (haveCourses) {
+                    const crsByGame = await collectCrsCourses(DDR_COURSES_DIR);
+                    const a3HtmlPath = path.join(DDR_COURSES_DIR, 'DDR A3.html');
+                    const a3Courses = await parseA3Html(a3HtmlPath);
+                    if (a3Courses.length > 0) {
+                        const processedA3 = await processCourseList(a3Courses, smFiles, singleRankMap, doubleRankMap, songIdMapState, 'A3');
+                        resultByGame['A3'] = processedA3;
+                    }
+                    for (const [game, courses] of crsByGame.entries()) {
+                        const hint = mapCoursesGameToSm(game) || undefined;
+                        resultByGame[hint || game] = await processCourseList(courses, smFiles, singleRankMap, doubleRankMap, songIdMapState, hint);
+                    }
+                } else {
+                    console.warn('No courses source found; skipping courses-data.json');
+                }
+            }
+            await fs.writeFile(COURSES_OUTPUT_PATH, JSON.stringify(resultByGame, null, 2));
+            console.log(`Successfully generated Courses data at ${COURSES_OUTPUT_PATH}`);
+        } catch (err) {
+            console.error('Error generating courses-data.json:', err);
         }
 
     } catch (error) {
