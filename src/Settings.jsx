@@ -144,7 +144,14 @@ const Settings = () => {
                 if (!pass) best = null;
             }
             if (best) {
-                const key = makeScoreKey({ title: best.title, artist: best.artist, difficulty: entry.difficulty });
+                // Prefer stable chartId keys when we can derive them
+                const key = makeScoreKey({
+                    songId: best.id,
+                    mode: keyName,
+                    difficulty: entry.difficulty,
+                    title: best.title,
+                    artist: best.artist,
+                });
                 newScores[keyName][key] = { score: entry.score, lamp: entry.lamp };
                 if (entry.optional && entry.optional.flare) {
                     newScores[keyName][key].flare = entry.optional.flare;

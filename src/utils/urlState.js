@@ -31,6 +31,8 @@ export function buildBpmUrl({ pathname = '/bpm', songId, chartId }) {
 }
 
 export function replaceLegacyUrl(navigate, location, songId, chartId) {
-  const url = buildBpmUrl({ pathname: location.pathname, songId, chartId });
+  const atRoot = !location || location.pathname === '/' || !location.pathname;
+  const pathname = atRoot ? '/bpm' : location.pathname;
+  const url = buildBpmUrl({ pathname, songId, chartId });
   navigate(url, { replace: true });
 }

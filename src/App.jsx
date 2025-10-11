@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, useCallback, useMemo, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext, useCallback, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate, useNavigate } from 'react-router-dom';
 import Tabs from './Tabs';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
-import { ScoresProvider, useScores } from './contexts/ScoresContext.jsx';
+import { ScoresProvider } from './contexts/ScoresContext.jsx';
 import { FilterProvider } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
@@ -29,7 +29,6 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 function AppRoutes() {
   const { theme, setPlayStyle, playStyle } = useContext(SettingsContext);
   const { user } = useAuth();
-  const { scores } = useScores();
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [simfileData, setSimfileData] = useState(null);
   const [currentChart, setCurrentChart] = useState(null);
@@ -39,16 +38,11 @@ function AppRoutes() {
   const [view, setView] = useState('bpm');
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
 
-  const hasUploadedScores = useMemo(() => {
-    if (!scores || typeof scores !== 'object') return false;
-    return ['single', 'double'].some(mode => {
-      const entries = scores?.[mode];
-      return entries && typeof entries === 'object' && Object.keys(entries).length > 0;
-    });
-  }, [scores]);
+  // Scores availability is handled within pages (e.g., StatsPage)
 
   useEffect(() => {
     fetch('/sm-files.json')
@@ -117,8 +111,14 @@ function AppRoutes() {
           next.delete('s');
           next.delete('c');
           next.delete('m');
-          if (debugEnabled) { try { console.log('[Route] replace song/chart ->', next.toString()); } catch { /* noop */ } }
-          setSearchParams(next, { replace: true });
+          const nextQuery = next.toString();
+          if (debugEnabled) { try { console.log('[Route] replace song/chart ->', nextQuery); } catch { /* noop */ } }
+          // If arriving on root, also ensure pathname is /bpm so the view loads
+          if (location.pathname === '/') {
+            navigate(`/bpm${nextQuery ? `?${nextQuery}` : ''}`, { replace: true });
+          } else {
+            setSearchParams(next, { replace: true });
+          }
         }
         return;
       }
@@ -149,8 +149,13 @@ function AppRoutes() {
         next.delete('difficulty');
         next.delete('mode');
         next.delete('t');
-        if (debugEnabled) { try { console.log('[Route] upgrade legacy ->', next.toString()); } catch { /* noop */ } }
-        setSearchParams(next, { replace: true });
+        const legacyQuery = next.toString();
+        if (debugEnabled) { try { console.log('[Route] upgrade legacy ->', legacyQuery); } catch { /* noop */ } }
+        if (location.pathname === '/') {
+          navigate(`/bpm${legacyQuery ? `?${legacyQuery}` : ''}`, { replace: true });
+        } else {
+          setSearchParams(next, { replace: true });
+        }
       } else {
         const storedSongId = storage.getItem('bpmSelectedSong');
         const storedChartSlug = storage.getItem('bpmSelectedChart');
@@ -166,8 +171,13 @@ function AppRoutes() {
           next.delete('s');
           next.delete('c');
           next.delete('m');
-          if (debugEnabled) { try { console.log('[Route] restore stored selection ->', next.toString()); } catch { /* noop */ } }
-          setSearchParams(next, { replace: true });
+          const restoredQuery = next.toString();
+          if (debugEnabled) { try { console.log('[Route] restore stored selection ->', restoredQuery); } catch { /* noop */ } }
+          if (location.pathname === '/') {
+            navigate(`/bpm${restoredQuery ? `?${restoredQuery}` : ''}`, { replace: true });
+          } else {
+            setSearchParams(next, { replace: true });
+          }
         } else {
           setSimfileData(null); setCurrentChart(null);
           if (storedSongId || storedChartSlug) {
@@ -178,7 +188,7 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled]);
+  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate]);
 
   const handleSongSelect = useCallback((song) => {
     if (song) {
@@ -256,10 +266,7 @@ function AppRoutes() {
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
             <Route path="/multiplier" element={<Multiplier />} />
-            <Route
-              path="/stats"
-              element={user && hasUploadedScores ? <StatsPage /> : <Navigate to="/settings" replace />}
-            />
+            <Route path="/stats" element={<StatsPage />} />
             <Route path="/rankings" element={<RankingsPage />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />

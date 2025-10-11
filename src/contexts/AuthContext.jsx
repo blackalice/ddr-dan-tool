@@ -47,13 +47,10 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch('/api/user/data', { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
-      setUser(u => ({ email: data.email || u?.email || '' }));
-      // Switch storage namespace first so reads/writes target the user bucket
-      try {
-        storage.hydrateFrom(data);
-      } catch { /* noop */ }
+      const email = typeof data.email === 'string' ? data.email : '';
+      setUser(u => ({ email: email || u?.email || '' }));
 
-      // Decide which scores to trust: prefer the larger of server vs local user bucket
+      // Decide which scores to trust BEFORE hydrating storage (avoid cache shadowing local)
       const parseMaybeJson = (val) => {
         if (!val) return null;
         try { return typeof val === 'string' ? JSON.parse(val) : val; } catch { return null; }
@@ -71,13 +68,28 @@ export const AuthProvider = ({ children }) => {
 
       const serverRaw = data.scores ?? data.ddrScores ?? null;
       const serverParsed = parseMaybeJson(serverRaw);
-      const localRaw = storage.getItem('ddrScores');
-      const localParsed = parseMaybeJson(localRaw);
+
+      // Read the locally persisted value directly from localStorage using the user namespace.
+      // This avoids the in-memory cache (which hydrateFrom would overwrite with the server snapshot).
+      let localParsed = null;
+      try {
+        if (typeof window !== 'undefined') {
+          const ns = email ? `user:${email}` : 'user:unknown';
+          const raw = window.localStorage.getItem(`${ns}:ddrScores`);
+          localParsed = parseMaybeJson(raw);
+        }
+      } catch { /* noop */ }
 
       const serverCount = countScores(serverParsed);
       const localCount = countScores(localParsed);
 
       const chosen = (localCount > serverCount) ? localParsed : serverParsed;
+
+      // Now hydrate storage namespace and cache from server payload
+      try {
+        storage.hydrateFrom(data);
+      } catch { /* noop */ }
+
       if (chosen) {
         try { setScores(chosen); } catch { /* noop */ }
       }
