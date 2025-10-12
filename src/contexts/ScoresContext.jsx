@@ -141,6 +141,7 @@ export const ScoresProvider = ({ children }) => {
   useEffect(() => {
     const payload = JSON.stringify(scores);
     storage.setItem('ddrScores', payload);
+    try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
   }, [scores]);
 
   useLayoutEffect(() => {

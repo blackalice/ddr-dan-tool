@@ -41,6 +41,12 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    // Beta: Toggle to show Courses tab (off by default)
+    const [showCoursesBeta, setShowCoursesBeta] = useState(() => {
+        const saved = storage.getItem('showCoursesBeta');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -72,6 +78,10 @@ export const SettingsProvider = ({ children }) => {
         storage.setItem('songlistOverride', songlistOverride);
     }, [songlistOverride]);
 
+    useEffect(() => {
+        storage.setItem('showCoursesBeta', JSON.stringify(showCoursesBeta));
+    }, [showCoursesBeta]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -89,6 +99,8 @@ export const SettingsProvider = ({ children }) => {
         showLists,
         showRankedRatings,
         setShowRankedRatings,
+        showCoursesBeta,
+        setShowCoursesBeta,
         songlistOverride,
         setSonglistOverride,
     };

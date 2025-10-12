@@ -27,6 +27,8 @@ const Settings = () => {
         // showLists is always enabled now
         showRankedRatings,
         setShowRankedRatings,
+        showCoursesBeta,
+        setShowCoursesBeta,
         songlistOverride,
         setSonglistOverride,
     } = useContext(SettingsContext);
@@ -322,6 +324,25 @@ const Settings = () => {
                     <ThemeSwitcher />
 
                     <h2 className="settings-sub-header">Beta Features</h2>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Show Courses (Beta)</h3>
+                            <p>
+                                Enable the experimental DDR Courses page and tab. Off by default.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={showCoursesBeta ? 'Enable' : 'Disable'}
+                                onChange={(e) => setShowCoursesBeta(e.target.value === 'Enable')}
+                                className="settings-select"
+                            >
+                                <option value="Enable">Enable</option>
+                                <option value="Disable">Disable</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div className="setting-card">
                         <div className="setting-text">

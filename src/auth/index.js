@@ -316,7 +316,7 @@ authApp.post('/login', async (c) => {
 
   // Add issuer/audience scoped to current origin
   const origin = new URL(c.req.url).origin
-  const token = await new SignJWT({ sub: user.id, email, iss: origin, aud: origin, ver: user.token_version || 1 })
+  const token = await new SignJWT({ sub: user.id, iss: origin, aud: origin, ver: user.token_version || 1 })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
@@ -359,7 +359,7 @@ authApp.post('/refresh', authMiddleware, async (c) => {
     .bind(user.sub).first()
   const tokenVersion = row?.token_version || 1
   const origin = new URL(c.req.url).origin
-  const token = await new SignJWT({ sub: user.sub, email: user.email, iss: origin, aud: origin, ver: tokenVersion })
+  const token = await new SignJWT({ sub: user.sub, iss: origin, aud: origin, ver: tokenVersion })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
