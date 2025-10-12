@@ -8,7 +8,7 @@ import { useGroups } from './GroupsContext.jsx';
 import { SettingsContext } from './SettingsContext.jsx';
 import { storage } from '../utils/remoteStorage.js';
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     setTheme,
     setPlayStyle,
     setShowRankedRatings,
+    setShowCoursesBeta,
     setSonglistOverride,
   } = useContext(SettingsContext);
 
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     if (data.playStyle !== undefined) setPlayStyle(data.playStyle);
     // showLists is always enabled now
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
+    if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
     if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
   };
 
@@ -48,7 +50,8 @@ export const AuthProvider = ({ children }) => {
     if (res.ok) {
       const data = await res.json();
       const email = typeof data.email === 'string' ? data.email : '';
-      setUser(u => ({ email: email || u?.email || '' }));
+      const uid = (typeof data.uid === 'string' || typeof data.uid === 'number') ? String(data.uid) : '';
+      setUser(u => ({ email: email || u?.email || '', uid: uid || u?.uid }));
 
       // Decide which scores to trust BEFORE hydrating storage (avoid cache shadowing local)
       const parseMaybeJson = (val) => {
@@ -68,22 +71,52 @@ export const AuthProvider = ({ children }) => {
 
       const serverRaw = data.scores ?? data.ddrScores ?? null;
       const serverParsed = parseMaybeJson(serverRaw);
+      const serverUpdatedAt = (() => { const v = data.ddrScoresUpdatedAt; const n = Number(v); return Number.isFinite(n) ? n : 0; })();
 
       // Read the locally persisted value directly from localStorage using the user namespace.
-      // This avoids the in-memory cache (which hydrateFrom would overwrite with the server snapshot).
+      // Prefer non-PII uid namespace, fallback to legacy email namespace.
       let localParsed = null;
+      let localUpdatedAt = 0;
       try {
         if (typeof window !== 'undefined') {
-          const ns = email ? `user:${email}` : 'user:unknown';
-          const raw = window.localStorage.getItem(`${ns}:ddrScores`);
-          localParsed = parseMaybeJson(raw);
+          const nsCandidates = [];
+          if (uid) nsCandidates.push(`user:${uid}`);
+          if (email) nsCandidates.push(`user:${email}`); // legacy
+          for (const ns of nsCandidates) {
+            const rawLocal = window.localStorage.getItem(`${ns}:ddrScores`);
+            const parsed = parseMaybeJson(rawLocal);
+            const tsRaw = window.localStorage.getItem(`${ns}:ddrScoresUpdatedAt`);
+            const tsNum = Number(tsRaw);
+            if (parsed) {
+              localParsed = parsed;
+              if (Number.isFinite(tsNum)) localUpdatedAt = tsNum;
+              break;
+            }
+          }
         }
       } catch { /* noop */ }
 
       const serverCount = countScores(serverParsed);
       const localCount = countScores(localParsed);
 
-      const chosen = (localCount > serverCount) ? localParsed : serverParsed;
+      let chosen = serverParsed;
+      if (localParsed || serverParsed) {
+        if (serverUpdatedAt && localUpdatedAt) {
+          // Prefer newer; if within 5 minutes, prefer larger count
+          const diff = Math.abs(serverUpdatedAt - localUpdatedAt);
+          if (serverUpdatedAt > localUpdatedAt && diff > 5 * 60 * 1000) {
+            chosen = serverParsed;
+          } else if (localUpdatedAt > serverUpdatedAt && diff > 5 * 60 * 1000) {
+            chosen = localParsed;
+          } else {
+            chosen = (localCount > serverCount) ? localParsed : serverParsed;
+          }
+        } else if (localUpdatedAt || serverUpdatedAt) {
+          chosen = (localUpdatedAt > serverUpdatedAt) ? localParsed : serverParsed;
+        } else {
+          chosen = (localCount > serverCount) ? localParsed : serverParsed;
+        }
+      }
 
       // Now hydrate storage namespace and cache from server payload
       try {
@@ -104,6 +137,7 @@ export const AuthProvider = ({ children }) => {
           playStyle: data.playStyle,
           showLists: data.showLists,
           showRankedRatings: data.showRankedRatings,
+          showCoursesBeta: data.showCoursesBeta,
           songlistOverride: data.songlistOverride,
         };
         applySettings(flat);

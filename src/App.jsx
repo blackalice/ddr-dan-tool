@@ -9,6 +9,7 @@ import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import { parseSelection } from './utils/urlState.js';
 import { parseChartId } from './utils/chartIds.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
+// import SyncBanner from './components/SyncBanner.jsx';
 import './App.css';
 import './Tabs.css';
 import { storage } from './utils/remoteStorage.js';
@@ -245,6 +246,7 @@ function AppRoutes() {
 
   return (
     <div data-theme={theme}>
+                {/* <SyncBanner /> */}
                 <Tabs />
 
       <div className="app-container">

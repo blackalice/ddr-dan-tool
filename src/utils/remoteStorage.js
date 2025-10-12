@@ -5,7 +5,24 @@ let lastSynced = {}; // snapshot of last known server state
 let initialized = false;
 let listenersAttached = false;
 let syncEnabled = false;
-let namespace = 'anon'; // localStorage namespace: 'anon' or 'user:<email>'
+const syncListeners = new Set();
+function notifySync() {
+  try {
+    for (const fn of Array.from(syncListeners)) {
+      try { fn(Boolean(syncEnabled)); } catch { /* noop */ }
+    }
+  } catch { /* noop */ }
+}
+function setSync(val) {
+  const next = Boolean(val);
+  if (syncEnabled !== next) {
+    syncEnabled = next;
+    notifySync();
+  }
+}
+let namespace = 'anon'; // localStorage namespace: 'anon' or 'user:<id>'
+let legacyNamespaces = []; // legacy prefixes to read from (e.g., user:<email>)
+let bc = null; // BroadcastChannel for multi-tab sync
 
 function persistActiveNamespace(ns) {
   try {
@@ -21,6 +38,18 @@ function persistActiveNamespace(ns) {
 function applyNamespace(nextNamespace) {
   namespace = nextNamespace || 'anon';
   persistActiveNamespace(namespace);
+  try { setupBroadcast(); } catch { /* noop */ }
+}
+
+function setLegacyNamespaces(list) {
+  try {
+    legacyNamespaces = Array.isArray(list) ? list.filter(Boolean) : [];
+  } catch { legacyNamespaces = []; }
+}
+function addLegacyNamespace(ns) {
+  if (!ns) return;
+  if (!Array.isArray(legacyNamespaces)) legacyNamespaces = [];
+  if (!legacyNamespaces.includes(ns)) legacyNamespaces.push(ns);
 }
 
 function restoreNamespaceFromSession() {
@@ -28,7 +57,7 @@ function restoreNamespaceFromSession() {
     if (typeof window === 'undefined') return;
     const stored = window.sessionStorage.getItem(SESSION_NAMESPACE_KEY);
     if (!stored) return;
-    namespace = stored;
+    applyNamespace(stored);
   } catch (_e) { void _e; }
 }
 
@@ -60,6 +89,25 @@ function scheduleFlush() {
     const dueIn = Math.max(0, MAX_FLUSH_INTERVAL - (Date.now() - lastFlushTime));
     maxTimer = setTimeout(() => { flush(); }, dueIn);
   }
+}
+
+function setupBroadcast() {
+  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return;
+  try { if (bc && typeof bc.close === 'function') bc.close(); } catch { /* noop */ }
+  try {
+    bc = new BroadcastChannel(`rs:${namespace}`);
+    bc.onmessage = (ev) => {
+      const msg = ev?.data || {};
+      if (!msg || msg.ns !== namespace) return;
+      if (msg.t === 'set' && msg.k != null) {
+        cache[String(msg.k)] = String(msg.v);
+      } else if (msg.t === 'remove' && msg.k != null) {
+        delete cache[String(msg.k)];
+      } else if (msg.t === 'clear') {
+        for (const k of Object.keys(cache)) delete cache[k];
+      }
+    };
+  } catch { /* noop */ }
 }
 
 function computeDelta() {
@@ -95,6 +143,31 @@ async function flush() {
     });
     if (!res.ok) {
       console.warn('[storage] flush failed', res.status);
+      if (res.status === 401) {
+        // Try to refresh once, then retry the PATCH
+        let refreshed = false;
+        try {
+          const r = await fetch('/api/refresh', { method: 'POST', credentials: 'include' });
+          refreshed = r.ok;
+        } catch { /* noop */ }
+        if (refreshed) {
+          try {
+            const retry = await fetch('/api/user/data', {
+              method: 'PATCH', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: payload,
+            });
+            if (retry.ok) {
+              lastSent = payload; lastSynced = { ...cache }; lastFlushTime = Date.now();
+              return;
+            }
+          } catch { /* noop */ }
+        }
+        // Give up syncing until re-auth; avoid hot loop
+        setSync(false);
+        return;
+      }
+      if (res.status === 413) {
+        try { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('remoteStorage:oversize', { detail: { length: payload.length } })); } catch { /* noop */ }
+      }
       if (res.status !== 413) {
         scheduleFlush();
       }
@@ -146,6 +219,23 @@ function flushNow(useBeacon = false) {
     body: payload,
   })
     .then(res => {
+      if (res.status === 401) {
+        // Attempt refresh then one retry
+        return fetch('/api/refresh', { method: 'POST', credentials: 'include' })
+          .then(r => {
+            if (!r.ok) throw new Error('refresh-failed');
+            return fetch('/api/user/data', {
+              method: 'PATCH', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: payload,
+            })
+          })
+          .then(retry => {
+            if (!retry?.ok) throw new Error(`HTTP ${retry?.status}`)
+            return retry;
+          })
+      }
+      if (res.status === 413) {
+        try { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('remoteStorage:oversize', { detail: { length: payload.length } })); } catch { /* noop */ }
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       lastSent = payload;
       lastSynced = { ...cache };
@@ -165,18 +255,21 @@ async function init() {
       // Authenticated: enable sync and switch to user namespace
       const raw = await res.json();
       const email = typeof raw.email === 'string' ? raw.email : null;
-      applyNamespace(email ? `user:${email}` : 'user:unknown');
-      syncEnabled = true;
+      const uid = raw && (typeof raw.uid === 'string' || typeof raw.uid === 'number') ? String(raw.uid) : null;
+      applyNamespace(uid ? `user:${uid}` : 'user:unknown');
+      setLegacyNamespaces([]);
+      if (email) addLegacyNamespace(`user:${email}`);
+      setSync(true);
       // Reset local cache for this session and hydrate from server data (excluding email)
       resetState();
-      const { email: _skipEmail, ...serverData } = raw || {}; void _skipEmail;
+      const { email: _skipEmail, uid: _skipUid, ...serverData } = raw || {}; void _skipEmail; void _skipUid;
       Object.assign(cache, serverData);
       lastSynced = { ...cache };
       lastSent = JSON.stringify(lastSynced);
       // Do NOT auto-migrate anonymous localStorage into user account to avoid leakage
     } else if (res.status === 401) {
       // Unauthenticated: disable sync and use anonymous namespace
-      syncEnabled = false;
+      setSync(false);
       applyNamespace('anon');
       resetState();
       // Hydrate from namespaced localStorage only (avoid cross-account pollution)
@@ -198,11 +291,25 @@ async function init() {
     void _e;
     // ignore errors
   }
-  // Ensure we attempt to persist on tab close
+  // Ensure we attempt to persist on tab close; also listen for online/storage
   if (!listenersAttached && typeof window !== 'undefined') {
     const onHide = () => flushNow(true);
     window.addEventListener('visibilitychange', onHide, { once: false });
     window.addEventListener('beforeunload', onHide, { once: false });
+    try { window.addEventListener('online', () => { try { void flush(); } catch { /* noop */ } }, { once: false }); } catch { /* noop */ }
+    try {
+      window.addEventListener('storage', (e) => {
+        try {
+          const k = e?.key || '';
+          if (!k || typeof k !== 'string') return;
+          if (!k.startsWith(`${namespace}:`)) return;
+          const unprefixed = k.slice(namespace.length + 1);
+          const v = e.newValue;
+          if (v == null) delete cache[unprefixed];
+          else cache[unprefixed] = v;
+        } catch { /* noop */ }
+      });
+    } catch { /* noop */ }
     listenersAttached = true;
   }
 }
@@ -219,6 +326,14 @@ function getItem(key) {
         const legacy = window.localStorage.getItem(key);
         if (legacy != null) return legacy;
       }
+      // Legacy user namespace fallback (e.g., user:<email>)
+      if (namespace.startsWith('user:') && Array.isArray(legacyNamespaces) && legacyNamespaces.length > 0) {
+        for (const legacyNs of legacyNamespaces) {
+          if (!legacyNs || legacyNs === namespace) continue;
+          const lv = window.localStorage.getItem(`${legacyNs}:${key}`);
+          if (lv != null) return lv;
+        }
+      }
     }
   } catch (_e) { void _e; }
   return null;
@@ -231,6 +346,7 @@ function setItem(key, value) {
       window.localStorage.setItem(nsKey(key), String(value));
     }
   } catch (_e) { void _e; }
+  try { if (bc) bc.postMessage({ t: 'set', ns: namespace, k: key, v: String(value) }); } catch { /* noop */ }
   scheduleFlush();
 }
 
@@ -241,14 +357,17 @@ function clear() {
   const activeNamespace = namespace;
   try {
     if (typeof window !== 'undefined') {
+      const prefixes = [activeNamespace, ...(Array.isArray(legacyNamespaces) ? legacyNamespaces : [])];
       const toRemove = [];
       for (let i = 0; i < window.localStorage.length; i++) {
         const k = window.localStorage.key(i);
-        if (k && k.startsWith(`${activeNamespace}:`)) toRemove.push(k);
+        if (!k) continue;
+        if (prefixes.some(p => p && k.startsWith(`${p}:`))) toRemove.push(k);
       }
       for (const k of toRemove) window.localStorage.removeItem(k);
     }
   } catch (_e) { void _e; }
+  try { if (bc) bc.postMessage({ t: 'clear', ns: activeNamespace }); } catch { /* noop */ }
   // Clear server copy for authenticated users
   lastSynced = {};
   lastSent = JSON.stringify(lastSynced);
@@ -262,7 +381,7 @@ function clear() {
       body: JSON.stringify({}),
     }).catch(() => {})
   }
-  syncEnabled = false;
+  setSync(false);
   initialized = false;
   applyNamespace('anon');
 }
@@ -276,11 +395,14 @@ function hydrateFrom(raw) {
   if (!raw || typeof raw !== 'object') return;
   // Switch to user namespace and enable sync
   const email = typeof raw.email === 'string' ? raw.email : null;
-  applyNamespace(email ? `user:${email}` : 'user:unknown');
-  syncEnabled = true;
+  const uid = raw && (typeof raw.uid === 'string' || typeof raw.uid === 'number') ? String(raw.uid) : null;
+  applyNamespace(uid ? `user:${uid}` : 'user:unknown');
+  setLegacyNamespaces([]);
+  if (email) addLegacyNamespace(`user:${email}`);
+  setSync(true);
   resetState();
   // Exclude email from key space
-  const { email: _skip, ...serverData } = raw || {}; void _skip;
+  const { email: _skip, uid: _skipUid, ...serverData } = raw || {}; void _skip; void _skipUid;
   Object.assign(cache, serverData);
   lastSynced = { ...cache };
   lastSent = JSON.stringify(lastSynced);
@@ -289,8 +411,25 @@ function hydrateFrom(raw) {
     const onHide = () => flushNow(true);
     window.addEventListener('visibilitychange', onHide, { once: false });
     window.addEventListener('beforeunload', onHide, { once: false });
+    try { window.addEventListener('online', () => { try { void flush(); } catch { /* noop */ } }, { once: false }); } catch { /* noop */ }
+    try {
+      window.addEventListener('storage', (e) => {
+        try {
+          const k = e?.key || '';
+          if (!k || typeof k !== 'string') return;
+          if (!k.startsWith(`${namespace}:`)) return;
+          const unprefixed = k.slice(namespace.length + 1);
+          const v = e.newValue;
+          if (v == null) delete cache[unprefixed];
+          else cache[unprefixed] = v;
+        } catch { /* noop */ }
+      });
+    } catch { /* noop */ }
     listenersAttached = true;
   }
 }
+
+export function onSyncStatusChange(fn) { if (typeof fn === 'function') { syncListeners.add(fn); return () => syncListeners.delete(fn); } return () => {}; }
+export function getSyncStatus() { return Boolean(syncEnabled); }
 
 export const storage = { init, refresh, hydrateFrom, getItem, setItem, clear };

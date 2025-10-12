@@ -21,9 +21,14 @@ app.use('*', async (c, next) => {
     if (isProd) {
       // Keep CSP moderate to avoid breaking the app; refine as needed
       // Allow Turnstile (scripts and frames) and general HTTPS connects.
+      const connectOrigins = ["'self'", 'https://challenges.cloudflare.com']
+      try {
+        const so = (c.env?.STATIC_ORIGIN && c.env.STATIC_ORIGIN.trim()) || ''
+        if (so) connectOrigins.push(new URL(so).origin)
+      } catch { /* ignore bad STATIC_ORIGIN */ }
       res.headers.set(
         'Content-Security-Policy',
-        "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https:; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+        `default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src ${connectOrigins.join(' ')}; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'`
       )
     }
   } catch { /* ignore header set errors */ }
@@ -95,6 +100,27 @@ function parseStoredPayload(row) {
   return {}
 }
 
+// Lightweight rate limit helper for user-data endpoints
+async function checkRateLimit(c, key, limit, windowSeconds) {
+  try {
+    const nowSec = Math.floor(Date.now() / 1000)
+    const windowStart = nowSec - (nowSec % windowSeconds)
+    const stmt = c.env.DB.prepare(
+      `INSERT INTO rate_limits (key, window_start, count) VALUES (?, ?, 1)
+       ON CONFLICT(key) DO UPDATE SET
+         count = CASE WHEN excluded.window_start = rate_limits.window_start THEN rate_limits.count + 1 ELSE 1 END,
+         window_start = CASE WHEN excluded.window_start = rate_limits.window_start THEN rate_limits.window_start ELSE excluded.window_start END
+       RETURNING count, window_start`
+    ).bind(key, windowStart)
+    const row = await stmt.first()
+    if (!row) return true
+    const count = typeof row.count === 'number' ? row.count : Number(row.count)
+    return count <= limit
+  } catch {
+    return true
+  }
+}
+
 // Mount auth routes under /api (e.g., /api/login, /api/signup, /api/refresh, /api/logout)
 app.route('/api', authApp)
 
@@ -123,7 +149,7 @@ app.post('/api/refresh', authMiddleware, async (c) => {
       .bind(user.sub).first()
     const tokenVersion = row?.token_version || 1
     const origin = new URL(c.req.url).origin
-    const token = await new SignJWT({ sub: user.sub, email: user.email, iss: origin, aud: origin, ver: tokenVersion })
+    const token = await new SignJWT({ sub: user.sub, iss: origin, aud: origin, ver: tokenVersion })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('7d')
@@ -177,9 +203,13 @@ const MAX_USER_DATA_BYTES = 256 * 1024 // 256 KiB
 
 app.get('/api/user/data', authMiddleware, async (c) => {
   const user = c.get('user') || {}
-  const email = user.email
   const userId = user.sub
-  const fallback = { email }
+  let email = ''
+  try {
+    const row = await c.env.DB.prepare('SELECT email FROM users WHERE id = ?').bind(userId).first()
+    email = row?.email || ''
+  } catch { /* noop */ }
+  const fallback = { uid: userId, email }
 
   try {
     const db = c.env?.DB
@@ -225,6 +255,9 @@ app.put('/api/user/data', authMiddleware, async (c) => {
     console.warn('[user-data] DB binding missing (PUT)')
     return c.json({ error: 'Storage unavailable' }, 503)
   }
+  // Rate limit user-data full writes: 60/min per user
+  const ok = await checkRateLimit(c, `ud:put:${userId}`, 60, 60)
+  if (!ok) return c.json({ error: 'Too many requests' }, 429)
   try {
     const size = new TextEncoder().encode(JSON.stringify(body)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
@@ -256,6 +289,9 @@ app.post('/api/user/data', authMiddleware, async (c) => {
     console.warn('[user-data] DB binding missing (POST)')
     return c.json({ error: 'Storage unavailable' }, 503)
   }
+  // Rate limit user-data merges (beacon): 120/min per user
+  const ok = await checkRateLimit(c, `ud:post:${userId}`, 120, 60)
+  if (!ok) return c.json({ error: 'Too many requests' }, 429)
   try {
     const size = new TextEncoder().encode(JSON.stringify(patch)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
@@ -304,6 +340,9 @@ app.patch('/api/user/data', authMiddleware, async (c) => {
     console.warn('[user-data] DB binding missing (PATCH)')
     return c.json({ error: 'Storage unavailable' }, 503)
   }
+  // Rate limit user-data merges: 120/min per user
+  const ok = await checkRateLimit(c, `ud:patch:${userId}`, 120, 60)
+  if (!ok) return c.json({ error: 'Too many requests' }, 429)
   try {
     const size = new TextEncoder().encode(JSON.stringify(patch)).length
     if (size > MAX_USER_DATA_BYTES) return c.json({ error: 'Payload too large' }, 413)
