@@ -57,7 +57,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -96,6 +96,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const lamp = scoreData?.lamp ?? song?.lamp ?? null;
   const flare = scoreData?.flare ?? null;
   const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
+  const artistName = song?.artist || derivedArtist || "";
+  const jacketPath = song?.jacket || "";
 
   const hasScores = React.useMemo(
     () =>
@@ -182,9 +184,23 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         className={
           'song-card' +
           (highlight ? ' highlight' : '') +
-          (showSlice ? ' with-score-slice' : '')
+          (showSlice ? ' with-score-slice' : '') +
+          (bpmOnly ? ' bpm-only' : '') +
+          (showArtist ? ' show-artist' : '') +
+          (showJacket ? ' show-jacket' : '') +
+          (jacketFull ? ' jacket-full' : '') +
+          (showGameWithDifficulty ? ' show-game-with-difficulty' : '')
         }
       >
+        {showJacket && jacketPath && (
+          <>
+            <div
+              className="song-card-jacket-bg"
+              style={{ backgroundImage: `url("/${encodeURI(jacketPath)}")` }}
+            />
+            <div className="song-card-jacket-fade" />
+          </>
+        )}
         {showDragHandle && (
           <button
             className="song-card-action drag"
@@ -208,32 +224,64 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           </button>
         )}
         <div className="song-card-header">
-          <h3 className="song-title">{song.title}</h3>
+          <div className="song-title-block">
+            <h3 className="song-title">{song.title}</h3>
+            {showArtist && artistName && (
+              <span className="song-card-artist" title={artistName}>
+                {artistName}
+              </span>
+            )}
+            {levelInTitleBlock && (
+              <span className="song-level song-title-level">
+                {renderLevel(levelToDisplay)}
+              </span>
+            )}
+          </div>
           <div className="header-right">
-            {song.game && <div className="game-chip" style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}>{song.game}</div>}
+            {song.game && (
+              <div className="game-chip" style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}>
+                {song.game}
+              </div>
+            )}
           </div>
         </div>
         <div className="song-details">
           <div>
             <span className="song-bpm">BPM: {song.bpm}</span>
-            <div className="song-calculation">
-              <span className="song-speed">
-                {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
-              </span>
-              <span className="song-separator">@</span>
-              <span className="song-modifier">{calculation.modifier}x</span>
-            </div>
+            {!bpmOnly && (
+              <div className="song-calculation">
+                <span className="song-speed">
+                  {calculation.isRange ? `${calculation.minSpeed}-${calculation.maxSpeed}` : calculation.maxSpeed}
+                </span>
+                <span className="song-separator">@</span>
+                <span className="song-modifier">{calculation.modifier}x</span>
+              </div>
+            )}
           </div>
           <div className="song-level-container">
-              <span className="song-level">{renderLevel(levelToDisplay)}</span>
-              {difficultyInfo && (
-                   <span 
-                      className="difficulty-badge"
-                      style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+              <span
+                className={`song-level${levelInTitleBlock ? " song-inline-level" : ""}`}
+              >
+                {renderLevel(levelToDisplay)}
+              </span>
+              <div className="song-badges">
+                {difficultyInfo && (
+                  <span
+                    className="difficulty-badge"
+                    style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
                   >
-                      {difficultyInfo.name}
+                    {difficultyInfo.name}
                   </span>
-              )}
+                )}
+                {showGameWithDifficulty && song.game && (
+                  <span
+                    className="game-chip inline"
+                    style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}
+                  >
+                    {song.game}
+                  </span>
+                )}
+              </div>
           </div>
         </div>
       </div>

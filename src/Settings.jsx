@@ -12,7 +12,6 @@ import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { getSongMeta } from './utils/cachedFetch.js';
 
 const Settings = () => {
     const {
@@ -31,9 +30,11 @@ const Settings = () => {
         setShowCoursesBeta,
         songlistOverride,
         setSonglistOverride,
+        worldDifficultyChanges,
+        setWorldDifficultyChanges,
     } = useContext(SettingsContext);
 
-    const { scores, setScores } = useScores();
+    const { scores, setScores, loadSongMeta } = useScores();
     const { groups } = useGroups();
     const { user, logout } = useAuth();
     const [logoutAllBusy, setLogoutAllBusy] = useState(false);
@@ -52,8 +53,10 @@ const Settings = () => {
     const [songLookupStrict, setSongLookupStrict] = useState({});
     const [titleIndex, setTitleIndex] = useState(new Map());
     useEffect(() => {
-        getSongMeta()
+        let cancelled = false;
+        loadSongMeta()
             .then((data) => {
+                if (cancelled) return;
                 setSongMeta(data);
                 const strictMap = {};
                 const titleIdx = new Map(); // normalized title -> array of songs
@@ -83,7 +86,10 @@ const Settings = () => {
                 setTitleIndex(titleIdx);
             })
             .catch(() => { /* noop */ });
-    }, []);
+        return () => {
+            cancelled = true;
+        };
+    }, [loadSongMeta]);
 
     const [uploadPlaytype, setUploadPlaytype] = useState('SP');
     const [processing, setProcessing] = useState(false);
@@ -318,6 +324,25 @@ const Settings = () => {
                                 {SONGLIST_OVERRIDE_OPTIONS.map(opt => (
                                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                                 ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>WORLD Difficulty Changes</h3>
+                            <p>
+                                Apply DDR WORLD difficulty updates when filtering and viewing charts.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <select
+                                value={worldDifficultyChanges ? 'On' : 'Off'}
+                                onChange={(e) => setWorldDifficultyChanges(e.target.value === 'On')}
+                                className="settings-select"
+                            >
+                                <option value="Off">Off</option>
+                                <option value="On">On</option>
                             </select>
                         </div>
                     </div>

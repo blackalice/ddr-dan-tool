@@ -14,6 +14,8 @@ import { getSongMeta } from '../utils/cachedFetch.js';
 import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
 import { buildChartId, isChartId, normalizeMode, upgradeChartId } from '../utils/chartIds.js';
 import { normalizeSongIdValue } from '../utils/songId.js';
+import { SettingsContext } from './SettingsContext.jsx';
+import { applyWorldDifficultyChanges } from '../utils/worldDifficultyChanges.js';
 import {
   buildChartMetaLookup,
   computeStats,
@@ -111,6 +113,9 @@ export const ScoresContext = createContext();
 const STATS_STORAGE_KEY = 'scoreStats';
 
 export const ScoresProvider = ({ children }) => {
+  const settings = useContext(SettingsContext) || {};
+  const worldDifficultyChanges = Boolean(settings.worldDifficultyChanges);
+
   const [scores, setScores] = useState(() => {
     const saved = storage.getItem('ddrScores');
     if (saved) {
@@ -130,7 +135,9 @@ export const ScoresProvider = ({ children }) => {
     return { ...hydrated, ready: false };
   });
 
+  const [rawSongMeta, setRawSongMeta] = useState([]);
   const [songMeta, setSongMeta] = useState([]);
+  const [songMetaWorldFlag, setSongMetaWorldFlag] = useState(null);
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
   const songMetaPromiseRef = useRef(null);
   const chartMetaPromiseRef = useRef(null);
@@ -157,8 +164,18 @@ export const ScoresProvider = ({ children }) => {
   }, [stats]);
 
   const loadSongMeta = useCallback(async () => {
-    if (Array.isArray(songMeta) && songMeta.length > 0) {
+    if (
+      Array.isArray(songMeta) &&
+      songMeta.length > 0 &&
+      songMetaWorldFlag === worldDifficultyChanges
+    ) {
       return songMeta;
+    }
+    if (Array.isArray(rawSongMeta) && rawSongMeta.length > 0) {
+      const applied = applyWorldDifficultyChanges(rawSongMeta, worldDifficultyChanges);
+      setSongMeta(applied);
+      setSongMetaWorldFlag(worldDifficultyChanges);
+      return applied;
     }
     if (songMetaPromiseRef.current) {
       return songMetaPromiseRef.current;
@@ -168,8 +185,11 @@ export const ScoresProvider = ({ children }) => {
         if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
           throw new Error(`[scores] song metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
         }
-        setSongMeta(meta);
-        return meta;
+        setRawSongMeta(meta);
+        const applied = applyWorldDifficultyChanges(meta, worldDifficultyChanges);
+        setSongMeta(applied);
+        setSongMetaWorldFlag(worldDifficultyChanges);
+        return applied;
       })
       .catch(err => {
         console.warn('[scores] Failed to load song metadata', err);
@@ -180,7 +200,16 @@ export const ScoresProvider = ({ children }) => {
       });
     songMetaPromiseRef.current = promise;
     return promise;
-  }, [songMeta]);
+  }, [rawSongMeta, songMeta, songMetaWorldFlag, worldDifficultyChanges]);
+
+  useEffect(() => {
+    if (!rawSongMeta.length) return;
+    const applied = applyWorldDifficultyChanges(rawSongMeta, worldDifficultyChanges);
+    setSongMeta(applied);
+    setSongMetaWorldFlag(worldDifficultyChanges);
+    setChartMetaLookup(new Map());
+    statsDirtyRef.current = true;
+  }, [rawSongMeta, worldDifficultyChanges]);
 
   const loadChartMeta = useCallback(async () => {
     if (chartMetaLookup instanceof Map && chartMetaLookup.size > 0) {

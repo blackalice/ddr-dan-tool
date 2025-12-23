@@ -27,7 +27,6 @@ import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
-import { getSongMeta } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
 import {
@@ -286,6 +285,7 @@ const ListsPage = () => {
     setActiveGroup,
   } = useGroups();
   const { resetFilters } = useFilters();
+  const { loadSongMeta } = useScores();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [songMeta, setSongMeta] = useState([]);
   const [editInfo, setEditInfo] = useState(null); // { groupName, chart }
@@ -294,10 +294,16 @@ const ListsPage = () => {
   const [localOrder, setLocalOrder] = useState([]);
 
   useEffect(() => {
-    getSongMeta()
-      .then(setSongMeta)
+    let cancelled = false;
+    loadSongMeta()
+      .then((meta) => {
+        if (!cancelled) setSongMeta(meta);
+      })
       .catch(err => console.error('Failed to load song meta:', err));
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [loadSongMeta]);
 
   const handleCreate = (name) => {
     if (name.trim()) {

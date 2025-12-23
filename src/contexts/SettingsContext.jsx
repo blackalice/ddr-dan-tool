@@ -47,6 +47,11 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [worldDifficultyChanges, setWorldDifficultyChanges] = useState(() => {
+        const saved = storage.getItem('worldDifficultyChanges');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -82,6 +87,10 @@ export const SettingsProvider = ({ children }) => {
         storage.setItem('showCoursesBeta', JSON.stringify(showCoursesBeta));
     }, [showCoursesBeta]);
 
+    useEffect(() => {
+        storage.setItem('worldDifficultyChanges', JSON.stringify(worldDifficultyChanges));
+    }, [worldDifficultyChanges]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -103,6 +112,8 @@ export const SettingsProvider = ({ children }) => {
         setShowCoursesBeta,
         songlistOverride,
         setSonglistOverride,
+        worldDifficultyChanges,
+        setWorldDifficultyChanges,
     };
 
     return (

@@ -11,6 +11,38 @@
     min-height:110px;
     box-sizing: border-box;
 }
+.song-card.show-jacket {
+  position: relative;
+  overflow: hidden;
+}
+.song-card-jacket-bg,
+.song-card-jacket-fade {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.song-card-jacket-bg {
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: auto 100%;
+  opacity: 0.25;
+  z-index: 0;
+}
+.song-card-jacket-fade {
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0) 10%,
+    var(--card-hover-bg-color) 33%
+  );
+  z-index: 0;
+}
+.song-card.show-jacket .song-card-header,
+.song-card.show-jacket .song-details,
+.song-card.show-jacket .song-card-action {
+  position: relative;
+  z-index: 1;
+}
 
 .song-card.with-score-slice {
     border-radius: 0.5rem 0.5rem 0 0;
@@ -47,6 +79,33 @@
   -webkit-box-orient: vertical;
   min-height: 2.5em;
 }
+.song-title-block {
+  min-width: 0;
+}
+.song-card-artist {
+  display: block;
+  font-weight: normal;
+  color: var(--text-color-lightest);
+  font-size: 0.8rem;
+  margin-top: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.song-card.show-artist .song-title {
+  min-height: 0;
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+.song-card.show-artist .song-title-block {
+  height: 3.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.song-card.show-artist .song-card-artist {
+  line-height: 1.1;
+}
 .song-details {
   display: flex;
   justify-content: space-between;
@@ -58,6 +117,11 @@
   font-size: 0.75rem;
   font-weight: 600;
   opacity: 0.8;
+}
+.song-card.bpm-only .song-bpm {
+  font-size: 1.125rem;
+  font-weight: 700;
+  opacity: 1;
 }
 .song-calculation {
   display: flex;
@@ -87,6 +151,20 @@
   font-size: 1.125rem;
   font-weight: 700;
 }
+.song-title-level {
+  margin-top: 0.25rem;
+  display: none;
+}
+.song-inline-level {
+  display: block;
+}
+.song-badges {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
 .difficulty-badge {
   display: inline-block;
   padding: 0.125rem 0.5rem;
@@ -94,6 +172,12 @@
   border-radius: 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
+}
+.game-chip.inline {
+  margin-left: 0;
+  font-size: 0.7rem;
+  padding: 0.125rem 0.4rem;
+  display: none;
 }
 
 .song-card-header {
@@ -118,6 +202,10 @@
   .song-card {
     min-height: 0px;
   }
+}
+.song-card.show-jacket .song-card-jacket-bg,
+.song-card.show-jacket .song-card-jacket-fade {
+  display: block;
 }
 
 .song-card-action {

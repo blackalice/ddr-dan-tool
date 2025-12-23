@@ -12,7 +12,7 @@ import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
-import { getSongMeta, getJsonCached } from './utils/cachedFetch.js';
+import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore, makeScoreKey } from './utils/scoreKey.js';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
 import { normalizeMode } from './utils/chartIds.js';
@@ -161,7 +161,7 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
 const RankingsPage = () => {
   const { playStyle, songlistOverride } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
-  const { scores } = useScores();
+  const { scores, loadSongMeta } = useScores();
   const [songMeta, setSongMeta] = useState([]);
   const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(() => {
@@ -253,10 +253,16 @@ const RankingsPage = () => {
 
 
   useEffect(() => {
-    getSongMeta()
-      .then(setSongMeta)
+    let cancelled = false;
+    loadSongMeta()
+      .then(meta => {
+        if (!cancelled) setSongMeta(meta);
+      })
       .catch(err => console.error('Failed to load song meta:', err));
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [loadSongMeta]);
 
   const { availableLevels, chartsByLevel } = useMemo(() => {
     if (!Array.isArray(songMeta) || songMeta.length === 0) {

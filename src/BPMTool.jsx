@@ -22,7 +22,7 @@ import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
 import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
-import { getSongMeta, getRadarValues, getJsonCached } from './utils/cachedFetch.js';
+import { getRadarValues, getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -220,7 +220,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const showLists = !!user;
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
-    const { scores } = useScores();
+    const { scores, loadSongMeta } = useScores();
     const location = useLocation();
 
 
@@ -376,10 +376,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [location.state?.fromSongCard]);
 
     useEffect(() => {
-        getSongMeta()
-            .then(setSongMeta)
+        let cancelled = false;
+        loadSongMeta()
+            .then((meta) => {
+                if (!cancelled) setSongMeta(meta);
+            })
             .catch(err => console.error('Failed to load song meta:', err));
-    }, []);
+        return () => {
+            cancelled = true;
+        };
+    }, [loadSongMeta]);
 
     useEffect(() => {
         getRadarValues()
@@ -1257,5 +1263,4 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
 };
 
 export default BPMTool;
-
 
