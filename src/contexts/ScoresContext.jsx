@@ -130,7 +130,9 @@ export const ScoresProvider = ({ children }) => {
     return { ...hydrated, ready: false };
   });
 
+  const [songMeta, setSongMeta] = useState([]);
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
+  const songMetaPromiseRef = useRef(null);
   const chartMetaPromiseRef = useRef(null);
   const scoresRef = useRef(scores);
   const statsDirtyRef = useRef(true);
@@ -154,6 +156,32 @@ export const ScoresProvider = ({ children }) => {
     storage.setItem(STATS_STORAGE_KEY, serializeStatsState(stats));
   }, [stats]);
 
+  const loadSongMeta = useCallback(async () => {
+    if (Array.isArray(songMeta) && songMeta.length > 0) {
+      return songMeta;
+    }
+    if (songMetaPromiseRef.current) {
+      return songMetaPromiseRef.current;
+    }
+    const promise = getSongMeta()
+      .then(meta => {
+        if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
+          throw new Error(`[scores] song metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
+        }
+        setSongMeta(meta);
+        return meta;
+      })
+      .catch(err => {
+        console.warn('[scores] Failed to load song metadata', err);
+        throw err;
+      })
+      .finally(() => {
+        songMetaPromiseRef.current = null;
+      });
+    songMetaPromiseRef.current = promise;
+    return promise;
+  }, [songMeta]);
+
   const loadChartMeta = useCallback(async () => {
     if (chartMetaLookup instanceof Map && chartMetaLookup.size > 0) {
       return chartMetaLookup;
@@ -161,7 +189,7 @@ export const ScoresProvider = ({ children }) => {
     if (chartMetaPromiseRef.current) {
       return chartMetaPromiseRef.current;
     }
-    const promise = getSongMeta()
+    const promise = loadSongMeta()
       .then(meta => {
         if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
           throw new Error(`[scores] chart metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
@@ -184,7 +212,7 @@ export const ScoresProvider = ({ children }) => {
       });
     chartMetaPromiseRef.current = promise;
     return promise;
-  }, [chartMetaLookup, setScores]);
+  }, [chartMetaLookup, setScores, loadSongMeta]);
 
   const runStatsComputation = useCallback(async (options = {}) => {
     const { signal } = options;
@@ -270,7 +298,8 @@ export const ScoresProvider = ({ children }) => {
     stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
     ensureStats,
     loadChartMeta,
-  }), [scores, stats, ensureStats, loadChartMeta]);
+    loadSongMeta,
+  }), [scores, stats, ensureStats, loadChartMeta, loadSongMeta]);
 
   return (
     <ScoresContext.Provider value={contextValue}>

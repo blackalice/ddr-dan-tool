@@ -3,22 +3,34 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "concurrently \"npm:dev:prepare\" \"npm:dev:wrangler\"",
-    "dev:prepare": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-radar.mjs && vite",
-    "dev:wrangler": "wrangler dev",
-    "build": "vite build",
-    "prebuild": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-radar.mjs",
-    "postinstall": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-radar.mjs",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "cf:dev": "wrangler dev",
-    "deploy": "npm run build && npm run deploy:worker && npm run deploy:pages",
-    "deploy:worker": "wrangler deploy --env production",
-    "deploy:pages": "wrangler pages deploy dist",
-    "parse:scores": "node scripts/parse-ganymede-html.mjs",
-    "build:audio": "node scripts/build-audio-lengths.mjs ddrbits"
-  },
+"scripts": {
+  "dev": "concurrently \"npm:dev:vite\" \"npm:dev:wrangler\"",
+
+  "dev:vite": "vite",
+  "dev:wrangler": "wrangler dev",
+
+  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-radar.mjs",
+
+  "dev:full": "npm run prepare:data && npm run dev",
+
+  "build": "vite build",
+  "prebuild": "npm run prepare:data",
+
+  "postinstall": "npm run prepare:data",
+
+  "lint": "eslint .",
+  "preview": "vite preview",
+
+  "cf:dev": "wrangler dev",
+
+  "deploy": "npm run build && npm run deploy:worker && npm run deploy:pages",
+  "deploy:worker": "wrangler deploy --env production",
+  "deploy:pages": "wrangler pages deploy dist",
+
+  "parse:scores": "node scripts/parse-ganymede-html.mjs",
+  "build:audio": "node scripts/build-audio-lengths.mjs ddrbits"
+},
+
   "dependencies": {
     "@dnd-kit/core": " ^6.1.0 ",
     "@dnd-kit/sortable": " ^8.0.0 ",
@@ -55,5 +67,10 @@
     "music-metadata": "^11.8.3",
     "vite": "^7.1.6",
     "wrangler": "^4.36.0"
-  }
+  },
+  "description": "![screenshot](screenshot.png)",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

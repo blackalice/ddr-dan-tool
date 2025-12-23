@@ -11,6 +11,7 @@ import {
   faChartColumn,
   faBars,
   faTimes,
+  faDice,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { useScores } from "./contexts/ScoresContext.jsx";
@@ -127,6 +128,14 @@ const Tabs = () => {
         label: "Multiplier",
         shortLabel: "Multiplier",
         icon: <FontAwesomeIcon icon={faCalculator} />,
+        primary: true,
+      },
+      {
+        key: "card-draw",
+        to: `/card-draw${hash}`,
+        label: "Card Draw",
+        shortLabel: "Draw",
+        icon: <FontAwesomeIcon icon={faDice} />,
         primary: true,
       },
       {

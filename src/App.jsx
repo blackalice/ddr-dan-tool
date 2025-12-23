@@ -25,6 +25,7 @@ const CoursesPage = lazy(() => import('./CoursesPage.jsx'));
 const ListsPage = lazy(() => import('./ListsPage.jsx'));
 const StatsPage = lazy(() => import('./StatsPage.jsx'));
 const RankingsPage = lazy(() => import('./RankingsPage.jsx'));
+const CardDrawPage = lazy(() => import('./CardDrawPage.jsx'));
 const LoginPage = lazy(() => import('./LoginPage.jsx'));
 const SignupPage = lazy(() => import('./SignupPage.jsx'));
 
@@ -272,6 +273,7 @@ function AppRoutes() {
             <Route path="/multiplier" element={<Multiplier />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/rankings" element={<RankingsPage />} />
+            <Route path="/card-draw" element={<CardDrawPage smData={smData} />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
@@ -308,4 +310,3 @@ function AppWrapper() {
 }
 
 export default AppWrapper;
-
