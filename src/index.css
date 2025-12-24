@@ -38,6 +38,6 @@ html, body { background: transparent; }
   background:
     radial-gradient(1100px 560px at 80% -10%, rgba(255,255,255,0.02), transparent 60%),
     linear-gradient(180deg, rgba(6, 8, 16, 0.65) 0%, rgba(6, 8, 16, 0.9) 100%),
-    url('/img/MHE-bg.jpg') center/cover no-repeat;
+    url('/img/MHE-bg.webp') center/cover no-repeat;
   background-attachment: fixed, fixed, fixed;
 }

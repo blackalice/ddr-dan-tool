@@ -57,7 +57,7 @@ const renderLevel = (level) => {
     );
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -106,6 +106,18 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     [scores]
   );
   const showSlice = hasScores;
+  const shouldShowSlice = showSlice || showScoreSlice;
+
+  const sliceLeft = showScoreSlice
+    ? (scoreSliceLeft ?? '')
+    : (displayScore != null ? displayScore.toLocaleString() : '0,000,000');
+  const sliceRight = showScoreSlice
+    ? (scoreSliceRight ?? '')
+    : (
+      displayScore != null
+        ? `${grade}${lamp ? ` - ${lamp}` : ''}${flare ? ` ${flare}` : ''}`
+        : 'No score'
+    );
 
   const calculation = useMemo(() => {
     if (song.error) return { modifier: 'N/A', minSpeed: 'N/A', maxSpeed: 'N/A', isRange: false };
@@ -161,25 +173,32 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     );
   }
 
+  const handleCardClick = () => {
+    if (onCardClick) {
+      onCardClick(song);
+      return;
+    }
+    if (resetFilters) resetFilters();
+    if (setPlayStyle) setPlayStyle(song.mode);
+    const songId = song.songId || song.id || song.path || song.value;
+    const chartId = song.chartId || song.slug; // may be undefined in Dan/Vega data
+    if (songId) {
+      const params = new URLSearchParams();
+      params.set('song', songId);
+      if (chartId) params.set('chart', chartId);
+      const query = params.toString();
+      navigate(`/bpm${query ? `?${query}` : ''}`, { state: { fromSongCard: true } });
+    } else {
+      // Fallback to legacy via query param 't' (title) plus mode/difficulty
+      navigate(`/bpm?mode=${encodeURIComponent(song.mode)}&difficulty=${encodeURIComponent(song.difficulty)}&t=${encodeURIComponent(song.title)}`, { state: { fromSongCard: true, title: song.title } });
+    }
+  };
+
   return (
     <div
       className={cardLinkClassName}
-      onClick={() => {
-      if (resetFilters) resetFilters();
-      if (setPlayStyle) setPlayStyle(song.mode);
-      const songId = song.songId || song.id || song.path || song.value;
-      const chartId = song.chartId || song.slug; // may be undefined in Dan/Vega data
-      if (songId) {
-        const params = new URLSearchParams();
-        params.set('song', songId);
-        if (chartId) params.set('chart', chartId);
-        const query = params.toString();
-        navigate(`/bpm${query ? `?${query}` : ''}`, { state: { fromSongCard: true } });
-      } else {
-        // Fallback to legacy via query param 't' (title) plus mode/difficulty
-        navigate(`/bpm?mode=${encodeURIComponent(song.mode)}&difficulty=${encodeURIComponent(song.difficulty)}&t=${encodeURIComponent(song.title)}`, { state: { fromSongCard: true, title: song.title } });
-      }
-    }}>
+      onClick={handleCardClick}
+    >
       <div
         className={
           'song-card' +
@@ -273,6 +292,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
                     {difficultyInfo.name}
                   </span>
                 )}
+                {cardTag}
                 {showGameWithDifficulty && song.game && (
                   <span
                     className="game-chip inline"
@@ -285,15 +305,13 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           </div>
         </div>
       </div>
-      {showSlice && (
-        <div className="song-score-slice">
+      {shouldShowSlice && (
+        <div className={`song-score-slice ${scoreSliceClassName}`.trim()}>
           <span className="score-value">
-            {displayScore != null ? displayScore.toLocaleString() : '0,000,000'}
+            {sliceLeft}
           </span>
           <span className="score-extra">
-            {displayScore != null
-              ? `${grade}${lamp ? ` - ${lamp}` : ''}${flare ? ` ${flare}` : ''}`
-              : 'No score'}
+            {sliceRight}
           </span>
         </div>
       )}

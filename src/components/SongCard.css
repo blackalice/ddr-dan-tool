@@ -33,7 +33,7 @@
   background: linear-gradient(
     to left,
     rgba(0, 0, 0, 0) 10%,
-    var(--card-hover-bg-color) 33%
+    var(--card-bg-color) 40%
   );
   z-index: 0;
 }
