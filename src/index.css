@@ -27,8 +27,17 @@ html, body { background: transparent; }
 /* Dark theme: reduce bright lift, deepen shadows */
 #root > [data-theme='dark'],
 #root > [data-theme='cg'],
-#root > [data-theme='dark-pink'] {
+#root > [data-theme='dark-pink'],
+#root > [data-theme='mhe2026'] {
   background: radial-gradient(1100px 560px at 80% -10%, rgba(255,255,255,0.015), transparent 60%),
               radial-gradient(900px 520px at -10% 120%, rgba(0,0,0,0.28), transparent 60%);
   background-attachment: fixed;
+}
+
+#root > [data-theme='mhe2026'] {
+  background:
+    radial-gradient(1100px 560px at 80% -10%, rgba(255,255,255,0.02), transparent 60%),
+    linear-gradient(180deg, rgba(6, 8, 16, 0.65) 0%, rgba(6, 8, 16, 0.9) 100%),
+    url('/img/MHE-bg.jpg') center/cover no-repeat;
+  background-attachment: fixed, fixed, fixed;
 }

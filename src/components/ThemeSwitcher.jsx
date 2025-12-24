@@ -20,6 +20,7 @@ const ThemeSwitcher = () => {
           <option value="dark-pink">Dark (Pink)</option>
           <option value="light">Light (Beta)</option>
           <option value="cg">CG</option>
+          <option value="mhe2026">MHE2026</option>
         </select>
       </div>
     </div>
