@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './Multiplier.css';
 
@@ -94,7 +96,7 @@ function Multiplier() {
                   className={`toggle-button ${showAlternative && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
                   onClick={() => setShowAlternative(!showAlternative)}
                 >
-                  <i className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                  <FontAwesomeIcon icon={calculation.alternative.direction === 'up' ? faArrowUp : faArrowDown} />
                 </button>
               )}
             </div>

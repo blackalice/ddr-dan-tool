@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useEffect, useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import SongCard from './components/SongCard.jsx';
 import { loadDanData } from './utils/course-loader.js';
 import { resolveScore } from './utils/scoreKey.js';
@@ -38,7 +40,7 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleT
       <h2 className={`dan-header ${isCollapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: danCourse.color }}>
         {danCourse.name}
         <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-          <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+          <FontAwesomeIcon icon={isCollapsed ? faChevronDown : faChevronUp} />
         </button>
       </h2>
       {!isCollapsed && (

@@ -4,7 +4,7 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPalette, faPlus, faPen, faSort, faGripLines } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faTrash, faPalette, faPlus, faPen, faSort, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import {
   DndContext,
   PointerSensor,
@@ -181,7 +181,7 @@ const GroupSection = ({
           </button>
         ) : (
           <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
-            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+            <FontAwesomeIcon icon={isCollapsed ? faChevronDown : faChevronUp} />
           </button>
         )}
       </h2>

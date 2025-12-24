@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useContext, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDownWideShort, faArrowUpWideShort, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select, { components as RSComponents } from 'react-select';
@@ -1052,14 +1054,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (
                                 <button className="filter-button" onClick={handleAddToList} title="Add to list">
-                                    <i className="fa-solid fa-plus"></i>
+                                    <FontAwesomeIcon icon={faPlus} />
                                 </button>
                             )}
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
-                                <i className="fa-solid fa-filter"></i>
+                                <FontAwesomeIcon icon={faFilter} />
                             </button>
                             <button className="filter-button" onClick={() => setShowSortModal(true)} title="Sort songs">
-                                <i className={`fa-solid ${sortAscending ? 'fa-arrow-up-wide-short' : 'fa-arrow-down-wide-short'}`}></i>
+                                <FontAwesomeIcon icon={sortAscending ? faArrowUpWideShort : faArrowDownWideShort} />
                             </button>
                         </div>
                     </div>
@@ -1094,14 +1096,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (
                                 <button className="filter-button" onClick={handleAddToList} title="Add to list">
-                                    <i className="fa-solid fa-plus"></i>
+                                    <FontAwesomeIcon icon={faPlus} />
                                 </button>
                             )}
                             <button className={`filter-button ${filtersActive ? 'active' : ''}`} onClick={() => setShowFilter(true)}>
-                                <i className="fa-solid fa-filter"></i>
+                                <FontAwesomeIcon icon={faFilter} />
                             </button>
                             <button className="filter-button" onClick={() => setShowSortModal(true)} title="Sort songs">
-                                <i className={`fa-solid ${sortAscending ? 'fa-arrow-up-wide-short' : 'fa-arrow-down-wide-short'}`}></i>
+                                <FontAwesomeIcon icon={sortAscending ? faArrowUpWideShort : faArrowDownWideShort} />
                             </button>
                         </div>
                     </div>
@@ -1263,4 +1265,3 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
 };
 
 export default BPMTool;
-

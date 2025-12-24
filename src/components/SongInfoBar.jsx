@@ -1,4 +1,16 @@
 import React, { useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowDown,
+  faArrowUp,
+  faBolt,
+  faChevronDown,
+  faChevronUp,
+  faClock,
+  faPlay,
+  faShoePrints,
+  faSnowflake,
+} from '@fortawesome/free-solid-svg-icons';
 import { DifficultyMeter } from './DifficultyMeter';
 import { difficultyLevels, difficultyNameMapping } from '../utils/difficulties.js';
 import { useFilters } from '../contexts/FilterContext.jsx';
@@ -287,7 +299,7 @@ const SongInfoBar = ({
             }}
             aria-label={isCollapsed ? 'Expand section' : 'Collapse section'}
           >
-            <i className={`fa-solid ${isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+            <FontAwesomeIcon icon={isCollapsed ? faChevronDown : faChevronUp} />
           </button>
         </h2>
       </div>
@@ -300,27 +312,27 @@ const SongInfoBar = ({
             {(songLength != null || metrics) && (
               <div className="stats-grid">
                 <div className="stat-item">
-                  <i className="fa-solid fa-clock"></i>
+                  <FontAwesomeIcon icon={faClock} />
                   <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : 'N/A'}</span>
                 </div>
                 <div className="stat-item">
-                  <i className="fa-solid fa-play"></i>
+                  <FontAwesomeIcon icon={faPlay} />
                   <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : 'N/A'}</span>
                 </div>
                 <div className="stat-item">
-                  <i className="fa-solid fa-shoe-prints"></i>
+                  <FontAwesomeIcon icon={faShoePrints} />
                   <span>{metrics?.steps?.toLocaleString?.() ?? 'N/A'}</span>
                 </div>
                 <div className="stat-item">
-                  <i className="fa-solid fa-snowflake"></i>
+                  <FontAwesomeIcon icon={faSnowflake} />
                   <span>{metrics?.holds?.toLocaleString?.() ?? 'N/A'}</span>
                 </div>
                 <div className="stat-item">
-                  <i className="fa-solid fa-bolt"></i>
+                  <FontAwesomeIcon icon={faBolt} />
                   <span>{metrics?.shocks?.toLocaleString?.() ?? 'N/A'}</span>
                 </div>
                 <div className="stat-item">
-                  <i className="fa-solid fa-arrow-up"></i>
+                  <FontAwesomeIcon icon={faArrowUp} />
                   <span>{metrics?.jumps?.toLocaleString?.() ?? 'N/A'}</span>
                 </div>
               </div>
@@ -355,17 +367,19 @@ const SongInfoBar = ({
                   <span style={{ gridColumn: '1 / span 3' }}>
                     {multiplier != null ? `${multiplier}x` : 'N/A'}
                     {hasAlt && calculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${calculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${calculation.alternative.direction} ${showAltBpm ? 'active' : ''}`}
-                      ></i>
+                      <FontAwesomeIcon
+                        icon={calculation.alternative.direction === 'up' ? faArrowUp : faArrowDown}
+                        className={`bpm-dir ${calculation.alternative.direction} ${showAltBpm ? 'active' : ''}`}
+                      />
                     )}
                   </span>
                   <span>
                     {coreMultiplier != null ? `${coreMultiplier}x` : 'N/A'}
                     {hasAlt && coreCalculation?.alternative?.direction && (
-                      <i
-                        className={`fa-solid ${coreCalculation.alternative.direction === 'up' ? 'fa-arrow-up' : 'fa-arrow-down'} bpm-dir ${coreCalculation.alternative.direction} ${showAltCoreBpm ? 'active' : ''}`}
-                      ></i>
+                      <FontAwesomeIcon
+                        icon={coreCalculation.alternative.direction === 'up' ? faArrowUp : faArrowDown}
+                        className={`bpm-dir ${coreCalculation.alternative.direction} ${showAltCoreBpm ? 'active' : ''}`}
+                      />
                     )}
                   </span>
                 </div>

@@ -5,7 +5,15 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownWideShort, faArrowUpWideShort, faCircleExclamation, faGear, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowDownWideShort,
+  faArrowUpWideShort,
+  faChevronDown,
+  faChevronUp,
+  faCircleExclamation,
+  faEyeSlash,
+  faGear,
+} from '@fortawesome/free-solid-svg-icons';
 import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { normalizeString } from './utils/stringSimilarity.js';
 import { storage } from './utils/remoteStorage.js';
@@ -134,7 +142,7 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
       <h2 className={`dan-header ${collapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: 'var(--accent-color)' }}>
         <div className="dan-header-title">Lv.{rating.toFixed(2)}</div>
         <button className="collapse-button" onClick={() => onToggle(rating)}>
-          <i className={`fa-solid ${collapsed ? 'fa-chevron-down' : 'fa-chevron-up'}`}></i>
+          <FontAwesomeIcon icon={collapsed ? faChevronDown : faChevronUp} />
         </button>
       </h2>
       {!collapsed && (

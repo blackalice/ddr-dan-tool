@@ -17,14 +17,14 @@ const difficultyDisplayMap = {
         beginner: { name: "bSP", color: "#4DB6AC", textColor: "#000000" },
         basic: { name: "BSP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DSP", color: "#d4504e", textColor: "#ffffff" },
-        expert: { name: "ESP", color: "#6fbe44", textColor: "#ffffff" },
+        expert: { name: "ESP", color: "#6fbe44", textColor: "#000000" },
         challenge: { name: "CSP", color: "#c846a6", textColor: "#ffffff" },
     },
     double: {
         beginner: { name: "bDP", color: "#4DB6AC", textColor: "#000000" },
         basic: { name: "BDP", color: "#f8d45a", textColor: "#000000" },
         difficult: { name: "DDP", color: "#d4504e", textColor: "#ffffff" },
-        expert: { name: "EDP", color: "#6fbe44", textColor: "#ffffff" },
+        expert: { name: "EDP", color: "#6fbe44", textColor: "#000000" },
         challenge: { name: "CDP", color: "#c846a6", textColor: "#ffffff" },
     }
 };
@@ -55,6 +55,14 @@ const renderLevel = (level) => {
             <span className="decimal-part">{decimalPart}</span>
         </>
     );
+};
+
+const formatLevelText = (level) => {
+  if (level == null) return "";
+  if (typeof level === "number") {
+    return Number.isInteger(level) ? String(level) : level.toString();
+  }
+  return String(level);
 };
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
@@ -147,6 +155,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
 
   const showRanked = forceShowRankedRating || showRankedRatings;
   const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
+  const levelText = formatLevelText(levelToDisplay);
 
   const cardLinkClassName = useMemo(() => {
     const classes = ['song-card-link'];
@@ -203,7 +212,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         className={
           'song-card' +
           (highlight ? ' highlight' : '') +
-          (showSlice ? ' with-score-slice' : '') +
+          (shouldShowSlice ? ' with-score-slice' : '') +
           (bpmOnly ? ' bpm-only' : '') +
           (showArtist ? ' show-artist' : '') +
           (showJacket ? ' show-jacket' : '') +
@@ -288,6 +297,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
                   <span
                     className="difficulty-badge"
                     style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                    data-level={levelText || undefined}
                   >
                     {difficultyInfo.name}
                   </span>
