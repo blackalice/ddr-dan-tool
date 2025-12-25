@@ -45,6 +45,7 @@ function AppRoutes() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
+  const hideFooterOnMobile = location.pathname.startsWith('/multiplier');
 
   // Scores availability is handled within pages (e.g., StatsPage)
 
@@ -301,7 +302,7 @@ function AppRoutes() {
           </Routes>
           </Suspense>
         </div>
-        <footer className="footer">
+        <footer className={`footer${hideFooterOnMobile ? ' footer-hide-mobile' : ''}`}>
             <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
         </footer>
       </div>

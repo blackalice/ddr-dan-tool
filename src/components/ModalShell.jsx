@@ -1,4 +1,4 @@
-import React, { useEffect, useId, forwardRef } from 'react';
+import React, { useEffect, useId, forwardRef, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from './ModalShell.module.css';
@@ -19,13 +19,77 @@ const ModalShell = ({
   contentClassName,
 }) => {
   const titleId = useId();
+  const scrollLockRef = useRef(null);
 
   useEffect(() => {
     if (!lockScroll || !isOpen) return undefined;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const body = document.body;
+    const html = document.documentElement;
+    const activeLocks = Number(body.dataset.modalLockCount || '0');
+    if (activeLocks === 0) {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const scrollBarGap = window.innerWidth - html.clientWidth;
+      const fullHeight = Math.max(body.scrollHeight, html.scrollHeight);
+      scrollLockRef.current = {
+        scrollY,
+        body: {
+          position: body.style.position,
+          top: body.style.top,
+          left: body.style.left,
+          right: body.style.right,
+          width: body.style.width,
+          height: body.style.height,
+          overflow: body.style.overflow,
+          paddingRight: body.style.paddingRight,
+        },
+        html: {
+          overflow: html.style.overflow,
+        },
+      };
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollY}px`;
+      body.style.left = '0';
+      body.style.right = '0';
+      body.style.width = '100%';
+      body.style.height = `${fullHeight}px`;
+      body.style.overflow = 'hidden';
+      html.style.overflow = 'hidden';
+      if (scrollBarGap > 0) {
+        body.style.paddingRight = `${scrollBarGap}px`;
+      }
+    }
+    body.dataset.modalLockCount = String(activeLocks + 1);
     return () => {
-      document.body.style.overflow = previousOverflow || '';
+      const nextLocks = Math.max(Number(body.dataset.modalLockCount || '1') - 1, 0);
+      if (nextLocks === 0) {
+        const previous = scrollLockRef.current;
+        if (previous) {
+          body.style.position = previous.body?.position || '';
+          body.style.top = previous.body?.top || '';
+          body.style.left = previous.body?.left || '';
+          body.style.right = previous.body?.right || '';
+          body.style.width = previous.body?.width || '';
+          body.style.height = previous.body?.height || '';
+          body.style.overflow = previous.body?.overflow || '';
+          body.style.paddingRight = previous.body?.paddingRight || '';
+          html.style.overflow = previous.html?.overflow || '';
+          window.scrollTo(0, previous.scrollY || 0);
+          scrollLockRef.current = null;
+        } else {
+          body.style.position = '';
+          body.style.top = '';
+          body.style.left = '';
+          body.style.right = '';
+          body.style.width = '';
+          body.style.height = '';
+          body.style.overflow = '';
+          body.style.paddingRight = '';
+          html.style.overflow = '';
+        }
+        delete body.dataset.modalLockCount;
+      } else {
+        body.dataset.modalLockCount = String(nextLocks);
+      }
     };
   }, [isOpen, lockScroll]);
 

@@ -377,7 +377,7 @@ const Settings = () => {
                         <div className="setting-text">
                             <h3>Show Courses</h3>
                             <p>
-                                Enable the experimental DDR Courses page and tab. Off by default.
+                                Show the courses page. May be slow and inaccurate. 
                             </p>
                         </div>
                         <div className="setting-control">

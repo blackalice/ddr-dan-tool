@@ -700,6 +700,10 @@ input:focus, select:focus, textarea:focus {
     .rankings-page .dan-select-wrapper { flex: 1 1 0; min-width: 0; }
     .rankings-page .dan-select { width: 100%; max-width: none; }
     .rankings-page .filter-button { flex: 0 0 auto; }
+
+    .footer.footer-hide-mobile {
+        display: none;
+    }
 }
 
 .difficulty-beginner { background-color: var(--difficulty-beginner-color); }

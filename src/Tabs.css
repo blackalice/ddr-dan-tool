@@ -453,6 +453,10 @@ button.mobile-menu-link:hover {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --mobile-tabs-height: calc(104px + env(safe-area-inset-top, 0px));
+  }
+
   .tabs-container {
     margin-bottom: 1rem;
   }
