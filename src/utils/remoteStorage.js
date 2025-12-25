@@ -350,6 +350,20 @@ function setItem(key, value) {
   scheduleFlush();
 }
 
+function removeItem(key) {
+  delete cache[key];
+  try {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(nsKey(key));
+      if (namespace === 'anon') {
+        window.localStorage.removeItem(key);
+      }
+    }
+  } catch (_e) { void _e; }
+  try { if (bc) bc.postMessage({ t: 'remove', ns: namespace, k: key }); } catch { /* noop */ }
+  scheduleFlush();
+}
+
 function clear() {
   // Clear in-memory
   for (const key of Object.keys(cache)) delete cache[key];
@@ -432,4 +446,4 @@ function hydrateFrom(raw) {
 export function onSyncStatusChange(fn) { if (typeof fn === 'function') { syncListeners.add(fn); return () => syncListeners.delete(fn); } return () => {}; }
 export function getSyncStatus() { return Boolean(syncEnabled); }
 
-export const storage = { init, refresh, hydrateFrom, getItem, setItem, clear };
+export const storage = { init, refresh, hydrateFrom, getItem, setItem, removeItem, clear };

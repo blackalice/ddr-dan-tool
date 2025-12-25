@@ -12,7 +12,6 @@ const ThemeSwitcher = () => {
     <div className="setting-card">
       <div className="setting-text">
         <h3>Theme</h3>
-        <p>Select a theme for the application.</p>
       </div>
       <div className="setting-control">
         <select className="settings-select" value={theme} onChange={handleThemeChange}>
@@ -20,7 +19,7 @@ const ThemeSwitcher = () => {
           <option value="dark-pink">Dark (Pink)</option>
           <option value="light">Light (Beta)</option>
           <option value="cg">CG</option>
-          <option value="mhe2026">MHE2026</option>
+          <option value="mhe2026">Manor House Evolved 2026</option>
         </select>
       </div>
     </div>

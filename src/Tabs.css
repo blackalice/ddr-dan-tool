@@ -60,6 +60,12 @@
   gap: 6px;
 }
 
+.settings-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .settings-tab {
   display: inline-flex;
   align-items: center;

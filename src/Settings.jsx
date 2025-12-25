@@ -6,6 +6,7 @@ import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
 import { similarity, normalizeString } from './utils/stringSimilarity.js';
 import { makeScoreKey } from './utils/scoreKey.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import { Switch } from './components/Switch.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
@@ -237,7 +238,31 @@ const Settings = () => {
         <div className="app-container">
             <div className="settings-content">
                 <div className="settings-inner-container">
-                    {/* Account section unified below */}
+                    {user ? (
+                        <div className="setting-card setting-card-split">
+                            <div className="setting-text">
+                                <h3>Account</h3>
+                                <p>
+                                    Signed in as {user.email || 'unknown'} · {groups.length} lists · {Object.keys(scores.single).length + Object.keys(scores.double).length} scores.
+                                </p>
+                            </div>
+                            <div className="setting-control">
+                                <button onClick={logout} className="settings-button">Logout</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="setting-card setting-card-split">
+                            <div className="setting-text">
+                                <h3>Login</h3>
+                                <p>
+                                    Create an account to sync your scores, settings and lists across devices.
+                                </p>
+                            </div>
+                            <div className="setting-control">
+                                <button onClick={() => navigate('/login')} className="settings-button">Login</button>
+                            </div>
+                        </div>
+                    )}
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>
@@ -328,69 +353,9 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>WORLD Difficulty Changes</h3>
-                            <p>
-                                Apply DDR WORLD difficulty updates when filtering and viewing charts.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <select
-                                value={worldDifficultyChanges ? 'On' : 'Off'}
-                                onChange={(e) => setWorldDifficultyChanges(e.target.value === 'On')}
-                                className="settings-select"
-                            >
-                                <option value="Off">Off</option>
-                                <option value="On">On</option>
-                            </select>
-                        </div>
-                    </div>
                     <ThemeSwitcher />
 
-                    <h2 className="settings-sub-header">Beta Features</h2>
-
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Show Courses (Beta)</h3>
-                            <p>
-                                Enable the experimental DDR Courses page and tab. Off by default.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <select
-                                value={showCoursesBeta ? 'Enable' : 'Disable'}
-                                onChange={(e) => setShowCoursesBeta(e.target.value === 'Enable')}
-                                className="settings-select"
-                            >
-                                <option value="Enable">Enable</option>
-                                <option value="Disable">Disable</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div className="setting-card">
-                        <div className="setting-text">
-                            <h3>Google AI Studio API Key</h3>
-                            <p>
-                                BETA - Used for the experimental camera feature to identify songs. Your key is stored only in your browser's session storage and is sent directly to Google. Likely to crash on low end devices.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <input
-                                type="password"
-                                value={newApiKey}
-                                onChange={(e) => setNewApiKey(e.target.value)}
-                                placeholder="Enter your Google AI API Key"
-                                className="settings-input"
-                            />
-                            <button onClick={handleSaveKey} className="settings-button">Save</button>
-                        </div>
-                    </div>
-
-                    {/* Custom List Function is always enabled; toggle removed */}
-
-                    <div className="setting-card">
+                    <div className="setting-card setting-card-toggle">
                         <div className="setting-text">
                             <h3>Show Ranked Ratings</h3>
                             <p>
@@ -398,14 +363,47 @@ const Settings = () => {
                             </p>
                         </div>
                         <div className="setting-control">
-                            <select
-                                value={showRankedRatings ? 'Enable' : 'Disable'}
-                                onChange={(e) => setShowRankedRatings(e.target.value === 'Enable')}
-                                className="settings-select"
-                            >
-                                <option value="Enable">Enable</option>
-                                <option value="Disable">Disable</option>
-                            </select>
+                            <Switch
+                                checked={showRankedRatings}
+                                onChange={(e) => setShowRankedRatings(e.target.checked)}
+                                ariaLabel="Toggle ranked ratings"
+                            />
+                        </div>
+                    </div>
+
+                    <h2 className="settings-sub-header">Beta Features</h2>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>Show Courses</h3>
+                            <p>
+                                Enable the experimental DDR Courses page and tab. Off by default.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={showCoursesBeta}
+                                onChange={(e) => setShowCoursesBeta(e.target.checked)}
+                                ariaLabel="Toggle courses beta"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Custom List Function is always enabled; toggle removed */}
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>WORLD Difficulty Changes</h3>
+                            <p>
+                                Apply DDR WORLD difficulty updates when filtering and viewing charts.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={worldDifficultyChanges}
+                                onChange={(e) => setWorldDifficultyChanges(e.target.checked)}
+                                ariaLabel="Toggle WORLD difficulty changes"
+                            />
                         </div>
                     </div>
 
@@ -451,29 +449,6 @@ const Settings = () => {
                             <div className="setting-text">
                                 <h3>Upload Scores</h3>
                                 <p>Log in to upload your scores from this device.</p>
-                            </div>
-                        </div>
-                    )}
-
-                    {user ? (
-                        <div className="setting-card">
-                            <div className="setting-text">
-                                <h3>Account</h3>
-                                <p>
-                                    Signed in as {user.email || 'unknown'} · {groups.length} lists · {Object.keys(scores.single).length + Object.keys(scores.double).length} scores. Manage your session and sign out of other devices.
-                                </p>
-                            </div>
-                            <div className="setting-control">
-                                <button onClick={logout} className="settings-button">Logout</button>
-                                <button onClick={onLogoutAll} className="settings-button" disabled={logoutAllBusy}>
-                                    {logoutAllBusy ? 'Logging out...' : 'Logout all devices'}
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="setting-card">
-                            <div className="setting-control">
-                                <button onClick={() => navigate('/login')} className="settings-button">Login</button>
                             </div>
                         </div>
                     )}

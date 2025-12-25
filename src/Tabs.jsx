@@ -12,6 +12,7 @@ import {
   faBars,
   faTimes,
   faDice,
+  faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { useScores } from "./contexts/ScoresContext.jsx";
@@ -294,17 +295,34 @@ const Tabs = () => {
           ))}
         </div>
         {settingsLink && (
-          <NavLink
-            to={settingsLink.to}
-            aria-label={settingsLink.label}
-            className={({ isActive }) =>
-              isActive
-                ? "settings-tab settings-tab-desktop active"
-                : "settings-tab settings-tab-desktop"
-            }
-          >
-            <span className="tab-icon">{settingsLink.icon}</span>
-          </NavLink>
+          <div className="settings-actions">
+            <NavLink
+              to={settingsLink.to}
+              aria-label={settingsLink.label}
+              className={({ isActive }) =>
+                isActive
+                  ? "settings-tab settings-tab-desktop active"
+                  : "settings-tab settings-tab-desktop"
+              }
+            >
+              <span className="tab-icon">{settingsLink.icon}</span>
+            </NavLink>
+            {!user?.email && (
+              <NavLink
+                to={`/login${hash}`}
+                aria-label="Log in"
+                className={({ isActive }) =>
+                  isActive
+                    ? "settings-tab settings-tab-desktop active"
+                    : "settings-tab settings-tab-desktop"
+                }
+              >
+                <span className="tab-icon">
+                  <FontAwesomeIcon icon={faRightToBracket} />
+                </span>
+              </NavLink>
+            )}
+          </div>
         )}
         <button
           className={`mobile-menu-toggle${menuOpen ? " open" : ""}`}
