@@ -39,6 +39,7 @@ function AppRoutes() {
   const [activeDan, setActiveDan] = useState(() => storage.getItem('activeDan') || 'All');
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => storage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
+  const previousLocationRef = React.useRef('');
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,6 +56,25 @@ function AppRoutes() {
   }, []);
 
   useEffect(() => {
+    const locationKey = `${location.pathname}${location.search}${location.hash}`;
+    const locationChanged = previousLocationRef.current !== locationKey;
+    previousLocationRef.current = locationKey;
+    const pickChartForPlayStyle = (availableTypes, style) => {
+      if (!Array.isArray(availableTypes) || availableTypes.length === 0) return null;
+      const defaultOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+      const preferred = availableTypes.filter(c => c.mode === style);
+      const fallback = availableTypes.filter(c => c.mode !== style);
+      for (const d of defaultOrder) {
+        const match = preferred.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+        if (match) return match;
+      }
+      for (const d of defaultOrder) {
+        const match = fallback.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+        if (match) return match;
+      }
+      return availableTypes[0] || null;
+    };
+
     const loadFromUrl = async () => {
       const sel = parseSelection({ search: location.search, hash: location.hash });
       // New format: ?song=<songId>&chart=<chartId>
@@ -78,26 +98,17 @@ function AppRoutes() {
           }
         }
         if (!chart) {
-          // choose default chart in current playStyle
-          const defaultOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
-          const preferred = data.availableTypes.filter(c => c.mode === playStyle);
-          const fallback = data.availableTypes.filter(c => c.mode !== playStyle);
-          for (const d of defaultOrder) {
-            chart = preferred.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-            if (chart) break;
+          chart = pickChartForPlayStyle(data.availableTypes, playStyle);
+        }
+        if (chart?.mode && chart.mode !== playStyle) {
+          if (locationChanged) {
+            setPlayStyle(chart.mode);
+          } else {
+            const preferredChart = pickChartForPlayStyle(data.availableTypes, playStyle);
+            if (preferredChart) chart = preferredChart;
           }
-          if (!chart) {
-            for (const d of defaultOrder) {
-              chart = fallback.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-              if (chart) break;
-            }
-          }
-          if (!chart) chart = data.availableTypes[0];
         }
         setCurrentChart(chart);
-        if (chart?.mode && chart.mode !== playStyle) {
-          setPlayStyle(chart.mode);
-        }
         const identifier = songFile.id || songFile.path || sel.songId || data?.songId || '';
         if (identifier) {
           storage.setItem('bpmSelectedSong', identifier);
@@ -136,11 +147,18 @@ function AppRoutes() {
         if (sel.legacy.difficulty && sel.legacy.mode) {
           chart = data.availableTypes.find(c => c.difficulty.toLowerCase() === sel.legacy.difficulty.toLowerCase() && c.mode.toLowerCase() === sel.legacy.mode.toLowerCase()) || null;
         }
-        if (!chart && data.availableTypes.length) chart = data.availableTypes[0];
-        setCurrentChart(chart);
-        if (chart?.mode && chart.mode !== playStyle) {
-          setPlayStyle(chart.mode);
+        if (!chart) {
+          chart = pickChartForPlayStyle(data.availableTypes, playStyle);
         }
+        if (chart?.mode && chart.mode !== playStyle) {
+          if (locationChanged) {
+            setPlayStyle(chart.mode);
+          } else {
+            const preferredChart = pickChartForPlayStyle(data.availableTypes, playStyle);
+            if (preferredChart) chart = preferredChart;
+          }
+        }
+        setCurrentChart(chart);
         // Upgrade legacy to new search params (clear legacy keys)
         const next = new URLSearchParams(searchParams);
         const identifier = songFile.id || songFile.path;

@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,6 +43,11 @@ const Tabs = () => {
   const [targetBpmInput, setTargetBpmInput] = React.useState(() =>
     String(targetBPM ?? 300),
   );
+  const scrollLockRef = React.useRef(null);
+  const overlayRoot =
+    typeof document !== "undefined"
+      ? document.getElementById("overlay-root")
+      : null;
 
   const hasUploadedScores = React.useMemo(() => {
     if (!scores || typeof scores !== "object") return false;
@@ -63,13 +69,42 @@ const Tabs = () => {
 
   React.useEffect(() => {
     if (!menuOpen) return undefined;
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const bodyStyle = document.body.style;
+    scrollLockRef.current = {
+      scrollY,
+      position: bodyStyle.position,
+      top: bodyStyle.top,
+      left: bodyStyle.left,
+      right: bodyStyle.right,
+      width: bodyStyle.width,
+      overflow: bodyStyle.overflow,
+    };
+    bodyStyle.position = "fixed";
+    bodyStyle.top = `-${scrollY}px`;
+    bodyStyle.left = "0";
+    bodyStyle.right = "0";
+    bodyStyle.width = "100%";
+    bodyStyle.overflow = "hidden";
     return () => {
-      document.body.style.overflow = previousBodyOverflow;
-      document.documentElement.style.overflow = previousHtmlOverflow;
+      const previous = scrollLockRef.current;
+      if (previous) {
+        bodyStyle.position = previous.position || "";
+        bodyStyle.top = previous.top || "";
+        bodyStyle.left = previous.left || "";
+        bodyStyle.right = previous.right || "";
+        bodyStyle.width = previous.width || "";
+        bodyStyle.overflow = previous.overflow || "";
+        window.scrollTo(0, previous.scrollY || 0);
+        scrollLockRef.current = null;
+      } else {
+        bodyStyle.position = "";
+        bodyStyle.top = "";
+        bodyStyle.left = "";
+        bodyStyle.right = "";
+        bodyStyle.width = "";
+        bodyStyle.overflow = "";
+      }
     };
   }, [menuOpen]);
 
@@ -103,6 +138,19 @@ const Tabs = () => {
       event.currentTarget.blur();
     },
     [commitTargetBpm],
+  );
+
+  const handlePlayStyleToggle = React.useCallback(
+    (event, style) => {
+      if (event) {
+        event.stopPropagation();
+        if (event.type === "touchend") {
+          event.preventDefault();
+        }
+      }
+      setPlayStyle?.(style);
+    },
+    [setPlayStyle],
   );
 
   const navLinks = React.useMemo(() => {
@@ -272,70 +320,8 @@ const Tabs = () => {
     ...secondaryLinks.filter((link) => link.key !== "settings"),
   ];
 
-  return (
-    <nav className="tabs-container">
-      <div className="tabs-content">
-        <div className="logo-container">
-          <Logo />
-        </div>
-        <div className="tabs-group">
-          {headerLinks.map((link) => (
-            <NavLink
-              key={link.key}
-              to={link.to}
-              aria-label={link.label}
-              className={({ isActive }) => {
-                const base = `tab${link.primary ? " tab--primary" : " tab--secondary"}`;
-                return isActive ? `${base} active` : base;
-              }}
-            >
-              <span className="tab-icon">{link.icon}</span>
-              <span className="tab-label">{link.shortLabel}</span>
-            </NavLink>
-          ))}
-        </div>
-        {settingsLink && (
-          <div className="settings-actions">
-            <NavLink
-              to={settingsLink.to}
-              aria-label={settingsLink.label}
-              className={({ isActive }) =>
-                isActive
-                  ? "settings-tab settings-tab-desktop active"
-                  : "settings-tab settings-tab-desktop"
-              }
-            >
-              <span className="tab-icon">{settingsLink.icon}</span>
-            </NavLink>
-            {!user?.email && (
-              <NavLink
-                to={`/login${hash}`}
-                aria-label="Log in"
-                className={({ isActive }) =>
-                  isActive
-                    ? "settings-tab settings-tab-desktop active"
-                    : "settings-tab settings-tab-desktop"
-                }
-              >
-                <span className="tab-icon">
-                  <FontAwesomeIcon icon={faRightToBracket} />
-                </span>
-              </NavLink>
-            )}
-          </div>
-        )}
-        <button
-          className={`mobile-menu-toggle${menuOpen ? " open" : ""}`}
-          type="button"
-          onClick={handleMenuToggle}
-          aria-label={
-            menuOpen ? "Close navigation menu" : "Open navigation menu"
-          }
-          aria-expanded={menuOpen}
-        >
-          <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
-        </button>
-      </div>
+  const mobileMenu = (
+    <>
       <div
         className={`mobile-menu${menuOpen ? " open" : ""}${menuNoTransition ? " no-transition" : ""}`}
       >
@@ -375,7 +361,8 @@ const Tabs = () => {
                     key={style}
                     type="button"
                     className={`mobile-toggle${(playStyle || "single") === style ? " active" : ""}`}
-                    onClick={() => setPlayStyle?.(style)}
+                    onClick={(event) => handlePlayStyleToggle(event, style)}
+                    onTouchEnd={(event) => handlePlayStyleToggle(event, style)}
                     aria-pressed={(playStyle || "single") === style}
                   >
                     {style === "single" ? "Single" : "Double"}
@@ -448,6 +435,74 @@ const Tabs = () => {
         onClick={(event) => handleMenuLinkClick(event)}
         aria-hidden={menuOpen ? "false" : "true"}
       />
+    </>
+  );
+
+  return (
+    <nav className="tabs-container">
+      <div className="tabs-content">
+        <div className="logo-container">
+          <Logo />
+        </div>
+        <div className="tabs-group">
+          {headerLinks.map((link) => (
+            <NavLink
+              key={link.key}
+              to={link.to}
+              aria-label={link.label}
+              className={({ isActive }) => {
+                const base = `tab${link.primary ? " tab--primary" : " tab--secondary"}`;
+                return isActive ? `${base} active` : base;
+              }}
+            >
+              <span className="tab-icon">{link.icon}</span>
+              <span className="tab-label">{link.shortLabel}</span>
+            </NavLink>
+          ))}
+        </div>
+        {settingsLink && (
+          <div className="settings-actions">
+            <NavLink
+              to={settingsLink.to}
+              aria-label={settingsLink.label}
+              className={({ isActive }) =>
+                isActive
+                  ? "settings-tab settings-tab-desktop active"
+                  : "settings-tab settings-tab-desktop"
+              }
+            >
+              <span className="tab-icon">{settingsLink.icon}</span>
+            </NavLink>
+            {!user?.email && (
+              <NavLink
+                to={`/login${hash}`}
+                aria-label="Log in"
+                className={({ isActive }) =>
+                  isActive
+                    ? "settings-tab settings-tab-desktop active"
+                    : "settings-tab settings-tab-desktop"
+                }
+              >
+                <span className="tab-icon">
+                  <FontAwesomeIcon icon={faRightToBracket} />
+                </span>
+              </NavLink>
+            )}
+          </div>
+        )}
+        <button
+          className={`mobile-menu-toggle${menuOpen ? " open" : ""}`}
+          type="button"
+          onClick={handleMenuToggle}
+          aria-label={
+            menuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={menuOpen}
+        >
+          <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
+        </button>
+      </div>
+      {overlayRoot ? createPortal(mobileMenu, overlayRoot) : mobileMenu}
     </nav>
   );
 };
