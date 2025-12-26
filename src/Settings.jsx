@@ -7,8 +7,10 @@ import { similarity, normalizeString } from './utils/stringSimilarity.js';
 import { makeScoreKey } from './utils/scoreKey.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { Switch } from './components/Switch.jsx';
+import { TwoOptionSwitch } from "./components/TwoOptionSwitch.jsx";
+import ModalShell from "./components/ModalShell.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
@@ -297,7 +299,7 @@ const Settings = () => {
                             />
                         </div>
                     </div>
-                    <div className="setting-card">
+                    <div className="setting-card setting-card-toggle setting-card-playstyle">
                         <div className="setting-text">
                             <h3>Play Style</h3>
                             <p>
@@ -305,14 +307,32 @@ const Settings = () => {
                             </p>
                         </div>
                         <div className="setting-control">
-                            <select
-                                value={playStyle === 'double' ? 'DP' : 'SP'}
-                                onChange={(e) => setPlayStyle(e.target.value === 'DP' ? 'double' : 'single')}
-                                className="settings-select"
-                            >
-                                <option value="SP">Single (SP)</option>
-                                <option value="DP">Double (DP)</option>
-                            </select>
+                            <TwoOptionSwitch
+                                ariaLabel="Play style"
+                                className="settings-playstyle-toggle"
+                                options={[
+                                  {
+                                    value: "single",
+                                    label: (
+                                      <span className="settings-playstyle-label">
+                                        <span className="settings-playstyle-long">Single</span>
+                                        <span className="settings-playstyle-short">SP</span>
+                                      </span>
+                                    ),
+                                  },
+                                  {
+                                    value: "double",
+                                    label: (
+                                      <span className="settings-playstyle-label">
+                                        <span className="settings-playstyle-long">Double</span>
+                                        <span className="settings-playstyle-short">DP</span>
+                                      </span>
+                                    ),
+                                  },
+                                ]}
+                                value={playStyle || "single"}
+                                onChange={setPlayStyle}
+                            />
                         </div>
                     </div>
                     <div className="setting-card">
@@ -432,8 +452,8 @@ const Settings = () => {
                                 <p>
                                     Import your DDR scores in JSON or HTML format. Right click and save the
                                     HTML of your <code>ganymede-cg.net</code> scores page, then upload it here.
-                                    Your browser currently stores {Object.keys(scores.single).length} SP and
-                                    {Object.keys(scores.double).length} DP scores.
+                                    You have&nbsp;{Object.keys(scores.single).length}&nbsp;SP and&nbsp;
+                                    {Object.keys(scores.double).length}&nbsp;DP scores.
                                 </p>
                             </div>
                             <div className="setting-control upload-control">
@@ -452,7 +472,15 @@ const Settings = () => {
                                     <option value="SP">SP</option>
                                     <option value="DP">DP</option>
                                 </select>
-                                <button onClick={clearScores} className="settings-button" disabled={processing}>Delete Stats</button>
+                                <ModalShell.Button
+                                    variant="danger"
+                                    onClick={clearScores}
+                                    disabled={processing}
+                                    aria-label="Delete stats"
+                                >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                    <span className="settings-clear-label">Delete stats</span>
+                                </ModalShell.Button>
                             </div>
                             {processing && (<div className="upload-status">Processing...</div>)}
                             {!processing && uploadMessage && (<div className="upload-status">{uploadMessage}</div>)}
@@ -475,7 +503,11 @@ const Settings = () => {
                     <div className="setting-card">
                         <div className="setting-text">
                             <p>
-                               Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. Decimalized rankings from <a className="footer-link" href="https://3icecream.com/">Sanbai Ice Cream</a> and are based on the Version 10 Revision 1 release. Card pick system inspired by <a className="footer-link" href="https://ddr.tools/">ddr.tools</a>. <br></br><br></br>Crafted with an organic blend of Gemini 2.5 Pro via GeminiCLI and ChatGPT Codex (with a sprinkle of ChatGPT 4o for initial planning). Human intelligence used sparingly. <br></br><br></br> Always remember to wear deoderant when playing DDR, and clean up after you've used the bathroom. <br></br><br></br> This tool is not affiliated with Konami or any other company. It is a fan-made project for educational purposes only.
+                               Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. Decimalized rankings from <a className="footer-link" href="https://3icecream.com/">Sanbai Ice Cream</a> and are based on the Version 10 Revision 1 release. Card pick system inspired by <a className="footer-link" href="https://ddr.tools/">ddr.tools</a>. <br></br><br></br>
+                               Crafted with an organic blend of Gemini 2.5 Pro via GeminiCLI and ChatGPT Codex (with a sprinkle of ChatGPT 4o for initial planning). Human intelligence used sparingly. <br></br><br></br>
+                               Follow the development, suggest features and report bugs at the at the <a className="footer-link" href="https://discord.gg/5gy4zwbPRC">UK DDR Discord</a> or <a className="footer-link" href="https://github.com/blackalice/ddr-dan-tool">Github</a> <br></br><br></br>
+                               Always remember to wear deoderant when playing DDR, and clean up after you've used the bathroom. <br></br><br></br>
+                               This tool is not affiliated with Konami or any other company. It is a fan-made project for educational purposes only.
                             </p>
                         </div>
                     </div>

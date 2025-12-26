@@ -248,18 +248,17 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
             Create List
           </ModalShell.Button>
         )}
-        <div className={styles.footerButtons}>
+        <ModalShell.FooterActions className={styles.footerButtons}>
           <ModalShell.Button variant="secondary" onClick={reset}>
             Reset
           </ModalShell.Button>
           <ModalShell.Button variant="primary" onClick={apply}>
             Apply
           </ModalShell.Button>
-        </div>
+        </ModalShell.FooterActions>
       </ModalShell.Footer>
     </ModalShell>
   );
 };
 
 export default FilterModal;
-

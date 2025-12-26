@@ -313,40 +313,8 @@
   font-weight: 600;
 }
 
-.mobile-toggle-group {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.mobile-toggle {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  color: var(--text-muted-color);
-  padding: 0.65rem 0.75rem;
-  font-weight: 600;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.mobile-toggle:hover {
-  color: var(--text-color);
-  filter: brightness(1.05);
-}
-
-.mobile-toggle.active {
-  background: linear-gradient(
-    180deg,
-    rgba(var(--accent-color-rgb), 0.85),
-    color-mix(in srgb, var(--accent-color) 82%, black)
-  );
-  color: var(--text-color);
-  border-color: rgba(var(--accent-color-rgb), 0.6);
-  box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.4);
+.mobile-playstyle-toggle {
+  width: 100%;
 }
 
 .mobile-target-input {

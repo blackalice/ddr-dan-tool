@@ -854,6 +854,8 @@
 
     .mobile-only {
         display: flex;
+        margin-left: auto;
+        justify-content: flex-end;
     }
 
     .desktop-only {
@@ -1040,5 +1042,4 @@
     color: var(--text-color);
     white-space: nowrap;
 }
-
 

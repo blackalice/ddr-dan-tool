@@ -18,6 +18,7 @@ import {
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { useScores } from "./contexts/ScoresContext.jsx";
 import { SettingsContext } from "./contexts/SettingsContext.jsx";
+import { TwoOptionSwitch } from "./components/TwoOptionSwitch.jsx";
 import "./Tabs.css";
 
 const Logo = () => (
@@ -141,13 +142,7 @@ const Tabs = () => {
   );
 
   const handlePlayStyleToggle = React.useCallback(
-    (event, style) => {
-      if (event) {
-        event.stopPropagation();
-        if (event.type === "touchend") {
-          event.preventDefault();
-        }
-      }
+    (style) => {
       setPlayStyle?.(style);
     },
     [setPlayStyle],
@@ -355,20 +350,16 @@ const Tabs = () => {
             </div>
             <div className="mobile-menu-section">
               <div className="mobile-section-title">Play Style</div>
-              <div className="mobile-toggle-group">
-                {["single", "double"].map((style) => (
-                  <button
-                    key={style}
-                    type="button"
-                    className={`mobile-toggle${(playStyle || "single") === style ? " active" : ""}`}
-                    onClick={(event) => handlePlayStyleToggle(event, style)}
-                    onTouchEnd={(event) => handlePlayStyleToggle(event, style)}
-                    aria-pressed={(playStyle || "single") === style}
-                  >
-                    {style === "single" ? "Single" : "Double"}
-                  </button>
-                ))}
-              </div>
+              <TwoOptionSwitch
+                ariaLabel="Play style"
+                className="mobile-playstyle-toggle"
+                options={[
+                  { label: "Single", value: "single" },
+                  { label: "Double", value: "double" },
+                ]}
+                value={playStyle || "single"}
+                onChange={handlePlayStyleToggle}
+              />
             </div>
             <div className="mobile-menu-section">
               <div className="mobile-section-title">Target Scroll Speed</div>

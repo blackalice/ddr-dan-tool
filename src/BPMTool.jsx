@@ -19,6 +19,7 @@ import Camera from './Camera.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
 import SortModal from './components/SortModal.jsx';
+import { TwoOptionSwitch } from './components/TwoOptionSwitch.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
@@ -1093,10 +1094,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             <div className="selection-container">
                 <div className="controls-container">
                     <div className="top-row">
-                        <div className="play-mode-toggle">
-                            <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'bpm' ? 'active' : ''}>BPM</button>
-                            <button onClick={() => setView(v => v === 'bpm' ? 'chart' : 'bpm')} className={view === 'chart' ? 'active' : ''}>Chart</button>
-                        </div>
+                        <TwoOptionSwitch
+                            ariaLabel="Toggle BPM and chart views"
+                            options={[
+                                { value: 'bpm', label: 'BPM' },
+                                { value: 'chart', label: 'Chart' },
+                            ]}
+                            value={view}
+                            onChange={setView}
+                        />
                         <div className="action-buttons mobile-only">
                             {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (

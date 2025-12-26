@@ -211,8 +211,8 @@ html {
 [data-theme='mhe2026'] {
   color-scheme: dark;
   --bg-color: #111111;
-  --bg-color-dark: #333333;
-  --bg-color-light: #222222;
+  --bg-color-dark: #151515;
+  --bg-color-light: #1f1f1f;
   --bg-color-lighter: #333333;
   --text-color: #ffffff;
   --text-color-light: #ff4090;
@@ -222,7 +222,7 @@ html {
   --secondary-color: #3f51b5;
   --border-color: #444446;
   --card-bg-color: #2c2c2e;
-  --card-hover-bg-color: #3a3a3c;
+  --card-hover-bg-color: #1b1b1b;
   --text-muted-color: #8e8e93;
   --accent-color: #ff4090;
   --accent-color-rgb: 255, 64, 144;

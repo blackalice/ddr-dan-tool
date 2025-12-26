@@ -168,6 +168,12 @@ const Footer = ({ children, align = 'right', className, ...props }) => (
   </div>
 );
 
+const FooterActions = ({ children, className, ...props }) => (
+  <div className={join(styles.footerActions, className)} {...props}>
+    {children}
+  </div>
+);
+
 const Button = forwardRef(({ variant = 'secondary', className, type = 'button', ...props }, ref) => {
   const variantClass = styles[`button${capitalize(variant)}`];
   return (
@@ -184,6 +190,7 @@ Button.displayName = 'ModalShell.Button';
 
 ModalShell.Body = Body;
 ModalShell.Footer = Footer;
+ModalShell.FooterActions = FooterActions;
 ModalShell.Button = Button;
 
 export default ModalShell;

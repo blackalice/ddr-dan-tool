@@ -99,6 +99,10 @@
     gap: 1rem;
 }
 
+.settings-playstyle-short {
+    display: none;
+}
+
 .settings-input, .settings-select {
     width: 100%;
     background-color: var(--card-bg-color);
@@ -186,6 +190,23 @@
         flex: 1 1 0;
     }
 
+    .setting-card-playstyle .setting-text,
+    .setting-card-playstyle .setting-control {
+        flex: 1 1 0;
+    }
+
+    .settings-playstyle-toggle {
+        width: 100%;
+    }
+
+    .settings-playstyle-long {
+        display: none;
+    }
+
+    .settings-playstyle-short {
+        display: inline;
+    }
+
     .setting-card-split {
         flex-direction: row;
         align-items: center;
@@ -270,10 +291,20 @@
     min-height: 2.5rem;
 }
 
+.settings-clear-label {
+    margin-left: 0.5rem;
+}
+
 @media (max-width: 1024px) {
     .upload-control > input[type="file"],
     .upload-control > select,
     .upload-control > button {
         width: 100%;
+    }
+}
+
+@media (max-width: 720px) {
+    .settings-clear-label {
+        display: none;
     }
 }
