@@ -29,6 +29,8 @@ const Settings = () => {
         setShowRankedRatings,
         showCoursesBeta,
         setShowCoursesBeta,
+        showTransliterationBeta,
+        setShowTransliterationBeta,
         songlistOverride,
         setSonglistOverride,
         worldDifficultyChanges,
@@ -385,6 +387,22 @@ const Settings = () => {
                                 checked={showCoursesBeta}
                                 onChange={(e) => setShowCoursesBeta(e.target.checked)}
                                 ariaLabel="Toggle courses beta"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>Show Transliteration</h3>
+                            <p>
+                                Display title and artist transliterations when available.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={showTransliterationBeta}
+                                onChange={(e) => setShowTransliterationBeta(e.target.checked)}
+                                ariaLabel="Toggle transliteration beta"
                             />
                         </div>
                     </div>

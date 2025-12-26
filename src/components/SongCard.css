@@ -151,6 +151,12 @@
   font-size: 1.125rem;
   font-weight: 700;
 }
+.song-level-shock {
+  margin-left: 0.35rem;
+  font-size: 0.8em;
+  color: currentColor;
+  vertical-align: middle;
+}
 .song-title-level {
   margin-top: 0.25rem;
   display: none;
@@ -172,6 +178,17 @@
   border-radius: 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
+}
+.difficulty-badge-level {
+  display: none;
+  margin-left: 0.25rem;
+  font-weight: 700;
+}
+.difficulty-badge-shock {
+  display: none;
+  margin-left: 0.25rem;
+  font-size: 0.85em;
+  color: var(--accent-color);
 }
 .game-chip.inline {
   margin-left: 0;

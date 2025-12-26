@@ -5,7 +5,7 @@ import {
   normalizedDifficultyMap,
 } from "./smParserUtils.js";
 
-const metaTagsToConsume = ["title", "titletranslit", "artist", "banner", "music"];
+const metaTagsToConsume = ["title", "titletranslit", "artist", "artisttranslit", "banner", "music"];
 
 function concludesANoteTag(line) {
   if (line === undefined) {
@@ -141,6 +141,7 @@ export function parseSm(sm) {
     title: "",
     titletranslit: "",
     artist: "",
+    artisttranslit: "",
     displayBpm: "N/A",
   };
 
@@ -186,6 +187,7 @@ export function parseSm(sm) {
       sc.title = getTagValue(header, 'TITLE');
       sc.titletranslit = getTagValue(header, 'TITLETRANSLIT');
       sc.artist = getTagValue(header, 'ARTIST');
+      sc.artisttranslit = getTagValue(header, 'ARTISTTRANSLIT');
       sc.banner = getTagValue(header, 'BANNER');
       sc.music = getTagValue(header, 'MUSIC');
       const globalBpmString = getTagValue(header, 'BPMS');

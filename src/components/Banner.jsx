@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import clsx from "clsx";
 import styles from "./Banner.module.css";
+import { SettingsContext } from "../contexts/SettingsContext.jsx";
 
 function Banner({ className, title }) {
-  const name = title.translitTitleName || title.titleName;
+  const { showTransliterationBeta } = useContext(SettingsContext);
+  const name = showTransliterationBeta && title.translitTitleName
+    ? title.translitTitleName
+    : title.titleName;
   const [currentBanner, setCurrentBanner] = useState(title.banner);
 
   let bannerEl;

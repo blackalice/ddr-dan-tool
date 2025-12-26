@@ -46,6 +46,7 @@ export const loadSimfileData = async (songFile) => {
             availableTypes,
             charts,
             path: songFile.path,
+            artistTranslit: parsed.artisttranslit || '',
             title: {
                 titleName: parsed.title,
                 translitTitleName: parsed.titletranslit,

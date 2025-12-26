@@ -217,7 +217,15 @@ const GAME_VERSION_ORDER = [
 
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
-    const { targetBPM, multipliers, apiKey, playStyle, songlistOverride, showRankedRatings } = useContext(SettingsContext);
+    const {
+        targetBPM,
+        multipliers,
+        apiKey,
+        playStyle,
+        songlistOverride,
+        showRankedRatings,
+        showTransliterationBeta,
+    } = useContext(SettingsContext);
     const { user } = useAuth();
     const showLists = !!user;
     const { filters } = useFilters();
@@ -548,11 +556,25 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }, [filters, playStyle, simfileData, scores, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings]);
 
-    const { songTitle, artist, gameVersion, difficulties, bpmDisplay, coreBpm, chartData, songLength, jacket } = useMemo(() => {
+    const {
+        songTitle,
+        artist,
+        displayTitle,
+        displayArtist,
+        gameVersion,
+        difficulties,
+        bpmDisplay,
+        coreBpm,
+        chartData,
+        songLength,
+        jacket,
+    } = useMemo(() => {
         if (!simfileWithRatings) {
             return {
                 songTitle: 'Please select',
                 artist: 'a song',
+                displayTitle: 'Please select',
+                displayArtist: 'a song',
                 gameVersion: 'NOMIX',
                 difficulties: { singles: {}, doubles: {} },
                 bpmDisplay: 'N/A',
@@ -615,10 +637,16 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
         }
 
+        const baseTitle = simfileWithRatings.title.titleName;
+        const baseArtist = simfileWithRatings.artist;
+        const translitTitle = simfileWithRatings.title.translitTitleName;
+        const translitArtist = simfileWithRatings.artistTranslit;
         console.log("Game Version:", simfileWithRatings.mix.mixName);
         return {
-            songTitle: simfileWithRatings.title.titleName,
-            artist: simfileWithRatings.artist,
+            songTitle: baseTitle,
+            artist: baseArtist,
+            displayTitle: showTransliterationBeta && translitTitle ? translitTitle : baseTitle,
+            displayArtist: showTransliterationBeta && translitArtist ? translitArtist : baseArtist,
             gameVersion: simfileWithRatings.mix.mixName,
             difficulties: diffs,
             bpmDisplay: display,
@@ -627,7 +655,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             songLength: length,
             jacket: jacketPath,
         };
-    }, [simfileWithRatings, currentChart, radarMap, songMeta]);
+    }, [simfileWithRatings, currentChart, radarMap, songMeta, showTransliterationBeta]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;
@@ -801,14 +829,29 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
         const options = sorted.map(file => ({
             value: file.path,
-            label: file.title,
+            label: showTransliterationBeta && file.titleTranslit ? file.titleTranslit : file.title,
             title: file.title,
             titleTranslit: file.titleTranslit,
             id: file.id,
             songId: file.id,
         }));
         setSongOptions(options);
-    }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings]);
+    }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings, showTransliterationBeta]);
+
+    const selectedSongOption = useMemo(() => {
+        if (!simfileData) return null;
+        const fromList = songOptions.find(opt => opt.value === simfileData.path);
+        if (fromList) return fromList;
+        const fallbackLabel = showTransliterationBeta && simfileData.title.translitTitleName
+            ? simfileData.title.translitTitleName
+            : simfileData.title.titleName;
+        return {
+            value: simfileData.path,
+            label: fallbackLabel,
+            title: simfileData.title.titleName,
+            titleTranslit: simfileData.title.translitTitleName,
+        };
+    }, [simfileData, songOptions, showTransliterationBeta]);
 
     useEffect(() => {
         if (!simfileData || songOptions.length === 0) return;
@@ -931,6 +974,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const diffMeta = metaEntry?.difficulties.find(d => d.mode === currentChart.mode && d.difficulty === currentChart.difficulty);
         const chart = {
             title: simfileData.title.titleName,
+            titleTranslit: simfileData.title.translitTitleName,
             level: currentChart.feet,
             rankedRating: diffMeta?.rankedRating,
             bpm: bpmDisplay,
@@ -940,6 +984,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             chartId: currentChart.chartId,
             songId: simfileData.songId,
             artist: simfileData.artist,
+            artistTranslit: simfileData.artistTranslit,
             path: simfileData.path,
         };
         addChartToGroup(name, chart);
@@ -1010,6 +1055,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 })
                 .map(d => ({
                     title: meta.title,
+                    titleTranslit: meta.titleTranslit,
                     level: d.feet,
                     rankedRating: d.rankedRating,
                     bpm: `${meta.bpmMin}-${meta.bpmMax}`,
@@ -1019,6 +1065,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     chartId: d.chartId,
                     songId: meta.id,
                     artist: meta.artist,
+                    artistTranslit: meta.artistTranslit,
                     path: meta.path,
                 }));
         });
@@ -1071,7 +1118,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 ref={selectRef}
                                 className="song-select"
                                 options={songOptions}
-                                value={simfileData ? { label: simfileData.title.titleName, value: simfileData.path } : null}
+                                value={selectedSongOption}
                                 onChange={(selected) => onSongSelect(selected)}
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
@@ -1086,9 +1133,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 selectRef={selectRef}
                                 filterOption={(option, rawInput) => {
                                     const { label, data } = option;
-                                    const { titleTranslit } = data;
+                                    const { title, titleTranslit } = data;
                                     const input = rawInput.toLowerCase();
-                                    return label.toLowerCase().includes(input) || (titleTranslit && titleTranslit.toLowerCase().includes(input));
+                                    return (
+                                        label.toLowerCase().includes(input)
+                                        || (title && title.toLowerCase().includes(input))
+                                        || (titleTranslit && titleTranslit.toLowerCase().includes(input))
+                                    );
                                 }}
                             />
                         </div>
@@ -1118,6 +1169,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     jacket={jacket}
                     songTitle={songTitle}
                     artist={artist}
+                    displayTitle={displayTitle}
+                    displayArtist={displayArtist}
                     playStyle={playStyle}
                     difficulties={difficulties}
                     currentChart={currentChart}

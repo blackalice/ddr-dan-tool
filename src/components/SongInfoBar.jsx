@@ -30,6 +30,8 @@ const SongInfoBar = ({
   jacket,
   songTitle,
   artist,
+  displayTitle,
+  displayArtist,
   playStyle, // 'single' or 'double'
   difficulties,
   currentChart,
@@ -47,6 +49,8 @@ const SongInfoBar = ({
   metrics,
 }) => {
 
+  const renderedTitle = displayTitle || songTitle;
+  const renderedArtist = displayArtist || artist;
   const { filters } = useFilters();
   const { showRankedRatings } = useContext(SettingsContext);
   const { scores } = useScores();
@@ -283,11 +287,11 @@ const SongInfoBar = ({
                   {gameVersion}
                 </span>
               )}
-              <span className="song-title-main" title={songTitle}>
-                {songTitle}
+              <span className="song-title-main" title={renderedTitle}>
+                {renderedTitle}
               </span>
-              <span className="song-title-artist" title={artist}>
-                {artist}
+              <span className="song-title-artist" title={renderedArtist}>
+                {renderedArtist}
               </span>
             </div>
           </div>

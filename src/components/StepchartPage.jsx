@@ -36,7 +36,7 @@ export function StepchartPage({
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const isLoading = !simfile;
-  const { showRankedRatings } = useContext(SettingsContext);
+  const { showRankedRatings, showTransliterationBeta } = useContext(SettingsContext);
 
   useEffect(() => {
     setCurrentType(initialCurrentType);
@@ -103,9 +103,12 @@ export function StepchartPage({
   }, [chart, speedmod, currentType]);
 
 
-  const title = currentTypeMeta
-    ? `${displaySimfile.title.translitTitleName || displaySimfile.title.titleName} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating : currentTypeMeta.feet})`
+  const displayTitle = showTransliterationBeta && displaySimfile.title.translitTitleName
+    ? displaySimfile.title.translitTitleName
     : displaySimfile.title.titleName;
+  const title = currentTypeMeta
+    ? `${displayTitle} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating : currentTypeMeta.feet})`
+    : displayTitle;
 
 
   return (

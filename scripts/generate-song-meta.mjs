@@ -34,6 +34,18 @@ function getLastBeat(notes) {
   return 0;
 }
 
+function chartHasShock(chart) {
+  if (!chart || !Array.isArray(chart.arrows)) return false;
+  return chart.arrows.some((arrow) => {
+    const dir = arrow.direction || '';
+    if (!dir) return false;
+    for (let i = 0; i < dir.length; i += 1) {
+      if (dir[i] !== 'M') return false;
+    }
+    return true;
+  });
+}
+
 function calculateSongLength(bpmChanges, songLastBeat, stops = []) {
   if (!bpmChanges || bpmChanges.length === 0) return 0;
   let time = 0;
@@ -199,7 +211,16 @@ async function main() {
             const arr = ratingsByMode[c.mode];
             const rating = pickRatingForLevel(arr, c.feet);
             const chartId = buildChartId(songId, c.mode, c.difficulty);
-            return { mode: c.mode, difficulty: c.difficulty, feet: c.feet, rankedRating: rating, chartId };
+            const chartData = simfile.charts[c.slug];
+            const hasShock = chartHasShock(chartData);
+            return {
+              mode: c.mode,
+              difficulty: c.difficulty,
+              feet: c.feet,
+              rankedRating: rating,
+              chartId,
+              hasShock,
+            };
           });
         const game = file.path.split('/')[1] || 'Unknown';
 
@@ -221,6 +242,7 @@ async function main() {
           title: simfile.title,
           titleTranslit: simfile.titletranslit,
           artist: simfile.artist,
+          artistTranslit: simfile.artisttranslit,
           game,
           bpmMin,
           bpmMax,
@@ -245,4 +267,3 @@ async function main() {
 }
 
 main();
-

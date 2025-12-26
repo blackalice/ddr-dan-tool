@@ -6,7 +6,7 @@ import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import { useScores } from '../contexts/ScoresContext.jsx';
 import { getGrade } from '../utils/grades.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPen, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faTimes, faPen, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import './SongCard.css';
 import '../styles/glow.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
@@ -38,21 +38,34 @@ const getBpmRange = (bpm) => {
   return { min: Math.min(...parts), max: Math.max(...parts) };
 };
 
-const renderLevel = (level) => {
+const renderLevel = (level, showShock) => {
     const hasDecimal = typeof level === 'number' && level % 1 !== 0;
+    let levelNode;
     if (!hasDecimal) {
-        return `Lv.${level}`;
+        levelNode = `Lv.${level}`;
+    } else {
+        const levelStr = level.toString();
+        const decimalIndex = levelStr.indexOf('.');
+        const integerPart = levelStr.substring(0, decimalIndex);
+        const decimalPart = levelStr.substring(decimalIndex);
+
+        levelNode = (
+            <>
+                Lv.{integerPart}
+                <span className="decimal-part">{decimalPart}</span>
+            </>
+        );
     }
-
-    const levelStr = level.toString();
-    const decimalIndex = levelStr.indexOf('.');
-    const integerPart = levelStr.substring(0, decimalIndex);
-    const decimalPart = levelStr.substring(decimalIndex);
-
     return (
         <>
-            Lv.{integerPart}
-            <span className="decimal-part">{decimalPart}</span>
+            {levelNode}
+            {showShock && (
+              <FontAwesomeIcon
+                icon={faBolt}
+                className="song-level-shock"
+                title="Shock arrows"
+              />
+            )}
         </>
     );
 };
@@ -66,26 +79,52 @@ const formatLevelText = (level) => {
 };
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
-  const { targetBPM, multipliers, setPlayStyle, showRankedRatings } = useContext(SettingsContext);
+  const { targetBPM, multipliers, setPlayStyle, showRankedRatings, showTransliterationBeta } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
   const [derivedArtist, setDerivedArtist] = React.useState(null);
+  const [derivedTitleTranslit, setDerivedTitleTranslit] = React.useState(null);
+  const [derivedArtistTranslit, setDerivedArtistTranslit] = React.useState(null);
 
   React.useEffect(() => {
     let cancelled = false;
     async function derive() {
-      if (song?.artist || !song?.path) { setDerivedArtist(null); return; }
+      const needsArtist = !song?.artist && song?.path;
+      const needsTranslit = Boolean(
+        showTransliterationBeta &&
+        song?.path &&
+        (!song?.titleTranslit || !song?.artistTranslit),
+      );
+      if (!needsArtist && !needsTranslit) {
+        if (!needsArtist) setDerivedArtist(null);
+        if (!needsTranslit) {
+          setDerivedTitleTranslit(null);
+          setDerivedArtistTranslit(null);
+        }
+        return;
+      }
       try {
         const meta = await getSongMeta();
         const m = meta.find(x => x.path === song.path);
-        if (!cancelled) setDerivedArtist(m?.artist || null);
+        if (cancelled) return;
+        if (needsArtist) setDerivedArtist(m?.artist || null);
+        if (needsTranslit) {
+          setDerivedTitleTranslit(m?.titleTranslit || null);
+          setDerivedArtistTranslit(m?.artistTranslit || null);
+        }
       } catch {
-        if (!cancelled) setDerivedArtist(null);
+        if (!cancelled) {
+          if (needsArtist) setDerivedArtist(null);
+          if (needsTranslit) {
+            setDerivedTitleTranslit(null);
+            setDerivedArtistTranslit(null);
+          }
+        }
       }
     }
     derive();
     return () => { cancelled = true; };
-  }, [song?.artist, song?.path]);
+  }, [song?.artist, song?.path, song?.titleTranslit, song?.artistTranslit, showTransliterationBeta]);
 
   const scoreData = React.useMemo(() => {
     if (skipScoreLookup) return null;
@@ -104,7 +143,16 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const lamp = scoreData?.lamp ?? song?.lamp ?? null;
   const flare = scoreData?.flare ?? null;
   const grade = React.useMemo(() => getGrade(displayScore), [displayScore]);
-  const artistName = song?.artist || derivedArtist || "";
+  const rawTitle = song?.title || "";
+  const rawArtist = song?.artist || derivedArtist || "";
+  const displayTitle = showTransliterationBeta
+    && (song?.titleTranslit || derivedTitleTranslit)
+    ? (song?.titleTranslit || derivedTitleTranslit)
+    : rawTitle;
+  const displayArtist = showTransliterationBeta
+    && (song?.artistTranslit || derivedArtistTranslit)
+    ? (song?.artistTranslit || derivedArtistTranslit)
+    : rawArtist;
   const jacketPath = song?.jacket || "";
 
   const hasScores = React.useMemo(
@@ -253,15 +301,15 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         )}
         <div className="song-card-header">
           <div className="song-title-block">
-            <h3 className="song-title">{song.title}</h3>
-            {showArtist && artistName && (
-              <span className="song-card-artist" title={artistName}>
-                {artistName}
+            <h3 className="song-title">{displayTitle}</h3>
+            {showArtist && displayArtist && (
+              <span className="song-card-artist" title={displayArtist}>
+                {displayArtist}
               </span>
             )}
             {levelInTitleBlock && (
               <span className="song-level song-title-level">
-                {renderLevel(levelToDisplay)}
+                {renderLevel(levelToDisplay, song?.hasShock)}
               </span>
             )}
           </div>
@@ -290,7 +338,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
               <span
                 className={`song-level${levelInTitleBlock ? " song-inline-level" : ""}`}
               >
-                {renderLevel(levelToDisplay)}
+                {renderLevel(levelToDisplay, song?.hasShock)}
               </span>
               <div className="song-badges">
                 {difficultyInfo && (
@@ -300,6 +348,14 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
                     data-level={levelText || undefined}
                   >
                     {difficultyInfo.name}
+                    <span className="difficulty-badge-level">{levelText}</span>
+                    {song?.hasShock && (
+                      <FontAwesomeIcon
+                        icon={faBolt}
+                        className="difficulty-badge-shock"
+                        title="Shock arrows"
+                      />
+                    )}
                   </span>
                 )}
                 {cardTag}
