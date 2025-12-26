@@ -25,7 +25,7 @@ import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
 import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
-import { getRadarValues, getJsonCached } from './utils/cachedFetch.js';
+import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -263,7 +263,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [songMeta, setSongMeta] = useState([]);
-    const [radarMap, setRadarMap] = useState(null);
     const [overrideSongs, setOverrideSongs] = useState(null);
     const [sortKey, setSortKey] = useState(() => storage.getItem('bpmSortKey') || 'title');
     const [sortAscending, setSortAscending] = useState(() => {
@@ -398,45 +397,17 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         };
     }, [loadSongMeta]);
 
-    useEffect(() => {
-        getRadarValues()
-            .then(data => setRadarMap(data || null))
-            .catch(() => setRadarMap(null));
-    }, []);
-
     const chartMetrics = useMemo(() => {
         if (!simfileData || !currentChart) return null;
         const chart = simfileData.charts?.[currentChart.slug];
         if (!chart) return null;
-        // Prefer precomputed radar values when available, but always compute
-        // local metrics like holds/jumps/shocks from the chart data
-        const key = `${simfileData?.title?.titleName || ''}||${currentChart.mode}||${currentChart.difficulty?.toLowerCase?.()}`;
-        const pre = radarMap && radarMap[key];
         try {
-            const computed = computeChartMetrics(chart);
-            if (pre) {
-                return {
-                    steps: pre.steps ?? computed.steps,
-                    holds: computed.holds,
-                    jumps: computed.jumps,
-                    shocks: computed.shocks,
-                    firstNoteSeconds: pre.firstNoteSeconds ?? computed.firstNoteSeconds,
-                    radar: {
-                        stream: pre.stream ?? computed.radar.stream,
-                        voltage: pre.voltage ?? computed.radar.voltage,
-                        air: pre.air ?? computed.radar.air,
-                        freeze: pre.freeze ?? computed.radar.freeze,
-                        chaos: pre.chaos ?? computed.radar.chaos,
-                    },
-                    lastBeat: computed.lastBeat,
-                };
-            }
-            return computed;
+            return computeChartMetrics(chart);
         } catch (e) {
             console.warn('Failed to compute chart metrics:', e);
             return null;
         }
-    }, [simfileData, currentChart, radarMap]);
+    }, [simfileData, currentChart]);
 
     useEffect(() => {
         const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
@@ -624,14 +595,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 core = calculateCoreBpm(bpmChanges, lastBeat);
                 data = calculateChartData(bpmChanges, lastBeat);
                 // Prefer canonical length from songMeta when present (ogg-based),
-                // then radar-values, then BPM+stops fallback
-                const preKey = `${simfileWithRatings.title.titleName}||${currentChart.mode}||${currentChart.difficulty?.toLowerCase?.()}`;
-                const pre = radarMap && radarMap[preKey];
+                // then BPM+stops fallback
                 const metaEntry = songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
                 if (metaEntry && typeof metaEntry.length === 'number' && metaEntry.length > 0) {
                     length = metaEntry.length;
-                } else if (pre && typeof pre.songSeconds === 'number' && pre.songSeconds > 0) {
-                    length = pre.songSeconds;
                 } else {
                     length = calculateSongLength(bpmChanges, lastBeat, chartDetails.stops);
                 }
@@ -656,7 +623,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             songLength: length,
             jacket: jacketPath,
         };
-    }, [simfileWithRatings, currentChart, radarMap, songMeta, showTransliterationBeta]);
+    }, [simfileWithRatings, currentChart, songMeta, showTransliterationBeta]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;

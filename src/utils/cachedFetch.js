@@ -63,9 +63,6 @@ async function fetchTextCached(url, { ttlMs = 24 * 60 * 60 * 1000, init } = {}) 
 export function getSongMeta() {
   return fetchJsonCached('/song-meta.json');
 }
-export function getRadarValues() {
-  return fetchJsonCached('/radar-values.json');
-}
 export function getJsonCached(url, opts) {
   return fetchJsonCached(url, opts);
 }
@@ -77,4 +74,3 @@ export function getTextCached(url, opts) {
 export function primeCache(url, data) {
   memoryCache.set(_cacheKey(url), { ts: now(), data });
 }
-

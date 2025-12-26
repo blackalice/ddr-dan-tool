@@ -9,7 +9,7 @@
   "dev:vite": "vite",
   "dev:wrangler": "wrangler dev",
 
-  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-radar.mjs",
+  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs",
 
   "dev:full": "npm run prepare:data && npm run dev",
 
