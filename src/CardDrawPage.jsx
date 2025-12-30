@@ -1,0 +1,2066 @@
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFilter,
+  faGear,
+  faRotateRight,
+  faTrash,
+  faTrophy,
+} from "@fortawesome/free-solid-svg-icons";
+import SongCard from "./components/SongCard.jsx";
+import FilterModal from "./components/FilterModal.jsx";
+import ModalShell from "./components/ModalShell.jsx";
+import { Switch } from "./components/Switch.jsx";
+import { SettingsContext } from "./contexts/SettingsContext.jsx";
+import { useFilters } from "./contexts/FilterContext.jsx";
+import { useScores } from "./contexts/ScoresContext.jsx";
+import { resolveScore } from "./utils/scoreKey.js";
+import { normalizeString } from "./utils/stringSimilarity.js";
+import { SONGLIST_OVERRIDE_OPTIONS } from "./utils/songlistOverrides.js";
+import { getJsonCached } from "./utils/cachedFetch.js";
+import { storage } from "./utils/remoteStorage.js";
+import "./CardDrawPage.css";
+import settingsStyles from "./components/CardDrawSettingsModal.module.css";
+
+const DEFAULT_DRAW_COUNT = 5;
+const MAX_DRAW_COUNT = 30;
+const DEFAULT_BUCKET_COUNT = 4;
+const MAX_BUCKET_COUNT = 10;
+const DEFAULT_FREE_PICK_COUNT = 0;
+const MAX_FREE_PICK_COUNT = 30;
+const LOCKED_ACTIONS = new Set(["protect", "pocket-pick"]);
+
+const clampNumber = (value, min, max) => {
+  if (Number.isNaN(value)) return min;
+  return Math.min(max, Math.max(min, value));
+};
+
+const getInitialWeightedBucketCount = () => {
+  try {
+    const saved = storage.getItem("cardDrawWeightedBucketCount");
+    const parsed = saved ? Number(saved) : DEFAULT_BUCKET_COUNT;
+    if (Number.isNaN(parsed)) return DEFAULT_BUCKET_COUNT;
+    return clampNumber(parsed, 1, MAX_BUCKET_COUNT);
+  } catch {
+    return DEFAULT_BUCKET_COUNT;
+  }
+};
+
+const coerceDistribution = (values, count) => {
+  const array = Array.isArray(values) ? values : [];
+  return Array.from({ length: count }, (_, index) =>
+    Math.max(0, Math.floor(Number(array[index]) || 0)),
+  );
+};
+
+const normalizeDistribution = (values, total) => {
+  const adjusted = [...values];
+  let sum = adjusted.reduce((acc, value) => acc + value, 0);
+  if (sum === total) return adjusted;
+  if (sum < total) {
+    adjusted[adjusted.length - 1] += total - sum;
+    return adjusted;
+  }
+  let overflow = sum - total;
+  for (let i = adjusted.length - 1; i >= 0 && overflow > 0; i -= 1) {
+    const reduceBy = Math.min(overflow, adjusted[i]);
+    adjusted[i] -= reduceBy;
+    overflow -= reduceBy;
+  }
+  return adjusted;
+};
+
+const buildBucketDefinitions = (minLevel, maxLevel, groupEnabled, bucketCount) => {
+  if (minLevel == null || maxLevel == null) return [];
+  const min = Math.floor(minLevel);
+  const max = Math.ceil(maxLevel);
+  if (max < min) return [];
+  if (!groupEnabled) {
+    return Array.from({ length: max - min + 1 }, (_, index) => {
+      const level = min + index;
+      return { id: `level-${level}`, min: level, max: level };
+    });
+  }
+  const totalLevels = max - min + 1;
+  const count = clampNumber(bucketCount, 1, totalLevels);
+  const baseSize = Math.floor(totalLevels / count);
+  const remainder = totalLevels % count;
+  const buckets = [];
+  let cursor = min;
+  for (let i = 0; i < count; i += 1) {
+    const size = baseSize + (i < remainder ? 1 : 0);
+    const start = cursor;
+    const end = start + size - 1;
+    buckets.push({ id: `bucket-${start}-${end}`, min: start, max: end });
+    cursor = end + 1;
+  }
+  return buckets;
+};
+
+const calculateExpectedDistribution = (entries, buckets, total) => {
+  if (!buckets.length || total <= 0) return buckets.map(() => 0);
+  const bucketCounts = buckets.map(() => 0);
+  entries.forEach((entry) => {
+    entry.matchingCharts.forEach((chart) => {
+      const index = buckets.findIndex(
+        (bucket) => chart.feet >= bucket.min && chart.feet <= bucket.max,
+      );
+      if (index !== -1) bucketCounts[index] += 1;
+    });
+  });
+  const totalCharts = bucketCounts.reduce((acc, value) => acc + value, 0);
+  if (!totalCharts) return buckets.map(() => 0);
+  const raw = bucketCounts.map((count) => (count / totalCharts) * total);
+  const floors = raw.map((value) => Math.floor(value));
+  let remaining = total - floors.reduce((acc, value) => acc + value, 0);
+  const remainder = raw
+    .map((value, index) => ({ index, frac: value - floors[index] }))
+    .sort((a, b) => b.frac - a.frac);
+  for (let i = 0; i < remaining; i += 1) {
+    const target = remainder[i % remainder.length];
+    floors[target.index] += 1;
+  }
+  return floors;
+};
+
+const buildCardForBucket = (entry, bucket, buildChartData) => {
+  const { meta, matchingCharts } = entry;
+  if (!meta || !matchingCharts.length) return null;
+  const options = matchingCharts.filter(
+    (chart) => chart.feet >= bucket.min && chart.feet <= bucket.max,
+  );
+  if (!options.length) return null;
+  const chosen = options[Math.floor(Math.random() * options.length)];
+  return buildChartData(meta, chosen);
+};
+
+const drawWeightedCards = (
+  entries,
+  buckets,
+  targetCounts,
+  maxCount,
+  buildChartData,
+  buildChartCard,
+) => {
+  const remaining = [...entries];
+  const picks = [];
+  buckets.forEach((bucket, index) => {
+    let needed = targetCounts[index] || 0;
+    while (needed > 0 && remaining.length > 0) {
+      const eligible = [];
+      for (let i = 0; i < remaining.length; i += 1) {
+        if (
+          remaining[i].matchingCharts.some(
+            (chart) => chart.feet >= bucket.min && chart.feet <= bucket.max,
+          )
+        ) {
+          eligible.push(i);
+        }
+      }
+      if (!eligible.length) break;
+      const chosenIndex = eligible[Math.floor(Math.random() * eligible.length)];
+      const [entry] = remaining.splice(chosenIndex, 1);
+      const card = buildCardForBucket(entry, bucket, buildChartData);
+      if (card) {
+        picks.push(card);
+        needed -= 1;
+      }
+    }
+  });
+  while (picks.length < maxCount && remaining.length > 0) {
+    const idx = Math.floor(Math.random() * remaining.length);
+    const [entry] = remaining.splice(idx, 1);
+    const card = buildChartCard(entry);
+    if (card) picks.push(card);
+  }
+  return picks;
+};
+
+const formatDrawTimestamp = (timestamp) => {
+  if (!timestamp) return "";
+  const date = new Date(timestamp);
+  const pad = (value) => String(value).padStart(2, "0");
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1);
+  const year = String(date.getFullYear()).slice(-2);
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+};
+const CARD_ACTIONS = [
+  { key: "protect", label: "Protect", requiresPlayer: true },
+  { key: "veto", label: "Veto", requiresPlayer: true },
+  { key: "pocket-pick", label: "Pocket", requiresPlayer: true },
+];
+
+const CardDrawPage = ({ smData }) => {
+  const { playStyle, songlistOverride, setPlayStyle, showTransliterationBeta } = useContext(SettingsContext);
+  const { filters } = useFilters();
+  const { scores, loadSongMeta } = useScores();
+  const navigate = useNavigate();
+  const [songMeta, setSongMeta] = useState([]);
+  const [overrideSongs, setOverrideSongs] = useState(null);
+  const [drawnCharts, setDrawnCharts] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawCurrent");
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [currentDrawId, setCurrentDrawId] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawCurrentId");
+      return saved ? Number(saved) || null : null;
+    } catch {
+      return null;
+    }
+  });
+  const [cardActions, setCardActions] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawCurrentActions");
+      const parsed = saved ? JSON.parse(saved) : {};
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  });
+  const [drawHistory, setDrawHistory] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawHistory");
+      const parsed = saved ? JSON.parse(saved) : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((entry) => ({
+        ...entry,
+        actions: entry?.actions && typeof entry.actions === "object" ? entry.actions : {},
+      }));
+    } catch {
+      return [];
+    }
+  });
+  const [showFilter, setShowFilter] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [drawCount, setDrawCount] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawCount");
+      const parsed = saved ? Number(saved) : DEFAULT_DRAW_COUNT;
+      if (Number.isNaN(parsed)) return DEFAULT_DRAW_COUNT;
+      return Math.min(MAX_DRAW_COUNT, Math.max(1, parsed));
+    } catch {
+      return DEFAULT_DRAW_COUNT;
+    }
+  });
+  const [freePickCount, setFreePickCount] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawFreePickCount");
+      const parsed = saved ? Number(saved) : DEFAULT_FREE_PICK_COUNT;
+      if (Number.isNaN(parsed)) return DEFAULT_FREE_PICK_COUNT;
+      return clampNumber(parsed, 0, MAX_FREE_PICK_COUNT);
+    } catch {
+      return DEFAULT_FREE_PICK_COUNT;
+    }
+  });
+  const [weightedEnabled, setWeightedEnabled] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawWeightedEnabled");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [weightedForceExpected, setWeightedForceExpected] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawWeightedForceExpected");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [weightedGroupBuckets, setWeightedGroupBuckets] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawWeightedGroupBuckets");
+      if (saved == null) return true;
+      return saved === "true";
+    } catch {
+      return true;
+    }
+  });
+  const [weightedBucketCount, setWeightedBucketCount] = useState(getInitialWeightedBucketCount);
+  const [weightedBucketCountInput, setWeightedBucketCountInput] = useState(
+    () => String(getInitialWeightedBucketCount()),
+  );
+  const [weightedDistribution, setWeightedDistribution] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawWeightedDistribution");
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [sortByLevel, setSortByLevel] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawSortByLevel");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [draftDrawCount, setDraftDrawCount] = useState(drawCount);
+  const [draftFreePickCount, setDraftFreePickCount] = useState(freePickCount);
+  const [draftWeightedEnabled, setDraftWeightedEnabled] = useState(weightedEnabled);
+  const [draftWeightedForceExpected, setDraftWeightedForceExpected] = useState(weightedForceExpected);
+  const [draftWeightedGroupBuckets, setDraftWeightedGroupBuckets] = useState(weightedGroupBuckets);
+  const [draftWeightedBucketCount, setDraftWeightedBucketCount] = useState(weightedBucketCount);
+  const [draftWeightedBucketCountInput, setDraftWeightedBucketCountInput] = useState(
+    weightedBucketCountInput,
+  );
+  const [draftWeightedDistribution, setDraftWeightedDistribution] = useState(weightedDistribution);
+  const [draftSortByLevel, setDraftSortByLevel] = useState(sortByLevel);
+  const [activeCardContext, setActiveCardContext] = useState(null);
+  const [pocketPickState, setPocketPickState] = useState(null);
+  const [pocketPickSong, setPocketPickSong] = useState(null);
+  const [pocketPickChart, setPocketPickChart] = useState(null);
+  const [pocketPickInput, setPocketPickInput] = useState("");
+  const menuPortalTarget = typeof document !== "undefined" ? document.body : null;
+  const activeCard = activeCardContext?.card || null;
+  const displayTitleFor = useCallback((chart) => {
+    if (!chart) return "";
+    if (showTransliterationBeta) {
+      if (chart.titleTranslit) return chart.titleTranslit;
+      const meta = songMeta.find((entry) => entry.id === chart.songId || entry.path === chart.path);
+      if (meta?.titleTranslit) return meta.titleTranslit;
+    }
+    return chart.title || "";
+  }, [showTransliterationBeta, songMeta]);
+  const displayArtistFor = useCallback((chart) => {
+    if (!chart) return "";
+    if (showTransliterationBeta) {
+      if (chart.artistTranslit) return chart.artistTranslit;
+      const meta = songMeta.find((entry) => entry.id === chart.songId || entry.path === chart.path);
+      if (meta?.artistTranslit) return meta.artistTranslit;
+    }
+    return chart.artist || "";
+  }, [showTransliterationBeta, songMeta]);
+  const openSettings = useCallback(() => {
+    setDraftDrawCount(drawCount);
+    setDraftFreePickCount(freePickCount);
+    setDraftWeightedEnabled(weightedEnabled);
+    setDraftWeightedForceExpected(weightedForceExpected);
+    setDraftWeightedGroupBuckets(weightedGroupBuckets);
+    setDraftWeightedBucketCount(weightedBucketCount);
+    setDraftWeightedBucketCountInput(weightedBucketCountInput);
+    setDraftWeightedDistribution(weightedDistribution);
+    setDraftSortByLevel(sortByLevel);
+    setShowSettings(true);
+  }, [
+    drawCount,
+    freePickCount,
+    weightedEnabled,
+    weightedForceExpected,
+    weightedGroupBuckets,
+    weightedBucketCount,
+    weightedBucketCountInput,
+    weightedDistribution,
+    sortByLevel,
+  ]);
+  const freePickPlaceholder = useMemo(() => ({
+    title: "Free pick",
+    artist: "Tap to choose",
+    bpm: "--",
+    level: "--",
+    mode: playStyle,
+    difficulty: "basic",
+  }), [playStyle]);
+  const draftBucketCountNumeric = Number(draftWeightedBucketCountInput);
+  const draftBucketCountInvalid = draftWeightedBucketCountInput.trim() === ""
+    || Number.isNaN(draftBucketCountNumeric)
+    || !Number.isInteger(draftBucketCountNumeric)
+    || draftBucketCountNumeric < 1
+    || draftBucketCountNumeric > MAX_BUCKET_COUNT;
+  const activeActionsMap = useMemo(() => {
+    if (!activeCardContext) return null;
+    if (!activeCardContext.entryId) return cardActions;
+    const entry = drawHistory.find((item) => item.id === activeCardContext.entryId);
+    return entry?.actions || {};
+  }, [activeCardContext, cardActions, drawHistory]);
+  const activeActionEntry = activeCard && activeActionsMap
+    ? activeActionsMap[activeCard.uniqueKey]
+    : null;
+
+  useEffect(() => {
+    let cancelled = false;
+    loadSongMeta()
+      .then((meta) => {
+        if (!cancelled) setSongMeta(meta);
+      })
+      .catch(() => {
+        if (!cancelled) setSongMeta([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [loadSongMeta]);
+
+  useEffect(() => {
+    storage.removeItem("cardDrawFlowerFilter");
+  }, []);
+
+  useEffect(() => {
+    const option = SONGLIST_OVERRIDE_OPTIONS.find(
+      (opt) => opt.value === songlistOverride,
+    );
+    if (!option || !option.file) {
+      setOverrideSongs(null);
+      return;
+    }
+    getJsonCached(option.file)
+      .then((data) => {
+        const songs = (data.songs || []).map(normalizeString);
+        setOverrideSongs(new Set(songs));
+      })
+      .catch(() => setOverrideSongs(null));
+  }, [songlistOverride]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawCurrent", JSON.stringify(drawnCharts));
+  }, [drawnCharts]);
+
+  useEffect(() => {
+    if (currentDrawId == null) {
+      storage.setItem("cardDrawCurrentId", "");
+      return;
+    }
+    storage.setItem("cardDrawCurrentId", String(currentDrawId));
+  }, [currentDrawId]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawCurrentActions", JSON.stringify(cardActions));
+  }, [cardActions]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawHistory", JSON.stringify(drawHistory));
+  }, [drawHistory]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawCount", String(drawCount));
+  }, [drawCount]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawFreePickCount", String(freePickCount));
+  }, [freePickCount]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawWeightedEnabled", String(weightedEnabled));
+  }, [weightedEnabled]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawWeightedForceExpected", String(weightedForceExpected));
+  }, [weightedForceExpected]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawWeightedGroupBuckets", String(weightedGroupBuckets));
+  }, [weightedGroupBuckets]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawWeightedBucketCount", String(weightedBucketCount));
+  }, [weightedBucketCount]);
+
+  useEffect(() => {
+    storage.setItem(
+      "cardDrawWeightedDistribution",
+      JSON.stringify(weightedDistribution),
+    );
+  }, [weightedDistribution]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawSortByLevel", String(sortByLevel));
+  }, [sortByLevel]);
+
+  const filtersActive = Boolean(
+    filters.bpmMin !== "" ||
+      filters.bpmMax !== "" ||
+      filters.difficultyMin !== "" ||
+      filters.difficultyMax !== "" ||
+      filters.lengthMin !== "" ||
+      filters.lengthMax !== "" ||
+      filters.games.length > 0 ||
+      (filters.difficultyNames && filters.difficultyNames.length > 0) ||
+      filters.artist !== "" ||
+      (filters.title && filters.title !== "") ||
+      filters.multiBpm !== "any" ||
+      filters.playedStatus !== "all",
+  );
+
+  const filteredEntries = useMemo(() => {
+    if (!songMeta.length) return [];
+    const lowerCaseFilterNames = (filters.difficultyNames || []).map((n) =>
+      n.toLowerCase(),
+    );
+
+    return songMeta
+      .filter((meta) => {
+        if (!meta) return false;
+        if (filters.games.length && !filters.games.includes(meta.game)) {
+          return false;
+        }
+        if (
+          filters.artist &&
+          !meta.artist?.toLowerCase()?.includes(filters.artist.toLowerCase())
+        ) {
+          return false;
+        }
+        if (filters.title) {
+          const titleMatch = meta.title
+            ?.toLowerCase()
+            ?.includes(filters.title.toLowerCase());
+          const translitMatch = meta.titleTranslit
+            ?.toLowerCase()
+            ?.includes(filters.title.toLowerCase());
+          if (!titleMatch && !translitMatch) return false;
+        }
+        if (overrideSongs && overrideSongs.size > 0) {
+          const titles = [meta.title, meta.titleTranslit].filter(Boolean);
+          const normalized = titles.map(normalizeString);
+          if (!normalized.some((t) => overrideSongs.has(t))) return false;
+        }
+        const bpmDiff = meta.bpmMax - meta.bpmMin;
+        const isSingleBpm = bpmDiff <= 5;
+        if (filters.multiBpm === "single" && !isSingleBpm) return false;
+        if (filters.multiBpm === "multiple" && isSingleBpm) return false;
+        if (filters.bpmMin !== "" && meta.bpmMax < Number(filters.bpmMin)) {
+          return false;
+        }
+        if (filters.bpmMax !== "" && meta.bpmMin > Number(filters.bpmMax)) {
+          return false;
+        }
+        if (filters.lengthMin !== "" && meta.length < Number(filters.lengthMin)) {
+          return false;
+        }
+        if (filters.lengthMax !== "" && meta.length > Number(filters.lengthMax)) {
+          return false;
+        }
+
+        if (filters.playedStatus !== "all") {
+          const hasPlayed = meta.difficulties?.some((d) => {
+            if (d.mode !== playStyle) return false;
+            const scoreHit = resolveScore(scores, d.mode, {
+              chartId: d.chartId,
+              songId: meta.id,
+              title: meta.title,
+              artist: meta.artist,
+              difficulty: d.difficulty,
+            });
+            return scoreHit != null;
+          });
+          if (filters.playedStatus === "played" && !hasPlayed) return false;
+          if (filters.playedStatus === "notPlayed" && hasPlayed) return false;
+        }
+
+        return true;
+      })
+      .map((meta) => {
+        const matchingCharts = (meta.difficulties || []).filter((d) => {
+          if (d.mode !== playStyle) return false;
+          if (filters.difficultyMin !== "" && d.feet < Number(filters.difficultyMin)) {
+            return false;
+          }
+          if (filters.difficultyMax !== "" && d.feet > Number(filters.difficultyMax)) {
+            return false;
+          }
+          if (lowerCaseFilterNames.length > 0) {
+            if (!lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) {
+              return false;
+            }
+          }
+          return true;
+        });
+        return { meta, matchingCharts };
+      })
+      .filter((entry) => entry.matchingCharts.length > 0);
+  }, [
+    songMeta,
+    filters,
+    scores,
+    playStyle,
+    overrideSongs,
+  ]);
+
+  const availableCount = filteredEntries.length;
+  const levelRange = useMemo(() => {
+    let minLevel = filters.difficultyMin !== "" ? Number(filters.difficultyMin) : null;
+    let maxLevel = filters.difficultyMax !== "" ? Number(filters.difficultyMax) : null;
+    if (minLevel != null && Number.isNaN(minLevel)) minLevel = null;
+    if (maxLevel != null && Number.isNaN(maxLevel)) maxLevel = null;
+    if (minLevel == null || maxLevel == null) {
+      let foundMin = Infinity;
+      let foundMax = -Infinity;
+      filteredEntries.forEach((entry) => {
+        entry.matchingCharts.forEach((chart) => {
+          foundMin = Math.min(foundMin, chart.feet);
+          foundMax = Math.max(foundMax, chart.feet);
+        });
+      });
+      if (minLevel == null) {
+        minLevel = Number.isFinite(foundMin) ? foundMin : 1;
+      }
+      if (maxLevel == null) {
+        maxLevel = Number.isFinite(foundMax) ? foundMax : minLevel;
+      }
+    }
+    if (minLevel > maxLevel) return { min: maxLevel, max: minLevel };
+    return { min: minLevel, max: maxLevel };
+  }, [filteredEntries, filters.difficultyMax, filters.difficultyMin]);
+
+  const bucketDefinitions = useMemo(
+    () =>
+      buildBucketDefinitions(
+        levelRange.min,
+        levelRange.max,
+        weightedGroupBuckets,
+        weightedBucketCount,
+      ),
+    [levelRange.max, levelRange.min, weightedGroupBuckets, weightedBucketCount],
+  );
+  const draftBucketDefinitions = useMemo(
+    () =>
+      buildBucketDefinitions(
+        levelRange.min,
+        levelRange.max,
+        draftWeightedGroupBuckets,
+        draftWeightedBucketCount,
+      ),
+    [levelRange.max, levelRange.min, draftWeightedGroupBuckets, draftWeightedBucketCount],
+  );
+  const draftWeightedTotalCount = Math.min(draftDrawCount, availableCount || draftDrawCount);
+  const draftBucketDistribution = useMemo(() => {
+    if (!draftBucketDefinitions.length) return [];
+    if (draftWeightedForceExpected) {
+      return calculateExpectedDistribution(
+        filteredEntries,
+        draftBucketDefinitions,
+        draftWeightedTotalCount,
+      );
+    }
+    return normalizeDistribution(
+      coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
+      draftWeightedTotalCount,
+    );
+  }, [
+    draftBucketDefinitions,
+    filteredEntries,
+    draftWeightedDistribution,
+    draftWeightedForceExpected,
+    draftWeightedTotalCount,
+  ]);
+
+  useEffect(() => {
+    if (!bucketDefinitions.length) return;
+    setWeightedDistribution((prev) => {
+      const next = coerceDistribution(prev, bucketDefinitions.length);
+      if (Array.isArray(prev) && prev.length === next.length) {
+        const unchanged = prev.every((value, index) => next[index] === value);
+        if (unchanged) return prev;
+      }
+      return next;
+    });
+  }, [bucketDefinitions]);
+
+  useEffect(() => {
+    if (!draftBucketDefinitions.length) return;
+    setDraftWeightedDistribution((prev) => {
+      const next = coerceDistribution(prev, draftBucketDefinitions.length);
+      if (Array.isArray(prev) && prev.length === next.length) {
+        const unchanged = prev.every((value, index) => next[index] === value);
+        if (unchanged) return prev;
+      }
+      return next;
+    });
+  }, [draftBucketDefinitions]);
+
+  const buildChartData = useCallback((meta, chart) => {
+    if (!meta || !chart) return null;
+    const bpmMin = Math.round(meta.bpmMin);
+    const bpmMax = Math.round(meta.bpmMax);
+    const bpmLabel = bpmMin === bpmMax ? String(bpmMax) : `${bpmMin}-${bpmMax}`;
+    return {
+      uniqueKey: `${meta.id}-${chart.chartId || chart.difficulty}`,
+      title: meta.title,
+      titleTranslit: meta.titleTranslit,
+      artist: meta.artist,
+      artistTranslit: meta.artistTranslit,
+      jacket: meta.jacket,
+      level: chart.feet,
+      rankedRating: chart.rankedRating,
+      bpm: bpmLabel,
+      difficulty: chart.difficulty.toLowerCase(),
+      mode: chart.mode,
+      game: meta.game,
+      chartId: chart.chartId,
+      songId: meta.id,
+      path: meta.path,
+      hasShock: chart.hasShock,
+    };
+  }, []);
+
+  const buildChartCard = useCallback((entry) => {
+    const { meta, matchingCharts } = entry;
+    if (!meta || !matchingCharts.length) return null;
+    const chosen =
+      matchingCharts[Math.floor(Math.random() * matchingCharts.length)];
+    if (!chosen) return null;
+    return buildChartData(meta, chosen);
+  }, [buildChartData]);
+
+  const sortChartsByLevel = useCallback((charts) => {
+    if (!sortByLevel) return charts;
+    const withIndex = charts.map((chart, index) => ({ chart, index }));
+    const sorted = withIndex.sort((a, b) => {
+      const aFreePick = a.chart.freePickSlot || a.chart.isFreePickPlaceholder;
+      const bFreePick = b.chart.freePickSlot || b.chart.isFreePickPlaceholder;
+      if (aFreePick && !bFreePick) return 1;
+      if (!aFreePick && bFreePick) return -1;
+      const aLevel = Number(a.chart.level);
+      const bLevel = Number(b.chart.level);
+      if (Number.isFinite(aLevel) && Number.isFinite(bLevel) && aLevel !== bLevel) {
+        return aLevel - bLevel;
+      }
+      if (Number.isFinite(aLevel) && !Number.isFinite(bLevel)) return -1;
+      if (!Number.isFinite(aLevel) && Number.isFinite(bLevel)) return 1;
+      return a.index - b.index;
+    });
+    return sorted.map(({ chart }) => chart);
+  }, [sortByLevel]);
+
+  const drawCharts = useCallback(() => {
+    if (!filteredEntries.length) {
+      setDrawnCharts([]);
+      setDrawHistory([]);
+      setCurrentDrawId(null);
+      setCardActions({});
+      return;
+    }
+    const drawId = Date.now();
+    const pool = [...filteredEntries];
+    const maxCount = Math.min(drawCount, pool.length);
+    let picks = [];
+    if (weightedEnabled && bucketDefinitions.length) {
+      const targetCounts = weightedForceExpected
+        ? calculateExpectedDistribution(pool, bucketDefinitions, maxCount)
+        : normalizeDistribution(
+            coerceDistribution(weightedDistribution, bucketDefinitions.length),
+            maxCount,
+          );
+      picks = drawWeightedCards(
+        pool,
+        bucketDefinitions,
+        targetCounts,
+        maxCount,
+        buildChartData,
+        buildChartCard,
+      );
+    } else {
+      for (let i = 0; i < maxCount; i += 1) {
+        const idx = Math.floor(Math.random() * pool.length);
+        const [picked] = pool.splice(idx, 1);
+        const card = buildChartCard(picked);
+        if (card) picks.push(card);
+      }
+    }
+    const freePickSlots = Array.from({ length: freePickCount }, (_, index) => ({
+      uniqueKey: `free-pick-${drawId}-${index}`,
+      freePickSlot: true,
+      isFreePickPlaceholder: true,
+    }));
+    const nextPicks = sortChartsByLevel([...picks, ...freePickSlots]);
+    setDrawnCharts(nextPicks);
+    setCardActions({});
+    setCurrentDrawId(drawId);
+    setDrawHistory((prev) => {
+      if (!nextPicks.length) return prev;
+      const entry = { id: drawId, charts: nextPicks, actions: {} };
+      const next = [entry, ...prev];
+      return next.slice(0, 6);
+    });
+  }, [
+    filteredEntries,
+    buildChartCard,
+    buildChartData,
+    drawCount,
+    freePickCount,
+    weightedEnabled,
+    weightedForceExpected,
+    weightedDistribution,
+    bucketDefinitions,
+    sortChartsByLevel,
+  ]);
+
+  const clearDraw = useCallback(() => {
+    const hasData = drawnCharts.length > 0 || drawHistory.length > 0;
+    if (hasData) {
+      const confirmed = window.confirm(
+        "Clear the current draw and history?",
+      );
+      if (!confirmed) return;
+    }
+    setDrawnCharts([]);
+    setDrawHistory([]);
+    setCurrentDrawId(null);
+    setCardActions({});
+  }, [drawHistory.length, drawnCharts.length]);
+
+  const games = useMemo(() => {
+    if (smData?.games?.length) return smData.games;
+    const set = new Set();
+    songMeta.forEach((meta) => {
+      if (meta?.game) set.add(meta.game);
+    });
+    return Array.from(set);
+  }, [smData, songMeta]);
+
+  const drawUniqueCard = useCallback((excludedKeys) => {
+    if (!filteredEntries.length) return null;
+    const attempts = Math.min(filteredEntries.length * 4, 40);
+    for (let i = 0; i < attempts; i += 1) {
+      const entry = filteredEntries[Math.floor(Math.random() * filteredEntries.length)];
+      const card = buildChartCard(entry);
+      if (card && !excludedKeys.has(card.uniqueKey)) return card;
+    }
+    return null;
+  }, [filteredEntries, buildChartCard]);
+
+  const updateActionsForContext = useCallback((entryId, updater) => {
+    if (!entryId) {
+      setCardActions(updater);
+      return;
+    }
+    setDrawHistory((prev) =>
+      prev.map((entry) =>
+        entry.id === entryId
+          ? { ...entry, actions: updater(entry.actions || {}) }
+          : entry,
+      ),
+    );
+  }, []);
+
+  const updateChartsForContext = useCallback((entryId, updater) => {
+    if (!entryId) {
+      setDrawnCharts(updater);
+      return;
+    }
+    setDrawHistory((prev) =>
+      prev.map((entry) =>
+        entry.id === entryId
+          ? { ...entry, charts: updater(entry.charts || []) }
+          : entry,
+      ),
+    );
+  }, []);
+
+  const removeFreePickSlot = useCallback((entryId, cardKey) => {
+    if (!cardKey) return;
+    updateChartsForContext(entryId, (prev) => prev.filter((chart) => chart.uniqueKey !== cardKey));
+    updateActionsForContext(entryId, (prev) => {
+      const next = { ...prev };
+      delete next[cardKey];
+      return next;
+    });
+  }, [updateActionsForContext, updateChartsForContext]);
+
+  const resetCardDrawSettings = useCallback(() => {
+    setDraftDrawCount(DEFAULT_DRAW_COUNT);
+    setDraftFreePickCount(DEFAULT_FREE_PICK_COUNT);
+    setDraftWeightedEnabled(false);
+    setDraftWeightedForceExpected(false);
+    setDraftWeightedGroupBuckets(true);
+    setDraftWeightedBucketCount(DEFAULT_BUCKET_COUNT);
+    setDraftWeightedBucketCountInput(String(DEFAULT_BUCKET_COUNT));
+    setDraftWeightedDistribution([]);
+    setDraftSortByLevel(false);
+  }, []);
+
+  const applyCardDrawSettings = useCallback(() => {
+    setDrawCount(draftDrawCount);
+    setFreePickCount(draftFreePickCount);
+    setWeightedEnabled(draftWeightedEnabled);
+    setWeightedForceExpected(draftWeightedForceExpected);
+    setWeightedGroupBuckets(draftWeightedGroupBuckets);
+    setWeightedBucketCount(draftWeightedBucketCount);
+    setWeightedBucketCountInput(
+      draftBucketCountInvalid ? String(draftWeightedBucketCount) : draftWeightedBucketCountInput,
+    );
+    setWeightedDistribution(
+      coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
+    );
+    setSortByLevel(draftSortByLevel);
+    setShowSettings(false);
+  }, [
+    draftDrawCount,
+    draftFreePickCount,
+    draftWeightedEnabled,
+    draftWeightedForceExpected,
+    draftWeightedGroupBuckets,
+    draftWeightedBucketCount,
+    draftWeightedBucketCountInput,
+    draftWeightedDistribution,
+    draftSortByLevel,
+    draftBucketCountInvalid,
+    draftBucketDefinitions.length,
+  ]);
+
+  const refreshChartsForContext = useCallback((entryId) => {
+    const charts = entryId
+      ? drawHistory.find((entry) => entry.id === entryId)?.charts || []
+      : drawnCharts;
+    if (!charts.length) return;
+
+    const actionsMap = entryId
+      ? drawHistory.find((entry) => entry.id === entryId)?.actions || {}
+      : cardActions;
+
+    const keepKeys = new Set(
+      charts
+        .filter(
+          (chart) =>
+            LOCKED_ACTIONS.has(actionsMap[chart.uniqueKey]?.action)
+            || chart.freePickSlot,
+        )
+        .map((chart) => chart.uniqueKey),
+    );
+    if (weightedEnabled && bucketDefinitions.length) {
+      const lockedCharts = charts.filter((chart) => keepKeys.has(chart.uniqueKey));
+      const lockedSongIds = new Set(lockedCharts.map((chart) => chart.songId));
+      const pool = filteredEntries.filter(
+        (entry) => !lockedSongIds.has(entry.meta.id),
+      );
+      const totalCount = charts.length;
+      const targetCounts = weightedForceExpected
+        ? calculateExpectedDistribution(pool, bucketDefinitions, totalCount)
+        : normalizeDistribution(
+            coerceDistribution(weightedDistribution, bucketDefinitions.length),
+            totalCount,
+          );
+      const lockedCounts = bucketDefinitions.map(() => 0);
+      lockedCharts.forEach((chart) => {
+        const index = bucketDefinitions.findIndex(
+          (bucket) => chart.level >= bucket.min && chart.level <= bucket.max,
+        );
+        if (index !== -1) lockedCounts[index] += 1;
+      });
+      const remainingTargets = targetCounts.map((count, index) =>
+        Math.max(count - lockedCounts[index], 0),
+      );
+      const replacements = drawWeightedCards(
+        pool,
+        bucketDefinitions,
+        remainingTargets,
+        totalCount - lockedCharts.length,
+        buildChartData,
+        buildChartCard,
+      );
+      let replacementIndex = 0;
+      const nextCharts = charts.map((chart) => {
+        if (keepKeys.has(chart.uniqueKey)) return chart;
+        const replacement = replacements[replacementIndex];
+        replacementIndex += 1;
+        return replacement || chart;
+      });
+      const nextSortedCharts = sortChartsByLevel(nextCharts);
+      const nextActions = {};
+      nextSortedCharts.forEach((chart) => {
+        if (keepKeys.has(chart.uniqueKey)) {
+          const existing = actionsMap[chart.uniqueKey];
+          if (existing) nextActions[chart.uniqueKey] = existing;
+        }
+      });
+      updateChartsForContext(entryId, () => nextSortedCharts);
+      updateActionsForContext(entryId, () => nextActions);
+      return;
+    }
+
+    const excluded = new Set(keepKeys);
+    const nextCharts = charts.map((chart) => {
+      if (keepKeys.has(chart.uniqueKey)) return chart;
+      const replacement = drawUniqueCard(excluded);
+      if (!replacement) return chart;
+      excluded.add(replacement.uniqueKey);
+      return replacement;
+    });
+
+    const nextSortedCharts = sortChartsByLevel(nextCharts);
+    const nextActions = {};
+    nextSortedCharts.forEach((chart) => {
+      if (keepKeys.has(chart.uniqueKey)) {
+        const existing = actionsMap[chart.uniqueKey];
+        if (existing) nextActions[chart.uniqueKey] = existing;
+      }
+    });
+
+    updateChartsForContext(entryId, () => nextSortedCharts);
+    updateActionsForContext(entryId, () => nextActions);
+  }, [
+    cardActions,
+    drawHistory,
+    drawnCharts,
+    drawUniqueCard,
+    updateActionsForContext,
+    updateChartsForContext,
+    weightedEnabled,
+    weightedForceExpected,
+    weightedDistribution,
+    bucketDefinitions,
+    filteredEntries,
+    buildChartData,
+    buildChartCard,
+    sortChartsByLevel,
+  ]);
+
+  const revertPocketPick = useCallback((entryId, cardKey) => {
+    const actionEntry = (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[cardKey];
+    if (!actionEntry) return;
+    if (!actionEntry.originalCard) {
+      updateActionsForContext(entryId, (prev) => {
+        const next = { ...prev };
+        delete next[cardKey];
+        return next;
+      });
+      return;
+    }
+    updateChartsForContext(entryId, (prev) => {
+      const index = prev.findIndex((chart) => chart.uniqueKey === cardKey);
+      if (index === -1) return prev;
+      const next = [...prev];
+      next[index] = actionEntry.originalCard;
+      return next;
+    });
+    updateActionsForContext(entryId, (prev) => {
+      const next = { ...prev };
+      delete next[cardKey];
+      if (actionEntry.originalAction) {
+        next[actionEntry.originalCard.uniqueKey] = actionEntry.originalAction;
+      }
+      return next;
+    });
+  }, [cardActions, drawHistory, updateActionsForContext, updateChartsForContext]);
+
+  const applyCardAction = useCallback((actionKey, player) => {
+    if (!activeCardContext?.card) return;
+    const entryId = activeCardContext.entryId || null;
+    if (actionKey === "redraw") {
+      updateChartsForContext(entryId, (prev) => {
+        const index = prev.findIndex((chart) => chart.uniqueKey === activeCard.uniqueKey);
+        if (index === -1) return prev;
+        const excluded = new Set(prev.map((chart) => chart.uniqueKey));
+        excluded.delete(activeCard.uniqueKey);
+        const replacement = drawUniqueCard(excluded);
+        if (!replacement) return prev;
+        const next = [...prev];
+        next[index] = replacement;
+        updateActionsForContext(entryId, (prevActions) => {
+          const nextActions = { ...prevActions };
+          delete nextActions[activeCard.uniqueKey];
+          nextActions[replacement.uniqueKey] = { action: actionKey, player: null, winner: null };
+          return nextActions;
+        });
+        return next;
+      });
+      setActiveCardContext(null);
+      return;
+    }
+    const existing = (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[activeCard.uniqueKey];
+    if (actionKey === "winner") {
+      const isSameWinner = existing?.winner === player;
+      updateActionsForContext(entryId, (prev) => {
+        const next = { ...prev };
+        if (isSameWinner) {
+          if (existing?.action) {
+            next[activeCard.uniqueKey] = { ...existing, winner: null };
+          } else {
+            delete next[activeCard.uniqueKey];
+          }
+        } else {
+          next[activeCard.uniqueKey] = {
+            ...(existing || { action: null, player: null }),
+            winner: player,
+          };
+        }
+        return next;
+      });
+      setActiveCardContext(null);
+      return;
+    }
+    if (existing?.action === actionKey && existing?.player === player) {
+      if (actionKey === "pocket-pick") {
+        revertPocketPick(entryId, activeCard.uniqueKey);
+      } else {
+        updateActionsForContext(entryId, (prev) => {
+          const next = { ...prev };
+          if (existing?.winner) {
+            next[activeCard.uniqueKey] = { ...existing, action: null, player: null };
+          } else {
+            delete next[activeCard.uniqueKey];
+          }
+          return next;
+        });
+      }
+      setActiveCardContext(null);
+      return;
+    }
+    if (actionKey === "pocket-pick") {
+      setPocketPickState({ card: activeCard, player, entryId, mode: "pocket-pick" });
+      setPocketPickSong(null);
+      setPocketPickChart(null);
+      setPocketPickInput("");
+      setActiveCardContext(null);
+      return;
+    }
+    updateActionsForContext(entryId, (prev) => ({
+      ...prev,
+      [activeCard.uniqueKey]: {
+        action: actionKey,
+        player,
+        winner: existing?.winner || null,
+      },
+    }));
+    setActiveCardContext(null);
+  }, [activeCard, activeCardContext, cardActions, drawHistory, drawUniqueCard, revertPocketPick, updateActionsForContext, updateChartsForContext]);
+
+  const openFreePickModal = useCallback((card, entryId) => {
+    setPocketPickState({
+      card,
+      player: null,
+      entryId,
+      mode: "free-pick",
+    });
+    setPocketPickSong(null);
+    setPocketPickChart(null);
+    setPocketPickInput("");
+  }, []);
+
+  const handleChartPage = useCallback((chart) => {
+    if (!chart) return;
+    if (setPlayStyle) setPlayStyle(chart.mode);
+    const songId = chart.songId || chart.id || chart.path || chart.value;
+    const chartId = chart.chartId || chart.slug;
+    if (songId) {
+      const params = new URLSearchParams();
+      params.set("song", songId);
+      if (chartId) params.set("chart", chartId);
+      const query = params.toString();
+      navigate(`/bpm${query ? `?${query}` : ""}`, { state: { fromSongCard: true } });
+      return;
+    }
+    navigate(`/bpm?mode=${encodeURIComponent(chart.mode)}&difficulty=${encodeURIComponent(chart.difficulty)}&t=${encodeURIComponent(chart.title)}`, { state: { fromSongCard: true, title: chart.title } });
+  }, [navigate, setPlayStyle]);
+
+  const getActionLabel = useCallback((actionKey) => {
+    const match = CARD_ACTIONS.find((action) => action.key === actionKey);
+    return match ? match.label : actionKey;
+  }, []);
+
+  const renderSliceTag = useCallback((entry) => {
+    if (!entry?.action) {
+      return <span className="card-draw-slice-placeholder">No tag</span>;
+    }
+    const label = getActionLabel(entry.action);
+    const playerLabel = entry.player ? ` ${entry.player}` : "";
+    return (
+      <span className="card-draw-slice-tag">
+        {label}{playerLabel}
+      </span>
+    );
+  }, [getActionLabel]);
+
+  const renderSliceWinner = useCallback((entry) => {
+    if (!entry?.winner) {
+      return null;
+    }
+    const winnerBadge = entry.winner;
+    return (
+      <span className="card-draw-slice-winner" aria-label={`Winner ${entry.winner}`}>
+        <FontAwesomeIcon icon={faTrophy} />
+        <span className="card-draw-slice-winner-badge">{winnerBadge}</span>
+      </span>
+    );
+  }, []);
+
+  const getSliceClassName = useCallback((entry) => {
+    if (entry?.winner) return "card-draw-slice-winner";
+    if (entry?.action) return `card-draw-slice-${entry.action}`;
+    return "card-draw-slice-none";
+  }, []);
+
+  const pocketPickSongOptions = useMemo(() => {
+    return filteredEntries.map((entry) => ({
+      value: entry.meta.id,
+      label: showTransliterationBeta && entry.meta.titleTranslit
+        ? entry.meta.titleTranslit
+        : entry.meta.title,
+      data: {
+        entry,
+        title: entry.meta.title,
+        titleTranslit: entry.meta.titleTranslit,
+      },
+    }));
+  }, [filteredEntries, showTransliterationBeta]);
+
+  const pocketPickSongValue = useMemo(() => {
+    if (!pocketPickSong) return null;
+    return pocketPickSongOptions.find((opt) => opt.value === pocketPickSong.value) || pocketPickSong;
+  }, [pocketPickSong, pocketPickSongOptions]);
+
+  const pocketPickContextCharts = useMemo(() => {
+    if (!pocketPickState) return [];
+    if (!pocketPickState.entryId) return drawnCharts;
+    const entry = drawHistory.find((item) => item.id === pocketPickState.entryId);
+    return entry?.charts || [];
+  }, [pocketPickState, drawnCharts, drawHistory]);
+
+  const pocketPickChartOptions = useMemo(() => {
+    if (!pocketPickSongValue?.data?.entry) return [];
+    const { entry } = pocketPickSongValue.data;
+    const existing = new Set(pocketPickContextCharts.map((chart) => chart.uniqueKey));
+    if (pocketPickState?.card?.uniqueKey) {
+      existing.delete(pocketPickState.card.uniqueKey);
+    }
+    return entry.matchingCharts
+      .map((chart) => {
+        const card = buildChartData(entry.meta, chart);
+        if (!card || existing.has(card.uniqueKey)) return null;
+        const diffLabel = chart.difficulty?.toUpperCase?.() || chart.difficulty;
+        return {
+          value: card.uniqueKey,
+          label: `${chart.mode?.toUpperCase?.() || chart.mode} ${diffLabel} • Lv.${chart.feet}`,
+          data: { chart, entry },
+        };
+      })
+      .filter(Boolean);
+  }, [pocketPickSongValue, pocketPickContextCharts, pocketPickState, buildChartData]);
+
+  const handlePocketPickConfirm = useCallback(() => {
+    if (!pocketPickState || !pocketPickChart?.data) return;
+    const { card, player, entryId } = pocketPickState;
+    const isFreePick = pocketPickState.mode === "free-pick";
+    const { chart, entry } = pocketPickChart.data;
+    const replacement = buildChartData(entry.meta, chart);
+    if (!replacement) return;
+    const replacementWithSlot = card?.freePickSlot
+      ? { ...replacement, freePickSlot: true }
+      : replacement;
+    const originalAction = (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[card.uniqueKey]
+      ? {
+        action: (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[card.uniqueKey].action || null,
+        player: (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[card.uniqueKey].player || null,
+        winner: (entryId ? (drawHistory.find((item) => item.id === entryId)?.actions || {}) : cardActions)[card.uniqueKey].winner || null,
+      }
+      : null;
+    updateChartsForContext(entryId, (prev) => {
+      const index = prev.findIndex((chartEntry) => chartEntry.uniqueKey === card.uniqueKey);
+      if (index === -1) return prev;
+      const next = [...prev];
+      next[index] = replacementWithSlot;
+      return next;
+    });
+    updateActionsForContext(entryId, (prev) => {
+      const next = { ...prev };
+      delete next[card.uniqueKey];
+      if (!isFreePick) {
+        next[replacement.uniqueKey] = {
+          action: "pocket-pick",
+          player,
+          winner: originalAction?.winner || null,
+          originalCard: card,
+          originalAction,
+        };
+      }
+      return next;
+    });
+    setPocketPickState(null);
+    setPocketPickSong(null);
+    setPocketPickChart(null);
+    setPocketPickInput("");
+  }, [pocketPickState, pocketPickChart, buildChartData, cardActions, drawHistory, updateActionsForContext, updateChartsForContext]);
+
+  useEffect(() => {
+    if (!currentDrawId) return;
+    setDrawHistory((prev) => {
+      const index = prev.findIndex((entry) => entry.id === currentDrawId);
+      if (index === -1) return prev;
+      const entry = prev[index];
+      const nextEntry = {
+        ...entry,
+        charts: drawnCharts,
+        actions: cardActions,
+      };
+      const next = [...prev];
+      next[index] = nextEntry;
+      return next;
+    });
+  }, [cardActions, drawnCharts, currentDrawId]);
+
+  const isFreePickModal = pocketPickState?.mode === "free-pick";
+  const nonFreePickCount = useMemo(
+    () => drawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
+    [drawnCharts],
+  );
+
+  return (
+    <div className="app-container card-draw-page">
+      <section className="filter-bar card-draw-bar">
+        <div className="filter-group card-draw-controls">
+          <div className="card-draw-summary">
+            <span className="card-draw-summary-full">
+              {availableCount} song{availableCount === 1 ? "" : "s"} match the
+              filter.
+            </span>
+            <span className="card-draw-summary-short">
+              {availableCount} song{availableCount === 1 ? "" : "s"}.
+            </span>
+            <span className="card-draw-summary-tiny">
+              {availableCount}♫
+            </span>
+          </div>
+          <div className="card-draw-actions">
+            <button
+              type="button"
+              className="card-draw-action primary"
+              onClick={drawCharts}
+              disabled={availableCount === 0}
+            >
+              {drawnCharts.length ? "Draw" : `Draw ${drawCount}`}
+            </button>
+            <button
+              type="button"
+              className="filter-button"
+              onClick={openSettings}
+              title="Settings"
+              aria-label="Settings"
+            >
+              <FontAwesomeIcon icon={faGear} />
+            </button>
+            <button
+              type="button"
+              className={`filter-button ${filtersActive ? "active" : ""}`}
+              onClick={() => setShowFilter(true)}
+              title="Filters"
+            >
+              <FontAwesomeIcon icon={faFilter} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="dan-section card-draw-results">
+        <h2 className="dan-header" style={{ backgroundColor: "var(--accent-color)" }}>
+          <span>Current draw</span>
+          <button
+            type="button"
+            className="collapse-button"
+            title="Refresh draw"
+            aria-label="Refresh draw"
+            onClick={() => {
+              const confirmed = window.confirm(
+                "Refresh this draw? Protected and pocket picks will be kept.",
+              );
+              if (!confirmed) return;
+              refreshChartsForContext(null);
+            }}
+          >
+            <FontAwesomeIcon icon={faRotateRight} />
+          </button>
+        </h2>
+        <div
+          className={`song-grid ${nonFreePickCount === DEFAULT_DRAW_COUNT ? "card-draw-five" : ""}`}
+        >
+          {drawnCharts.length ? (
+            drawnCharts.map((chart) => (
+              chart.isFreePickPlaceholder ? (
+                <div
+                  key={chart.uniqueKey}
+                  className="card-draw-card card-draw-free-pick"
+                >
+                  <SongCard
+                    song={freePickPlaceholder}
+                    skipScoreLookup
+                    bpmOnly
+                    showArtist
+                    showJacket
+                    jacketFull
+                    showGameWithDifficulty
+                    levelInTitleBlock
+                    onCardClick={() => openFreePickModal(chart, null)}
+                    showScoreSlice
+                    scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
+                    scoreSliceClassName="card-draw-slice-none"
+                  />
+                </div>
+              ) : (
+                <div
+                  key={chart.uniqueKey}
+                  className={`card-draw-card${cardActions[chart.uniqueKey] ? ` is-${cardActions[chart.uniqueKey].action}${cardActions[chart.uniqueKey].player ? ` is-${cardActions[chart.uniqueKey].player.toLowerCase()}` : ""}` : ""}`}
+                >
+                  <SongCard
+                    song={chart}
+                    skipScoreLookup
+                    bpmOnly
+                    showArtist
+                    showJacket
+                    jacketFull
+                    showGameWithDifficulty
+                    levelInTitleBlock
+                    onCardClick={() => setActiveCardContext({ card: chart, entryId: null })}
+                    showScoreSlice
+                    scoreSliceLeft={renderSliceTag(cardActions[chart.uniqueKey])}
+                    scoreSliceRight={renderSliceWinner(cardActions[chart.uniqueKey])}
+                    scoreSliceClassName={getSliceClassName(cardActions[chart.uniqueKey])}
+                  />
+                </div>
+              )
+            ))
+          ) : (
+            <div className="card-draw-empty">
+              Draw to generate a set of charts for your tournament round.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {drawHistory.length > 1 && (
+        <section className="card-draw-history dan-section">
+          {drawHistory.slice(1, 6).map((entry) => (
+            <div key={entry.id} className="card-draw-history-set">
+              <h3 className="dan-header card-draw-history-header">
+                <span>{formatDrawTimestamp(entry.id)}</span>
+                <button
+                  type="button"
+                  className="collapse-button"
+                  title="Refresh draw"
+                  aria-label="Refresh draw"
+                  onClick={() => {
+                    const confirmed = window.confirm(
+                      "Refresh this draw? Protected and pocket picks will be kept.",
+                    );
+                    if (!confirmed) return;
+                    refreshChartsForContext(entry.id);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faRotateRight} />
+                </button>
+              </h3>
+              <div
+                className={`song-grid card-draw-history-grid ${
+                  entry.charts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
+                    ? "card-draw-five"
+                    : ""
+                }`}
+              >
+                {entry.charts.map((chart) => (
+                  chart.isFreePickPlaceholder ? (
+                    <div
+                      key={`${entry.id}-${chart.uniqueKey}`}
+                      className="card-draw-card card-draw-free-pick"
+                    >
+                      <SongCard
+                        song={freePickPlaceholder}
+                        skipScoreLookup
+                        bpmOnly
+                        showArtist
+                        showJacket
+                        jacketFull
+                        showGameWithDifficulty
+                        levelInTitleBlock
+                        onCardClick={() => openFreePickModal(chart, entry.id)}
+                        showScoreSlice
+                        scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
+                        scoreSliceClassName="card-draw-slice-none"
+                      />
+                    </div>
+                  ) : (
+                    <SongCard
+                      key={`${entry.id}-${chart.uniqueKey}`}
+                      song={chart}
+                      skipScoreLookup
+                      bpmOnly
+                      showArtist
+                      showJacket
+                      jacketFull
+                      showGameWithDifficulty
+                      levelInTitleBlock
+                      onCardClick={() => setActiveCardContext({ card: chart, entryId: entry.id })}
+                      showScoreSlice
+                      scoreSliceLeft={renderSliceTag(entry.actions?.[chart.uniqueKey])}
+                      scoreSliceRight={renderSliceWinner(entry.actions?.[chart.uniqueKey])}
+                      scoreSliceClassName={getSliceClassName(entry.actions?.[chart.uniqueKey])}
+                    />
+                  )
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      <ModalShell
+        isOpen={Boolean(activeCardContext)}
+        onClose={() => setActiveCardContext(null)}
+        title={activeCard ? "Card actions" : "Card actions"}
+        ariaDescribedBy="card-draw-actions"
+      >
+        <ModalShell.Body id="card-draw-actions">
+          {activeCard && (
+            <div className="card-draw-modal-meta">
+              <div className="card-draw-modal-title">{displayTitleFor(activeCard)}</div>
+              {displayArtistFor(activeCard) && (
+                <div className="card-draw-modal-artist">{displayArtistFor(activeCard)}</div>
+              )}
+              <div className="card-draw-modal-subtitle">
+                {activeCard.mode?.toUpperCase()} {activeCard.difficulty?.toUpperCase()} • Lv.{activeCard.level}
+              </div>
+            </div>
+          )}
+          <div className="card-draw-modal-actions">
+            {CARD_ACTIONS.map((action) => (
+              <div key={action.key} className="card-draw-modal-row">
+                <div className="card-draw-modal-label">{action.label}</div>
+                <div className="card-draw-modal-buttons">
+                  <ModalShell.Button
+                    variant="secondary"
+                    className={
+                      activeActionEntry?.action === action.key &&
+                      activeActionEntry?.player === "P1"
+                        ? "card-draw-modal-selected"
+                        : null
+                    }
+                    aria-pressed={
+                      activeActionEntry?.action === action.key &&
+                      activeActionEntry?.player === "P1"
+                    }
+                    onClick={() => applyCardAction(action.key, "P1")}
+                  >
+                    P1
+                  </ModalShell.Button>
+                  <ModalShell.Button
+                    variant="secondary"
+                    className={
+                      activeActionEntry?.action === action.key &&
+                      activeActionEntry?.player === "P2"
+                        ? "card-draw-modal-selected"
+                        : null
+                    }
+                    aria-pressed={
+                      activeActionEntry?.action === action.key &&
+                      activeActionEntry?.player === "P2"
+                    }
+                    onClick={() => applyCardAction(action.key, "P2")}
+                  >
+                    P2
+                  </ModalShell.Button>
+                </div>
+              </div>
+            ))}
+            <div className="card-draw-modal-row">
+              <div className="card-draw-modal-label">Winner</div>
+              <div className="card-draw-modal-buttons">
+                <ModalShell.Button
+                  variant="secondary"
+                  className={
+                    activeActionEntry?.winner === "P1" ? "card-draw-modal-selected" : null
+                  }
+                  aria-pressed={activeActionEntry?.winner === "P1"}
+                  onClick={() => applyCardAction("winner", "P1")}
+                >
+                  P1
+                </ModalShell.Button>
+                <ModalShell.Button
+                  variant="secondary"
+                  className={
+                    activeActionEntry?.winner === "P2" ? "card-draw-modal-selected" : null
+                  }
+                  aria-pressed={activeActionEntry?.winner === "P2"}
+                  onClick={() => applyCardAction("winner", "P2")}
+                >
+                  P2
+                </ModalShell.Button>
+              </div>
+            </div>
+          </div>
+        </ModalShell.Body>
+        <ModalShell.Footer align="space-between">
+          <ModalShell.Button
+            variant="secondary"
+            onClick={() => applyCardAction("redraw", null)}
+          >
+            Redraw
+          </ModalShell.Button>
+          <ModalShell.Button
+            variant="secondary"
+            onClick={() => {
+              handleChartPage(activeCard);
+              setActiveCard(null);
+            }}
+          >
+            View chart
+          </ModalShell.Button>
+        </ModalShell.Footer>
+      </ModalShell>
+
+      <ModalShell
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        title="Card draw settings"
+      >
+        <ModalShell.Body>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Draw count</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Choose how many charts to draw (1–{MAX_DRAW_COUNT}).
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+            <button
+              type="button"
+              className={settingsStyles.stepperButton}
+              onClick={() => setDraftDrawCount((prev) => Math.max(1, prev - 1))}
+              aria-label="Decrease draw count"
+            >
+              −
+            </button>
+            <input
+              id="card-draw-count"
+              type="number"
+              className={settingsStyles.input}
+              min={1}
+              max={MAX_DRAW_COUNT}
+              value={draftDrawCount}
+              onChange={(event) => {
+                const next = Number(event.target.value);
+                if (Number.isNaN(next)) return;
+                setDraftDrawCount(Math.min(MAX_DRAW_COUNT, Math.max(1, next)));
+              }}
+            />
+            <button
+              type="button"
+              className={settingsStyles.stepperButton}
+              onClick={() => setDraftDrawCount((prev) => Math.min(MAX_DRAW_COUNT, prev + 1))}
+              aria-label="Increase draw count"
+            >
+              +
+            </button>
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Free picks</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Add blank cards that you can fill in after the draw (0–{MAX_FREE_PICK_COUNT}).
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <button
+                  type="button"
+                  className={settingsStyles.stepperButton}
+                  onClick={() => setDraftFreePickCount((prev) => Math.max(0, prev - 1))}
+                  aria-label="Decrease free pick count"
+                >
+                  −
+                </button>
+                <input
+                  id="card-draw-free-picks"
+                  type="number"
+                  className={settingsStyles.input}
+                  min={0}
+                  max={MAX_FREE_PICK_COUNT}
+                  value={draftFreePickCount}
+                  onChange={(event) => {
+                    const next = Number(event.target.value);
+                    if (Number.isNaN(next)) return;
+                    setDraftFreePickCount(Math.min(MAX_FREE_PICK_COUNT, Math.max(0, next)));
+                  }}
+                />
+                <button
+                  type="button"
+                  className={settingsStyles.stepperButton}
+                  onClick={() => setDraftFreePickCount((prev) => Math.min(MAX_FREE_PICK_COUNT, prev + 1))}
+                  aria-label="Increase free pick count"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Sort by level</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Order the drawn charts from low to high difficulty.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftSortByLevel}
+                  onChange={() => setDraftSortByLevel((prev) => !prev)}
+                  ariaLabel="Toggle sort by level"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Use Weighted Distributions</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Sets a fixed limit on exactly how many charts of each difficulty level
+                  will be drawn.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftWeightedEnabled}
+                  onChange={() => setDraftWeightedEnabled((prev) => !prev)}
+                  ariaLabel="Toggle weighted distributions"
+                />
+              </div>
+            </div>
+            {draftWeightedEnabled && (
+              <div className={settingsStyles.subSection}>
+                <label className={settingsStyles.inlineToggle}>
+                  <input
+                    type="checkbox"
+                    checked={draftWeightedForceExpected}
+                    onChange={() => setDraftWeightedForceExpected((prev) => !prev)}
+                  />
+                  <span>Force expected distribution</span>
+                </label>
+                <div className={settingsStyles.inlineRow}>
+                  <label className={settingsStyles.inlineToggle}>
+                    <input
+                      type="checkbox"
+                      checked={draftWeightedGroupBuckets}
+                      onChange={() => setDraftWeightedGroupBuckets((prev) => !prev)}
+                    />
+                    <span>Group cards into this many buckets</span>
+                  </label>
+                  {draftWeightedGroupBuckets && (
+                    <input
+                      type="number"
+                      className={`${settingsStyles.bucketCountInput} ${
+                        draftBucketCountInvalid ? settingsStyles.bucketCountInvalid : ""
+                      }`}
+                      value={draftWeightedBucketCountInput}
+                      aria-invalid={draftBucketCountInvalid}
+                      onChange={(event) => {
+                        const nextRaw = event.target.value;
+                        setDraftWeightedBucketCountInput(nextRaw);
+                        if (nextRaw.trim() === "") return;
+                        const nextParsed = Number(nextRaw);
+                        if (!Number.isFinite(nextParsed)) return;
+                        if (!Number.isInteger(nextParsed)) return;
+                        if (nextParsed < 1 || nextParsed > MAX_BUCKET_COUNT) return;
+                        setDraftWeightedBucketCount(nextParsed);
+                      }}
+                    />
+                  )}
+                </div>
+                <div className={settingsStyles.bucketHint}>
+                  Distribute cards between levels within the selected filter.
+                </div>
+                <div className={settingsStyles.bucketGrid}>
+                  {draftBucketDefinitions.map((bucket, index) => {
+                    const label =
+                      bucket.min === bucket.max
+                        ? `Lv.${bucket.min}`
+                        : `Lv.${bucket.min}-${bucket.max}`;
+                    return (
+                      <div key={bucket.id} className={settingsStyles.bucketCell}>
+                        <input
+                          type="number"
+                          min={0}
+                          max={draftWeightedTotalCount}
+                          className={settingsStyles.bucketInput}
+                          value={draftBucketDistribution[index] ?? 0}
+                          disabled={draftWeightedForceExpected}
+                          onChange={(event) => {
+                            const nextValue = Number(event.target.value);
+                            if (Number.isNaN(nextValue)) return;
+                            setDraftWeightedDistribution((prev) => {
+                              const next = coerceDistribution(
+                                prev,
+                                draftBucketDefinitions.length,
+                              );
+                              next[index] = Math.max(0, Math.floor(nextValue));
+                              return next;
+                            });
+                          }}
+                        />
+                        <div className={settingsStyles.bucketLabel}>{label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </section>
+        </ModalShell.Body>
+        <ModalShell.Footer align="space-between">
+          <ModalShell.Button
+            variant="danger"
+            onClick={clearDraw}
+            disabled={drawnCharts.length === 0}
+            aria-label="Clear all draws"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            <span className={settingsStyles.clearLabel}>Clear all draws</span>
+          </ModalShell.Button>
+          <ModalShell.FooterActions>
+            <ModalShell.Button variant="secondary" onClick={resetCardDrawSettings}>
+              Reset
+            </ModalShell.Button>
+            <ModalShell.Button variant="primary" onClick={applyCardDrawSettings}>
+              Apply
+            </ModalShell.Button>
+          </ModalShell.FooterActions>
+        </ModalShell.Footer>
+      </ModalShell>
+
+      <ModalShell
+        isOpen={Boolean(pocketPickState)}
+        onClose={() => {
+          setPocketPickState(null);
+          setPocketPickSong(null);
+          setPocketPickChart(null);
+          setPocketPickInput("");
+        }}
+        title={isFreePickModal ? "Free pick" : "Pocket pick"}
+        ariaDescribedBy="pocket-pick-modal"
+      >
+        <ModalShell.Body id="pocket-pick-modal">
+          {pocketPickState?.card && !isFreePickModal && (
+            <div className="card-draw-modal-meta">
+              <div className="card-draw-modal-title">
+                Replace: {displayTitleFor(pocketPickState.card)}
+              </div>
+              {displayArtistFor(pocketPickState.card) && (
+                <div className="card-draw-modal-artist">
+                  {displayArtistFor(pocketPickState.card)}
+                </div>
+              )}
+              <div className="card-draw-modal-subtitle">
+                {pocketPickState.player} pocket pick
+              </div>
+            </div>
+          )}
+          {isFreePickModal && (
+            <div className="card-draw-modal-meta">
+              <div className="card-draw-modal-title">Select a free pick</div>
+              <div className="card-draw-modal-subtitle">
+                Choose a song and chart to fill this blank card.
+              </div>
+            </div>
+          )}
+          <div className="card-draw-pocket">
+            <div className="card-draw-pocket-field">
+              <label className="card-draw-pocket-label" htmlFor="pocket-pick-song">
+                Song
+              </label>
+              <Select
+                inputId="pocket-pick-song"
+                className="card-draw-pocket-select"
+                options={pocketPickSongOptions}
+                value={pocketPickSongValue}
+                onChange={(selected) => {
+                  setPocketPickSong(selected);
+                  setPocketPickChart(null);
+                }}
+                inputValue={pocketPickInput}
+                onInputChange={(value) => setPocketPickInput(value)}
+                placeholder="Search for a song..."
+                isClearable
+                menuPortalTarget={menuPortalTarget}
+                menuPosition="fixed"
+                filterOption={(option, rawInput) => {
+                  const input = rawInput.toLowerCase();
+                  const { label, data } = option;
+                  const title = data?.title || "";
+                  const titleTranslit = data?.titleTranslit || "";
+                  return (
+                    label.toLowerCase().includes(input) ||
+                    title.toLowerCase().includes(input) ||
+                    titleTranslit.toLowerCase().includes(input)
+                  );
+                }}
+                styles={{
+                  control: (styles) => ({
+                    ...styles,
+                    backgroundColor: "var(--card-bg-color)",
+                    border: "1px solid var(--border-color)",
+                    color: "var(--text-color)",
+                    padding: "0.3rem",
+                    borderRadius: "0.5rem",
+                  }),
+                  menu: (styles) => ({
+                    ...styles,
+                    backgroundColor: "var(--bg-color-light)",
+                    zIndex: 1002,
+                  }),
+                  menuPortal: (styles) => ({ ...styles, zIndex: 2000 }),
+                  option: (styles, { isFocused, isSelected }) => ({
+                    ...styles,
+                    backgroundColor: isSelected
+                      ? "var(--card-hover-bg-color)"
+                      : isFocused
+                      ? "var(--card-bg-color)"
+                      : null,
+                    color: "var(--text-color)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }),
+                  singleValue: (styles) => ({
+                    ...styles,
+                    color: "var(--text-color)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }),
+                  input: (styles) => ({ ...styles, color: "var(--text-color)" }),
+                }}
+              />
+            </div>
+            <div className="card-draw-pocket-field">
+              <label className="card-draw-pocket-label" htmlFor="pocket-pick-chart">
+                Chart
+              </label>
+              <Select
+                inputId="pocket-pick-chart"
+                className="card-draw-pocket-select"
+                options={pocketPickChartOptions}
+                value={pocketPickChart}
+                onChange={(selected) => setPocketPickChart(selected)}
+                placeholder="Select a chart..."
+                isClearable
+                isDisabled={!pocketPickSong}
+                menuPortalTarget={menuPortalTarget}
+                menuPosition="fixed"
+                styles={{
+                  control: (styles) => ({
+                    ...styles,
+                    backgroundColor: "var(--card-bg-color)",
+                    border: "1px solid var(--border-color)",
+                    color: "var(--text-color)",
+                    padding: "0.3rem",
+                    borderRadius: "0.5rem",
+                  }),
+                  menu: (styles) => ({
+                    ...styles,
+                    backgroundColor: "var(--bg-color-light)",
+                    zIndex: 1002,
+                  }),
+                  menuPortal: (styles) => ({ ...styles, zIndex: 2000 }),
+                  option: (styles, { isFocused, isSelected }) => ({
+                    ...styles,
+                    backgroundColor: isSelected
+                      ? "var(--card-hover-bg-color)"
+                      : isFocused
+                      ? "var(--card-bg-color)"
+                      : null,
+                    color: "var(--text-color)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }),
+                  singleValue: (styles) => ({
+                    ...styles,
+                    color: "var(--text-color)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }),
+                  input: (styles) => ({ ...styles, color: "var(--text-color)" }),
+                }}
+              />
+            </div>
+          </div>
+        </ModalShell.Body>
+      <ModalShell.Footer align="space-between">
+        {isFreePickModal ? (
+          <>
+            <ModalShell.Button
+              variant="secondary"
+              onClick={() => {
+                const confirmed = window.confirm("Remove this free pick slot?");
+                if (!confirmed) return;
+                removeFreePickSlot(pocketPickState?.entryId || null, pocketPickState?.card?.uniqueKey);
+                setPocketPickState(null);
+                setPocketPickSong(null);
+                setPocketPickChart(null);
+                setPocketPickInput("");
+              }}
+              aria-label="Remove free pick"
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </ModalShell.Button>
+            <div className="card-draw-modal-footer-actions">
+              <ModalShell.Button
+                variant="ghost"
+                onClick={() => {
+                  setPocketPickState(null);
+                  setPocketPickSong(null);
+                  setPocketPickChart(null);
+                  setPocketPickInput("");
+                }}
+              >
+                Cancel
+              </ModalShell.Button>
+              <ModalShell.Button
+                variant="primary"
+                onClick={handlePocketPickConfirm}
+                disabled={!pocketPickSong || !pocketPickChart}
+              >
+                Apply free pick
+              </ModalShell.Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <ModalShell.Button
+              variant="ghost"
+              onClick={() => {
+                setPocketPickState(null);
+                setPocketPickSong(null);
+                setPocketPickChart(null);
+                setPocketPickInput("");
+              }}
+            >
+              Cancel
+            </ModalShell.Button>
+            <ModalShell.Button
+              variant="primary"
+              onClick={handlePocketPickConfirm}
+              disabled={!pocketPickSong || !pocketPickChart}
+            >
+              Apply pocket pick
+            </ModalShell.Button>
+          </>
+        )}
+      </ModalShell.Footer>
+      </ModalShell>
+
+      <FilterModal
+        isOpen={showFilter}
+        onClose={() => setShowFilter(false)}
+        games={games}
+        showLists={false}
+      />
+    </div>
+  );
+};
+
+export default CardDrawPage;

@@ -1,0 +1,622 @@
+.card-draw-page {
+  gap: 1rem;
+}
+
+.card-draw-page .filter-bar {
+  margin-bottom: 0;
+}
+
+.card-draw-page .song-card {
+  background-color: var(--card-bg-color);
+}
+
+.card-draw-header h1 {
+  margin: 0;
+}
+
+.card-draw-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted-color);
+}
+
+.card-draw-bar .filter-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-draw-summary {
+  color: var(--text-muted-color);
+  font-size: 0.95rem;
+}
+
+.card-draw-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+
+.card-draw-action {
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  border-radius: var(--radius-sm);
+  padding: 0 1rem;
+  height: 44px;
+  min-width: 44px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.card-draw-action.primary {
+  background-color: var(--accent-color);
+  border-color: transparent;
+  color: var(--color-white-agnostic);
+}
+
+.card-draw-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card-draw-empty {
+  background-color: var(--bg-color-light);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  text-align: center;
+  color: var(--text-muted-color);
+}
+
+.card-draw-free-pick {
+  cursor: pointer;
+}
+
+.card-draw-free-pick .song-card {
+  border: 1px dashed var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: none;
+}
+
+.card-draw-free-pick .song-level,
+.card-draw-free-pick .difficulty-badge,
+.card-draw-free-pick .song-level-container {
+  visibility: hidden;
+}
+
+.card-draw-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-draw-history-set {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.card-draw-history-grid {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.card-draw-history-header {
+  margin: 0;
+  background-color: var(--accent-color);
+}
+
+.card-draw-history-set .song-grid {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.card-draw-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.card-draw-tag.protect {
+  background: var(--green-color);
+  color: #0b0b0b;
+}
+
+.card-draw-tag.pocket-pick {
+  background: var(--cyan-color);
+  color: #0b0b0b;
+}
+
+.card-draw-tag.veto {
+  background: var(--button-down-color);
+  color: #ffffff;
+}
+
+.card-draw-tag.redraw {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.card-draw-tag.winner {
+  background: var(--yellow-color);
+  color: #0b0b0b;
+}
+
+.card-draw-trophy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-left: 0.45rem;
+  position: relative;
+}
+
+.card-draw-trophy svg {
+  font-size: 0.85rem;
+}
+
+.card-draw-trophy-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 0.2rem;
+}
+
+.card-draw-slice-placeholder {
+  color: inherit;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.card-draw-slice-tag {
+  font-weight: 700;
+  text-transform: none;
+}
+
+.card-draw-slice-winner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: inherit;
+}
+
+.card-draw-slice-winner svg {
+  font-size: 0.85rem;
+}
+
+.card-draw-slice-winner-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1rem;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.card-draw-page .song-score-slice {
+  color: #0b0b0b;
+  background-color: var(--card-hover-bg-color);
+}
+
+.card-draw-page .song-score-slice .score-extra {
+  color: inherit;
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-none {
+  background-color: var(--card-hover-bg-color);
+  color: var(--text-muted-color);
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-none .card-draw-slice-placeholder {
+  opacity: 1;
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-protect {
+  background-color: var(--green-color);
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-pocket-pick {
+  background-color: var(--cyan-color);
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-veto {
+  background-color: var(--button-down-color);
+  color: #ffffff;
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-redraw {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-winner {
+  background-color: var(--yellow-color);
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-protect .card-draw-slice-placeholder,
+.card-draw-page .song-score-slice.card-draw-slice-pocket-pick .card-draw-slice-placeholder,
+.card-draw-page .song-score-slice.card-draw-slice-winner .card-draw-slice-placeholder {
+  color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+}
+
+.card-draw-page .song-score-slice.card-draw-slice-veto .card-draw-slice-placeholder,
+.card-draw-page .song-score-slice.card-draw-slice-redraw .card-draw-slice-placeholder {
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+}
+
+.card-draw-card.is-veto .song-card {
+  opacity: 0.55;
+}
+
+.card-draw-card.is-winner .song-card {
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.7),
+    0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+.card-draw-modal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.card-draw-modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.card-draw-modal-artist {
+  color: var(--text-muted-color);
+  font-size: 0.95rem;
+}
+
+.card-draw-modal-subtitle {
+  color: var(--text-muted-color);
+  font-size: 0.85rem;
+}
+
+.card-draw-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-draw-modal-footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card-draw-modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-draw-modal-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.card-draw-modal-label {
+  font-weight: 600;
+  flex: 1;
+}
+
+.card-draw-modal-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-draw-modal-selected {
+  border-color: rgba(var(--accent-color-rgb), 0.8);
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.4);
+}
+
+.card-draw-pocket {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-draw-pocket-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-draw-pocket-label {
+  font-weight: 600;
+  color: var(--text-muted-color);
+}
+
+.card-draw-pocket-select {
+  width: 100%;
+}
+
+.card-draw-summary-short {
+  display: none;
+}
+
+.card-draw-summary-tiny {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .card-draw-bar .filter-group {
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .card-draw-actions {
+    width: auto;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .card-draw-summary {
+    text-align: left;
+  }
+
+  .card-draw-summary-full {
+    display: none;
+  }
+
+  .card-draw-summary-short {
+    display: inline;
+  }
+
+  .card-draw-page .song-card {
+    min-height: 195px;
+    justify-content: flex-start;
+    padding-left: 8px;
+    padding-right:8px;
+    padding-top: 12px;
+    padding-bottom:12px;
+  }
+
+  .card-draw-page .song-bpm {
+    display: none;
+  }
+
+  .card-draw-page .song-card-artist {
+    white-space: normal;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  }
+
+  .card-draw-page .song-title-block {
+    height: auto;
+    min-height:9rem;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card-draw-page .song-card-header {
+    display: block;
+  }
+
+  .card-draw-page .song-title {
+    min-height: 0;
+    line-height: 1.35!important;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-draw-page .song-title-level {
+    display: none;
+  }
+
+  .card-draw-page .difficulty-badge[data-level]:not([data-level=""])::after {
+    content: "";
+  }
+
+  .card-draw-page .difficulty-badge-level {
+    display: inline-flex;
+    margin-left: 0.25rem;
+  }
+
+  .card-draw-page .difficulty-badge-shock {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.25rem;
+    color: currentColor;
+  }
+
+  .card-draw-page .song-card.jacket-full .song-card-jacket-bg {
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+  }
+
+  .card-draw-page .song-card.jacket-full .song-card-jacket-fade {
+    display: none;
+  }
+
+  .card-draw-page .song-card.show-game-with-difficulty .song-card-header .game-chip {
+    display: none;
+  }
+
+  .card-draw-page .song-card.show-game-with-difficulty .game-chip.inline {
+    display: inline-flex;
+  }
+
+  .card-draw-page .song-level-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    flex: 1;
+  }
+
+  .card-draw-page .song-badges {
+    margin-top: auto;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .card-draw-page .song-level {
+    line-height: 1;
+  }
+
+  .card-draw-page .difficulty-badge,
+  .card-draw-page .game-chip.inline {
+    height: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: 0.25rem;
+  }
+
+  .card-draw-page .difficulty-badge {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+  }
+
+  .card-draw-page .game-chip.inline {
+    font-size: 0.7rem;
+    padding: 0.125rem 0.4rem;
+  }
+
+  .card-draw-page .song-badges .card-draw-tag {
+    flex-basis: 100%;
+    order: 3;
+    justify-content: center;
+    margin-top: 0.35rem;
+  }
+
+  .card-draw-page .song-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-top: 0.25rem;
+  }
+
+  .card-draw-page .song-level {
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  }
+
+  .card-draw-page .song-inline-level {
+    display: none;
+  }
+
+  .card-draw-page .song-title-level {
+    display: none;
+  }
+
+  .card-draw-page .card-draw-tag {
+    margin-top: 0.35rem;
+    align-self: center;
+    box-shadow: none;
+  }
+
+  .card-draw-page .song-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 369px) {
+  .card-draw-summary-short {
+    display: none;
+  }
+
+  .card-draw-summary-tiny {
+    display: inline;
+  }
+}
+
+@media (min-width: 641px) {
+  .card-draw-page .song-details > div:first-child {
+    display: none;
+  }
+
+  .card-draw-page .song-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-draw-page .song-level-container {
+    text-align: left;
+    align-items: flex-start;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    margin-top: auto;
+  }
+
+  .card-draw-page .song-badges {
+    align-items: center;
+    flex-direction: row;
+    gap: 0.35rem;
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  .card-draw-page .song-badges .difficulty-badge {
+    order: 1;
+  }
+
+  .card-draw-page .song-badges .game-chip.inline {
+    order: 2;
+  }
+
+  .card-draw-page .song-badges .card-draw-tag {
+    order: 3;
+    margin-left: auto;
+  }
+
+  .card-draw-page .song-card.jacket-full .song-card-jacket-bg {
+    opacity: 0.4;
+  }
+}

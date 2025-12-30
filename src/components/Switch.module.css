@@ -1,0 +1,51 @@
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  --switch-height: 32px;
+  --switch-width: 62px;
+  --switch-padding: 3px;
+  --thumb-size: calc(var(--switch-height) - (var(--switch-padding) * 2));
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.track {
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--switch-padding);
+}
+
+.thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  background: var(--card-bg-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transform: translateX(0);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.switch input:checked + .track {
+  background: rgba(var(--accent-color-rgb), 0.35);
+  border-color: rgba(var(--accent-color-rgb), 0.6);
+}
+
+.switch input:checked + .track .thumb {
+  transform: translateX(
+    calc(var(--switch-width) - var(--thumb-size) - (var(--switch-padding) * 2))
+  );
+  background: #ffffff;
+}
