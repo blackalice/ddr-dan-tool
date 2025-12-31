@@ -39,7 +39,7 @@ const readCssVariable = (name, fallback) => {
 };
 
 const StatsPage = () => {
-  const { playStyle, theme, worldDifficultyChanges } = useContext(SettingsContext);
+  const { playStyle, theme, worldDifficultyChanges, worldRemoveChallengeCharts } = useContext(SettingsContext);
   const { stats, scores, ensureStats } = useScores();
   const { user } = useAuth();
 
@@ -72,7 +72,7 @@ const StatsPage = () => {
     return () => {
       controller?.abort();
     };
-  }, [ensureStats, scores, user, worldDifficultyChanges]);
+  }, [ensureStats, scores, user, worldDifficultyChanges, worldRemoveChallengeCharts]);
 
   const chartColors = useMemo(() => {
     const tooltipFallback = theme === 'light'

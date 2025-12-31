@@ -57,6 +57,16 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [worldRemoveChallengeCharts, setWorldRemoveChallengeCharts] = useState(() => {
+        const saved = storage.getItem('worldRemoveChallengeCharts');
+        if (saved != null) return JSON.parse(saved);
+        const legacy = storage.getItem('worldNewChallengeCharts');
+        if (legacy != null) {
+            return !JSON.parse(legacy);
+        }
+        return false;
+    });
+
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -100,6 +110,10 @@ export const SettingsProvider = ({ children }) => {
         storage.setItem('worldDifficultyChanges', JSON.stringify(worldDifficultyChanges));
     }, [worldDifficultyChanges]);
 
+    useEffect(() => {
+        storage.setItem('worldRemoveChallengeCharts', JSON.stringify(worldRemoveChallengeCharts));
+    }, [worldRemoveChallengeCharts]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -125,6 +139,8 @@ export const SettingsProvider = ({ children }) => {
         setSonglistOverride,
         worldDifficultyChanges,
         setWorldDifficultyChanges,
+        worldRemoveChallengeCharts,
+        setWorldRemoveChallengeCharts,
     };
 
     return (

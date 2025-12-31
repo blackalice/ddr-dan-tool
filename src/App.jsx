@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useMemo, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useSearchParams, Navigate, useNavigate } from 'react-router-dom';
 import Tabs from './Tabs';
 import { SettingsProvider, SettingsContext } from './contexts/SettingsContext.jsx';
@@ -6,6 +6,7 @@ import { ScoresProvider } from './contexts/ScoresContext.jsx';
 import { FilterProvider } from './contexts/FilterContext.jsx';
 import { GroupsProvider } from './contexts/GroupsContext.jsx';
 import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
+import { applyWorldNewChallengeChartsToSimfile } from './utils/worldNewChallengeCharts.js';
 import { parseSelection } from './utils/urlState.js';
 import { parseChartId } from './utils/chartIds.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
@@ -30,10 +31,14 @@ const LoginPage = lazy(() => import('./LoginPage.jsx'));
 const SignupPage = lazy(() => import('./SignupPage.jsx'));
 
 function AppRoutes() {
-  const { theme, setPlayStyle, playStyle } = useContext(SettingsContext);
+  const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts } = useContext(SettingsContext);
   const { user } = useAuth();
   const [smData, setSmData] = useState({ games: [], files: [] });
-  const [simfileData, setSimfileData] = useState(null);
+  const [rawSimfileData, setRawSimfileData] = useState(null);
+  const simfileData = useMemo(
+    () => applyWorldNewChallengeChartsToSimfile(rawSimfileData, !worldRemoveChallengeCharts),
+    [rawSimfileData, worldRemoveChallengeCharts],
+  );
   const [currentChart, setCurrentChart] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
   const [activeDan, setActiveDan] = useState(() => storage.getItem('activeDan') || 'All');
@@ -46,6 +51,22 @@ function AppRoutes() {
   const [searchParams, setSearchParams] = useSearchParams();
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
   const hideFooterOnMobile = location.pathname.startsWith('/multiplier');
+
+  const pickChartForPlayStyle = useCallback((availableTypes, style) => {
+    if (!Array.isArray(availableTypes) || availableTypes.length === 0) return null;
+    const defaultOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
+    const preferred = availableTypes.filter(c => c.mode === style);
+    const fallback = availableTypes.filter(c => c.mode !== style);
+    for (const d of defaultOrder) {
+      const match = preferred.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+      if (match) return match;
+    }
+    for (const d of defaultOrder) {
+      const match = fallback.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
+      if (match) return match;
+    }
+    return availableTypes[0] || null;
+  }, []);
 
   // Scores availability is handled within pages (e.g., StatsPage)
 
@@ -60,52 +81,37 @@ function AppRoutes() {
     const locationKey = `${location.pathname}${location.search}${location.hash}`;
     const locationChanged = previousLocationRef.current !== locationKey;
     previousLocationRef.current = locationKey;
-    const pickChartForPlayStyle = (availableTypes, style) => {
-      if (!Array.isArray(availableTypes) || availableTypes.length === 0) return null;
-      const defaultOrder = ['Expert', 'Hard', 'Heavy', 'Challenge', 'Difficult', 'Standard', 'Medium', 'Basic', 'Easy', 'Light', 'Beginner'];
-      const preferred = availableTypes.filter(c => c.mode === style);
-      const fallback = availableTypes.filter(c => c.mode !== style);
-      for (const d of defaultOrder) {
-        const match = preferred.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-        if (match) return match;
-      }
-      for (const d of defaultOrder) {
-        const match = fallback.find(c => c.difficulty.toLowerCase() === d.toLowerCase());
-        if (match) return match;
-      }
-      return availableTypes[0] || null;
-    };
-
     const loadFromUrl = async () => {
       const sel = parseSelection({ search: location.search, hash: location.hash });
       // New format: ?song=<songId>&chart=<chartId>
       if (sel.songId) {
         const songFile = smData.files.find(f => f.id === sel.songId || f.path === sel.songId) || null;
         if (!songFile) {
-          setSimfileData(null); setCurrentChart(null);
+          setRawSimfileData(null); setCurrentChart(null);
           return;
         }
         const data = await loadSimfileData(songFile);
-        setSimfileData(data);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        setRawSimfileData(data);
         let chart = null;
         if (sel.chartId) {
-          chart = data.availableTypes.find(c => c.slug === sel.chartId) || null;
+          chart = filteredData.availableTypes.find(c => c.slug === sel.chartId) || null;
           if (!chart) {
             const parsedChart = parseChartId(sel.chartId);
             if (parsedChart?.mode && parsedChart?.difficulty) {
               const slug = [parsedChart.mode, parsedChart.difficulty].filter(Boolean).join('-');
-              chart = data.availableTypes.find(c => c.slug === slug) || null;
+              chart = filteredData.availableTypes.find(c => c.slug === slug) || null;
             }
           }
         }
         if (!chart) {
-          chart = pickChartForPlayStyle(data.availableTypes, playStyle);
+          chart = pickChartForPlayStyle(filteredData.availableTypes, playStyle);
         }
         if (chart?.mode && chart.mode !== playStyle) {
           if (locationChanged) {
             setPlayStyle(chart.mode);
           } else {
-            const preferredChart = pickChartForPlayStyle(data.availableTypes, playStyle);
+            const preferredChart = pickChartForPlayStyle(filteredData.availableTypes, playStyle);
             if (preferredChart) chart = preferredChart;
           }
         }
@@ -141,21 +147,22 @@ function AppRoutes() {
       // Legacy format: #<title> or ?t=<title> with optional ?mode=&difficulty=
       if (sel.legacy && sel.legacy.title) {
         const songFile = await findSongByTitle(sel.legacy.title);
-        if (!songFile) { setSimfileData(null); setCurrentChart(null); return; }
+        if (!songFile) { setRawSimfileData(null); setCurrentChart(null); return; }
         const data = await loadSimfileData(songFile);
-        setSimfileData(data);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        setRawSimfileData(data);
         let chart = null;
         if (sel.legacy.difficulty && sel.legacy.mode) {
-          chart = data.availableTypes.find(c => c.difficulty.toLowerCase() === sel.legacy.difficulty.toLowerCase() && c.mode.toLowerCase() === sel.legacy.mode.toLowerCase()) || null;
+          chart = filteredData.availableTypes.find(c => c.difficulty.toLowerCase() === sel.legacy.difficulty.toLowerCase() && c.mode.toLowerCase() === sel.legacy.mode.toLowerCase()) || null;
         }
         if (!chart) {
-          chart = pickChartForPlayStyle(data.availableTypes, playStyle);
+          chart = pickChartForPlayStyle(filteredData.availableTypes, playStyle);
         }
         if (chart?.mode && chart.mode !== playStyle) {
           if (locationChanged) {
             setPlayStyle(chart.mode);
           } else {
-            const preferredChart = pickChartForPlayStyle(data.availableTypes, playStyle);
+            const preferredChart = pickChartForPlayStyle(filteredData.availableTypes, playStyle);
             if (preferredChart) chart = preferredChart;
           }
         }
@@ -201,7 +208,7 @@ function AppRoutes() {
             setSearchParams(next, { replace: true });
           }
         } else {
-          setSimfileData(null); setCurrentChart(null);
+          setRawSimfileData(null); setCurrentChart(null);
           if (storedSongId || storedChartSlug) {
             storage.setItem('bpmSelectedSong', '');
             storage.setItem('bpmSelectedChart', '');
@@ -210,7 +217,27 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate]);
+  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, worldRemoveChallengeCharts]);
+
+  useEffect(() => {
+    if (!simfileData) {
+      if (currentChart) setCurrentChart(null);
+      return;
+    }
+    if (!Array.isArray(simfileData.availableTypes)) return;
+    if (!currentChart) {
+      const next = pickChartForPlayStyle(simfileData.availableTypes, playStyle);
+      if (next) setCurrentChart(next);
+      return;
+    }
+    const match = simfileData.availableTypes.find(c => c.slug === currentChart.slug) || null;
+    if (!match) {
+      const next = pickChartForPlayStyle(simfileData.availableTypes, playStyle);
+      setCurrentChart(next);
+      return;
+    }
+    if (match !== currentChart) setCurrentChart(match);
+  }, [simfileData, currentChart, playStyle, pickChartForPlayStyle]);
 
   const handleSongSelect = useCallback((song) => {
     if (song) {

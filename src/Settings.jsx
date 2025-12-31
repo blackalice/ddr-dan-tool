@@ -37,6 +37,8 @@ const Settings = () => {
         setSonglistOverride,
         worldDifficultyChanges,
         setWorldDifficultyChanges,
+        worldRemoveChallengeCharts,
+        setWorldRemoveChallengeCharts,
     } = useContext(SettingsContext);
 
     const { scores, setScores, loadSongMeta } = useScores();
@@ -441,6 +443,22 @@ const Settings = () => {
                                 checked={worldDifficultyChanges}
                                 onChange={(e) => setWorldDifficultyChanges(e.target.checked)}
                                 ariaLabel="Toggle WORLD difficulty changes"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>Remove WORLD Challenge Charts</h3>
+                            <p>
+                                Hide the Challenge charts added in DDR WORLD from the app.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={worldRemoveChallengeCharts}
+                                onChange={(e) => setWorldRemoveChallengeCharts(e.target.checked)}
+                                ariaLabel="Toggle removing WORLD challenge charts"
                             />
                         </div>
                     </div>
