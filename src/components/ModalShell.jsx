@@ -12,7 +12,7 @@ const ModalShell = ({
   title,
   size = 'md',
   lockScroll = true,
-  closeOnBackdrop = true,
+  closeOnBackdrop = false,
   closeOnEscape = true,
   ariaDescribedBy,
   children,

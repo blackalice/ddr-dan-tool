@@ -16,6 +16,13 @@ function Multiplier() {
     setTargetInput(String(targetBPM));
   }, [targetBPM]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(max-width: 640px)').matches) return;
+    setActiveField('song');
+    setSongInput('');
+  }, []);
+
   const sanitizeInput = useCallback((value) => value.replace(/[^\d]/g, ''), []);
 
   const updateTargetInput = useCallback(

@@ -180,6 +180,11 @@
   color: var(--text-muted-color);
 }
 
+.bucketPercent {
+  font-size: 0.75rem;
+  color: var(--text-muted-color);
+}
+
 .clearLabel {
   margin-left: 0.5rem;
 }

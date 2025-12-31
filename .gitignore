@@ -45,3 +45,7 @@ public/vega-data.json
 /ddrbits/
 public/sm/**/*.png
 CYD/README.md
+public/sm-files.json
+public/song-lengths.json
+public/song-meta.json
+public/sm-files.json

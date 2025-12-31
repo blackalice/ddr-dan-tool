@@ -55,21 +55,39 @@ const coerceDistribution = (values, count) => {
   );
 };
 
-const normalizeDistribution = (values, total) => {
-  const adjusted = [...values];
-  let sum = adjusted.reduce((acc, value) => acc + value, 0);
-  if (sum === total) return adjusted;
-  if (sum < total) {
-    adjusted[adjusted.length - 1] += total - sum;
-    return adjusted;
+const calculateWeightedTargets = (values, total) => {
+  const count = Array.isArray(values) ? values.length : 0;
+  if (!count) return [];
+  const weights = coerceDistribution(values, count);
+  const targets = Array.from({ length: count }, () => 0);
+  if (total <= 0) return targets;
+  let totalWeight = weights.reduce((acc, value) => acc + value, 0);
+  let effectiveWeights = weights;
+  if (totalWeight <= 0) {
+    effectiveWeights = Array.from({ length: count }, () => 1);
+    totalWeight = count;
   }
-  let overflow = sum - total;
-  for (let i = adjusted.length - 1; i >= 0 && overflow > 0; i -= 1) {
-    const reduceBy = Math.min(overflow, adjusted[i]);
-    adjusted[i] -= reduceBy;
-    overflow -= reduceBy;
+  const ideal = effectiveWeights.map((weight) => (weight / totalWeight) * total);
+  const floors = ideal.map((value) => Math.floor(value));
+  let remainder = total - floors.reduce((acc, value) => acc + value, 0);
+  const fractions = ideal
+    .map((value, index) => ({
+      index,
+      frac: value - floors[index],
+      rand: Math.random(),
+    }))
+    .sort((a, b) => {
+      if (b.frac !== a.frac) return b.frac - a.frac;
+      return a.rand - b.rand;
+    });
+  floors.forEach((value, index) => {
+    targets[index] = value;
+  });
+  for (let i = 0; i < remainder; i += 1) {
+    const target = fractions[i % fractions.length];
+    targets[target.index] += 1;
   }
-  return adjusted;
+  return targets;
 };
 
 const buildBucketDefinitions = (minLevel, maxLevel, groupEnabled, bucketCount) => {
@@ -97,32 +115,6 @@ const buildBucketDefinitions = (minLevel, maxLevel, groupEnabled, bucketCount) =
     cursor = end + 1;
   }
   return buckets;
-};
-
-const calculateExpectedDistribution = (entries, buckets, total) => {
-  if (!buckets.length || total <= 0) return buckets.map(() => 0);
-  const bucketCounts = buckets.map(() => 0);
-  entries.forEach((entry) => {
-    entry.matchingCharts.forEach((chart) => {
-      const index = buckets.findIndex(
-        (bucket) => chart.feet >= bucket.min && chart.feet <= bucket.max,
-      );
-      if (index !== -1) bucketCounts[index] += 1;
-    });
-  });
-  const totalCharts = bucketCounts.reduce((acc, value) => acc + value, 0);
-  if (!totalCharts) return buckets.map(() => 0);
-  const raw = bucketCounts.map((count) => (count / totalCharts) * total);
-  const floors = raw.map((value) => Math.floor(value));
-  let remaining = total - floors.reduce((acc, value) => acc + value, 0);
-  const remainder = raw
-    .map((value, index) => ({ index, frac: value - floors[index] }))
-    .sort((a, b) => b.frac - a.frac);
-  for (let i = 0; i < remaining; i += 1) {
-    const target = remainder[i % remainder.length];
-    floors[target.index] += 1;
-  }
-  return floors;
 };
 
 const buildCardForBucket = (entry, bucket, buildChartData) => {
@@ -176,6 +168,36 @@ const drawWeightedCards = (
     if (card) picks.push(card);
   }
   return picks;
+};
+
+const calculateRandomTargets = (values, total) => {
+  const count = Array.isArray(values) ? values.length : 0;
+  if (!count) return [];
+  const weights = coerceDistribution(values, count);
+  const targets = Array.from({ length: count }, () => 0);
+  if (total <= 0) return targets;
+  let totalWeight = weights.reduce((acc, value) => acc + value, 0);
+  let effectiveWeights = weights;
+  if (totalWeight <= 0) {
+    effectiveWeights = Array.from({ length: count }, () => 1);
+    totalWeight = count;
+  }
+  const cumulative = [];
+  let running = 0;
+  for (let i = 0; i < count; i += 1) {
+    running += effectiveWeights[i];
+    cumulative[i] = running;
+  }
+  for (let pick = 0; pick < total; pick += 1) {
+    const roll = Math.random() * totalWeight;
+    for (let i = 0; i < cumulative.length; i += 1) {
+      if (roll < cumulative[i]) {
+        targets[i] += 1;
+        break;
+      }
+    }
+  }
+  return targets;
 };
 
 const formatDrawTimestamp = (timestamp) => {
@@ -636,24 +658,29 @@ const CardDrawPage = ({ smData }) => {
     [levelRange.max, levelRange.min, draftWeightedGroupBuckets, draftWeightedBucketCount],
   );
   const draftWeightedTotalCount = Math.min(draftDrawCount, availableCount || draftDrawCount);
-  const draftBucketDistribution = useMemo(() => {
+  const draftBucketDistribution = useMemo(
+    () => coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
+    [draftBucketDefinitions.length, draftWeightedDistribution],
+  );
+  const draftBucketWeightTotal = useMemo(
+    () => draftBucketDistribution.reduce((acc, value) => acc + value, 0),
+    [draftBucketDistribution],
+  );
+  const draftBucketExpectedRanges = useMemo(() => {
     if (!draftBucketDefinitions.length) return [];
-    if (draftWeightedForceExpected) {
-      return calculateExpectedDistribution(
-        filteredEntries,
-        draftBucketDefinitions,
-        draftWeightedTotalCount,
-      );
+    if (draftBucketWeightTotal <= 0) {
+      return draftBucketDistribution.map(() => "--");
     }
-    return normalizeDistribution(
-      coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
-      draftWeightedTotalCount,
-    );
+    return draftBucketDistribution.map((weight) => {
+      const ideal = (weight / draftBucketWeightTotal) * draftWeightedTotalCount;
+      const min = Math.floor(ideal);
+      const max = Math.ceil(ideal);
+      return min === max ? String(min) : `${min}-${max}`;
+    });
   }, [
-    draftBucketDefinitions,
-    filteredEntries,
-    draftWeightedDistribution,
-    draftWeightedForceExpected,
+    draftBucketDefinitions.length,
+    draftBucketDistribution,
+    draftBucketWeightTotal,
     draftWeightedTotalCount,
   ]);
 
@@ -749,8 +776,11 @@ const CardDrawPage = ({ smData }) => {
     let picks = [];
     if (weightedEnabled && bucketDefinitions.length) {
       const targetCounts = weightedForceExpected
-        ? calculateExpectedDistribution(pool, bucketDefinitions, maxCount)
-        : normalizeDistribution(
+        ? calculateWeightedTargets(
+            coerceDistribution(weightedDistribution, bucketDefinitions.length),
+            maxCount,
+          )
+        : calculateRandomTargets(
             coerceDistribution(weightedDistribution, bucketDefinitions.length),
             maxCount,
           );
@@ -937,27 +967,34 @@ const CardDrawPage = ({ smData }) => {
         (entry) => !lockedSongIds.has(entry.meta.id),
       );
       const totalCount = charts.length;
+      const remainingCount = totalCount - lockedCharts.length;
       const targetCounts = weightedForceExpected
-        ? calculateExpectedDistribution(pool, bucketDefinitions, totalCount)
-        : normalizeDistribution(
+        ? calculateWeightedTargets(
             coerceDistribution(weightedDistribution, bucketDefinitions.length),
             totalCount,
+          )
+        : calculateRandomTargets(
+            coerceDistribution(weightedDistribution, bucketDefinitions.length),
+            remainingCount,
           );
-      const lockedCounts = bucketDefinitions.map(() => 0);
-      lockedCharts.forEach((chart) => {
-        const index = bucketDefinitions.findIndex(
-          (bucket) => chart.level >= bucket.min && chart.level <= bucket.max,
+      let remainingTargets = targetCounts;
+      if (weightedForceExpected) {
+        const lockedCounts = bucketDefinitions.map(() => 0);
+        lockedCharts.forEach((chart) => {
+          const index = bucketDefinitions.findIndex(
+            (bucket) => chart.level >= bucket.min && chart.level <= bucket.max,
+          );
+          if (index !== -1) lockedCounts[index] += 1;
+        });
+        remainingTargets = targetCounts.map((count, index) =>
+          Math.max(count - lockedCounts[index], 0),
         );
-        if (index !== -1) lockedCounts[index] += 1;
-      });
-      const remainingTargets = targetCounts.map((count, index) =>
-        Math.max(count - lockedCounts[index], 0),
-      );
+      }
       const replacements = drawWeightedCards(
         pool,
         bucketDefinitions,
         remainingTargets,
-        totalCount - lockedCharts.length,
+        remainingCount,
         buildChartData,
         buildChartCard,
       );
@@ -1717,8 +1754,8 @@ const CardDrawPage = ({ smData }) => {
               <div className={settingsStyles.settingText}>
                 <h4 className={settingsStyles.sectionTitle}>Use Weighted Distributions</h4>
                 <p className={settingsStyles.sectionDescription}>
-                  Sets a fixed limit on exactly how many charts of each difficulty level
-                  will be drawn.
+                  Weight the chance of drawing charts from each difficulty bucket.
+                  Values are relative and do not need to add up.
                 </p>
               </div>
               <div className={settingsStyles.settingControl}>
@@ -1770,7 +1807,8 @@ const CardDrawPage = ({ smData }) => {
                   )}
                 </div>
                 <div className={settingsStyles.bucketHint}>
-                  Distribute cards between levels within the selected filter.
+                  Higher numbers increase the odds for that bucket.
+                  {draftWeightedForceExpected ? " Ranges show how many cards each bucket gets." : ""}
                 </div>
                 <div className={settingsStyles.bucketGrid}>
                   {draftBucketDefinitions.map((bucket, index) => {
@@ -1778,15 +1816,19 @@ const CardDrawPage = ({ smData }) => {
                       bucket.min === bucket.max
                         ? `Lv.${bucket.min}`
                         : `Lv.${bucket.min}-${bucket.max}`;
+                    const weightValue = draftBucketDistribution[index] ?? 0;
+                    const percentLabel = draftBucketWeightTotal > 0
+                      ? `${Math.round((weightValue / draftBucketWeightTotal) * 100)}%`
+                      : "--";
+                    const rangeLabel = draftBucketExpectedRanges[index] ?? "--";
+                    const hintLabel = draftWeightedForceExpected ? rangeLabel : percentLabel;
                     return (
                       <div key={bucket.id} className={settingsStyles.bucketCell}>
                         <input
                           type="number"
                           min={0}
-                          max={draftWeightedTotalCount}
                           className={settingsStyles.bucketInput}
                           value={draftBucketDistribution[index] ?? 0}
-                          disabled={draftWeightedForceExpected}
                           onChange={(event) => {
                             const nextValue = Number(event.target.value);
                             if (Number.isNaN(nextValue)) return;
@@ -1801,6 +1843,7 @@ const CardDrawPage = ({ smData }) => {
                           }}
                         />
                         <div className={settingsStyles.bucketLabel}>{label}</div>
+                        <div className={settingsStyles.bucketPercent}>{hintLabel}</div>
                       </div>
                     );
                   })}
