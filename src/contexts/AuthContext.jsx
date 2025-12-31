@@ -23,7 +23,10 @@ export const AuthProvider = ({ children }) => {
     setPlayStyle,
     setShowRankedRatings,
     setShowCoursesBeta,
+    setShowTransliterationBeta,
     setSonglistOverride,
+    setWorldDifficultyChanges,
+    setWorldRemoveChallengeCharts,
   } = useContext(SettingsContext);
 
   const applySettings = (data = {}) => {
@@ -37,7 +40,14 @@ export const AuthProvider = ({ children }) => {
     // showLists is always enabled now
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
     if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
+    if (data.showTransliterationBeta !== undefined) setShowTransliterationBeta(bool(data.showTransliterationBeta));
     if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
+    if (data.worldDifficultyChanges !== undefined) setWorldDifficultyChanges(bool(data.worldDifficultyChanges));
+    if (data.worldRemoveChallengeCharts !== undefined) {
+      setWorldRemoveChallengeCharts(bool(data.worldRemoveChallengeCharts));
+    } else if (data.worldNewChallengeCharts !== undefined) {
+      setWorldRemoveChallengeCharts(!bool(data.worldNewChallengeCharts));
+    }
   };
 
   const refreshToken = async () => {
@@ -138,7 +148,11 @@ export const AuthProvider = ({ children }) => {
           showLists: data.showLists,
           showRankedRatings: data.showRankedRatings,
           showCoursesBeta: data.showCoursesBeta,
+          showTransliterationBeta: data.showTransliterationBeta,
           songlistOverride: data.songlistOverride,
+          worldDifficultyChanges: data.worldDifficultyChanges,
+          worldRemoveChallengeCharts: data.worldRemoveChallengeCharts,
+          worldNewChallengeCharts: data.worldNewChallengeCharts,
         };
         applySettings(flat);
       }
@@ -163,7 +177,21 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
     return false;
-  }, [navigate, setScores, setTargetBPM, setApiKey, setMultiplierMode, setTheme, setPlayStyle, setShowRankedRatings, setSonglistOverride]);
+  }, [
+    navigate,
+    setScores,
+    setTargetBPM,
+    setApiKey,
+    setMultiplierMode,
+    setTheme,
+    setPlayStyle,
+    setShowRankedRatings,
+    setShowCoursesBeta,
+    setShowTransliterationBeta,
+    setSonglistOverride,
+    setWorldDifficultyChanges,
+    setWorldRemoveChallengeCharts,
+  ]);
 
   useEffect(() => {
     fetchUserData();
@@ -213,7 +241,11 @@ export const AuthProvider = ({ children }) => {
     setTheme('dark');
     setPlayStyle('single');
     setShowRankedRatings(false);
+    setShowCoursesBeta(false);
+    setShowTransliterationBeta(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
+    setWorldDifficultyChanges(false);
+    setWorldRemoveChallengeCharts(false);
     // Clear persisted storage (remote + local + session)
     try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch { /* noop */ }
     storage.clear();
