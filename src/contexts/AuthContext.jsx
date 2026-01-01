@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
     setShowCoursesBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
+    setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
   } = useContext(SettingsContext);
@@ -42,6 +43,9 @@ export const AuthProvider = ({ children }) => {
     if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
     if (data.showTransliterationBeta !== undefined) setShowTransliterationBeta(bool(data.showTransliterationBeta));
     if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
+    if (data.showMultiplierIncrementVersion !== undefined) {
+      setShowMultiplierIncrementVersion(bool(data.showMultiplierIncrementVersion));
+    }
     if (data.worldDifficultyChanges !== undefined) setWorldDifficultyChanges(bool(data.worldDifficultyChanges));
     if (data.worldRemoveChallengeCharts !== undefined) {
       setWorldRemoveChallengeCharts(bool(data.worldRemoveChallengeCharts));
@@ -150,6 +154,7 @@ export const AuthProvider = ({ children }) => {
           showCoursesBeta: data.showCoursesBeta,
           showTransliterationBeta: data.showTransliterationBeta,
           songlistOverride: data.songlistOverride,
+          showMultiplierIncrementVersion: data.showMultiplierIncrementVersion,
           worldDifficultyChanges: data.worldDifficultyChanges,
           worldRemoveChallengeCharts: data.worldRemoveChallengeCharts,
           worldNewChallengeCharts: data.worldNewChallengeCharts,
@@ -189,6 +194,7 @@ export const AuthProvider = ({ children }) => {
     setShowCoursesBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
+    setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
   ]);
@@ -244,6 +250,7 @@ export const AuthProvider = ({ children }) => {
     setShowCoursesBeta(false);
     setShowTransliterationBeta(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
+    setShowMultiplierIncrementVersion(false);
     setWorldDifficultyChanges(false);
     setWorldRemoveChallengeCharts(false);
     // Clear persisted storage (remote + local + session)

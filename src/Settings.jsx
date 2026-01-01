@@ -35,6 +35,8 @@ const Settings = () => {
         setShowTransliterationBeta,
         songlistOverride,
         setSonglistOverride,
+        showMultiplierIncrementVersion,
+        setShowMultiplierIncrementVersion,
         worldDifficultyChanges,
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
@@ -344,7 +346,7 @@ const Settings = () => {
                                 Change the available speed multipliers to match a specific game version.
                             </p>
                         </div>
-                        <div className="setting-control">
+                        <div className="setting-control setting-control-stack">
                             <select
                                 value={multiplierMode}
                                 onChange={(e) => setMultiplierMode(e.target.value)}
@@ -354,6 +356,14 @@ const Settings = () => {
                                     <option key={mode} value={mode}>{mode}</option>
                                 ))}
                             </select>
+                            <div className="settings-inline-toggle">
+                                <span>Show selector on Multiplier page</span>
+                                <Switch
+                                    checked={showMultiplierIncrementVersion}
+                                    onChange={(e) => setShowMultiplierIncrementVersion(e.target.checked)}
+                                    ariaLabel="Toggle multiplier increment version selector"
+                                />
+                            </div>
                         </div>
                     </div>
 

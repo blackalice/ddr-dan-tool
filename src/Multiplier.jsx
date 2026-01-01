@@ -2,10 +2,17 @@ import React, { useState, useMemo, useContext, useCallback, useEffect } from 're
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
+import { MULTIPLIER_MODES } from './utils/multipliers';
 import './Multiplier.css';
 
 function Multiplier() {
-  const { targetBPM, multipliers } = useContext(SettingsContext);
+  const {
+    targetBPM,
+    multipliers,
+    multiplierMode,
+    setMultiplierMode,
+    showMultiplierIncrementVersion,
+  } = useContext(SettingsContext);
   const [targetInput, setTargetInput] = useState(() => String(targetBPM ?? ''));
   const [songInput, setSongInput] = useState('150');
   const [activeField, setActiveField] = useState('song');
@@ -189,6 +196,20 @@ function Multiplier() {
                   </div>
                 </div>
               </div>
+              {showMultiplierIncrementVersion && (
+                <div className="multiplier-result-compact multiplier-mode-compact">
+                  <select
+                    className="multiplier-mode-select"
+                    value={multiplierMode}
+                    onChange={(e) => setMultiplierMode(e.target.value)}
+                    aria-label="Multiplier increment version"
+                  >
+                    {Object.values(MULTIPLIER_MODES).map((mode) => (
+                      <option key={mode} value={mode}>{mode}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <div className="multiplier-keypad">
                 {['1','2','3','4','5','6','7','8','9'].map((digit) => {
                   const cornerClass = digit === '1'
@@ -252,6 +273,20 @@ function Multiplier() {
                   )}
                 </div>
               </div>
+              {showMultiplierIncrementVersion && (
+                <div className="multiplier-mode-compact">
+                  <select
+                    className="multiplier-mode-select"
+                    value={multiplierMode}
+                    onChange={(e) => setMultiplierMode(e.target.value)}
+                    aria-label="Multiplier increment version"
+                  >
+                    {Object.values(MULTIPLIER_MODES).map((mode) => (
+                      <option key={mode} value={mode}>{mode}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
           </div>
         </div>

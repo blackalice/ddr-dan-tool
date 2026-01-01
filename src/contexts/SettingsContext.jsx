@@ -34,6 +34,11 @@ export const SettingsProvider = ({ children }) => {
         return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
     });
 
+    const [showMultiplierIncrementVersion, setShowMultiplierIncrementVersion] = useState(() => {
+        const saved = storage.getItem('showMultiplierIncrementVersion');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     const [showLists] = useState(true);
 
     const [showRankedRatings, setShowRankedRatings] = useState(() => {
@@ -99,6 +104,10 @@ export const SettingsProvider = ({ children }) => {
     }, [songlistOverride]);
 
     useEffect(() => {
+        storage.setItem('showMultiplierIncrementVersion', JSON.stringify(showMultiplierIncrementVersion));
+    }, [showMultiplierIncrementVersion]);
+
+    useEffect(() => {
         storage.setItem('showCoursesBeta', JSON.stringify(showCoursesBeta));
     }, [showCoursesBeta]);
 
@@ -137,6 +146,8 @@ export const SettingsProvider = ({ children }) => {
         setShowTransliterationBeta,
         songlistOverride,
         setSonglistOverride,
+        showMultiplierIncrementVersion,
+        setShowMultiplierIncrementVersion,
         worldDifficultyChanges,
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
