@@ -10,13 +10,14 @@ import React, {
   useState,
 } from 'react';
 import { storage } from '../utils/remoteStorage.js';
-import { getSongMeta } from '../utils/cachedFetch.js';
+import { getJsonCached, getSongMeta } from '../utils/cachedFetch.js';
 import { makeScoreKey, legacyScoreKey } from '../utils/scoreKey.js';
 import { buildChartId, isChartId, normalizeMode, upgradeChartId } from '../utils/chartIds.js';
 import { normalizeSongIdValue } from '../utils/songId.js';
 import { SettingsContext } from './SettingsContext.jsx';
 import { applyWorldDifficultyChanges } from '../utils/worldDifficultyChanges.js';
 import { applyWorldNewChallengeCharts } from '../utils/worldNewChallengeCharts.js';
+import { normalizeString } from '../utils/stringSimilarity.js';
 import {
   buildChartMetaLookup,
   computeStats,
@@ -112,6 +113,35 @@ function migrateScores(existing, meta) {
 export const ScoresContext = createContext();
 
 const STATS_STORAGE_KEY = 'scoreStats';
+const RANKINGS_PATH = '/combined_song_ratings.json';
+
+function buildRatingMap(data, key) {
+  const map = new Map();
+  if (!Array.isArray(data)) return map;
+  for (const entry of data) {
+    const norm = normalizeString(entry?.song_name || '');
+    if (!norm) continue;
+    const val = entry?.[key];
+    if (!map.has(norm)) map.set(norm, []);
+    if (Array.isArray(val)) {
+      map.get(norm).push(...val.map(Number));
+    } else if (val !== undefined && val !== null) {
+      map.get(norm).push(Number(val));
+    }
+  }
+  return map;
+}
+
+function pickRatingForLevel(ratings, level) {
+  if (!Array.isArray(ratings) || ratings.length === 0) return null;
+  const idx = ratings.findIndex((r) => Math.floor(r) === level);
+  if (idx !== -1) {
+    const val = ratings[idx];
+    ratings.splice(idx, 1);
+    return val;
+  }
+  return ratings.shift();
+}
 
 export const ScoresProvider = ({ children }) => {
   const settings = useContext(SettingsContext) || {};
@@ -142,6 +172,8 @@ export const ScoresProvider = ({ children }) => {
   const [songMeta, setSongMeta] = useState([]);
   const [songMetaWorldFlag, setSongMetaWorldFlag] = useState(null);
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
+  const rankedRatingsRef = useRef(null);
+  const rankedRatingsPromiseRef = useRef(null);
   const songMetaPromiseRef = useRef(null);
   const chartMetaPromiseRef = useRef(null);
   const scoresRef = useRef(scores);
@@ -171,6 +203,60 @@ export const ScoresProvider = ({ children }) => {
     return applyWorldNewChallengeCharts(withWorldChanges, !worldRemoveChallengeCharts);
   }, [worldDifficultyChanges, worldRemoveChallengeCharts]);
 
+  const loadRankedRatings = useCallback(async () => {
+    if (rankedRatingsRef.current) return rankedRatingsRef.current;
+    if (rankedRatingsPromiseRef.current) return rankedRatingsPromiseRef.current;
+    const promise = getJsonCached(RANKINGS_PATH)
+      .then((data) => {
+        const result = {
+          single: buildRatingMap(data, 'single_rankings'),
+          double: buildRatingMap(data, 'doubles_rankings'),
+        };
+        rankedRatingsRef.current = result;
+        return result;
+      })
+      .catch((err) => {
+        console.warn('[scores] Failed to load ranked ratings', err);
+        return null;
+      })
+      .finally(() => {
+        rankedRatingsPromiseRef.current = null;
+      });
+    rankedRatingsPromiseRef.current = promise;
+    return promise;
+  }, []);
+
+  const applyRankedRatings = useCallback(async (meta) => {
+    if (!Array.isArray(meta) || meta.length === 0) return meta;
+    const ratings = await loadRankedRatings();
+    if (!ratings) return meta;
+    let changed = false;
+    const next = meta.map((song) => {
+      const key = normalizeString(song?.title || '');
+      const single = ratings.single.get(key);
+      const double = ratings.double.get(key);
+      if (!single && !double) return song;
+      const pools = {
+        single: single ? [...single] : null,
+        double: double ? [...double] : null,
+      };
+      if (!Array.isArray(song?.difficulties)) return song;
+      let songChanged = false;
+      const difficulties = song.difficulties.map((diff) => {
+        const pool = pools[diff.mode];
+        if (!pool || pool.length === 0) return diff;
+        const rated = pickRatingForLevel(pool, diff.feet);
+        if (!Number.isFinite(rated) || diff.rankedRating === rated) return diff;
+        songChanged = true;
+        return { ...diff, rankedRating: rated };
+      });
+      if (!songChanged) return song;
+      changed = true;
+      return { ...song, difficulties };
+    });
+    return changed ? next : meta;
+  }, [loadRankedRatings]);
+
   const loadSongMeta = useCallback(async () => {
     if (
       Array.isArray(songMeta) &&
@@ -180,7 +266,9 @@ export const ScoresProvider = ({ children }) => {
       return songMeta;
     }
     if (Array.isArray(rawSongMeta) && rawSongMeta.length > 0) {
-      const applied = applyWorldMetaChanges(rawSongMeta);
+      const corrected = await applyRankedRatings(rawSongMeta);
+      const applied = applyWorldMetaChanges(corrected);
+      setRawSongMeta(corrected);
       setSongMeta(applied);
       setSongMetaWorldFlag(worldMetaKey);
       return applied;
@@ -193,11 +281,14 @@ export const ScoresProvider = ({ children }) => {
         if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
           throw new Error(`[scores] song metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
         }
-        setRawSongMeta(meta);
-        const applied = applyWorldMetaChanges(meta);
-        setSongMeta(applied);
-        setSongMetaWorldFlag(worldMetaKey);
-        return applied;
+        return applyRankedRatings(meta).then((corrected) => {
+          const normalized = corrected || meta;
+          setRawSongMeta(normalized);
+          const applied = applyWorldMetaChanges(normalized);
+          setSongMeta(applied);
+          setSongMetaWorldFlag(worldMetaKey);
+          return applied;
+        });
       })
       .catch(err => {
         console.warn('[scores] Failed to load song metadata', err);
@@ -208,7 +299,7 @@ export const ScoresProvider = ({ children }) => {
       });
     songMetaPromiseRef.current = promise;
     return promise;
-  }, [applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, worldMetaKey]);
+  }, [applyRankedRatings, applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, worldMetaKey]);
 
   useEffect(() => {
     if (!rawSongMeta.length) return;

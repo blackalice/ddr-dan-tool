@@ -482,14 +482,19 @@ function buildRatingMap(data, key) {
     return map;
 }
 
-const ratingCache = new Map();
+const ratingCache = new WeakMap();
 
 function getRatingsForTitle(title, map) {
     const norm = normalizeName(title);
-    if (ratingCache.has(norm)) return [...ratingCache.get(norm)];
+    let cacheForMap = ratingCache.get(map);
+    if (!cacheForMap) {
+        cacheForMap = new Map();
+        ratingCache.set(map, cacheForMap);
+    }
+    if (cacheForMap.has(norm)) return [...cacheForMap.get(norm)];
     if (map.has(norm)) {
         const arr = map.get(norm);
-        ratingCache.set(norm, arr);
+        cacheForMap.set(norm, arr);
         return [...arr];
     }
     let bestKey = null;
@@ -503,10 +508,10 @@ function getRatingsForTitle(title, map) {
     }
     if (bestKey && bestDist <= 2) {
         const arr = map.get(bestKey);
-        ratingCache.set(norm, arr);
+        cacheForMap.set(norm, arr);
         return [...arr];
     }
-    ratingCache.set(norm, []);
+    cacheForMap.set(norm, []);
     return [];
 }
 
