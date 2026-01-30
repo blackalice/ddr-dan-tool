@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     setWorldRemoveChallengeCharts,
   } = useContext(SettingsContext);
 
-  const applySettings = (data = {}) => {
+  const applySettings = useCallback((data = {}) => {
     const bool = (v) => v === true || v === 'true';
     const num = (v, d) => (v !== undefined && v !== null ? Number(v) : d);
     if (data.targetBPM !== undefined) setTargetBPM(num(data.targetBPM, 300));
@@ -52,12 +52,25 @@ export const AuthProvider = ({ children }) => {
     } else if (data.worldNewChallengeCharts !== undefined) {
       setWorldRemoveChallengeCharts(!bool(data.worldNewChallengeCharts));
     }
-  };
+  }, [
+    setTargetBPM,
+    setApiKey,
+    setMultiplierMode,
+    setTheme,
+    setPlayStyle,
+    setShowRankedRatings,
+    setShowCoursesBeta,
+    setShowTransliterationBeta,
+    setSonglistOverride,
+    setShowMultiplierIncrementVersion,
+    setWorldDifficultyChanges,
+    setWorldRemoveChallengeCharts,
+  ]);
 
-  const refreshToken = async () => {
+  const refreshToken = useCallback(async () => {
     const res = await fetch('/api/refresh', { method: 'POST', credentials: 'include' });
     return res.ok;
-  };
+  }, []);
 
   const fetchUserData = useCallback(async () => {
     const res = await fetch('/api/user/data', { credentials: 'include' });
@@ -182,22 +195,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
     return false;
-  }, [
-    navigate,
-    setScores,
-    setTargetBPM,
-    setApiKey,
-    setMultiplierMode,
-    setTheme,
-    setPlayStyle,
-    setShowRankedRatings,
-    setShowCoursesBeta,
-    setShowTransliterationBeta,
-    setSonglistOverride,
-    setShowMultiplierIncrementVersion,
-    setWorldDifficultyChanges,
-    setWorldRemoveChallengeCharts,
-  ]);
+  }, [applySettings, refreshToken, setScores, setGroups, setActiveGroup, setUser]);
 
   useEffect(() => {
     fetchUserData();

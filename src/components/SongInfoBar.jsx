@@ -22,6 +22,7 @@ import { resolveScore } from '../utils/scoreKey.js';
 import '../BPMTool.css';
 import '../styles/glow.css';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
+import { getDifficultyValue, isDifficultyInRange } from '../utils/difficultyFilters.js';
 
 const SongInfoBar = ({
   isCollapsed,
@@ -99,12 +100,14 @@ const SongInfoBar = ({
     return difficultyLevels.map(levelName => {
         let level = null;
         let chartType = null;
+        let matchedDifficulty = null;
 
         // Find the chart for the current difficulty level (e.g., 'Expert')
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
                 level = showRankedRatings && difficultySet[name].rankedRating != null ? difficultySet[name].rankedRating : difficultySet[name].feet;
                 chartType = chartDifficulties.find(t => t.difficulty === name);
+                matchedDifficulty = difficultySet[name];
                 if (chartType) break;
             }
         }
@@ -115,8 +118,13 @@ const SongInfoBar = ({
         // Now, check against filters
         if (chartType) {
             // Check level range filter
-            if ((filters.difficultyMin && chartType.feet < Number(filters.difficultyMin)) ||
-                (filters.difficultyMax && chartType.feet > Number(filters.difficultyMax))) {
+            const chartForFilter = {
+              ...chartType,
+              rankedRating: matchedDifficulty?.rankedRating,
+              feet: matchedDifficulty?.feet ?? chartType.feet,
+            };
+            const difficultyValue = getDifficultyValue(chartForFilter, showRankedRatings);
+            if (!isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
                 filteredOut = true;
             }
             // Check difficulty name filter

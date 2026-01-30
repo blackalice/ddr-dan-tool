@@ -21,6 +21,7 @@ import { normalizeString } from "./utils/stringSimilarity.js";
 import { SONGLIST_OVERRIDE_OPTIONS } from "./utils/songlistOverrides.js";
 import { getJsonCached } from "./utils/cachedFetch.js";
 import { storage } from "./utils/remoteStorage.js";
+import { getDifficultyBucketValue, getDifficultyValue, isDifficultyInRange } from "./utils/difficultyFilters.js";
 import "./CardDrawPage.css";
 import settingsStyles from "./components/CardDrawSettingsModal.module.css";
 
@@ -117,12 +118,13 @@ const buildBucketDefinitions = (minLevel, maxLevel, groupEnabled, bucketCount) =
   return buckets;
 };
 
-const buildCardForBucket = (entry, bucket, buildChartData) => {
+const buildCardForBucket = (entry, bucket, buildChartData, getBucketValue) => {
   const { meta, matchingCharts } = entry;
   if (!meta || !matchingCharts.length) return null;
-  const options = matchingCharts.filter(
-    (chart) => chart.feet >= bucket.min && chart.feet <= bucket.max,
-  );
+  const options = matchingCharts.filter((chart) => {
+    const bucketValue = getBucketValue(chart);
+    return Number.isFinite(bucketValue) && bucketValue >= bucket.min && bucketValue <= bucket.max;
+  });
   if (!options.length) return null;
   const chosen = options[Math.floor(Math.random() * options.length)];
   return buildChartData(meta, chosen);
@@ -135,6 +137,7 @@ const drawWeightedCards = (
   maxCount,
   buildChartData,
   buildChartCard,
+  getBucketValue,
 ) => {
   const remaining = [...entries];
   const picks = [];
@@ -145,7 +148,10 @@ const drawWeightedCards = (
       for (let i = 0; i < remaining.length; i += 1) {
         if (
           remaining[i].matchingCharts.some(
-            (chart) => chart.feet >= bucket.min && chart.feet <= bucket.max,
+            (chart) => {
+              const bucketValue = getBucketValue(chart);
+              return Number.isFinite(bucketValue) && bucketValue >= bucket.min && bucketValue <= bucket.max;
+            },
           )
         ) {
           eligible.push(i);
@@ -154,7 +160,7 @@ const drawWeightedCards = (
       if (!eligible.length) break;
       const chosenIndex = eligible[Math.floor(Math.random() * eligible.length)];
       const [entry] = remaining.splice(chosenIndex, 1);
-      const card = buildCardForBucket(entry, bucket, buildChartData);
+      const card = buildCardForBucket(entry, bucket, buildChartData, getBucketValue);
       if (card) {
         picks.push(card);
         needed -= 1;
@@ -218,7 +224,7 @@ const CARD_ACTIONS = [
 ];
 
 const CardDrawPage = ({ smData }) => {
-  const { playStyle, songlistOverride, setPlayStyle, showTransliterationBeta } = useContext(SettingsContext);
+  const { playStyle, songlistOverride, setPlayStyle, showTransliterationBeta, showRankedRatings } = useContext(SettingsContext);
   const { filters } = useFilters();
   const { scores, loadSongMeta } = useScores();
   const navigate = useNavigate();
@@ -587,10 +593,8 @@ const CardDrawPage = ({ smData }) => {
       .map((meta) => {
         const matchingCharts = (meta.difficulties || []).filter((d) => {
           if (d.mode !== playStyle) return false;
-          if (filters.difficultyMin !== "" && d.feet < Number(filters.difficultyMin)) {
-            return false;
-          }
-          if (filters.difficultyMax !== "" && d.feet > Number(filters.difficultyMax)) {
+          const difficultyValue = getDifficultyValue(d, showRankedRatings);
+          if (!isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
             return false;
           }
           if (lowerCaseFilterNames.length > 0) {
@@ -609,6 +613,7 @@ const CardDrawPage = ({ smData }) => {
     scores,
     playStyle,
     overrideSongs,
+    showRankedRatings,
   ]);
 
   const availableCount = filteredEntries.length;
@@ -617,13 +622,21 @@ const CardDrawPage = ({ smData }) => {
     let maxLevel = filters.difficultyMax !== "" ? Number(filters.difficultyMax) : null;
     if (minLevel != null && Number.isNaN(minLevel)) minLevel = null;
     if (maxLevel != null && Number.isNaN(maxLevel)) maxLevel = null;
+    if (minLevel != null) {
+      minLevel = showRankedRatings ? Math.floor(minLevel) : minLevel;
+    }
+    if (maxLevel != null) {
+      maxLevel = showRankedRatings ? Math.floor(maxLevel) : maxLevel;
+    }
     if (minLevel == null || maxLevel == null) {
       let foundMin = Infinity;
       let foundMax = -Infinity;
       filteredEntries.forEach((entry) => {
         entry.matchingCharts.forEach((chart) => {
-          foundMin = Math.min(foundMin, chart.feet);
-          foundMax = Math.max(foundMax, chart.feet);
+          const bucketValue = getDifficultyBucketValue(chart, showRankedRatings);
+          if (!Number.isFinite(bucketValue)) return;
+          foundMin = Math.min(foundMin, bucketValue);
+          foundMax = Math.max(foundMax, bucketValue);
         });
       });
       if (minLevel == null) {
@@ -635,7 +648,7 @@ const CardDrawPage = ({ smData }) => {
     }
     if (minLevel > maxLevel) return { min: maxLevel, max: minLevel };
     return { min: minLevel, max: maxLevel };
-  }, [filteredEntries, filters.difficultyMax, filters.difficultyMin]);
+  }, [filteredEntries, filters.difficultyMax, filters.difficultyMin, showRankedRatings]);
 
   const bucketDefinitions = useMemo(
     () =>
@@ -750,8 +763,8 @@ const CardDrawPage = ({ smData }) => {
       const bFreePick = b.chart.freePickSlot || b.chart.isFreePickPlaceholder;
       if (aFreePick && !bFreePick) return 1;
       if (!aFreePick && bFreePick) return -1;
-      const aLevel = Number(a.chart.level);
-      const bLevel = Number(b.chart.level);
+      const aLevel = getDifficultyValue(a.chart, showRankedRatings);
+      const bLevel = getDifficultyValue(b.chart, showRankedRatings);
       if (Number.isFinite(aLevel) && Number.isFinite(bLevel) && aLevel !== bLevel) {
         return aLevel - bLevel;
       }
@@ -760,7 +773,12 @@ const CardDrawPage = ({ smData }) => {
       return a.index - b.index;
     });
     return sorted.map(({ chart }) => chart);
-  }, [sortByLevel]);
+  }, [sortByLevel, showRankedRatings]);
+
+  const bucketValueForChart = useCallback(
+    (chart) => getDifficultyBucketValue(chart, showRankedRatings),
+    [showRankedRatings],
+  );
 
   const drawCharts = useCallback(() => {
     if (!filteredEntries.length) {
@@ -791,6 +809,7 @@ const CardDrawPage = ({ smData }) => {
         maxCount,
         buildChartData,
         buildChartCard,
+        bucketValueForChart,
       );
     } else {
       for (let i = 0; i < maxCount; i += 1) {
@@ -826,6 +845,7 @@ const CardDrawPage = ({ smData }) => {
     weightedDistribution,
     bucketDefinitions,
     sortChartsByLevel,
+    bucketValueForChart,
   ]);
 
   const clearDraw = useCallback(() => {
@@ -981,8 +1001,10 @@ const CardDrawPage = ({ smData }) => {
       if (weightedForceExpected) {
         const lockedCounts = bucketDefinitions.map(() => 0);
         lockedCharts.forEach((chart) => {
+          const bucketValue = bucketValueForChart(chart);
+          if (!Number.isFinite(bucketValue)) return;
           const index = bucketDefinitions.findIndex(
-            (bucket) => chart.level >= bucket.min && chart.level <= bucket.max,
+            (bucket) => bucketValue >= bucket.min && bucketValue <= bucket.max,
           );
           if (index !== -1) lockedCounts[index] += 1;
         });
@@ -997,6 +1019,7 @@ const CardDrawPage = ({ smData }) => {
         remainingCount,
         buildChartData,
         buildChartCard,
+        bucketValueForChart,
       );
       let replacementIndex = 0;
       const nextCharts = charts.map((chart) => {
@@ -1053,6 +1076,7 @@ const CardDrawPage = ({ smData }) => {
     buildChartData,
     buildChartCard,
     sortChartsByLevel,
+    bucketValueForChart,
   ]);
 
   const revertPocketPick = useCallback((entryId, cardKey) => {
@@ -1636,7 +1660,7 @@ const CardDrawPage = ({ smData }) => {
             variant="secondary"
             onClick={() => {
               handleChartPage(activeCard);
-              setActiveCard(null);
+              setActiveCardContext(null);
             }}
           >
             View chart

@@ -18,8 +18,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
     const {
-        apiKey,
-        setApiKey,
         targetBPM,
         setTargetBPM,
         playStyle,
@@ -46,16 +44,6 @@ const Settings = () => {
     const { scores, setScores, loadSongMeta } = useScores();
     const { groups } = useGroups();
     const { user, logout } = useAuth();
-    const [logoutAllBusy, setLogoutAllBusy] = useState(false);
-    const onLogoutAll = async () => {
-        if (logoutAllBusy) return;
-        setLogoutAllBusy(true);
-        try {
-            await fetch('/api/logout-all', { method: 'POST', credentials: 'include' });
-        } catch { /* noop */ }
-        setLogoutAllBusy(false);
-        await logout();
-    };
     const navigate = useNavigate();
 
     const [songMeta, setSongMeta] = useState([]);
@@ -234,12 +222,6 @@ const Settings = () => {
         if (window.confirm('Delete all stored scores?')) {
             setScores({ single: {}, double: {} });
         }
-    };
-
-    const [newApiKey, setNewApiKey] = useState(apiKey);
-
-    const handleSaveKey = () => {
-        setApiKey(newApiKey);
     };
 
     return (

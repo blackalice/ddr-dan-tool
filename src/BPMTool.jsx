@@ -27,6 +27,7 @@ import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
 import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
+import { getDifficultyValue, isDifficultyInRange } from './utils/difficultyFilters.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -321,6 +322,40 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         });
         return { ...simfileData, availableTypes: at };
     }, [simfileData, songMeta]);
+    const ratedChartBySlug = useMemo(() => {
+        if (!simfileWithRatings?.availableTypes) return new Map();
+        return new Map(simfileWithRatings.availableTypes.map(c => [c.slug, c]));
+    }, [simfileWithRatings]);
+    const rawChartBySlug = useMemo(() => {
+        if (!simfileData?.availableTypes) return new Map();
+        return new Map(simfileData.availableTypes.map(c => [c.slug, c]));
+    }, [simfileData]);
+    const getRatedChart = useCallback((chart) => {
+        if (!chart) return chart;
+        if (chart.slug && ratedChartBySlug.has(chart.slug)) return ratedChartBySlug.get(chart.slug);
+        if (chart.chartId && simfileWithRatings?.availableTypes) {
+            const match = simfileWithRatings.availableTypes.find(c => c.chartId === chart.chartId);
+            if (match) return match;
+        }
+        if (chart.mode && chart.difficulty && simfileWithRatings?.availableTypes) {
+            const match = simfileWithRatings.availableTypes.find(c => c.mode === chart.mode && c.difficulty === chart.difficulty);
+            if (match) return match;
+        }
+        return chart;
+    }, [ratedChartBySlug, simfileWithRatings]);
+    const getRawChart = useCallback((chart) => {
+        if (!chart) return chart;
+        if (chart.slug && rawChartBySlug.has(chart.slug)) return rawChartBySlug.get(chart.slug);
+        if (chart.chartId && simfileData?.availableTypes) {
+            const match = simfileData.availableTypes.find(c => c.chartId === chart.chartId);
+            if (match) return match;
+        }
+        if (chart.mode && chart.difficulty && simfileData?.availableTypes) {
+            const match = simfileData.availableTypes.find(c => c.mode === chart.mode && c.difficulty === chart.difficulty);
+            if (match) return match;
+        }
+        return chart;
+    }, [rawChartBySlug, simfileData]);
     const filtersActive = Boolean(
         filters.bpmMin !== '' ||
         filters.bpmMax !== '' ||
@@ -435,24 +470,25 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
 
         const isChartFilteredOut = (chart) => {
+            const chartForFilter = getRatedChart(chart);
             // Check level range filter
-            if ((filters.difficultyMin && chart.feet < Number(filters.difficultyMin)) ||
-                (filters.difficultyMax && chart.feet > Number(filters.difficultyMax))) {
+            const chartDifficulty = getDifficultyValue(chartForFilter, showRankedRatings);
+            if (!isDifficultyInRange(chartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
                 return true;
             }
             // Check difficulty name filter
             if (lowerCaseFilterNames.length > 0) {
-                if (!lowerCaseFilterNames.includes(chart.difficulty.toLowerCase())) {
+                if (!lowerCaseFilterNames.includes(chartForFilter.difficulty.toLowerCase())) {
                     return true;
                 }
             }
             // Check played status filter
-            const scoreHit = resolveScore(scores, chart.mode, {
-                chartId: chart.chartId,
+            const scoreHit = resolveScore(scores, chartForFilter.mode, {
+                chartId: chartForFilter.chartId,
                 songId: simfileWithRatings.songId,
                 title: simfileWithRatings.title.titleName,
                 artist: simfileWithRatings.artist,
-                difficulty: chart.difficulty,
+                difficulty: chartForFilter.difficulty,
             });
             const hasPlayed = scoreHit != null;
 
@@ -481,18 +517,26 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (lowerCaseFilterNames.length > 0) {
                 newChart = validCharts.find(c => c.difficulty.toLowerCase() === lowerCaseFilterNames[0]);
             }
-            // Fallback to the closest chart by feet value
+            // Fallback to the closest chart by difficulty value
             if (!newChart && currentChart) {
-                const targetFeet = currentChart.feet;
-                newChart = validCharts.reduce((prev, curr) => 
-                    Math.abs(curr.feet - targetFeet) < Math.abs(prev.feet - targetFeet) ? curr : prev
-                );
+                const targetDifficulty = getDifficultyValue(currentChart, showRankedRatings);
+                if (!Number.isFinite(targetDifficulty)) {
+                    newChart = validCharts[0];
+                } else {
+                    newChart = validCharts.reduce((prev, curr) => {
+                        const prevValue = getDifficultyValue(prev, showRankedRatings);
+                        const currValue = getDifficultyValue(curr, showRankedRatings);
+                        if (!Number.isFinite(prevValue)) return curr;
+                        if (!Number.isFinite(currValue)) return prev;
+                        return Math.abs(currValue - targetDifficulty) < Math.abs(prevValue - targetDifficulty) ? curr : prev;
+                    });
+                }
             }
             // Fallback to the first valid chart
             if (!newChart) {
                 newChart = validCharts[0];
             }
-            setCurrentChart(newChart);
+            setCurrentChart(getRawChart(newChart));
         } else {
             // No valid charts for the current song, try to select a new song
             if (songOptions.length > 0) {
@@ -511,7 +555,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                         const nextSongValidCharts = nextSongChartsInMode.filter(c => !isChartFilteredOut(c, filters, playStyle, scores, nextSongMeta));
                         if (nextSongValidCharts.length > 0) {
                             onSongSelect(nextSongOption);
-                            setCurrentChart(nextSongValidCharts[0]); // Select the first valid chart in the new song
+                            setCurrentChart(getRawChart(nextSongValidCharts[0])); // Select the first valid chart in the new song
                             newSongFound = true;
                             break;
                         }
@@ -526,7 +570,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 onSongSelect(null);
             }
         }
-    }, [filters, playStyle, simfileData, scores, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings]);
+    }, [filters, playStyle, simfileData, scores, currentChart, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings, showRankedRatings, getRatedChart, getRawChart]);
 
     const {
         songTitle,
@@ -609,7 +653,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const baseArtist = simfileWithRatings.artist;
         const translitTitle = simfileWithRatings.title.translitTitleName;
         const translitArtist = simfileWithRatings.artistTranslit;
-        console.log("Game Version:", simfileWithRatings.mix.mixName);
         return {
             songTitle: baseTitle,
             artist: baseArtist,
@@ -716,10 +759,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
-                    const levelMatch = filters.difficultyMin === '' || d.feet >= Number(filters.difficultyMin);
-                    const levelMaxMatch = filters.difficultyMax === '' || d.feet <= Number(filters.difficultyMax);
+                    const difficultyValue = getDifficultyValue(d, showRankedRatings);
+                    const levelMatch = isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
-                    return levelMatch && levelMaxMatch && nameMatch;
+                    return levelMatch && nameMatch;
                 });
                 if (!chartMatches) return false;
             }
@@ -804,7 +847,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             songId: file.id,
         }));
         setSongOptions(options);
-    }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings, showTransliterationBeta]);
+    }, [selectedGame, smData, songMeta, filters, overrideSongs, sortKey, sortAscending, playStyle, showRankedRatings, showTransliterationBeta, scores]);
 
     const selectedSongOption = useMemo(() => {
         if (!simfileData) return null;
@@ -834,20 +877,22 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!simfileData || !currentChart || !filters) return;
 
         // If the current chart is still valid, do nothing.
+        const currentChartDifficulty = getDifficultyValue(currentChart, showRankedRatings);
         const currentChartIsValid =
-            (!filters.difficultyMin || currentChart.feet >= Number(filters.difficultyMin)) &&
-            (!filters.difficultyMax || currentChart.feet <= Number(filters.difficultyMax)) &&
+            isDifficultyInRange(currentChartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings) &&
             (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(currentChart.difficulty));
 
         if (currentChartIsValid) return;
 
         // Find a better chart that matches the filters
         const availableCharts = simfileWithRatings.availableTypes.filter(c => c.mode === playStyle);
-        const matchingCharts = availableCharts.filter(c =>
-            (!filters.difficultyMin || c.feet >= Number(filters.difficultyMin)) &&
-            (!filters.difficultyMax || c.feet <= Number(filters.difficultyMax)) &&
-            (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(c.difficulty))
-        );
+        const matchingCharts = availableCharts.filter(c => {
+            const difficultyValue = getDifficultyValue(c, showRankedRatings);
+            return (
+                isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings) &&
+                (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(c.difficulty))
+            );
+        });
 
         if (matchingCharts.length > 0) {
             // Prioritize the first difficulty in the filter, if available
@@ -861,9 +906,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!newChart) {
                 newChart = matchingCharts[0];
             }
-            setCurrentChart(newChart);
+            setCurrentChart(getRawChart(newChart));
         }
-    }, [simfileData, simfileWithRatings, filters, playStyle, setCurrentChart]);
+    }, [simfileData, simfileWithRatings, filters, playStyle, currentChart, setCurrentChart, showRankedRatings, getRatedChart, getRawChart]);
 
     useEffect(() => {
         if (!simfileWithRatings || !currentChart) return;
@@ -872,9 +917,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const chartsInMode = simfileWithRatings.availableTypes.filter(c => c.mode === mode);
 
         const matchesFilters = (chart) => {
-            if (filters.difficultyMin !== '' && chart.feet < Number(filters.difficultyMin)) return false;
-            if (filters.difficultyMax !== '' && chart.feet > Number(filters.difficultyMax)) return false;
-            return true;
+            const difficultyValue = getDifficultyValue(chart, showRankedRatings);
+            return isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings);
         };
 
         const matchingCharts = chartsInMode.filter(matchesFilters);
@@ -887,11 +931,21 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
 
         if (!matchingCharts.find(c => c.slug === currentChart.slug)) {
-            const targetFeet = currentChart.feet;
-            const closest = matchingCharts.reduce((prev, c) => Math.abs(c.feet - targetFeet) < Math.abs(prev.feet - targetFeet) ? c : prev, matchingCharts[0]);
-            setCurrentChart(closest);
+            const targetDifficulty = getDifficultyValue(currentChart, showRankedRatings);
+            if (!Number.isFinite(targetDifficulty)) {
+                setCurrentChart(getRawChart(matchingCharts[0]));
+                return;
+            }
+            const closest = matchingCharts.reduce((prev, c) => {
+                const prevValue = getDifficultyValue(prev, showRankedRatings);
+                const currValue = getDifficultyValue(c, showRankedRatings);
+                if (!Number.isFinite(prevValue)) return c;
+                if (!Number.isFinite(currValue)) return prev;
+                return Math.abs(currValue - targetDifficulty) < Math.abs(prevValue - targetDifficulty) ? c : prev;
+            }, matchingCharts[0]);
+            setCurrentChart(getRawChart(closest));
         }
-    }, [filters, playStyle, simfileData, currentChart, songOptions, onSongSelect, setCurrentChart, simfileWithRatings]);
+    }, [filters, playStyle, simfileData, currentChart, songOptions, onSongSelect, setCurrentChart, simfileWithRatings, showRankedRatings, getRawChart, getRatedChart]);
 
     const selectStyles = {
         control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
@@ -990,10 +1044,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
-                    const levelMatch = currentFilters.difficultyMin === '' || d.feet >= Number(currentFilters.difficultyMin);
-                    const levelMaxMatch = currentFilters.difficultyMax === '' || d.feet <= Number(currentFilters.difficultyMax);
+                    const difficultyValue = getDifficultyValue(d, showRankedRatings);
+                    const levelMatch = isDifficultyInRange(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
-                    return levelMatch && levelMaxMatch && nameMatch;
+                    return levelMatch && nameMatch;
                 });
                 if (!chartMatches) return false;
             }
@@ -1016,8 +1070,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             return meta.difficulties
                 .filter(d => {
                     if (d.mode !== playStyle) return false; // Filter by play style
-                    if (currentFilters.difficultyMin && d.feet < currentFilters.difficultyMin) return false;
-                    if (currentFilters.difficultyMax && d.feet > currentFilters.difficultyMax) return false;
+                    const difficultyValue = getDifficultyValue(d, showRankedRatings);
+                    if (!isDifficultyInRange(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings)) {
+                        return false;
+                    }
                     if (lowerCaseFilterNames.length > 0 && !lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) return false;
                     return true;
                 })

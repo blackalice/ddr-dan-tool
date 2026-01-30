@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useFilters } from '../contexts/FilterContext.jsx';
+import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import ModalShell from './ModalShell.jsx';
 import styles from './FilterModal.module.css';
 
@@ -7,6 +8,7 @@ const difficultyNames = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'
 
 const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const { filters, setFilters } = useFilters();
+  const { showRankedRatings } = useContext(SettingsContext);
   const [localFilters, setLocalFilters] = useState(filters);
 
 
@@ -16,10 +18,10 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
     }
   }, [isOpen, filters]);
 
-  const handleRangeBlur = (field, value, min, max) => {
+  const handleRangeBlur = (field, value, min, max, allowDecimal = false) => {
     if (value === '') return; // Don't validate if empty
 
-    let numValue = parseInt(value, 10);
+    let numValue = allowDecimal ? Number(value) : parseInt(value, 10);
 
     if (isNaN(numValue)) { // If not a number, clear it
         setLocalFilters(f => ({ ...f, [field]: '' }));
@@ -74,6 +76,8 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const gamesActive = localFilters.games.length > 0;
   const multiBpmActive = localFilters.multiBpm !== 'any';
   const playedStatusActive = localFilters.playedStatus !== 'all';
+  const difficultyMax = showRankedRatings ? 19.99 : 19;
+  const difficultyStep = showRankedRatings ? '0.05' : '1';
 
   const footerAlign = showLists ? 'space-between' : 'right';
 
@@ -113,21 +117,23 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 <input
                   type="number"
                   min="1"
-                  max="19"
+                  max={difficultyMax}
+                  step={difficultyStep}
                   placeholder="Min"
                   value={localFilters.difficultyMin}
                   onChange={e => setLocalFilters(f => ({ ...f, difficultyMin: e.target.value }))}
-                  onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, 19)}
+                  onBlur={e => handleRangeBlur('difficultyMin', e.target.value, 1, difficultyMax, showRankedRatings)}
                   className={`${styles.input} ${localFilters.difficultyMin !== '' ? styles.activeInput : ''}`}
                 />
                 <input
                   type="number"
                   min="1"
-                  max="19"
+                  max={difficultyMax}
+                  step={difficultyStep}
                   placeholder="Max"
                   value={localFilters.difficultyMax}
                   onChange={e => setLocalFilters(f => ({ ...f, difficultyMax: e.target.value }))}
-                  onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, 19)}
+                  onBlur={e => handleRangeBlur('difficultyMax', e.target.value, 1, difficultyMax, showRankedRatings)}
                   className={`${styles.input} ${localFilters.difficultyMax !== '' ? styles.activeInput : ''}`}
                 />
               </div>
