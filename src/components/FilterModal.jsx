@@ -283,9 +283,26 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
               </div>
             </div>
             {showCounts && (
-              <div className={styles.countRow}>
-                Songs: {counts.filtered} / {counts.total}
-                {showCharts && <> • Charts: {counts.chartsFiltered} / {counts.chartsTotal}</>}
+              <div className={styles.formGroup}>
+                <div className={styles.countGrid}>
+                  <div className={styles.countHeader}>
+                    <span className={styles.countHeaderSpacer}></span>
+                    <span className={styles.countHeaderLabel}>Filtered</span>
+                    <span className={styles.countHeaderLabel}>Total</span>
+                  </div>
+                  <div className={styles.countRow}>
+                    <span className={styles.countLabelCell}>Songs</span>
+                    <span className={styles.countValue}>{counts.filtered}</span>
+                    <span className={styles.countValue}>{counts.total}</span>
+                  </div>
+                  {showCharts && (
+                    <div className={styles.countRow}>
+                      <span className={styles.countLabelCell}>Charts</span>
+                      <span className={styles.countValue}>{counts.chartsFiltered}</span>
+                      <span className={styles.countValue}>{counts.chartsTotal}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

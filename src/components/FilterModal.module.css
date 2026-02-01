@@ -111,10 +111,48 @@
   flex: 1;
 }
 
-.countRow {
+.countGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   color: var(--text-muted-color);
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.countRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.countHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.countHeaderSpacer {
+  display: block;
+}
+
+.countHeaderLabel {
+  text-align: center;
+  font-weight: 600;
+}
+
+.countLabelCell {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.countValue {
+  text-align: center;
 }
 
 .footerButtons {

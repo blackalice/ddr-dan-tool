@@ -85,6 +85,22 @@
     font-size: 0.875rem;
 }
 
+.settings-changelog {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--text-muted-color);
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.settings-changelog li {
+    margin-bottom: 0.35rem;
+}
+
+.settings-changelog li:last-child {
+    margin-bottom: 0;
+}
+
 .settings-sub-header {
     margin: 2rem 0 1rem 0;
     font-size: 1.25rem;
