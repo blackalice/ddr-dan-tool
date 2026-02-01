@@ -28,6 +28,7 @@ import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore, makeScoreKey } from './utils/scoreKey.js';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
 import { normalizeMode } from './utils/chartIds.js';
+import { formatRankedRating } from './utils/formatRankedRating.js';
 
 const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
 const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
@@ -144,7 +145,7 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
   return (
     <section className="dan-section">
       <h2 className={`dan-header ${collapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: 'var(--accent-color)' }}>
-        <div className="dan-header-title">Lv.{rating.toFixed(2)}</div>
+        <div className="dan-header-title">Lv.{formatRankedRating(rating)}</div>
         <button className="collapse-button" onClick={() => onToggle(rating)}>
           <FontAwesomeIcon icon={collapsed ? faChevronDown : faChevronUp} />
         </button>

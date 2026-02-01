@@ -23,6 +23,7 @@ import '../BPMTool.css';
 import '../styles/glow.css';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 import { getDifficultyValue, isDifficultyAllowed } from '../utils/difficultyFilters.js';
+import { formatRankedRating } from '../utils/formatRankedRating.js';
 
 const SongInfoBar = ({
   isCollapsed,
@@ -105,7 +106,9 @@ const SongInfoBar = ({
         // Find the chart for the current difficulty level (e.g., 'Expert')
         for (const name of difficultyNameMapping[levelName]) {
             if (difficultySet[name]) {
-                level = showRankedRatings && difficultySet[name].rankedRating != null ? difficultySet[name].rankedRating : difficultySet[name].feet;
+                level = showRankedRatings && difficultySet[name].rankedRating != null
+                  ? formatRankedRating(difficultySet[name].rankedRating)
+                  : difficultySet[name].feet;
                 chartType = chartDifficulties.find(t => t.difficulty === name);
                 matchedDifficulty = difficultySet[name];
                 if (chartType) break;

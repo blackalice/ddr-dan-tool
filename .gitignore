@@ -54,3 +54,4 @@ public/vega-results.json
 public/ddr-ver/
 *.ogg
 __MUSICDB
+/data/rankings/__archive

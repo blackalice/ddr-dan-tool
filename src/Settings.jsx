@@ -519,6 +519,7 @@ const Settings = () => {
                                 <li>Song list overrides now include artist and difficulty data for safer matching.<br></br><b>(Bug: JUWUBEAT/Vetch)</b></li>
                                 <li>Added latest WORLD charts</li>
                                 <li>Build process streamlined</li>
+                                <li>Updated to Sanbai Ice Cream V11 Revision 1 Rankings</li>
                             </ul>
                         </div>
                     </div>
@@ -527,7 +528,7 @@ const Settings = () => {
                     <div className="setting-card">
                         <div className="setting-text">
                             <p>
-                               Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. Decimalized rankings from <a className="footer-link" href="https://3icecream.com/">Sanbai Ice Cream</a> and are based on the Version 10 Revision 1 release. Card pick system inspired by <a className="footer-link" href="https://ddr.tools/">ddr.tools</a>. <br></br><br></br>
+                               Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. Decimalized rankings from <a className="footer-link" href="https://3icecream.com/">Sanbai Ice Cream</a> and are based on the Version 11 Revision 1 release. Card pick system inspired by <a className="footer-link" href="https://ddr.tools/">ddr.tools</a>. <br></br><br></br>
                                Crafted with an organic blend of Gemini 2.5 Pro via GeminiCLI and ChatGPT Codex (with a sprinkle of ChatGPT 4o for initial planning). Human intelligence used sparingly. <br></br><br></br>
                                Follow the development, suggest features and report bugs at the at the <a className="footer-link" href="https://discord.gg/5gy4zwbPRC">UK DDR Discord</a> or <a className="footer-link" href="https://github.com/blackalice/ddr-dan-tool">Github</a> <br></br><br></br>
                                Always remember to wear deoderant when playing DDR, and clean up after you've used the bathroom. <br></br><br></br>

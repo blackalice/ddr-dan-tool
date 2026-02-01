@@ -4,6 +4,7 @@ import { ToggleBar } from "./ToggleBar";
 import { StepchartSection } from "./StepchartSection";
 import { DifficultyMeter } from './DifficultyMeter';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
+import { formatRankedRating } from '../utils/formatRankedRating.js';
 
 import styles from "./StepchartPage.module.css";
 import "../BPMTool.css";
@@ -107,7 +108,7 @@ export function StepchartPage({
     ? displaySimfile.title.translitTitleName
     : displaySimfile.title.titleName;
   const title = currentTypeMeta
-    ? `${displayTitle} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? currentTypeMeta.rankedRating : currentTypeMeta.feet})`
+    ? `${displayTitle} - ${currentType.replace(/-/g, ", ")} (${showRankedRatings && currentTypeMeta.rankedRating != null ? formatRankedRating(currentTypeMeta.rankedRating) : currentTypeMeta.feet})`
     : displayTitle;
 
 

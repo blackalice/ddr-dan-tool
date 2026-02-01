@@ -14,13 +14,13 @@ export const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isS
        
     };
 
-    const hasDecimal = typeof level === 'number' && level % 1 !== 0;
-    let integerPart = level;
+    const levelStr = level == null ? '' : String(level);
+    const decimalIndex = levelStr.indexOf('.');
+    const hasDecimal = decimalIndex !== -1;
+    let integerPart = levelStr;
     let decimalPart = null;
 
     if (hasDecimal) {
-        const levelStr = level.toString();
-        const decimalIndex = levelStr.indexOf('.');
         integerPart = levelStr.substring(0, decimalIndex);
         decimalPart = levelStr.substring(decimalIndex);
     }

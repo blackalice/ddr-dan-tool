@@ -11,6 +11,7 @@ import './SongCard.css';
 import '../styles/glow.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
+import { formatRankedRating } from '../utils/formatRankedRating.js';
 
 const difficultyDisplayMap = {
     single: {
@@ -39,13 +40,14 @@ const getBpmRange = (bpm) => {
 };
 
 const renderLevel = (level, showShock) => {
-    const hasDecimal = typeof level === 'number' && level % 1 !== 0;
+    if (level == null) return null;
+    const levelStr = String(level);
+    const decimalIndex = levelStr.indexOf('.');
+    const hasDecimal = decimalIndex !== -1;
     let levelNode;
     if (!hasDecimal) {
-        levelNode = `Lv.${level}`;
+        levelNode = `Lv.${levelStr}`;
     } else {
-        const levelStr = level.toString();
-        const decimalIndex = levelStr.indexOf('.');
         const integerPart = levelStr.substring(0, decimalIndex);
         const decimalPart = levelStr.substring(decimalIndex);
 
@@ -202,8 +204,11 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   const difficultyInfo = song.mode && song.difficulty ? difficultyDisplayMap[song.mode]?.[song.difficulty] : null;
 
   const showRanked = forceShowRankedRating || showRankedRatings;
-  const levelToDisplay = showRanked && song.rankedRating != null ? song.rankedRating : song.level;
-  const levelText = formatLevelText(levelToDisplay);
+  const rankedLevelText = showRanked && song.rankedRating != null
+    ? formatRankedRating(song.rankedRating)
+    : null;
+  const levelToDisplay = rankedLevelText ?? song.level;
+  const levelText = rankedLevelText ?? formatLevelText(song.level);
 
   const cardLinkClassName = useMemo(() => {
     const classes = ['song-card-link'];

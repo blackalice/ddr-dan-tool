@@ -4,6 +4,7 @@ import { parseSm } from '../utils/smParser';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import './StepchartViewer.css';
 import { getTextCached } from '../utils/cachedFetch.js';
+import { formatRankedRating } from '../utils/formatRankedRating.js';
 
 const StepchartViewer = ({ smFileUrl }) => {
   const [simfile, setSimfile] = useState(null);
@@ -93,7 +94,7 @@ const StepchartViewer = ({ smFileUrl }) => {
       <select onChange={handleChartChange} value={selectedChartKey || ''}>
         {simfile.availableTypes.map((chartType) => (
           <option key={chartType.slug} value={chartType.slug}>
-            {chartType.mode} - {chartType.difficulty} ({showRankedRatings && chartType.rankedRating != null ? chartType.rankedRating : chartType.feet})
+            {chartType.mode} - {chartType.difficulty} ({showRankedRatings && chartType.rankedRating != null ? formatRankedRating(chartType.rankedRating) : chartType.feet})
           </option>
         ))}
       </select>

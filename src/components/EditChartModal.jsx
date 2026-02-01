@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SettingsContext } from '../contexts/SettingsContext.jsx';
 import ModalShell from './ModalShell.jsx';
 import styles from './AddToListModal.module.css';
+import { formatRankedRating } from '../utils/formatRankedRating.js';
 
 const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
   const [selected, setSelected] = useState(chart?.difficulty || '');
@@ -53,7 +54,7 @@ const EditChartModal = ({ isOpen, onClose, chart, options, onSave }) => {
           >
             {options.map(o => (
               <option key={o.difficulty} value={o.difficulty}>
-                {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? o.rankedRating : o.feet})
+                {o.difficulty} (Lv.{showRankedRatings && o.rankedRating != null ? formatRankedRating(o.rankedRating) : o.feet})
               </option>
             ))}
           </select>
