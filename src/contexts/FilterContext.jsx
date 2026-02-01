@@ -15,6 +15,8 @@ const defaultFilters = {
   multiBpm: 'any',
   playedStatus: 'all',
   difficultyNames: [],
+  rankedFractionMin: '',
+  rankedFractionMax: '',
 };
 
 export const FilterContext = createContext({
@@ -37,7 +39,14 @@ export const FilterProvider = ({ children }) => {
         const migratedGames = Array.isArray(parsed.games)
           ? parsed.games.map(g => gameRenames[g] || g)
           : [];
-        return { ...defaultFilters, ...parsed, games: migratedGames };
+        const migrated = { ...defaultFilters, ...parsed, games: migratedGames };
+        const hasFractionMin = Object.prototype.hasOwnProperty.call(parsed, 'rankedFractionMin');
+        const hasFractionMax = Object.prototype.hasOwnProperty.call(parsed, 'rankedFractionMax');
+        if (!hasFractionMin && !hasFractionMax && parsed.rankedCap != null) {
+          migrated.rankedFractionMin = '';
+          migrated.rankedFractionMax = parsed.rankedCap;
+        }
+        return migrated;
       } catch {
         // If bad data, fall back to defaults
         return defaultFilters;

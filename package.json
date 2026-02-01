@@ -9,7 +9,7 @@
   "dev:vite": "vite",
   "dev:wrangler": "wrangler dev",
 
-  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs && npm run sync:public",
+  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && node scripts/generate-ddr-a3-override.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs && npm run sync:public",
 
   "dev:full": "npm run prepare:data && npm run dev",
 

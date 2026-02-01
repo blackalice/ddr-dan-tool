@@ -45,6 +45,8 @@ function AppRoutes() {
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => storage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
   const previousLocationRef = React.useRef('');
+  const debugChartSelection = typeof window !== 'undefined'
+    && window.localStorage?.getItem('debugChartSelection') === '1';
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -83,15 +85,38 @@ function AppRoutes() {
     previousLocationRef.current = locationKey;
     const loadFromUrl = async () => {
       const sel = parseSelection({ search: location.search, hash: location.hash });
+      if (debugChartSelection) {
+        console.debug('[Route] parseSelection', {
+          pathname: location.pathname,
+          search: location.search,
+          hash: location.hash,
+          sel,
+          filesCount: smData.files.length,
+        });
+      }
       // New format: ?song=<songId>&chart=<chartId>
       if (sel.songId) {
         const songFile = smData.files.find(f => f.id === sel.songId || f.path === sel.songId) || null;
+        if (debugChartSelection) {
+          console.debug('[Route] resolve song', {
+            songId: sel.songId,
+            found: Boolean(songFile),
+            fileId: songFile?.id,
+            filePath: songFile?.path,
+          });
+        }
         if (!songFile) {
           setRawSimfileData(null); setCurrentChart(null);
           return;
         }
         const data = await loadSimfileData(songFile);
         const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        if (debugChartSelection) {
+          console.debug('[Route] loaded simfile', {
+            title: data?.title?.titleName,
+            availableTypes: filteredData?.availableTypes?.map(t => t.slug),
+          });
+        }
         setRawSimfileData(data);
         let chart = null;
         if (sel.chartId) {
@@ -103,9 +128,22 @@ function AppRoutes() {
               chart = filteredData.availableTypes.find(c => c.slug === slug) || null;
             }
           }
+          if (debugChartSelection && !chart) {
+            console.debug('[Route] chart not found in song', {
+              chartId: sel.chartId,
+              parsed: parseChartId(sel.chartId),
+            });
+          }
         }
         if (!chart) {
           chart = pickChartForPlayStyle(filteredData.availableTypes, playStyle);
+        }
+        if (debugChartSelection) {
+          console.debug('[Route] picked chart', {
+            chartSlug: chart?.slug,
+            chartMode: chart?.mode,
+            playStyle,
+          });
         }
         if (chart?.mode && chart.mode !== playStyle) {
           if (locationChanged) {
@@ -232,6 +270,12 @@ function AppRoutes() {
     }
     const match = simfileData.availableTypes.find(c => c.slug === currentChart.slug) || null;
     if (!match) {
+      if (debugChartSelection) {
+        console.debug('[Route] current chart missing, picking fallback', {
+          currentSlug: currentChart?.slug,
+          available: simfileData.availableTypes.map(c => c.slug),
+        });
+      }
       const next = pickChartForPlayStyle(simfileData.availableTypes, playStyle);
       setCurrentChart(next);
       return;
@@ -240,6 +284,13 @@ function AppRoutes() {
   }, [simfileData, currentChart, playStyle, pickChartForPlayStyle]);
 
   const handleSongSelect = useCallback((song) => {
+    if (debugChartSelection) {
+      console.debug('[Route] handleSongSelect', {
+        song,
+        currentPath: location.pathname,
+        currentSearch: location.search,
+      });
+    }
     if (song) {
       const songId = song.id || song.songId || song.value || song.path || null;
       if (songId) {
@@ -268,11 +319,32 @@ function AppRoutes() {
   // Avoid modifying the URL or selection when songlistOverride changes to prevent flicker.
 
   const handleChartSelect = useCallback((chart) => {
+    if (debugChartSelection) {
+      console.debug('[Route] handleChartSelect', {
+        chartSlug: chart?.slug,
+        chartMode: chart?.mode,
+        chartDifficulty: chart?.difficulty,
+      });
+    }
+    const songIdFromUrl = searchParams.get('song');
+    const songIdCandidates = [simfileData?.songId, simfileData?.path, simfileData?.filePath].filter(Boolean);
+    const matchesUrl = !songIdFromUrl || songIdCandidates.includes(songIdFromUrl);
+    if (!matchesUrl) {
+      if (debugChartSelection) {
+        console.debug('[Route] skip chart select (song mismatch)', {
+          songIdFromUrl,
+          songIdCandidates,
+          chartSlug: chart?.slug,
+        });
+      }
+      return;
+    }
+
     setCurrentChart(chart);
     if (chart && chart.mode) {
       setPlayStyle(chart.mode);
     }
-    const songId = simfileData?.songId || simfileData?.path || simfileData?.filePath || searchParams.get('song') || null;
+    const songId = songIdFromUrl || songIdCandidates[0] || null;
     if (songId) {
       storage.setItem('bpmSelectedSong', songId);
       storage.setItem('bpmSelectedChart', chart?.slug || '');

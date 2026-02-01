@@ -111,6 +111,12 @@
   flex: 1;
 }
 
+.countRow {
+  color: var(--text-muted-color);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
 .footerButtons {
   display: flex;
   gap: 0.75rem;

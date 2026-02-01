@@ -4,7 +4,12 @@ import { FixedSizeList as List } from 'react-window';
 
 const MenuList = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
-    const initialOffset = options.indexOf(value) * 35;
+    const itemHeight = 35;
+    const itemCount = children.length;
+    const selectedIndex = options.indexOf(value);
+    const targetOffset = selectedIndex >= 0 ? selectedIndex * itemHeight : 0;
+    const maxOffset = Math.max(0, itemCount * itemHeight - maxHeight);
+    const initialOffset = Math.min(Math.max(0, targetOffset), maxOffset);
 
     return (
         <List

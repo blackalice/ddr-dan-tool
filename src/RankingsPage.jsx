@@ -14,8 +14,12 @@ import {
   faEyeSlash,
   faGear,
 } from '@fortawesome/free-solid-svg-icons';
-import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
-import { normalizeString } from './utils/stringSimilarity.js';
+import {
+  SONGLIST_OVERRIDE_OPTIONS,
+  buildSonglistOverrideLookup,
+  songlistOverrideHasEntries,
+  songlistOverrideMatches,
+} from './utils/songlistOverrides';
 import { storage } from './utils/remoteStorage.js';
 import './App.css';
 import './VegaPage.css';
@@ -279,18 +283,22 @@ const RankingsPage = () => {
 
     const levelSet = new Set();
     const buckets = new Map();
-    const normalizedOverride = overrideSongs && overrideSongs.size > 0 ? overrideSongs : null;
+    const hasOverride = songlistOverrideHasEntries(overrideSongs);
 
     for (const song of songMeta) {
       const difficulties = Array.isArray(song?.difficulties) ? song.difficulties : [];
       if (difficulties.length === 0) continue;
 
-      if (normalizedOverride) {
-        const titles = [];
-        if (song.title) titles.push(normalizeString(song.title));
-        if (song.titleTranslit) titles.push(normalizeString(song.titleTranslit));
-        const matchesOverride = titles.some((title) => title && normalizedOverride.has(title));
-        if (!matchesOverride) continue;
+      if (hasOverride) {
+        if (!songlistOverrideMatches(overrideSongs, {
+          title: song.title,
+          titleTranslit: song.titleTranslit,
+          artist: song.artist,
+          artistTranslit: song.artistTranslit,
+          mode: playStyle,
+        })) {
+          continue;
+        }
       }
 
       const bpmString = song.hasMultipleBpms
@@ -403,19 +411,18 @@ const RankingsPage = () => {
     });
   };
 
-  useEffect(() => {
-    const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
-    if (!option || !option.file) {
-      setOverrideSongs(null);
-      return;
-    }
-    getJsonCached(option.file)
-      .then(data => {
-        const songs = (data.songs || []).map(normalizeString);
-        setOverrideSongs(new Set(songs));
-      })
-      .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
-  }, [songlistOverride]);
+    useEffect(() => {
+      const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
+      if (!option || !option.file) {
+        setOverrideSongs(null);
+        return;
+      }
+      getJsonCached(option.file)
+        .then(data => {
+          setOverrideSongs(buildSonglistOverrideLookup(data));
+        })
+        .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
+    }, [songlistOverride]);
 
   const chartsForLevel = useMemo(() => {
     if (!selectedLevel) return [];

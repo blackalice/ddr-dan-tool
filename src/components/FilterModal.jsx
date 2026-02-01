@@ -6,7 +6,7 @@ import styles from './FilterModal.module.css';
 
 const difficultyNames = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
 
-const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
+const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCounts }) => {
   const { filters, setFilters } = useFilters();
   const { showRankedRatings } = useContext(SettingsContext);
   const [localFilters, setLocalFilters] = useState(filters);
@@ -59,6 +59,8 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
       bpmMax: '',
       difficultyMin: '',
       difficultyMax: '',
+      rankedFractionMin: '',
+      rankedFractionMax: '',
       lengthMin: '',
       lengthMax: '',
       games: [],
@@ -78,6 +80,16 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
   const playedStatusActive = localFilters.playedStatus !== 'all';
   const difficultyMax = showRankedRatings ? 19.99 : 19;
   const difficultyStep = showRankedRatings ? '0.05' : '1';
+  const rankedFractionMax = 0.95;
+  const rankedFractionStep = '0.05';
+
+  const counts = React.useMemo(() => {
+    if (typeof getCounts !== 'function') return null;
+    return getCounts(localFilters);
+  }, [getCounts, localFilters]);
+
+  const showCounts = counts && Number.isFinite(counts.total);
+  const showCharts = showCounts && Number.isFinite(counts.chartsTotal);
 
   const footerAlign = showLists ? 'space-between' : 'right';
 
@@ -138,6 +150,35 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 />
               </div>
             </div>
+            {showRankedRatings && (
+              <div className={styles.formGroup}>
+                <label>Ranked Decimal Range (0.00-0.95)</label>
+                <div className={styles.inputGroup}>
+                  <input
+                    type="number"
+                    min="0"
+                    max={rankedFractionMax}
+                    step={rankedFractionStep}
+                    placeholder="Min"
+                    value={localFilters.rankedFractionMin}
+                    onChange={e => setLocalFilters(f => ({ ...f, rankedFractionMin: e.target.value }))}
+                    onBlur={e => handleRangeBlur('rankedFractionMin', e.target.value, 0, rankedFractionMax, true)}
+                    className={`${styles.input} ${localFilters.rankedFractionMin !== '' ? styles.activeInput : ''}`}
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max={rankedFractionMax}
+                    step={rankedFractionStep}
+                    placeholder="Max"
+                    value={localFilters.rankedFractionMax}
+                    onChange={e => setLocalFilters(f => ({ ...f, rankedFractionMax: e.target.value }))}
+                    onBlur={e => handleRangeBlur('rankedFractionMax', e.target.value, 0, rankedFractionMax, true)}
+                    className={`${styles.input} ${localFilters.rankedFractionMax !== '' ? styles.activeInput : ''}`}
+                  />
+                </div>
+              </div>
+            )}
             <div className={`${styles.formGroup} ${diffNamesActive ? styles.activeGroup : ''}`}>
               <label>Difficulty Names</label>
               <div className={styles.gameCheckboxes}>
@@ -241,6 +282,12 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList }) => {
                 </select>
               </div>
             </div>
+            {showCounts && (
+              <div className={styles.countRow}>
+                Songs: {counts.filtered} / {counts.total}
+                {showCharts && <> • Charts: {counts.chartsFiltered} / {counts.chartsTotal}</>}
+              </div>
+            )}
           </div>
         </div>
       </ModalShell.Body>
