@@ -9,7 +9,8 @@ import {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const SONG_ID_MAP_PATH = path.join(__dirname, 'song-ids.json');
+const ROOT_DIR = path.resolve(__dirname, '..');
+const SONG_ID_MAP_PATH = path.join(ROOT_DIR, 'data', 'song-ids.json');
 
 function normalizePathKey(p) {
   return String(p || '').replace(/\\/g, '/');

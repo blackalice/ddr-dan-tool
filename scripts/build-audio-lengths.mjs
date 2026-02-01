@@ -4,13 +4,22 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { parseFile } from 'music-metadata'
 import { spawn } from 'child_process'
+import {
+  collectTreeStats,
+  mergeStats,
+  shouldSkipBuild,
+  writeCache,
+} from './cache-utils.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const ROOT = path.resolve(__dirname, '..')
-const PUBLIC_SM_DIR = path.join(ROOT, 'public', 'sm')
-const LOCAL_DIR = path.join(ROOT, '.local')
-const OUT_PATH = path.join(LOCAL_DIR, 'audio-lengths.json')
+const DATA_DIR = path.join(ROOT, 'data')
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles')
+const GENERATED_DIR = path.join(DATA_DIR, 'generated')
+const OUT_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
+const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'audio-lengths.json')
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1'
 
 async function* walk(dir) {
   for (const d of await fs.readdir(dir, { withFileTypes: true })) {
@@ -58,18 +67,34 @@ function parseMusicFilename(smText) {
 }
 
 async function main() {
-  const sourceRoot = process.argv[2] ? path.resolve(process.cwd(), process.argv[2]) : path.resolve(ROOT, 'ddrbits')
+  const sourceRoot = process.argv[2] ? path.resolve(process.cwd(), process.argv[2]) : SIMFILES_DIR
+  const inputStats = mergeStats(
+    await collectTreeStats(SIMFILES_DIR, (p) => /\.(sm|ssc)$/i.test(p), ROOT),
+    await collectTreeStats(sourceRoot, (p) => /\.(ogg|mp3|wav)$/i.test(p), ROOT),
+  )
+  const { skip, reason } = await shouldSkipBuild({
+    cachePath: CACHE_PATH,
+    inputStats,
+    outputPaths: [OUT_PATH],
+    config: { sourceRoot },
+    force: FORCE,
+  })
+  if (skip) {
+    console.log(`[build-audio-lengths] up-to-date (${reason}) — skipping.`)
+    return
+  }
   try {
     await fs.access(sourceRoot)
   } catch {
     console.warn(`Source root not found: ${sourceRoot} — skipping audio length build.`)
-    await fs.mkdir(LOCAL_DIR, { recursive: true })
+    await fs.mkdir(GENERATED_DIR, { recursive: true })
     await fs.writeFile(OUT_PATH, JSON.stringify({}, null, 2))
     console.log(`Wrote ${OUT_PATH} (0 entries)`)
+    await writeCache(CACHE_PATH, inputStats, { sourceRoot })
     return
   }
 
-  await fs.mkdir(LOCAL_DIR, { recursive: true })
+  await fs.mkdir(GENERATED_DIR, { recursive: true })
   const bitsIdx = await indexBits(sourceRoot)
   const durationCache = new Map()
   async function getDuration(p) {
@@ -100,9 +125,9 @@ async function main() {
   }
 
   const out = {}
-  for await (const smPath of walk(PUBLIC_SM_DIR)) {
+  for await (const smPath of walk(SIMFILES_DIR)) {
     if (!smPath.toLowerCase().endsWith('.sm') && !smPath.toLowerCase().endsWith('.ssc')) continue
-    const rel = path.relative(path.join(ROOT, 'public'), smPath).replace(/\\/g, '/') // e.g., sm/Folder/Song.sm
+    const rel = path.posix.join('sm', path.relative(SIMFILES_DIR, smPath).replace(/\\/g, '/')) // e.g., sm/Folder/Song.sm
     let text
     try {
       text = await fs.readFile(smPath, 'utf-8')
@@ -195,6 +220,7 @@ async function main() {
   }
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2))
   console.log(`Wrote ${OUT_PATH} (${Object.keys(out).length} entries)`) 
+  await writeCache(CACHE_PATH, inputStats, { sourceRoot })
 }
 
 main().catch(e => { console.error(e); process.exit(1) })

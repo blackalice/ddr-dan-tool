@@ -4,6 +4,12 @@ import { fileURLToPath } from 'url';
 import { parseSm } from '../src/utils/smParser.js';
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 import { buildChartId } from '../src/utils/chartIds.js';
+import {
+  collectStats,
+  mergeStats,
+  shouldSkipBuild,
+  writeCache,
+} from './cache-utils.mjs';
 
 function getLastBeat(notes) {
   if (!notes) return 0;
@@ -85,10 +91,22 @@ function calculateSongLength(bpmChanges, songLastBeat, stops = []) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
-const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
-const OUTPUT_PATH = path.join(PUBLIC_DIR, 'song-meta.json');
-const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
+const ROOT_DIR = path.join(__dirname, '..');
+const DATA_DIR = path.join(ROOT_DIR, 'data');
+const GENERATED_DIR = path.join(DATA_DIR, 'generated');
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
+const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
+const OUTPUT_PATH = path.join(GENERATED_DIR, 'song-meta.json');
+const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
+const SONG_ID_MAP_PATH = path.join(DATA_DIR, 'song-ids.json');
+const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'song-meta.json');
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
+
+const toSimfilePath = (publicPath) => {
+  const normalized = String(publicPath || '').replace(/\\/g, '/');
+  const trimmed = normalized.startsWith('sm/') ? normalized.slice(3) : normalized;
+  return path.join(SIMFILES_DIR, trimmed);
+};
 
 async function readJson(p) {
   const data = await fs.readFile(p, 'utf-8');
@@ -189,6 +207,20 @@ const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
 
 async function main() {
   try {
+    await fs.mkdir(GENERATED_DIR, { recursive: true });
+    const inputStats = mergeStats(
+      await collectStats([SM_FILES_PATH, COMBINED_RATINGS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
+    );
+    const { skip, reason } = await shouldSkipBuild({
+      cachePath: CACHE_PATH,
+      inputStats,
+      outputPaths: [OUTPUT_PATH],
+      force: FORCE,
+    });
+    if (skip) {
+      console.log(`[generate-song-meta] up-to-date (${reason}) — skipping.`);
+      return;
+    }
     const smList = await readJson(SM_FILES_PATH);
     const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
     const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
@@ -200,7 +232,7 @@ async function main() {
       try {
         const { id: songId, created } = ensureSongId(songIdMap, file.path);
         if (created) mapChanged = true;
-        const fullPath = path.join(PUBLIC_DIR, file.path);
+        const fullPath = toSimfilePath(file.path);
         const simfile = await readSmFile(fullPath);
         const allBpms = Object.values(simfile.charts).flatMap(c => c.bpm.map(b => b.bpm)).filter(b => b > 0);
         const uniqueBpms = [...new Set(allBpms)];
@@ -265,6 +297,7 @@ async function main() {
     }
     await fs.writeFile(OUTPUT_PATH, JSON.stringify(results, null, 2));
     console.log(`Generated song metadata for ${results.length} songs.`);
+    await writeCache(CACHE_PATH, inputStats);
   } catch (err) {
     console.error('Error generating song metadata:', err);
     process.exit(1);

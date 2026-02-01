@@ -35,17 +35,22 @@ songs.png
 /_archive
 public/song-meta.json
 public/dan-data.json
-public/song-meta.json
 public/vega-data.json
 .dev.vars
 /.wrangler
 /dist
 /DDR bits
 /.local/
-/ddrbits/
-public/sm/**/*.png
+/data/simfiles/
+/data/generated/
+public/sm/
 CYD/README.md
 public/sm-files.json
 public/song-lengths.json
 public/song-meta.json
-public/sm-files.json
+public/courses-data.json
+public/combined_song_ratings.json
+public/vega-results.json
+public/ddr-ver/
+*.ogg
+__MUSICDB

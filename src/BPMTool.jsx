@@ -9,8 +9,12 @@ import Select, { components as RSComponents } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useAuth } from './contexts/AuthContext.jsx';
-import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
-import { normalizeString } from './utils/stringSimilarity';
+import {
+    SONGLIST_OVERRIDE_OPTIONS,
+    buildSonglistOverrideLookup,
+    songlistOverrideHasEntries,
+    songlistOverrideMatches,
+} from './utils/songlistOverrides';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
@@ -27,7 +31,7 @@ import { computeChartMetrics } from './utils/chartMetrics.js';
 import './BPMTool.css';
 import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
-import { getDifficultyValue, isDifficultyInRange } from './utils/difficultyFilters.js';
+import { getDifficultyValue, isDifficultyAllowed } from './utils/difficultyFilters.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -147,7 +151,14 @@ const calculateSongLength = (bpmChanges, songLastBeat, stops = []) => {
 const MenuList = ({ options, children, maxHeight, getValue }) => {
     const listRef = React.useRef(null);
     const [value] = getValue();
-    const initialOffset = useMemo(() => options.indexOf(value) * 35, [options, value]);
+    const initialOffset = useMemo(() => {
+        const itemHeight = 35;
+        const itemCount = children.length;
+        const selectedIndex = options.indexOf(value);
+        const targetOffset = selectedIndex >= 0 ? selectedIndex * itemHeight : 0;
+        const maxOffset = Math.max(0, itemCount * itemHeight - maxHeight);
+        return Math.min(Math.max(0, targetOffset), maxOffset);
+    }, [options, value, children.length, maxHeight]);
 
     useEffect(() => {
         if (listRef.current) {
@@ -272,6 +283,18 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     });
     const [showSortModal, setShowSortModal] = useState(false);
     const [audioSeconds, setAudioSeconds] = useState(null);
+    const debugChartSelection = typeof window !== 'undefined'
+        && window.localStorage?.getItem('debugChartSelection') === '1';
+    const handleSongSelectDebug = useCallback((selected) => {
+        if (debugChartSelection) {
+            console.debug('[BPMTool] song select', {
+                selected,
+                currentSong: simfileData?.title?.titleName,
+                currentChart: currentChart?.slug,
+            });
+        }
+        onSongSelect(selected);
+    }, [debugChartSelection, onSongSelect, simfileData?.title?.titleName, currentChart?.slug]);
 
     const hexToRgba = (hex, alpha) => {
         let c = hex.replace('#', '').trim();
@@ -368,8 +391,122 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         filters.artist !== '' ||
         (filters.title && filters.title !== '') ||
         filters.multiBpm !== 'any' ||
-        filters.playedStatus !== 'all'
+        filters.playedStatus !== 'all' ||
+        (showRankedRatings && (filters.rankedFractionMin !== '' || filters.rankedFractionMax !== ''))
     );
+
+    const getFilterCounts = useCallback((currentFilters) => {
+        if (!smData?.files?.length) return null;
+        if (!songMeta.length) return null;
+
+        const metaMap = new Map(songMeta.map(m => [m.path, m]));
+        const gamesFilter = Array.isArray(currentFilters?.games) ? currentFilters.games : [];
+        const diffNames = Array.isArray(currentFilters?.difficultyNames) ? currentFilters.difficultyNames : [];
+        const lowerCaseFilterNames = diffNames.map(n => n.toLowerCase());
+        const artistFilter = (currentFilters?.artist || '').toLowerCase();
+        const titleFilter = (currentFilters?.title || '').toLowerCase();
+        const bpmMinFilter = currentFilters?.bpmMin ?? '';
+        const bpmMaxFilter = currentFilters?.bpmMax ?? '';
+        const lengthMinFilter = currentFilters?.lengthMin ?? '';
+        const lengthMaxFilter = currentFilters?.lengthMax ?? '';
+        const multiBpmFilter = currentFilters?.multiBpm ?? 'any';
+        const playedStatusFilter = currentFilters?.playedStatus ?? 'all';
+        const rankedFractionMinFilter = currentFilters?.rankedFractionMin ?? '';
+        const rankedFractionMaxFilter = currentFilters?.rankedFractionMax ?? '';
+
+        let total = 0;
+        let filtered = 0;
+        let chartsTotal = 0;
+        let chartsFiltered = 0;
+
+        for (const file of smData.files) {
+            if (selectedGame !== 'all' && !file.path.startsWith(`sm/${selectedGame}/`)) continue;
+            const meta = metaMap.get(file.path);
+            if (!meta) continue;
+            if (songlistOverrideHasEntries(overrideSongs)) {
+                if (!songlistOverrideMatches(overrideSongs, {
+                    title: meta.title,
+                    titleTranslit: meta.titleTranslit,
+                    artist: meta.artist,
+                    artistTranslit: meta.artistTranslit,
+                    mode: playStyle,
+                })) {
+                    continue;
+                }
+            }
+
+            const chartsInMode = (meta.difficulties || []).filter(d => d.mode === playStyle);
+            if (!chartsInMode.length) continue;
+
+            total += 1;
+            chartsTotal += chartsInMode.length;
+
+            if (gamesFilter.length && !gamesFilter.includes(meta.game)) continue;
+            if (artistFilter && !meta.artist?.toLowerCase()?.includes(artistFilter)) continue;
+            if (titleFilter) {
+                const titleMatch = meta.title?.toLowerCase()?.includes(titleFilter);
+                const translitMatch = meta.titleTranslit?.toLowerCase()?.includes(titleFilter);
+                if (!titleMatch && !translitMatch) continue;
+            }
+            const bpmDiff = meta.bpmMax - meta.bpmMin;
+            const isSingleBpm = bpmDiff <= 5;
+            if (multiBpmFilter === 'single' && !isSingleBpm) continue;
+            if (multiBpmFilter === 'multiple' && isSingleBpm) continue;
+            if (bpmMinFilter !== '' && meta.bpmMax < Number(bpmMinFilter)) continue;
+            if (bpmMaxFilter !== '' && meta.bpmMin > Number(bpmMaxFilter)) continue;
+            if (lengthMinFilter !== '' && meta.length !== undefined && meta.length < Number(lengthMinFilter)) continue;
+            if (lengthMaxFilter !== '' && meta.length !== undefined && meta.length > Number(lengthMaxFilter)) continue;
+            if (playedStatusFilter !== 'all') {
+                const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
+                    if (d.mode !== playStyle) return false;
+                    const scoreHit = resolveScore(scores, d.mode, {
+                        chartId: d.chartId,
+                        songId: meta.id,
+                        title: meta.title,
+                        artist: meta.artist,
+                        difficulty: d.difficulty,
+                    });
+                    return scoreHit != null;
+                });
+                if (playedStatusFilter === 'played' && !hasPlayedInCurrentPlaystyle) continue;
+                if (playedStatusFilter === 'notPlayed' && hasPlayedInCurrentPlaystyle) continue;
+            }
+
+            const chartMatches = chartsInMode.filter(d => {
+                const difficultyValue = getDifficultyValue(d, showRankedRatings);
+                const levelMatch = isDifficultyAllowed(
+                    difficultyValue,
+                    currentFilters?.difficultyMin,
+                    currentFilters?.difficultyMax,
+                    showRankedRatings,
+                    rankedFractionMinFilter,
+                    rankedFractionMaxFilter,
+                );
+                if (!levelMatch) return false;
+                const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
+                if (!nameMatch) return false;
+                if (playedStatusFilter !== 'all') {
+                    const scoreHit = resolveScore(scores, d.mode, {
+                        chartId: d.chartId,
+                        songId: meta.id,
+                        title: meta.title,
+                        artist: meta.artist,
+                        difficulty: d.difficulty,
+                    });
+                    const hasScore = scoreHit != null;
+                    if (playedStatusFilter === 'played' && !hasScore) return false;
+                    if (playedStatusFilter === 'notPlayed' && hasScore) return false;
+                }
+                return true;
+            });
+
+            if (!chartMatches.length) continue;
+            filtered += 1;
+            chartsFiltered += chartMatches.length;
+        }
+
+        return { filtered, total, chartsFiltered, chartsTotal };
+    }, [smData, songMeta, selectedGame, overrideSongs, playStyle, showRankedRatings, scores]);
 
     useEffect(() => {
         storage.setItem('isCollapsed', JSON.stringify(isCollapsed));
@@ -452,8 +589,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
         getJsonCached(option.file)
             .then(data => {
-                const songs = (data.songs || []).map(normalizeString);
-                setOverrideSongs(new Set(songs));
+                setOverrideSongs(buildSonglistOverrideLookup(data));
             })
             .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
     }, [songlistOverride]);
@@ -462,8 +598,23 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!simfileWithRatings) return;
 
         const chartsInMode = simfileWithRatings.availableTypes.filter(c => c.mode === playStyle);
+        const chartExists = currentChart
+            ? simfileWithRatings.availableTypes.some(c => c.slug === currentChart.slug)
+            : false;
+        if (!chartExists) {
+            const fallback = chartsInMode[0] || simfileWithRatings.availableTypes[0];
+            if (debugChartSelection) {
+                console.debug('[BPMTool] Missing chart for song, fallback', {
+                    song: simfileWithRatings.title?.titleName,
+                    currentSlug: currentChart?.slug,
+                    fallbackSlug: fallback?.slug,
+                    playStyle,
+                });
+            }
+            if (fallback) setCurrentChart(getRawChart(fallback));
+            return;
+        }
         if (chartsInMode.length === 0) {
-            // If no charts for this play style, do nothing and let the song be filtered out
             return;
         }
 
@@ -473,7 +624,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             const chartForFilter = getRatedChart(chart);
             // Check level range filter
             const chartDifficulty = getDifficultyValue(chartForFilter, showRankedRatings);
-            if (!isDifficultyInRange(chartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
+            if (!isDifficultyAllowed(chartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings, filters.rankedFractionMin, filters.rankedFractionMax)) {
                 return true;
             }
             // Check difficulty name filter
@@ -732,20 +883,22 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             filteredFiles = filteredFiles.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
         }
 
-        if (overrideSongs && overrideSongs.size > 0) {
-            filteredFiles = filteredFiles.filter(file => {
-                const titles = [file.title];
-                if (file.titleTranslit) titles.push(file.titleTranslit);
-                const normalized = titles.map(normalizeString);
-                return normalized.some(t => overrideSongs.has(t));
-            });
-        }
-
         const metaMap = new Map(songMeta.map(m => [m.path, m]));
 
         filteredFiles = filteredFiles.filter(file => {
             const meta = metaMap.get(file.path);
             if (!meta) return false;
+            if (songlistOverrideHasEntries(overrideSongs)) {
+                if (!songlistOverrideMatches(overrideSongs, {
+                    title: meta.title,
+                    titleTranslit: meta.titleTranslit,
+                    artist: meta.artist,
+                    artistTranslit: meta.artistTranslit,
+                    mode: playStyle,
+                })) {
+                    return false;
+                }
+            }
             if (filters.games.length && !filters.games.includes(meta.game)) return false;
             if (filters.artist && !meta.artist.toLowerCase().includes(filters.artist.toLowerCase())) return false;
             if (filters.title && !meta.title.toLowerCase().includes(filters.title.toLowerCase()) && !(meta.titleTranslit && meta.titleTranslit.toLowerCase().includes(filters.title.toLowerCase()))) return false;
@@ -755,12 +908,17 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (filters.multiBpm === 'multiple' && isSingleBpm) return false;
             if (filters.bpmMin !== '' && meta.bpmMax < Number(filters.bpmMin)) return false;
             if (filters.bpmMax !== '' && meta.bpmMin > Number(filters.bpmMax)) return false;
-            if (filters.difficultyMin !== '' || filters.difficultyMax !== '' || (filters.difficultyNames && filters.difficultyNames.length > 0)) {
+            if (
+                filters.difficultyMin !== '' ||
+                filters.difficultyMax !== '' ||
+                (filters.difficultyNames && filters.difficultyNames.length > 0) ||
+                (showRankedRatings && (filters.rankedFractionMin !== '' || filters.rankedFractionMax !== ''))
+            ) {
                 const lowerCaseFilterNames = (filters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
                     const difficultyValue = getDifficultyValue(d, showRankedRatings);
-                    const levelMatch = isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings);
+                    const levelMatch = isDifficultyAllowed(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings, filters.rankedFractionMin, filters.rankedFractionMax);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
                     return levelMatch && nameMatch;
                 });
@@ -876,10 +1034,28 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     useEffect(() => {
         if (!simfileData || !currentChart || !filters) return;
 
+        const chartExists = currentChart
+            ? simfileWithRatings.availableTypes.some(c => c.slug === currentChart.slug)
+            : false;
+        if (!chartExists) {
+            const fallback = simfileWithRatings.availableTypes.find(c => c.mode === playStyle)
+                || simfileWithRatings.availableTypes[0];
+            if (debugChartSelection) {
+                console.debug('[BPMTool] Current chart not in song, fallback', {
+                    song: simfileWithRatings.title?.titleName,
+                    currentSlug: currentChart?.slug,
+                    fallbackSlug: fallback?.slug,
+                    playStyle,
+                });
+            }
+            if (fallback) setCurrentChart(getRawChart(fallback));
+            return;
+        }
+
         // If the current chart is still valid, do nothing.
         const currentChartDifficulty = getDifficultyValue(currentChart, showRankedRatings);
         const currentChartIsValid =
-            isDifficultyInRange(currentChartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings) &&
+            isDifficultyAllowed(currentChartDifficulty, filters.difficultyMin, filters.difficultyMax, showRankedRatings, filters.rankedFractionMin, filters.rankedFractionMax) &&
             (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(currentChart.difficulty));
 
         if (currentChartIsValid) return;
@@ -889,7 +1065,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const matchingCharts = availableCharts.filter(c => {
             const difficultyValue = getDifficultyValue(c, showRankedRatings);
             return (
-                isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings) &&
+                isDifficultyAllowed(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings, filters.rankedFractionMin, filters.rankedFractionMax) &&
                 (!filters.difficultyNames || filters.difficultyNames.length === 0 || filters.difficultyNames.includes(c.difficulty))
             );
         });
@@ -918,7 +1094,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
         const matchesFilters = (chart) => {
             const difficultyValue = getDifficultyValue(chart, showRankedRatings);
-            return isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings);
+            return isDifficultyAllowed(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings, filters.rankedFractionMin, filters.rankedFractionMax);
         };
 
         const matchingCharts = chartsInMode.filter(matchesFilters);
@@ -1040,12 +1216,17 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (currentFilters.multiBpm === 'multiple' && isSingleBpm) return false;
             if (currentFilters.bpmMin !== '' && meta.bpmMax < Number(currentFilters.bpmMin)) return false;
             if (currentFilters.bpmMax !== '' && meta.bpmMin > Number(currentFilters.bpmMax)) return false;
-            if (currentFilters.difficultyMin !== '' || currentFilters.difficultyMax !== '' || (currentFilters.difficultyNames && currentFilters.difficultyNames.length > 0)) {
+            if (
+                currentFilters.difficultyMin !== '' ||
+                currentFilters.difficultyMax !== '' ||
+                (currentFilters.difficultyNames && currentFilters.difficultyNames.length > 0) ||
+                (showRankedRatings && (currentFilters.rankedFractionMin !== '' || currentFilters.rankedFractionMax !== ''))
+            ) {
                 const lowerCaseFilterNames = (currentFilters.difficultyNames || []).map(n => n.toLowerCase());
                 const chartMatches = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
                     const difficultyValue = getDifficultyValue(d, showRankedRatings);
-                    const levelMatch = isDifficultyInRange(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings);
+                    const levelMatch = isDifficultyAllowed(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings, currentFilters.rankedFractionMin, currentFilters.rankedFractionMax);
                     const nameMatch = lowerCaseFilterNames.length === 0 || lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
                     return levelMatch && nameMatch;
                 });
@@ -1071,7 +1252,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 .filter(d => {
                     if (d.mode !== playStyle) return false; // Filter by play style
                     const difficultyValue = getDifficultyValue(d, showRankedRatings);
-                    if (!isDifficultyInRange(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings)) {
+                    if (!isDifficultyAllowed(difficultyValue, currentFilters.difficultyMin, currentFilters.difficultyMax, showRankedRatings, currentFilters.rankedFractionMin, currentFilters.rankedFractionMax)) {
                         return false;
                     }
                     if (lowerCaseFilterNames.length > 0 && !lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) return false;
@@ -1148,7 +1329,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                                 className="song-select"
                                 options={songOptions}
                                 value={selectedSongOption}
-                                onChange={(selected) => onSongSelect(selected)}
+                                onChange={handleSongSelectDebug}
                                 styles={selectStyles}
                                 placeholder="Search for a song..."
                                 isClearable
@@ -1327,6 +1508,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
             games={smData.games}
             showLists={showLists}
             onCreateList={handleCreateListFromFilter}
+            getCounts={getFilterCounts}
         />
         <AddToListModal
             isOpen={showAddModal}

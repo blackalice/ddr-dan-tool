@@ -17,11 +17,15 @@ import { SettingsContext } from "./contexts/SettingsContext.jsx";
 import { useFilters } from "./contexts/FilterContext.jsx";
 import { useScores } from "./contexts/ScoresContext.jsx";
 import { resolveScore } from "./utils/scoreKey.js";
-import { normalizeString } from "./utils/stringSimilarity.js";
-import { SONGLIST_OVERRIDE_OPTIONS } from "./utils/songlistOverrides.js";
+import {
+  SONGLIST_OVERRIDE_OPTIONS,
+  buildSonglistOverrideLookup,
+  songlistOverrideHasEntries,
+  songlistOverrideMatches,
+} from "./utils/songlistOverrides.js";
 import { getJsonCached } from "./utils/cachedFetch.js";
 import { storage } from "./utils/remoteStorage.js";
-import { getDifficultyBucketValue, getDifficultyValue, isDifficultyInRange } from "./utils/difficultyFilters.js";
+import { getDifficultyBucketValue, getDifficultyValue, isDifficultyAllowed } from "./utils/difficultyFilters.js";
 import "./CardDrawPage.css";
 import settingsStyles from "./components/CardDrawSettingsModal.module.css";
 
@@ -445,13 +449,12 @@ const CardDrawPage = ({ smData }) => {
       setOverrideSongs(null);
       return;
     }
-    getJsonCached(option.file)
-      .then((data) => {
-        const songs = (data.songs || []).map(normalizeString);
-        setOverrideSongs(new Set(songs));
-      })
-      .catch(() => setOverrideSongs(null));
-  }, [songlistOverride]);
+      getJsonCached(option.file)
+        .then((data) => {
+          setOverrideSongs(buildSonglistOverrideLookup(data));
+        })
+        .catch(() => setOverrideSongs(null));
+    }, [songlistOverride]);
 
   useEffect(() => {
     storage.setItem("cardDrawCurrent", JSON.stringify(drawnCharts));
@@ -520,8 +523,107 @@ const CardDrawPage = ({ smData }) => {
       filters.artist !== "" ||
       (filters.title && filters.title !== "") ||
       filters.multiBpm !== "any" ||
-      filters.playedStatus !== "all",
+      filters.playedStatus !== "all" ||
+      (showRankedRatings && (filters.rankedFractionMin !== "" || filters.rankedFractionMax !== "")),
   );
+
+  const getFilterCounts = useCallback((currentFilters) => {
+    if (!songMeta.length) return null;
+
+    const gamesFilter = Array.isArray(currentFilters?.games) ? currentFilters.games : [];
+    const diffNames = Array.isArray(currentFilters?.difficultyNames) ? currentFilters.difficultyNames : [];
+    const lowerCaseFilterNames = diffNames.map((n) => n.toLowerCase());
+    const artistFilter = (currentFilters?.artist || "").toLowerCase();
+    const titleFilter = (currentFilters?.title || "").toLowerCase();
+    const bpmMinFilter = currentFilters?.bpmMin ?? "";
+    const bpmMaxFilter = currentFilters?.bpmMax ?? "";
+    const lengthMinFilter = currentFilters?.lengthMin ?? "";
+    const lengthMaxFilter = currentFilters?.lengthMax ?? "";
+    const multiBpmFilter = currentFilters?.multiBpm ?? "any";
+    const playedStatusFilter = currentFilters?.playedStatus ?? "all";
+    const rankedFractionMinFilter = currentFilters?.rankedFractionMin ?? "";
+    const rankedFractionMaxFilter = currentFilters?.rankedFractionMax ?? "";
+
+    let total = 0;
+    let filtered = 0;
+    let chartsTotal = 0;
+    let chartsFiltered = 0;
+
+    songMeta.forEach((meta) => {
+      if (!meta) return;
+      if (songlistOverrideHasEntries(overrideSongs)) {
+        if (!songlistOverrideMatches(overrideSongs, {
+          title: meta.title,
+          titleTranslit: meta.titleTranslit,
+          artist: meta.artist,
+          artistTranslit: meta.artistTranslit,
+          mode: playStyle,
+        })) {
+          return;
+        }
+      }
+
+      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle);
+      if (!chartsInMode.length) return;
+      total += 1;
+      chartsTotal += chartsInMode.length;
+
+      if (gamesFilter.length && !gamesFilter.includes(meta.game)) return;
+      if (artistFilter && !meta.artist?.toLowerCase()?.includes(artistFilter)) return;
+      if (titleFilter) {
+        const titleMatch = meta.title?.toLowerCase()?.includes(titleFilter);
+        const translitMatch = meta.titleTranslit?.toLowerCase()?.includes(titleFilter);
+        if (!titleMatch && !translitMatch) return;
+      }
+      const bpmDiff = meta.bpmMax - meta.bpmMin;
+      const isSingleBpm = bpmDiff <= 5;
+      if (multiBpmFilter === "single" && !isSingleBpm) return;
+      if (multiBpmFilter === "multiple" && isSingleBpm) return;
+      if (bpmMinFilter !== "" && meta.bpmMax < Number(bpmMinFilter)) return;
+      if (bpmMaxFilter !== "" && meta.bpmMin > Number(bpmMaxFilter)) return;
+      if (lengthMinFilter !== "" && meta.length < Number(lengthMinFilter)) return;
+      if (lengthMaxFilter !== "" && meta.length > Number(lengthMaxFilter)) return;
+
+      if (playedStatusFilter !== "all") {
+        const hasPlayed = chartsInMode.some((d) => {
+          const scoreHit = resolveScore(scores, d.mode, {
+            chartId: d.chartId,
+            songId: meta.id,
+            title: meta.title,
+            artist: meta.artist,
+            difficulty: d.difficulty,
+          });
+          return scoreHit != null;
+        });
+        if (playedStatusFilter === "played" && !hasPlayed) return;
+        if (playedStatusFilter === "notPlayed" && hasPlayed) return;
+      }
+
+      const matchingCharts = chartsInMode.filter((d) => {
+        const difficultyValue = getDifficultyValue(d, showRankedRatings);
+        if (!isDifficultyAllowed(
+          difficultyValue,
+          currentFilters?.difficultyMin,
+          currentFilters?.difficultyMax,
+          showRankedRatings,
+          rankedFractionMinFilter,
+          rankedFractionMaxFilter,
+        )) {
+          return false;
+        }
+        if (lowerCaseFilterNames.length > 0) {
+          return lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
+        }
+        return true;
+      });
+
+      if (!matchingCharts.length) return;
+      filtered += 1;
+      chartsFiltered += matchingCharts.length;
+    });
+
+    return { filtered, total, chartsFiltered, chartsTotal };
+  }, [songMeta, overrideSongs, playStyle, scores, showRankedRatings]);
 
   const filteredEntries = useMemo(() => {
     if (!songMeta.length) return [];
@@ -550,11 +652,17 @@ const CardDrawPage = ({ smData }) => {
             ?.includes(filters.title.toLowerCase());
           if (!titleMatch && !translitMatch) return false;
         }
-        if (overrideSongs && overrideSongs.size > 0) {
-          const titles = [meta.title, meta.titleTranslit].filter(Boolean);
-          const normalized = titles.map(normalizeString);
-          if (!normalized.some((t) => overrideSongs.has(t))) return false;
-        }
+          if (songlistOverrideHasEntries(overrideSongs)) {
+            if (!songlistOverrideMatches(overrideSongs, {
+              title: meta.title,
+              titleTranslit: meta.titleTranslit,
+              artist: meta.artist,
+              artistTranslit: meta.artistTranslit,
+              mode: playStyle,
+            })) {
+              return false;
+            }
+          }
         const bpmDiff = meta.bpmMax - meta.bpmMin;
         const isSingleBpm = bpmDiff <= 5;
         if (filters.multiBpm === "single" && !isSingleBpm) return false;
@@ -594,7 +702,14 @@ const CardDrawPage = ({ smData }) => {
         const matchingCharts = (meta.difficulties || []).filter((d) => {
           if (d.mode !== playStyle) return false;
           const difficultyValue = getDifficultyValue(d, showRankedRatings);
-          if (!isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
+          if (!isDifficultyAllowed(
+            difficultyValue,
+            filters.difficultyMin,
+            filters.difficultyMax,
+            showRankedRatings,
+            filters.rankedFractionMin,
+            filters.rankedFractionMax,
+          )) {
             return false;
           }
           if (lowerCaseFilterNames.length > 0) {
@@ -2125,6 +2240,7 @@ const CardDrawPage = ({ smData }) => {
         onClose={() => setShowFilter(false)}
         games={games}
         showLists={false}
+        getCounts={getFilterCounts}
       />
     </div>
   );

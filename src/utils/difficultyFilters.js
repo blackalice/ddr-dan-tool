@@ -43,3 +43,27 @@ export const isDifficultyInRange = (value, minRaw, maxRaw, showRankedRatings) =>
   }
   return true;
 };
+
+export const isRankedFractionInRange = (value, minRaw, maxRaw, showRankedRatings) => {
+  if (!showRankedRatings) return true;
+  const min = parseFilterNumber(minRaw);
+  const max = parseFilterNumber(maxRaw);
+  if (!min && !max) return true;
+  if (!Number.isFinite(value)) return false;
+  const fraction = value - Math.floor(value);
+  if (min && fraction < min.value - 1e-9) return false;
+  if (max && fraction > max.value + 1e-9) return false;
+  return true;
+};
+
+export const isDifficultyAllowed = (
+  value,
+  minRaw,
+  maxRaw,
+  showRankedRatings,
+  rankedFractionMinRaw,
+  rankedFractionMaxRaw,
+) => {
+  if (!isDifficultyInRange(value, minRaw, maxRaw, showRankedRatings)) return false;
+  return isRankedFractionInRange(value, rankedFractionMinRaw, rankedFractionMaxRaw, showRankedRatings);
+};

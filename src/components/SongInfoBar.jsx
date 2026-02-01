@@ -22,7 +22,7 @@ import { resolveScore } from '../utils/scoreKey.js';
 import '../BPMTool.css';
 import '../styles/glow.css';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
-import { getDifficultyValue, isDifficultyInRange } from '../utils/difficultyFilters.js';
+import { getDifficultyValue, isDifficultyAllowed } from '../utils/difficultyFilters.js';
 
 const SongInfoBar = ({
   isCollapsed,
@@ -124,7 +124,14 @@ const SongInfoBar = ({
               feet: matchedDifficulty?.feet ?? chartType.feet,
             };
             const difficultyValue = getDifficultyValue(chartForFilter, showRankedRatings);
-            if (!isDifficultyInRange(difficultyValue, filters.difficultyMin, filters.difficultyMax, showRankedRatings)) {
+            if (!isDifficultyAllowed(
+              difficultyValue,
+              filters.difficultyMin,
+              filters.difficultyMax,
+              showRankedRatings,
+              filters.rankedFractionMin,
+              filters.rankedFractionMax,
+            )) {
                 filteredOut = true;
             }
             // Check difficulty name filter
@@ -260,9 +267,9 @@ const SongInfoBar = ({
                           draggable={false}
                         />
                         {/* Overlay logo appears on hover */}
-                        <img
+                        <GameLogo
                           className="game-logo-img chip-img logo"
-                          src={`/img/logos/${encodeURIComponent(gameVersion)}.jpg`}
+                          name={gameVersion}
                           alt=""
                           width={90}
                           height={90}
@@ -404,21 +411,50 @@ const SongInfoBar = ({
 };
 
 export default SongInfoBar;
-// Desktop-only logo component with extension fallback from public/img/logos
-function GameLogo({ name }) {
-  if (!name) return null;
-  const fileName = encodeURIComponent(name);
-  const src = `/img/logos/${fileName}.jpg`;
+// Desktop-only logo component with alias + extension fallback from public/img/logos
+const LOGO_EXTS = ['png', 'jpg', 'jpeg', 'webp'];
+
+function buildLogoCandidates(name) {
+  if (!name) return [];
+  const base = encodeURIComponent(name);
+  return LOGO_EXTS.map((ext) => `/img/logos/${base}.${ext}`);
+}
+
+function GameLogo({
+  name,
+  className = 'game-logo-img',
+  alt,
+  width = 90,
+  height = 90,
+  loading = 'eager',
+  decoding = 'sync',
+  draggable = false,
+}) {
+  const candidates = React.useMemo(() => buildLogoCandidates(name), [name]);
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    setIndex(0);
+  }, [name]);
+
+  if (!name || candidates.length === 0 || index < 0) return null;
+  const src = candidates[index];
+
+  const handleError = () => {
+    setIndex((i) => (i + 1 < candidates.length ? i + 1 : -1));
+  };
+
   return (
     <img
-      className="game-logo-img"
+      className={className}
       src={src}
-      alt={name}
-      width={90}
-      height={90}
-      loading="eager"
-      decoding="sync"
-      draggable={false}
+      alt={alt ?? name}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding={decoding}
+      draggable={draggable}
+      onError={handleError}
     />
   );
 }

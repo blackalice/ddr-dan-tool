@@ -3,6 +3,13 @@ import path from 'path';
 import Fraction from "fraction.js";
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 import { buildChartId } from '../src/utils/chartIds.js';
+import {
+    collectStats,
+    collectTreeStats,
+    mergeStats,
+    shouldSkipBuild,
+    writeCache,
+} from './cache-utils.mjs';
 
 // --- Start of smParserUtils.js content ---
 const beats = [
@@ -394,16 +401,28 @@ function parseSm(sm) {
 
 // --- Main build script logic ---
 
-const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
-const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
-const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
-const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
-const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
-const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
+const ROOT_DIR = process.cwd();
+const DATA_DIR = path.resolve(ROOT_DIR, 'data');
+const GENERATED_DIR = path.join(DATA_DIR, 'generated');
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
+const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
+const COURSE_DATA_PATH = path.join(DATA_DIR, 'courses', 'course-data.json');
+const DAN_OUTPUT_PATH = path.join(GENERATED_DIR, 'dan-data.json');
+const VEGA_OUTPUT_PATH = path.join(GENERATED_DIR, 'vega-data.json');
+const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
 // DDR Courses source (.crs files)
-const DDR_COURSES_DIR = path.resolve(process.cwd(), 'cource', 'DDRCourses-master');
-const COURSE_DATA_HTML = path.resolve(process.cwd(), 'cource', 'Course Data.html');
-const COURSES_OUTPUT_PATH = path.join(PUBLIC_DIR, 'courses-data.json');
+const DDR_COURSES_DIR = path.join(DATA_DIR, 'courses', 'DDRCourses-master');
+const COURSE_DATA_HTML = path.join(DATA_DIR, 'courses', 'Course Data.html');
+const COURSES_OUTPUT_PATH = path.join(GENERATED_DIR, 'courses-data.json');
+const SONG_ID_MAP_PATH = path.join(DATA_DIR, 'song-ids.json');
+const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'processed-data.json');
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
+
+const toSimfilePath = (publicPath) => {
+    const normalized = String(publicPath || '').replace(/\\/g, '/');
+    const trimmed = normalized.startsWith('sm/') ? normalized.slice(3) : normalized;
+    return path.join(SIMFILES_DIR, trimmed);
+};
 
 
 const readJson = async (filePath) => {
@@ -621,7 +640,7 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
                 continue;
             }
 
-            const smFilePath = path.join(PUBLIC_DIR, songFile.path);
+            const smFilePath = toSimfilePath(songFile.path);
             const simfileData = await readSmFile(smFilePath);
             if (!simfileData) {
                 processedSongs.push({
@@ -1015,7 +1034,7 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
                 processedSongs.push({ title, mode, level, error: 'Song file not found' });
                 continue;
             }
-            const smFilePath = path.join(PUBLIC_DIR, songFile.path);
+            const smFilePath = toSimfilePath(songFile.path);
             const simfileData = await readSmFile(smFilePath);
             if (!simfileData) {
                 processedSongs.push({ title, mode, level, error: 'Failed to load simfile' });
@@ -1065,6 +1084,32 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
 async function main() {
     try {
         console.log('Starting data processing...');
+        await fs.mkdir(GENERATED_DIR, { recursive: true });
+        const haveNewHtml = await fs.stat(COURSE_DATA_HTML).then(() => true).catch(() => false);
+        const haveCourses = haveNewHtml ? false : await fs.stat(DDR_COURSES_DIR).then(() => true).catch(() => false);
+        const coursesSource = haveNewHtml ? 'html' : (haveCourses ? 'crs' : 'none');
+        let inputStats = mergeStats(
+            await collectStats([SM_FILES_PATH, COURSE_DATA_PATH, COMBINED_RATINGS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
+        );
+        if (haveNewHtml) {
+            inputStats = mergeStats(inputStats, await collectStats([COURSE_DATA_HTML], ROOT_DIR));
+        } else if (haveCourses) {
+            inputStats = mergeStats(
+                inputStats,
+                await collectTreeStats(DDR_COURSES_DIR, (p) => /\.(crs|html)$/i.test(p), ROOT_DIR),
+            );
+        }
+        const { skip, reason } = await shouldSkipBuild({
+            cachePath: CACHE_PATH,
+            inputStats,
+            outputPaths: [DAN_OUTPUT_PATH, VEGA_OUTPUT_PATH, COURSES_OUTPUT_PATH],
+            config: { coursesSource },
+            force: FORCE,
+        });
+        if (skip) {
+            console.log(`[generate-processed-data] up-to-date (${reason}) — skipping.`);
+            return;
+        }
         const smFiles = await readJson(SM_FILES_PATH);
         const courseData = await readJson(COURSE_DATA_PATH);
         const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
@@ -1099,7 +1144,6 @@ async function main() {
         // Process Courses from new HTML source if present; fallback to .crs otherwise
         try {
             const resultByGame = {};
-            const haveNewHtml = await fs.stat(COURSE_DATA_HTML).then(() => true).catch(() => false);
             if (haveNewHtml) {
                 const mapByGame = await parseUnifiedCourseHtml(COURSE_DATA_HTML);
                 for (const [game, courses] of mapByGame.entries()) {
@@ -1117,7 +1161,6 @@ async function main() {
                     resultByGame[game] = out;
                 }
             } else {
-                const haveCourses = await fs.stat(DDR_COURSES_DIR).then(() => true).catch(() => false);
                 if (haveCourses) {
                     const crsByGame = await collectCrsCourses(DDR_COURSES_DIR);
                     const a3HtmlPath = path.join(DDR_COURSES_DIR, 'DDR A3.html');
@@ -1139,6 +1182,7 @@ async function main() {
         } catch (err) {
             console.error('Error generating courses-data.json:', err);
         }
+        await writeCache(CACHE_PATH, inputStats, { coursesSource });
 
     } catch (error) {
         console.error('Error generating processed data:', error);

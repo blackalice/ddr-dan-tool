@@ -1,10 +1,23 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildChartId } from '../src/utils/chartIds.js';
+import {
+  collectStats,
+  mergeStats,
+  shouldSkipBuild,
+  writeCache,
+} from './cache-utils.mjs';
 
-const csvPath = fileURLToPath(new URL('../ddr_world_new_difficulties.csv', import.meta.url));
-const songMetaPath = fileURLToPath(new URL('../public/song-meta.json', import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT_DIR = path.resolve(__dirname, '..');
+
+const csvPath = fileURLToPath(new URL('../data/world/ddr_world_new_difficulties.csv', import.meta.url));
+const songMetaPath = fileURLToPath(new URL('../data/generated/song-meta.json', import.meta.url));
 const outputPath = fileURLToPath(new URL('../src/utils/worldNewChallengeChartsData.js', import.meta.url));
+const CACHE_PATH = fileURLToPath(new URL('../data/generated/.cache/world-new-challenges.json', import.meta.url));
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
 
 const parseCsv = (text) => {
   const rows = [];
@@ -199,6 +212,19 @@ const pickBestMatch = ({ row, songs, indexes }) => {
 };
 
 const run = async () => {
+  const inputStats = mergeStats(
+    await collectStats([csvPath, songMetaPath], ROOT_DIR),
+  );
+  const { skip, reason } = await shouldSkipBuild({
+    cachePath: CACHE_PATH,
+    inputStats,
+    outputPaths: [outputPath],
+    force: FORCE,
+  });
+  if (skip) {
+    console.log(`[world-new-challenges] up-to-date (${reason}) — skipping.`);
+    return;
+  }
   const csvText = await readFile(csvPath, 'utf8');
   const csvRows = parseCsv(csvText);
   const headers = csvRows.shift()?.map(header => header.trim()) || [];
@@ -243,6 +269,7 @@ const run = async () => {
     for (const row of unmatched.slice(0, 20)) console.log(`- ${row}`);
     if (unmatched.length > 20) console.log(`... (${unmatched.length - 20} more)`);
   }
+  await writeCache(CACHE_PATH, inputStats);
 };
 
 run().catch((err) => {

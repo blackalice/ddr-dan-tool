@@ -509,6 +509,20 @@ const Settings = () => {
                         </div>
                     )}
 
+                    <h2 className="settings-sub-header">Changelog</h2>
+                    <div className="setting-card">
+                        <div className="setting-text">
+                            <h3>Feb 1, 2026</h3>
+                            <ul className="settings-changelog">
+                                <li>Ranked ratings filters now support min/max decimal ranges.<br></br><b>(Request: Jynxatu)</b></li>
+                                <li>Filter modals show live song and chart counts.</li>
+                                <li>Song list overrides now include artist and difficulty data for safer matching.<br></br><b>(Bug: JUWUBEAT/Vetch)</b></li>
+                                <li>Added latest WORLD charts</li>
+                                <li>Build process streamlined</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <h2 className="settings-sub-header">About</h2>
                     <div className="setting-card">
                         <div className="setting-text">
