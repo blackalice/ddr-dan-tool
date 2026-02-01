@@ -2,8 +2,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { buildChartId } from '../src/utils/chartIds.js';
 
-const csvPath = fileURLToPath(new URL('../ddr_world_new_difficulties.csv', import.meta.url));
-const songMetaPath = fileURLToPath(new URL('../public/song-meta.json', import.meta.url));
+const csvPath = fileURLToPath(new URL('../data/world/ddr_world_new_difficulties.csv', import.meta.url));
+const songMetaPath = fileURLToPath(new URL('../data/generated/song-meta.json', import.meta.url));
 const outputPath = fileURLToPath(new URL('../src/utils/worldNewChallengeChartsData.js', import.meta.url));
 
 const parseCsv = (text) => {

@@ -7,10 +7,18 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const ROOT = path.resolve(__dirname, '..')
-const PUBLIC_DIR = path.join(ROOT, 'public')
-const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json')
-const SONG_LENGTHS_PATH = path.join(PUBLIC_DIR, 'song-lengths.json')
-const AUDIO_MAP_PATH = path.join(ROOT, '.local', 'audio-lengths.json')
+const DATA_DIR = path.join(ROOT, 'data')
+const GENERATED_DIR = path.join(DATA_DIR, 'generated')
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles')
+const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json')
+const SONG_LENGTHS_PATH = path.join(GENERATED_DIR, 'song-lengths.json')
+const AUDIO_MAP_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
+
+const toSimfilePath = (publicPath) => {
+  const normalized = String(publicPath || '').replace(/\\/g, '/')
+  const trimmed = normalized.startsWith('sm/') ? normalized.slice(3) : normalized
+  return path.join(SIMFILES_DIR, trimmed)
+}
 
 const toFixed = (n, d = 2) => Number.isFinite(n) ? Number(n.toFixed(d)) : 0
 
@@ -57,6 +65,7 @@ function computeSongSeconds(chart) {
 
 async function main() {
   try {
+    await fs.mkdir(GENERATED_DIR, { recursive: true })
     const smListRaw = await fs.readFile(SM_FILES_PATH, 'utf-8')
     const smList = JSON.parse(smListRaw)
     let audioMap = {}
@@ -67,14 +76,14 @@ async function main() {
     } catch {}
     const lengthsOut = {}
     for (const file of smList.files) {
-      const full = path.join(PUBLIC_DIR, file.path)
+      const full = toSimfilePath(file.path)
       let text
       try {
         text = await fs.readFile(full, 'utf-8')
       } catch {
         continue
       }
-      // Always use the public/sm simfile for calculations (audio lengths still come from ddrbits)
+      // Always use the source simfile for calculations (audio lengths still come from data/generated)
       let sim
       try { sim = parseSm(text) } catch (e) { console.warn('Failed to parse', file.path); continue }
       const override = audioMap[file.path]?.lengthSeconds

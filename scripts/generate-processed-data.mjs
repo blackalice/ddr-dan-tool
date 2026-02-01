@@ -394,16 +394,25 @@ function parseSm(sm) {
 
 // --- Main build script logic ---
 
-const PUBLIC_DIR = path.resolve(process.cwd(), 'public');
-const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
-const COURSE_DATA_PATH = path.join(PUBLIC_DIR, 'course-data.json');
-const DAN_OUTPUT_PATH = path.join(PUBLIC_DIR, 'dan-data.json');
-const VEGA_OUTPUT_PATH = path.join(PUBLIC_DIR, 'vega-data.json');
-const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
+const ROOT_DIR = process.cwd();
+const DATA_DIR = path.resolve(ROOT_DIR, 'data');
+const GENERATED_DIR = path.join(DATA_DIR, 'generated');
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
+const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
+const COURSE_DATA_PATH = path.join(DATA_DIR, 'courses', 'course-data.json');
+const DAN_OUTPUT_PATH = path.join(GENERATED_DIR, 'dan-data.json');
+const VEGA_OUTPUT_PATH = path.join(GENERATED_DIR, 'vega-data.json');
+const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
 // DDR Courses source (.crs files)
-const DDR_COURSES_DIR = path.resolve(process.cwd(), 'cource', 'DDRCourses-master');
-const COURSE_DATA_HTML = path.resolve(process.cwd(), 'cource', 'Course Data.html');
-const COURSES_OUTPUT_PATH = path.join(PUBLIC_DIR, 'courses-data.json');
+const DDR_COURSES_DIR = path.join(DATA_DIR, 'courses', 'DDRCourses-master');
+const COURSE_DATA_HTML = path.join(DATA_DIR, 'courses', 'Course Data.html');
+const COURSES_OUTPUT_PATH = path.join(GENERATED_DIR, 'courses-data.json');
+
+const toSimfilePath = (publicPath) => {
+    const normalized = String(publicPath || '').replace(/\\/g, '/');
+    const trimmed = normalized.startsWith('sm/') ? normalized.slice(3) : normalized;
+    return path.join(SIMFILES_DIR, trimmed);
+};
 
 
 const readJson = async (filePath) => {
@@ -621,7 +630,7 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
                 continue;
             }
 
-            const smFilePath = path.join(PUBLIC_DIR, songFile.path);
+            const smFilePath = toSimfilePath(songFile.path);
             const simfileData = await readSmFile(smFilePath);
             if (!simfileData) {
                 processedSongs.push({
@@ -1015,7 +1024,7 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
                 processedSongs.push({ title, mode, level, error: 'Song file not found' });
                 continue;
             }
-            const smFilePath = path.join(PUBLIC_DIR, songFile.path);
+            const smFilePath = toSimfilePath(songFile.path);
             const simfileData = await readSmFile(smFilePath);
             if (!simfileData) {
                 processedSongs.push({ title, mode, level, error: 'Failed to load simfile' });
@@ -1065,6 +1074,7 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
 async function main() {
     try {
         console.log('Starting data processing...');
+        await fs.mkdir(GENERATED_DIR, { recursive: true });
         const smFiles = await readJson(SM_FILES_PATH);
         const courseData = await readJson(COURSE_DATA_PATH);
         const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);

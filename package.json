@@ -9,7 +9,7 @@
   "dev:vite": "vite",
   "dev:wrangler": "wrangler dev",
 
-  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs",
+  "prepare:data": "node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs && npm run sync:public",
 
   "dev:full": "npm run prepare:data && npm run dev",
 
@@ -28,7 +28,8 @@
   "deploy:pages": "wrangler pages deploy dist",
 
   "parse:scores": "node scripts/parse-ganymede-html.mjs",
-  "build:audio": "node scripts/build-audio-lengths.mjs ddrbits"
+  "build:audio": "node scripts/build-audio-lengths.mjs",
+  "sync:public": "node scripts/sync-public-assets.mjs"
 },
 
   "dependencies": {

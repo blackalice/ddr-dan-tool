@@ -85,10 +85,19 @@ function calculateSongLength(bpmChanges, songLastBeat, stops = []) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
-const SM_FILES_PATH = path.join(PUBLIC_DIR, 'sm-files.json');
-const OUTPUT_PATH = path.join(PUBLIC_DIR, 'song-meta.json');
-const COMBINED_RATINGS_PATH = path.join(PUBLIC_DIR, 'combined_song_ratings.json');
+const ROOT_DIR = path.join(__dirname, '..');
+const DATA_DIR = path.join(ROOT_DIR, 'data');
+const GENERATED_DIR = path.join(DATA_DIR, 'generated');
+const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
+const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
+const OUTPUT_PATH = path.join(GENERATED_DIR, 'song-meta.json');
+const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
+
+const toSimfilePath = (publicPath) => {
+  const normalized = String(publicPath || '').replace(/\\/g, '/');
+  const trimmed = normalized.startsWith('sm/') ? normalized.slice(3) : normalized;
+  return path.join(SIMFILES_DIR, trimmed);
+};
 
 async function readJson(p) {
   const data = await fs.readFile(p, 'utf-8');
@@ -189,6 +198,7 @@ const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
 
 async function main() {
   try {
+    await fs.mkdir(GENERATED_DIR, { recursive: true });
     const smList = await readJson(SM_FILES_PATH);
     const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
     const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
@@ -200,7 +210,7 @@ async function main() {
       try {
         const { id: songId, created } = ensureSongId(songIdMap, file.path);
         if (created) mapChanged = true;
-        const fullPath = path.join(PUBLIC_DIR, file.path);
+        const fullPath = toSimfilePath(file.path);
         const simfile = await readSmFile(fullPath);
         const allBpms = Object.values(simfile.charts).flatMap(c => c.bpm.map(b => b.bpm)).filter(b => b > 0);
         const uniqueBpms = [...new Set(allBpms)];
