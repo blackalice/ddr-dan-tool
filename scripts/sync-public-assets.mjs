@@ -65,7 +65,16 @@ const copyDirFiltered = async (from, to, shouldCopy) => {
 async function main() {
   await ensureDir(PUBLIC_DIR);
 
-  const allowedExt = new Set(['.sm', '.ssc', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp']);
+  const isAllowedSimfileAsset = (src) => {
+    const ext = path.extname(src).toLowerCase();
+    if (ext === '.sm' || ext === '.ssc') {
+      return true;
+    }
+    if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.webp') {
+      return /-jacket\.(png|jpg|jpeg|webp)$/i.test(src);
+    }
+    return false;
+  };
 
   const filesToCopy = [
     { from: path.join(GENERATED_DIR, 'sm-files.json'), to: path.join(PUBLIC_DIR, 'sm-files.json') },
@@ -97,7 +106,7 @@ async function main() {
   const inputStats = mergeStats(
     await collectStats(filesToCopy.map(file => file.from), ROOT_DIR),
     await collectTreeStats(ddrVerSrc, () => true, ROOT_DIR),
-    await collectTreeStats(SIMFILES_DIR, (src) => allowedExt.has(path.extname(src).toLowerCase()), ROOT_DIR),
+    await collectTreeStats(SIMFILES_DIR, isAllowedSimfileAsset, ROOT_DIR),
     ...(hasLogos ? [await collectTreeStats(logosSrc, () => true, ROOT_DIR)] : []),
   );
 
@@ -125,10 +134,7 @@ async function main() {
   await copyDirFiltered(ddrVerSrc, ddrVerDest, () => true);
 
   await resetDir(PUBLIC_SM_DIR);
-  await copyDirFiltered(SIMFILES_DIR, PUBLIC_SM_DIR, (src) => {
-    const ext = path.extname(src).toLowerCase();
-    return allowedExt.has(ext);
-  });
+  await copyDirFiltered(SIMFILES_DIR, PUBLIC_SM_DIR, isAllowedSimfileAsset);
 
   if (hasLogos) {
     await resetDir(logosDest);
