@@ -1,9 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { collectStats, mergeStats, shouldSkipBuild, writeCache } from './cache-utils.mjs';
 
 const ROOT_DIR = process.cwd();
 const XML_PATH = path.join(ROOT_DIR, '__MUSICDB', 'musicdbA3.xml');
 const OUTPUT_PATH = path.join(ROOT_DIR, 'data', 'ddr-ver', 'DDRA3-full.json');
+const CACHE_PATH = path.join(ROOT_DIR, 'data', 'generated', '.cache', 'ddr-a3-override.json');
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
 
 const DIFFICULTY_NAMES = ['Beginner', 'Basic', 'Difficult', 'Expert', 'Challenge'];
 
@@ -64,6 +67,19 @@ const parseMusicdb = (xml) => {
 
 async function main() {
   try {
+    const inputStats = mergeStats(
+      await collectStats([XML_PATH], ROOT_DIR),
+    );
+    const { skip, reason } = await shouldSkipBuild({
+      cachePath: CACHE_PATH,
+      inputStats,
+      outputPaths: [OUTPUT_PATH],
+      force: FORCE,
+    });
+    if (skip) {
+      console.log(`[generate-ddr-a3-override] up-to-date (${reason}) — skipping.`);
+      return;
+    }
     const xml = await fs.readFile(XML_PATH, 'utf-8');
     const songs = parseMusicdb(xml);
     await fs.mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
@@ -75,6 +91,7 @@ async function main() {
     };
     await fs.writeFile(OUTPUT_PATH, JSON.stringify(payload, null, 2));
     console.log(`Generated ${OUTPUT_PATH} with ${songs.length} songs.`);
+    await writeCache(CACHE_PATH, inputStats);
   } catch (err) {
     console.error('Failed to generate DDRA3-full.json:', err);
     process.exit(1);

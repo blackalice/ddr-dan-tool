@@ -2,6 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
+import {
+    collectStats,
+    collectTreeStats,
+    mergeStats,
+    shouldSkipBuild,
+    writeCache,
+} from './cache-utils.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,6 +18,15 @@ const SIMFILES_DIR = path.join(ROOT_DIR, 'data', 'simfiles');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'data', 'generated');
 const IGNORE_DIRS = new Set(['logos']);
 const outputFile = path.join(OUTPUT_DIR, 'sm-files.json');
+const CACHE_PATH = path.join(OUTPUT_DIR, '.cache', 'sm-files.json');
+const SONG_ID_MAP_PATH = path.join(ROOT_DIR, 'data', 'song-ids.json');
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
+
+const isSmOrJacket = (filePath) => {
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext === '.sm' || ext === '.ssc') return true;
+    return /-jacket\.(png|jpg|jpeg|webp)$/i.test(filePath);
+};
 
 function toPublicSmPath(relativePath) {
     const normalized = relativePath.replace(/\\/g, '/');
@@ -56,6 +72,20 @@ function findSongFiles(dir, baseDir) {
 async function main() {
     try {
         fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+        const inputStats = mergeStats(
+            await collectTreeStats(SIMFILES_DIR, (p) => isSmOrJacket(p), ROOT_DIR),
+            await collectStats([SONG_ID_MAP_PATH], ROOT_DIR),
+        );
+        const { skip, reason } = await shouldSkipBuild({
+            cachePath: CACHE_PATH,
+            inputStats,
+            outputPaths: [outputFile],
+            force: FORCE,
+        });
+        if (skip) {
+            console.log(`[generate-sm-list] up-to-date (${reason}) — skipping.`);
+            return;
+        }
         const allFiles = findSongFiles(SIMFILES_DIR, SIMFILES_DIR);
 
         const songIdMap = await loadSongIdMap();
@@ -121,6 +151,7 @@ async function main() {
 
         fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
         console.log(`Successfully generated sm-files.json with ${gameFolders.length} games and ${filesWithIds.length} files.`);
+        await writeCache(CACHE_PATH, inputStats);
 
     } catch (error) {
         console.error('Error generating sm-files.json:', error);

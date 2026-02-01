@@ -75,6 +75,17 @@ You will need [Node.js](https://nodejs.org/en/) installed on your machine.
 
 The application will now be running locally, typically at `http://localhost:5173`.
 
+### Data Pipeline (Incremental Builds)
+
+Local builds generate derived data (song lists, metadata, audio lengths, courses, etc.). These scripts now track input changes and skip work when nothing changed.
+
+- Incremental (default):
+  - `npm run prepare:data`
+- Full rebuild (force all steps):
+  - `npm run prepare:data:force`
+
+You can also force any individual step with `--force` or by setting `FORCE_DATA=1` (or `DDR_FORCE_DATA=1`) in your shell.
+
 ### Auth & Database
 
 - Backend endpoints live under `/api`:

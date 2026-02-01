@@ -2,6 +2,12 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { parseSm } from '../src/utils/smParser.js'
+import {
+  collectStats,
+  mergeStats,
+  shouldSkipBuild,
+  writeCache,
+} from './cache-utils.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -13,6 +19,8 @@ const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles')
 const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json')
 const SONG_LENGTHS_PATH = path.join(GENERATED_DIR, 'song-lengths.json')
 const AUDIO_MAP_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
+const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'song-lengths.json')
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1'
 
 const toSimfilePath = (publicPath) => {
   const normalized = String(publicPath || '').replace(/\\/g, '/')
@@ -66,6 +74,19 @@ function computeSongSeconds(chart) {
 async function main() {
   try {
     await fs.mkdir(GENERATED_DIR, { recursive: true })
+    const inputStats = mergeStats(
+      await collectStats([SM_FILES_PATH, AUDIO_MAP_PATH], ROOT),
+    )
+    const { skip, reason } = await shouldSkipBuild({
+      cachePath: CACHE_PATH,
+      inputStats,
+      outputPaths: [SONG_LENGTHS_PATH],
+      force: FORCE,
+    })
+    if (skip) {
+      console.log(`[generate-song-lengths] up-to-date (${reason}) — skipping.`)
+      return
+    }
     const smListRaw = await fs.readFile(SM_FILES_PATH, 'utf-8')
     const smList = JSON.parse(smListRaw)
     let audioMap = {}
@@ -109,6 +130,7 @@ async function main() {
     }
     await fs.writeFile(SONG_LENGTHS_PATH, JSON.stringify(lengthsOut))
     console.log(`Wrote ${SONG_LENGTHS_PATH} with ${Object.keys(lengthsOut).length} song length entries`)
+    await writeCache(CACHE_PATH, inputStats)
   } catch (e) {
     console.error('Error generating song lengths:', e)
     process.exit(1)

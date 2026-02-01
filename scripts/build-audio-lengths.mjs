@@ -4,6 +4,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { parseFile } from 'music-metadata'
 import { spawn } from 'child_process'
+import {
+  collectTreeStats,
+  mergeStats,
+  shouldSkipBuild,
+  writeCache,
+} from './cache-utils.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -12,6 +18,8 @@ const DATA_DIR = path.join(ROOT, 'data')
 const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles')
 const GENERATED_DIR = path.join(DATA_DIR, 'generated')
 const OUT_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
+const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'audio-lengths.json')
+const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1'
 
 async function* walk(dir) {
   for (const d of await fs.readdir(dir, { withFileTypes: true })) {
@@ -60,6 +68,21 @@ function parseMusicFilename(smText) {
 
 async function main() {
   const sourceRoot = process.argv[2] ? path.resolve(process.cwd(), process.argv[2]) : SIMFILES_DIR
+  const inputStats = mergeStats(
+    await collectTreeStats(SIMFILES_DIR, (p) => /\.(sm|ssc)$/i.test(p), ROOT),
+    await collectTreeStats(sourceRoot, (p) => /\.(ogg|mp3|wav)$/i.test(p), ROOT),
+  )
+  const { skip, reason } = await shouldSkipBuild({
+    cachePath: CACHE_PATH,
+    inputStats,
+    outputPaths: [OUT_PATH],
+    config: { sourceRoot },
+    force: FORCE,
+  })
+  if (skip) {
+    console.log(`[build-audio-lengths] up-to-date (${reason}) — skipping.`)
+    return
+  }
   try {
     await fs.access(sourceRoot)
   } catch {
@@ -67,6 +90,7 @@ async function main() {
     await fs.mkdir(GENERATED_DIR, { recursive: true })
     await fs.writeFile(OUT_PATH, JSON.stringify({}, null, 2))
     console.log(`Wrote ${OUT_PATH} (0 entries)`)
+    await writeCache(CACHE_PATH, inputStats, { sourceRoot })
     return
   }
 
@@ -196,6 +220,7 @@ async function main() {
   }
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2))
   console.log(`Wrote ${OUT_PATH} (${Object.keys(out).length} entries)`) 
+  await writeCache(CACHE_PATH, inputStats, { sourceRoot })
 }
 
 main().catch(e => { console.error(e); process.exit(1) })

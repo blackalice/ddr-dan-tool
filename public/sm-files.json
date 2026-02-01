@@ -9923,6 +9923,13 @@
       "id": "001342"
     },
     {
+      "path": "sm/World/4NT1 D34D/4NT1 D34D.sm",
+      "title": "4NT1 D34D",
+      "titleTranslit": "",
+      "jacket": "sm/World/4NT1 D34D/4NT1 D34D-jacket.png",
+      "id": "002007"
+    },
+    {
       "path": "sm/World/access super [hyper] focus/access super [hyper] focus.sm",
       "title": "access super [hyper] focus",
       "titleTranslit": "",
@@ -9935,6 +9942,20 @@
       "titleTranslit": "Ai-shi AI sare",
       "jacket": "sm/World/Ai-shi AI sare/Ai-shi AI sare-jacket.png",
       "id": "001344"
+    },
+    {
+      "path": "sm/World/Aka to ao no rampage/Aka to ao no rampage.sm",
+      "title": "朱と碧のランページ",
+      "titleTranslit": "Aka to ao no rampage",
+      "jacket": "sm/World/Aka to ao no rampage/Aka to ao no rampage-jacket.png",
+      "id": "002008"
+    },
+    {
+      "path": "sm/World/Aka to ao no rampage (cover)/Aka to ao no rampage (cover).sm",
+      "title": "朱と碧のランページ",
+      "titleTranslit": "Aka to ao no rampage",
+      "jacket": "sm/World/Aka to ao no rampage (cover)/Aka to ao no rampage (cover)-jacket.png",
+      "id": "002009"
     },
     {
       "path": "sm/World/Akatsuki/Akatsuki.sm",
@@ -9951,6 +9972,13 @@
       "id": "001346"
     },
     {
+      "path": "sm/World/Aoba no ashioto/Aoba no ashioto.sm",
+      "title": "あおばの足音",
+      "titleTranslit": "Aoba no ashioto",
+      "jacket": "sm/World/Aoba no ashioto/Aoba no ashioto-jacket.png",
+      "id": "002010"
+    },
+    {
       "path": "sm/World/ARACHNE/ARACHNE.sm",
       "title": "ARACHNE",
       "titleTranslit": "",
@@ -9963,6 +9991,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Arcadia/Arcadia-jacket.png",
       "id": "001347"
+    },
+    {
+      "path": "sm/World/Autosummer/Autosummer.sm",
+      "title": "Autosummer",
+      "titleTranslit": "",
+      "jacket": "sm/World/Autosummer/Autosummer-jacket.png",
+      "id": "002011"
     },
     {
       "path": "sm/World/BabeL ~Next Story~/BabeL ~Next Story~.sm",
@@ -9986,11 +10021,25 @@
       "id": "001351"
     },
     {
+      "path": "sm/World/Be Happy Next 2 You/Be Happy Next 2 You.sm",
+      "title": "Be Happy Next 2 You",
+      "titleTranslit": "",
+      "jacket": "sm/World/Be Happy Next 2 You/Be Happy Next 2 You-jacket.png",
+      "id": "002012"
+    },
+    {
       "path": "sm/World/Beyond The Earth/Beyond The Earth.sm",
       "title": "Beyond The Earth",
       "titleTranslit": "",
       "jacket": "sm/World/Beyond The Earth/Beyond The Earth-jacket.png",
       "id": "001352"
+    },
+    {
+      "path": "sm/World/BIG som tam/BIG som tam.sm",
+      "title": "BIGソムタム",
+      "titleTranslit": "BIG som tam",
+      "jacket": "sm/World/BIG som tam/BIG som tam-jacket.png",
+      "id": "002013"
     },
     {
       "path": "sm/World/Blizzard of Arrows/Blizzard of Arrows.sm",
@@ -10014,6 +10063,13 @@
       "id": "001476"
     },
     {
+      "path": "sm/World/BRAIN-HEART/BRAIN-HEART.sm",
+      "title": "BRAIN-HEART",
+      "titleTranslit": "",
+      "jacket": "sm/World/BRAIN-HEART/BRAIN-HEART-jacket.png",
+      "id": "002014"
+    },
+    {
       "path": "sm/World/BREAK DOWN! (World Version)/BREAK DOWN! (World Version).sm",
       "title": "BRE∀K DOWN! (World Version)",
       "titleTranslit": "",
@@ -10021,11 +10077,32 @@
       "id": "001348"
     },
     {
+      "path": "sm/World/Burstix Comet/Burstix Comet.ssc",
+      "title": "Burstix Comet",
+      "titleTranslit": "",
+      "jacket": "sm/World/Burstix Comet/Burstix Comet-jacket.png",
+      "id": "002015"
+    },
+    {
       "path": "sm/World/Buta thunder/Buta thunder.sm",
       "title": "ブタサンダー",
       "titleTranslit": "Buta thunder",
       "jacket": "sm/World/Buta thunder/Buta thunder-jacket.png",
       "id": "001355"
+    },
+    {
+      "path": "sm/World/Bye or not/Bye or not.sm",
+      "title": "Bye or not",
+      "titleTranslit": "",
+      "jacket": "sm/World/Bye or not/Bye or not-jacket.png",
+      "id": "002016"
+    },
+    {
+      "path": "sm/World/Casino fire Kotomi-chan (cover)/Casino fire Kotomi-chan (cover).ssc",
+      "title": "カジノファイヤーことみちゃん",
+      "titleTranslit": "Casino fire Kotomi-chan",
+      "jacket": "sm/World/Casino fire Kotomi-chan (cover)/Casino fire Kotomi-chan (cover)-jacket.png",
+      "id": "002017"
     },
     {
       "path": "sm/World/Catharsis no tsuki/Catharsis no tsuki.sm",
@@ -10049,6 +10126,20 @@
       "id": "001359"
     },
     {
+      "path": "sm/World/Cirno no perfect sansuu gakuen/Cirno no perfect sansuu gakuen.sm",
+      "title": "チルノのパーフェクトさんすう学園",
+      "titleTranslit": "Cirno no perfect sansuu gakuen",
+      "jacket": "sm/World/Cirno no perfect sansuu gakuen/Cirno no perfect sansuu gakuen-jacket.png",
+      "id": "002018"
+    },
+    {
+      "path": "sm/World/Collapse of the Sanctuary/Collapse of the Sanctuary.sm",
+      "title": "Collapse of the Sanctuary",
+      "titleTranslit": "",
+      "jacket": "sm/World/Collapse of the Sanctuary/Collapse of the Sanctuary-jacket.png",
+      "id": "002019"
+    },
+    {
       "path": "sm/World/COSMIC V3LOCITY/COSMIC V3LOCITY.sm",
       "title": "COSMIC V3LOCITY",
       "titleTranslit": "COSMIC VELOCITY",
@@ -10061,6 +10152,27 @@
       "titleTranslit": "",
       "jacket": "sm/World/Couleur=Blanche/Couleur=Blanche-jacket.png",
       "id": "001360"
+    },
+    {
+      "path": "sm/World/CUE CUE RESCUE/CUE CUE RESCUE.sm",
+      "title": "CUE CUE RESCUE",
+      "titleTranslit": "",
+      "jacket": "sm/World/CUE CUE RESCUE/CUE CUE RESCUE-jacket.png",
+      "id": "002020"
+    },
+    {
+      "path": "sm/World/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)/Dadadadadadadadadada (NIJISANJI Dance-bu ver.).sm",
+      "title": "打打打打打打打打打打 (にじさんじダンス部 ver.)",
+      "titleTranslit": "Dadadadadadadadadada (NIJISANJI Dance-bu ver.)",
+      "jacket": "sm/World/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)-jacket.png",
+      "id": "002021"
+    },
+    {
+      "path": "sm/World/Daisycutter/Daisycutter.sm",
+      "title": "Daisycutter",
+      "titleTranslit": "",
+      "jacket": "sm/World/Daisycutter/Daisycutter-jacket.png",
+      "id": "002022"
     },
     {
       "path": "sm/World/Dance and Death/Dance and Death.sm",
@@ -10098,6 +10210,13 @@
       "id": "001362"
     },
     {
+      "path": "sm/World/Deadly Dolly Dance/Deadly Dolly Dance.sm",
+      "title": "Deadly Dolly Dance",
+      "titleTranslit": "",
+      "jacket": "sm/World/Deadly Dolly Dance/Deadly Dolly Dance-jacket.png",
+      "id": "002023"
+    },
+    {
       "path": "sm/World/Dense Flyer/Dense Flyer.sm",
       "title": "Dense Flyer",
       "titleTranslit": "",
@@ -10110,6 +10229,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/DIAVOLO/DIAVOLO-jacket.png",
       "id": "001361"
+    },
+    {
+      "path": "sm/World/Din Don Dan (NIJISANJI Dance-bu ver.)/Din Don Dan (NIJISANJI Dance-bu ver.).sm",
+      "title": "Din Don Dan (にじさんじダンス部 ver.)",
+      "titleTranslit": "Din Don Dan (NIJISANJI Dance-bu ver.)",
+      "jacket": "sm/World/Din Don Dan (NIJISANJI Dance-bu ver.)/Din Don Dan (NIJISANJI Dance-bu ver.)-jacket.png",
+      "id": "002024"
     },
     {
       "path": "sm/World/Don't Stop The HYPERCORE/Don't Stop The HYPERCORE.sm",
@@ -10168,6 +10294,20 @@
       "id": "001373"
     },
     {
+      "path": "sm/World/Explore/Explore.sm",
+      "title": "エクスプロウル",
+      "titleTranslit": "Explore",
+      "jacket": "sm/World/Explore/Explore-jacket.png",
+      "id": "002025"
+    },
+    {
+      "path": "sm/World/EYE OF THE HEAVEN/EYE OF THE HEAVEN.ssc",
+      "title": "EYE OF THE HEAVEN",
+      "titleTranslit": "",
+      "jacket": "sm/World/EYE OF THE HEAVEN/EYE OF THE HEAVEN-jacket.png",
+      "id": "002026"
+    },
+    {
       "path": "sm/World/First Action/First Action.sm",
       "title": "First Action",
       "titleTranslit": "",
@@ -10210,6 +10350,13 @@
       "id": "001380"
     },
     {
+      "path": "sm/World/Ga-ga-ga-galaxy!/Ga-ga-ga-galaxy!.sm",
+      "title": "ギャ・ギャ・ギャ・ギャラクシー！",
+      "titleTranslit": "Ga-ga-ga-galaxy!",
+      "jacket": "sm/World/Ga-ga-ga-galaxy!/Ga-ga-ga-galaxy!-jacket.png",
+      "id": "002027"
+    },
+    {
       "path": "sm/World/Gale Rider/Gale Rider.sm",
       "title": "Gale Rider",
       "titleTranslit": "",
@@ -10222,6 +10369,13 @@
       "titleTranslit": "Ganymede -reborn-",
       "jacket": "sm/World/Ganymede -reborn-/Ganymede -reborn--jacket.png",
       "id": "001382"
+    },
+    {
+      "path": "sm/World/Gekkou ranbu/Gekkou ranbu.sm",
+      "title": "月光乱舞",
+      "titleTranslit": "Gekkou ranbu",
+      "jacket": "sm/World/Gekkou ranbu/Gekkou ranbu-jacket.png",
+      "id": "002028"
     },
     {
       "path": "sm/World/Get Into The Groove feat.WaMi/Get Into The Groove feat.WaMi.sm",
@@ -10252,6 +10406,13 @@
       "id": "001387"
     },
     {
+      "path": "sm/World/Hanenaki shoujo uta/Hanenaki shoujo uta.sm",
+      "title": "羽根亡き少女唄",
+      "titleTranslit": "Hanenaki shoujo uta",
+      "jacket": "sm/World/Hanenaki shoujo uta/Hanenaki shoujo uta-jacket.png",
+      "id": "002029"
+    },
+    {
       "path": "sm/World/Happy Dance Day 2 U/Happy Dance Day 2 U.sm",
       "title": "Happy Dance Day 2 U",
       "titleTranslit": "",
@@ -10280,6 +10441,13 @@
       "id": "001391"
     },
     {
+      "path": "sm/World/Hihou! Wai! Neet!/Hihou! Wai! Neet!.sm",
+      "title": "悲報！ワイ！ニート！",
+      "titleTranslit": "Hihou! Wai! Neet!",
+      "jacket": "sm/World/Hihou! Wai! Neet!/Hihou! Wai! Neet!-jacket.png",
+      "id": "002030"
+    },
+    {
       "path": "sm/World/Hito mania/Hito mania.sm",
       "title": "人マニア",
       "titleTranslit": "Hito mania",
@@ -10294,6 +10462,13 @@
       "id": "001393"
     },
     {
+      "path": "sm/World/Hou (Five Flares Mix)/Hou (Five Flares Mix).ssc",
+      "title": "鳳 (Five Flares Mix)",
+      "titleTranslit": "Hou (Five Flares Mix)",
+      "jacket": "sm/World/Hou (Five Flares Mix)/Hou (Five Flares Mix)-jacket.png",
+      "id": "002031"
+    },
+    {
       "path": "sm/World/HYPER OVERR DANCEFLOORRR/HYPER OVERR DANCEFLOORRR.sm",
       "title": "HYPER OVERR DANCEFLOORRR",
       "titleTranslit": "",
@@ -10306,6 +10481,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/HyperNOAH/HyperNOAH-jacket.png",
       "id": "001394"
+    },
+    {
+      "path": "sm/World/Ice cream magic/Ice cream magic.sm",
+      "title": "アイスクリームマジック",
+      "titleTranslit": "Ice cream magic",
+      "jacket": "sm/World/Ice cream magic/Ice cream magic-jacket.png",
+      "id": "002032"
     },
     {
       "path": "sm/World/Igaku/Igaku.sm",
@@ -10334,6 +10516,20 @@
       "titleTranslit": "Kagachi",
       "jacket": "sm/World/Kagachi/Kagachi-jacket.png",
       "id": "001398"
+    },
+    {
+      "path": "sm/World/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~.sm",
+      "title": "覚悟せよ！エンタンメ～ン ～より身の切り売り自暴自棄版～",
+      "titleTranslit": "Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~",
+      "jacket": "sm/World/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~-jacket.png",
+      "id": "002033"
+    },
+    {
+      "path": "sm/World/Kawaikute gomen/Kawaikute gomen.sm",
+      "title": "可愛くてごめん",
+      "titleTranslit": "Kawaikute gomen",
+      "jacket": "sm/World/Kawaikute gomen/Kawaikute gomen-jacket.png",
+      "id": "002034"
     },
     {
       "path": "sm/World/Kirakira universe/Kirakira universe.sm",
@@ -10427,6 +10623,13 @@
       "id": "001412"
     },
     {
+      "path": "sm/World/Meikyuu no rondo/Meikyuu no rondo.ssc",
+      "title": "迷宮のロンド",
+      "titleTranslit": "Meikyuu no rondo",
+      "jacket": "sm/World/Meikyuu no rondo/Meikyuu no rondo-jacket.png",
+      "id": "002035"
+    },
+    {
       "path": "sm/World/Mesmerizer/Mesmerizer.sm",
       "title": "メズマライザー",
       "titleTranslit": "Mesmerizer",
@@ -10453,6 +10656,20 @@
       "titleTranslit": "",
       "jacket": "sm/World/Mighty Beat Monsterz/Mighty Beat Monsterz-jacket.png",
       "id": "001416"
+    },
+    {
+      "path": "sm/World/Mikazuki connect/Mikazuki connect.sm",
+      "title": "ミカヅキ\\:コネクト",
+      "titleTranslit": "Mikazuki connect",
+      "jacket": "sm/World/Mikazuki connect/Mikazuki connect-jacket.png",
+      "id": "002036"
+    },
+    {
+      "path": "sm/World/MODEL FT2 Miracle Version/MODEL FT2 Miracle Version.sm",
+      "title": "MODEL FT2 Miracle Version",
+      "titleTranslit": "",
+      "jacket": "sm/World/MODEL FT2 Miracle Version/MODEL FT2 Miracle Version-jacket.png",
+      "id": "002037"
     },
     {
       "path": "sm/World/Monsters Den/Monsters Den.ssc",
@@ -10483,6 +10700,13 @@
       "id": "001420"
     },
     {
+      "path": "sm/World/murmur twins (guitar pop ver.)/murmur twins (guitar pop ver.).sm",
+      "title": "murmur twins (guitar pop ver.)",
+      "titleTranslit": "",
+      "jacket": "sm/World/murmur twins (guitar pop ver.)/murmur twins (guitar pop ver.)-jacket.png",
+      "id": "002038"
+    },
+    {
       "path": "sm/World/MVP/MVP.sm",
       "title": "MVP",
       "titleTranslit": "",
@@ -10495,6 +10719,13 @@
       "titleTranslit": "Neoki yashi no ki",
       "jacket": "sm/World/Neoki yashi no ki/Neoki yashi no ki-jacket.png",
       "id": "001421"
+    },
+    {
+      "path": "sm/World/New Millennium Pt.2/New Millennium Pt.2.sm",
+      "title": "New Millennium Pt.2",
+      "titleTranslit": "",
+      "jacket": "sm/World/New Millennium Pt.2/New Millennium Pt.2-jacket.png",
+      "id": "002039"
     },
     {
       "path": "sm/World/Niji no Sekai/Niji no Sekai.sm",
@@ -10516,6 +10747,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/No More Love/No More Love-jacket.png",
       "id": "001424"
+    },
+    {
+      "path": "sm/World/O JIYA/O JIYA.sm",
+      "title": "O JIYA",
+      "titleTranslit": "",
+      "jacket": "sm/World/O JIYA/O JIYA-jacket.png",
+      "id": "002040"
     },
     {
       "path": "sm/World/Odore!! Virtual animal!!/Odore!! Virtual animal!!.sm",
@@ -10602,6 +10840,20 @@
       "id": "001436"
     },
     {
+      "path": "sm/World/Remember remember (cover)/Remember remember (cover).sm",
+      "title": "リメンバーリメンバー",
+      "titleTranslit": "Remember remember",
+      "jacket": "sm/World/Remember remember (cover)/Remember remember (cover)-jacket.png",
+      "id": "002041"
+    },
+    {
+      "path": "sm/World/Renkei epilogue/Renkei epilogue.sm",
+      "title": "恋繋エピローグ",
+      "titleTranslit": "Renkei epilogue",
+      "jacket": "sm/World/Renkei epilogue/Renkei epilogue-jacket.png",
+      "id": "002042"
+    },
+    {
       "path": "sm/World/ReRHYZE/ReRHYZE.sm",
       "title": "Re\\:RHYZE",
       "titleTranslit": "ReRHYZE",
@@ -10621,6 +10873,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Roche Limit/Roche Limit-jacket.png",
       "id": "001438"
+    },
+    {
+      "path": "sm/World/Roll the Dice/Roll the Dice.sm",
+      "title": "Roll the Dice",
+      "titleTranslit": "",
+      "jacket": "sm/World/Roll the Dice/Roll the Dice-jacket.png",
+      "id": "002043"
     },
     {
       "path": "sm/World/Roman/Roman.sm",
@@ -10658,6 +10917,13 @@
       "id": "001445"
     },
     {
+      "path": "sm/World/Saiph/Saiph.sm",
+      "title": "Saiph",
+      "titleTranslit": "",
+      "jacket": "sm/World/Saiph/Saiph-jacket.png",
+      "id": "002044"
+    },
+    {
       "path": "sm/World/Sakazuki/Sakazuki.sm",
       "title": "逆月",
       "titleTranslit": "Sakazuki",
@@ -10670,6 +10936,27 @@
       "titleTranslit": "Setsujou danka",
       "jacket": "sm/World/Setsujou danka/Setsujou danka-jacket.png",
       "id": "001447"
+    },
+    {
+      "path": "sm/World/Shamshir no mai/Shamshir no mai.sm",
+      "title": "シャムシールの舞",
+      "titleTranslit": "Shamshir no mai",
+      "jacket": "sm/World/Shamshir no mai/Shamshir no mai-jacket.png",
+      "id": "002045"
+    },
+    {
+      "path": "sm/World/Shippuujinrai/Shippuujinrai.ssc",
+      "title": "疾風迅雷",
+      "titleTranslit": "Shippuujinrai",
+      "jacket": "sm/World/Shippuujinrai/Shippuujinrai-jacket.png",
+      "id": "002046"
+    },
+    {
+      "path": "sm/World/Shooting Star/Shooting Star.sm",
+      "title": "Shooting Star",
+      "titleTranslit": "",
+      "jacket": "sm/World/Shooting Star/Shooting Star-jacket.png",
+      "id": "002047"
     },
     {
       "path": "sm/World/Show/Show.sm",
@@ -10691,6 +10978,13 @@
       "titleTranslit": "Sign wa B -New Arrange Ver.-",
       "jacket": "sm/World/Sign wa B -New Arrange Ver.-/Sign wa B -New Arrange Ver.--jacket.png",
       "id": "001450"
+    },
+    {
+      "path": "sm/World/SkyDrive! (HASEKO EUROBEAT MIX)/SkyDrive! (HASEKO EUROBEAT MIX).sm",
+      "title": "SkyDrive! (HASEKO EUROBEAT MIX)",
+      "titleTranslit": "",
+      "jacket": "sm/World/SkyDrive! (HASEKO EUROBEAT MIX)/SkyDrive! (HASEKO EUROBEAT MIX)-jacket.png",
+      "id": "002048"
     },
     {
       "path": "sm/World/So What/So What.sm",
@@ -10726,6 +11020,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/STOMP!!/STOMP!!-jacket.png",
       "id": "001443"
+    },
+    {
+      "path": "sm/World/Suisou no kujira/Suisou no kujira.sm",
+      "title": "水槽のクジラ",
+      "titleTranslit": "Suisou no kujira",
+      "jacket": "sm/World/Suisou no kujira/Suisou no kujira-jacket.png",
+      "id": "002049"
     },
     {
       "path": "sm/World/SUPER HEROINE!!/SUPER HEROINE!!.sm",
@@ -10798,6 +11099,13 @@
       "id": "001464"
     },
     {
+      "path": "sm/World/Touhouyouyoumu ULTIMATE MEDLEY/Touhouyouyoumu ULTIMATE MEDLEY.sm",
+      "title": "東方妖々夢 ULTIMATE MEDLEY",
+      "titleTranslit": "Touhouyouyoumu ULTIMATE MEDLEY",
+      "jacket": "sm/World/Touhouyouyoumu ULTIMATE MEDLEY/Touhouyouyoumu ULTIMATE MEDLEY-jacket.png",
+      "id": "002050"
+    },
+    {
       "path": "sm/World/Trauma saimin shoujo Satori!/Trauma saimin shoujo Satori!.sm",
       "title": "トラウマ催眠少女さとり！",
       "titleTranslit": "Trauma saimin shoujo Satori!",
@@ -10854,6 +11162,13 @@
       "id": "001469"
     },
     {
+      "path": "sm/World/WOW WAR TONIGHT ~tokiniha okoseyo movement/WOW WAR TONIGHT ~tokiniha okoseyo movement.sm",
+      "title": "WOW WAR TONIGHT ～時には起こせよムーヴメント",
+      "titleTranslit": "WOW WAR TONIGHT ~tokiniha okoseyo movement",
+      "jacket": "sm/World/WOW WAR TONIGHT ~tokiniha okoseyo movement/WOW WAR TONIGHT ~tokiniha okoseyo movement-jacket.png",
+      "id": "002051"
+    },
+    {
       "path": "sm/World/Yuusha/Yuusha.ssc",
       "title": "勇者",
       "titleTranslit": "Yuusha",
@@ -10866,6 +11181,20 @@
       "titleTranslit": "Zanzou ni tsunagareta tsuioku no HIDEAWAY",
       "jacket": "sm/World/Zanzou ni tsunagareta tsuioku no HIDEAWAY/Zanzou ni tsunagareta tsuioku no HIDEAWAY-jacket.png",
       "id": "001473"
+    },
+    {
+      "path": "sm/World/Zattou, bokura no machi/Zattou, bokura no machi.sm",
+      "title": "雑踏、僕らの街",
+      "titleTranslit": "Zattou, bokura no machi",
+      "jacket": "sm/World/Zattou, bokura no machi/Zattou, bokura no machi-jacket.png",
+      "id": "002052"
+    },
+    {
+      "path": "sm/World/ZENDEGI DANCE/ZENDEGI DANCE.ssc",
+      "title": "ZENDEGI DANCE",
+      "titleTranslit": "",
+      "jacket": "sm/World/ZENDEGI DANCE/ZENDEGI DANCE-jacket.png",
+      "id": "002053"
     },
     {
       "path": "sm/World/Zettaireido/Zettaireido.sm",

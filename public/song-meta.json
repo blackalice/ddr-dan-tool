@@ -103111,6 +103111,71 @@
     "jacket": "sm/World/1116/1116-jacket.png"
   },
   {
+    "id": "002007",
+    "path": "sm/World/4NT1 D34D/4NT1 D34D.sm",
+    "title": "4NT1 D34D",
+    "titleTranslit": "",
+    "artist": "N-Driver",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 109,
+    "bpmMax": 109,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002007#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002007#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002007#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002007#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "chartId": "002007#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002007#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002007#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 124,
+    "jacket": "sm/World/4NT1 D34D/4NT1 D34D-jacket.png"
+  },
+  {
     "id": "001475",
     "path": "sm/World/access super [hyper] focus/access super [hyper] focus.sm",
     "title": "access super [hyper] focus",
@@ -103253,6 +103318,150 @@
     ],
     "length": 125,
     "jacket": "sm/World/Ai-shi AI sare/Ai-shi AI sare-jacket.png"
+  },
+  {
+    "id": "002008",
+    "path": "sm/World/Aka to ao no rampage/Aka to ao no rampage.sm",
+    "title": "朱と碧のランページ",
+    "titleTranslit": "Aka to ao no rampage",
+    "artist": "NU-KO",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 178,
+    "bpmMax": 178,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002008#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.5,
+        "chartId": "002008#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.35,
+        "chartId": "002008#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002008#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002008#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.7,
+        "chartId": "002008#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002008#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 134,
+    "jacket": "sm/World/Aka to ao no rampage/Aka to ao no rampage-jacket.png"
+  },
+  {
+    "id": "002009",
+    "path": "sm/World/Aka to ao no rampage (cover)/Aka to ao no rampage (cover).sm",
+    "title": "朱と碧のランページ",
+    "titleTranslit": "Aka to ao no rampage",
+    "artist": "covered by 儒烏風亭らでん(ReGLOSS)",
+    "artistTranslit": "covered by Juufuutei Raden (ReGLOSS)",
+    "game": "World",
+    "bpmMin": 178,
+    "bpmMax": 178,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002009#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002009#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002009#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002009#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002009#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002009#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002009#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 129,
+    "jacket": "sm/World/Aka to ao no rampage (cover)/Aka to ao no rampage (cover)-jacket.png"
   },
   {
     "id": "001345",
@@ -103415,6 +103624,78 @@
     "jacket": "sm/World/Amazing Bomberman/Amazing Bomberman-jacket.png"
   },
   {
+    "id": "002010",
+    "path": "sm/World/Aoba no ashioto/Aoba no ashioto.sm",
+    "title": "あおばの足音",
+    "titleTranslit": "Aoba no ashioto",
+    "artist": "駄菓子O型",
+    "artistTranslit": "OgataDagashi",
+    "game": "World",
+    "bpmMin": 98,
+    "bpmMax": 98,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002010#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002010#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002010#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002010#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002010#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.7,
+        "chartId": "002010#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002010#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 120,
+    "jacket": "sm/World/Aoba no ashioto/Aoba no ashioto-jacket.png"
+  },
+  {
     "id": "001343",
     "path": "sm/World/ARACHNE/ARACHNE.sm",
     "title": "ARACHNE",
@@ -103550,6 +103831,71 @@
     ],
     "length": 121,
     "jacket": "sm/World/Arcadia/Arcadia-jacket.png"
+  },
+  {
+    "id": "002011",
+    "path": "sm/World/Autosummer/Autosummer.sm",
+    "title": "Autosummer",
+    "titleTranslit": "",
+    "artist": "Aoi",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 88.5,
+    "bpmMax": 177,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002011#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002011#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002011#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002011#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002011#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002011#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002011#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 108,
+    "jacket": "sm/World/Autosummer/Autosummer-jacket.png"
   },
   {
     "id": "001349",
@@ -103791,6 +104137,71 @@
     "jacket": "sm/World/Bad youth awake/Bad youth awake-jacket.png"
   },
   {
+    "id": "002012",
+    "path": "sm/World/Be Happy Next 2 You/Be Happy Next 2 You.sm",
+    "title": "Be Happy Next 2 You",
+    "titleTranslit": "",
+    "artist": "nc feat. maimie",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 175,
+    "bpmMax": 175,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002012#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002012#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002012#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002012#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002012#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002012#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002012#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 123,
+    "jacket": "sm/World/Be Happy Next 2 You/Be Happy Next 2 You-jacket.png"
+  },
+  {
     "id": "001352",
     "path": "sm/World/Beyond The Earth/Beyond The Earth.sm",
     "title": "Beyond The Earth",
@@ -103861,6 +104272,94 @@
     ],
     "length": 137,
     "jacket": "sm/World/Beyond The Earth/Beyond The Earth-jacket.png"
+  },
+  {
+    "id": "002013",
+    "path": "sm/World/BIG som tam/BIG som tam.sm",
+    "title": "BIGソムタム",
+    "titleTranslit": "BIG som tam",
+    "artist": "AJURIKA",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 187,
+    "bpmMax": 187,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 2.35,
+        "chartId": "002013#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 7.4,
+        "chartId": "002013#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 7.4,
+        "chartId": "002013#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.55,
+        "chartId": "002013#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 12.65,
+        "chartId": "002013#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "rankedRating": 13.5,
+        "chartId": "002013#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "rankedRating": 13.6,
+        "chartId": "002013#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "rankedRating": 13.9,
+        "chartId": "002013#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "rankedRating": 13.9,
+        "chartId": "002013#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 124,
+    "jacket": "sm/World/BIG som tam/BIG som tam-jacket.png"
   },
   {
     "id": "001353",
@@ -104017,6 +104516,20 @@
         "rankedRating": 16.35,
         "chartId": "001354#D#4",
         "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "001354#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "001354#D#5",
+        "hasShock": false
       }
     ],
     "length": 117,
@@ -104095,6 +104608,71 @@
     "jacket": "sm/World/blue anthem/blue anthem-jacket.png"
   },
   {
+    "id": "002014",
+    "path": "sm/World/BRAIN-HEART/BRAIN-HEART.sm",
+    "title": "BRAIN-HEART",
+    "titleTranslit": "",
+    "artist": "SOUND HOLIC Vs. ZYTOKINE feat. Nana Takahashi",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 140,
+    "bpmMax": 140,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002014#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002014#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002014#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002014#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002014#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002014#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002014#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 127,
+    "jacket": "sm/World/BRAIN-HEART/BRAIN-HEART-jacket.png"
+  },
+  {
     "id": "001348",
     "path": "sm/World/BREAK DOWN! (World Version)/BREAK DOWN! (World Version).sm",
     "title": "BRE∀K DOWN! (World Version)",
@@ -104167,6 +104745,71 @@
     "jacket": "sm/World/BREAK DOWN! (World Version)/BREAK DOWN! (World Version)-jacket.png"
   },
   {
+    "id": "002015",
+    "path": "sm/World/Burstix Comet/Burstix Comet.ssc",
+    "title": "Burstix Comet",
+    "titleTranslit": "",
+    "artist": "Ninja Never DieS!",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 79,
+    "bpmMax": 316,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002015#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002015#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002015#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002015#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002015#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002015#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002015#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 128,
+    "jacket": "sm/World/Burstix Comet/Burstix Comet-jacket.png"
+  },
+  {
     "id": "001355",
     "path": "sm/World/Buta thunder/Buta thunder.sm",
     "title": "ブタサンダー",
@@ -104237,6 +104880,143 @@
     ],
     "length": 145,
     "jacket": "sm/World/Buta thunder/Buta thunder-jacket.png"
+  },
+  {
+    "id": "002016",
+    "path": "sm/World/Bye or not/Bye or not.sm",
+    "title": "Bye or not",
+    "titleTranslit": "",
+    "artist": "PSYQUI feat. mikanzil",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 170,
+    "bpmMax": 170,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "chartId": "002016#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002016#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002016#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002016#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002016#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002016#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002016#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 123,
+    "jacket": "sm/World/Bye or not/Bye or not-jacket.png"
+  },
+  {
+    "id": "002017",
+    "path": "sm/World/Casino fire Kotomi-chan (cover)/Casino fire Kotomi-chan (cover).ssc",
+    "title": "カジノファイヤーことみちゃん",
+    "titleTranslit": "Casino fire Kotomi-chan",
+    "artist": "covered by 一条莉々華(ReGLOSS)",
+    "artistTranslit": "covered by Ichijou Ririka (ReGLOSS)",
+    "game": "World",
+    "bpmMin": 115,
+    "bpmMax": 230,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002017#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002017#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002017#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002017#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002017#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.7,
+        "chartId": "002017#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002017#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 122,
+    "jacket": "sm/World/Casino fire Kotomi-chan (cover)/Casino fire Kotomi-chan (cover)-jacket.png"
   },
   {
     "id": "001357",
@@ -104487,6 +105267,159 @@
     "jacket": "sm/World/Chocolate Planet/Chocolate Planet-jacket.png"
   },
   {
+    "id": "002018",
+    "path": "sm/World/Cirno no perfect sansuu gakuen/Cirno no perfect sansuu gakuen.sm",
+    "title": "チルノのパーフェクトさんすう学園",
+    "titleTranslit": "Cirno no perfect sansuu gakuen",
+    "artist": "ビートまりお",
+    "artistTranslit": "BeatMARIO",
+    "game": "World",
+    "bpmMin": 179,
+    "bpmMax": 179,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002018#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002018#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002018#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002018#S#2",
+        "hasShock": true
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002018#D#2",
+        "hasShock": true
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002018#S#4",
+        "hasShock": true
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002018#D#4",
+        "hasShock": true
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "rankedRating": 17,
+        "chartId": "002018#S#5",
+        "hasShock": true
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "rankedRating": 17.05,
+        "chartId": "002018#D#5",
+        "hasShock": true
+      }
+    ],
+    "length": 130,
+    "jacket": "sm/World/Cirno no perfect sansuu gakuen/Cirno no perfect sansuu gakuen-jacket.png"
+  },
+  {
+    "id": "002019",
+    "path": "sm/World/Collapse of the Sanctuary/Collapse of the Sanctuary.sm",
+    "title": "Collapse of the Sanctuary",
+    "titleTranslit": "",
+    "artist": "打打だいず vs. siromaru",
+    "artistTranslit": "D-D-Dice vs. siromaru",
+    "game": "World",
+    "bpmMin": 165,
+    "bpmMax": 165,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "chartId": "002019#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002019#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002019#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002019#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002019#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002019#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002019#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 123,
+    "jacket": "sm/World/Collapse of the Sanctuary/Collapse of the Sanctuary-jacket.png"
+  },
+  {
     "id": "001356",
     "path": "sm/World/COSMIC V3LOCITY/COSMIC V3LOCITY.sm",
     "title": "COSMIC V3LOCITY",
@@ -104622,6 +105555,236 @@
     ],
     "length": 131,
     "jacket": "sm/World/Couleur=Blanche/Couleur=Blanche-jacket.png"
+  },
+  {
+    "id": "002020",
+    "path": "sm/World/CUE CUE RESCUE/CUE CUE RESCUE.sm",
+    "title": "CUE CUE RESCUE",
+    "titleTranslit": "",
+    "artist": "TORIENA",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 160,
+    "bpmMax": 160,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002020#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 4,
+        "chartId": "002020#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 4,
+        "chartId": "002020#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002020#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002020#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002020#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002020#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002020#S#5",
+        "hasShock": true
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002020#D#5",
+        "hasShock": true
+      }
+    ],
+    "length": 111,
+    "jacket": "sm/World/CUE CUE RESCUE/CUE CUE RESCUE-jacket.png"
+  },
+  {
+    "id": "002021",
+    "path": "sm/World/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)/Dadadadadadadadadada (NIJISANJI Dance-bu ver.).sm",
+    "title": "打打打打打打打打打打 (にじさんじダンス部 ver.)",
+    "titleTranslit": "Dadadadadadadadadada (NIJISANJI Dance-bu ver.)",
+    "artist": "長尾景 & 倉持めると & セラフ・ダズルガーデン",
+    "artistTranslit": "Kei Nagao & Meruto Kuramochi & Seraph Dazzle Garden",
+    "game": "World",
+    "bpmMin": 155,
+    "bpmMax": 156,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 3.4,
+        "chartId": "002021#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 4.4,
+        "chartId": "002021#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 4.5,
+        "chartId": "002021#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 7.55,
+        "chartId": "002021#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 8.65,
+        "chartId": "002021#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 11.55,
+        "chartId": "002021#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 11.65,
+        "chartId": "002021#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 16,
+        "chartId": "002021#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 16,
+        "chartId": "002021#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 112,
+    "jacket": "sm/World/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)/Dadadadadadadadadada (NIJISANJI Dance-bu ver.)-jacket.png"
+  },
+  {
+    "id": "002022",
+    "path": "sm/World/Daisycutter/Daisycutter.sm",
+    "title": "Daisycutter",
+    "titleTranslit": "",
+    "artist": "ETIA.",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 191,
+    "bpmMax": 191,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 5,
+        "chartId": "002022#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 10,
+        "chartId": "002022#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002022#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 13,
+        "chartId": "002022#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 13,
+        "chartId": "002022#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 17,
+        "chartId": "002022#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 17,
+        "chartId": "002022#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 123,
+    "jacket": "sm/World/Daisycutter/Daisycutter-jacket.png"
   },
   {
     "id": "001364",
@@ -104984,6 +106147,71 @@
     "jacket": "sm/World/DanRevoAthlon/DanRevoAthlon-jacket.png"
   },
   {
+    "id": "002023",
+    "path": "sm/World/Deadly Dolly Dance/Deadly Dolly Dance.sm",
+    "title": "Deadly Dolly Dance",
+    "titleTranslit": "",
+    "artist": "Shiron",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 160,
+    "bpmMax": 160,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002023#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002023#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002023#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002023#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002023#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 17,
+        "chartId": "002023#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 17,
+        "chartId": "002023#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 127,
+    "jacket": "sm/World/Deadly Dolly Dance/Deadly Dolly Dance-jacket.png"
+  },
+  {
     "id": "001367",
     "path": "sm/World/Dense Flyer/Dense Flyer.sm",
     "title": "Dense Flyer",
@@ -105142,6 +106370,85 @@
     ],
     "length": 115,
     "jacket": "sm/World/DIAVOLO/DIAVOLO-jacket.png"
+  },
+  {
+    "id": "002024",
+    "path": "sm/World/Din Don Dan (NIJISANJI Dance-bu ver.)/Din Don Dan (NIJISANJI Dance-bu ver.).sm",
+    "title": "Din Don Dan (にじさんじダンス部 ver.)",
+    "titleTranslit": "Din Don Dan (NIJISANJI Dance-bu ver.)",
+    "artist": "レイン・パターソン & 山神カルタ & 東堂コハク",
+    "artistTranslit": "Rain Patterson & Karuta Sanjin & Kohaku Toudou",
+    "game": "World",
+    "bpmMin": 140,
+    "bpmMax": 140,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 1,
+        "chartId": "002024#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 3,
+        "chartId": "002024#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 3,
+        "chartId": "002024#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002024#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002024#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 12,
+        "chartId": "002024#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 12,
+        "chartId": "002024#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 16,
+        "chartId": "002024#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 16,
+        "chartId": "002024#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 110,
+    "jacket": "sm/World/Din Don Dan (NIJISANJI Dance-bu ver.)/Din Don Dan (NIJISANJI Dance-bu ver.)-jacket.png"
   },
   {
     "id": "001368",
@@ -105761,6 +107068,143 @@
     "jacket": "sm/World/ESPRIT ONE/ESPRIT ONE-jacket.png"
   },
   {
+    "id": "002025",
+    "path": "sm/World/Explore/Explore.sm",
+    "title": "エクスプロウル",
+    "titleTranslit": "Explore",
+    "artist": "晴いちばん",
+    "artistTranslit": "Haru-ichiban",
+    "game": "World",
+    "bpmMin": 164,
+    "bpmMax": 164,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002025#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002025#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002025#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002025#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002025#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002025#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002025#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 129,
+    "jacket": "sm/World/Explore/Explore-jacket.png"
+  },
+  {
+    "id": "002026",
+    "path": "sm/World/EYE OF THE HEAVEN/EYE OF THE HEAVEN.ssc",
+    "title": "EYE OF THE HEAVEN",
+    "titleTranslit": "",
+    "artist": "BEMANI Sound Team \"U1-ASAMi\"",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 154,
+    "bpmMax": 308,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "chartId": "002026#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002026#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002026#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 14,
+        "chartId": "002026#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 14,
+        "chartId": "002026#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 18,
+        "chartId": "002026#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 18,
+        "chartId": "002026#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 118,
+    "jacket": "sm/World/EYE OF THE HEAVEN/EYE OF THE HEAVEN-jacket.png"
+  },
+  {
     "id": "001376",
     "path": "sm/World/First Action/First Action.sm",
     "title": "First Action",
@@ -106218,6 +107662,78 @@
     "jacket": "sm/World/Funky Flux Fusion/Funky Flux Fusion-jacket.png"
   },
   {
+    "id": "002027",
+    "path": "sm/World/Ga-ga-ga-galaxy!/Ga-ga-ga-galaxy!.sm",
+    "title": "ギャ・ギャ・ギャ・ギャラクシー！",
+    "titleTranslit": "Ga-ga-ga-galaxy!",
+    "artist": "つきみぐー、",
+    "artistTranslit": "tsukimizzz",
+    "game": "World",
+    "bpmMin": 140,
+    "bpmMax": 140,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002027#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.5,
+        "chartId": "002027#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.25,
+        "chartId": "002027#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002027#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002027#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002027#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002027#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 135,
+    "jacket": "sm/World/Ga-ga-ga-galaxy!/Ga-ga-ga-galaxy!-jacket.png"
+  },
+  {
     "id": "001381",
     "path": "sm/World/Gale Rider/Gale Rider.sm",
     "title": "Gale Rider",
@@ -106376,6 +107892,94 @@
     ],
     "length": 134,
     "jacket": "sm/World/Ganymede -reborn-/Ganymede -reborn--jacket.png"
+  },
+  {
+    "id": "002028",
+    "path": "sm/World/Gekkou ranbu/Gekkou ranbu.sm",
+    "title": "月光乱舞",
+    "titleTranslit": "Gekkou ranbu",
+    "artist": "P*Light",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 186,
+    "bpmMax": 186,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002028#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002028#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002028#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002028#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002028#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002028#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002028#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.4,
+        "chartId": "002028#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.3,
+        "chartId": "002028#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 121,
+    "jacket": "sm/World/Gekkou ranbu/Gekkou ranbu-jacket.png"
   },
   {
     "id": "001383",
@@ -106682,6 +108286,78 @@
     "jacket": "sm/World/Hakujitsu to gengetsu/Hakujitsu to gengetsu-jacket.png"
   },
   {
+    "id": "002029",
+    "path": "sm/World/Hanenaki shoujo uta/Hanenaki shoujo uta.sm",
+    "title": "羽根亡き少女唄",
+    "titleTranslit": "Hanenaki shoujo uta",
+    "artist": "純情ディスコード",
+    "artistTranslit": "Junjou Discord",
+    "game": "World",
+    "bpmMin": 172.6,
+    "bpmMax": 174,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002029#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.5,
+        "chartId": "002029#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.35,
+        "chartId": "002029#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002029#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002029#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.7,
+        "chartId": "002029#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002029#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 124,
+    "jacket": "sm/World/Hanenaki shoujo uta/Hanenaki shoujo uta-jacket.png"
+  },
+  {
     "id": "001388",
     "path": "sm/World/Happy Dance Day 2 U/Happy Dance Day 2 U.sm",
     "title": "Happy Dance Day 2 U",
@@ -106964,10 +108640,98 @@
         "rankedRating": 15.25,
         "chartId": "001391#D#4",
         "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.4,
+        "chartId": "001391#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "rankedRating": 17.05,
+        "chartId": "001391#D#5",
+        "hasShock": false
       }
     ],
     "length": 128,
     "jacket": "sm/World/Hi-tech Tokio/Hi-tech Tokio-jacket.png"
+  },
+  {
+    "id": "002030",
+    "path": "sm/World/Hihou! Wai! Neet!/Hihou! Wai! Neet!.sm",
+    "title": "悲報！ワイ！ニート！",
+    "titleTranslit": "Hihou! Wai! Neet!",
+    "artist": "Shu",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 165,
+    "bpmMax": 165,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002030#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002030#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002030#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002030#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002030#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002030#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002030#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 130,
+    "jacket": "sm/World/Hihou! Wai! Neet!/Hihou! Wai! Neet!-jacket.png"
   },
   {
     "id": "001392",
@@ -107114,6 +108878,85 @@
     "jacket": "sm/World/Hollywood Galaxy/Hollywood Galaxy-jacket.png"
   },
   {
+    "id": "002031",
+    "path": "sm/World/Hou (Five Flares Mix)/Hou (Five Flares Mix).ssc",
+    "title": "鳳 (Five Flares Mix)",
+    "titleTranslit": "Hou (Five Flares Mix)",
+    "artist": "Remixed by BEMANI Sound Team \"Coyaan + U1\"",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 105,
+    "bpmMax": 210,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 6,
+        "chartId": "002031#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 10,
+        "chartId": "002031#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 10,
+        "chartId": "002031#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 14,
+        "chartId": "002031#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 14,
+        "chartId": "002031#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002031#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002031#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002031#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002031#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 126,
+    "jacket": "sm/World/Hou (Five Flares Mix)/Hou (Five Flares Mix)-jacket.png"
+  },
+  {
     "id": "001385",
     "path": "sm/World/HYPER OVERR DANCEFLOORRR/HYPER OVERR DANCEFLOORRR.sm",
     "title": "HYPER OVERR DANCEFLOORRR",
@@ -107256,6 +109099,78 @@
     ],
     "length": 127,
     "jacket": "sm/World/HyperNOAH/HyperNOAH-jacket.png"
+  },
+  {
+    "id": "002032",
+    "path": "sm/World/Ice cream magic/Ice cream magic.sm",
+    "title": "アイスクリームマジック",
+    "titleTranslit": "Ice cream magic",
+    "artist": "雪乃イト",
+    "artistTranslit": "Yukino Ito",
+    "game": "World",
+    "bpmMin": 110,
+    "bpmMax": 110,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002032#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.5,
+        "chartId": "002032#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.25,
+        "chartId": "002032#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002032#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002032#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002032#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002032#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 133,
+    "jacket": "sm/World/Ice cream magic/Ice cream magic-jacket.png"
   },
   {
     "id": "001395",
@@ -107544,6 +109459,150 @@
     ],
     "length": 128,
     "jacket": "sm/World/Kagachi/Kagachi-jacket.png"
+  },
+  {
+    "id": "002033",
+    "path": "sm/World/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~.sm",
+    "title": "覚悟せよ！エンタンメ～ン ～より身の切り売り自暴自棄版～",
+    "titleTranslit": "Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~",
+    "artist": "マキシウキョウ",
+    "artistTranslit": "Maxi Ukyo",
+    "game": "World",
+    "bpmMin": 140.997,
+    "bpmMax": 176,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "rankedRating": 4.35,
+        "chartId": "002033#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002033#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002033#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002033#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002033#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.7,
+        "chartId": "002033#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002033#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 128,
+    "jacket": "sm/World/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~/Kakugoseyo! Enternmeen ~yori mi no kiriuri jiboujiki ban~-jacket.png"
+  },
+  {
+    "id": "002034",
+    "path": "sm/World/Kawaikute gomen/Kawaikute gomen.sm",
+    "title": "可愛くてごめん",
+    "titleTranslit": "Kawaikute gomen",
+    "artist": "Covered by ちょぴん",
+    "artistTranslit": "Covered by CHOPIN",
+    "game": "World",
+    "bpmMin": 160,
+    "bpmMax": 160,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 1,
+        "rankedRating": 1.25,
+        "chartId": "002034#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.5,
+        "chartId": "002034#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.25,
+        "chartId": "002034#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002034#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 8,
+        "rankedRating": 8.35,
+        "chartId": "002034#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002034#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002034#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 125,
+    "jacket": "sm/World/Kawaikute gomen/Kawaikute gomen-jacket.png"
   },
   {
     "id": "001399",
@@ -107932,6 +109991,22 @@
         "rankedRating": 17.05,
         "chartId": "001403#D#4",
         "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.4,
+        "chartId": "001403#S#5",
+        "hasShock": true
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.3,
+        "chartId": "001403#D#5",
+        "hasShock": true
       }
     ],
     "length": 129,
@@ -108507,6 +110582,94 @@
     "jacket": "sm/World/Meikyoushisui/Meikyoushisui-jacket.png"
   },
   {
+    "id": "002035",
+    "path": "sm/World/Meikyuu no rondo/Meikyuu no rondo.ssc",
+    "title": "迷宮のロンド",
+    "titleTranslit": "Meikyuu no rondo",
+    "artist": "BEMANI Sound Team \"Captain KING\"",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 85,
+    "bpmMax": 340,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002035#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.5,
+        "chartId": "002035#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.35,
+        "chartId": "002035#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002035#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "rankedRating": 12.6,
+        "chartId": "002035#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002035#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002035#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.4,
+        "chartId": "002035#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.3,
+        "chartId": "002035#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 121,
+    "jacket": "sm/World/Meikyuu no rondo/Meikyuu no rondo-jacket.png"
+  },
+  {
     "id": "001413",
     "path": "sm/World/Mesmerizer/Mesmerizer.sm",
     "title": "メズマライザー",
@@ -108811,6 +110974,173 @@
     "jacket": "sm/World/Mighty Beat Monsterz/Mighty Beat Monsterz-jacket.png"
   },
   {
+    "id": "002036",
+    "path": "sm/World/Mikazuki connect/Mikazuki connect.sm",
+    "title": "ミカヅキ\\:コネクト",
+    "titleTranslit": "Mikazuki connect",
+    "artist": "かゆき",
+    "artistTranslit": "Kayuki",
+    "game": "World",
+    "bpmMin": 160,
+    "bpmMax": 160,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002036#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002036#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002036#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.5,
+        "chartId": "002036#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "rankedRating": 11.2,
+        "chartId": "002036#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002036#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002036#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.4,
+        "chartId": "002036#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "rankedRating": 18.3,
+        "chartId": "002036#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 126,
+    "jacket": "sm/World/Mikazuki connect/Mikazuki connect-jacket.png"
+  },
+  {
+    "id": "002037",
+    "path": "sm/World/MODEL FT2 Miracle Version/MODEL FT2 Miracle Version.sm",
+    "title": "MODEL FT2 Miracle Version",
+    "titleTranslit": "",
+    "artist": "Mutsuhiko Izumi",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 155,
+    "bpmMax": 155,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002037#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002037#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002037#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002037#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002037#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002037#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002037#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002037#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002037#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 106,
+    "jacket": "sm/World/MODEL FT2 Miracle Version/MODEL FT2 Miracle Version-jacket.png"
+  },
+  {
     "id": "001417",
     "path": "sm/World/Monsters Den/Monsters Den.ssc",
     "title": "Monsters Den",
@@ -109106,6 +111436,71 @@
     "jacket": "sm/World/Murasaki guruma/Murasaki guruma-jacket.png"
   },
   {
+    "id": "002038",
+    "path": "sm/World/murmur twins (guitar pop ver.)/murmur twins (guitar pop ver.).sm",
+    "title": "murmur twins (guitar pop ver.)",
+    "titleTranslit": "",
+    "artist": "covered by 音乃瀬奏(ReGLOSS)",
+    "artistTranslit": "covered by Otonose Kanade(ReGLOSS)",
+    "game": "World",
+    "bpmMin": 174,
+    "bpmMax": 174,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002038#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002038#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002038#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002038#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002038#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002038#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002038#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 117,
+    "jacket": "sm/World/murmur twins (guitar pop ver.)/murmur twins (guitar pop ver.)-jacket.png"
+  },
+  {
     "id": "001410",
     "path": "sm/World/MVP/MVP.sm",
     "title": "MVP",
@@ -109248,6 +111643,85 @@
     ],
     "length": 123,
     "jacket": "sm/World/Neoki yashi no ki/Neoki yashi no ki-jacket.png"
+  },
+  {
+    "id": "002039",
+    "path": "sm/World/New Millennium Pt.2/New Millennium Pt.2.sm",
+    "title": "New Millennium Pt.2",
+    "titleTranslit": "",
+    "artist": "Remixed by Zekk",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 160,
+    "bpmMax": 160,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002039#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002039#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002039#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "chartId": "002039#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "chartId": "002039#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002039#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002039#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002039#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002039#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 117,
+    "jacket": "sm/World/New Millennium Pt.2/New Millennium Pt.2-jacket.png"
   },
   {
     "id": "001422",
@@ -109464,6 +111938,85 @@
     ],
     "length": 124,
     "jacket": "sm/World/No More Love/No More Love-jacket.png"
+  },
+  {
+    "id": "002040",
+    "path": "sm/World/O JIYA/O JIYA.sm",
+    "title": "O JIYA",
+    "titleTranslit": "",
+    "artist": "ASMAT & emi",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 151,
+    "bpmMax": 151,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002040#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 4,
+        "chartId": "002040#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 4,
+        "chartId": "002040#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002040#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002040#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "chartId": "002040#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "chartId": "002040#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 16,
+        "chartId": "002040#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002040#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 100,
+    "jacket": "sm/World/O JIYA/O JIYA-jacket.png"
   },
   {
     "id": "001426",
@@ -110378,6 +112931,150 @@
     "jacket": "sm/World/Remember remember/Remember remember-jacket.png"
   },
   {
+    "id": "002041",
+    "path": "sm/World/Remember remember (cover)/Remember remember (cover).sm",
+    "title": "リメンバーリメンバー",
+    "titleTranslit": "Remember remember",
+    "artist": "covered by 轟はじめ(ReGLOSS)",
+    "artistTranslit": "covered by Todoroki Hajime (ReGLOSS)",
+    "game": "World",
+    "bpmMin": 182,
+    "bpmMax": 182,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002041#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002041#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002041#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002041#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002041#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 12,
+        "rankedRating": 12.25,
+        "chartId": "002041#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002041#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 119,
+    "jacket": "sm/World/Remember remember (cover)/Remember remember (cover)-jacket.png"
+  },
+  {
+    "id": "002042",
+    "path": "sm/World/Renkei epilogue/Renkei epilogue.sm",
+    "title": "恋繋エピローグ",
+    "titleTranslit": "Renkei epilogue",
+    "artist": "Amateras Records feat. KUMI(ヲタみん)",
+    "artistTranslit": "Amateras Records feat. KUMI (Otamin)",
+    "game": "World",
+    "bpmMin": 155,
+    "bpmMax": 155,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002042#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002042#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "rankedRating": 7.35,
+        "chartId": "002042#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002042#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002042#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002042#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002042#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 138,
+    "jacket": "sm/World/Renkei epilogue/Renkei epilogue-jacket.png"
+  },
+  {
     "id": "001434",
     "path": "sm/World/ReRHYZE/ReRHYZE.sm",
     "title": "Re\\:RHYZE",
@@ -110443,6 +113140,20 @@
         "feet": 16,
         "rankedRating": 16.5,
         "chartId": "001434#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "001434#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "001434#D#5",
         "hasShock": false
       }
     ],
@@ -110610,6 +113321,85 @@
     "jacket": "sm/World/Roche Limit/Roche Limit-jacket.png"
   },
   {
+    "id": "002043",
+    "path": "sm/World/Roll the Dice/Roll the Dice.sm",
+    "title": "Roll the Dice",
+    "titleTranslit": "",
+    "artist": "lapix",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 165,
+    "bpmMax": 165,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "chartId": "002043#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002043#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002043#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002043#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002043#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002043#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002043#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002043#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002043#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 128,
+    "jacket": "sm/World/Roll the Dice/Roll the Dice-jacket.png"
+  },
+  {
     "id": "001439",
     "path": "sm/World/Roman/Roman.sm",
     "title": "路男",
@@ -110747,6 +113537,22 @@
         "feet": 12,
         "rankedRating": 12.6,
         "chartId": "001440#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "001440#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "001440#D#5",
         "hasShock": false
       }
     ],
@@ -110986,6 +113792,85 @@
     "jacket": "sm/World/Sahara/Sahara-jacket.png"
   },
   {
+    "id": "002044",
+    "path": "sm/World/Saiph/Saiph.sm",
+    "title": "Saiph",
+    "titleTranslit": "",
+    "artist": "BEMANI Sound Team \"Yvya\"",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 162,
+    "bpmMax": 162,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 5,
+        "chartId": "002044#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002044#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002044#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002044#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002044#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002044#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002044#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002044#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002044#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 133,
+    "jacket": "sm/World/Saiph/Saiph-jacket.png"
+  },
+  {
     "id": "001446",
     "path": "sm/World/Sakazuki/Sakazuki.sm",
     "title": "逆月",
@@ -111162,6 +114047,215 @@
     "jacket": "sm/World/Setsujou danka/Setsujou danka-jacket.png"
   },
   {
+    "id": "002045",
+    "path": "sm/World/Shamshir no mai/Shamshir no mai.sm",
+    "title": "シャムシールの舞",
+    "titleTranslit": "Shamshir no mai",
+    "artist": "Zektbach",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 100,
+    "bpmMax": 155,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "rankedRating": 3.4,
+        "chartId": "002045#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.5,
+        "chartId": "002045#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.25,
+        "chartId": "002045#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002045#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002045#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "002045#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "002045#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 118,
+    "jacket": "sm/World/Shamshir no mai/Shamshir no mai-jacket.png"
+  },
+  {
+    "id": "002046",
+    "path": "sm/World/Shippuujinrai/Shippuujinrai.ssc",
+    "title": "疾風迅雷",
+    "titleTranslit": "Shippuujinrai",
+    "artist": "KUMOKIRI",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 90,
+    "bpmMax": 180,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "rankedRating": 4.35,
+        "chartId": "002046#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 9.5,
+        "chartId": "002046#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 9,
+        "rankedRating": 9.55,
+        "chartId": "002046#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002046#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 14,
+        "rankedRating": 14.8,
+        "chartId": "002046#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 17,
+        "rankedRating": 17,
+        "chartId": "002046#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 17,
+        "rankedRating": 17.05,
+        "chartId": "002046#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 121,
+    "jacket": "sm/World/Shippuujinrai/Shippuujinrai-jacket.png"
+  },
+  {
+    "id": "002047",
+    "path": "sm/World/Shooting Star/Shooting Star.sm",
+    "title": "Shooting Star",
+    "titleTranslit": "",
+    "artist": "ReGLOSS",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 170,
+    "bpmMax": 170,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "chartId": "002047#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002047#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002047#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002047#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 11,
+        "chartId": "002047#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002047#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002047#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 132,
+    "jacket": "sm/World/Shooting Star/Shooting Star-jacket.png"
+  },
+  {
     "id": "001448",
     "path": "sm/World/Show/Show.sm",
     "title": "唱",
@@ -111227,6 +114321,22 @@
         "feet": 12,
         "rankedRating": 12.6,
         "chartId": "001448#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "001448#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "001448#D#5",
         "hasShock": false
       }
     ],
@@ -111392,6 +114502,85 @@
     ],
     "length": 134,
     "jacket": "sm/World/Sign wa B -New Arrange Ver.-/Sign wa B -New Arrange Ver.--jacket.png"
+  },
+  {
+    "id": "002048",
+    "path": "sm/World/SkyDrive! (HASEKO EUROBEAT MIX)/SkyDrive! (HASEKO EUROBEAT MIX).sm",
+    "title": "SkyDrive! (HASEKO EUROBEAT MIX)",
+    "titleTranslit": "",
+    "artist": "Amateras Records feat. 築山さえ",
+    "artistTranslit": "Amateras Records feat. Sae Tsukiyama",
+    "game": "World",
+    "bpmMin": 170,
+    "bpmMax": 170,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002048#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 7,
+        "chartId": "002048#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002048#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002048#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002048#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002048#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 14,
+        "chartId": "002048#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002048#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 17,
+        "chartId": "002048#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 132,
+    "jacket": "sm/World/SkyDrive! (HASEKO EUROBEAT MIX)/SkyDrive! (HASEKO EUROBEAT MIX)-jacket.png"
   },
   {
     "id": "001451",
@@ -111743,6 +114932,78 @@
     ],
     "length": 109,
     "jacket": "sm/World/STOMP!!/STOMP!!-jacket.png"
+  },
+  {
+    "id": "002049",
+    "path": "sm/World/Suisou no kujira/Suisou no kujira.sm",
+    "title": "水槽のクジラ",
+    "titleTranslit": "Suisou no kujira",
+    "artist": "テヅカ feat. 大西あみみ",
+    "artistTranslit": "Tezuka feat. Amimi Oonishi",
+    "game": "World",
+    "bpmMin": 206,
+    "bpmMax": 206,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002049#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.5,
+        "chartId": "002049#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 6,
+        "rankedRating": 6.35,
+        "chartId": "002049#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002049#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002049#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002049#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002049#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 113,
+    "jacket": "sm/World/Suisou no kujira/Suisou no kujira-jacket.png"
   },
   {
     "id": "001444",
@@ -112513,6 +115774,85 @@
     "jacket": "sm/World/Tokumei M/Tokumei M-jacket.png"
   },
   {
+    "id": "002050",
+    "path": "sm/World/Touhouyouyoumu ULTIMATE MEDLEY/Touhouyouyoumu ULTIMATE MEDLEY.sm",
+    "title": "東方妖々夢 ULTIMATE MEDLEY",
+    "titleTranslit": "Touhouyouyoumu ULTIMATE MEDLEY",
+    "artist": "uma vs. モリモリあつし",
+    "artistTranslit": "uma vs. Atsushi Morimori",
+    "game": "World",
+    "bpmMin": 89.021,
+    "bpmMax": 220,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 5,
+        "chartId": "002050#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 10,
+        "chartId": "002050#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 10,
+        "chartId": "002050#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002050#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002050#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002050#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 16,
+        "chartId": "002050#D#4",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002050#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 18,
+        "chartId": "002050#D#5",
+        "hasShock": false
+      }
+    ],
+    "length": 124,
+    "jacket": "sm/World/Touhouyouyoumu ULTIMATE MEDLEY/Touhouyouyoumu ULTIMATE MEDLEY-jacket.png"
+  },
+  {
     "id": "001465",
     "path": "sm/World/Trauma saimin shoujo Satori!/Trauma saimin shoujo Satori!.sm",
     "title": "トラウマ催眠少女さとり！",
@@ -112883,6 +116223,22 @@
         "rankedRating": 13.55,
         "chartId": "001468#D#4",
         "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.15,
+        "chartId": "001468#S#5",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "challenge",
+        "feet": 15,
+        "rankedRating": 15.25,
+        "chartId": "001468#D#5",
+        "hasShock": false
       }
     ],
     "length": 105,
@@ -113121,6 +116477,71 @@
     "jacket": "sm/World/WONDER COASTER/WONDER COASTER-jacket.png"
   },
   {
+    "id": "002051",
+    "path": "sm/World/WOW WAR TONIGHT ~tokiniha okoseyo movement/WOW WAR TONIGHT ~tokiniha okoseyo movement.sm",
+    "title": "WOW WAR TONIGHT ～時には起こせよムーヴメント",
+    "titleTranslit": "WOW WAR TONIGHT ~tokiniha okoseyo movement",
+    "artist": "Covered by uzumaki with Hommarju",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 180,
+    "bpmMax": 180,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 3,
+        "chartId": "002051#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 6,
+        "chartId": "002051#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "chartId": "002051#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002051#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 9,
+        "chartId": "002051#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 12,
+        "chartId": "002051#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 12,
+        "chartId": "002051#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 127,
+    "jacket": "sm/World/WOW WAR TONIGHT ~tokiniha okoseyo movement/WOW WAR TONIGHT ~tokiniha okoseyo movement-jacket.png"
+  },
+  {
     "id": "001472",
     "path": "sm/World/Yuusha/Yuusha.ssc",
     "title": "勇者",
@@ -113279,6 +116700,143 @@
     ],
     "length": 132,
     "jacket": "sm/World/Zanzou ni tsunagareta tsuioku no HIDEAWAY/Zanzou ni tsunagareta tsuioku no HIDEAWAY-jacket.png"
+  },
+  {
+    "id": "002052",
+    "path": "sm/World/Zattou, bokura no machi/Zattou, bokura no machi.sm",
+    "title": "雑踏、僕らの街",
+    "titleTranslit": "Zattou, bokura no machi",
+    "artist": "Covered by taru",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 171,
+    "bpmMax": 171,
+    "hasMultipleBpms": false,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 2,
+        "rankedRating": 2.35,
+        "chartId": "002052#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.5,
+        "chartId": "002052#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 5,
+        "rankedRating": 5.25,
+        "chartId": "002052#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.8,
+        "chartId": "002052#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 10,
+        "rankedRating": 10.9,
+        "chartId": "002052#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002052#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 13,
+        "rankedRating": 13.55,
+        "chartId": "002052#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 99,
+    "jacket": "sm/World/Zattou, bokura no machi/Zattou, bokura no machi-jacket.png"
+  },
+  {
+    "id": "002053",
+    "path": "sm/World/ZENDEGI DANCE/ZENDEGI DANCE.ssc",
+    "title": "ZENDEGI DANCE",
+    "titleTranslit": "",
+    "artist": "ARM x BEMANI Sound Team \"U1 overground\"",
+    "artistTranslit": "",
+    "game": "World",
+    "bpmMin": 80,
+    "bpmMax": 160,
+    "hasMultipleBpms": true,
+    "difficulties": [
+      {
+        "mode": "single",
+        "difficulty": "beginner",
+        "feet": 4,
+        "chartId": "002053#S#0",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "basic",
+        "feet": 9,
+        "chartId": "002053#S#1",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "basic",
+        "feet": 8,
+        "chartId": "002053#D#1",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002053#S#2",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "difficult",
+        "feet": 12,
+        "chartId": "002053#D#2",
+        "hasShock": false
+      },
+      {
+        "mode": "single",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002053#S#4",
+        "hasShock": false
+      },
+      {
+        "mode": "double",
+        "difficulty": "expert",
+        "feet": 15,
+        "chartId": "002053#D#4",
+        "hasShock": false
+      }
+    ],
+    "length": 129,
+    "jacket": "sm/World/ZENDEGI DANCE/ZENDEGI DANCE-jacket.png"
   },
   {
     "id": "001474",
