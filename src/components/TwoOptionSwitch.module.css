@@ -6,7 +6,7 @@
   gap: 0;
   height: 44px;
   padding: 2px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -22,7 +22,7 @@
   bottom: 2px;
   left: 2px;
   width: calc(50% - 2px);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(var(--accent-color-rgb), 0.35);
   border: 1px solid rgba(var(--accent-color-rgb), 0.6);
   transition: transform 0.2s ease;
@@ -40,7 +40,7 @@
   z-index: 1;
   padding: 0 1.2rem;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--text-muted-color);
   font-weight: 600;

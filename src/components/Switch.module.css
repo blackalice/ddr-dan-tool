@@ -19,7 +19,7 @@
 .track {
   width: var(--switch-width);
   height: var(--switch-height);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   transition: background 0.2s ease, border-color 0.2s ease;
@@ -31,7 +31,7 @@
 .thumb {
   width: var(--thumb-size);
   height: var(--thumb-size);
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--card-bg-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   transform: translateX(0);

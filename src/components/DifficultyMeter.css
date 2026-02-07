@@ -9,12 +9,12 @@
 }
 
 .difficulty-meter:last-child{
-        border-top-right-radius: 0.375rem;
-        border-bottom-right-radius: 0.375rem;
+        border-top-right-radius: var(--radius-xs);
+        border-bottom-right-radius: var(--radius-xs);
 }
 .difficulty-meter:first-child{
-        border-top-left-radius: 0.375rem;
-        border-bottom-left-radius: 0.375rem;
+        border-top-left-radius: var(--radius-xs);
+        border-bottom-left-radius: var(--radius-xs);
 }
 
 .decimal-part {

@@ -2,7 +2,7 @@
 .song-card {
     background-color: var(--card-bg-color);
     padding: 1.25rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-sm);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
@@ -45,7 +45,7 @@
 }
 
 .song-card.with-score-slice {
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
 .song-card-link {
@@ -175,7 +175,7 @@
   display: inline-block;
   padding: 0.125rem 0.5rem;
   margin-top: 0.25rem;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-2xs);
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -208,7 +208,7 @@
     background-color: var(--card-hover-bg-color);
     color: var(--text-muted-color);
     padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-2xs);
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
@@ -218,7 +218,7 @@
     width: 46px;
     height: 46px;
     object-fit: cover;
-    border-radius: 0.375rem;
+    border-radius: var(--radius-xs);
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
@@ -239,7 +239,7 @@
   background-color: var(--difficulty-standard-color);
   color: var(--button-icon);
   border: none;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-2xs);
   padding: 0.25rem;
   cursor: pointer;
   height:32px;
@@ -269,7 +269,7 @@
 
 .song-card-link.score-highlight {
   border: 1px solid;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   display: block;
   box-sizing: border-box;
   border-color: rgba(255, 255, 255, 1);
@@ -320,7 +320,7 @@
 .song-score-slice {
   background-color: var(--card-hover-bg-color);
   padding: 0.5rem 1.25rem;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   font-size: 0.75rem;
   display: flex;
   justify-content: space-between;
@@ -340,7 +340,7 @@
 .score-badge {
   background-color: var(--card-hover-bg-color);
   padding: 0.65rem 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-2xs);
   font-size: 0.75rem;
   margin-top: 0.25rem;
   text-align: right;

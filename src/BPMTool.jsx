@@ -1137,8 +1137,25 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [filters, playStyle, simfileData, currentChart, songOptions, onSongSelect, setCurrentChart, simfileWithRatings, showRankedRatings, getRawChart, getRatedChart]);
 
     const selectStyles = {
-        control: (styles) => ({ ...styles, backgroundColor: 'var(--card-bg-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.3rem', borderRadius: '0.5rem' }),
-        menu: (styles) => ({ ...styles, backgroundColor: 'var(--bg-color-light)', zIndex: 1000 }),
+        control: (styles) => ({
+            ...styles,
+            backgroundColor: 'var(--card-bg-color)',
+            border: '1px solid var(--border-color)',
+            color: 'var(--text-color)',
+            padding: '0.3rem',
+            borderRadius: 'var(--radius-sm)',
+        }),
+        menu: (styles) => ({
+            ...styles,
+            backgroundColor: 'var(--bg-color-light)',
+            borderRadius: 'var(--radius-sm)',
+            overflow: 'hidden',
+            zIndex: 1000,
+        }),
+        menuList: (styles) => ({
+            ...styles,
+            borderRadius: 'var(--radius-sm)',
+        }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
             backgroundColor: isSelected ? 'var(--card-hover-bg-color)' : isFocused ? 'var(--card-bg-color)' : null,

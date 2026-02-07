@@ -58,7 +58,7 @@
         width: auto;
         border: 1px solid;
         margin: 2rem auto;
-        border-radius: 0.75rem 0 0.75rem 0; /* rounded-tl-xl rounded-br-xl */
+        border-radius: var(--radius-md) 0 var(--radius-md) 0; /* rounded-tl-xl rounded-br-xl */
         flex-direction: row;
         justify-content: flex-start;
         gap: 1rem;

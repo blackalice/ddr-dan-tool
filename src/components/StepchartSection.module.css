@@ -74,8 +74,8 @@
     color: white;
     height: 1.5rem;
     width: 1.5rem;
-    border-top-left-radius: 0.5rem; /* rounded-l-lg */
-    border-bottom-left-radius: 0.5rem;
+    border-top-left-radius: var(--radius-sm); /* rounded-l-lg */
+    border-bottom-left-radius: var(--radius-sm);
 }
 
 .bar:hover .selfLink svg,
@@ -122,8 +122,8 @@
     font-size: 0.675rem;
     color: white;
     padding: 0.125rem 0.25rem; /* p-0.5 */
-    border-top-left-radius: 0.5rem; /* rounded-l-lg */
-    border-bottom-left-radius: 0.5rem;
+    border-top-left-radius: var(--radius-sm); /* rounded-l-lg */
+    border-bottom-left-radius: var(--radius-sm);
 }
 
 .bpmLabelEven {

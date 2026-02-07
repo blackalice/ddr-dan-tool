@@ -2,6 +2,20 @@
 html {
   --color-white-agnostic: white;
   --color-black-agnostic: hsl(0, 0%, 5%);
+  --radius-2xs-default: 4px;
+  --radius-xs-default: 6px;
+  --radius-sm-default: 8px;
+  --radius-md-default: 12px;
+  --radius-lg-default: 16px;
+  --radius-pill-default: 9999px;
+  --radius-round-default: 50%;
+  --radius-2xs: var(--radius-2xs-theme, var(--radius-2xs-default));
+  --radius-xs: var(--radius-xs-theme, var(--radius-xs-default));
+  --radius-sm: var(--radius-sm-theme, var(--radius-sm-default));
+  --radius-md: var(--radius-md-theme, var(--radius-md-default));
+  --radius-lg: var(--radius-lg-theme, var(--radius-lg-default));
+  --radius-pill: var(--radius-pill-theme, var(--radius-pill-default));
+  --radius-round: var(--radius-round-theme, var(--radius-round-default));
 
   --color-beginner: #00B0C6;
   --color-basic: #D68B00;
@@ -34,10 +48,6 @@ html {
   --yellow-color: #FBBF24;
   --button-icon: white;
   --button-bg: #4B5563;
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
   --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
@@ -100,10 +110,6 @@ html {
   --yellow-color: #C18401;
   --button-bg: #5C5E66;
   --button-icon: white;
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 8px 26px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 18px 52px rgba(0, 0, 0, 0.12);
@@ -167,10 +173,6 @@ html {
   --yellow-color: #FBBF24;
   --button-bg: #3a3a3c;
   --button-icon: #ffffff;
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
   --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
@@ -233,10 +235,6 @@ html {
   --yellow-color: #FBBF24;
   --button-bg: #3a3a3c;
   --button-icon: #ffffff;
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
   --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
@@ -280,7 +278,7 @@ html {
   color: var(--button-icon);
   width: 32px;
   height: 32px;
-  border-radius: 0.375rem;
+  border-radius: var(--radius-xs);
   border: none;
   cursor: pointer;
   display: flex;
@@ -297,7 +295,7 @@ html {
   background-color: var(--card-bg-color);
   border: 0px solid var(--border-color);
   color: var(--text-color);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   width: 44px;
   height: 44px;
@@ -342,10 +340,6 @@ html {
   --yellow-color: #FBBF24;
   --button-icon: white;
   --button-bg: #53325f;
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.25);
   --shadow-lg: 0 18px 50px rgba(0,0,0,0.35);
@@ -456,7 +450,7 @@ body {
   transition: color 0.2s;
   padding: 0.5rem 1rem;
   border: 2px solid var(--accent-color);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
 }
 .nav-link:hover {
   color: var(--text-color);
@@ -512,7 +506,7 @@ body {
 .play-mode-toggle {
   display: flex;
   background-color: var(--card-bg-color);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   padding: 0.25rem;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
@@ -521,7 +515,7 @@ body {
   padding: 0.5rem 1.5rem;
   font-size: 0.875rem;
   font-weight: 700;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   border: none;
   background-color: transparent;
   color: var(--text-muted-color);
@@ -586,8 +580,8 @@ select optgroup {
   font-weight: 700;
   color: var(--text-color);
   padding: 0.75rem;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
   margin: 0px;
   /* Subtle outer elevation; no inner glow */
   box-shadow:
@@ -596,8 +590,8 @@ select optgroup {
   transition: border-radius 0.3s ease-in-out;
 }
 .dan-header.is-collapsed {
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
 }
 .song-grid {
   display: grid;
@@ -605,8 +599,8 @@ select optgroup {
   gap: 0.75rem;
   padding: 0.75rem;
   background-color: var(--bg-color-light);
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
 }
 .song-grid > * {
   min-width: 0;

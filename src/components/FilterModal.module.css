@@ -39,7 +39,7 @@
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-color);
   padding: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 1rem;
   box-sizing: border-box;
@@ -65,7 +65,7 @@
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   padding: 0.5rem;
   background: rgba(255, 255, 255, 0.02);
 }
@@ -73,7 +73,7 @@
 .checkboxLabel {
   display: block;
   padding: 0.5rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
   font-weight: 400;
@@ -99,7 +99,7 @@
 .activeInput {
   outline: 3px solid var(--accent-color);
   outline-offset: 1px;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 
 .halfWidthContainer {

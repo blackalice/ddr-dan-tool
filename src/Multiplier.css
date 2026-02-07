@@ -29,7 +29,7 @@
   background-color: var(--card-bg-color);
   color: var(--text-color);
   padding: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   border: 2px solid transparent;
   text-align: center;
   font-size: 1.5rem;
@@ -61,7 +61,7 @@
     color: var(--button-icon);
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
     border: none;
     cursor: pointer;
     display: flex;

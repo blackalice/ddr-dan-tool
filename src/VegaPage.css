@@ -28,7 +28,7 @@
     background-color: var(--accent-color);
     color: var(--text-color);
     padding: 1rem 2rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     font-weight: 700;
     transition: background-color 0.2s;
@@ -52,8 +52,8 @@
     flex-wrap: wrap;
     padding: 0.75rem;
     background-color: var(--bg-color-light);
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-sm);
 }
 
 .results-category {
@@ -61,7 +61,7 @@
     min-width: 200px;
     background-color: var(--card-bg-color);
     border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-sm);
     padding: 1rem;
 }
 
@@ -140,7 +140,7 @@
         background-color: var(--accent-color);
         color: var(--text-color);
         padding: 1rem 2rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-sm);
         text-decoration: none;
         font-weight: 700;
         transition: background-color 0.2s;

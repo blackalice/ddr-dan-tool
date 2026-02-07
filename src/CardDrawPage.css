@@ -101,8 +101,8 @@
 }
 
 .card-draw-history-grid {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
 }
 
 .card-draw-history-header {
@@ -120,7 +120,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.65rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-weight: 700;
   font-size: 0.75rem;
   letter-spacing: 0.02em;
@@ -171,7 +171,7 @@
   justify-content: center;
   width: 1rem;
   height: 1rem;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: rgba(0, 0, 0, 0.65);
   color: #ffffff;
   font-size: 0.65rem;
@@ -509,7 +509,7 @@
     margin: 0;
     line-height: 1;
     white-space: nowrap;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-2xs);
   }
 
   .card-draw-page .difficulty-badge {
