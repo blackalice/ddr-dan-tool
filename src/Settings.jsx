@@ -10,11 +10,33 @@ import { Switch } from './components/Switch.jsx';
 import { TwoOptionSwitch } from "./components/TwoOptionSwitch.jsx";
 import ModalShell from "./components/ModalShell.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUpload, faDownload } from '@fortawesome/free-solid-svg-icons';
 import './Settings.css';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useOfflineCache } from './hooks/useOfflineCache.js';
+
+const CHANGELOG_UPDATES = [
+    {
+        date: 'Feb 7, 2026',
+        items: [
+            'Preliminary DDR World EU Song List added.',
+            'Offline mode added.',
+        ],
+    },
+    {
+        date: 'Feb 1, 2026',
+        items: [
+            'Ranked ratings filters now support min/max decimal ranges. (Request: Jynxatu)',
+            'Filter modals show live song and chart counts.',
+            'Song list overrides now include artist and difficulty data for safer matching. (Bug: JUWUBEAT/Vetch)',
+            'Added latest WORLD charts',
+            'Build process streamlined',
+            'Updated to Sanbai Ice Cream V11 Revision 1 Rankings',
+        ],
+    },
+];
 
 const Settings = () => {
     const {
@@ -45,6 +67,18 @@ const Settings = () => {
     const { groups } = useGroups();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const {
+        supported: offlineSupported,
+        enabled: offlineEnabled,
+        downloading: offlineDownloading,
+        statusLabel: offlineStatusLabel,
+        error: offlineError,
+        startDownload,
+        clearDownload,
+    } = useOfflineCache();
+    const offlineDownloadLabel = offlineDownloading ? 'Downloading...' : 'Download';
+    const canDownloadOffline = Boolean(user);
+    const [showOlderUpdates, setShowOlderUpdates] = useState(false);
 
     const [songMeta, setSongMeta] = useState([]);
     const [songLookupStrict, setSongLookupStrict] = useState({});
@@ -391,6 +425,42 @@ const Settings = () => {
 
                     <div className="setting-card setting-card-toggle">
                         <div className="setting-text">
+                            <h3>Offline Data</h3>
+                            <p>
+                                Download song data and SM files for offline use.
+                            </p>
+                            <p className="settings-status">{offlineStatusLabel}</p>
+                            {offlineError && (<p className="settings-status settings-status-error">{offlineError}</p>)}
+                            {!canDownloadOffline && (
+                                <p className="settings-status">Log in to download offline data.</p>
+                            )}
+                        </div>
+                        {canDownloadOffline && (
+                            <div className="setting-control">
+                                <button
+                                    onClick={startDownload}
+                                    className="settings-button settings-button-icon"
+                                    disabled={!offlineSupported || offlineDownloading}
+                                    aria-label={offlineDownloadLabel}
+                                    title={offlineDownloadLabel}
+                                >
+                                    <FontAwesomeIcon icon={faDownload} />
+                                </button>
+                                <button
+                                    onClick={clearDownload}
+                                    className="settings-button settings-button-danger settings-button-icon"
+                                    disabled={!offlineSupported || offlineDownloading || !offlineEnabled}
+                                    aria-label="Clear offline data"
+                                    title="Clear offline data"
+                                >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
                             <h3>Show Courses</h3>
                             <p>
                                 Show the courses page. May be slow and inaccurate. 
@@ -512,15 +582,31 @@ const Settings = () => {
                     <h2 className="settings-sub-header">Changelog</h2>
                     <div className="setting-card">
                         <div className="setting-text">
-                            <h3>Feb 1, 2026</h3>
+                            <h3>{CHANGELOG_UPDATES[0].date}</h3>
                             <ul className="settings-changelog">
-                                <li>Ranked ratings filters now support min/max decimal ranges.<br></br><b>(Request: Jynxatu)</b></li>
-                                <li>Filter modals show live song and chart counts.</li>
-                                <li>Song list overrides now include artist and difficulty data for safer matching.<br></br><b>(Bug: JUWUBEAT/Vetch)</b></li>
-                                <li>Added latest WORLD charts</li>
-                                <li>Build process streamlined</li>
-                                <li>Updated to Sanbai Ice Cream V11 Revision 1 Rankings</li>
+                                {CHANGELOG_UPDATES[0].items.map((item) => (
+                                    <li key={item}>{item}</li>
+                                ))}
                             </ul>
+                            {CHANGELOG_UPDATES.length > 1 && (
+                                <button
+                                    type="button"
+                                    className="settings-changelog-toggle"
+                                    onClick={() => setShowOlderUpdates((prev) => !prev)}
+                                >
+                                    {showOlderUpdates ? 'Hide older updates' : 'Show older updates'}
+                                </button>
+                            )}
+                            {showOlderUpdates && CHANGELOG_UPDATES.slice(1).map((update) => (
+                                <div key={update.date} className="settings-changelog-entry">
+                                    <h3>{update.date}</h3>
+                                    <ul className="settings-changelog">
+                                        {update.items.map((item) => (
+                                            <li key={`${update.date}-${item}`}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
                     </div>
 

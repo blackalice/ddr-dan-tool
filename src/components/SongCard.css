@@ -214,6 +214,13 @@
     white-space: nowrap;
     margin-left: 0.5rem;
 }
+.song-card-game-logo {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
 
 @media (max-width: 640px) {
   .song-card {

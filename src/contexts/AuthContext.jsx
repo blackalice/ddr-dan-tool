@@ -7,12 +7,14 @@ import { useScores } from './ScoresContext.jsx';
 import { useGroups } from './GroupsContext.jsx';
 import { SettingsContext } from './SettingsContext.jsx';
 import { storage } from '../utils/remoteStorage.js';
+import { useOfflineStatus } from '../hooks/useOfflineStatus.js';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const { offline } = useOfflineStatus();
   const { setScores } = useScores();
   const { setGroups, setActiveGroup } = useGroups();
   const {
@@ -73,7 +75,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const fetchUserData = useCallback(async () => {
-    const res = await fetch('/api/user/data', { credentials: 'include' });
+    if (offline) return false;
+    let res;
+    try {
+      res = await fetch('/api/user/data', { credentials: 'include' });
+    } catch (err) {
+      console.warn('[auth] fetch user data failed', err);
+      return false;
+    }
     if (res.ok) {
       const data = await res.json();
       const email = typeof data.email === 'string' ? data.email : '';
@@ -195,7 +204,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
     return false;
-  }, [applySettings, refreshToken, setScores, setGroups, setActiveGroup, setUser]);
+  }, [applySettings, refreshToken, setScores, setGroups, setActiveGroup, setUser, offline]);
 
   useEffect(() => {
     fetchUserData();

@@ -176,6 +176,47 @@
     position: relative;
 }
 
+.snowfall-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+    z-index: 2;
+}
+
+.snowflake {
+    position: absolute;
+    top: -8%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    animation-name: snowfall-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes snowfall-fall {
+    0% {
+        transform: translate3d(0, -5%, 0);
+        opacity: 0;
+    }
+    8% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(var(--snow-drift, 0px), 118vh, 0);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snowflake {
+        animation: none;
+    }
+}
+
 .song-info-bar {
     border-radius: .5rem;
     margin-bottom: 0rem;

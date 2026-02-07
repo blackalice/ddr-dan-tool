@@ -12,6 +12,7 @@ import '../styles/glow.css';
 import { GAME_CHIP_STYLES } from '../utils/gameChipStyles.js';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 import { formatRankedRating } from '../utils/formatRankedRating.js';
+import GameLogo from './GameLogo.jsx';
 
 const difficultyDisplayMap = {
     single: {
@@ -80,7 +81,7 @@ const formatLevelText = (level) => {
   return String(level);
 };
 
-const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
+const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameLogo = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings, showTransliterationBeta } = useContext(SettingsContext);
   const { scores } = useScores();
   const navigate = useNavigate();
@@ -320,9 +321,22 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
           </div>
           <div className="header-right">
             {song.game && (
-              <div className="game-chip" style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}>
-                {song.game}
-              </div>
+              showGameLogo ? (
+                <GameLogo
+                  className="song-card-game-logo"
+                  name={song.game}
+                  alt={song.game}
+                  width={46}
+                  height={46}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                />
+              ) : (
+                <div className="game-chip" style={GAME_CHIP_STYLES[song.game] || GAME_CHIP_STYLES.DEFAULT}>
+                  {song.game}
+                </div>
+              )
             )}
           </div>
         </div>

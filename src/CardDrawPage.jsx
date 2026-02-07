@@ -25,6 +25,7 @@ import {
 } from "./utils/songlistOverrides.js";
 import { getJsonCached } from "./utils/cachedFetch.js";
 import { storage } from "./utils/remoteStorage.js";
+import { useOfflineMode } from "./hooks/useOfflineMode.js";
 import { getDifficultyBucketValue, getDifficultyValue, isDifficultyAllowed } from "./utils/difficultyFilters.js";
 import "./CardDrawPage.css";
 import settingsStyles from "./components/CardDrawSettingsModal.module.css";
@@ -228,6 +229,9 @@ const CARD_ACTIONS = [
 ];
 
 const CardDrawPage = ({ smData }) => {
+  const { offline } = useOfflineMode();
+  const showJacket = !offline;
+  const jacketFull = !offline;
   const { playStyle, songlistOverride, setPlayStyle, showTransliterationBeta, showRankedRatings } = useContext(SettingsContext);
   const { filters } = useFilters();
   const { scores, loadSongMeta } = useScores();
@@ -1563,8 +1567,9 @@ const CardDrawPage = ({ smData }) => {
                     skipScoreLookup
                     bpmOnly
                     showArtist
-                    showJacket
-                    jacketFull
+                    showJacket={showJacket}
+                    jacketFull={jacketFull}
+                    showGameLogo={offline}
                     showGameWithDifficulty
                     levelInTitleBlock
                     onCardClick={() => openFreePickModal(chart, null)}
@@ -1583,8 +1588,9 @@ const CardDrawPage = ({ smData }) => {
                     skipScoreLookup
                     bpmOnly
                     showArtist
-                    showJacket
-                    jacketFull
+                    showJacket={showJacket}
+                    jacketFull={jacketFull}
+                    showGameLogo={offline}
                     showGameWithDifficulty
                     levelInTitleBlock
                     onCardClick={() => setActiveCardContext({ card: chart, entryId: null })}
@@ -1644,8 +1650,9 @@ const CardDrawPage = ({ smData }) => {
                         skipScoreLookup
                         bpmOnly
                         showArtist
-                        showJacket
-                        jacketFull
+                        showJacket={showJacket}
+                        jacketFull={jacketFull}
+                        showGameLogo={offline}
                         showGameWithDifficulty
                         levelInTitleBlock
                         onCardClick={() => openFreePickModal(chart, entry.id)}
@@ -1661,8 +1668,9 @@ const CardDrawPage = ({ smData }) => {
                       skipScoreLookup
                       bpmOnly
                       showArtist
-                      showJacket
-                      jacketFull
+                      showJacket={showJacket}
+                      jacketFull={jacketFull}
+                      showGameLogo={offline}
                       showGameWithDifficulty
                       levelInTitleBlock
                       onCardClick={() => setActiveCardContext({ card: chart, entryId: entry.id })}

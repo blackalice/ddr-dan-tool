@@ -2,6 +2,7 @@ import { normalizeString } from './stringSimilarity.js';
 
 export const SONGLIST_OVERRIDE_OPTIONS = [
     { value: 'none', label: 'None', file: null },
+    { value: 'WORLD-EU', label: 'DDR WORLD - Europe', file: '/ddr-ver/DDRWORLD-EU-full.json' },
     { value: 'A3', label: 'DDR A3 - Japan', file: '/ddr-ver/DDRA3-full.json' },
     {
         value: 'A3-flower-no-unlocks',

@@ -32,6 +32,8 @@ import './BPMTool.css';
 import { getJsonCached } from './utils/cachedFetch.js';
 import { resolveScore } from './utils/scoreKey.js';
 import { getDifficultyValue, isDifficultyAllowed } from './utils/difficultyFilters.js';
+import { useOfflineMode } from './hooks/useOfflineMode.js';
+import SnowfallOverlay from './components/SnowfallOverlay.jsx';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -245,6 +247,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
     const { scores, loadSongMeta } = useScores();
     const location = useLocation();
+    const { offline } = useOfflineMode();
 
 
     const [songOptions, setSongOptions] = useState([]);
@@ -539,6 +542,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     // Probe exact audio length from server (Worker parses OGG), cached at edge
     useEffect(() => {
         setAudioSeconds(null);
+        if (offline) return;
         const musicFile = simfileData?.music;
         const smPath = simfileData?.path;
         if (!musicFile || !smPath) return;
@@ -549,7 +553,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 if (secs && isFinite(secs)) setAudioSeconds(secs);
             })
             .catch(() => {});
-    }, [simfileData?.music, simfileData?.path, simfileWithRatings]);
+    }, [offline, simfileData?.music, simfileData?.path, simfileWithRatings]);
 
     useEffect(() => {
         if (location.state?.fromSongCard) {
@@ -847,6 +851,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
         return result;
     }, [targetBPM, bpmDisplay, multipliers]);
+
+    const shouldShowSnowfall = useMemo(() => {
+        const title = (songTitle || '').trim().toLowerCase();
+        return (
+            title === 'thank you merry christmas' ||
+            title === 'silent hill' ||
+            title === 'silent hill (3rd christmas mix)'
+        );
+    }, [songTitle]);
 
     const coreCalculation = useMemo(() => {
         if (!targetBPM || !coreBpm) return null;
@@ -1372,11 +1385,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             </div>
 
             <div className={`chart-section ${isCollapsed ? 'collapsed' : ''}`}>
+                {shouldShowSnowfall && <SnowfallOverlay />}
                 <SongInfoBar
                     isCollapsed={isCollapsed}
                     setIsCollapsed={setIsCollapsed}
                     gameVersion={gameVersion}
                     jacket={jacket}
+                    disableJacket={offline}
                     songTitle={songTitle}
                     artist={artist}
                     displayTitle={displayTitle}

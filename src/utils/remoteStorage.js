@@ -125,6 +125,7 @@ function computeDelta() {
 
 async function flush() {
   if (!syncEnabled) return;
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
   if (flushTimer) {
     clearTimeout(flushTimer);
     flushTimer = null;
@@ -184,6 +185,7 @@ async function flush() {
 
 function flushNow(useBeacon = false) {
   if (!syncEnabled) return;
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
   if (flushTimer) {
     clearTimeout(flushTimer);
     flushTimer = null;

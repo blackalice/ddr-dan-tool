@@ -84,6 +84,15 @@
     color: var(--text-muted-color);
     font-size: 0.875rem;
 }
+.settings-status {
+    margin-top: 0.5rem;
+    color: var(--text-muted-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+.settings-status-error {
+    color: #c84b4b;
+}
 
 .settings-changelog {
     margin: 0;
@@ -99,6 +108,27 @@
 
 .settings-changelog li:last-child {
     margin-bottom: 0;
+}
+
+.settings-changelog-toggle {
+    margin-top: 0.9rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.settings-changelog-toggle:hover {
+    color: var(--accent-color-light);
+}
+
+.settings-changelog-entry {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
 }
 
 .settings-sub-header {
@@ -164,10 +194,24 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.settings-button-icon {
+    padding: 0.75rem;
+    min-width: 2.5rem;
 }
 
 .settings-button:hover {
     background-color: var(--accent-color-light);
+}
+.settings-button-danger {
+    background-color: #a73737;
+}
+.settings-button-danger:hover {
+    background-color: #8e2f2f;
 }
 
 /* Mobile Layout */
