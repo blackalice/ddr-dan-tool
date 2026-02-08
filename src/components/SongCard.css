@@ -332,9 +332,24 @@
 }
 .song-score-slice .score-value {
   flex: 1 1 auto;
+  color: var(--text-color);
 }
 .song-score-slice .score-extra {
   color: var(--text-muted-color);
+  text-align: right;
+}
+
+[data-theme='light'] .song-score-slice {
+  background-color: #e3e9f1;
+  border-top: 1px solid #c9d2de;
+}
+
+[data-theme='light'] .song-score-slice .score-value {
+  color: #1f2630;
+}
+
+[data-theme='light'] .song-score-slice .score-extra {
+  color: #556274;
 }
 
 .score-badge {

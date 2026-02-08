@@ -2,6 +2,8 @@
 html {
   --color-white-agnostic: white;
   --color-black-agnostic: hsl(0, 0%, 5%);
+  --font-body: 'DM Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-heading: 'DM Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
   --radius-2xs-default: 4px;
   --radius-xs-default: 6px;
   --radius-sm-default: 8px;
@@ -88,64 +90,78 @@ html {
 
 [data-theme='light'] {
   color-scheme: light;
-  --bg-color: #FAFAFA;
-  --bg-color-light: #EAEAEB;
-  --bg-color-dark: #DCDDDE;
-  --card-bg-color: #FFFFFF;
-  --card-hover-bg-color: #F0F0F1;
-  --card-hover-bg-color-light: #EAEAEB;
-  --border-color: #D1D1D2;
-  --text-color: #383A42;
-  --text-color-light: #383A42;
-  --text-color-lighter: #383A42;
-  --text-color-lightest: #5C5E66;
-  --text-muted-color: #808289;
-  --accent-color: #3B82F6;
-  --accent-color-rgb: 59, 130, 246;
-  --accent-color-light: #93C5FD;
-  --cyan-color: #0184BC;
-  --green-color: #50A14F;
-  --pink-color: #A626A4;
-  --blue-color: #4078F2;
-  --yellow-color: #C18401;
-  --button-bg: #5C5E66;
+  --bg-color: #f3f5f8;
+  --bg-color-light: #e8ecf1;
+  --bg-color-dark: #dce2ea;
+  --card-bg-color: #ffffff;
+  --card-hover-bg-color: #f1f4f8;
+  --card-hover-bg-color-light: #e7ecf2;
+  --border-color: #cbd3de;
+  --text-color: #1f2630;
+  --text-color-light: #2a3340;
+  --text-color-lighter: #3c4858;
+  --text-color-lightest: #556274;
+  --text-muted-color: #697689;
+  --accent-color: #d63a45;
+  --accent-color-rgb: 214, 58, 69;
+  --accent-color-light: #ef6a72;
+  --accent-contrast: #ffffff;
+  --cyan-color: #117a95;
+  --green-color: #4a885b;
+  --pink-color: #9a4f79;
+  --blue-color: #426fc5;
+  --yellow-color: #a07e2c;
+  --button-bg: #607083;
   --button-icon: white;
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 8px 26px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 18px 52px rgba(0, 0, 0, 0.12);
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.1);
+  --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(43, 58, 79, 0.14);
   --glass-blur: saturate(140%) blur(12px);
+  --tabs-bg-top: rgba(245, 247, 250, 0.96);
+  --tabs-bg-bottom: rgba(245, 247, 250, 0.35);
+  --mobile-menu-bg: rgba(248, 250, 252, 0.98);
+  --overlay-backdrop: rgba(12, 18, 28, 0.34);
+  --modal-bg: rgba(250, 252, 255, 0.96);
+  --modal-border: rgba(43, 58, 79, 0.16);
+  --modal-shadow: 0 28px 64px rgba(20, 28, 41, 0.24);
+  --modal-section-bg: rgba(255, 255, 255, 0.72);
+  --modal-section-border: rgba(43, 58, 79, 0.12);
+  --modal-control-bg: rgba(255, 255, 255, 0.74);
+  --modal-control-bg-hover: rgba(255, 255, 255, 0.95);
+  --modal-control-bg-emphasis: rgba(255, 255, 255, 0.86);
+  --modal-control-border: rgba(43, 58, 79, 0.17);
 
-  --difficulty-beginner-color: #4078F2;
-  --difficulty-light-color: #C18401;
-  --difficulty-standard-color: #E45649;
-  --difficulty-heavy-color: #50A14F;
-  --difficulty-challenge-color: #A626A4;
-  --difficulty-edit-color: #696C77;
-  --difficulty-single-color: #A626A4;
-  --difficulty-double-color: #4078F2;
+  --difficulty-beginner-color: #3f7ebd;
+  --difficulty-light-color: #af8432;
+  --difficulty-standard-color: #cc4e4e;
+  --difficulty-heavy-color: #4b8755;
+  --difficulty-challenge-color: #8b529d;
+  --difficulty-edit-color: #6c7787;
+  --difficulty-single-color: #8b529d;
+  --difficulty-double-color: #3f7ebd;
 
-  --button-up-color: #50A14F;
-  --button-up-hover-color: #468C45;
-  --button-down-color: #E45649;
-  --button-down-hover-color: #C94D41;
+  --button-up-color: #4b8755;
+  --button-up-hover-color: #3f7248;
+  --button-down-color: #cf4a53;
+  --button-down-hover-color: #b63f46;
 
   /* from stepcharts-main */
-  --color-focal-700: #374151;
-  --color-focal-600: #4b5563;
-  --color-focal-500: #6B7280;
-  --color-focal-400: #9ca3af;
-  --color-focal-300: #d1d5db;
-  --color-focal-200: #e5e7eb;
-  --color-focal-100: #f3f4f6;
-  --color-focal-50: #f9fafb;
+  --color-focal-700: #1f2630;
+  --color-focal-600: #313c4a;
+  --color-focal-500: #4a5868;
+  --color-focal-400: #697689;
+  --color-focal-300: #92a0b3;
+  --color-focal-200: #c5cedb;
+  --color-focal-100: #e4e9f0;
+  --color-focal-50: #f5f7fb;
   --color-focal: var(--color-focal-500);
 
-  --color-heading: var(--color-white-agnostic);
-  --color-subheading: var(--color-focal-200);
+  --color-heading: var(--color-focal-700);
+  --color-subheading: var(--color-focal-500);
 
-  --color-link: var(--color-challenge);
+  --color-link: var(--accent-color);
 }
 
 [data-theme='cg'] {
@@ -307,7 +323,7 @@ html {
 }
 .filter-button.active {
   background-color: var(--accent-color);
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
 }
 
 /* Icon for hiding AAA scores */
@@ -395,7 +411,7 @@ body {
   margin: 0;
   /* Background color is applied on the theme container so gradients work */
   color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
   letter-spacing: 0.1px;
 }
 
@@ -437,6 +453,7 @@ body {
   font-size: 1.5rem; /* 24px */
   font-weight: 800;
   letter-spacing: -0.025em;
+  font-family: var(--font-heading);
   margin: 0;
 }
 .header h1 span {
@@ -453,7 +470,7 @@ body {
   border-radius: var(--radius-pill);
 }
 .nav-link:hover {
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
   background-color: var(--accent-color);
 }
 
@@ -528,7 +545,7 @@ body {
 }
 
 .play-mode-toggle button.active {
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
   background-color: var(--accent-color);
 }
 .play-mode-toggle.dan-toggle button:first-of-type.active {
@@ -578,7 +595,9 @@ select optgroup {
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
   padding: 0.75rem;
   border-top-left-radius: var(--radius-sm);
   border-top-right-radius: var(--radius-sm);

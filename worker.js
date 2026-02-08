@@ -28,7 +28,7 @@ app.use('*', async (c, next) => {
       } catch { /* ignore bad STATIC_ORIGIN */ }
       res.headers.set(
         'Content-Security-Policy',
-        `default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src ${connectOrigins.join(' ')}; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'`
+        `default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src ${connectOrigins.join(' ')} https://cloudflareinsights.com; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'`
       )
     }
   } catch { /* ignore header set errors */ }

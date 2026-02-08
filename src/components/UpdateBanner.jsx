@@ -42,7 +42,7 @@ export default function UpdateBanner() {
   const BANNER_HEIGHT = 44;
   const style = {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 2002,
-    background: 'var(--accent-color, #2d89ef)', color: 'var(--text-color, #fff)',
+    background: 'var(--accent-color, #2d89ef)', color: 'var(--accent-contrast, #fff)',
     minHeight: `${BANNER_HEIGHT}px`, padding: '8px 12px', paddingTop: 'env(safe-area-inset-top, 0px)',
     display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center',
     boxShadow: '0 2px 6px rgba(0,0,0,0.2)'

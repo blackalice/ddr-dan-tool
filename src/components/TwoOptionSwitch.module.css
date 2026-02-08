@@ -7,8 +7,9 @@
   height: 44px;
   padding: 2px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--card-hover-bg-color-light);
+  background: color-mix(in srgb, var(--bg-color-dark) 64%, var(--card-bg-color));
+  border: 1px solid var(--border-color);
 }
 
 .root:focus-within {
@@ -24,6 +25,7 @@
   width: calc(50% - 2px);
   border-radius: var(--radius-pill);
   background: rgba(var(--accent-color-rgb), 0.35);
+  background: color-mix(in srgb, var(--accent-color) 34%, var(--card-bg-color));
   border: 1px solid rgba(var(--accent-color-rgb), 0.6);
   transition: transform 0.2s ease;
   transform: translateX(var(--thumb-position, 0%));

@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap');
+
 /* Set base font properties and cross-browser rendering niceties. */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'DM Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -19,8 +21,17 @@ html, body { background: transparent; }
 
 /* Subtle, modern app background layered under theme colors */
 #root > [data-theme] {
-  background: radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,0.04), transparent 60%),
-              radial-gradient(900px 500px at -10% 120%, rgba(0,0,0,0.12), transparent 60%);
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(255, 255, 255, 0.04), transparent 60%),
+    radial-gradient(900px 500px at -10% 120%, rgba(0, 0, 0, 0.12), transparent 60%);
+  background-attachment: fixed;
+}
+
+#root > [data-theme='light'] {
+  background:
+    radial-gradient(1200px 600px at 96% -14%, rgba(255, 255, 255, 0.78), transparent 60%),
+    radial-gradient(860px 560px at -6% 118%, rgba(211, 220, 232, 0.45), transparent 65%),
+    linear-gradient(180deg, rgba(246, 249, 252, 0.95), rgba(236, 241, 247, 0.92));
   background-attachment: fixed;
 }
 
@@ -29,14 +40,15 @@ html, body { background: transparent; }
 #root > [data-theme='cg'],
 #root > [data-theme='dark-pink'],
 #root > [data-theme='mhe2026'] {
-  background: radial-gradient(1100px 560px at 80% -10%, rgba(255,255,255,0.015), transparent 60%),
-              radial-gradient(900px 520px at -10% 120%, rgba(0,0,0,0.28), transparent 60%);
+  background:
+    radial-gradient(1100px 560px at 80% -10%, rgba(255, 255, 255, 0.015), transparent 60%),
+    radial-gradient(900px 520px at -10% 120%, rgba(0, 0, 0, 0.28), transparent 60%);
   background-attachment: fixed;
 }
 
 #root > [data-theme='mhe2026'] {
   background:
-    radial-gradient(1100px 560px at 80% -10%, rgba(255,255,255,0.02), transparent 60%),
+    radial-gradient(1100px 560px at 80% -10%, rgba(255, 255, 255, 0.02), transparent 60%),
     linear-gradient(180deg, rgba(6, 8, 16, 0.65) 0%, rgba(6, 8, 16, 0.9) 100%),
     url('/img/MHE-bg.webp') center/cover no-repeat;
   background-attachment: fixed, fixed, fixed;

@@ -190,7 +190,7 @@
     border-radius: var(--radius-md);
     border: none;
     background-color: var(--accent-color);
-    color: var(--text-color);
+    color: var(--accent-contrast, var(--text-color));
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -335,6 +335,59 @@
     margin-top: 0.5rem;
 }
 
+.upload-format-help {
+    margin-top: 0.85rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--card-bg-color);
+}
+
+.upload-format-summary {
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    user-select: none;
+}
+
+.upload-format-summary:hover {
+    color: var(--accent-color-light);
+}
+
+.upload-format-description {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted-color);
+    line-height: 1.45;
+}
+
+.upload-format-list {
+    margin: 0.6rem 0 0 1rem;
+    padding: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted-color);
+    line-height: 1.4;
+}
+
+.upload-format-list li + li {
+    margin-top: 0.35rem;
+}
+
+.upload-format-example {
+    margin-top: 0.75rem;
+    background-color: var(--bg-color-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--text-color);
+}
+
 .hidden-file-input {
     display: none;
 }
@@ -345,7 +398,7 @@
     border-radius: var(--radius-md);
     border: none;
     background-color: var(--accent-color);
-    color: var(--text-color);
+    color: var(--accent-contrast, var(--text-color));
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;

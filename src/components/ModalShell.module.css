@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--overlay-backdrop, rgba(0, 0, 0, 0.35));
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 1001;
@@ -12,15 +12,15 @@
 }
 
 .content {
-  background: rgba(18, 19, 23, 0.93);
+  background: var(--modal-bg, rgba(18, 19, 23, 0.93));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--modal-border, var(--glass-border));
   color: var(--text-color);
   width: 100%;
   max-width: 520px;
   border-radius: var(--radius-md);
-  box-shadow: 0 32px 72px rgba(0, 0, 0, 0.55);
+  box-shadow: var(--modal-shadow, 0 32px 72px rgba(0, 0, 0, 0.55));
   display: flex;
   flex-direction: column;
   max-height: 90vh;
@@ -41,8 +41,8 @@
   justify-content: flex-end;
   position: relative;
   padding: 1.25rem 1.75rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--modal-section-bg, rgba(255, 255, 255, 0.02));
+  border-bottom: 1px solid var(--modal-section-border, rgba(255, 255, 255, 0.06));
 }
 
 .title {
@@ -86,8 +86,8 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 1.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--modal-section-bg, rgba(255, 255, 255, 0.02));
+  border-top: 1px solid var(--modal-section-border, rgba(255, 255, 255, 0.06));
 }
 
 .footerAlignLeft {
@@ -113,13 +113,13 @@
 }
 
 .button {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-sm);
   padding: 0.75rem 1.25rem;
   font-weight: 600;
   cursor: pointer;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
   color: var(--text-color);
   transition:
     background 0.2s ease,
@@ -130,7 +130,7 @@
 }
 
 .button:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--modal-control-bg-hover, rgba(255, 255, 255, 0.06));
 }
 
 .buttonPrimary {
@@ -153,7 +153,7 @@
 }
 
 .buttonGhost {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.04));
   color: var(--text-color);
 }
 

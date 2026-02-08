@@ -28,10 +28,10 @@
 }
 
 .stepperButton {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-sm);
   padding: 0.5rem 0.8rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
   color: var(--text-color);
   font-size: 1rem;
   font-weight: 700;
@@ -56,14 +56,14 @@
 }
 
 .stepperButton:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--modal-control-bg-hover, rgba(255, 255, 255, 0.06));
 }
 
 .input {
   padding: 0.75rem;
   border-radius: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
   color: var(--text-color);
   font-size: 1rem;
   width: 4rem;
@@ -131,8 +131,8 @@
   width: 4rem;
   padding: 0.5rem 0.6rem;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
   color: var(--text-color);
   font-size: 0.95rem;
   height: 2.25rem;
@@ -167,8 +167,8 @@
   max-width: 4.5rem;
   padding: 0.45rem 0.5rem;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
   color: var(--text-color);
   font-size: 0.95rem;
   text-align: center;

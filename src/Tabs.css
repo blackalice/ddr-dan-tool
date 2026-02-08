@@ -4,7 +4,11 @@
   z-index: 1000; /* above content layers; keep modals higher */
   margin-bottom: 1rem;
   /* Glass nav bar */
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    180deg,
+    var(--tabs-bg-top, rgba(0, 0, 0, 0.12)),
+    var(--tabs-bg-bottom, rgba(0, 0, 0, 0))
+  );
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-bottom: 1px solid var(--glass-border);
@@ -138,7 +142,7 @@
     var(--accent-color),
     color-mix(in srgb, var(--accent-color) 84%, black)
   );
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
   box-shadow: 0 10px 22px rgba(var(--accent-color-rgb), 0.28);
 }
 
@@ -173,7 +177,7 @@
 }
 
 .mobile-menu-inner {
-  background: rgba(18, 18, 20, 0.98);
+  background: var(--mobile-menu-bg, rgba(18, 18, 20, 0.98));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-left: 1px solid var(--glass-border);
@@ -280,7 +284,7 @@
     var(--accent-color),
     color-mix(in srgb, var(--accent-color) 84%, black)
   );
-  color: var(--text-color);
+  color: var(--accent-contrast, var(--text-color));
   box-shadow:
     0 0 12px rgba(var(--accent-color-rgb), 0.45),
     0 0 1px rgba(var(--accent-color-rgb), 0.85);
@@ -394,7 +398,7 @@ button.mobile-menu-link:hover {
 .mobile-menu-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--overlay-backdrop, rgba(0, 0, 0, 0.35));
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease-in-out;

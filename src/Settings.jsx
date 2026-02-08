@@ -19,6 +19,12 @@ import { useOfflineCache } from './hooks/useOfflineCache.js';
 
 const CHANGELOG_UPDATES = [
     {
+        date: 'Feb 8, 2026',
+        items: [
+            'Light mode now works properly.',
+        ],
+    },
+    {
         date: 'Feb 7, 2026',
         items: [
             'Preliminary DDR World EU Song List added.',
@@ -535,6 +541,41 @@ const Settings = () => {
                                     You have&nbsp;{Object.keys(scores.single).length}&nbsp;SP and&nbsp;
                                     {Object.keys(scores.double).length}&nbsp;DP scores.
                                 </p>
+                                <details className="upload-format-help">
+                                    <summary className="upload-format-summary">JSON upload format</summary>
+                                    <p className="upload-format-description">
+                                        JSON uploads should be an object with a <code>scores</code> array. You can
+                                        optionally provide <code>meta.playtype</code> as <code>SP</code> or <code>DP</code>;
+                                        if omitted, the selector next to upload is used.
+                                    </p>
+                                    <ul className="upload-format-list">
+                                        <li>
+                                            Required per score: <code>identifier</code>, <code>artist</code>, <code>difficulty</code>, <code>score</code>, <code>lamp</code>
+                                        </li>
+                                        <li>
+                                            Optional per score: <code>optional.flare</code>
+                                        </li>
+                                    </ul>
+                                    <pre className="upload-format-example">{`{
+  "meta": {
+    "game": "ddr",
+    "playtype": "SP",
+    "service": "Custom"
+  },
+  "scores": [
+    {
+      "identifier": "MAX 300",
+      "artist": "Ω",
+      "difficulty": "Expert",
+      "score": 987650,
+      "lamp": "CLEAR",
+      "optional": {
+        "flare": "III"
+      }
+    }
+  ]
+}`}</pre>
+                                </details>
                             </div>
                             <div className="setting-control upload-control">
                                 <input
