@@ -24,6 +24,7 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
 import SortModal from './components/SortModal.jsx';
 import { TwoOptionSwitch } from './components/TwoOptionSwitch.jsx';
+import ChartStatsPanel from './components/ChartStatsPanel.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
@@ -1329,10 +1330,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 <div className="controls-container">
                     <div className="top-row">
                         <TwoOptionSwitch
-                            ariaLabel="Toggle BPM and chart views"
+                            ariaLabel="Toggle BPM, chart, and stats views"
                             options={[
                                 { value: 'bpm', label: 'BPM' },
                                 { value: 'chart', label: 'Chart' },
+                                { value: 'stats', label: 'Stats' },
                             ]}
                             value={view}
                             onChange={setView}
@@ -1514,7 +1516,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                             </div>
                         )}
                     </div>
-                ) : (
+                ) : view === 'chart' ? (
                     <StepchartPage
                         simfile={simfileWithRatings}
                         currentType={currentChart ? currentChart.slug : (simfileWithRatings?.availableTypes?.[0]?.slug)}
@@ -1523,6 +1525,11 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                         setIsCollapsed={setIsCollapsed}
                         playStyle={playStyle}
                         speedmod={speedmod}
+                    />
+                ) : (
+                    <ChartStatsPanel
+                        metrics={chartMetrics}
+                        songLength={audioSeconds ?? songLength}
                     />
                 )}
                  {view === 'chart' && (

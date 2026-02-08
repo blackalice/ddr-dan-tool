@@ -1,7 +1,7 @@
 .root {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--option-count, 2), minmax(0, 1fr));
   align-items: center;
   gap: 0;
   height: 44px;
@@ -22,13 +22,13 @@
   top: 2px;
   bottom: 2px;
   left: 2px;
-  width: calc(50% - 2px);
+  width: calc((100% - 4px) / var(--option-count, 2));
   border-radius: var(--radius-pill);
   background: rgba(var(--accent-color-rgb), 0.35);
   background: color-mix(in srgb, var(--accent-color) 34%, var(--card-bg-color));
   border: 1px solid rgba(var(--accent-color-rgb), 0.6);
   transition: transform 0.2s ease;
-  transform: translateX(var(--thumb-position, 0%));
+  transform: translateX(calc(var(--thumb-index, 0) * 100%));
   pointer-events: none;
 }
 

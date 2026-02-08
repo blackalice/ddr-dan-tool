@@ -72,6 +72,11 @@ export const SettingsProvider = ({ children }) => {
         return false;
     });
 
+    const [showChartStatsDebug, setShowChartStatsDebug] = useState(() => {
+        const saved = storage.getItem('showChartStatsDebug');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
@@ -123,6 +128,10 @@ export const SettingsProvider = ({ children }) => {
         storage.setItem('worldRemoveChallengeCharts', JSON.stringify(worldRemoveChallengeCharts));
     }, [worldRemoveChallengeCharts]);
 
+    useEffect(() => {
+        storage.setItem('showChartStatsDebug', JSON.stringify(showChartStatsDebug));
+    }, [showChartStatsDebug]);
+
     const multipliers = useMemo(() => getMultipliers(multiplierMode), [multiplierMode]);
 
     const value = {
@@ -152,6 +161,8 @@ export const SettingsProvider = ({ children }) => {
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
         setWorldRemoveChallengeCharts,
+        showChartStatsDebug,
+        setShowChartStatsDebug,
     };
 
     return (

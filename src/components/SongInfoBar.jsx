@@ -56,7 +56,7 @@ const SongInfoBar = ({
   const renderedTitle = displayTitle || songTitle;
   const renderedArtist = displayArtist || artist;
   const { filters } = useFilters();
-  const { showRankedRatings } = useContext(SettingsContext);
+  const { showRankedRatings, showChartStatsDebug } = useContext(SettingsContext);
   const { scores } = useScores();
   const isDesktop = useIsDesktop();
   const chipStyle = React.useMemo(() => (
@@ -222,6 +222,17 @@ const SongInfoBar = ({
     if (calculation && calculation.alternative) setShowAltBpm(!showAltBpm);
     if (coreCalculation && coreCalculation.alternative) setShowAltCoreBpm(!showAltCoreBpm);
   };
+  const debugStatsJson = React.useMemo(() => {
+    if (!metrics) return '';
+    const payload = metrics.debugStats && typeof metrics.debugStats === 'object'
+      ? metrics.debugStats
+      : metrics;
+    try {
+      return JSON.stringify(payload, null, 2);
+    } catch {
+      return '';
+    }
+  }, [metrics]);
 
   return (
     <div className={`song-info-bar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -367,6 +378,12 @@ const SongInfoBar = ({
               <span className="score-value">{currentScore ? currentScore.score.toLocaleString() : '--'}</span>
               <span className="score-extra">{currentScore ? `${getGrade(currentScore.score)}${currentScore.flare ? ` ${currentScore.flare}` : ''}` : ''}</span>
             </div>
+            {showChartStatsDebug && debugStatsJson && (
+              <details className="stats-debug-panel">
+                <summary>Debug chart stats</summary>
+                <pre>{debugStatsJson}</pre>
+              </details>
+            )}
           </div>
           <div className="info-right">
             <div className="bpm-table" onClick={hasAlt ? toggleAlt : undefined} title={hasAlt ? 'Toggle alt speeds' : undefined}>

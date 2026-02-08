@@ -1,0 +1,754 @@
+// Compute chart metrics and derived statistics from parsed chart data.
+
+const QUANTIZATION_TYPES = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
+const QUANTIZATION_LABELS = QUANTIZATION_TYPES.reduce((acc, n) => {
+  acc[n] = `${n}th Notes`;
+  return acc;
+}, {});
+
+function safeNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function safeDivide(numerator, denominator) {
+  const n = safeNumber(numerator);
+  const d = safeNumber(denominator);
+  return d > 0 ? n / d : 0;
+}
+
+function roundTo(value, decimals = 3) {
+  if (!Number.isFinite(value)) return 0;
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+}
+
+function sum(values) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  return values.reduce((acc, n) => acc + safeNumber(n), 0);
+}
+
+function mean(values) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  return sum(values) / values.length;
+}
+
+function median(values) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  const sorted = [...values].map(safeNumber).sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) return (sorted[mid - 1] + sorted[mid]) / 2;
+  return sorted[mid];
+}
+
+function mode(values, decimals = 3) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  const buckets = new Map();
+  for (const value of values) {
+    const rounded = roundTo(safeNumber(value), decimals);
+    buckets.set(rounded, (buckets.get(rounded) || 0) + 1);
+  }
+  let bestValue = 0;
+  let bestCount = -1;
+  for (const [value, count] of buckets.entries()) {
+    if (count > bestCount) {
+      bestCount = count;
+      bestValue = value;
+    }
+  }
+  return bestValue;
+}
+
+function standardDeviation(values) {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  const avg = mean(values);
+  const variance = mean(values.map((value) => {
+    const delta = safeNumber(value) - avg;
+    return delta * delta;
+  }));
+  return Math.sqrt(variance);
+}
+
+function buildSummaryStats(values, { modeDecimals = 3 } = {}) {
+  const normalized = Array.isArray(values)
+    ? values.map(safeNumber).filter((value) => Number.isFinite(value))
+    : [];
+  if (normalized.length === 0) {
+    return {
+      min: 0,
+      max: 0,
+      mean: 0,
+      median: 0,
+      mode: 0,
+      standardDeviation: 0,
+    };
+  }
+  return {
+    min: Math.min(...normalized),
+    max: Math.max(...normalized),
+    mean: mean(normalized),
+    median: median(normalized),
+    mode: mode(normalized, modeDecimals),
+    standardDeviation: standardDeviation(normalized),
+  };
+}
+
+function countTapsInRow(dir) {
+  let count = 0;
+  for (let i = 0; i < dir.length; i += 1) {
+    const c = dir[i];
+    if (c === '1' || c === '2' || c === '4') count += 1;
+  }
+  return count;
+}
+
+function isShockRow(dir) {
+  if (!dir || typeof dir !== 'string') return false;
+  const trimmed = dir.trim();
+  if (!trimmed) return false;
+  for (let i = 0; i < trimmed.length; i += 1) {
+    if (trimmed[i] !== 'M') return false;
+  }
+  return true;
+}
+
+function isAlmostInteger(value, epsilon = 1e-6) {
+  return Math.abs(value - Math.round(value)) <= epsilon;
+}
+
+function classifyQuantization(offsetInMeasures) {
+  const offset = safeNumber(offsetInMeasures);
+  for (const n of QUANTIZATION_TYPES) {
+    if (isAlmostInteger(offset * n)) {
+      return n;
+    }
+  }
+  return null;
+}
+
+function findMostFrequentQuantizations(counts) {
+  const entries = Object.entries(counts || {}).filter(([, count]) => count > 0);
+  if (entries.length === 0) return '';
+  entries.sort((a, b) => b[1] - a[1]);
+  return entries.slice(0, 2).map(([label]) => label).join(', ');
+}
+
+function computeLaneCounts(rows) {
+  let left = 0;
+  let down = 0;
+  let up = 0;
+  let right = 0;
+
+  for (const row of rows) {
+    const dir = row?.direction || '';
+    for (let idx = 0; idx < dir.length; idx += 1) {
+      const c = dir[idx];
+      if (c !== '1' && c !== '2' && c !== '4') continue;
+      const lane = idx % 4;
+      if (lane === 0) left += 1;
+      if (lane === 1) down += 1;
+      if (lane === 2) up += 1;
+      if (lane === 3) right += 1;
+    }
+  }
+
+  return { left, down, up, right };
+}
+
+function getTapLaneIndices(direction) {
+  const indices = [];
+  const dir = String(direction || '');
+  for (let i = 0; i < dir.length; i += 1) {
+    const c = dir[i];
+    if (c === '1' || c === '2' || c === '4') indices.push(i);
+  }
+  return indices;
+}
+
+function getSingleTapLane(direction) {
+  const lanes = getTapLaneIndices(direction);
+  return lanes.length === 1 ? lanes[0] : -1;
+}
+
+function sideGroup(lane, laneCount) {
+  const mid = laneCount / 2;
+  return lane < mid ? 0 : 1;
+}
+
+function laneType(lane) {
+  const idx = ((lane % 4) + 4) % 4;
+  if (idx === 0) return 'left';
+  if (idx === 1) return 'down';
+  if (idx === 2) return 'up';
+  return 'right';
+}
+
+function crossoverType(foot, lane, laneCount) {
+  const mid = laneCount / 2;
+  const quarter = Math.max(1, Math.ceil(laneCount / 4));
+
+  if (foot === 'L' && lane >= mid) {
+    const depth = lane - mid;
+    return depth >= quarter ? 'full' : 'half';
+  }
+  if (foot === 'R' && lane < mid) {
+    const depth = (mid - 1) - lane;
+    return depth >= quarter ? 'full' : 'half';
+  }
+  return null;
+}
+
+function laneFootPenalty(foot, lane, laneCount) {
+  const mid = laneCount / 2;
+  if ((foot === 'L' && lane < mid) || (foot === 'R' && lane >= mid)) return 0;
+
+  let depth = 0;
+  if (foot === 'L') {
+    depth = lane - mid + 1;
+  } else {
+    depth = mid - lane;
+  }
+
+  const normalizedDepth = safeDivide(depth, Math.max(1, laneCount / 2));
+  return 0.35 + (normalizedDepth * 0.4);
+}
+
+function transitionPenalty(prevFoot, nextFoot, prevLane, nextLane) {
+  if (prevFoot === nextFoot) {
+    if (prevLane === nextLane) return 0.05; // likely jacking with the same foot
+    return 0.75; // doublestep tendency
+  }
+  if (prevLane === nextLane) return 0.6; // footswitch tendency
+  return 0;
+}
+
+function solveFootAssignments(singleStepRows, laneCount) {
+  if (!Array.isArray(singleStepRows) || singleStepRows.length === 0) return [];
+  const feet = ['L', 'R'];
+  const n = singleStepRows.length;
+  const dp = Array.from({ length: n }, () => ({ L: Number.POSITIVE_INFINITY, R: Number.POSITIVE_INFINITY }));
+  const back = Array.from({ length: n }, () => ({ L: null, R: null }));
+
+  const firstLane = safeNumber(singleStepRows[0]?.lane);
+  const firstPreferred = firstLane < laneCount / 2 ? 'L' : 'R';
+  for (const foot of feet) {
+    dp[0][foot] = laneFootPenalty(foot, firstLane, laneCount) + (foot === firstPreferred ? 0 : 0.1);
+  }
+
+  for (let i = 1; i < n; i += 1) {
+    const prevLane = safeNumber(singleStepRows[i - 1]?.lane);
+    const lane = safeNumber(singleStepRows[i]?.lane);
+    for (const foot of feet) {
+      for (const prevFoot of feet) {
+        const cost = dp[i - 1][prevFoot]
+          + transitionPenalty(prevFoot, foot, prevLane, lane)
+          + laneFootPenalty(foot, lane, laneCount);
+        if (cost < dp[i][foot]) {
+          dp[i][foot] = cost;
+          back[i][foot] = prevFoot;
+        }
+      }
+    }
+  }
+
+  let current = dp[n - 1].L <= dp[n - 1].R ? 'L' : 'R';
+  const assignment = new Array(n);
+  for (let i = n - 1; i >= 0; i -= 1) {
+    assignment[i] = current;
+    current = back[i][current] || 'L';
+  }
+
+  return assignment;
+}
+
+function isBracketPair(a, b, laneCount) {
+  if (a === b) return false;
+  if (laneCount >= 8 && Math.floor(a / 4) !== Math.floor(b / 4)) return false;
+
+  const la = ((a % 4) + 4) % 4;
+  const lb = ((b % 4) + 4) % 4;
+  const low = Math.min(la, lb);
+  const high = Math.max(la, lb);
+  return (
+    (low === 0 && high === 1)
+    || (low === 1 && high === 2)
+    || (low === 2 && high === 3)
+  );
+}
+
+function countBrackets(rows, laneCount) {
+  let brackets = 0;
+  for (const row of rows) {
+    if (row?.shock) continue;
+    if (safeNumber(row?.taps) < 2) continue;
+
+    const lanes = getTapLaneIndices(row?.direction || '');
+    if (lanes.length < 2) continue;
+
+    let found = false;
+    for (let i = 0; i < lanes.length && !found; i += 1) {
+      for (let j = i + 1; j < lanes.length; j += 1) {
+        if (isBracketPair(lanes[i], lanes[j], laneCount)) {
+          found = true;
+          break;
+        }
+      }
+    }
+    if (found) brackets += 1;
+  }
+  return brackets;
+}
+
+function analyzeFootwork(singleStepRows, eventRows, laneCount) {
+  const assignments = solveFootAssignments(singleStepRows, laneCount);
+
+  let footswitches = 0;
+  let upFootswitches = 0;
+  let downFootswitches = 0;
+  let sideswitches = 0;
+  let jacks = 0;
+  let doublesteps = 0;
+  let halfCrossovers = 0;
+  let fullCrossovers = 0;
+
+  for (let i = 0; i < singleStepRows.length; i += 1) {
+    const lane = safeNumber(singleStepRows[i]?.lane);
+    const foot = assignments[i];
+    const cType = crossoverType(foot, lane, laneCount);
+    if (cType === 'half') halfCrossovers += 1;
+    if (cType === 'full') fullCrossovers += 1;
+
+    if (i === 0) continue;
+
+    const prevLane = safeNumber(singleStepRows[i - 1]?.lane);
+    const prevFoot = assignments[i - 1];
+
+    const sameLane = lane === prevLane;
+    const sameFoot = foot === prevFoot;
+
+    if (sameLane && sameFoot) {
+      jacks += 1;
+      continue;
+    }
+
+    if (sameLane && !sameFoot) {
+      footswitches += 1;
+      const noteType = laneType(lane);
+      if (noteType === 'up') upFootswitches += 1;
+      if (noteType === 'down') downFootswitches += 1;
+      continue;
+    }
+
+    if (!sameLane && sameFoot) {
+      doublesteps += 1;
+      if (sideGroup(lane, laneCount) !== sideGroup(prevLane, laneCount)) {
+        sideswitches += 1;
+      }
+    }
+  }
+
+  const brackets = countBrackets(eventRows, laneCount);
+  const crossovers = halfCrossovers + fullCrossovers;
+  const footswitchesPlusSideswitches = footswitches + sideswitches;
+  const footswitchesSideswitchesJacks = footswitches + sideswitches + jacks;
+  const crossoversPlusFootswitchesSideswitchesJacksDoublesteps = crossovers + footswitches + sideswitches + jacks + doublesteps;
+
+  return {
+    footworkMethod: 'heuristic-v1',
+    crossovers,
+    halfCrossovers,
+    fullCrossovers,
+    footswitches,
+    upFootswitches,
+    downFootswitches,
+    sideswitches,
+    footswitchesPlusSideswitches,
+    jacks,
+    brackets,
+    doublesteps,
+    footswitchesSideswitchesJacks,
+    crossoversPlusFootswitchesSideswitchesJacksDoublesteps,
+  };
+}
+
+function diffSeries(values) {
+  if (!Array.isArray(values) || values.length < 2) return [];
+  const deltas = [];
+  for (let i = 1; i < values.length; i += 1) {
+    deltas.push(safeNumber(values[i]) - safeNumber(values[i - 1]));
+  }
+  return deltas;
+}
+
+function maxRateFromTimes(times, windowSize) {
+  if (!Array.isArray(times) || times.length < windowSize || windowSize < 2) return 0;
+  let best = 0;
+  for (let i = 0; i + windowSize - 1 < times.length; i += 1) {
+    const start = safeNumber(times[i]);
+    const end = safeNumber(times[i + windowSize - 1]);
+    const duration = end - start;
+    if (duration <= 0) continue;
+    const rate = (windowSize - 1) / duration;
+    if (rate > best) best = rate;
+  }
+  return best;
+}
+
+function minGapBetweenTimes(times) {
+  const deltas = diffSeries(times).filter((d) => d > 0);
+  if (deltas.length === 0) return 0;
+  return Math.min(...deltas);
+}
+
+function computeLastBeat(chart) {
+  if (!chart) return 0;
+  const lastArrowOffset = chart.arrows?.length > 0
+    ? safeNumber(chart.arrows[chart.arrows.length - 1].offset) + 0.25
+    : 0;
+  const lastFreezeOffset = chart.freezes?.length > 0
+    ? safeNumber(chart.freezes[chart.freezes.length - 1].endOffset)
+    : 0;
+  return Math.max(lastArrowOffset, lastFreezeOffset) * 4;
+}
+
+function timeAtOffset(bpmRanges, stops, targetOffset) {
+  if (!Array.isArray(bpmRanges) || bpmRanges.length === 0) return 0;
+  const sorted = [...bpmRanges].sort((a, b) => safeNumber(a.startOffset) - safeNumber(b.startOffset));
+  const stopList = Array.isArray(stops) ? stops : [];
+  const target = safeNumber(targetOffset);
+
+  let time = 0;
+  let pos = safeNumber(sorted[0]?.startOffset);
+  for (let i = 0; i < sorted.length; i += 1) {
+    const seg = sorted[i] || {};
+    const segStart = safeNumber(seg.startOffset);
+    const segEndRaw = seg.endOffset == null ? target : safeNumber(seg.endOffset);
+    const start = Math.max(pos, segStart);
+    const end = Math.min(target, segEndRaw);
+
+    if (end > start && safeNumber(seg.bpm) > 0) {
+      const beats = (end - start) * 4;
+      time += (beats / safeNumber(seg.bpm)) * 60;
+      for (const stop of stopList) {
+        const offset = safeNumber(stop?.offset);
+        if (offset >= start && offset < end) time += safeNumber(stop?.duration);
+      }
+    }
+
+    pos = end;
+    if (pos >= target) break;
+  }
+
+  return time;
+}
+
+function songLengthSeconds(bpmRanges, stops, lastBeat) {
+  if (!Array.isArray(bpmRanges) || bpmRanges.length === 0) return 0;
+  const endOffset = safeNumber(lastBeat) / 4;
+  return timeAtOffset(bpmRanges, stops, endOffset);
+}
+
+function eventTimes(arrows, bpmRanges, stops) {
+  const times = [];
+  if (!Array.isArray(arrows)) return times;
+  for (const arrow of arrows) {
+    times.push(timeAtOffset(bpmRanges, stops, safeNumber(arrow?.offset)));
+  }
+  return times;
+}
+
+function approximateRadar(arrows, freezes, bpmRanges, stops, lastBeat) {
+  const totalTaps = (arrows || []).reduce((acc, arrow) => acc + countTapsInRow(arrow?.direction || ''), 0);
+  const jumpEvents = (arrows || []).reduce((acc, arrow) => acc + (countTapsInRow(arrow?.direction || '') >= 2 ? 1 : 0), 0);
+  const times = eventTimes(arrows || [], bpmRanges || [], stops || []);
+  const length = songLengthSeconds(bpmRanges || [], stops || [], lastBeat || 0);
+
+  let voltage = 0;
+  let j = 0;
+  for (let i = 0; i < times.length; i += 1) {
+    while (j < times.length && times[j] <= times[i] + 1) j += 1;
+    voltage = Math.max(voltage, j - i);
+  }
+
+  let freezeSeconds = 0;
+  if (Array.isArray(freezes)) {
+    for (const freeze of freezes) {
+      const start = Math.max(0, safeNumber(freeze?.startOffset));
+      const end = Math.max(start, safeNumber(freeze?.endOffset));
+      freezeSeconds += timeAtOffset(bpmRanges || [], stops || [], end) - timeAtOffset(bpmRanges || [], stops || [], start);
+    }
+  }
+
+  return {
+    stream: safeDivide(totalTaps, length),
+    voltage,
+    air: safeDivide(jumpEvents, times.length),
+    freeze: Math.min(1, safeDivide(freezeSeconds, length)),
+    chaos: null,
+  };
+}
+
+export function computeChartMetrics(chart) {
+  if (!chart) return null;
+
+  const arrows = Array.isArray(chart.arrows) ? chart.arrows : [];
+  const freezes = Array.isArray(chart.freezes) ? chart.freezes : [];
+  const bpms = Array.isArray(chart.bpm) ? chart.bpm : [];
+  const stops = Array.isArray(chart.stops) ? chart.stops : [];
+  const laneCount = Math.max(
+    4,
+    ...arrows.map((arrow) => String(arrow?.direction || '').length).filter((length) => length > 0),
+  );
+
+  const eventRows = [];
+  let steps = 0;
+  let notes = 0;
+  let jumps = 0;
+  let hands = 0;
+  let shocks = 0;
+
+  const quantizationCounts = {};
+  for (const n of QUANTIZATION_TYPES) {
+    quantizationCounts[QUANTIZATION_LABELS[n]] = 0;
+  }
+
+  for (const arrow of arrows) {
+    const direction = arrow?.direction || '';
+    const taps = countTapsInRow(direction);
+    const shock = isShockRow(direction);
+    const hasPlayableEvent = taps > 0 || shock;
+    if (!hasPlayableEvent) continue;
+
+    const time = timeAtOffset(bpms, stops, safeNumber(arrow?.offset));
+    eventRows.push({
+      offset: safeNumber(arrow?.offset),
+      time,
+      taps,
+      shock,
+      direction,
+    });
+
+    const quant = classifyQuantization(arrow?.offset);
+    if (quant) {
+      quantizationCounts[QUANTIZATION_LABELS[quant]] += 1;
+    }
+
+    if (shock) {
+      shocks += 1;
+      notes += 1;
+      continue;
+    }
+
+    steps += 1;
+    notes += taps;
+    if (taps === 2) jumps += 1;
+    if (taps >= 3) hands += 1;
+  }
+
+  const singleStepRows = eventRows
+    .filter((row) => !row.shock && row.taps === 1)
+    .map((row) => ({
+      lane: getSingleTapLane(row.direction),
+      time: row.time,
+      offset: row.offset,
+    }))
+    .filter((row) => row.lane >= 0)
+    .sort((a, b) => a.time - b.time || a.offset - b.offset);
+
+  const holds = freezes.length;
+  const holdDurations = freezes.map((freeze) => {
+    const start = Math.max(0, safeNumber(freeze?.startOffset));
+    const end = Math.max(start, safeNumber(freeze?.endOffset));
+    return timeAtOffset(bpms, stops, end) - timeAtOffset(bpms, stops, start);
+  }).filter((value) => value > 0);
+
+  const stopDurations = stops
+    .map((stop) => safeNumber(stop?.duration))
+    .filter((duration) => duration > 0);
+
+  const eventTimesList = eventRows.map((row) => row.time).sort((a, b) => a - b);
+  const eventDeltas = diffSeries(eventTimesList).filter((delta) => delta > 0);
+  const notesPerSecondSeries = eventDeltas.map((delta) => 1 / delta);
+
+  const firstNoteSeconds = eventTimesList.length > 0 ? eventTimesList[0] : 0;
+  const chartEndSeconds = eventTimesList.length > 0 ? eventTimesList[eventTimesList.length - 1] : 0;
+  const chartLengthSeconds = Math.max(0, chartEndSeconds - firstNoteSeconds);
+
+  const laneCounts = computeLaneCounts(eventRows.filter((row) => !row.shock));
+  const leftRightTotal = laneCounts.left + laneCounts.right;
+  const downUpTotal = laneCounts.down + laneCounts.up;
+  const horizontal = laneCounts.left + laneCounts.right;
+  const vertical = laneCounts.down + laneCounts.up;
+  const totalDirectional = horizontal + vertical;
+
+  const jumpTimes = eventRows.filter((row) => row.taps === 2).map((row) => row.time).sort((a, b) => a - b);
+
+  const bpmValues = bpms
+    .map((entry) => safeNumber(entry?.bpm))
+    .filter((bpm) => bpm > 0);
+  const bpmChanges = Math.max(0, bpms.length - 1);
+  const stopCount = stopDurations.length;
+  const totalStopDurationSeconds = sum(stopDurations);
+
+  const quantizationEntries = QUANTIZATION_TYPES.map((n) => ({
+    noteType: n,
+    label: QUANTIZATION_LABELS[n],
+    count: quantizationCounts[QUANTIZATION_LABELS[n]] || 0,
+  }));
+  const finestQuantization = quantizationEntries
+    .filter((entry) => entry.count > 0)
+    .sort((a, b) => b.noteType - a.noteType)[0]?.label || '';
+  const mostFrequentQuantizations = findMostFrequentQuantizations(quantizationCounts);
+
+  const npsStats = buildSummaryStats(notesPerSecondSeries, { modeDecimals: 3 });
+  const tbnStats = buildSummaryStats(eventDeltas, { modeDecimals: 3 });
+  const holdStats = buildSummaryStats(holdDurations, { modeDecimals: 3 });
+  const footwork = analyzeFootwork(singleStepRows, eventRows, laneCount);
+
+  const lastBeat = computeLastBeat(chart);
+  const radar = approximateRadar(arrows, freezes, bpms, stops, lastBeat);
+  const songLength = songLengthSeconds(bpms, stops, lastBeat);
+
+  const debugStats = {
+    notes,
+    steps,
+    jumps,
+    holds,
+    shocks,
+    hands,
+    bpmChanges,
+    stops: stopCount,
+    chartStart: firstNoteSeconds,
+    chartEnd: chartEndSeconds,
+    chartLength: chartLengthSeconds,
+    totalStopDuration: totalStopDurationSeconds,
+    stopPercentOfChart: safeDivide(totalStopDurationSeconds, chartLengthSeconds) * 100,
+    shortestStop: stopDurations.length > 0 ? Math.min(...stopDurations) : 0,
+    longestStop: stopDurations.length > 0 ? Math.max(...stopDurations) : 0,
+    totalHoldDuration: sum(holdDurations),
+    meanHoldDuration: holdStats.mean,
+    shortestHoldNote: holdDurations.length > 0 ? Math.min(...holdDurations) : 0,
+    longestHoldNote: holdDurations.length > 0 ? Math.max(...holdDurations) : 0,
+    maximumNotesPerSecond: npsStats.max,
+    minimumNotesPerSecond: npsStats.min,
+    meanNotesPerSecond: npsStats.mean,
+    medianNotesPerSecond: npsStats.median,
+    modeNotesPerSecond: npsStats.mode,
+    standardDeviationNotesPerSecond: npsStats.standardDeviation,
+    maxTimeBetweenNotes: tbnStats.max,
+    meanTimeBetweenNotes: tbnStats.mean,
+    medianTimeBetweenNotes: tbnStats.median,
+    modeTimeBetweenNotes: tbnStats.mode,
+    standardDeviationTimeBetweenNotes: tbnStats.standardDeviation,
+    fastest2NoteBurst: maxRateFromTimes(eventTimesList, 2),
+    fastest3NoteBurst: maxRateFromTimes(eventTimesList, 3),
+    fastest5NoteBurst: maxRateFromTimes(eventTimesList, 5),
+    fastest7NoteRun: maxRateFromTimes(eventTimesList, 7),
+    fastest15NoteRun: maxRateFromTimes(eventTimesList, 15),
+    closestJumps: minGapBetweenTimes(jumpTimes),
+    notesPerSecond: safeDivide(notes, chartLengthSeconds),
+    stepsPerSecond: safeDivide(steps, chartLengthSeconds),
+    jumpsPerSecond: safeDivide(jumps, chartLengthSeconds),
+    holdsPerSecond: safeDivide(holds, chartLengthSeconds),
+    shocksPerSecond: safeDivide(shocks, chartLengthSeconds),
+    handsPerSecond: safeDivide(hands, chartLengthSeconds),
+    crossoversPerSecond: safeDivide(footwork.crossovers, chartLengthSeconds),
+    halfCrossoversPerSecond: safeDivide(footwork.halfCrossovers, chartLengthSeconds),
+    fullCrossoversPerSecond: safeDivide(footwork.fullCrossovers, chartLengthSeconds),
+    footswitchesPerSecond: safeDivide(footwork.footswitches, chartLengthSeconds),
+    upFootswitchesPerSecond: safeDivide(footwork.upFootswitches, chartLengthSeconds),
+    downFootswitchesPerSecond: safeDivide(footwork.downFootswitches, chartLengthSeconds),
+    sideswitchesPerSecond: safeDivide(footwork.sideswitches, chartLengthSeconds),
+    footswitchesPlusSideswitchesPerSecond: safeDivide(footwork.footswitchesPlusSideswitches, chartLengthSeconds),
+    jacksPerSecond: safeDivide(footwork.jacks, chartLengthSeconds),
+    bracketsPerSecond: safeDivide(footwork.brackets, chartLengthSeconds),
+    doublestepsPerSecond: safeDivide(footwork.doublesteps, chartLengthSeconds),
+    footswitchesSideswitchesJacksPerSecond: safeDivide(footwork.footswitchesSideswitchesJacks, chartLengthSeconds),
+    crossoversPlusFootswitchesSideswitchesJacksDoublestepsPerSecond: safeDivide(footwork.crossoversPlusFootswitchesSideswitchesJacksDoublesteps, chartLengthSeconds),
+    jumpsPerStepsPercent: safeDivide(jumps, steps) * 100,
+    holdsPerStepsPercent: safeDivide(holds, steps) * 100,
+    shocksPerStepsPercent: safeDivide(shocks, steps) * 100,
+    handsPerStepsPercent: safeDivide(hands, steps) * 100,
+    crossoversPerStepsPercent: safeDivide(footwork.crossovers, steps) * 100,
+    halfCrossoversPerStepsPercent: safeDivide(footwork.halfCrossovers, steps) * 100,
+    fullCrossoversPerStepsPercent: safeDivide(footwork.fullCrossovers, steps) * 100,
+    footswitchesPerStepsPercent: safeDivide(footwork.footswitches, steps) * 100,
+    upFootswitchesPerStepsPercent: safeDivide(footwork.upFootswitches, steps) * 100,
+    downFootswitchesPerStepsPercent: safeDivide(footwork.downFootswitches, steps) * 100,
+    sideswitchesPerStepsPercent: safeDivide(footwork.sideswitches, steps) * 100,
+    footswitchesPlusSideswitchesPerStepsPercent: safeDivide(footwork.footswitchesPlusSideswitches, steps) * 100,
+    jacksPerStepsPercent: safeDivide(footwork.jacks, steps) * 100,
+    bracketsPerStepsPercent: safeDivide(footwork.brackets, steps) * 100,
+    bracketsPerJumpsPercent: safeDivide(footwork.brackets, jumps) * 100,
+    doublestepsPerStepsPercent: safeDivide(footwork.doublesteps, steps) * 100,
+    footswitchesSideswitchesJacksPerStepsPercent: safeDivide(footwork.footswitchesSideswitchesJacks, steps) * 100,
+    crossoversPlusFootswitchesSideswitchesJacksDoublestepsPerStepsPercent:
+      safeDivide(footwork.crossoversPlusFootswitchesSideswitchesJacksDoublesteps, steps) * 100,
+    crossovers: footwork.crossovers,
+    halfCrossovers: footwork.halfCrossovers,
+    fullCrossovers: footwork.fullCrossovers,
+    footswitches: footwork.footswitches,
+    upFootswitches: footwork.upFootswitches,
+    downFootswitches: footwork.downFootswitches,
+    sideswitches: footwork.sideswitches,
+    footswitchesPlusSideswitches: footwork.footswitchesPlusSideswitches,
+    jacks: footwork.jacks,
+    brackets: footwork.brackets,
+    doublesteps: footwork.doublesteps,
+    footswitchesSideswitchesJacks: footwork.footswitchesSideswitchesJacks,
+    crossoversPlusFootswitchesSideswitchesJacksDoublesteps:
+      footwork.crossoversPlusFootswitchesSideswitchesJacksDoublesteps,
+    footworkMethod: footwork.footworkMethod,
+    bpmMin: bpmValues.length > 0 ? Math.min(...bpmValues) : 0,
+    bpmMax: bpmValues.length > 0 ? Math.max(...bpmValues) : 0,
+    bpmRange: bpmValues.length > 0 ? (Math.max(...bpmValues) - Math.min(...bpmValues)) : 0,
+    bpmChangesPerSecond: safeDivide(bpmChanges, chartLengthSeconds),
+    stopsPerSecond: safeDivide(stopCount, chartLengthSeconds),
+    bpmChangesPlusStopsPerSecond: safeDivide(bpmChanges + stopCount, chartLengthSeconds),
+    leftNotes: laneCounts.left,
+    downNotes: laneCounts.down,
+    upNotes: laneCounts.up,
+    rightNotes: laneCounts.right,
+    lopsidednessByMax: safeDivide(Math.max(Math.abs(laneCounts.left - laneCounts.right), Math.abs(laneCounts.down - laneCounts.up)), totalDirectional),
+    lopsidednessByMean: safeDivide(Math.abs(laneCounts.left - laneCounts.right) + Math.abs(laneCounts.down - laneCounts.up), totalDirectional * 2),
+    leftRightBias: safeDivide(laneCounts.left, leftRightTotal),
+    downUpBias: safeDivide(laneCounts.down, downUpTotal),
+    horizontalVerticalBias: safeDivide(horizontal, horizontal + vertical),
+    mostFrequentQuantizations,
+    finestQuantization,
+    quantizationCounts,
+    chartSeconds: songLength,
+  };
+
+  return {
+    steps,
+    holds,
+    jumps,
+    shocks,
+    hands,
+    notes,
+    firstNoteSeconds,
+    chartEndSeconds,
+    chartLengthSeconds,
+    stops: stopCount,
+    bpmChanges,
+    notesPerSecond: debugStats.notesPerSecond,
+    stepsPerSecond: debugStats.stepsPerSecond,
+    jumpsPerSecond: debugStats.jumpsPerSecond,
+    holdsPerSecond: debugStats.holdsPerSecond,
+    shocksPerSecond: debugStats.shocksPerSecond,
+    handsPerSecond: debugStats.handsPerSecond,
+    leftNotes: laneCounts.left,
+    downNotes: laneCounts.down,
+    upNotes: laneCounts.up,
+    rightNotes: laneCounts.right,
+    quantizationCounts,
+    mostFrequentQuantizations,
+    finestQuantization,
+    radar,
+    lastBeat,
+    debugStats,
+  };
+}
+
+export { timeAtOffset, songLengthSeconds };
