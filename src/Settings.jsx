@@ -67,8 +67,6 @@ const Settings = () => {
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
         setWorldRemoveChallengeCharts,
-        showChartStatsDebug,
-        setShowChartStatsDebug,
     } = useContext(SettingsContext);
 
     const { scores, setScores, loadSongMeta } = useScores();
@@ -529,22 +527,6 @@ const Settings = () => {
                                 checked={worldRemoveChallengeCharts}
                                 onChange={(e) => setWorldRemoveChallengeCharts(e.target.checked)}
                                 ariaLabel="Toggle removing WORLD challenge charts"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="setting-card setting-card-toggle">
-                        <div className="setting-text">
-                            <h3>Chart Stats Debug Panel</h3>
-                            <p>
-                                Show raw chart-derived stats in BPM view for validation and tuning.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <Switch
-                                checked={showChartStatsDebug}
-                                onChange={(e) => setShowChartStatsDebug(e.target.checked)}
-                                ariaLabel="Toggle chart stats debug panel"
                             />
                         </div>
                     </div>

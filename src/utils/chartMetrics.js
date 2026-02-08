@@ -1,5 +1,5 @@
 // Compute chart metrics and derived statistics from parsed chart data.
-// Version: heuristic-v3
+// Version: heuristic-v5
 
 const QUANTIZATION_TYPES = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
 const QUANTIZATION_LABELS = QUANTIZATION_TYPES.reduce((acc, n) => {
@@ -303,57 +303,53 @@ function buildHoldRanges(freezes, bpmRanges, stops) {
  }).filter(h => h.lane >= 0);
 }
 
-/**
-* Get all holds active at a given time
-*/
-function getActiveHolds(holdRanges, time) {
- return holdRanges.filter(h => time > h.startTime && time < h.endTime);
-}
-
 // =============================================================================
 // Crossover Detection
 // =============================================================================
 
 /**
-* Determines if a foot placement is a crossover and what type.
-* For 4-panel DDR:
-*   - Half crossover: foot crosses to adjacent center panel (L→Up, R→Down)
-*   - Full crossover: foot crosses to far panel (L→Right, R→Left)
+* Determines if the current foot positions constitute a crossed state.
+* Crossed means left foot is on a lane to the right of right foot.
 */
-function crossoverType(foot, lane, laneCount) {
- if (laneCount === 4) {
-   if (foot === 'L') {
-     if (lane === 2) return 'half';  // Left foot on Up
-     if (lane === 3) return 'full';  // Left foot on Right
-   } else if (foot === 'R') {
-     if (lane === 1) return 'half';  // Right foot on Down
-     if (lane === 0) return 'full';  // Right foot on Left
+function getCrossedState(leftFootLane, rightFootLane, laneCount) {
+ if (leftFootLane === null || rightFootLane === null) {
+   return { crossed: false, type: null, depth: 0 };
+ }
+
+ if (leftFootLane > rightFootLane) {
+   const depth = leftFootLane - rightFootLane;
+
+   if (laneCount === 4) {
+     return {
+       crossed: true,
+       type: depth >= 2 ? 'full' : 'half',
+       depth,
+     };
    }
-   return null;
+
+   const normalizedDepth = depth / Math.max(1, laneCount / 2);
+   return {
+     crossed: true,
+     type: normalizedDepth >= 0.5 ? 'full' : 'half',
+     depth,
+   };
  }
 
- // For 8-panel (doubles) or other modes
- const mid = laneCount / 2;
- const quarterPoint = Math.floor(laneCount / 4);
-
- if (foot === 'L' && lane >= mid) {
-   const depth = lane - mid;
-   return depth >= quarterPoint ? 'full' : 'half';
- }
- if (foot === 'R' && lane < mid) {
-   const depth = (mid - 1) - lane;
-   return depth >= quarterPoint ? 'full' : 'half';
- }
- return null;
+ return { crossed: false, type: null, depth: 0 };
 }
 
 /**
-* Detect crossovers that occur while the other foot is holding a note
+* Detect crossovers that occur while the other foot is holding a note.
+* Counts only transitions entering crossed state while other foot holds.
 */
-function detectCrossoversWithHolds(singleStepRows, assignments, holdRanges, laneCount) {
+function detectCrossoversWithHoldsFixed(singleStepRows, assignments, holdRanges, laneCount) {
  let holdCrossovers = 0;
  let halfHoldCrossovers = 0;
  let fullHoldCrossovers = 0;
+
+ if (!Array.isArray(holdRanges) || holdRanges.length === 0) {
+   return { holdCrossovers, halfHoldCrossovers, fullHoldCrossovers };
+ }
 
  // Build hold ownership map based on which foot naturally hits each hold
  const holdOwnership = new Map();
@@ -361,32 +357,48 @@ function detectCrossoversWithHolds(singleStepRows, assignments, holdRanges, lane
    holdOwnership.set(idx, laneSide(hold.lane, laneCount));
  });
 
+ let leftFootLane = null;
+ let rightFootLane = null;
+ let wasCrossedDuringHold = false;
+
  for (let i = 0; i < singleStepRows.length; i++) {
    const row = singleStepRows[i];
    const foot = assignments[i];
    const time = row.time;
+   const lane = row.lane;
 
-   // Check if there's an active hold
-   const activeHolds = getActiveHolds(holdRanges, time);
-   if (activeHolds.length === 0) continue;
+   if (foot === 'L') {
+     leftFootLane = lane;
+   } else if (foot === 'R') {
+     rightFootLane = lane;
+   }
 
-   // Check if the OTHER foot is the one holding
+   // Check if the other foot is currently holding
+   let otherFootHolding = false;
    const otherFoot = foot === 'L' ? 'R' : 'L';
-   
+
    for (let j = 0; j < holdRanges.length; j++) {
      const hold = holdRanges[j];
      if (time > hold.startTime && time < hold.endTime) {
        if (holdOwnership.get(j) === otherFoot) {
-         // The other foot is holding - check if current step is a crossover
-         const cType = crossoverType(foot, row.lane, laneCount);
-         if (cType) {
-           holdCrossovers++;
-           if (cType === 'half') halfHoldCrossovers++;
-           if (cType === 'full') fullHoldCrossovers++;
-         }
+         otherFootHolding = true;
+         break;
        }
      }
    }
+
+   if (!otherFootHolding) {
+     wasCrossedDuringHold = false;
+     continue;
+   }
+
+   const crossState = getCrossedState(leftFootLane, rightFootLane, laneCount);
+   if (crossState.crossed && !wasCrossedDuringHold) {
+     holdCrossovers++;
+     if (crossState.type === 'full') fullHoldCrossovers++;
+     else if (crossState.type === 'half') halfHoldCrossovers++;
+   }
+   wasCrossedDuringHold = crossState.crossed;
  }
 
  return { holdCrossovers, halfHoldCrossovers, fullHoldCrossovers };
@@ -1171,77 +1183,318 @@ function detectMonoRuns(singleStepRows, assignments, laneCount, minLength = 6) {
 // =============================================================================
 
 /**
-* Detects continuous streams vs bursts
+* Split raw notes text into measures.
 */
-function detectStreams(eventRows, bpm, minStreamLength = 16) {
- const streams = [];
- let bursts = 0;
+function splitNotesIntoMeasures(notesText, laneCount) {
+ if (typeof notesText !== 'string' || notesText.trim().length === 0) return [];
 
- if (!eventRows.length) return { streams, streamNotes: 0, bursts };
+ const lines = notesText.replace(/\r\n?/g, '\n').split('\n');
+ const measures = [];
+ let currentMeasure = [];
 
- // Calculate expected gap for 16th notes at the given BPM
- const avgBpm = Array.isArray(bpm) && bpm.length > 0
-   ? mean(bpm.map(b => safeNumber(b?.bpm)).filter(b => b > 0))
-   : 150;
+ for (const rawLine of lines) {
+   const line = rawLine.replace(/\/\/.*$/, '').trim();
+   if (!line) continue;
+   if (line.startsWith(';') || line.startsWith(',;')) break;
+   if (line.startsWith(',')) {
+     measures.push(currentMeasure);
+     currentMeasure = [];
+     continue;
+   }
+   const normalized = line.replace(/\s+/g, '');
+   if (!normalized || normalized.startsWith('#') || normalized.includes(':')) continue;
+   currentMeasure.push(normalized.slice(0, laneCount));
+ }
 
- const sixteenthGap = 60 / avgBpm / 4; // Time between 16th notes
- const tolerance = sixteenthGap * 0.5; // Allow 50% variance
+ measures.push(currentMeasure);
 
- const times = eventRows
-   .filter(r => !r.shock && r.taps >= 1)
-   .map(r => r.time);
+ while (measures.length > 0 && measures[measures.length - 1].length === 0) {
+   measures.pop();
+ }
 
- if (times.length < 2) return { streams, streamNotes: 0, bursts };
+ return measures;
+}
 
- let streamStart = 0;
- let streamLength = 1;
+function isZeroRow(row) {
+ const str = String(row || '');
+ if (!str) return true;
+ for (let i = 0; i < str.length; i += 1) {
+   if (str[i] !== '0') return false;
+ }
+ return true;
+}
 
- for (let i = 1; i < times.length; i++) {
-   const gap = times[i] - times[i - 1];
+/**
+* Port of SL-ChartParser MinimizeMeasure.
+*/
+function minimizeMeasureRows(rows) {
+ let measure = Array.isArray(rows) ? [...rows] : [];
+ let minimal = false;
 
-   // Check if this note continues the stream
-   if (gap <= sixteenthGap + tolerance && gap >= sixteenthGap * 0.4) {
-     streamLength++;
-   } else {
-     // Stream ended
-     if (streamLength >= minStreamLength) {
-       streams.push({
-         startIdx: streamStart,
-         length: streamLength,
-         startTime: times[streamStart],
-         endTime: times[streamStart + streamLength - 1]
-       });
-     } else if (streamLength >= 4) {
-       bursts++;
+ while (!minimal && measure.length > 0 && measure.length % 2 === 0) {
+   let allZeroes = true;
+   for (let i = 1; i < measure.length; i += 2) {
+     if (!isZeroRow(measure[i])) {
+       allZeroes = false;
+       break;
      }
+   }
 
-     streamStart = i;
-     streamLength = 1;
+   if (allZeroes) {
+     const next = [];
+     for (let i = 0; i < measure.length; i += 2) {
+       next.push(measure[i]);
+     }
+     measure = next;
+   } else {
+     minimal = true;
    }
  }
 
- // Check final stream
+ return measure;
+}
+
+/**
+* Port of SL-ChartParser GetMeasureInfo (stream-focused fields).
+*/
+function buildMeasureInfoFromChartNotes(chartNotes, laneCount, bpms, stops) {
+ const measures = splitNotesIntoMeasures(chartNotes, laneCount);
+ const notesPerMeasure = [];
+ const equallySpacedPerMeasure = [];
+ const npsPerMeasure = [];
+ let peakNPS = 0;
+
+ for (let i = 0; i < measures.length; i += 1) {
+   const minimized = minimizeMeasureRows(measures[i]);
+   let notesInMeasure = 0;
+   for (const row of minimized) {
+     if (/[124]/.test(String(row || ''))) notesInMeasure += 1;
+   }
+   const rowsInMeasure = minimized.length;
+   notesPerMeasure.push(notesInMeasure);
+   equallySpacedPerMeasure.push(notesInMeasure === rowsInMeasure);
+
+   const duration = timeAtOffset(bpms, stops, i + 1) - timeAtOffset(bpms, stops, i);
+   const nps = duration <= 0.12 ? 0 : safeDivide(notesInMeasure, duration);
+   npsPerMeasure.push(nps);
+   if (nps > peakNPS) peakNPS = nps;
+ }
+
+ return {
+   notesPerMeasure,
+   equallySpacedPerMeasure,
+   npsPerMeasure,
+   peakNPS,
+ };
+}
+
+/**
+* Port of SL-ChartParserHelpers GetStreamSequences.
+*/
+function getStreamSequences(notesPerMeasure, notesThreshold = 16) {
+ const streamMeasures = [];
+ for (let i = 0; i < notesPerMeasure.length; i += 1) {
+   if (safeNumber(notesPerMeasure[i]) >= notesThreshold) {
+     streamMeasures.push(i + 1); // Lua-style 1-indexed measure ids
+   }
+ }
+
+ const streamSequences = [];
+ const streamSequenceThreshold = 1;
+ const breakSequenceThreshold = 2;
+ let counter = 1;
+ let streamEnd = null;
+
+ if (streamMeasures.length > 0) {
+   const breakStart = 0;
+   const breakEnd = streamMeasures[0] - 1;
+   if (breakEnd - breakStart >= breakSequenceThreshold) {
+     streamSequences.push({ streamStart: breakStart, streamEnd: breakEnd, isBreak: true });
+   }
+ }
+
+ for (let k = 0; k < streamMeasures.length; k += 1) {
+   const curVal = streamMeasures[k];
+   const nextVal = streamMeasures[k + 1] ?? -1;
+
+   if (curVal + 1 === nextVal) {
+     counter += 1;
+     streamEnd = curVal + 1;
+     continue;
+   }
+
+   if (counter >= streamSequenceThreshold) {
+     if (streamEnd === null) streamEnd = curVal;
+     const streamStart = streamEnd - counter;
+     streamSequences.push({ streamStart, streamEnd, isBreak: false });
+   }
+
+   const breakStart = curVal;
+   const breakEnd = nextVal !== -1 ? nextVal - 1 : notesPerMeasure.length;
+   if (breakEnd - breakStart >= breakSequenceThreshold) {
+     streamSequences.push({ streamStart: breakStart, streamEnd: breakEnd, isBreak: true });
+   }
+
+   counter = 1;
+   streamEnd = null;
+ }
+
+ return streamSequences;
+}
+
+/**
+* Detects streams and bursts using Lua-style measure processing when notes text exists.
+*/
+function detectStreams(eventRows, bpm, measureInfo = null, minStreamLength = 16) {
+ if (measureInfo && Array.isArray(measureInfo.notesPerMeasure) && measureInfo.notesPerMeasure.length > 0) {
+   const notesPerMeasure = measureInfo.notesPerMeasure;
+   const sequences = getStreamSequences(notesPerMeasure, minStreamLength);
+   const streams = [];
+   let streamNotes = 0;
+   let streamMeasures = 0;
+   let breakMeasures = 0;
+   let breakSegments = 0;
+
+   for (const sequence of sequences) {
+     const length = Math.max(0, sequence.streamEnd - sequence.streamStart);
+     if (length === 0) continue;
+
+     if (sequence.isBreak) {
+       breakSegments += 1;
+       breakMeasures += length;
+       continue;
+     }
+
+     const startMeasure = Math.max(0, sequence.streamStart);
+     const endMeasure = Math.min(notesPerMeasure.length, sequence.streamEnd);
+     let notesInSegment = 0;
+     for (let i = startMeasure; i < endMeasure; i += 1) {
+       notesInSegment += safeNumber(notesPerMeasure[i]);
+     }
+     streamNotes += notesInSegment;
+     streamMeasures += (endMeasure - startMeasure);
+
+     streams.push({
+       startMeasure,
+       endMeasure,
+       length: endMeasure - startMeasure,
+       notes: notesInSegment,
+     });
+   }
+
+   // Short dense sections below stream threshold.
+   let bursts = 0;
+   let inBurst = false;
+   for (let i = 0; i < notesPerMeasure.length; i += 1) {
+     const n = safeNumber(notesPerMeasure[i]);
+     const burstMeasure = n >= 8 && n < minStreamLength;
+     if (burstMeasure && !inBurst) {
+       bursts += 1;
+       inBurst = true;
+     } else if (!burstMeasure) {
+       inBurst = false;
+     }
+   }
+
+   return {
+     streams,
+     streamNotes,
+     bursts,
+     streamMeasures,
+     breakMeasures,
+     streamSegments: streams.length,
+     breakSegments,
+     streamDetectionMethod: 'lua-measure-v1',
+   };
+ }
+
+ const streams = [];
+ let bursts = 0;
+ if (!eventRows.length) {
+   return {
+     streams,
+     streamNotes: 0,
+     bursts,
+     streamMeasures: 0,
+     breakMeasures: 0,
+     streamSegments: 0,
+     breakSegments: 0,
+     streamDetectionMethod: 'time-gap-fallback',
+   };
+ }
+
+ const avgBpm = Array.isArray(bpm) && bpm.length > 0
+   ? mean(bpm.map((b) => safeNumber(b?.bpm)).filter((b) => b > 0))
+   : 150;
+ const sixteenthGap = 60 / avgBpm / 4;
+ const tolerance = sixteenthGap * 0.5;
+ const times = eventRows.filter((r) => !r.shock && r.taps >= 1).map((r) => r.time);
+ if (times.length < 2) {
+   return {
+     streams,
+     streamNotes: 0,
+     bursts,
+     streamMeasures: 0,
+     breakMeasures: 0,
+     streamSegments: 0,
+     breakSegments: 0,
+     streamDetectionMethod: 'time-gap-fallback',
+   };
+ }
+
+ let streamStart = 0;
+ let streamLength = 1;
+ for (let i = 1; i < times.length; i += 1) {
+   const gap = times[i] - times[i - 1];
+   if (gap <= sixteenthGap + tolerance && gap >= sixteenthGap * 0.4) {
+     streamLength += 1;
+     continue;
+   }
+
+   if (streamLength >= minStreamLength) {
+     streams.push({
+       startIdx: streamStart,
+       length: streamLength,
+       startTime: times[streamStart],
+       endTime: times[streamStart + streamLength - 1],
+     });
+   } else if (streamLength >= 4) {
+     bursts += 1;
+   }
+   streamStart = i;
+   streamLength = 1;
+ }
+
  if (streamLength >= minStreamLength) {
    streams.push({
      startIdx: streamStart,
      length: streamLength,
      startTime: times[streamStart],
-     endTime: times[streamStart + streamLength - 1]
+     endTime: times[streamStart + streamLength - 1],
    });
  } else if (streamLength >= 4) {
-   bursts++;
+   bursts += 1;
  }
 
- const streamNotes = streams.reduce((acc, s) => acc + s.length, 0);
+ const streamNotes = streams.reduce((acc, s) => acc + safeNumber(s.length), 0);
 
- return { streams, streamNotes, bursts };
+ return {
+   streams,
+   streamNotes,
+   bursts,
+   streamMeasures: 0,
+   breakMeasures: 0,
+   streamSegments: streams.length,
+   breakSegments: 0,
+   streamDetectionMethod: 'time-gap-fallback',
+ };
 }
 
 // =============================================================================
 // Main Footwork Analysis
 // =============================================================================
 
-function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], bpms = []) {
+function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], bpms = [], measureInfo = null) {
  const assignments = solveFootAssignments(singleStepRows, laneCount, holdRanges);
 
  let footswitches = 0;
@@ -1252,15 +1505,27 @@ function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], 
  let halfCrossovers = 0;
  let fullCrossovers = 0;
 
+ let leftFootLane = null;
+ let rightFootLane = null;
+ let wasCrossed = false;
+
  // Analyze each single step
  for (let i = 0; i < singleStepRows.length; i++) {
    const lane = safeNumber(singleStepRows[i]?.lane);
    const foot = assignments[i];
 
-   // Check for crossovers
-   const cType = crossoverType(foot, lane, laneCount);
-   if (cType === 'half') halfCrossovers++;
-   if (cType === 'full') fullCrossovers++;
+   if (foot === 'L') {
+     leftFootLane = lane;
+   } else if (foot === 'R') {
+     rightFootLane = lane;
+   }
+
+   const crossState = getCrossedState(leftFootLane, rightFootLane, laneCount);
+   if (crossState.crossed && !wasCrossed) {
+     if (crossState.type === 'full') fullCrossovers++;
+     else if (crossState.type === 'half') halfCrossovers++;
+   }
+   wasCrossed = crossState.crossed;
 
    if (i === 0) continue;
 
@@ -1311,10 +1576,19 @@ function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], 
 
  // Detect crossovers during holds
  const { holdCrossovers, halfHoldCrossovers, fullHoldCrossovers } =
-   detectCrossoversWithHolds(singleStepRows, assignments, holdRanges, laneCount);
+   detectCrossoversWithHoldsFixed(singleStepRows, assignments, holdRanges, laneCount);
 
  // Detect streams
- const { streams, streamNotes, bursts } = detectStreams(eventRows, bpms);
+ const {
+   streams,
+   streamNotes,
+   bursts,
+   streamMeasures,
+   breakMeasures,
+   streamSegments,
+   breakSegments,
+   streamDetectionMethod,
+ } = detectStreams(eventRows, bpms, measureInfo);
 
  // Aggregate statistics
  const crossovers = halfCrossovers + fullCrossovers;
@@ -1323,7 +1597,7 @@ function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], 
  const technicalMoves = crossovers + footswitches + sideswitches + jacks + doublesteps;
 
  return {
-   footworkMethod: 'heuristic-v3',
+   footworkMethod: 'heuristic-v5',
 
    // Crossovers
    crossovers,
@@ -1385,11 +1659,123 @@ function analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges = [], 
    streamCount: streams.length,
    streamNotes,
    bursts,
+   streamMeasures,
+   breakMeasures,
+   streamSegments,
+   breakSegments,
+   streamDetectionMethod,
 
    // Aggregates
    technicalMoves,
    footAssignments: assignments,
  };
+}
+
+function normalizeStepmaniaTech(raw) {
+ if (!raw || typeof raw !== 'object') return null;
+ const aliases = {
+   crossovers: ['crossovers', 'TechCountsCategory_Crossovers'],
+   footswitches: ['footswitches', 'TechCountsCategory_Footswitches'],
+   sideswitches: ['sideswitches', 'TechCountsCategory_Sideswitches'],
+   jacks: ['jacks', 'TechCountsCategory_Jacks'],
+   brackets: ['brackets', 'TechCountsCategory_Brackets'],
+   doublesteps: ['doublesteps', 'TechCountsCategory_Doublesteps'],
+   halfCrossovers: ['halfCrossovers', 'half_crossovers'],
+   fullCrossovers: ['fullCrossovers', 'full_crossovers'],
+   holdCrossovers: ['holdCrossovers', 'hold_crossovers'],
+   upFootswitches: ['upFootswitches', 'up_footswitches'],
+   downFootswitches: ['downFootswitches', 'down_footswitches'],
+   forcedBrackets: ['forcedBrackets', 'forced_brackets'],
+   anchors: ['anchors'],
+   spins: ['spins'],
+   spins180: ['spins180', 'spins_180'],
+   spins360: ['spins360', 'spins_360'],
+   staircases: ['staircases'],
+   rolls: ['rolls'],
+   candles: ['candles'],
+   drills: ['drills'],
+   drillNotes: ['drillNotes', 'drill_notes'],
+   gallops: ['gallops'],
+   monoRuns: ['monoRuns', 'mono_runs'],
+   monoLeftRuns: ['monoLeftRuns', 'mono_left_runs'],
+   monoRightRuns: ['monoRightRuns', 'mono_right_runs'],
+   streamCount: ['streamCount', 'streams', 'stream_count'],
+   streamNotes: ['streamNotes', 'stream_notes'],
+   bursts: ['bursts'],
+   technicalMoves: ['technicalMoves', 'technical_moves'],
+ };
+ const out = {};
+ for (const [target, keys] of Object.entries(aliases)) {
+   for (const key of keys) {
+     if (!(key in raw)) continue;
+     const n = Number(raw[key]);
+     if (Number.isFinite(n) && n >= 0) {
+       out[target] = Math.round(n);
+       break;
+     }
+   }
+ }
+ return Object.keys(out).length > 0 ? out : null;
+}
+
+function applyStepmaniaTechOverrides(footwork, rawTech) {
+ const tech = normalizeStepmaniaTech(rawTech);
+ if (!tech) return footwork;
+
+ const next = { ...footwork };
+ const has = (key) => Object.prototype.hasOwnProperty.call(tech, key);
+
+ if (has('crossovers')) next.crossovers = tech.crossovers;
+ if (has('halfCrossovers')) next.halfCrossovers = tech.halfCrossovers;
+ if (has('fullCrossovers')) next.fullCrossovers = tech.fullCrossovers;
+ if (has('holdCrossovers')) next.holdCrossovers = tech.holdCrossovers;
+ if (has('footswitches')) next.footswitches = tech.footswitches;
+ if (has('upFootswitches')) next.upFootswitches = tech.upFootswitches;
+ if (has('downFootswitches')) next.downFootswitches = tech.downFootswitches;
+ if (has('sideswitches')) next.sideswitches = tech.sideswitches;
+ if (has('jacks')) next.jacks = tech.jacks;
+ if (has('brackets')) next.brackets = tech.brackets;
+ if (has('forcedBrackets')) next.forcedBrackets = tech.forcedBrackets;
+ if (has('doublesteps')) next.doublesteps = tech.doublesteps;
+ if (has('anchors')) next.anchors = tech.anchors;
+ if (has('spins')) next.spins = tech.spins;
+ if (has('spins180')) next.spins180 = tech.spins180;
+ if (has('spins360')) next.spins360 = tech.spins360;
+ if (has('staircases')) next.staircases = tech.staircases;
+ if (has('rolls')) next.rolls = tech.rolls;
+ if (has('candles')) next.candles = tech.candles;
+ if (has('drills')) next.drills = tech.drills;
+ if (has('drillNotes')) next.drillNotes = tech.drillNotes;
+ if (has('gallops')) next.gallops = tech.gallops;
+ if (has('monoRuns')) next.monoRuns = tech.monoRuns;
+ if (has('monoLeftRuns')) next.monoLeftRuns = tech.monoLeftRuns;
+ if (has('monoRightRuns')) next.monoRightRuns = tech.monoRightRuns;
+ if (has('streamCount')) next.streamCount = tech.streamCount;
+ if (has('streamNotes')) next.streamNotes = tech.streamNotes;
+ if (has('bursts')) next.bursts = tech.bursts;
+
+ if (!has('crossovers')) {
+   next.crossovers = safeNumber(next.halfCrossovers) + safeNumber(next.fullCrossovers);
+ }
+ next.totalCrossovers = safeNumber(next.crossovers) + safeNumber(next.holdCrossovers);
+ if (!has('spins')) {
+   next.spins = safeNumber(next.spins180) + safeNumber(next.spins360);
+ }
+ if (has('technicalMoves')) {
+   next.technicalMoves = tech.technicalMoves;
+ } else {
+   next.technicalMoves =
+     safeNumber(next.crossovers)
+     + safeNumber(next.footswitches)
+     + safeNumber(next.sideswitches)
+     + safeNumber(next.jacks)
+     + safeNumber(next.doublesteps);
+ }
+ next.stepmaniaTechApplied = true;
+ next.stepmaniaTechCategories = Object.keys(tech).sort();
+ next.footworkMethod = `${next.footworkMethod}+stepmania-tech`;
+
+ return next;
 }
 
 // =============================================================================
@@ -1481,6 +1867,7 @@ export function computeChartMetrics(chart) {
  const freezes = Array.isArray(chart.freezes) ? chart.freezes : [];
  const bpms = Array.isArray(chart.bpm) ? chart.bpm : [];
  const stops = Array.isArray(chart.stops) ? chart.stops : [];
+ const chartNotes = typeof chart.notes === 'string' ? chart.notes : '';
 
  const laneCount = Math.max(
    4,
@@ -1609,9 +1996,14 @@ export function computeChartMetrics(chart) {
  const npsStats = buildSummaryStats(notesPerSecondSeries, { modeDecimals: 3 });
  const tbnStats = buildSummaryStats(eventDeltas, { modeDecimals: 3 });
  const holdStats = buildSummaryStats(holdDurations, { modeDecimals: 3 });
+ const measureInfo = buildMeasureInfoFromChartNotes(chartNotes, laneCount, bpms, stops);
 
  // Footwork analysis
- const footwork = analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges, bpms);
+ const footworkHeuristic = analyzeFootwork(singleStepRows, eventRows, laneCount, holdRanges, bpms, measureInfo);
+ const footwork = applyStepmaniaTechOverrides(
+   footworkHeuristic,
+   chart?.stepmaniaTech || chart?.stepmaniaTechCounts || chart?.techCounts || null,
+ );
 
  // Radar and song length
  const lastBeat = computeLastBeat(chart);
@@ -1656,6 +2048,11 @@ export function computeChartMetrics(chart) {
    medianNotesPerSecond: npsStats.median,
    modeNotesPerSecond: npsStats.mode,
    standardDeviationNotesPerSecond: npsStats.standardDeviation,
+   peakMeasureNps: measureInfo.peakNPS,
+   equallySpacedMeasuresPercent: safeDivide(
+     measureInfo.equallySpacedPerMeasure.filter(Boolean).length,
+     measureInfo.equallySpacedPerMeasure.length,
+   ) * 100,
 
    // Time between notes
    maxTimeBetweenNotes: tbnStats.max,
@@ -1763,7 +2160,14 @@ export function computeChartMetrics(chart) {
    streamCount: footwork.streamCount,
    streamNotes: footwork.streamNotes,
    bursts: footwork.bursts,
+   streamMeasures: footwork.streamMeasures,
+   breakMeasures: footwork.breakMeasures,
+   streamSegments: footwork.streamSegments,
+   breakSegments: footwork.breakSegments,
+   streamDetectionMethod: footwork.streamDetectionMethod,
    technicalMoves: footwork.technicalMoves,
+   stepmaniaTechApplied: Boolean(footwork.stepmaniaTechApplied),
+   stepmaniaTechCategories: footwork.stepmaniaTechCategories || [],
    footworkMethod: footwork.footworkMethod,
 
    // BPM stats
@@ -1810,6 +2214,9 @@ export function computeChartMetrics(chart) {
    gallopDetails: footwork.gallopDetails,
    monoRunDetails: footwork.monoRunDetails,
    streams: footwork.streams,
+   notesPerMeasure: measureInfo.notesPerMeasure,
+   equallySpacedPerMeasure: measureInfo.equallySpacedPerMeasure,
+   measureNpsPerMeasure: measureInfo.npsPerMeasure,
  };
 
  // =============================================================================

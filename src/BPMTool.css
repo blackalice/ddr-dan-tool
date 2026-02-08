@@ -1083,30 +1083,3 @@
     color: var(--text-color);
     white-space: nowrap;
 }
-
-.stats-debug-panel {
-    margin-top: 0.25rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xs);
-    background-color: var(--bg-color);
-    overflow: hidden;
-}
-
-.stats-debug-panel summary {
-    cursor: pointer;
-    user-select: none;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.stats-debug-panel pre {
-    margin: 0;
-    padding: 0.75rem;
-    max-height: 260px;
-    overflow: auto;
-    font-size: 0.72rem;
-    line-height: 1.3;
-    border-top: 1px solid var(--border-color);
-}
-

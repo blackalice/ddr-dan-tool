@@ -343,11 +343,28 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!simfileData) return null;
         const meta = songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
         if (!meta) return simfileData;
+        const diffMetaByModeDifficulty = new Map(
+            (meta.difficulties || []).map(d => [`${d.mode}|${d.difficulty}`, d]),
+        );
         const at = simfileData.availableTypes.map(c => {
-            const diffMeta = meta.difficulties.find(d => d.mode === c.mode && d.difficulty === c.difficulty);
-            return { ...c, rankedRating: diffMeta?.rankedRating };
+            const diffMeta = diffMetaByModeDifficulty.get(`${c.mode}|${c.difficulty}`);
+            return {
+                ...c,
+                rankedRating: diffMeta?.rankedRating,
+                stepmaniaTech: diffMeta?.stepmaniaTech || null,
+            };
         });
-        return { ...simfileData, availableTypes: at };
+        const bySlug = new Map(at.map(c => [c.slug, c]));
+        const charts = {};
+        for (const [slug, chart] of Object.entries(simfileData.charts || {})) {
+            const chartMeta = bySlug.get(slug);
+            charts[slug] = {
+                ...chart,
+                chartId: chartMeta?.chartId ?? chart?.chartId ?? null,
+                stepmaniaTech: chartMeta?.stepmaniaTech ?? chart?.stepmaniaTech ?? null,
+            };
+        }
+        return { ...simfileData, availableTypes: at, charts };
     }, [simfileData, songMeta]);
     const ratedChartBySlug = useMemo(() => {
         if (!simfileWithRatings?.availableTypes) return new Map();
@@ -575,8 +592,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [loadSongMeta]);
 
     const chartMetrics = useMemo(() => {
-        if (!simfileData || !currentChart) return null;
-        const chart = simfileData.charts?.[currentChart.slug];
+        if ((!simfileWithRatings && !simfileData) || !currentChart) return null;
+        const source = simfileWithRatings || simfileData;
+        const chart = source?.charts?.[currentChart.slug] || simfileData?.charts?.[currentChart.slug];
         if (!chart) return null;
         try {
             return computeChartMetrics(chart);
@@ -584,7 +602,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             console.warn('Failed to compute chart metrics:', e);
             return null;
         }
-    }, [simfileData, currentChart]);
+    }, [simfileWithRatings, simfileData, currentChart]);
 
     useEffect(() => {
         const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);

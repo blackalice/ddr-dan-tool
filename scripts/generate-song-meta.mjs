@@ -98,6 +98,7 @@ const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
 const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
 const OUTPUT_PATH = path.join(GENERATED_DIR, 'song-meta.json');
 const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
+const STEPMANIA_TECH_COUNTS_PATH = path.join(GENERATED_DIR, 'stepmania-tech-counts.json');
 const SONG_ID_MAP_PATH = path.join(DATA_DIR, 'song-ids.json');
 const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'song-meta.json');
 const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
@@ -205,11 +206,68 @@ function pickRatingForLevel(ratings, level) {
 
 const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
 
+function normalizeTechCounts(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const out = {};
+  const keys = [
+    'steps',
+    'notes',
+    'jumps',
+    'hands',
+    'quads',
+    'holds',
+    'shocks',
+    'crossovers',
+    'footswitches',
+    'sideswitches',
+    'jacks',
+    'brackets',
+    'doublesteps',
+    'halfCrossovers',
+    'fullCrossovers',
+    'holdCrossovers',
+    'upFootswitches',
+    'downFootswitches',
+    'forcedBrackets',
+    'anchors',
+    'spins',
+    'spins180',
+    'spins360',
+    'staircases',
+    'rolls',
+    'candles',
+    'drills',
+    'drillNotes',
+    'gallops',
+    'monoRuns',
+    'monoLeftRuns',
+    'monoRightRuns',
+    'streams',
+    'streamCount',
+    'streamNotes',
+    'bursts',
+    'technicalMoves',
+  ];
+  for (const key of keys) {
+    const n = Number(raw[key]);
+    if (Number.isFinite(n) && n >= 0) out[key] = Math.round(n);
+  }
+  return Object.keys(out).length > 0 ? out : null;
+}
+
+function buildPathModeDifficultyKey(songPath, mode, difficulty) {
+  const p = String(songPath || '').replace(/\\/g, '/').trim();
+  const m = String(mode || '').toLowerCase().trim();
+  const d = String(difficulty || '').toLowerCase().trim();
+  if (!p || !m || !d) return '';
+  return `${p}|${m}|${d}`;
+}
+
 async function main() {
   try {
     await fs.mkdir(GENERATED_DIR, { recursive: true });
     const inputStats = mergeStats(
-      await collectStats([SM_FILES_PATH, COMBINED_RATINGS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
+      await collectStats([SM_FILES_PATH, COMBINED_RATINGS_PATH, STEPMANIA_TECH_COUNTS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
     );
     const { skip, reason } = await shouldSkipBuild({
       cachePath: CACHE_PATH,
@@ -223,6 +281,14 @@ async function main() {
     }
     const smList = await readJson(SM_FILES_PATH);
     const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
+    const stepmaniaTechData = await readJson(STEPMANIA_TECH_COUNTS_PATH).catch(() => null);
+    const stepmaniaByChartId = stepmaniaTechData?.countsByChartId && typeof stepmaniaTechData.countsByChartId === 'object'
+      ? stepmaniaTechData.countsByChartId
+      : {};
+    const stepmaniaByPathModeDifficulty = stepmaniaTechData?.countsByPathModeDifficulty
+      && typeof stepmaniaTechData.countsByPathModeDifficulty === 'object'
+      ? stepmaniaTechData.countsByPathModeDifficulty
+      : {};
     const singleRankMap = buildRatingMap(combinedRatings, 'single_rankings');
     const doubleRankMap = buildRatingMap(combinedRatings, 'doubles_rankings');
     const songIdMap = await loadSongIdMap();
@@ -250,6 +316,14 @@ async function main() {
             const chartId = buildChartId(songId, c.mode, c.difficulty);
             const chartData = simfile.charts[c.slug];
             const hasShock = chartHasShock(chartData);
+            const pmdKey = buildPathModeDifficultyKey(file.path, c.mode, c.difficulty);
+            const pmdKeyAlt = pmdKey.startsWith('sm/') ? pmdKey.slice(3) : `sm/${pmdKey}`;
+            const stepmaniaTech = normalizeTechCounts(
+              (chartId && stepmaniaByChartId[chartId])
+              || stepmaniaByPathModeDifficulty[pmdKey]
+              || stepmaniaByPathModeDifficulty[pmdKeyAlt]
+              || null,
+            );
             return {
               mode: c.mode,
               difficulty: c.difficulty,
@@ -257,6 +331,7 @@ async function main() {
               rankedRating: rating,
               chartId,
               hasShock,
+              ...(stepmaniaTech ? { stepmaniaTech } : {}),
             };
           });
         const game = file.path.split('/')[1] || 'Unknown';
