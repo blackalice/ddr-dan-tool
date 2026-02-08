@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { parseSm } from '../src/utils/smParser.js';
 import { computeChartMetrics } from '../src/utils/chartMetrics.js';
 import { buildChartId } from '../src/utils/chartIds.js';
+import { computeItgmaniaTechCounts } from './itgmania-tech-counts.mjs';
 import {
   collectStats,
   collectTreeStats,
@@ -55,7 +56,7 @@ function putCount(target, key, value) {
   target[key] = n;
 }
 
-function buildCounts(metrics) {
+function buildCounts(metrics, itgTech) {
   const debugStats = metrics?.debugStats && typeof metrics.debugStats === 'object'
     ? metrics.debugStats
     : {};
@@ -104,6 +105,20 @@ function buildCounts(metrics) {
   putCount(counts, 'bursts', debugStats.bursts);
   putCount(counts, 'technicalMoves', debugStats.technicalMoves);
 
+  // Prefer ITGmania StepParity/TechCounts for overlapping categories.
+  if (itgTech && typeof itgTech === 'object') {
+    putCount(counts, 'crossovers', itgTech.crossovers);
+    putCount(counts, 'halfCrossovers', itgTech.halfCrossovers);
+    putCount(counts, 'fullCrossovers', itgTech.fullCrossovers);
+    putCount(counts, 'footswitches', itgTech.footswitches);
+    putCount(counts, 'upFootswitches', itgTech.upFootswitches);
+    putCount(counts, 'downFootswitches', itgTech.downFootswitches);
+    putCount(counts, 'sideswitches', itgTech.sideswitches);
+    putCount(counts, 'jacks', itgTech.jacks);
+    putCount(counts, 'brackets', itgTech.brackets);
+    putCount(counts, 'doublesteps', itgTech.doublesteps);
+  }
+
   // ITGmania category aliases for compatibility.
   if (counts.crossovers != null) counts.TechCountsCategory_Crossovers = counts.crossovers;
   if (counts.footswitches != null) counts.TechCountsCategory_Footswitches = counts.footswitches;
@@ -130,11 +145,12 @@ async function main() {
       [
         path.join(ROOT_DIR, 'src', 'utils', 'smParser.js'),
         path.join(ROOT_DIR, 'src', 'utils', 'chartMetrics.js'),
+        path.join(ROOT_DIR, 'scripts', 'itgmania-tech-counts.mjs'),
       ],
       ROOT_DIR,
     ),
   );
-  const config = { algorithm: 'heuristic-v5', outputVersion: 2 };
+  const config = { algorithm: 'itgmania-step-parity-v1+heuristic-v5', outputVersion: 3 };
   const { skip, reason } = await shouldSkipBuild({
     cachePath: CACHE_PATH,
     inputStats,
@@ -181,7 +197,8 @@ async function main() {
         if (!chart || typeof chart !== 'object') continue;
 
         const metrics = computeChartMetrics(chart);
-        const counts = buildCounts(metrics);
+        const itgTech = computeItgmaniaTechCounts(chart);
+        const counts = buildCounts(metrics, itgTech);
         if (!counts) continue;
 
         const chartId = buildChartId(songId, mode, difficulty);
@@ -206,9 +223,9 @@ async function main() {
   }
 
   const payload = {
-    version: 2,
+    version: 3,
     generatedAt: new Date().toISOString(),
-    source: 'heuristic-v5',
+    source: 'itgmania-step-parity-v1+heuristic-v5',
     songCount,
     failedSongs,
     entryCount: chartCount,

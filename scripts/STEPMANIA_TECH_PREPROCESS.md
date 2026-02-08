@@ -8,11 +8,16 @@ This repo now generates chart tech counts at build time from local simfiles.
 
 - `node scripts/extract-stepmania-tech-counts.mjs`
 
-It parses every chart via `parseSm()`, computes chart metrics via `computeChartMetrics()`, and exports:
+It parses every chart via `parseSm()`, computes:
+
+- ITGmania-style StepParity tech categories via `scripts/itgmania-tech-counts.mjs`
+- extended non-StepMania metrics via `computeChartMetrics()`
+
+and exports:
 
 - `data/generated/stepmania-tech-counts.json`
 
-Output keys include basic counts, footwork counts, and advanced pattern counts, including:
+Output keys include basic counts, ITGmania tech counts, and advanced pattern counts, including:
 
 - `steps`, `notes`, `jumps`, `hands`, `quads`, `holds`, `shocks`
 - `crossovers`, `halfCrossovers`, `fullCrossovers`, `holdCrossovers`
