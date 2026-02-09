@@ -13,7 +13,7 @@ import './App.css';
 import './components/SongCard.css';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
-const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleToPath }) => {
+const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleLookup }) => {
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
@@ -56,9 +56,17 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleT
             const score = hit?.score;
             const scoreHighlight = shouldHighlightScore(score);
             const lamp = hit?.lamp;
-            const path = titleToPath.get(normalizeString(song.title)) || null;
-            const songWithPath = path ? { ...song, path } : song;
-            const songForCard = lamp ? { ...songWithPath, lamp } : songWithPath;
+            const matchedMeta = titleLookup.get(normalizeString(song.title)) || null;
+            const songWithMeta = matchedMeta
+              ? {
+                  ...song,
+                  path: matchedMeta.path || song.path,
+                  songId: song.songId || matchedMeta.id,
+                  jacket: song.jacket || matchedMeta.jacket,
+                  titleTranslit: song.titleTranslit || matchedMeta.titleTranslit || undefined,
+                }
+              : song;
+            const songForCard = lamp ? { ...songWithMeta, lamp } : songWithMeta;
             return (
               <SongCard
                 key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
@@ -126,11 +134,11 @@ const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
     setActiveDan('All');
   }, [playStyle, setActiveDan]);
 
-  const titleToPath = useMemo(() => {
+  const titleLookup = useMemo(() => {
     const map = new Map();
     for (const f of smData.files || []) {
-      if (f.title) map.set(normalizeString(f.title), f.path);
-      if (f.titleTranslit) map.set(normalizeString(f.titleTranslit), f.path);
+      if (f.title) map.set(normalizeString(f.title), f);
+      if (f.titleTranslit) map.set(normalizeString(f.titleTranslit), f);
     }
     return map;
   }, [smData.files]);
@@ -160,7 +168,7 @@ const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
                   playMode={playStyle}
                   setSelectedGame={setSelectedGame}
                   resetFilters={resetFilters}
-                  titleToPath={titleToPath}
+                  titleLookup={titleLookup}
                 />
             ))
           ) : (

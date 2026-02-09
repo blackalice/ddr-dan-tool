@@ -233,7 +233,7 @@ const GAME_VERSION_ORDER = [
 ];
 
 
-const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView }) => {
+const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView, selectionLoading = false }) => {
     const {
         targetBPM,
         multipliers,
@@ -1001,11 +1001,13 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         jacket,
     } = useMemo(() => {
         if (!simfileWithRatings) {
+            const emptyTitle = selectionLoading ? 'Loading song...' : 'Please select';
+            const emptyArtist = selectionLoading ? '\u00a0' : 'a song';
             return {
-                songTitle: 'Please select',
-                artist: 'a song',
-                displayTitle: 'Please select',
-                displayArtist: 'a song',
+                songTitle: emptyTitle,
+                artist: emptyArtist,
+                displayTitle: emptyTitle,
+                displayArtist: emptyArtist,
                 gameVersion: 'NOMIX',
                 difficulties: { singles: {}, doubles: {} },
                 bpmDisplay: 'N/A',
@@ -1032,7 +1034,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let core = null;
         let data = null;
         let length = 0;
-        const jacketPath = metaEntry?.jacket || null;
+        const jacketPath = metaEntry?.jacket || simfileWithRatings?.jacket || simfileData?.jacket || null;
 
         if (currentChart && simfileWithRatings.charts) {
             const chartDetails = simfileWithRatings.charts[currentChart.slug];
@@ -1081,7 +1083,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             songLength: length,
             jacket: jacketPath,
         };
-    }, [simfileWithRatings, currentChart, songMeta, showTransliterationBeta]);
+    }, [simfileWithRatings, simfileData, currentChart, songMeta, showTransliterationBeta, selectionLoading]);
 
     const calculation = useMemo(() => {
         if (!targetBPM || !bpmDisplay || bpmDisplay === 'N/A') return null;

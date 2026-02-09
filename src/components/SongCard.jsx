@@ -93,11 +93,9 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     let cancelled = false;
     async function derive() {
       const needsArtist = !song?.artist && song?.path;
-      const needsTranslit = Boolean(
-        showTransliterationBeta &&
-        song?.path &&
-        (!song?.titleTranslit || !song?.artistTranslit),
-      );
+      const needsTitleTranslit = Boolean(showTransliterationBeta && song?.path && !song?.titleTranslit);
+      const needsArtistTranslit = Boolean(showTransliterationBeta && showArtist && song?.path && !song?.artistTranslit);
+      const needsTranslit = needsTitleTranslit || needsArtistTranslit;
       if (!needsArtist && !needsTranslit) {
         if (!needsArtist) setDerivedArtist(null);
         if (!needsTranslit) {
@@ -112,22 +110,22 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         if (cancelled) return;
         if (needsArtist) setDerivedArtist(m?.artist || null);
         if (needsTranslit) {
-          setDerivedTitleTranslit(m?.titleTranslit || null);
-          setDerivedArtistTranslit(m?.artistTranslit || null);
+          if (needsTitleTranslit) setDerivedTitleTranslit(m?.titleTranslit || null);
+          if (needsArtistTranslit) setDerivedArtistTranslit(m?.artistTranslit || null);
         }
       } catch {
         if (!cancelled) {
           if (needsArtist) setDerivedArtist(null);
           if (needsTranslit) {
-            setDerivedTitleTranslit(null);
-            setDerivedArtistTranslit(null);
+            if (needsTitleTranslit) setDerivedTitleTranslit(null);
+            if (needsArtistTranslit) setDerivedArtistTranslit(null);
           }
         }
       }
     }
     derive();
     return () => { cancelled = true; };
-  }, [song?.artist, song?.path, song?.titleTranslit, song?.artistTranslit, showTransliterationBeta]);
+  }, [song?.artist, song?.path, song?.titleTranslit, song?.artistTranslit, showTransliterationBeta, showArtist]);
 
   const scoreData = React.useMemo(() => {
     if (skipScoreLookup) return null;

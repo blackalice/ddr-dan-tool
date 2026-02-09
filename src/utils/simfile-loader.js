@@ -43,6 +43,7 @@ export const loadSimfileData = async (songFile) => {
         return {
             ...parsed,
             songId,
+            jacket: songFile.jacket || '',
             availableTypes,
             charts,
             path: songFile.path,

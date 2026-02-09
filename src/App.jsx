@@ -47,14 +47,28 @@ function AppRoutes() {
   const [activeVegaCourse, setActiveVegaCourse] = useState(() => storage.getItem('activeVegaCourse') || 'All');
   const [view, setView] = useState('bpm');
   const previousLocationRef = React.useRef('');
+  const currentSongPathRef = React.useRef(null);
   const debugChartSelection = typeof window !== 'undefined'
     && window.localStorage?.getItem('debugChartSelection') === '1';
 
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const requestedSelection = useMemo(
+    () => parseSelection({ search: location.search, hash: location.hash }),
+    [location.search, location.hash],
+  );
   const debugEnabled = searchParams.get('debug') === '1' || (typeof window !== 'undefined' && window.localStorage.getItem('debugRouting') === '1');
   const hideFooterOnMobile = location.pathname.startsWith('/multiplier');
+  const hasRequestedSongMismatch = useMemo(() => {
+    if (!requestedSelection.songId) return false;
+    if (!simfileData) return true;
+    const candidates = new Set([simfileData.songId, simfileData.path, simfileData.filePath].filter(Boolean));
+    return !candidates.has(requestedSelection.songId);
+  }, [requestedSelection.songId, simfileData]);
+  const shouldMaskStaleBpmSelection = location.pathname === '/bpm' && hasRequestedSongMismatch;
+  const bpmSimfileData = shouldMaskStaleBpmSelection ? null : simfileData;
+  const bpmCurrentChart = shouldMaskStaleBpmSelection ? null : currentChart;
 
   const pickChartForPlayStyle = useCallback((availableTypes, style) => {
     if (!Array.isArray(availableTypes) || availableTypes.length === 0) return null;
@@ -82,6 +96,14 @@ function AppRoutes() {
   }, []);
 
   useEffect(() => {
+    currentSongPathRef.current = rawSimfileData?.path || null;
+  }, [rawSimfileData?.path]);
+
+  useEffect(() => {
+    const routeAllowsBpmSelection = location.pathname === '/bpm' || location.pathname === '/';
+    if (!routeAllowsBpmSelection) {
+      return;
+    }
     const locationKey = `${location.pathname}${location.search}${location.hash}`;
     const locationChanged = previousLocationRef.current !== locationKey;
     previousLocationRef.current = locationKey;
@@ -110,6 +132,10 @@ function AppRoutes() {
         if (!songFile) {
           setRawSimfileData(null); setCurrentChart(null);
           return;
+        }
+        if (currentSongPathRef.current && currentSongPathRef.current !== songFile.path) {
+          setRawSimfileData(null);
+          setCurrentChart(null);
         }
         const data = await loadSimfileData(songFile);
         const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
@@ -188,6 +214,10 @@ function AppRoutes() {
       if (sel.legacy && sel.legacy.title) {
         const songFile = await findSongByTitle(sel.legacy.title);
         if (!songFile) { setRawSimfileData(null); setCurrentChart(null); return; }
+        if (currentSongPathRef.current && currentSongPathRef.current !== songFile.path) {
+          setRawSimfileData(null);
+          setCurrentChart(null);
+        }
         const data = await loadSimfileData(songFile);
         const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
         setRawSimfileData(data);
@@ -376,7 +406,7 @@ function AppRoutes() {
           enabled: debugEnabled,
           search: location.search,
           hash: location.hash,
-          sel: parseSelection({ search: location.search, hash: location.hash }),
+          sel: requestedSelection,
           filesCount: smData.files?.length || 0,
           simfilePath: simfileData?.path,
           simfileTitle: simfileData?.title?.titleName,
@@ -397,7 +427,7 @@ function AppRoutes() {
             <Route path="/card-draw" element={<CardDrawPage smData={smData} />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={simfileData} currentChart={currentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} />} />
+            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
             <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
