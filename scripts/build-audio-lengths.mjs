@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import { parseFile } from 'music-metadata'
 import { spawn } from 'child_process'
 import {
+  collectStats,
   collectTreeStats,
   mergeStats,
   shouldSkipBuild,
@@ -20,6 +21,8 @@ const GENERATED_DIR = path.join(DATA_DIR, 'generated')
 const OUT_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
 const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'audio-lengths.json')
 const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1'
+const MIN_REASONABLE_AUDIO_SECONDS = 10
+const MAX_REASONABLE_AUDIO_SECONDS = 60 * 60
 
 async function* walk(dir) {
   for (const d of await fs.readdir(dir, { withFileTypes: true })) {
@@ -35,6 +38,11 @@ function normalizeName(str) {
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]/g, '')
+}
+
+function isReasonableAudioSeconds(value) {
+  const n = Number(value)
+  return Number.isFinite(n) && n >= MIN_REASONABLE_AUDIO_SECONDS && n <= MAX_REASONABLE_AUDIO_SECONDS
 }
 
 async function indexBits(sourceRoot) {
@@ -67,10 +75,12 @@ function parseMusicFilename(smText) {
 }
 
 async function main() {
-  const sourceRoot = process.argv[2] ? path.resolve(process.cwd(), process.argv[2]) : SIMFILES_DIR
+  const sourceArg = process.argv.slice(2).find((arg) => !String(arg).startsWith('-'))
+  const sourceRoot = sourceArg ? path.resolve(process.cwd(), sourceArg) : SIMFILES_DIR
   const inputStats = mergeStats(
     await collectTreeStats(SIMFILES_DIR, (p) => /\.(sm|ssc)$/i.test(p), ROOT),
     await collectTreeStats(sourceRoot, (p) => /\.(ogg|mp3|wav)$/i.test(p), ROOT),
+    await collectStats([path.join(ROOT, 'scripts', 'build-audio-lengths.mjs')], ROOT),
   )
   const { skip, reason } = await shouldSkipBuild({
     cachePath: CACHE_PATH,
@@ -97,25 +107,29 @@ async function main() {
   await fs.mkdir(GENERATED_DIR, { recursive: true })
   const bitsIdx = await indexBits(sourceRoot)
   const durationCache = new Map()
+  async function probeWithFfprobe(p, fallback = 0) {
+    const ffprobe = process.env.FFPROBE || 'ffprobe'
+    return new Promise((resolve) => {
+      const cp = spawn(ffprobe, ['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', p])
+      let out = ''
+      cp.stdout.on('data', (d) => out += d.toString())
+      cp.on('close', () => {
+        const val = Number(parseFloat(out))
+        resolve(Number.isFinite(val) ? val : fallback)
+      })
+      cp.on('error', () => resolve(fallback))
+    })
+  }
+
   async function getDuration(p) {
     if (durationCache.has(p)) return durationCache.get(p)
     try {
       const meta = await parseFile(p)
       let sec = Number(meta.format.duration || 0)
-      if (!sec || sec < 10) {
-        // Fallback to ffprobe when available
-        const ffprobe = process.env.FFPROBE || 'ffprobe'
-        sec = await new Promise((resolve) => {
-          const cp = spawn(ffprobe, ['-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1', p])
-          let out = ''
-          cp.stdout.on('data', (d) => out += d.toString())
-          cp.on('close', () => {
-            const val = Number(parseFloat(out))
-            resolve(Number.isFinite(val) ? val : (meta.format.duration || 0))
-          })
-          cp.on('error', () => resolve(meta.format.duration || 0))
-        })
+      if (!isReasonableAudioSeconds(sec)) {
+        sec = await probeWithFfprobe(p, sec)
       }
+      if (!isReasonableAudioSeconds(sec)) sec = 0
       durationCache.set(p, sec)
       return sec
     } catch {

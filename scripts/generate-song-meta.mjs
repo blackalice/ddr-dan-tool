@@ -209,7 +209,7 @@ const DIFF_ORDER = ['beginner','basic','difficult','expert','challenge','edit'];
 function normalizeTechCounts(raw) {
   if (!raw || typeof raw !== 'object') return null;
   const out = {};
-  const keys = [
+  const intKeys = [
     'steps',
     'notes',
     'jumps',
@@ -217,6 +217,7 @@ function normalizeTechCounts(raw) {
     'quads',
     'holds',
     'shocks',
+    'stops',
     'crossovers',
     'footswitches',
     'sideswitches',
@@ -248,9 +249,26 @@ function normalizeTechCounts(raw) {
     'bursts',
     'technicalMoves',
   ];
-  for (const key of keys) {
+  const floatKeys = [
+    'notesPerSecond',
+    'stepsPerSecond',
+    'maximumNotesPerSecond',
+    'meanNotesPerSecond',
+    'medianNotesPerSecond',
+    'fastest3NoteBurst',
+    'fastest7NoteRun',
+    'fastest15NoteRun',
+    'maxTimeBetweenNotes',
+  ];
+  for (const key of intKeys) {
     const n = Number(raw[key]);
     if (Number.isFinite(n) && n >= 0) out[key] = Math.round(n);
+  }
+  for (const key of floatKeys) {
+    const n = Number(raw[key]);
+    if (!Number.isFinite(n) || n < 0) continue;
+    const factor = 1000;
+    out[key] = Math.round(n * factor) / factor;
   }
   return Object.keys(out).length > 0 ? out : null;
 }

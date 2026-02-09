@@ -24,6 +24,7 @@ import '../styles/glow.css';
 import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 import { getDifficultyValue, isDifficultyAllowed } from '../utils/difficultyFilters.js';
 import { formatRankedRating } from '../utils/formatRankedRating.js';
+import { chartMatchesAdvancedFilters, hasActiveAdvancedFilters } from '../utils/advancedStatsFilters.js';
 import GameLogo from './GameLogo.jsx';
 
 const SongInfoBar = ({
@@ -101,6 +102,8 @@ const SongInfoBar = ({
     const difficultySet = style === 'single' ? difficulties.singles : difficulties.doubles;
     const chartDifficulties = simfileData.availableTypes.filter(t => t.mode === style);
 
+    const advancedFiltersActive = hasActiveAdvancedFilters(filters);
+
     return difficultyLevels.map(levelName => {
         let level = null;
         let chartType = null;
@@ -146,6 +149,14 @@ const SongInfoBar = ({
                 if (!lowerCaseFilterNames.includes(chartType.difficulty.toLowerCase())) {
                     filteredOut = true;
                 }
+            }
+            // Check advanced chart stat filters when stat metadata is available
+            if (
+              advancedFiltersActive &&
+              chartForFilter.stepmaniaTech &&
+              !chartMatchesAdvancedFilters(chartForFilter, filters)
+            ) {
+              filteredOut = true;
             }
 
             // Check played status filter

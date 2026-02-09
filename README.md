@@ -176,3 +176,10 @@ table:
 ```sh
 npm run parse:scores <path/to/file.html> [output.json] [SP|DP]
 ```
+
+## License
+
+This project is licensed under GPL-3.0-or-later. See `LICENSE`.
+
+Third-party attribution and derived-code notices are documented in
+`THIRD_PARTY_NOTICES.md`.

@@ -88,6 +88,14 @@
   text-align: right;
 }
 
+.chart-stats-item-out-of {
+  margin-left: 0.14rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--text-muted-color) 88%, var(--text-color-lightest) 12%);
+  opacity: 0.82;
+}
+
 .chart-stats-quantization {
   display: flex;
   flex-direction: column;

@@ -34,7 +34,46 @@ const StatCard = ({ title, subtitle, children }) => (
 
 const QUANTIZATION_ORDER = ['4th Notes', '8th Notes', '12th Notes', '16th Notes', '20th Notes', '24th Notes', '32nd Notes', '48th Notes', '64th Notes', '96th Notes', '192nd Notes'];
 
-const ChartStatsPanel = ({ metrics, songLength }) => {
+const formatCountWithMax = (value, metricKey, levelStatMaxima) => {
+  const current = Number(value);
+  if (!Number.isFinite(current)) return '--';
+  const max = Number(levelStatMaxima?.[metricKey]);
+  if (!Number.isFinite(max)) return formatNumber(current, 0);
+  return (
+    <>
+      {formatNumber(current, 0)}
+      <span className="chart-stats-item-out-of">/{formatNumber(max, 0)}</span>
+    </>
+  );
+};
+
+const formatWithMax = (value, metricKey, levelStatMaxima, decimals = 2) => {
+  const current = Number(value);
+  if (!Number.isFinite(current)) return '--';
+  const max = Number(levelStatMaxima?.[metricKey]);
+  if (!Number.isFinite(max)) return formatNumber(current, decimals);
+  return (
+    <>
+      {formatNumber(current, decimals)}
+      <span className="chart-stats-item-out-of">/{formatNumber(max, decimals)}</span>
+    </>
+  );
+};
+
+const formatSecondsWithMax = (value, metricKey, levelStatMaxima, decimals = 3) => {
+  const current = Number(value);
+  if (!Number.isFinite(current)) return '--';
+  const max = Number(levelStatMaxima?.[metricKey]);
+  if (!Number.isFinite(max)) return formatSeconds(current, decimals);
+  return (
+    <>
+      {formatSeconds(current, decimals)}
+      <span className="chart-stats-item-out-of">/{formatSeconds(max, decimals)}</span>
+    </>
+  );
+};
+
+const ChartStatsPanel = ({ metrics, songLength, chartLevel, levelStatMaxima }) => {
   const stats = metrics?.debugStats && typeof metrics.debugStats === 'object'
     ? metrics.debugStats
     : null;
@@ -62,59 +101,59 @@ const ChartStatsPanel = ({ metrics, songLength }) => {
   return (
     <div className="chart-stats-panel">
       <div className="chart-stats-layout">
-        <StatCard title="Overview" subtitle="Core note counts and timeline">
-          <Stat label="Total notes" value={formatNumber(stats.notes, 0)} />
-          <Stat label="Steps" value={formatNumber(stats.steps, 0)} />
-          <Stat label="Holds" value={formatNumber(stats.holds, 0)} />
-          <Stat label="Jumps" value={formatNumber(stats.jumps, 0)} />
-          <Stat label="Hands" value={formatNumber(stats.hands, 0)} />
-          <Stat label="Quads" value={formatNumber(stats.quads, 0)} />
-          <Stat label="Shock arrows" value={formatNumber(stats.shocks, 0)} />
+        <StatCard title="Overview" subtitle={chartLevel != null ? `Core note counts and timeline (level ${chartLevel} max)` : 'Core note counts and timeline'}>
+          <Stat label="Total notes" value={formatCountWithMax(stats.notes, 'notes', levelStatMaxima)} />
+          <Stat label="Steps" value={formatCountWithMax(stats.steps, 'steps', levelStatMaxima)} />
+          <Stat label="Holds" value={formatCountWithMax(stats.holds, 'holds', levelStatMaxima)} />
+          <Stat label="Jumps" value={formatCountWithMax(stats.jumps, 'jumps', levelStatMaxima)} />
+          <Stat label="Hands" value={formatCountWithMax(stats.hands, 'hands', levelStatMaxima)} />
+          <Stat label="Quads" value={formatCountWithMax(stats.quads, 'quads', levelStatMaxima)} />
+          <Stat label="Shock arrows" value={formatCountWithMax(stats.shocks, 'shocks', levelStatMaxima)} />
           <Stat label="Chart start" value={formatSeconds(stats.chartStart)} />
           <Stat label="Chart length" value={formatSeconds(stats.chartLength)} />
           <Stat label="Song length" value={formatSeconds(songLength ?? stats.chartSeconds)} />
         </StatCard>
 
         <StatCard title="Density" subtitle="Sustained speed and bursts">
-          <Stat label="Notes / second" value={formatNumber(stats.notesPerSecond)} />
-          <Stat label="Steps / second" value={formatNumber(stats.stepsPerSecond)} />
-          <Stat label="Max NPS" value={formatNumber(stats.maximumNotesPerSecond)} />
-          <Stat label="Mean NPS" value={formatNumber(stats.meanNotesPerSecond)} />
-          <Stat label="Median NPS" value={formatNumber(stats.medianNotesPerSecond)} />
-          <Stat label="Fastest 3-note burst" value={formatNumber(stats.fastest3NoteBurst)} />
-          <Stat label="Fastest 7-note run" value={formatNumber(stats.fastest7NoteRun)} />
-          <Stat label="Fastest 15-note run" value={formatNumber(stats.fastest15NoteRun)} />
-          <Stat label="Max gap between notes" value={formatSeconds(stats.maxTimeBetweenNotes, 3)} />
+          <Stat label="Notes / second" value={formatWithMax(stats.notesPerSecond, 'notesPerSecond', levelStatMaxima)} />
+          <Stat label="Steps / second" value={formatWithMax(stats.stepsPerSecond, 'stepsPerSecond', levelStatMaxima)} />
+          <Stat label="Max NPS" value={formatWithMax(stats.maximumNotesPerSecond, 'maximumNotesPerSecond', levelStatMaxima)} />
+          <Stat label="Mean NPS" value={formatWithMax(stats.meanNotesPerSecond, 'meanNotesPerSecond', levelStatMaxima)} />
+          <Stat label="Median NPS" value={formatWithMax(stats.medianNotesPerSecond, 'medianNotesPerSecond', levelStatMaxima)} />
+          <Stat label="Fastest 3-note burst" value={formatWithMax(stats.fastest3NoteBurst, 'fastest3NoteBurst', levelStatMaxima)} />
+          <Stat label="Fastest 7-note run" value={formatWithMax(stats.fastest7NoteRun, 'fastest7NoteRun', levelStatMaxima)} />
+          <Stat label="Fastest 15-note run" value={formatWithMax(stats.fastest15NoteRun, 'fastest15NoteRun', levelStatMaxima)} />
+          <Stat label="Max gap between notes" value={formatSecondsWithMax(stats.maxTimeBetweenNotes, 'maxTimeBetweenNotes', levelStatMaxima, 3)} />
         </StatCard>
 
         <StatCard title="Footwork" subtitle={`Pattern analysis (${stats.footworkMethod || 'heuristic'})`}>
-          <Stat label="Crossovers" value={formatNumber(stats.crossovers, 0)} />
-          <Stat label="Half crossovers" value={formatNumber(stats.halfCrossovers, 0)} />
-          <Stat label="Full crossovers" value={formatNumber(stats.fullCrossovers, 0)} />
-          <Stat label="Hold crossovers" value={formatNumber(stats.holdCrossovers, 0)} />
-          <Stat label="Footswitches" value={formatNumber(stats.footswitches, 0)} />
-          <Stat label="Sideswitches" value={formatNumber(stats.sideswitches, 0)} />
-          <Stat label="Jacks" value={formatNumber(stats.jacks, 0)} />
-          <Stat label="Brackets" value={formatNumber(stats.brackets, 0)} />
-          <Stat label="Doublesteps" value={formatNumber(stats.doublesteps, 0)} />
+          <Stat label="Crossovers" value={formatCountWithMax(stats.crossovers, 'crossovers', levelStatMaxima)} />
+          <Stat label="Half crossovers" value={formatCountWithMax(stats.halfCrossovers, 'halfCrossovers', levelStatMaxima)} />
+          <Stat label="Full crossovers" value={formatCountWithMax(stats.fullCrossovers, 'fullCrossovers', levelStatMaxima)} />
+          <Stat label="Hold crossovers" value={formatCountWithMax(stats.holdCrossovers, 'holdCrossovers', levelStatMaxima)} />
+          <Stat label="Footswitches" value={formatCountWithMax(stats.footswitches, 'footswitches', levelStatMaxima)} />
+          <Stat label="Sideswitches" value={formatCountWithMax(stats.sideswitches, 'sideswitches', levelStatMaxima)} />
+          <Stat label="Jacks" value={formatCountWithMax(stats.jacks, 'jacks', levelStatMaxima)} />
+          <Stat label="Brackets" value={formatCountWithMax(stats.brackets, 'brackets', levelStatMaxima)} />
+          <Stat label="Doublesteps" value={formatCountWithMax(stats.doublesteps, 'doublesteps', levelStatMaxima)} />
         </StatCard>
 
         <StatCard title="Advanced Patterns" subtitle="Technical movement motifs">
-          <Stat label="Anchors" value={formatNumber(stats.anchors, 0)} />
-          <Stat label="Spins 180" value={formatNumber(stats.spins180, 0)} />
-          <Stat label="Spins 360" value={formatNumber(stats.spins360, 0)} />
-          <Stat label="Staircases" value={formatNumber(stats.staircases, 0)} />
-          <Stat label="Rolls" value={formatNumber(stats.rolls, 0)} />
-          <Stat label="Candles" value={formatNumber(stats.candles, 0)} />
-          <Stat label="Drills" value={formatNumber(stats.drills, 0)} />
-          <Stat label="Gallops" value={formatNumber(stats.gallops, 0)} />
+          <Stat label="Anchors" value={formatCountWithMax(stats.anchors, 'anchors', levelStatMaxima)} />
+          <Stat label="Spins 180" value={formatCountWithMax(stats.spins180, 'spins180', levelStatMaxima)} />
+          <Stat label="Spins 360" value={formatCountWithMax(stats.spins360, 'spins360', levelStatMaxima)} />
+          <Stat label="Staircases" value={formatCountWithMax(stats.staircases, 'staircases', levelStatMaxima)} />
+          <Stat label="Rolls" value={formatCountWithMax(stats.rolls, 'rolls', levelStatMaxima)} />
+          <Stat label="Candles" value={formatCountWithMax(stats.candles, 'candles', levelStatMaxima)} />
+          <Stat label="Drills" value={formatCountWithMax(stats.drills, 'drills', levelStatMaxima)} />
+          <Stat label="Gallops" value={formatCountWithMax(stats.gallops, 'gallops', levelStatMaxima)} />
         </StatCard>
 
         <StatCard title="Flow Patterns" subtitle="Run and section-level structure">
-          <Stat label="Mono runs" value={formatNumber(stats.monoRuns, 0)} />
-          <Stat label="Streams" value={formatNumber(stats.streamCount, 0)} />
-          <Stat label="Stream notes" value={formatNumber(stats.streamNotes, 0)} />
-          <Stat label="Bursts" value={formatNumber(stats.bursts, 0)} />
+          <Stat label="Mono runs" value={formatCountWithMax(stats.monoRuns, 'monoRuns', levelStatMaxima)} />
+          <Stat label="Streams" value={formatCountWithMax(stats.streamCount, 'streamCount', levelStatMaxima)} />
+          <Stat label="Stream notes" value={formatCountWithMax(stats.streamNotes, 'streamNotes', levelStatMaxima)} />
+          <Stat label="Bursts" value={formatCountWithMax(stats.bursts, 'bursts', levelStatMaxima)} />
         </StatCard>
 
         <StatCard title="Tempo & Timing" subtitle="BPM movement and stop behavior">
@@ -122,7 +161,7 @@ const ChartStatsPanel = ({ metrics, songLength }) => {
           <Stat label="BPM max" value={formatNumber(stats.bpmMax)} />
           <Stat label="BPM range" value={formatNumber(stats.bpmRange)} />
           <Stat label="BPM changes" value={formatNumber(stats.bpmChanges, 0)} />
-          <Stat label="Stops" value={formatNumber(stats.stops, 0)} />
+          <Stat label="Stops" value={formatCountWithMax(stats.stops, 'stops', levelStatMaxima)} />
           <Stat label="Total stop duration" value={formatSeconds(stats.totalStopDuration)} />
           <Stat label="Stop % of chart" value={formatPercent(stats.stopPercentOfChart)} />
           <Stat label="Shortest stop" value={formatSeconds(stats.shortestStop, 3)} />
@@ -149,10 +188,10 @@ const ChartStatsPanel = ({ metrics, songLength }) => {
           <div className="chart-stats-card-grid">
             <Stat label="Most frequent" value={stats.mostFrequentQuantizations || '--'} />
             <Stat label="Finest" value={stats.finestQuantization || '--'} />
-            {quantizationItems.length === 0 ? (
-              <Stat label="Quantization data" value="No data" />
-            ) : (
-              quantizationItems.map((entry) => (
+              {quantizationItems.length === 0 ? (
+                <Stat label="Quantization data" value="No data" />
+              ) : (
+                quantizationItems.map((entry) => (
                 <Stat key={entry.label} label={entry.label} value={formatNumber(entry.count, 0)} />
               ))
             )}

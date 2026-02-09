@@ -1,4 +1,9 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
 // Build-time JS port of ITGmania StepParity + TechCounts logic for dance-single/double.
+// Derived from ITGmania/StepMania source implementations.
+// ITGmania: https://github.com/itgmania/itgmania
+// StepMania: https://github.com/stepmania/stepmania
 // Sources:
 // - _archive/itgmania-source/src/StepParityDatastructs.*
 // - _archive/itgmania-source/src/StepParityGenerator.*

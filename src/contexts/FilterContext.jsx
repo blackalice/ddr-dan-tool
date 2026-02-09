@@ -1,6 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { storage } from '../utils/remoteStorage.js';
+import { ADVANCED_FILTER_DEFAULTS } from '../utils/advancedStatsFilters.js';
 
 const defaultFilters = {
   bpmMin: '',
@@ -17,6 +18,7 @@ const defaultFilters = {
   difficultyNames: [],
   rankedFractionMin: '',
   rankedFractionMax: '',
+  ...ADVANCED_FILTER_DEFAULTS,
 };
 
 export const FilterContext = createContext({

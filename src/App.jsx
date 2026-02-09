@@ -34,6 +34,7 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 function AppRoutes() {
   const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts } = useContext(SettingsContext);
   const { user } = useAuth();
+  const pwaEnabled = import.meta.env.MODE !== 'no-pwa';
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [rawSimfileData, setRawSimfileData] = useState(null);
   const simfileData = useMemo(
@@ -367,7 +368,7 @@ function AppRoutes() {
   return (
     <div data-theme={theme}>
                 {/* <SyncBanner /> */}
-                <UpdateBanner />
+                {pwaEnabled && <UpdateBanner />}
                 <Tabs />
 
       <div className="app-container">

@@ -22,6 +22,11 @@ const CHANGELOG_UPDATES = [
         date: 'Feb 8, 2026',
         items: [
             'Light mode now works properly.',
+            'Added Advanced Filters page with min/max chart-stat filters for Density, Footwork, Flow Patterns, Advanced Patterns, and Stops.',
+            'Advanced chart-stat filters now apply in both BPM and Card Draw.',
+            'Card Draw now respects advanced filter ranges in live counts and draw pool selection.',
+            'BPM selection retention fixed when advanced filters are enabled and chart metadata is still loading.',
+            'StepMania tech preprocessing now uses ITGmania-style StepParity extraction merged with extended heuristic metrics.',
         ],
     },
     {
@@ -84,6 +89,7 @@ const Settings = () => {
     } = useOfflineCache();
     const offlineDownloadLabel = offlineDownloading ? 'Downloading...' : 'Download';
     const canDownloadOffline = Boolean(user);
+    const offlineFeatureEnabled = import.meta.env.MODE !== 'no-pwa';
     const [showOlderUpdates, setShowOlderUpdates] = useState(false);
 
     const [songMeta, setSongMeta] = useState([]);
@@ -429,41 +435,43 @@ const Settings = () => {
 
                     <h2 className="settings-sub-header">Beta Features</h2>
 
-                    <div className="setting-card setting-card-toggle">
-                        <div className="setting-text">
-                            <h3>Offline Data</h3>
-                            <p>
-                                Download song data and SM files for offline use.
-                            </p>
-                            <p className="settings-status">{offlineStatusLabel}</p>
-                            {offlineError && (<p className="settings-status settings-status-error">{offlineError}</p>)}
-                            {!canDownloadOffline && (
-                                <p className="settings-status">Log in to download offline data.</p>
+                    {offlineFeatureEnabled && (
+                        <div className="setting-card setting-card-toggle">
+                            <div className="setting-text">
+                                <h3>Offline Data</h3>
+                                <p>
+                                    Download song data and SM files for offline use.
+                                </p>
+                                <p className="settings-status">{offlineStatusLabel}</p>
+                                {offlineError && (<p className="settings-status settings-status-error">{offlineError}</p>)}
+                                {!canDownloadOffline && (
+                                    <p className="settings-status">Log in to download offline data.</p>
+                                )}
+                            </div>
+                            {canDownloadOffline && (
+                                <div className="setting-control">
+                                    <button
+                                        onClick={startDownload}
+                                        className="settings-button settings-button-icon"
+                                        disabled={!offlineSupported || offlineDownloading}
+                                        aria-label={offlineDownloadLabel}
+                                        title={offlineDownloadLabel}
+                                    >
+                                        <FontAwesomeIcon icon={faDownload} />
+                                    </button>
+                                    <button
+                                        onClick={clearDownload}
+                                        className="settings-button settings-button-danger settings-button-icon"
+                                        disabled={!offlineSupported || offlineDownloading || !offlineEnabled}
+                                        aria-label="Clear offline data"
+                                        title="Clear offline data"
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </div>
                             )}
                         </div>
-                        {canDownloadOffline && (
-                            <div className="setting-control">
-                                <button
-                                    onClick={startDownload}
-                                    className="settings-button settings-button-icon"
-                                    disabled={!offlineSupported || offlineDownloading}
-                                    aria-label={offlineDownloadLabel}
-                                    title={offlineDownloadLabel}
-                                >
-                                    <FontAwesomeIcon icon={faDownload} />
-                                </button>
-                                <button
-                                    onClick={clearDownload}
-                                    className="settings-button settings-button-danger settings-button-icon"
-                                    disabled={!offlineSupported || offlineDownloading || !offlineEnabled}
-                                    aria-label="Clear offline data"
-                                    title="Clear offline data"
-                                >
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    )}
 
                     <div className="setting-card setting-card-toggle">
                         <div className="setting-text">
@@ -657,6 +665,7 @@ const Settings = () => {
                             <p>
                                Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> with love for the DDR community. The stepchart parsing logic is based on the work of <a className="footer-link" href="https://github.com/city41/stepcharts">city41</a>. The stepcharts files are built by the community at <a className="footer-link" href="https://zenius-i-vanisher.com/">Zenius-I-Vanisher</a>, based on orignal work by Konami. Decimalized rankings from <a className="footer-link" href="https://3icecream.com/">Sanbai Ice Cream</a> and are based on the Version 11 Revision 1 release. Card pick system inspired by <a className="footer-link" href="https://ddr.tools/">ddr.tools</a>. <br></br><br></br>
                                Crafted with an organic blend of Gemini 2.5 Pro via GeminiCLI and ChatGPT Codex (with a sprinkle of ChatGPT 4o for initial planning). Human intelligence used sparingly. <br></br><br></br>
+                               Tech counting includes a derived JavaScript port of ITGmania/StepMania StepParity/TechCounts logic, licensed under GPL-3.0-or-later. See LICENSE and THIRD_PARTY_NOTICES.md for details. <br></br><br></br>
                                Follow the development, suggest features and report bugs at the at the <a className="footer-link" href="https://discord.gg/5gy4zwbPRC">UK DDR Discord</a> or <a className="footer-link" href="https://github.com/blackalice/ddr-dan-tool">Github</a> <br></br><br></br>
                                Always remember to wear deoderant when playing DDR, and clean up after you've used the bathroom. <br></br><br></br>
                                This tool is not affiliated with Konami or any other company. It is a fan-made project for educational purposes only.

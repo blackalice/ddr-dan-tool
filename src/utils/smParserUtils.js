@@ -40,21 +40,20 @@ function similarBpm(a, b) {
 }
 
 export function mergeSimilarBpmRanges(bpm) {
-  return bpm.reduce((building, b, i, a) => {
-    const prev = a[i - 1];
-    const next = a[i + 1];
+  if (!Array.isArray(bpm) || bpm.length === 0) return [];
 
-    if (prev && similarBpm(prev, b)) {
-      return building;
+  const merged = [{ ...bpm[0] }];
+  for (let i = 1; i < bpm.length; i += 1) {
+    const current = bpm[i];
+    const last = merged[merged.length - 1];
+
+    if (last && similarBpm(last, current)) {
+      // Extend the active segment across the full similar-BPM chain.
+      last.endOffset = current.endOffset;
+      continue;
     }
 
-    if (next && similarBpm(next, b)) {
-      return building.concat({
-        ...b,
-        endOffset: next.endOffset,
-      });
-    }
-
-    return building.concat(b);
-  }, []);
+    merged.push({ ...current });
+  }
+  return merged;
 }

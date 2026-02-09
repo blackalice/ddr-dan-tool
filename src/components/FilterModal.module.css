@@ -6,6 +6,38 @@
   gap: 1.5rem;
 }
 
+.pageTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.pageTab {
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  color: var(--text-muted);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.pageTab:hover {
+  background: var(--modal-control-bg-hover, rgba(255, 255, 255, 0.06));
+  color: var(--text-color);
+}
+
+.pageTabActive {
+  background: color-mix(in srgb, var(--accent-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--accent-color) 70%, black);
+  color: var(--text-color);
+}
+
+.pageTabHasActive {
+  box-shadow: 0 0 0 1px rgba(var(--accent-color-rgb), 0.45);
+}
+
 .columns {
   display: flex;
   flex-direction: column;
@@ -102,6 +134,57 @@
   border-radius: var(--radius-sm);
 }
 
+.advancedLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.advancedSections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.advancedSection {
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md);
+  background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.advancedSection > h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.advancedMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.advancedMetric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.advancedMetric > label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.metricHint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
 .halfWidthContainer {
   display: flex;
   gap: 1rem;
@@ -185,10 +268,18 @@
   .gameCheckboxes {
     flex-grow: 1;
   }
+
+  .advancedMetricGrid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 640px) {
   .halfWidthContainer {
     flex-direction: column;
+  }
+
+  .advancedMetricGrid {
+    grid-template-columns: 1fr;
   }
 }

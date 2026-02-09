@@ -21,6 +21,8 @@ const SONG_LENGTHS_PATH = path.join(GENERATED_DIR, 'song-lengths.json')
 const AUDIO_MAP_PATH = path.join(GENERATED_DIR, 'audio-lengths.json')
 const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'song-lengths.json')
 const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1'
+const MIN_REASONABLE_SONG_SECONDS = 10
+const MAX_REASONABLE_SONG_SECONDS = 60 * 60
 
 const toSimfilePath = (publicPath) => {
   const normalized = String(publicPath || '').replace(/\\/g, '/')
@@ -29,6 +31,11 @@ const toSimfilePath = (publicPath) => {
 }
 
 const toFixed = (n, d = 2) => Number.isFinite(n) ? Number(n.toFixed(d)) : 0
+
+function isReasonableSongLength(seconds) {
+  const n = Number(seconds)
+  return Number.isFinite(n) && n >= MIN_REASONABLE_SONG_SECONDS && n <= MAX_REASONABLE_SONG_SECONDS
+}
 
 function timeAtOffset(bpmRanges, stops, targetOffset) {
   if (!Array.isArray(bpmRanges) || bpmRanges.length === 0) return 0
@@ -76,6 +83,7 @@ async function main() {
     await fs.mkdir(GENERATED_DIR, { recursive: true })
     const inputStats = mergeStats(
       await collectStats([SM_FILES_PATH, AUDIO_MAP_PATH], ROOT),
+      await collectStats([path.join(ROOT, 'scripts', 'generate-song-lengths.mjs')], ROOT),
     )
     const { skip, reason } = await shouldSkipBuild({
       cachePath: CACHE_PATH,
@@ -107,15 +115,22 @@ async function main() {
       // Always use the source simfile for calculations (audio lengths still come from data/generated)
       let sim
       try { sim = parseSm(text) } catch (e) { console.warn('Failed to parse', file.path); continue }
-      const override = audioMap[file.path]?.lengthSeconds
-      if (override && override > 0) {
+      const override = Number(audioMap[file.path]?.lengthSeconds)
+      if (isReasonableSongLength(override)) {
         lengthsOut[file.path] = { seconds: toFixed(override, 3), roundedSeconds: Math.round(override) }
         continue
+      }
+      if (Number.isFinite(override) && override > 0 && !isReasonableSongLength(override)) {
+        console.warn(`Ignoring implausible audio length for ${file.path}: ${override}`)
       }
       for (const at of sim.availableTypes) {
         const chart = sim.charts[at.slug]
         if (!chart) continue
-        const secUsed = computeSongSeconds(chart) || 0
+        const rawSec = computeSongSeconds(chart) || 0
+        const secUsed = isReasonableSongLength(rawSec) ? rawSec : 0
+        if (rawSec > 0 && secUsed === 0) {
+          console.warn(`Ignoring implausible computed chart length for ${file.path} (${at.slug}): ${rawSec}`)
+        }
         // Store per-simfile length (seconds + rounded) for deployment
         if (!lengthsOut[file.path]) {
           lengthsOut[file.path] = { seconds: toFixed(secUsed, 3), roundedSeconds: Math.round(secUsed) }

@@ -7,7 +7,6 @@ import { buildChartId } from '../src/utils/chartIds.js';
 import { computeItgmaniaTechCounts } from './itgmania-tech-counts.mjs';
 import {
   collectStats,
-  collectTreeStats,
   mergeStats,
   shouldSkipBuild,
   writeCache,
@@ -50,8 +49,21 @@ function toNonNegativeInt(value) {
   return Math.round(n);
 }
 
+function toNonNegativeNumber(value, precision = 3) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n < 0) return null;
+  const factor = 10 ** precision;
+  return Math.round(n * factor) / factor;
+}
+
 function putCount(target, key, value) {
   const n = toNonNegativeInt(value);
+  if (n === null) return;
+  target[key] = n;
+}
+
+function putMeasure(target, key, value, precision = 3) {
+  const n = toNonNegativeNumber(value, precision);
   if (n === null) return;
   target[key] = n;
 }
@@ -70,6 +82,7 @@ function buildCounts(metrics, itgTech) {
   putCount(counts, 'quads', metrics?.quads);
   putCount(counts, 'holds', metrics?.holds);
   putCount(counts, 'shocks', metrics?.shocks);
+  putCount(counts, 'stops', debugStats.stops);
 
   // Footwork patterns
   putCount(counts, 'crossovers', debugStats.crossovers);
@@ -105,6 +118,17 @@ function buildCounts(metrics, itgTech) {
   putCount(counts, 'bursts', debugStats.bursts);
   putCount(counts, 'technicalMoves', debugStats.technicalMoves);
 
+  // Density metrics (float values)
+  putMeasure(counts, 'notesPerSecond', debugStats.notesPerSecond, 3);
+  putMeasure(counts, 'stepsPerSecond', debugStats.stepsPerSecond, 3);
+  putMeasure(counts, 'maximumNotesPerSecond', debugStats.maximumNotesPerSecond, 3);
+  putMeasure(counts, 'meanNotesPerSecond', debugStats.meanNotesPerSecond, 3);
+  putMeasure(counts, 'medianNotesPerSecond', debugStats.medianNotesPerSecond, 3);
+  putMeasure(counts, 'fastest3NoteBurst', debugStats.fastest3NoteBurst, 3);
+  putMeasure(counts, 'fastest7NoteRun', debugStats.fastest7NoteRun, 3);
+  putMeasure(counts, 'fastest15NoteRun', debugStats.fastest15NoteRun, 3);
+  putMeasure(counts, 'maxTimeBetweenNotes', debugStats.maxTimeBetweenNotes, 3);
+
   // Prefer ITGmania StepParity/TechCounts for overlapping categories.
   if (itgTech && typeof itgTech === 'object') {
     putCount(counts, 'crossovers', itgTech.crossovers);
@@ -139,11 +163,13 @@ async function main() {
   await fs.mkdir(GENERATED_DIR, { recursive: true });
 
   const inputStats = mergeStats(
+    // Rely on generate-sm-list cache rules for raw simfile change detection.
     await collectStats([SM_FILES_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
-    await collectTreeStats(SIMFILES_DIR, (p) => /\.(sm|ssc)$/i.test(p), ROOT_DIR),
     await collectStats(
       [
+        path.join(ROOT_DIR, 'scripts', 'extract-stepmania-tech-counts.mjs'),
         path.join(ROOT_DIR, 'src', 'utils', 'smParser.js'),
+        path.join(ROOT_DIR, 'src', 'utils', 'smParserUtils.js'),
         path.join(ROOT_DIR, 'src', 'utils', 'chartMetrics.js'),
         path.join(ROOT_DIR, 'scripts', 'itgmania-tech-counts.mjs'),
       ],

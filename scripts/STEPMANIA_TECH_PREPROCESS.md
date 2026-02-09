@@ -34,6 +34,14 @@ Compatibility aliases are also written:
 - `TechCountsCategory_Brackets`
 - `TechCountsCategory_Doublesteps`
 
+## Licensing Note
+
+`scripts/itgmania-tech-counts.mjs` is a derived JS port of ITGmania/StepMania
+StepParity/TechCounts logic. See:
+
+- `LICENSE`
+- `THIRD_PARTY_NOTICES.md`
+
 ## Merge Into Song Metadata
 
 `generate-song-meta.mjs` reads `data/generated/stepmania-tech-counts.json` and merges matched counts into:

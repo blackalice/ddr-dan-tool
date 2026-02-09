@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +27,7 @@ import { getJsonCached } from "./utils/cachedFetch.js";
 import { storage } from "./utils/remoteStorage.js";
 import { useOfflineMode } from "./hooks/useOfflineMode.js";
 import { getDifficultyBucketValue, getDifficultyValue, isDifficultyAllowed } from "./utils/difficultyFilters.js";
+import { ADVANCED_FILTER_METRICS, chartMatchesAdvancedFilters, hasActiveAdvancedFilters } from "./utils/advancedStatsFilters.js";
 import "./CardDrawPage.css";
 import settingsStyles from "./components/CardDrawSettingsModal.module.css";
 
@@ -357,6 +358,8 @@ const CardDrawPage = ({ smData }) => {
   const [draftWeightedDistribution, setDraftWeightedDistribution] = useState(weightedDistribution);
   const [draftSortByLevel, setDraftSortByLevel] = useState(sortByLevel);
   const [activeCardContext, setActiveCardContext] = useState(null);
+  const filterCountsCacheRef = useRef(new Map());
+  const metricBoundsCacheRef = useRef(new Map());
   const [pocketPickState, setPocketPickState] = useState(null);
   const [pocketPickSong, setPocketPickSong] = useState(null);
   const [pocketPickChart, setPocketPickChart] = useState(null);
@@ -528,11 +531,49 @@ const CardDrawPage = ({ smData }) => {
       (filters.title && filters.title !== "") ||
       filters.multiBpm !== "any" ||
       filters.playedStatus !== "all" ||
-      (showRankedRatings && (filters.rankedFractionMin !== "" || filters.rankedFractionMax !== "")),
+      (showRankedRatings && (filters.rankedFractionMin !== "" || filters.rankedFractionMax !== "")) ||
+      hasActiveAdvancedFilters(filters),
   );
+  const buildFilterCacheKey = useCallback((currentFilters = {}) => {
+    const normalized = {
+      bpmMin: currentFilters?.bpmMin ?? "",
+      bpmMax: currentFilters?.bpmMax ?? "",
+      difficultyMin: currentFilters?.difficultyMin ?? "",
+      difficultyMax: currentFilters?.difficultyMax ?? "",
+      rankedFractionMin: currentFilters?.rankedFractionMin ?? "",
+      rankedFractionMax: currentFilters?.rankedFractionMax ?? "",
+      lengthMin: currentFilters?.lengthMin ?? "",
+      lengthMax: currentFilters?.lengthMax ?? "",
+      artist: (currentFilters?.artist || "").toLowerCase(),
+      title: (currentFilters?.title || "").toLowerCase(),
+      multiBpm: currentFilters?.multiBpm ?? "any",
+      playedStatus: currentFilters?.playedStatus ?? "all",
+      games: Array.isArray(currentFilters?.games) ? [...currentFilters.games].sort() : [],
+      difficultyNames: Array.isArray(currentFilters?.difficultyNames)
+        ? [...currentFilters.difficultyNames].map((n) => n.toLowerCase()).sort()
+        : [],
+    };
+    ADVANCED_FILTER_METRICS.forEach((metric) => {
+      normalized[`${metric.key}Min`] = currentFilters?.[`${metric.key}Min`] ?? "";
+      normalized[`${metric.key}Max`] = currentFilters?.[`${metric.key}Max`] ?? "";
+    });
+    return JSON.stringify(normalized);
+  }, []);
+  const setCachedResult = (cache, key, value) => {
+    cache.set(key, value);
+    const maxEntries = 24;
+    if (cache.size > maxEntries) {
+      const firstKey = cache.keys().next().value;
+      if (firstKey !== undefined) cache.delete(firstKey);
+    }
+    return value;
+  };
 
   const getFilterCounts = useCallback((currentFilters) => {
     if (!songMeta.length) return null;
+    const cacheKey = `counts|${playStyle}|${showRankedRatings ? "1" : "0"}|${buildFilterCacheKey(currentFilters)}`;
+    const cached = filterCountsCacheRef.current.get(cacheKey);
+    if (cached) return cached;
 
     const gamesFilter = Array.isArray(currentFilters?.games) ? currentFilters.games : [];
     const diffNames = Array.isArray(currentFilters?.difficultyNames) ? currentFilters.difficultyNames : [];
@@ -547,6 +588,7 @@ const CardDrawPage = ({ smData }) => {
     const playedStatusFilter = currentFilters?.playedStatus ?? "all";
     const rankedFractionMinFilter = currentFilters?.rankedFractionMin ?? "";
     const rankedFractionMaxFilter = currentFilters?.rankedFractionMax ?? "";
+    const advancedFiltersActive = hasActiveAdvancedFilters(currentFilters);
 
     let total = 0;
     let filtered = 0;
@@ -616,7 +658,12 @@ const CardDrawPage = ({ smData }) => {
           return false;
         }
         if (lowerCaseFilterNames.length > 0) {
-          return lowerCaseFilterNames.includes(d.difficulty.toLowerCase());
+          if (!lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) {
+            return false;
+          }
+        }
+        if (advancedFiltersActive && !chartMatchesAdvancedFilters(d, currentFilters)) {
+          return false;
         }
         return true;
       });
@@ -626,7 +673,157 @@ const CardDrawPage = ({ smData }) => {
       chartsFiltered += matchingCharts.length;
     });
 
-    return { filtered, total, chartsFiltered, chartsTotal };
+    return setCachedResult(
+      filterCountsCacheRef.current,
+      cacheKey,
+      { filtered, total, chartsFiltered, chartsTotal },
+    );
+  }, [songMeta, overrideSongs, playStyle, scores, showRankedRatings, buildFilterCacheKey]);
+
+  const getMetricBounds = useCallback((currentFilters) => {
+    if (!songMeta.length) return null;
+    const cacheKey = `bounds|${playStyle}|${showRankedRatings ? "1" : "0"}|${buildFilterCacheKey(currentFilters)}`;
+    const cached = metricBoundsCacheRef.current.get(cacheKey);
+    if (cached) return cached;
+
+    const gamesFilter = Array.isArray(currentFilters?.games) ? currentFilters.games : [];
+    const diffNames = Array.isArray(currentFilters?.difficultyNames) ? currentFilters.difficultyNames : [];
+    const lowerCaseFilterNames = diffNames.map((n) => n.toLowerCase());
+    const artistFilter = (currentFilters?.artist || "").toLowerCase();
+    const titleFilter = (currentFilters?.title || "").toLowerCase();
+    const bpmMinFilter = currentFilters?.bpmMin ?? "";
+    const bpmMaxFilter = currentFilters?.bpmMax ?? "";
+    const lengthMinFilter = currentFilters?.lengthMin ?? "";
+    const lengthMaxFilter = currentFilters?.lengthMax ?? "";
+    const multiBpmFilter = currentFilters?.multiBpm ?? "any";
+    const playedStatusFilter = currentFilters?.playedStatus ?? "all";
+    const rankedFractionMinFilter = currentFilters?.rankedFractionMin ?? "";
+    const rankedFractionMaxFilter = currentFilters?.rankedFractionMax ?? "";
+
+    const bounds = ADVANCED_FILTER_METRICS.reduce((acc, metric) => {
+      acc[metric.key] = { min: Infinity, max: -Infinity, count: 0 };
+      return acc;
+    }, {});
+
+    songMeta.forEach((meta) => {
+      if (!meta) return;
+      if (gamesFilter.length && !gamesFilter.includes(meta.game)) return;
+      if (artistFilter && !meta.artist?.toLowerCase()?.includes(artistFilter)) return;
+      if (titleFilter) {
+        const titleMatch = meta.title?.toLowerCase()?.includes(titleFilter);
+        const translitMatch = meta.titleTranslit?.toLowerCase()?.includes(titleFilter);
+        if (!titleMatch && !translitMatch) return;
+      }
+      if (songlistOverrideHasEntries(overrideSongs)) {
+        if (!songlistOverrideMatches(overrideSongs, {
+          title: meta.title,
+          titleTranslit: meta.titleTranslit,
+          artist: meta.artist,
+          artistTranslit: meta.artistTranslit,
+          mode: playStyle,
+        })) {
+          return;
+        }
+      }
+      const bpmDiff = meta.bpmMax - meta.bpmMin;
+      const isSingleBpm = bpmDiff <= 5;
+      if (multiBpmFilter === "single" && !isSingleBpm) return;
+      if (multiBpmFilter === "multiple" && isSingleBpm) return;
+      if (bpmMinFilter !== "" && meta.bpmMax < Number(bpmMinFilter)) return;
+      if (bpmMaxFilter !== "" && meta.bpmMin > Number(bpmMaxFilter)) return;
+      if (lengthMinFilter !== "" && meta.length < Number(lengthMinFilter)) return;
+      if (lengthMaxFilter !== "" && meta.length > Number(lengthMaxFilter)) return;
+
+      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle);
+      if (!chartsInMode.length) return;
+
+      if (playedStatusFilter !== "all") {
+        const hasPlayed = chartsInMode.some((d) => {
+          const scoreHit = resolveScore(scores, d.mode, {
+            chartId: d.chartId,
+            songId: meta.id,
+            title: meta.title,
+            artist: meta.artist,
+            difficulty: d.difficulty,
+          });
+          return scoreHit != null;
+        });
+        if (playedStatusFilter === "played" && !hasPlayed) return;
+        if (playedStatusFilter === "notPlayed" && hasPlayed) return;
+      }
+
+      chartsInMode.forEach((d) => {
+        const difficultyValue = getDifficultyValue(d, showRankedRatings);
+        if (!isDifficultyAllowed(
+          difficultyValue,
+          currentFilters?.difficultyMin,
+          currentFilters?.difficultyMax,
+          showRankedRatings,
+          rankedFractionMinFilter,
+          rankedFractionMaxFilter,
+        )) {
+          return;
+        }
+        if (lowerCaseFilterNames.length > 0 && !lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) {
+          return;
+        }
+        if (playedStatusFilter !== "all") {
+          const scoreHit = resolveScore(scores, d.mode, {
+            chartId: d.chartId,
+            songId: meta.id,
+            title: meta.title,
+            artist: meta.artist,
+            difficulty: d.difficulty,
+          });
+          const hasScore = scoreHit != null;
+          if (playedStatusFilter === "played" && !hasScore) return;
+          if (playedStatusFilter === "notPlayed" && hasScore) return;
+        }
+
+        const failingMetricKeys = [];
+        ADVANCED_FILTER_METRICS.forEach((metric) => {
+          const minRaw = currentFilters?.[`${metric.key}Min`] ?? "";
+          const maxRaw = currentFilters?.[`${metric.key}Max`] ?? "";
+          if (minRaw === "" && maxRaw === "") return;
+          const value = Number(d?.stepmaniaTech?.[metric.key]);
+          const safeValue = Number.isFinite(value) ? value : 0;
+          if (minRaw !== "" && safeValue < Number(minRaw)) {
+            failingMetricKeys.push(metric.key);
+            return;
+          }
+          if (maxRaw !== "" && safeValue > Number(maxRaw)) {
+            failingMetricKeys.push(metric.key);
+          }
+        });
+        const failedCount = failingMetricKeys.length;
+        const singleFailedKey = failedCount === 1 ? failingMetricKeys[0] : null;
+
+        ADVANCED_FILTER_METRICS.forEach((metric) => {
+          if (failedCount > 1) return;
+          if (failedCount === 1 && singleFailedKey !== metric.key) return;
+          const value = Number(d?.stepmaniaTech?.[metric.key]);
+          const safeValue = Number.isFinite(value) ? value : 0;
+          const entry = bounds[metric.key];
+          entry.min = Math.min(entry.min, safeValue);
+          entry.max = Math.max(entry.max, safeValue);
+          entry.count += 1;
+        });
+      });
+    });
+
+    ADVANCED_FILTER_METRICS.forEach((metric) => {
+      const entry = bounds[metric.key];
+      if (!entry || entry.count === 0) {
+        bounds[metric.key] = { min: null, max: null, count: 0 };
+      }
+    });
+
+    return setCachedResult(metricBoundsCacheRef.current, cacheKey, bounds);
+  }, [songMeta, overrideSongs, playStyle, scores, showRankedRatings, buildFilterCacheKey]);
+
+  useEffect(() => {
+    filterCountsCacheRef.current.clear();
+    metricBoundsCacheRef.current.clear();
   }, [songMeta, overrideSongs, playStyle, scores, showRankedRatings]);
 
   const filteredEntries = useMemo(() => {
@@ -634,6 +831,7 @@ const CardDrawPage = ({ smData }) => {
     const lowerCaseFilterNames = (filters.difficultyNames || []).map((n) =>
       n.toLowerCase(),
     );
+    const advancedFiltersActive = hasActiveAdvancedFilters(filters);
 
     return songMeta
       .filter((meta) => {
@@ -720,6 +918,9 @@ const CardDrawPage = ({ smData }) => {
             if (!lowerCaseFilterNames.includes(d.difficulty.toLowerCase())) {
               return false;
             }
+          }
+          if (advancedFiltersActive && !chartMatchesAdvancedFilters(d, filters)) {
+            return false;
           }
           return true;
         });
@@ -2249,6 +2450,7 @@ const CardDrawPage = ({ smData }) => {
         games={games}
         showLists={false}
         getCounts={getFilterCounts}
+        getMetricBounds={getMetricBounds}
       />
     </div>
   );

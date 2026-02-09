@@ -416,7 +416,8 @@ app.get('/api/song-length', async (c) => {
     const map = await getSongLengths(c)
     const entry = map[smPath]
     if (!entry) return c.json({ error: 'not found' }, 404)
-    const seconds = Number(entry.seconds || entry.roundedSeconds || 0)
+    const candidates = [Number(entry.seconds), Number(entry.roundedSeconds)]
+    const seconds = candidates.find((v) => Number.isFinite(v) && v > 0 && v <= 60 * 60) || 0
     const body = JSON.stringify({ seconds, roundedSeconds: Math.round(seconds) })
     const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=604800, stale-while-revalidate=604800' })
     const res = new Response(body, { status: 200, headers })
