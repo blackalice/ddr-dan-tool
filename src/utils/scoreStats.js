@@ -56,6 +56,24 @@ const normaliseLevel = (value) => {
   return level;
 };
 
+const normaliseBpm = (value) => {
+  const bpm = Number(value);
+  if (!Number.isFinite(bpm) || bpm <= 0) return null;
+  return bpm;
+};
+
+const normaliseCount = (value) => {
+  const count = Number(value);
+  if (!Number.isFinite(count) || count < 0) return null;
+  return count;
+};
+
+const normaliseRate = (value) => {
+  const rate = Number(value);
+  if (!Number.isFinite(rate) || rate < 0) return null;
+  return rate;
+};
+
 const addKey = (map, key, entry) => {
   if (typeof key !== 'string') return;
   const trimmed = key.trim();
@@ -79,6 +97,10 @@ export function buildChartMetaLookup(songMeta) {
       const entry = {
         level,
         mode: normalizedMode,
+        bpmMin: normaliseBpm(diff?.bpmMin ?? song?.bpmMin),
+        bpmMax: normaliseBpm(diff?.bpmMax ?? song?.bpmMax),
+        crossovers: normaliseCount(diff?.stepmaniaTech?.crossovers ?? diff?.crossovers),
+        notesPerSecond: normaliseRate(diff?.stepmaniaTech?.notesPerSecond ?? diff?.notesPerSecond),
       };
 
       const chartId = diff?.chartId;
