@@ -4,8 +4,8 @@ const LOGO_EXTS = ['png', 'jpg', 'jpeg', 'webp'];
 
 function buildLogoCandidates(name) {
   if (!name) return [];
-  const base = encodeURIComponent(name);
-  return LOGO_EXTS.map((ext) => `/img/logos/${base}.${ext}`);
+  const mix = encodeURIComponent(name);
+  return LOGO_EXTS.map((ext) => `/sm/${mix}/${mix}.${ext}`);
 }
 
 export default function GameLogo({

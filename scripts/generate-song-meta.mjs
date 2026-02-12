@@ -97,11 +97,14 @@ const GENERATED_DIR = path.join(DATA_DIR, 'generated');
 const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
 const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
 const OUTPUT_PATH = path.join(GENERATED_DIR, 'song-meta.json');
+const SONG_LENGTHS_PATH = path.join(GENERATED_DIR, 'song-lengths.json');
 const COMBINED_RATINGS_PATH = path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json');
 const STEPMANIA_TECH_COUNTS_PATH = path.join(GENERATED_DIR, 'stepmania-tech-counts.json');
 const SONG_ID_MAP_PATH = path.join(DATA_DIR, 'song-ids.json');
 const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'song-meta.json');
 const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
+const MIN_REASONABLE_SONG_SECONDS = 10;
+const MAX_REASONABLE_SONG_SECONDS = 60 * 60;
 
 const toSimfilePath = (publicPath) => {
   const normalized = String(publicPath || '').replace(/\\/g, '/');
@@ -281,11 +284,25 @@ function buildPathModeDifficultyKey(songPath, mode, difficulty) {
   return `${p}|${m}|${d}`;
 }
 
+function pickAudioDerivedLength(songLengths, songPath) {
+  const entry = songLengths?.[songPath];
+  if (!entry || typeof entry !== 'object') return null;
+  const preferred = Number(entry.roundedSeconds);
+  if (Number.isFinite(preferred) && preferred >= MIN_REASONABLE_SONG_SECONDS && preferred <= MAX_REASONABLE_SONG_SECONDS) {
+    return preferred;
+  }
+  const secondary = Number(entry.seconds);
+  if (Number.isFinite(secondary) && secondary >= MIN_REASONABLE_SONG_SECONDS && secondary <= MAX_REASONABLE_SONG_SECONDS) {
+    return Math.round(secondary);
+  }
+  return null;
+}
+
 async function main() {
   try {
     await fs.mkdir(GENERATED_DIR, { recursive: true });
     const inputStats = mergeStats(
-      await collectStats([SM_FILES_PATH, COMBINED_RATINGS_PATH, STEPMANIA_TECH_COUNTS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
+      await collectStats([SM_FILES_PATH, SONG_LENGTHS_PATH, COMBINED_RATINGS_PATH, STEPMANIA_TECH_COUNTS_PATH, SONG_ID_MAP_PATH], ROOT_DIR),
     );
     const { skip, reason } = await shouldSkipBuild({
       cachePath: CACHE_PATH,
@@ -298,6 +315,7 @@ async function main() {
       return;
     }
     const smList = await readJson(SM_FILES_PATH);
+    const songLengths = await readJson(SONG_LENGTHS_PATH).catch(() => ({}));
     const combinedRatings = await readJson(COMBINED_RATINGS_PATH).catch(() => []);
     const stepmaniaTechData = await readJson(STEPMANIA_TECH_COUNTS_PATH).catch(() => null);
     const stepmaniaByChartId = stepmaniaTechData?.countsByChartId && typeof stepmaniaTechData.countsByChartId === 'object'
@@ -364,7 +382,9 @@ async function main() {
             referenceChart = simfile.charts[key];
           }
         }
-        const length = calculateSongLength(referenceChart.bpm, lastBeat, referenceChart.stops);
+        const computedLength = calculateSongLength(referenceChart.bpm, lastBeat, referenceChart.stops);
+        const audioDerivedLength = pickAudioDerivedLength(songLengths, file.path);
+        const length = audioDerivedLength ?? computedLength;
 
         results.push({
           id: songId,

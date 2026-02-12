@@ -28,6 +28,26 @@ const isSmOrJacket = (filePath) => {
     return /-jacket\.(png|jpg|jpeg|webp)$/i.test(filePath);
 };
 
+const JACKET_EXTENSION_PRIORITY = {
+    '.webp': 0,
+    '.png': 1,
+    '.jpg': 2,
+    '.jpeg': 3,
+};
+
+function pickPreferredJacket(files) {
+    return files
+        .filter((f) => /-jacket\.(png|jpg|jpeg|webp)$/i.test(f))
+        .sort((a, b) => {
+            const extA = path.extname(a).toLowerCase();
+            const extB = path.extname(b).toLowerCase();
+            const priA = JACKET_EXTENSION_PRIORITY[extA] ?? 99;
+            const priB = JACKET_EXTENSION_PRIORITY[extB] ?? 99;
+            if (priA !== priB) return priA - priB;
+            return a.localeCompare(b);
+        })[0] || null;
+}
+
 function toPublicSmPath(relativePath) {
     const normalized = relativePath.replace(/\\/g, '/');
     return `sm/${normalized}`;
@@ -51,7 +71,7 @@ function findSongFiles(dir, baseDir) {
             let jacket = null;
             try {
                 const dirItems = fs.readdirSync(songDir);
-                const jacketFile = dirItems.find((f) => /-jacket\.(png|jpg|jpeg|webp)$/i.test(f));
+                const jacketFile = pickPreferredJacket(dirItems);
                 if (jacketFile) {
                     jacket = path.relative(baseDir, path.join(songDir, jacketFile)).replace(/\\/g, '/');
                 }

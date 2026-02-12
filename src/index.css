@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap');
-
 /* Set base font properties and cross-browser rendering niceties. */
 :root {
   font-family: 'DM Sans', 'Inter', 'Segoe UI', Arial, sans-serif;

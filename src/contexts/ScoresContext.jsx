@@ -178,9 +178,6 @@ export const ScoresProvider = ({ children }) => {
   const chartMetaPromiseRef = useRef(null);
   const scoresRef = useRef(scores);
   const statsDirtyRef = useRef(true);
-  const autoStatsControllerRef = useRef(null);
-  const statsRetryTimerRef = useRef(null);
-  const [statsRetryToken, setStatsRetryToken] = useState(0);
 
   useEffect(() => {
     const payload = JSON.stringify(scores);
@@ -375,59 +372,15 @@ export const ScoresProvider = ({ children }) => {
     return runStatsComputation(options);
   }, [runStatsComputation, stats]);
 
-  useEffect(() => {
-    if (!statsDirtyRef.current) return;
-
-    if (autoStatsControllerRef.current && typeof autoStatsControllerRef.current.abort === 'function') {
-      autoStatsControllerRef.current.abort();
-    }
-
-    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    if (controller) {
-      autoStatsControllerRef.current = controller;
-    } else {
-      autoStatsControllerRef.current = null;
-    }
-
-    if (statsRetryTimerRef.current) {
-      clearTimeout(statsRetryTimerRef.current);
-      statsRetryTimerRef.current = null;
-    }
-
-    runStatsComputation({ signal: controller?.signal }).catch((err) => {
-      if (controller?.signal?.aborted) return;
-      if (statsRetryTimerRef.current) {
-        clearTimeout(statsRetryTimerRef.current);
-      }
-      const delay = err?.message?.includes('metadata') ? 750 : 1250;
-      statsRetryTimerRef.current = setTimeout(() => {
-        statsRetryTimerRef.current = null;
-        setStatsRetryToken(token => token + 1);
-      }, delay);
-    });
-
-    return () => {
-      if (autoStatsControllerRef.current === controller) {
-        autoStatsControllerRef.current = null;
-      }
-      if (controller && typeof controller.abort === 'function') {
-        controller.abort();
-      }
-      if (statsRetryTimerRef.current) {
-        clearTimeout(statsRetryTimerRef.current);
-        statsRetryTimerRef.current = null;
-      }
-    };
-  }, [scores, runStatsComputation, statsRetryToken]);
-
   const contextValue = useMemo(() => ({
     scores,
     setScores,
     stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
+    songMeta,
     ensureStats,
     loadChartMeta,
     loadSongMeta,
-  }), [scores, stats, ensureStats, loadChartMeta, loadSongMeta]);
+  }), [scores, stats, songMeta, ensureStats, loadChartMeta, loadSongMeta]);
 
   return (
     <ScoresContext.Provider value={contextValue}>

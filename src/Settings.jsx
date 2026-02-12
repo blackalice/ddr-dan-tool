@@ -19,6 +19,13 @@ import { useOfflineCache } from './hooks/useOfflineCache.js';
 
 const CHANGELOG_UPDATES = [
     {
+        date: 'Feb 9, 2026',
+        items: [
+            'Improved page load speed.',
+            'Improved advanced filters.',
+        ],
+    },
+    {
         date: 'Feb 8, 2026',
         items: [
             'Light mode now works properly.',

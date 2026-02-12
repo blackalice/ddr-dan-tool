@@ -20,7 +20,6 @@ const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1'
 
 const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
 const PUBLIC_SM_DIR = path.join(PUBLIC_DIR, 'sm');
-const ASSETS_DIR = path.join(DATA_DIR, 'assets');
 
 const ensureDir = (dir) => fs.mkdir(dir, { recursive: true });
 const pathExists = async (target) => {
@@ -66,12 +65,24 @@ async function main() {
   await ensureDir(PUBLIC_DIR);
 
   const isAllowedSimfileAsset = (src) => {
+    const relative = path.relative(SIMFILES_DIR, src);
+    const parts = relative.split(path.sep).filter(Boolean);
     const ext = path.extname(src).toLowerCase();
     if (ext === '.sm' || ext === '.ssc') {
       return true;
     }
     if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.webp') {
-      return /-jacket\.(png|jpg|jpeg|webp)$/i.test(src);
+      if (/-jacket\.(png|jpg|jpeg|webp)$/i.test(src)) {
+        return true;
+      }
+      // Allow one mix logo in the root of each mix folder:
+      // data/simfiles/<Mix>/<Mix>.<ext>
+      if (parts.length === 2) {
+        const mixName = parts[0];
+        const fileName = parts[1];
+        const baseName = path.basename(fileName, ext);
+        return baseName.toLowerCase() === mixName.toLowerCase();
+      }
     }
     return false;
   };
@@ -92,29 +103,23 @@ async function main() {
   const ddrVerSrc = (await pathExists(ddrVerNested)) ? ddrVerNested : ddrVerRoot;
   const ddrVerDest = path.join(PUBLIC_DIR, 'ddr-ver');
 
-  const logosSrc = path.join(ASSETS_DIR, 'logos');
-  const logosDest = path.join(PUBLIC_DIR, 'img', 'logos');
-  const hasLogos = await pathExists(logosSrc);
-
   const outputPaths = [
     ...filesToCopy.map(file => file.to),
     ddrVerDest,
     PUBLIC_SM_DIR,
-    ...(hasLogos ? [logosDest] : []),
   ];
 
   const inputStats = mergeStats(
     await collectStats(filesToCopy.map(file => file.from), ROOT_DIR),
     await collectTreeStats(ddrVerSrc, () => true, ROOT_DIR),
     await collectTreeStats(SIMFILES_DIR, isAllowedSimfileAsset, ROOT_DIR),
-    ...(hasLogos ? [await collectTreeStats(logosSrc, () => true, ROOT_DIR)] : []),
   );
 
   const { skip, reason } = await shouldSkipBuild({
     cachePath: CACHE_PATH,
     inputStats,
     outputPaths,
-    config: { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc), hasLogos },
+    config: { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc) },
     force: FORCE,
   });
   if (skip) {
@@ -136,13 +141,8 @@ async function main() {
   await resetDir(PUBLIC_SM_DIR);
   await copyDirFiltered(SIMFILES_DIR, PUBLIC_SM_DIR, isAllowedSimfileAsset);
 
-  if (hasLogos) {
-    await resetDir(logosDest);
-    await copyDirFiltered(logosSrc, logosDest, () => true);
-  }
-
   console.log('[sync-public-assets] completed');
-  await writeCache(CACHE_PATH, inputStats, { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc), hasLogos });
+  await writeCache(CACHE_PATH, inputStats, { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc) });
 }
 
 main().catch((err) => {

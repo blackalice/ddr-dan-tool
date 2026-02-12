@@ -247,7 +247,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const showLists = !!user;
     const { filters } = useFilters();
     const { groups, addChartToGroup, createGroup, addChartsToGroup } = useGroups();
-    const { scores, loadSongMeta } = useScores();
+    const { scores, loadSongMeta, songMeta } = useScores();
     const location = useLocation();
     const { offline } = useOfflineMode();
 
@@ -279,7 +279,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const [speedmod, setSpeedmod] = useState(1);
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [songMeta, setSongMeta] = useState([]);
     const [overrideSongs, setOverrideSongs] = useState(null);
     const [sortKey, setSortKey] = useState(() => storage.getItem('bpmSortKey') || 'title');
     const [sortAscending, setSortAscending] = useState(() => {
@@ -767,7 +766,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 if (secs && isFinite(secs) && secs > 0 && secs <= 60 * 60) setAudioSeconds(secs);
             })
             .catch(() => {});
-    }, [offline, simfileData?.music, simfileData?.path, simfileWithRatings]);
+    }, [offline, simfileData?.music, simfileData?.path]);
 
     useEffect(() => {
         if (location.state?.fromSongCard) {
@@ -776,14 +775,27 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [location.state?.fromSongCard]);
 
     useEffect(() => {
-        let cancelled = false;
-        loadSongMeta()
-            .then((meta) => {
-                if (!cancelled) setSongMeta(meta);
-            })
-            .catch(err => console.error('Failed to load song meta:', err));
+        let idleHandle = null;
+        let timeoutHandle = null;
+
+        const run = () => {
+            loadSongMeta()
+                .catch(err => console.error('Failed to load song meta:', err));
+        };
+
+        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+            idleHandle = window.requestIdleCallback(run, { timeout: 2000 });
+        } else {
+            timeoutHandle = window.setTimeout(run, 1200);
+        }
+
         return () => {
-            cancelled = true;
+            if (idleHandle != null && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+                window.cancelIdleCallback(idleHandle);
+            }
+            if (timeoutHandle != null) {
+                window.clearTimeout(timeoutHandle);
+            }
         };
     }, [loadSongMeta]);
 
@@ -1013,7 +1025,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 bpmDisplay: 'N/A',
                 coreBpm: null,
                 chartData: null,
-                songLength: 0,
+                songLength: null,
                 jacket: null,
             };
         }
@@ -1033,7 +1045,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         let display = 'N/A';
         let core = null;
         let data = null;
-        let length = 0;
+        let length = null;
         const jacketPath = metaEntry?.jacket || simfileWithRatings?.jacket || simfileData?.jacket || null;
 
         if (currentChart && simfileWithRatings.charts) {
@@ -1150,10 +1162,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         return result;
     }, [targetBPM, coreBpm, multipliers]);
 
+    const resolvedSongLength = (typeof songLength === 'number' && songLength > 0)
+        ? songLength
+        : audioSeconds;
+
 
     useEffect(() => {
         if (!smData.files.length) return;
         const advancedFiltersActive = hasActiveAdvancedFilters(filters);
+        const metaLoaded = songMeta.length > 0;
         let filteredFiles = smData.files;
         if (selectedGame !== 'all') {
             filteredFiles = filteredFiles.filter(file => file.path.startsWith(`sm/${selectedGame}/`));
@@ -1162,6 +1179,15 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const metaMap = new Map(songMeta.map(m => [m.path, m]));
 
         filteredFiles = filteredFiles.filter(file => {
+            if (!metaLoaded) {
+                if (filters.title) {
+                    const input = filters.title.toLowerCase();
+                    const titleMatch = file.title.toLowerCase().includes(input);
+                    const translitMatch = (file.titleTranslit || '').toLowerCase().includes(input);
+                    if (!titleMatch && !translitMatch) return false;
+                }
+                return true;
+            }
             const meta = metaMap.get(file.path);
             if (!meta) return false;
             if (songlistOverrideHasEntries(overrideSongs)) {
@@ -1706,7 +1732,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     coreCalculation={coreCalculation}
                     showAltCoreBpm={showAltCoreBpm}
                     setShowAltCoreBpm={setShowAltCoreBpm}
-                    songLength={audioSeconds ?? songLength}
+                    songLength={resolvedSongLength}
                     metrics={chartMetrics}
                     view={view}
                 />
@@ -1806,7 +1832,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                 ) : (
                     <ChartStatsPanel
                         metrics={chartMetrics}
-                        songLength={audioSeconds ?? songLength}
+                        songLength={resolvedSongLength}
                         chartLevel={currentChart?.feet}
                         levelStatMaxima={levelStatMaxima}
                     />
