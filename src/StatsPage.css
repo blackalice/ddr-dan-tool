@@ -132,6 +132,7 @@
 
 .stats-table .numeric {
   text-align: right;
+  font-weight: 700;
 }
 
 .stats-table tfoot tr {
@@ -163,6 +164,33 @@
   gap: 0.2rem;
   line-height: 1.2;
   font-size: 0.82rem;
+}
+
+.stats-number {
+  font-weight: 700;
+}
+
+.stats-perfect-cell {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.stats-song-link {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+  color: var(--accent-color);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.stats-song-link:hover {
+  color: var(--accent-color-light);
 }
 
 .stats-bpm-empty {

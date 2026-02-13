@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +14,14 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useAuth } from './contexts/AuthContext.jsx';
 import { LEVELS } from './utils/scoreStats.js';
 import { upgradeChartId } from './utils/chartIds.js';
+import {
+  SONGLIST_OVERRIDE_OPTIONS,
+  buildSonglistOverrideLookup,
+  songlistOverrideHasEntries,
+  songlistOverrideMatches,
+} from './utils/songlistOverrides.js';
+import { getJsonCached } from './utils/cachedFetch.js';
+import { buildBpmUrl } from './utils/urlState.js';
 import './StatsPage.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -59,6 +68,41 @@ const NPS_BUCKETS = [
   { label: '8.0+', min: 8.0, max: Infinity },
 ];
 
+const formatMetricValue = (value, digits = 1) => {
+  if (!Number.isFinite(value)) return 'N/A';
+  return value.toFixed(digits);
+};
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+const getRepresentativeBpm = (meta) => {
+  const bpmMin = Number(meta?.bpmMin);
+  const bpmMax = Number(meta?.bpmMax);
+  const hasMin = Number.isFinite(bpmMin) && bpmMin > 0;
+  const hasMax = Number.isFinite(bpmMax) && bpmMax > 0;
+  if (hasMin && hasMax) return (bpmMin + bpmMax) / 2;
+  if (hasMax) return bpmMax;
+  return hasMin ? bpmMin : NaN;
+};
+
+const PERFECT_FEATURES = [
+  { key: 'bpm', label: 'BPM', scale: 40, weight: 1.3, get: (meta) => getRepresentativeBpm(meta) },
+  { key: 'crossovers', label: 'XO', scale: 20, weight: 1.0, get: (meta) => Number(meta?.crossovers) },
+  { key: 'notesPerSecond', label: 'NPS', scale: 1.3, weight: 1.25, get: (meta) => Number(meta?.notesPerSecond) },
+  { key: 'jumps', label: 'Jumps', scale: 30, weight: 0.9, get: (meta) => Number(meta?.jumps) },
+  { key: 'holds', label: 'Holds', scale: 20, weight: 0.75, get: (meta) => Number(meta?.holds) },
+  { key: 'footswitches', label: 'Footswitches', scale: 10, weight: 0.8, get: (meta) => Number(meta?.footswitches) },
+  { key: 'doublesteps', label: 'Doublesteps', scale: 10, weight: 0.8, get: (meta) => Number(meta?.doublesteps) },
+  { key: 'streamNotes', label: 'Stream Notes', scale: 80, weight: 0.9, get: (meta) => Number(meta?.streamNotes) },
+];
+
+const stdDeviation = (values) => {
+  if (!Array.isArray(values) || values.length === 0) return 0;
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  const variance = values.reduce((sum, value) => sum + ((value - mean) ** 2), 0) / values.length;
+  return Math.sqrt(variance);
+};
+
 const parseScoreValue = (value) => {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string') {
@@ -84,10 +128,19 @@ const readCssVariable = (name, fallback) => {
 };
 
 const StatsPage = () => {
-  const { playStyle, theme, worldDifficultyChanges, worldRemoveChallengeCharts } = useContext(SettingsContext);
+  const {
+    playStyle,
+    theme,
+    worldDifficultyChanges,
+    worldRemoveChallengeCharts,
+    songlistOverride,
+    showTransliterationBeta,
+  } = useContext(SettingsContext);
   const { stats, scores, ensureStats, loadChartMeta } = useScores();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
+  const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedStatView, setSelectedStatView] = useState('resultsByLevel');
 
   const normalizedPlayStyle = playStyle === 'double' ? 'double' : 'single';
@@ -132,6 +185,29 @@ const StatsPage = () => {
       controller?.abort();
     };
   }, [ensureStats, loadChartMeta, scores, user, worldDifficultyChanges, worldRemoveChallengeCharts]);
+
+  useEffect(() => {
+    const option = SONGLIST_OVERRIDE_OPTIONS.find((opt) => opt.value === songlistOverride);
+    if (!option?.file) {
+      setOverrideSongs(null);
+      return;
+    }
+    getJsonCached(option.file)
+      .then((data) => {
+        setOverrideSongs(buildSonglistOverrideLookup(data));
+      })
+      .catch(() => {
+        setOverrideSongs(null);
+      });
+  }, [songlistOverride]);
+
+  const openChartFromMeta = useCallback((meta) => {
+    if (!meta) return;
+    const songId = meta.path || meta.songId || null;
+    const chartId = meta.chartSlug || meta.chartId || null;
+    if (!songId) return;
+    navigate(buildBpmUrl({ pathname: '/bpm', songId, chartId }));
+  }, [navigate]);
 
   const scoredChartEntries = useMemo(() => {
     if (!chartMetaLookup || !(chartMetaLookup instanceof Map) || chartMetaLookup.size === 0) {
@@ -247,6 +323,285 @@ const StatsPage = () => {
   const hasCrossoverMappedScores = useMemo(() => crossoverByLevelRows.some((row) => row.total > 0), [crossoverByLevelRows]);
   const hasNpsMappedScores = useMemo(() => npsByLevelRows.some((row) => row.total > 0), [npsByLevelRows]);
   const bpmDataLoading = hasScores && chartMetaLookup.size === 0;
+
+  const perfectSongRows = useMemo(() => {
+    if (!chartMetaLookup || !(chartMetaLookup instanceof Map) || chartMetaLookup.size === 0) {
+      return [];
+    }
+
+    const playedByChartId = new Map();
+    for (const { meta, result } of scoredChartEntries) {
+      const key = meta?.chartId;
+      if (!key) continue;
+      playedByChartId.set(key, result);
+    }
+
+    const uniqueCharts = [];
+    const seen = new Set();
+    for (const meta of chartMetaLookup.values()) {
+      if (!meta || meta.mode !== normalizedPlayStyle) continue;
+      const key = meta.chartId || `${meta.songId || ''}:${meta.mode}:${meta.difficulty || ''}:${meta.level}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      uniqueCharts.push(meta);
+    }
+
+    return LEVELS.map((level) => {
+      const candidates = uniqueCharts.filter((meta) => Number(meta.level) === level);
+      if (!candidates.length) {
+        return {
+          level,
+          confidence: 0,
+          profile: null,
+          bestPlayed: null,
+          bestUnplayed: null,
+        };
+      }
+
+      const playedSamples = candidates
+        .map((meta) => {
+          const playedResult = meta.chartId ? playedByChartId.get(meta.chartId) : null;
+          const score = playedResult ? parseScoreValue(playedResult.score) : null;
+          return score != null ? { meta, score } : null;
+        })
+        .filter(Boolean);
+
+      if (!playedSamples.length) {
+        return {
+          level,
+          confidence: 0,
+          profile: null,
+          bestPlayed: null,
+          bestUnplayed: null,
+        };
+      }
+
+      playedSamples.sort((a, b) => b.score - a.score);
+      const topSampleCount = Math.max(5, Math.ceil(playedSamples.length * 0.35));
+      const topSamples = playedSamples.slice(0, topSampleCount);
+
+      const profile = {};
+      for (const feature of PERFECT_FEATURES) {
+        let weightedSum = 0;
+        let weightTotal = 0;
+        for (const sample of topSamples) {
+          const value = feature.get(sample.meta);
+          if (!Number.isFinite(value)) continue;
+          const scoreWeight = 0.35 + clamp((sample.score - 800000) / 200000, 0, 1);
+          weightedSum += value * scoreWeight;
+          weightTotal += scoreWeight;
+        }
+        profile[feature.key] = weightTotal > 0 ? weightedSum / weightTotal : null;
+      }
+
+      const featureCoverage = PERFECT_FEATURES.reduce((count, feature) => (
+        Number.isFinite(profile[feature.key]) ? count + 1 : count
+      ), 0);
+      if (featureCoverage < 4) {
+        return {
+          level,
+          confidence: 0,
+          profile,
+          bestPlayed: null,
+          bestUnplayed: null,
+        };
+      }
+
+      const topScores = topSamples.map((sample) => sample.score);
+      const sampleConfidence = Math.min(1, playedSamples.length / 14);
+      const coverageConfidence = featureCoverage / PERFECT_FEATURES.length;
+      const stabilityConfidence = 1 - Math.min(1, stdDeviation(topScores) / 70000);
+      const confidence = (
+        (sampleConfidence * 0.45)
+        + (coverageConfidence * 0.35)
+        + (stabilityConfidence * 0.2)
+      );
+
+      let bestPlayed = null;
+      let bestUnplayed = null;
+      let bestPlayedFit = -Infinity;
+      let bestUnplayedFit = -Infinity;
+
+      for (const meta of candidates) {
+        let fitSum = 0;
+        let fitWeight = 0;
+        let usedFeatures = 0;
+        for (const feature of PERFECT_FEATURES) {
+          const profileValue = profile[feature.key];
+          const candidateValue = feature.get(meta);
+          if (!Number.isFinite(profileValue) || !Number.isFinite(candidateValue)) continue;
+          const normalizedDiff = Math.abs(candidateValue - profileValue) / feature.scale;
+          const similarity = Math.exp(-normalizedDiff);
+          fitSum += similarity * feature.weight;
+          fitWeight += feature.weight;
+          usedFeatures += 1;
+        }
+        if (usedFeatures < 4 || fitWeight <= 0) continue;
+        const fit = fitSum / fitWeight;
+
+        const playedResult = meta.chartId ? playedByChartId.get(meta.chartId) : null;
+        const playedScore = playedResult ? parseScoreValue(playedResult.score) : null;
+        const payload = { meta, fit, playedScore, usedFeatures };
+        if (playedResult) {
+          const shouldReplace = !bestPlayed
+            || fit > bestPlayedFit
+            || (fit === bestPlayedFit && (playedScore ?? -1) > (bestPlayed?.playedScore ?? -1));
+          if (shouldReplace) {
+            bestPlayed = payload;
+            bestPlayedFit = fit;
+          }
+        } else {
+          if (songlistOverrideHasEntries(overrideSongs)) {
+            const matchesOverride = songlistOverrideMatches(overrideSongs, {
+              title: meta.title,
+              titleTranslit: meta.titleTranslit,
+              artist: meta.artist,
+              artistTranslit: meta.artistTranslit,
+              mode: normalizedPlayStyle,
+            });
+            if (!matchesOverride) continue;
+          }
+          const shouldReplace = !bestUnplayed
+            || fit > bestUnplayedFit;
+          if (shouldReplace) {
+            bestUnplayed = payload;
+            bestUnplayedFit = fit;
+          }
+        }
+      }
+
+      return {
+        level,
+        confidence,
+        profile,
+        bestPlayed,
+        bestUnplayed,
+      };
+    });
+  }, [
+    chartMetaLookup,
+    scoredChartEntries,
+    normalizedPlayStyle,
+    overrideSongs,
+  ]);
+
+  const hasPerfectSongData = useMemo(
+    () => perfectSongRows.some((row) => row.bestPlayed || row.bestUnplayed),
+    [perfectSongRows],
+  );
+
+  const struggleFeatureInsights = useMemo(() => {
+    const played = scoredChartEntries
+      .map(({ meta, result }) => {
+        const lamp = String(result?.lamp || '').toLowerCase();
+        const score = parseScoreValue(result?.score);
+        const fallback = lamp.includes('failed') ? 550000 : 720000;
+        return { meta, score: score ?? fallback };
+      })
+      .filter((entry) => entry?.meta);
+
+    if (played.length < 8) return null;
+    played.sort((a, b) => b.score - a.score);
+    const sampleSize = Math.max(4, Math.floor(played.length * 0.25));
+    const strong = played.slice(0, sampleSize);
+    const weak = played.slice(-sampleSize);
+
+    const insights = {};
+    for (const feature of PERFECT_FEATURES) {
+      const strongVals = strong.map((entry) => feature.get(entry.meta)).filter(Number.isFinite);
+      const weakVals = weak.map((entry) => feature.get(entry.meta)).filter(Number.isFinite);
+      if (!strongVals.length || !weakVals.length) continue;
+      const strongMean = strongVals.reduce((sum, value) => sum + value, 0) / strongVals.length;
+      const weakMean = weakVals.reduce((sum, value) => sum + value, 0) / weakVals.length;
+      insights[feature.key] = {
+        ...feature,
+        strongMean,
+        weakMean,
+        delta: weakMean - strongMean,
+      };
+    }
+    return insights;
+  }, [scoredChartEntries]);
+
+  const worstSongsRows = useMemo(() => {
+    if (!Array.isArray(scoredChartEntries) || !scoredChartEntries.length) return [];
+    if (!struggleFeatureInsights) return [];
+
+    const rows = [];
+    for (const { meta, result } of scoredChartEntries) {
+      if (songlistOverrideHasEntries(overrideSongs)) {
+        const matchesOverride = songlistOverrideMatches(overrideSongs, {
+          title: meta.title,
+          titleTranslit: meta.titleTranslit,
+          artist: meta.artist,
+          artistTranslit: meta.artistTranslit,
+          mode: normalizedPlayStyle,
+        });
+        if (!matchesOverride) continue;
+      }
+
+      const lamp = String(result?.lamp || '');
+      const lampLower = lamp.toLowerCase();
+      const numericScore = parseScoreValue(result?.score);
+      const scoreForCalc = numericScore ?? (lampLower.includes('failed') ? 550000 : 720000);
+      const scorePenalty = clamp((995000 - scoreForCalc) / 260000, 0, 2.2);
+      const lampPenalty = lampLower.includes('failed') ? 0.8 : (lampLower.includes('clear') ? 0.15 : 0);
+
+      let featurePenalty = 0;
+      const reasons = [];
+      for (const feature of PERFECT_FEATURES) {
+        const insight = struggleFeatureInsights[feature.key];
+        if (!insight) continue;
+        const value = feature.get(meta);
+        if (!Number.isFinite(value) || !Number.isFinite(insight.strongMean) || !Number.isFinite(insight.weakMean)) continue;
+
+        const closerToWeak = Math.abs(value - insight.strongMean) - Math.abs(value - insight.weakMean);
+        const normalized = clamp(closerToWeak / feature.scale, -1.2, 1.2);
+        const penalty = Math.max(0, normalized) * feature.weight;
+        if (penalty <= 0) continue;
+        featurePenalty += penalty;
+        reasons.push({
+          label: feature.label,
+          penalty,
+          value,
+          weak: insight.weakMean,
+          strong: insight.strongMean,
+        });
+      }
+
+      reasons.sort((a, b) => b.penalty - a.penalty);
+      const struggleIndex = (scorePenalty * 1.25) + lampPenalty + featurePenalty;
+      rows.push({
+        meta,
+        lamp: lamp || 'N/A',
+        score: numericScore,
+        struggleIndex,
+        reasons: reasons.slice(0, 3),
+      });
+    }
+
+    rows.sort((a, b) => {
+      if (b.struggleIndex !== a.struggleIndex) return b.struggleIndex - a.struggleIndex;
+      const scoreA = Number.isFinite(a.score) ? a.score : -1;
+      const scoreB = Number.isFinite(b.score) ? b.score : -1;
+      return scoreA - scoreB;
+    });
+    return rows.slice(0, 60);
+  }, [normalizedPlayStyle, overrideSongs, scoredChartEntries, struggleFeatureInsights]);
+
+  const struggleSummary = useMemo(() => {
+    if (!worstSongsRows.length) return [];
+    const weights = new Map();
+    for (const row of worstSongsRows.slice(0, 30)) {
+      for (const reason of row.reasons || []) {
+        weights.set(reason.label, (weights.get(reason.label) || 0) + reason.penalty);
+      }
+    }
+    return Array.from(weights.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([label]) => label);
+  }, [worstSongsRows]);
 
   const chartColors = useMemo(() => {
     const tooltipFallback = theme === 'light'
@@ -400,6 +755,8 @@ const StatsPage = () => {
                 <option value="bpmByLevel">BPM Ranges by Level</option>
                 <option value="crossoversByLevel">Amount of Crossovers by Level</option>
                 <option value="npsByLevel">Notes/Second by Level</option>
+                <option value="perfectSongByLevel">Perfect Song by Level</option>
+                <option value="worstSongs">Worst Songs (Your Struggle List)</option>
               </select>
             </div>
           </div>
@@ -501,8 +858,8 @@ const StatsPage = () => {
                             <td key={`${row.level}-${bucket.label}`} className={isBest ? 'stats-bpm-best' : ''}>
                               {bucket.count > 0 ? (
                                 <div className="stats-bpm-cell">
-                                  <span>{bucket.count} chart{bucket.count === 1 ? '' : 's'}</span>
-                                  <span>{bucket.avgScore != null ? `${Math.round(bucket.avgScore).toLocaleString()} avg` : 'No score'}</span>
+                                  <span><span className="stats-number">{bucket.count}</span> chart{bucket.count === 1 ? '' : 's'}</span>
+                                  <span>{bucket.avgScore != null ? <><span className="stats-number">{Math.round(bucket.avgScore).toLocaleString()}</span> avg</> : 'No score'}</span>
                                 </div>
                               ) : (
                                 <span className="stats-bpm-empty">-</span>
@@ -550,8 +907,8 @@ const StatsPage = () => {
                             <td key={`${row.level}-${bucket.label}`} className={isBest ? 'stats-bpm-best' : ''}>
                               {bucket.count > 0 ? (
                                 <div className="stats-bpm-cell">
-                                  <span>{bucket.count} chart{bucket.count === 1 ? '' : 's'}</span>
-                                  <span>{bucket.avgScore != null ? `${Math.round(bucket.avgScore).toLocaleString()} avg` : 'No score'}</span>
+                                  <span><span className="stats-number">{bucket.count}</span> chart{bucket.count === 1 ? '' : 's'}</span>
+                                  <span>{bucket.avgScore != null ? <><span className="stats-number">{Math.round(bucket.avgScore).toLocaleString()}</span> avg</> : 'No score'}</span>
                                 </div>
                               ) : (
                                 <span className="stats-bpm-empty">-</span>
@@ -568,7 +925,7 @@ const StatsPage = () => {
               <div className="stats-empty">No crossover-linked charts found yet for your {playStyleLabel} scores.</div>
             )}
           </section>
-        ) : (
+        ) : selectedStatView === 'npsByLevel' ? (
           <section className="stats-card">
             <div className="stats-card-header">
               <h2>Notes/Second by Level</h2>
@@ -599,8 +956,8 @@ const StatsPage = () => {
                             <td key={`${row.level}-${bucket.label}`} className={isBest ? 'stats-bpm-best' : ''}>
                               {bucket.count > 0 ? (
                                 <div className="stats-bpm-cell">
-                                  <span>{bucket.count} chart{bucket.count === 1 ? '' : 's'}</span>
-                                  <span>{bucket.avgScore != null ? `${Math.round(bucket.avgScore).toLocaleString()} avg` : 'No score'}</span>
+                                  <span><span className="stats-number">{bucket.count}</span> chart{bucket.count === 1 ? '' : 's'}</span>
+                                  <span>{bucket.avgScore != null ? <><span className="stats-number">{Math.round(bucket.avgScore).toLocaleString()}</span> avg</> : 'No score'}</span>
                                 </div>
                               ) : (
                                 <span className="stats-bpm-empty">-</span>
@@ -615,6 +972,159 @@ const StatsPage = () => {
               </div>
             ) : (
               <div className="stats-empty">No notes/second-linked charts found yet for your {playStyleLabel} scores.</div>
+            )}
+          </section>
+        ) : selectedStatView === 'perfectSongByLevel' ? (
+          <section className="stats-card">
+            <div className="stats-card-header">
+              <h2>Perfect Song by Level</h2>
+              <span className="stats-summary">Includes best unplayed match</span>
+            </div>
+            <p className="stats-subtitle">Per level, ideal buckets are built from your strongest averages (BPM, crossovers, notes/sec), then matched to the closest chart.</p>
+
+            {awaitingInitialStats || bpmDataLoading ? (
+              <div className="stats-empty">Loading perfect-song mapping…</div>
+            ) : hasPerfectSongData ? (
+              <div className="stats-table-wrapper">
+                <table className="stats-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Level</th>
+                      <th scope="col">Confidence</th>
+                      <th scope="col">Target Profile</th>
+                      <th scope="col">Best Played</th>
+                      <th scope="col">Best Unplayed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {perfectSongRows.map((row) => {
+                      const profile = row.profile || {};
+                      const renderChartCell = (entry) => {
+                        if (!entry?.meta) return <span className="stats-bpm-empty">-</span>;
+                        const displayTitle = showTransliterationBeta
+                          ? (entry.meta.titleTranslit || entry.meta.title)
+                          : entry.meta.title;
+                        const difficulty = entry.meta.difficulty ? entry.meta.difficulty.toUpperCase() : 'N/A';
+                        const bpmValue = getRepresentativeBpm(entry.meta);
+                        const xoValue = Number(entry.meta.crossovers);
+                        const npsValue = Number(entry.meta.notesPerSecond);
+                        const jumpsValue = Number(entry.meta.jumps);
+                        const streamNotesValue = Number(entry.meta.streamNotes);
+                        const scoreText = Number.isFinite(entry.playedScore)
+                          ? ` | Score ${Math.round(entry.playedScore).toLocaleString()}`
+                          : '';
+                        return (
+                          <div className="stats-bpm-cell stats-perfect-cell">
+                            <button
+                              type="button"
+                              className="stats-song-link"
+                              onClick={() => openChartFromMeta(entry.meta)}
+                              title="Open chart in BPM page"
+                            >
+                              {displayTitle} ({difficulty})
+                            </button>
+                            <span>
+                              BPM <span className="stats-number">{Number.isFinite(bpmValue) ? Math.round(bpmValue) : 'N/A'}</span> | XO <span className="stats-number">{Number.isFinite(xoValue) ? xoValue : 'N/A'}</span> | NPS <span className="stats-number">{formatMetricValue(npsValue)}</span> | Jumps <span className="stats-number">{Number.isFinite(jumpsValue) ? jumpsValue : 'N/A'}</span> | Stream <span className="stats-number">{Number.isFinite(streamNotesValue) ? streamNotesValue : 'N/A'}</span> | Fit <span className="stats-number">{entry.fit.toFixed(2)}</span> (<span className="stats-number">{entry.usedFeatures}</span>/8){scoreText}
+                            </span>
+                          </div>
+                        );
+                      };
+
+                      return (
+                        <tr key={row.level}>
+                          <th scope="row">Lv.{row.level}</th>
+                          <td><span className="stats-number">{Math.round((row.confidence || 0) * 100)}%</span></td>
+                          <td>
+                            <div className="stats-bpm-cell stats-perfect-cell">
+                              <span>
+                                BPM <span className="stats-number">{formatMetricValue(profile.bpm, 0)}</span> | XO <span className="stats-number">{formatMetricValue(profile.crossovers, 0)}</span> | NPS <span className="stats-number">{formatMetricValue(profile.notesPerSecond, 2)}</span>
+                              </span>
+                              <span>
+                                Jumps <span className="stats-number">{formatMetricValue(profile.jumps, 0)}</span> | Holds <span className="stats-number">{formatMetricValue(profile.holds, 0)}</span> | Footswitches <span className="stats-number">{formatMetricValue(profile.footswitches, 0)}</span> | Doublesteps <span className="stats-number">{formatMetricValue(profile.doublesteps, 0)}</span> | Stream <span className="stats-number">{formatMetricValue(profile.streamNotes, 0)}</span>
+                              </span>
+                            </div>
+                          </td>
+                          <td>{renderChartCell(row.bestPlayed)}</td>
+                          <td>{renderChartCell(row.bestUnplayed)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="stats-empty">Not enough scored charts yet to infer perfect-song profiles.</div>
+            )}
+          </section>
+        ) : (
+          <section className="stats-card">
+            <div className="stats-card-header">
+              <h2>Worst Songs</h2>
+              <span className="stats-summary">Ranked by struggle index</span>
+            </div>
+            <p className="stats-subtitle">
+              Uses score, lamp, and chart traits that align with your weaker patterns to find songs you currently struggle with most.
+              {struggleSummary.length > 0 ? ` Common struggle traits: ${struggleSummary.join(', ')}.` : ''}
+            </p>
+
+            {awaitingInitialStats || bpmDataLoading ? (
+              <div className="stats-empty">Loading struggle analysis…</div>
+            ) : worstSongsRows.length > 0 ? (
+              <div className="stats-table-wrapper">
+                <table className="stats-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Level</th>
+                      <th scope="col">Song</th>
+                      <th scope="col">Score</th>
+                      <th scope="col">Lamp</th>
+                      <th scope="col">Struggle</th>
+                      <th scope="col">Why</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {worstSongsRows.map((row) => {
+                      const displayTitle = showTransliterationBeta
+                        ? (row.meta.titleTranslit || row.meta.title)
+                        : row.meta.title;
+                      const difficulty = row.meta.difficulty ? row.meta.difficulty.toUpperCase() : 'N/A';
+                      return (
+                        <tr key={`${row.meta.chartId || row.meta.path || row.meta.title}-${difficulty}`}>
+                          <td className="numeric"><span className="stats-number">{row.meta.level}</span></td>
+                          <td>
+                            <button
+                              type="button"
+                              className="stats-song-link"
+                              onClick={() => openChartFromMeta(row.meta)}
+                              title="Open chart in BPM page"
+                            >
+                              {displayTitle} ({difficulty})
+                            </button>
+                          </td>
+                          <td className="numeric">
+                            {Number.isFinite(row.score)
+                              ? <span className="stats-number">{Math.round(row.score).toLocaleString()}</span>
+                              : 'N/A'}
+                          </td>
+                          <td>{row.lamp || 'N/A'}</td>
+                          <td className="numeric"><span className="stats-number">{row.struggleIndex.toFixed(2)}</span></td>
+                          <td>
+                            <div className="stats-bpm-cell stats-perfect-cell">
+                              {(row.reasons || []).length > 0 ? row.reasons.map((reason) => (
+                                <span key={`${row.meta.chartId || row.meta.path}-${reason.label}`}>
+                                  {reason.label} <span className="stats-number">{formatMetricValue(reason.value, reason.label === 'NPS' ? 2 : 0)}</span>
+                                </span>
+                              )) : <span className="stats-bpm-empty">Low score/lamp pressure</span>}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="stats-empty">Not enough scored charts yet to build your struggle list.</div>
             )}
           </section>
         )}

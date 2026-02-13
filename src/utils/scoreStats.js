@@ -94,23 +94,38 @@ export function buildChartMetaLookup(songMeta) {
       const level = normaliseLevel(diff?.feet);
       if (!level) continue;
 
+      const chartId = diff?.chartId;
+      const builtId = buildChartId(song?.id, normalizedMode, diff?.difficulty);
+      const normalizedDifficulty = String(diff?.difficulty || '').toLowerCase();
       const entry = {
+        chartId: chartId || builtId || null,
+        chartSlug: normalizedMode && normalizedDifficulty ? `${normalizedMode}-${normalizedDifficulty}` : null,
+        songId: song?.id || null,
+        path: song?.path || null,
+        title: song?.title || '',
+        titleTranslit: song?.titleTranslit || '',
+        artist: song?.artist || '',
+        artistTranslit: song?.artistTranslit || '',
+        difficulty: normalizedDifficulty,
         level,
         mode: normalizedMode,
         bpmMin: normaliseBpm(diff?.bpmMin ?? song?.bpmMin),
         bpmMax: normaliseBpm(diff?.bpmMax ?? song?.bpmMax),
         crossovers: normaliseCount(diff?.stepmaniaTech?.crossovers ?? diff?.crossovers),
         notesPerSecond: normaliseRate(diff?.stepmaniaTech?.notesPerSecond ?? diff?.notesPerSecond),
+        jumps: normaliseCount(diff?.stepmaniaTech?.jumps ?? diff?.jumps),
+        holds: normaliseCount(diff?.stepmaniaTech?.holds ?? diff?.holds),
+        footswitches: normaliseCount(diff?.stepmaniaTech?.footswitches ?? diff?.footswitches),
+        doublesteps: normaliseCount(diff?.stepmaniaTech?.doublesteps ?? diff?.doublesteps),
+        streamNotes: normaliseCount(diff?.stepmaniaTech?.streamNotes ?? diff?.streamNotes),
       };
 
-      const chartId = diff?.chartId;
       if (chartId) {
         addKey(map, chartId, entry);
         const upgraded = upgradeChartId(chartId);
         if (upgraded) addKey(map, upgraded, entry);
       }
 
-      const builtId = buildChartId(song?.id, normalizedMode, diff?.difficulty);
       if (builtId) addKey(map, builtId, entry);
 
       const withArtist = makeScoreKey({
