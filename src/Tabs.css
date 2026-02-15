@@ -211,8 +211,8 @@
 
 .mobile-menu-inner {
   background: var(--mobile-menu-bg, rgba(18, 18, 20, 0.98));
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-left: 1px solid var(--glass-border-effective);
   display: flex;
   flex-direction: column;

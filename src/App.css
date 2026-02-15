@@ -70,7 +70,7 @@ html {
   --shadow-lg: 0 14px 34px rgba(3, 8, 20, 0.34);
   --glass-bg: rgba(8, 14, 28, 0.62);
   --glass-border: rgba(177, 208, 255, 0.18);
-  --glass-blur: saturate(160%) blur(18px);
+  --glass-blur: saturate(140%) blur(12px);
   --tabs-bg-top: rgba(11, 20, 38, 0.9);
   --tabs-bg-bottom: rgba(11, 20, 38, 0.48);
   --mobile-menu-bg: rgba(8, 14, 28, 0.95);
@@ -146,7 +146,7 @@ html {
   --shadow-lg: 0 14px 34px rgba(16, 35, 61, 0.14);
   --glass-bg: rgba(251, 254, 255, 0.78);
   --glass-border: rgba(66, 98, 138, 0.18);
-  --glass-blur: saturate(135%) blur(16px);
+  --glass-blur: saturate(140%) blur(12px);
   --tabs-bg-top: rgba(245, 249, 255, 0.93);
   --tabs-bg-bottom: rgba(245, 249, 255, 0.5);
   --mobile-menu-bg: rgba(245, 250, 255, 0.98);
@@ -222,7 +222,7 @@ html {
   --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.36);
   --glass-bg: rgba(20, 13, 20, 0.64);
   --glass-border: rgba(255, 181, 94, 0.18);
-  --glass-blur: saturate(150%) blur(18px);
+  --glass-blur: saturate(140%) blur(12px);
   --tabs-bg-top: rgba(32, 23, 32, 0.92);
   --tabs-bg-bottom: rgba(32, 23, 32, 0.48);
   --mobile-menu-bg: rgba(24, 16, 24, 0.96);
@@ -288,7 +288,7 @@ html {
   --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.38);
   --glass-bg: rgba(23, 15, 30, 0.64);
   --glass-border: rgba(255, 176, 214, 0.22);
-  --glass-blur: saturate(165%) blur(18px);
+  --glass-blur: saturate(140%) blur(12px);
   --tabs-bg-top: rgba(33, 22, 43, 0.9);
   --tabs-bg-bottom: rgba(33, 22, 43, 0.46);
   --mobile-menu-bg: rgba(26, 18, 34, 0.96);
@@ -448,7 +448,7 @@ html {
   --shadow-lg: 0 14px 34px rgba(8, 3, 14, 0.38);
   --glass-bg: rgba(23, 10, 34, 0.64);
   --glass-border: rgba(245, 196, 255, 0.2);
-  --glass-blur: saturate(165%) blur(18px);
+  --glass-blur: saturate(140%) blur(12px);
   --tabs-bg-top: rgba(36, 20, 52, 0.9);
   --tabs-bg-bottom: rgba(36, 20, 52, 0.46);
   --mobile-menu-bg: rgba(27, 15, 39, 0.96);

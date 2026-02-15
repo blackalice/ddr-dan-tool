@@ -6,6 +6,31 @@
     position: relative;
     background-color: #f3f4f6; /* bg-gray-50 */
     z-index: 10;
+    /* Draw beat grid with layered gradients instead of hundreds of bar divs. */
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            #818cf8 0,
+            #818cf8 2px,
+            transparent 2px,
+            transparent var(--measure-height, 160px)
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            #60a5fa 0,
+            #60a5fa 1px,
+            transparent 1px,
+            transparent var(--bar-height, 40px)
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            #eef2ff 0,
+            #eef2ff var(--bar-height, 40px),
+            #f3f4f6 var(--bar-height, 40px),
+            #f3f4f6 calc(var(--bar-height, 40px) * 2)
+        );
+    content-visibility: auto;
+    contain-intrinsic-size: 640px;
 }
 
 .containerSingle {

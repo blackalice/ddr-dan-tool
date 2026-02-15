@@ -374,6 +374,11 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         mutedColor: '',
         gridColor: '',
     });
+    const chartDevicePixelRatio = useMemo(() => {
+        const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1;
+        if (isMobile) return 1;
+        return Math.min(dpr, 1.5);
+    }, [isMobile]);
 
     useEffect(() => {
         storage.setItem('bpmChartChunkColumns', String(chartChunkColumns));
@@ -1201,13 +1206,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     }, [targetBPM, bpmDisplay, multipliers]);
 
     const shouldShowSnowfall = useMemo(() => {
+        if (isMobile) return false;
         const title = (songTitle || '').trim().toLowerCase();
         return (
             title === 'thank you merry christmas' ||
             title === 'silent hill' ||
             title === 'silent hill (3rd christmas mix)'
         );
-    }, [songTitle]);
+    }, [isMobile, songTitle]);
 
     const coreCalculation = useMemo(() => {
         if (!targetBPM || !coreBpm) return null;
@@ -1845,10 +1851,10 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
         
         stepped: true,
         fill: true,
-        pointRadius: 1,
+        pointRadius: 0,
         pointBackgroundColor: themeColors.accentColor,
         pointBorderColor: '#fff',
-        pointHoverRadius: 7,
+        pointHoverRadius: isMobile ? 0 : 7,
         borderWidth: 2.5
       }
     ]
@@ -1856,6 +1862,9 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                                 options={{
                                     responsive: true,
                                     maintainAspectRatio: false,
+                                    animation: false,
+                                    devicePixelRatio: chartDevicePixelRatio,
+                                    events: isMobile ? [] : undefined,
                                     scales: {
                                         x: {
                                             type: 'linear',
@@ -1884,7 +1893,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                                             }
                                         }
                                     },
-                                    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+                                    interaction: isMobile ? undefined : { mode: 'nearest', axis: 'x', intersect: false }
                                 }}
                             />
                         ) : (

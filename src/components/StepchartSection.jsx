@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
-import { FiLink } from "react-icons/fi";
 import { ArrowImg } from "./ArrowImg";
 import { timeAtOffset } from "../utils/chartMetrics.js";
 
@@ -43,23 +42,6 @@ const getHighlightClassName = (offset, patternByOffset, highlightPatterns) => {
   return null;
 };
 
-function SelfLink({
-  style,
-  id,
-  onClick,
-}) {
-  return (
-    <a
-      className={clsx(styles.selfLink, "float-left -mx-8 w-10")}
-      href={`#${id}`}
-      style={style}
-      onClick={onClick}
-    >
-      <FiLink />
-    </a>
-  );
-}
-
 function StepchartSection({
   className,
   style,
@@ -72,15 +54,6 @@ function StepchartSection({
   patternByOffset = null,
   highlightPatterns = {},
 }) {
-  const [targetedBeat, setTargetedBeat] = useState(null);
-
-  useEffect(() => {
-    const hash = (window.location.hash ?? "").replace("#", "");
-    if (hash) {
-      setTargetedBeat(hash);
-    }
-  }, []);
-
   const { arrows, freezes, bpm, stops } = chart;
 
   if (arrows.length === 0 && freezes.length === 0) {
@@ -93,6 +66,8 @@ function StepchartSection({
   const barHeight = `var(--arrow-size) * ${speedMod}`;
   const measureHeight = `calc(${barHeight} * 4)`;
   const arrowAdjustment = `calc((${barHeight} - var(--arrow-size)) / 2)`;
+  const sectionMeasureCount = Math.ceil(endOffset - startOffset);
+  const containerHeight = `calc(${sectionMeasureCount} * ${measureHeight})`;
 
   const arrowImgs = [];
 
@@ -131,29 +106,6 @@ function StepchartSection({
         );
       }
     }
-  }
-
-  const barDivs = [];
-
-  for (let i = 0; i < Math.ceil(endOffset - startOffset) / 0.25; ++i) {
-    const id = `beat-${(startOffset + i * 0.25) * 4 + 1}`;
-    const height = `calc(var(--arrow-size) * ${speedMod})`;
-
-    barDivs.push(
-      <div
-        key={id}
-        // id={id}
-        className={clsx(styles.bar, {
-          [styles.barMeasure]: (i + 1) % 4 === 0,
-          [styles.barBeat]: (i + 1) % 4 !== 0,
-          [styles.targeted]: id === targetedBeat,
-        })}
-        style={{
-          height,
-        }}
-      >
-      </div>
-    );
   }
 
   const freezeDivs = freezes.map((f) => {
@@ -340,13 +292,12 @@ function StepchartSection({
           )}
           style={
             {
-              height: `calc(${Math.ceil(
-                endOffset - startOffset
-              )} * ${measureHeight})`,
+              "--bar-height": `calc(var(--arrow-size) * ${speedMod})`,
+              "--measure-height": measureHeight,
+              height: containerHeight,
             }
           }
         >
-          {barDivs}
           {bpmRangeDivs}
           {freezeDivs}
           {!isSingle && (

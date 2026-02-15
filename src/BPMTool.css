@@ -919,6 +919,10 @@
         padding: 0.5rem;
     }
 
+    .chart-container canvas {
+        touch-action: pan-y;
+    }
+
     .bpm-tool-grid {
         margin-top: 1rem;
     }
