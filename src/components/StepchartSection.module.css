@@ -134,6 +134,22 @@
     background-color: var(--color-difficult);
 }
 
+.timeLabel {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+    left: -46px;
+    width: 40px;
+}
+
+.timeLabelText {
+    font-size: 0.68rem;
+    line-height: 1;
+    color: color-mix(in srgb, var(--text-color-light) 92%, transparent);
+    font-variant-numeric: tabular-nums;
+}
+
 .stopSign {
     font-size: 1.5rem; /* text-2xl */
     right: -1.75rem; /* -right-7 */

@@ -16,6 +16,8 @@ const sectionSizesInMeasures = {
   2.5: 3,
   3: 3,
 };
+const MIN_CHUNK_COLUMNS = 1;
+const MAX_CHUNK_COLUMNS = 5;
 
 // function scrollTargetBeatJustUnderHeader(beatId, headerId) {
 //   setTimeout(() => {
@@ -34,6 +36,7 @@ export function StepchartPage({
   simfile,
   currentType: initialCurrentType,
   speedmod,
+  chunkColumns = 1,
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const isLoading = !simfile;
@@ -64,8 +67,9 @@ export function StepchartPage({
 
   const chart = currentTypeMeta ? displaySimfile.charts[currentType] : null;
 
-  const sectionGroups = useMemo(() => {
+  const chartLayout = useMemo(() => {
     if (!chart) return [];
+    const normalizedColumns = Math.min(MAX_CHUNK_COLUMNS, Math.max(MIN_CHUNK_COLUMNS, Math.round(Number(chunkColumns) || 1)));
 
     const { arrows, freezes } = chart;
     const lastArrowOffset = (arrows[arrows.length - 1]?.offset ?? 0) + 0.25;
@@ -74,34 +78,58 @@ export function StepchartPage({
 
     const sections = [];
     for (let i = 0; i < totalSongHeight; i += sectionSizesInMeasures[speedmod]) {
-      sections.push(
-        <StepchartSection
-          key={i}
-          chart={chart}
-          speedMod={speedmod}
-          startOffset={i}
-          endOffset={Math.min(totalSongHeight, i + sectionSizesInMeasures[speedmod])}
-          style={{ zIndex: Math.round(totalSongHeight) - i }}
-        />
-      );
+      sections.push({
+        startOffset: i,
+        endOffset: Math.min(totalSongHeight, i + sectionSizesInMeasures[speedmod]),
+        zIndex: Math.round(totalSongHeight) - i,
+      });
     }
 
     const groups = [];
-    const sectionsPerChunk = currentType.includes('single') ? 7 : 4;
-    while (sections.length) {
-      const sectionChunk = sections.splice(0, sectionsPerChunk);
-      groups.push(
-        <div
-          key={groups.length}
-          className={styles.stepchartSectionGroup}
-          style={{ zIndex: 999 - groups.length }}
-        >
-          {sectionChunk}
-        </div>
-      );
+    const targetColumns = Math.max(1, Math.min(normalizedColumns, sections.length || 1));
+    const chunkSize = Math.ceil(sections.length / targetColumns);
+
+    for (let col = 0; col < targetColumns; col += 1) {
+      const start = col * chunkSize;
+      if (start >= sections.length) break;
+      if (col === targetColumns - 1) {
+        groups.push(sections.slice(start));
+      } else {
+        groups.push(sections.slice(start, start + chunkSize));
+      }
     }
-    return groups;
-  }, [chart, speedmod, currentType]);
+
+    return {
+      groups,
+      chunkColumns: groups.length,
+      multiColumn: groups.length > 1,
+    };
+  }, [chart, speedmod, chunkColumns]);
+
+  const sectionGroups = useMemo(() => {
+    if (!chart || !chartLayout.groups) return [];
+
+    return chartLayout.groups.map((sectionChunk, chunkIndex) => (
+      <div
+        key={chunkIndex}
+        className={`${styles.stepchartSectionGroup} ${chartLayout.multiColumn ? styles.stepchartSectionGroupHorizontal : ""}`.trim()}
+        style={chartLayout.multiColumn ? undefined : { zIndex: 999 - chunkIndex }}
+      >
+        {sectionChunk.map((section) => (
+            <StepchartSection
+              key={section.startOffset}
+              chart={chart}
+              speedMod={speedmod}
+              startOffset={section.startOffset}
+              endOffset={section.endOffset}
+              showSideMarkers
+              showTimeLabels
+              style={{ zIndex: section.zIndex }}
+            />
+          ))}
+      </div>
+    ));
+  }, [chart, chartLayout, speedmod]);
 
 
   const displayTitle = showTransliterationBeta && displaySimfile.title.translitTitleName
@@ -121,7 +149,17 @@ export function StepchartPage({
                   {displaySimfile.mix.mixName}: {title}
                 </div>
               </div>
-              {sectionGroups}
+              {chartLayout.multiColumn ? (
+                <div className={`${styles.stepchartSections} ${styles.stepchartSectionsHorizontal}`.trim()}>
+                  <div className={styles.stepchartSectionsHorizontalInner} style={{ "--chunk-columns": chartLayout.chunkColumns }}>
+                    {sectionGroups}
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.stepchartSections}>
+                  {sectionGroups}
+                </div>
+              )}
           </>
       ) : (
           <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center', color: 'var(--text-muted-color)', textAlign: 'center', padding: '1rem' }}>

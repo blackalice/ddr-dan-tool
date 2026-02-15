@@ -990,7 +990,9 @@
     right: 20px;
     z-index: 1000;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
     background: color-mix(in srgb, var(--bg-color-light) 90%, var(--card-bg-color));
     padding: 10px;
     border-radius: var(--radius-xs);
@@ -999,6 +1001,14 @@
     float: right;
     margin-bottom: 20px;
     opacity: 0.82;
+}
+
+.chunk-columns-stepper,
+.smod-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .smod-button {

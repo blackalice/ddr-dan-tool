@@ -4,10 +4,22 @@ import { FreezeBody } from "./FreezeBody";
 import { GiStopSign } from "react-icons/gi";
 import { FiLink } from "react-icons/fi";
 import { ArrowImg } from "./ArrowImg";
+import { timeAtOffset } from "../utils/chartMetrics.js";
 
 import styles from "./StepchartSection.module.css";
 
 const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
+const TIME_LABEL_INTERVAL_MEASURES = 2;
+const BPM_TIME_COLLISION_EPSILON = 0.01;
+const TIME_LABEL_COLLISION_SHIFT = "1.5rem";
+
+const formatTimeLabel = (seconds) => {
+  const safe = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
+  const whole = Math.floor(safe);
+  const mins = Math.floor(whole / 60);
+  const secs = whole % 60;
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+};
 
 function SelfLink({
   style,
@@ -33,6 +45,8 @@ function StepchartSection({
   speedMod,
   startOffset,
   endOffset,
+  showSideMarkers = true,
+  showTimeLabels = true,
 }) {
   const [targetedBeat, setTargetedBeat] = useState(null);
 
@@ -148,6 +162,8 @@ function StepchartSection({
 
   const bpmRangeDivs = [];
   const bpmLabelDivs = [];
+  const timeLabelDivs = [];
+  const bpmMarkerOffsets = [];
 
   if (bpm.length > 1) {
     for (let i = 0; i < bpm.length; ++i) {
@@ -191,9 +207,11 @@ function StepchartSection({
       );
 
       if (
+        showSideMarkers &&
         normalizedStartOffset >= startOffset &&
         normalizedStartOffset < endOffset
       ) {
+        bpmMarkerOffsets.push(normalizedStartOffset);
         bpmLabelDivs.push(
           <div
             key={b.startOffset}
@@ -221,21 +239,50 @@ function StepchartSection({
     }
   }
 
-  const stopLabels = stops.map((s) => {
-    if (s.offset < startOffset || s.offset >= endOffset) {
-      return null;
+  if (showTimeLabels) {
+    const firstTimeOffset =
+      Math.ceil(startOffset / TIME_LABEL_INTERVAL_MEASURES) * TIME_LABEL_INTERVAL_MEASURES;
+    for (
+      let offset = firstTimeOffset;
+      offset < endOffset;
+      offset += TIME_LABEL_INTERVAL_MEASURES
+    ) {
+      const seconds = timeAtOffset(bpm, stops, offset);
+      const overlapsBpmMarker = bpmMarkerOffsets.some(
+        (markerOffset) => Math.abs(markerOffset - offset) < BPM_TIME_COLLISION_EPSILON,
+      );
+      const top = overlapsBpmMarker
+        ? `calc(${offset - startOffset} * ${measureHeight} + ${TIME_LABEL_COLLISION_SHIFT})`
+        : `calc(${offset - startOffset} * ${measureHeight})`;
+      timeLabelDivs.push(
+        <div
+          key={`time-${offset}`}
+          className={styles.timeLabel}
+          style={{ top }}
+        >
+          <div className={styles.timeLabelText}>{formatTimeLabel(seconds)}</div>
+        </div>
+      );
     }
+  }
 
-    return (
-      <GiStopSign
-        key={s.offset}
-        className={clsx(styles.stopSign)}
-        style={{
-          top: `calc(${s.offset - startOffset} * ${measureHeight})`,
-        }}
-      />
-    );
-  });
+  const stopLabels = showSideMarkers
+    ? stops.map((s) => {
+        if (s.offset < startOffset || s.offset >= endOffset) {
+          return null;
+        }
+
+        return (
+          <GiStopSign
+            key={s.offset}
+            className={clsx(styles.stopSign)}
+            style={{
+              top: `calc(${s.offset - startOffset} * ${measureHeight})`,
+            }}
+          />
+        );
+      })
+    : null;
 
   const noscriptStyle =
     startOffset === 0 ? (
@@ -277,6 +324,7 @@ function StepchartSection({
           {arrowImgs}
         </div>
         {bpmLabelDivs}
+        {timeLabelDivs}
         {stopLabels}
       </div>
     </>

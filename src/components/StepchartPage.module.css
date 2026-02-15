@@ -5,12 +5,45 @@
 .stepchartSections {
     display: flex;
     flex-direction: column;
+    gap: 0.9rem;
+    padding-top: 1rem;
+}
+
+.stepchartSectionsHorizontal {
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.4rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.stepchartSectionsHorizontal::-webkit-scrollbar {
+    display: none;
+    height: 0;
+}
+
+.stepchartSectionsHorizontalInner {
+    --column-time-label-gap: 3.25rem;
+    display: grid;
+    grid-template-columns: repeat(var(--chunk-columns, 5), max-content);
+    align-items: start;
+    gap: var(--column-time-label-gap);
+    width: max-content;
+    padding-inline-start: 3rem;
+    padding-inline-end: 0.4rem;
+    margin-inline: auto;
 }
 
 .stepchartSectionGroup {
     --arrow-size: 40px;
     display: grid;
     place-items: center;
+}
+
+.stepchartSectionGroupHorizontal {
+    width: max-content;
+    align-items: start;
 }
 
 .printTitle {

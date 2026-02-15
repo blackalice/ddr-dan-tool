@@ -277,6 +277,14 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     };
     const [speedmod, setSpeedmod] = useState(1);
+    const [chartChunkColumns, setChartChunkColumns] = useState(() => {
+        const saved = Number(storage.getItem('bpmChartChunkColumns'));
+        if (Number.isFinite(saved) && saved >= 1 && saved <= 5) {
+            return Math.round(saved);
+        }
+        const legacy = storage.getItem('bpmChartChunkLayout');
+        return legacy === 'horizontal5' ? 5 : 1;
+    });
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [overrideSongs, setOverrideSongs] = useState(null);
@@ -321,6 +329,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         mutedColor: '',
         gridColor: '',
     });
+
+    useEffect(() => {
+        storage.setItem('bpmChartChunkColumns', String(chartChunkColumns));
+    }, [chartChunkColumns]);
 
     const updateThemeColors = useCallback(() => {
         const style = getComputedStyle(document.documentElement);
@@ -1828,6 +1840,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                         setIsCollapsed={setIsCollapsed}
                         playStyle={playStyle}
                         speedmod={speedmod}
+                        chunkColumns={chartChunkColumns}
                     />
                 ) : (
                     <ChartStatsPanel
@@ -1839,9 +1852,30 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                 )}
                  {view === 'chart' && (
                     <div className="smod-controls-container">
-                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.max(1, prev - 0.5))}>-</button>
-                        <div className="smod-value">{speedmod}x</div>
-                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.min(3, prev + 0.5))}>+</button>
+                        <div className="chunk-columns-stepper">
+                            <button
+                                className="smod-button"
+                                onClick={() => setChartChunkColumns((prev) => Math.max(1, prev - 1))}
+                                title="Decrease chart columns"
+                                aria-label="Decrease chart columns"
+                            >
+                                -
+                            </button>
+                            <div className="smod-value">{chartChunkColumns} col</div>
+                            <button
+                                className="smod-button"
+                                onClick={() => setChartChunkColumns((prev) => Math.min(5, prev + 1))}
+                                title="Increase chart columns"
+                                aria-label="Increase chart columns"
+                            >
+                                +
+                            </button>
+                        </div>
+                        <div className="smod-stepper">
+                            <button className="smod-button" onClick={() => setSpeedmod(prev => Math.max(1, prev - 0.5))}>-</button>
+                            <div className="smod-value">{speedmod}x</div>
+                            <button className="smod-button" onClick={() => setSpeedmod(prev => Math.min(3, prev + 0.5))}>+</button>
+                        </div>
                     </div>
                 )}
             </div>
