@@ -71,7 +71,7 @@
   touch-action: none;
   user-select: none;
 }
-.drag-handle:hover { background-color: rgba(0, 0, 0, 0.1); }
+.drag-handle:hover { background-color: color-mix(in srgb, var(--accent-color) 16%, transparent); }
 .drag-handle:active { cursor: grabbing; }
 
 /* Pronounced placeholder gap during drag-over */
@@ -96,7 +96,7 @@
 }
 
 .delete-list-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: color-mix(in srgb, var(--accent-color) 16%, transparent);
 }
 
 .edit-charts-button {
@@ -115,7 +115,7 @@
 
 .edit-charts-button.active,
 .edit-charts-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: color-mix(in srgb, var(--accent-color) 16%, transparent);
 }
 
 .color-picker-label {
@@ -130,7 +130,7 @@
 }
 
 .color-picker-label:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: color-mix(in srgb, var(--accent-color) 16%, transparent);
 }
 
 .color-picker {
@@ -144,9 +144,9 @@
 }
 
 .list-name-input {
-  background: var(--card-bg-color);
+  background: color-mix(in srgb, var(--card-bg-color) 92%, white 8%);
   color: var(--text-color);
-  border: none;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xs);
   padding: 0.25rem 0.5rem;
   font-size: 1rem;

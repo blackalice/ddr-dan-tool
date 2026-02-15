@@ -1,10 +1,15 @@
 /* --- Song Card --- */
 .song-card {
-    background-color: var(--card-bg-color);
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--card-bg-color) 88%, white 12%),
+      color-mix(in srgb, var(--card-bg-color) 95%, black 5%)
+    );
     padding: 1.25rem;
     border-radius: var(--radius-sm);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -59,8 +64,8 @@
 }
 
 .song-card-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .song-card-link:hover .song-card {
@@ -69,7 +74,7 @@
 }
 .song-title {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.25;
   margin: 0 0 0.5rem 0;
   word-break: break-word;
@@ -86,7 +91,7 @@
   display: block;
   font-weight: normal;
   color: var(--text-color-lightest);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   margin-top: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -132,12 +137,12 @@
 .song-speed {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--cyan-color);
+  color: color-mix(in srgb, var(--cyan-color) 88%, var(--text-color) 12%);
 }
 .song-modifier {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--green-color);
+  color: color-mix(in srgb, var(--green-color) 88%, var(--text-color) 12%);
 }
 .song-separator {
   color: var(--text-muted-color);
@@ -175,9 +180,10 @@
   display: inline-block;
   padding: 0.125rem 0.5rem;
   margin-top: 0.25rem;
-  border-radius: var(--radius-2xs);
+  border-radius: var(--radius-xs);
   font-size: 0.75rem;
   font-weight: 700;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 .difficulty-badge-level {
   display: none;
@@ -205,10 +211,10 @@
 }
 
 .game-chip {
-    background-color: var(--card-hover-bg-color);
+    background-color: color-mix(in srgb, var(--card-hover-bg-color) 88%, var(--card-bg-color));
     color: var(--text-muted-color);
     padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-2xs);
+    border-radius: var(--radius-xs);
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
@@ -239,11 +245,13 @@
   background-color: var(--difficulty-standard-color);
   color: var(--button-icon);
   border: none;
-  border-radius: var(--radius-2xs);
+  border-radius: var(--radius-xs);
   padding: 0.25rem;
   cursor: pointer;
   height:32px;
   width:32px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-sm);
 }
 .song-card-action.edit {
   background-color: var(--difficulty-edit-color);
@@ -318,7 +326,7 @@
 
 
 .song-score-slice {
-  background-color: var(--card-hover-bg-color);
+  background: color-mix(in srgb, var(--card-hover-bg-color) 86%, var(--card-bg-color));
   padding: 0.5rem 1.25rem;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   font-size: 0.75rem;
@@ -329,6 +337,8 @@
   box-sizing: border-box;
   transition: transform 0.2s;
   font-weight: bold;
+  border: 1px solid var(--border-color);
+  border-top: none;
 }
 .song-score-slice .score-value {
   flex: 1 1 auto;
@@ -340,8 +350,8 @@
 }
 
 [data-theme='light'] .song-score-slice {
-  background-color: #e3e9f1;
-  border-top: 1px solid #c9d2de;
+  background-color: #e9f0f9;
+  border-top: 1px solid #c6d5e9;
 }
 
 [data-theme='light'] .song-score-slice .score-value {
@@ -353,12 +363,13 @@
 }
 
 .score-badge {
-  background-color: var(--card-hover-bg-color);
+  background-color: color-mix(in srgb, var(--card-hover-bg-color) 86%, var(--card-bg-color));
   padding: 0.65rem 0.5rem;
-  border-radius: var(--radius-2xs);
+  border-radius: var(--radius-xs);
   font-size: 0.75rem;
   margin-top: 0.25rem;
   text-align: right;
+  border: 1px solid color-mix(in srgb, var(--border-color) 75%, transparent);
 }
 
 .score-badge .score-extra {

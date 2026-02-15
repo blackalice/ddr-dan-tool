@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 0 0 3rem;
+  padding: 0 0 2.6rem;
 }
 
 .stats-page > * {
@@ -14,7 +14,11 @@
 }
 
 .stats-card {
-  background: var(--card-bg-color);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--card-bg-color) 88%, white 12%),
+    color-mix(in srgb, var(--card-bg-color) 95%, black 5%)
+  );
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -33,8 +37,9 @@
 
 .stats-card-header h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
   font-weight: 700;
+  font-family: var(--font-heading);
 }
 
 .stats-filter-group {
@@ -57,7 +62,7 @@
   gap: 0.35rem;
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--accent-color) 16%, transparent);
+  background: color-mix(in srgb, var(--accent-color) 18%, transparent);
   color: var(--accent-color);
   font-size: 0.85rem;
   font-weight: 600;
@@ -114,15 +119,15 @@
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--text-muted-color);
-  background: color-mix(in srgb, var(--bg-color-light) 70%, transparent);
+  background: color-mix(in srgb, var(--bg-color-light) 78%, transparent);
 }
 
 .stats-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--bg-color-light) 40%, transparent);
+  background: color-mix(in srgb, var(--bg-color-light) 32%, transparent);
 }
 
 .stats-table tbody tr:hover {
-  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  background: color-mix(in srgb, var(--accent-color) 14%, transparent);
 }
 
 .stats-table th[scope='row'] {
@@ -136,7 +141,7 @@
 }
 
 .stats-table tfoot tr {
-  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+  background: color-mix(in srgb, var(--accent-color) 15%, transparent);
   font-weight: 700;
 }
 

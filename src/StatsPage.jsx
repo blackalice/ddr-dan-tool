@@ -1460,7 +1460,7 @@ const StatsPage = () => {
         ticks: {
           color: chartColors.axis,
           maxRotation: 0,
-          font: { size: 12, family: 'Inter, system-ui, sans-serif' },
+          font: { size: 12, family: 'Manrope, Segoe UI, sans-serif' },
         },
       },
       y: {
@@ -1471,7 +1471,7 @@ const StatsPage = () => {
           beginAtZero: true,
           precision: 0,
           stepSize: 1,
-          font: { size: 12, family: 'Inter, system-ui, sans-serif' },
+          font: { size: 12, family: 'Manrope, Segoe UI, sans-serif' },
         },
       },
     },

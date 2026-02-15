@@ -1,6 +1,6 @@
-/* Set base font properties and cross-browser rendering niceties. */
+/* Base typography and rendering */
 :root {
-  font-family: 'DM Sans', 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -9,45 +9,65 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Reset basics; App.css handles layout and theming. */
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+/* Global reset */
+* {
+  box-sizing: border-box;
+}
 
-/* Root container sizing */
-#root { width: 100%; min-height: 100dvh; background: transparent; }
-html, body { background: transparent; }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
 
-/* Subtle, modern app background layered under theme colors */
+html {
+  scroll-behavior: smooth;
+}
+
+#root {
+  width: 100%;
+  min-height: 100dvh;
+  background: transparent;
+}
+
+/* Shared atmospheric backdrop */
 #root > [data-theme] {
   background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(255, 255, 255, 0.04), transparent 60%),
-    radial-gradient(900px 500px at -10% 120%, rgba(0, 0, 0, 0.12), transparent 60%);
+    radial-gradient(1200px 700px at 88% -20%, rgba(255, 255, 255, 0.06), transparent 68%),
+    radial-gradient(980px 600px at -10% 118%, rgba(2, 6, 23, 0.38), transparent 68%),
+    linear-gradient(180deg, rgba(10, 16, 29, 0.9), rgba(6, 10, 20, 0.98));
   background-attachment: fixed;
 }
 
 #root > [data-theme='light'] {
   background:
-    radial-gradient(1200px 600px at 96% -14%, rgba(255, 255, 255, 0.78), transparent 60%),
-    radial-gradient(860px 560px at -6% 118%, rgba(211, 220, 232, 0.45), transparent 65%),
-    linear-gradient(180deg, rgba(246, 249, 252, 0.95), rgba(236, 241, 247, 0.92));
+    radial-gradient(1100px 640px at 88% -18%, rgba(255, 255, 255, 0.92), transparent 66%),
+    radial-gradient(860px 560px at -8% 116%, rgba(175, 196, 224, 0.48), transparent 66%),
+    linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(233, 241, 251, 0.95));
   background-attachment: fixed;
 }
 
-/* Dark theme: reduce bright lift, deepen shadows */
 #root > [data-theme='dark'],
 #root > [data-theme='cg'],
 #root > [data-theme='dark-pink'],
 #root > [data-theme='mhe2026'] {
   background:
-    radial-gradient(1100px 560px at 80% -10%, rgba(255, 255, 255, 0.015), transparent 60%),
-    radial-gradient(900px 520px at -10% 120%, rgba(0, 0, 0, 0.28), transparent 60%);
+    radial-gradient(1100px 620px at 86% -20%, rgba(255, 255, 255, 0.04), transparent 68%),
+    radial-gradient(900px 560px at -10% 118%, rgba(2, 6, 23, 0.52), transparent 64%),
+    linear-gradient(180deg, rgba(8, 13, 24, 0.95), rgba(5, 9, 17, 0.98));
   background-attachment: fixed;
 }
 
 #root > [data-theme='mhe2026'] {
   background:
-    radial-gradient(1100px 560px at 80% -10%, rgba(255, 255, 255, 0.02), transparent 60%),
-    linear-gradient(180deg, rgba(6, 8, 16, 0.65) 0%, rgba(6, 8, 16, 0.9) 100%),
+    radial-gradient(1100px 560px at 86% -20%, rgba(255, 255, 255, 0.05), transparent 65%),
+    linear-gradient(180deg, rgba(6, 8, 16, 0.56) 0%, rgba(6, 8, 16, 0.9) 100%),
     url('/img/MHE-bg.webp') center/cover no-repeat;
   background-attachment: fixed, fixed, fixed;
+}
+
+::selection {
+  background: rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
+  color: var(--text-color, #0f172a);
 }
