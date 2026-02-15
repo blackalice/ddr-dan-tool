@@ -72,12 +72,12 @@
 
 .stats-subtitle {
   margin: 0;
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   font-size: 0.95rem;
 }
 
 .stats-summary {
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -109,7 +109,7 @@
 .stats-table th,
 .stats-table td {
   padding: 0.65rem 0.85rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
   text-align: right;
   color: var(--text-color);
 }
@@ -118,12 +118,12 @@
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
-  color: var(--text-muted-color);
-  background: color-mix(in srgb, var(--bg-color-light) 78%, transparent);
+  color: var(--text-color-lightest);
+  background: color-mix(in srgb, var(--bg-color-dark) 26%, var(--bg-color-light));
 }
 
 .stats-table tbody tr:nth-child(even) {
-  background: color-mix(in srgb, var(--bg-color-light) 32%, transparent);
+  background: color-mix(in srgb, var(--bg-color-dark) 22%, transparent);
 }
 
 .stats-table tbody tr:hover {
@@ -199,7 +199,7 @@
 }
 
 .stats-bpm-empty {
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
 }
 
 .stats-bpm-best {
@@ -233,7 +233,7 @@
 }
 
 .stats-neutral {
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   font-weight: 600;
 }
 

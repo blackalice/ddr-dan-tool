@@ -2,8 +2,18 @@
 .song-card {
     background: linear-gradient(
       160deg,
-      color-mix(in srgb, var(--card-bg-color) 88%, white 12%),
-      color-mix(in srgb, var(--card-bg-color) 95%, black 5%)
+      color-mix(
+        in srgb,
+        color-mix(in srgb, var(--card-bg-color) 88%, white 12%)
+          var(--surface-glass-strength, 100%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        color-mix(in srgb, var(--card-bg-color) 95%, black 5%)
+          var(--surface-glass-strength, 100%),
+        transparent
+      )
     );
     padding: 1.25rem;
     border-radius: var(--radius-sm);
@@ -112,10 +122,14 @@
   line-height: 1.1;
 }
 .song-details {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: flex-end;
+  column-gap: 0.75rem;
   margin-top: auto;
+}
+.song-details > div:first-child {
+  min-width: 0;
 }
 .song-bpm {
   display: block;
@@ -150,11 +164,19 @@
 }
 .song-level-container {
   text-align: right;
+  min-width: max-content;
+}
+.song-level-container-ranked {
+  min-width: 6.25rem;
 }
 .song-level {
   display: block;
   font-size: 1.125rem;
   font-weight: 700;
+}
+.song-level-ranked {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .song-level-shock {
   margin-left: 0.35rem;
@@ -269,6 +291,46 @@
 }
 .song-card-action.drag:active { cursor: grabbing; }
 
+@container dan-card (max-width: 290px) {
+  .song-details {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.4rem;
+    align-items: start;
+  }
+
+  .song-level-container,
+  .song-level-container-ranked {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.65rem;
+    text-align: left;
+  }
+
+  .song-calculation {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .song-speed {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.06;
+  }
+
+  .song-level,
+  .song-modifier {
+    white-space: nowrap;
+  }
+
+  .song-badges {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    margin-left: auto;
+  }
+}
+
 .song-card.highlight {
   box-shadow: 0 0 0 3px var(--accent-color);
   animation: highlight-fade 1.5s forwards;
@@ -293,6 +355,7 @@
 }
 
 .song-card-link.score-highlight.glow-marvelous {
+  border-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);
 }
 
@@ -301,6 +364,7 @@
 }
 
 .song-card-link.score-highlight.glow-perfect {
+  border-color: rgba(255, 224, 102, 0.95);
   box-shadow: 0 0 6px rgba(255, 224, 102, 0.45);
 }
 
@@ -309,6 +373,7 @@
 }
 
 .song-card-link.score-highlight.glow-great {
+  border-color: rgba(46, 204, 113, 0.95);
   box-shadow: 0 0 6px rgba(46, 204, 113, 0.45);
 }
 
@@ -317,6 +382,7 @@
 }
 
 .song-card-link.score-highlight.glow-good {
+  border-color: rgba(52, 152, 219, 0.95);
   box-shadow: 0 0 6px rgba(52, 152, 219, 0.45);
 }
 

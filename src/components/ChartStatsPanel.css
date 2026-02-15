@@ -1,6 +1,6 @@
 .chart-stats-panel {
   padding: 1rem;
-  background-color: var(--bg-color-light);
+  background: color-mix(in srgb, var(--bg-color-light) 88%, var(--bg-color-dark));
   min-height: 500px;
 }
 
@@ -9,21 +9,21 @@
   padding: 1rem 1.1rem;
   border-radius: var(--radius-md);
   background:
-    radial-gradient(circle at top right, rgba(var(--accent-color-rgb), 0.35), transparent 45%),
-    color-mix(in srgb, var(--card-hover-bg-color) 60%, var(--bg-color-light) 40%);
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, var(--accent-color) 30%);
+    radial-gradient(circle at top right, rgba(var(--accent-color-rgb), 0.26), transparent 45%),
+    color-mix(in srgb, var(--card-hover-bg-color) 66%, var(--bg-color-light) 34%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 78%, var(--accent-color) 22%);
 }
 
 .chart-stats-hero h2 {
   margin: 0;
   font-size: 1.35rem;
   letter-spacing: 0.01em;
-  color: var(--text-color-lighter);
+  color: var(--text-color);
 }
 
 .chart-stats-hero p {
   margin: 0.35rem 0 0;
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   font-size: 0.92rem;
 }
 
@@ -35,28 +35,28 @@
 
 .chart-stats-card {
   border-radius: var(--radius-md);
-  border: 1px solid color-mix(in srgb, var(--border-color) 82%, var(--accent-color) 18%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 88%, var(--accent-color) 12%);
   background:
-    linear-gradient(180deg, rgba(var(--accent-color-rgb), 0.08), transparent 38%),
-    color-mix(in srgb, var(--card-bg-color) 88%, var(--bg-color-light) 12%);
+    linear-gradient(180deg, rgba(var(--accent-color-rgb), 0.06), transparent 34%),
+    color-mix(in srgb, var(--card-bg-color) 92%, var(--bg-color-dark) 8%);
   overflow: hidden;
 }
 
 .chart-stats-card-header {
   padding: 0.8rem 0.95rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 84%, var(--accent-color) 16%);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 90%, var(--accent-color) 10%);
 }
 
 .chart-stats-card-header h3 {
   margin: 0;
   font-size: 1rem;
-  color: var(--text-color-lighter);
+  color: var(--text-color);
 }
 
 .chart-stats-card-header p {
   margin: 0.3rem 0 0;
   font-size: 0.8rem;
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
 }
 
 .chart-stats-card-grid {
@@ -73,18 +73,19 @@
   gap: 0.7rem;
   padding: 0.42rem 0.55rem;
   border-radius: var(--radius-xs);
-  background: color-mix(in srgb, var(--bg-color-dark) 70%, transparent);
+  background: color-mix(in srgb, var(--bg-color-dark) 82%, var(--card-bg-color) 18%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 58%, transparent);
 }
 
 .chart-stats-item-label {
   font-size: 0.82rem;
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
 }
 
 .chart-stats-item-value {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--text-color-lightest);
+  color: var(--text-color);
   text-align: right;
 }
 
@@ -92,8 +93,8 @@
   margin-left: 0.14rem;
   font-size: 0.78rem;
   font-weight: 500;
-  color: color-mix(in srgb, var(--text-muted-color) 88%, var(--text-color-lightest) 12%);
-  opacity: 0.82;
+  color: color-mix(in srgb, var(--text-color-lightest) 86%, var(--text-muted-color));
+  opacity: 1;
 }
 
 .chart-stats-quantization {
@@ -114,9 +115,9 @@
   gap: 0.35rem;
   padding: 0.34rem 0.6rem;
   border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, var(--accent-color) 30%);
-  background: color-mix(in srgb, var(--bg-color-dark) 78%, var(--card-hover-bg-color) 22%);
-  color: var(--text-color-lighter);
+  border: 1px solid color-mix(in srgb, var(--border-color) 82%, var(--accent-color) 18%);
+  background: color-mix(in srgb, var(--bg-color-dark) 84%, var(--card-hover-bg-color) 16%);
+  color: var(--text-color);
   font-size: 0.78rem;
 }
 
@@ -125,27 +126,27 @@
 }
 
 .chart-stats-tag.muted {
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   border-style: dashed;
 }
 
 .chart-stats-empty {
   margin: 1rem;
   border-radius: var(--radius-md);
-  border: 1px dashed var(--border-color);
-  background: color-mix(in srgb, var(--card-bg-color) 80%, var(--bg-color-dark) 20%);
+  border: 1px dashed color-mix(in srgb, var(--border-color) 86%, var(--accent-color) 14%);
+  background: color-mix(in srgb, var(--card-bg-color) 88%, var(--bg-color-dark) 12%);
   padding: 1rem 1.1rem;
 }
 
 .chart-stats-empty h3 {
   margin: 0;
   font-size: 1rem;
-  color: var(--text-color-lighter);
+  color: var(--text-color);
 }
 
 .chart-stats-empty p {
   margin: 0.45rem 0 0;
-  color: var(--text-muted-color);
+  color: var(--text-color-lightest);
   font-size: 0.9rem;
 }
 

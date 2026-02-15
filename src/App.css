@@ -2,6 +2,12 @@
 html {
   --color-white-agnostic: white;
   --color-black-agnostic: hsl(0, 0%, 5%);
+  /* Global glass intensity control (0% = off, 100% = full). */
+  --glass-strength: 100%;
+  /* Shared surface glass intensity for cards/panels. */
+  --surface-glass-strength: 50%;
+  /* Button glass intensity (0% = flat, 100% = current glass look). */
+  --button-glass-strength: 60%;
   --font-body: 'Manrope', 'Segoe UI', Arial, sans-serif;
   --font-heading: 'Sora', 'Manrope', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
@@ -46,8 +52,8 @@ html {
   --text-color: #eef4ff;
   --text-color-light: #d6e4ff;
   --text-color-lighter: #c7d7f7;
-  --text-color-lightest: #9db2d8;
-  --text-muted-color: #7d92b8;
+  --text-color-lightest: #afc2e2;
+  --text-muted-color: #93a8cc;
   --accent-color: #3dd5f3;
   --accent-color-rgb: 61, 213, 243;
   --accent-color-light: #8de7fa;
@@ -59,9 +65,9 @@ html {
   --yellow-color: #facc15;
   --button-icon: white;
   --button-bg: #22365f;
-  --shadow-sm: 0 8px 16px rgba(3, 8, 20, 0.34);
-  --shadow-md: 0 18px 38px rgba(3, 8, 20, 0.42);
-  --shadow-lg: 0 32px 72px rgba(3, 8, 20, 0.5);
+  --shadow-sm: 0 2px 8px rgba(3, 8, 20, 0.22);
+  --shadow-md: 0 8px 20px rgba(3, 8, 20, 0.28);
+  --shadow-lg: 0 14px 34px rgba(3, 8, 20, 0.34);
   --glass-bg: rgba(8, 14, 28, 0.62);
   --glass-border: rgba(177, 208, 255, 0.18);
   --glass-blur: saturate(160%) blur(18px);
@@ -71,7 +77,7 @@ html {
   --overlay-backdrop: rgba(2, 6, 12, 0.62);
   --modal-bg: rgba(10, 18, 33, 0.88);
   --modal-border: rgba(184, 209, 245, 0.2);
-  --modal-shadow: 0 32px 80px rgba(3, 8, 20, 0.62);
+  --modal-shadow: 0 12px 36px rgba(3, 8, 20, 0.4);
   --modal-section-bg: rgba(19, 31, 54, 0.62);
   --modal-section-border: rgba(184, 209, 245, 0.2);
   --modal-control-bg: rgba(22, 34, 58, 0.84);
@@ -135,9 +141,9 @@ html {
   --yellow-color: #a57a21;
   --button-bg: #51688c;
   --button-icon: white;
-  --shadow-sm: 0 8px 16px rgba(16, 35, 61, 0.08);
-  --shadow-md: 0 16px 34px rgba(16, 35, 61, 0.12);
-  --shadow-lg: 0 30px 70px rgba(16, 35, 61, 0.18);
+  --shadow-sm: 0 2px 8px rgba(16, 35, 61, 0.07);
+  --shadow-md: 0 8px 20px rgba(16, 35, 61, 0.1);
+  --shadow-lg: 0 14px 34px rgba(16, 35, 61, 0.14);
   --glass-bg: rgba(251, 254, 255, 0.78);
   --glass-border: rgba(66, 98, 138, 0.18);
   --glass-blur: saturate(135%) blur(16px);
@@ -147,7 +153,7 @@ html {
   --overlay-backdrop: rgba(13, 24, 40, 0.36);
   --modal-bg: rgba(249, 252, 255, 0.95);
   --modal-border: rgba(66, 98, 138, 0.18);
-  --modal-shadow: 0 28px 64px rgba(16, 35, 61, 0.18);
+  --modal-shadow: 0 12px 32px rgba(16, 35, 61, 0.16);
   --modal-section-bg: rgba(255, 255, 255, 0.74);
   --modal-section-border: rgba(66, 98, 138, 0.15);
   --modal-control-bg: rgba(255, 255, 255, 0.78);
@@ -211,9 +217,9 @@ html {
   --yellow-color: #FBBF24;
   --button-bg: #463946;
   --button-icon: #ffffff;
-  --shadow-sm: 0 8px 16px rgba(0, 0, 0, 0.32);
-  --shadow-md: 0 18px 34px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 30px 70px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.36);
   --glass-bg: rgba(20, 13, 20, 0.64);
   --glass-border: rgba(255, 181, 94, 0.18);
   --glass-blur: saturate(150%) blur(18px);
@@ -277,9 +283,9 @@ html {
   --yellow-color: #FBBF24;
   --button-bg: #51335b;
   --button-icon: #ffffff;
-  --shadow-sm: 0 8px 16px rgba(0, 0, 0, 0.34);
-  --shadow-md: 0 18px 34px rgba(0, 0, 0, 0.44);
-  --shadow-lg: 0 30px 70px rgba(0, 0, 0, 0.54);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.38);
   --glass-bg: rgba(23, 15, 30, 0.64);
   --glass-border: rgba(255, 176, 214, 0.22);
   --glass-blur: saturate(165%) blur(18px);
@@ -322,8 +328,17 @@ html {
 .collapse-button {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--bg-color-dark) 70%, var(--card-bg-color)),
-    var(--bg-color-dark)
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--bg-color-dark) 70%, var(--card-bg-color))
+        var(--button-glass-strength, 100%),
+      transparent
+    ),
+    color-mix(
+      in srgb,
+      var(--bg-color-dark) var(--button-glass-strength, 100%),
+      transparent
+    )
   );
   color: var(--button-icon);
   width: 32px;
@@ -334,9 +349,16 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 0.9rem;
+  line-height: 1;
   box-shadow: var(--shadow-sm);
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   flex-shrink: 0;
+}
+
+.collapse-button svg {
+  width: 0.95em;
+  height: 0.95em;
 }
 .collapse-button:hover {
   background-color: var(--card-hover-bg-color-light);
@@ -347,8 +369,18 @@ html {
 .filter-button {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--card-bg-color) 86%, white 14%),
-    color-mix(in srgb, var(--card-bg-color) 94%, black 6%)
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--card-bg-color) 86%, white 14%)
+        var(--button-glass-strength, 100%),
+      transparent
+    ),
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--card-bg-color) 94%, black 6%)
+        var(--button-glass-strength, 100%),
+      transparent
+    )
   );
   border: 1px solid var(--border-color);
   color: var(--text-color);
@@ -359,9 +391,15 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.92rem;
+  line-height: 1;
   box-shadow: var(--shadow-sm);
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.filter-button svg {
+  width: 0.95em;
+  height: 0.95em;
 }
 .filter-button:hover {
   border-color: color-mix(in srgb, var(--accent-color) 35%, var(--border-color));
@@ -371,7 +409,7 @@ html {
   background-color: var(--accent-color);
   border-color: transparent;
   color: var(--accent-contrast, var(--text-color));
-  box-shadow: 0 12px 26px rgba(var(--accent-color-rgb), 0.32);
+  box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), 0.2);
 }
 
 /* Icon for hiding AAA scores */
@@ -393,7 +431,7 @@ html {
   --text-color-light: #E5E7EB;
   --text-color-lighter: #F9FAFB;
   --text-color-lightest: #d1d5db;
-  --text-muted-color: #b38bbf;
+  --text-muted-color: #c3a0ce;
   --accent-color: #e879f9;
   --accent-color-rgb: 232, 121, 249;
   --accent-color-light: #f0abfc;
@@ -405,9 +443,9 @@ html {
   --yellow-color: #FBBF24;
   --button-icon: white;
   --button-bg: #603f77;
-  --shadow-sm: 0 8px 16px rgba(8, 3, 14, 0.34);
-  --shadow-md: 0 18px 34px rgba(8, 3, 14, 0.44);
-  --shadow-lg: 0 30px 70px rgba(8, 3, 14, 0.54);
+  --shadow-sm: 0 2px 8px rgba(8, 3, 14, 0.24);
+  --shadow-md: 0 8px 20px rgba(8, 3, 14, 0.32);
+  --shadow-lg: 0 14px 34px rgba(8, 3, 14, 0.38);
   --glass-bg: rgba(23, 10, 34, 0.64);
   --glass-border: rgba(245, 196, 255, 0.2);
   --glass-blur: saturate(165%) blur(18px);
@@ -537,7 +575,7 @@ textarea {
 .nav-link:hover {
   color: var(--accent-contrast, var(--text-color));
   background-color: var(--accent-color);
-  box-shadow: 0 10px 24px rgba(var(--accent-color-rgb), 0.28);
+  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.18);
 }
 
 
@@ -545,8 +583,18 @@ textarea {
 .filter-bar {
   background: linear-gradient(
     160deg,
-    color-mix(in srgb, var(--bg-color-light) 84%, var(--card-bg-color)),
-    color-mix(in srgb, var(--bg-color-light) 92%, black 8%)
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--bg-color-light) 84%, var(--card-bg-color))
+        var(--surface-glass-strength),
+      transparent
+    ),
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--bg-color-light) 92%, black 8%)
+        var(--surface-glass-strength),
+      transparent
+    )
   );
   padding: 1rem 1.1rem;
   border-radius: var(--radius-md);
@@ -622,7 +670,7 @@ textarea {
     color-mix(in srgb, var(--accent-color) 90%, white 10%),
     var(--accent-color)
   );
-  box-shadow: 0 10px 20px rgba(var(--accent-color-rgb), 0.28);
+  box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), 0.18);
 }
 .play-mode-toggle.dan-toggle button:first-of-type.active {
   background-color: var(--pink-color);
@@ -635,8 +683,18 @@ textarea {
   appearance: none;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--card-bg-color) 90%, white 10%),
-    color-mix(in srgb, var(--card-bg-color) 96%, black 4%)
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--card-bg-color) 90%, white 10%)
+        var(--surface-glass-strength),
+      transparent
+    ),
+    color-mix(
+      in srgb,
+      color-mix(in srgb, var(--card-bg-color) 96%, black 4%)
+        var(--surface-glass-strength),
+      transparent
+    )
   );
   color: var(--text-color);
   font-weight: 600;
@@ -681,7 +739,7 @@ select optgroup {
   align-items: center;
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
   font-weight: 700;
-  color: var(--accent-contrast, var(--text-color));
+  color: var(--color-white-agnostic);
   font-family: var(--font-heading);
   letter-spacing: -0.015em;
   padding: 0.85rem 0.95rem;
@@ -695,7 +753,7 @@ select optgroup {
     color-mix(in srgb, var(--accent-color) 46%, var(--bg-color-dark) 54%)
   );
   box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.2),
+    0 6px 14px rgba(0, 0, 0, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: border-radius 0.3s ease-in-out;
 }
@@ -708,7 +766,12 @@ select optgroup {
   grid-template-columns: 1fr;
   gap: 0.9rem;
   padding: 0.95rem;
-  background: color-mix(in srgb, var(--bg-color-light) 88%, var(--card-bg-color));
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--bg-color-light) 88%, var(--card-bg-color))
+      var(--surface-glass-strength),
+    transparent
+  );
   border: 1px solid var(--border-color);
   border-top: none;
   border-bottom-left-radius: var(--radius-sm);
@@ -730,6 +793,10 @@ select optgroup {
     .dan-song-grid {
         grid-template-columns: repeat(4, 1fr)!important;
   }
+    .dan-song-grid .song-card {
+      container-type: inline-size;
+      container-name: dan-card;
+    }
 }
 
     .dan-header:not(.is-collapsed) {
@@ -773,7 +840,7 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 640px) {
     .app-container {
-        padding: 0 0.7rem 0.85rem;
+        padding: 0 0.25rem;
     }
 
     .filter-group {

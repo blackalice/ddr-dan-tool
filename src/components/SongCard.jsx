@@ -351,9 +351,11 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
               </div>
             )}
           </div>
-          <div className="song-level-container">
+          <div
+            className={`song-level-container${rankedLevelText ? " song-level-container-ranked" : ""}`}
+          >
               <span
-                className={`song-level${levelInTitleBlock ? " song-inline-level" : ""}`}
+                className={`song-level${levelInTitleBlock ? " song-inline-level" : ""}${rankedLevelText ? " song-level-ranked" : ""}`}
               >
                 {renderLevel(levelToDisplay, song?.hasShock)}
               </span>

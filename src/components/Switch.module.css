@@ -20,10 +20,9 @@
   width: var(--switch-width);
   height: var(--switch-height);
   border-radius: var(--radius-pill);
-  background: var(--card-hover-bg-color-light);
-  background: color-mix(in srgb, var(--bg-color-dark) 64%, var(--card-bg-color));
-  border: 1px solid var(--border-color);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  background: color-mix(in srgb, var(--bg-color-dark) 72%, var(--card-bg-color) 28%);
+  border: 1px solid color-mix(in srgb, var(--text-muted-color) 30%, var(--border-color));
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   display: inline-flex;
   align-items: center;
   padding: var(--switch-padding);
@@ -33,15 +32,19 @@
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: var(--radius-round);
-  background: var(--card-bg-color);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.24);
+  background: color-mix(in srgb, var(--text-color) 88%, var(--card-bg-color));
+  border: 1px solid color-mix(in srgb, var(--text-muted-color) 38%, transparent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
   transform: translateX(0);
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.switch:hover .track {
+  border-color: color-mix(in srgb, var(--accent-color) 32%, var(--border-color));
 }
 
 .switch input:checked + .track {
-  background: rgba(var(--accent-color-rgb), 0.35);
-  background: color-mix(in srgb, var(--accent-color) 34%, var(--card-bg-color));
+  background: color-mix(in srgb, var(--accent-color) 42%, var(--card-bg-color));
   border-color: rgba(var(--accent-color-rgb), 0.6);
 }
 
@@ -50,4 +53,9 @@
     calc(var(--switch-width) - var(--thumb-size) - (var(--switch-padding) * 2))
   );
   background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.switch input:focus-visible + .track {
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.18);
 }

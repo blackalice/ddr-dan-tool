@@ -134,8 +134,18 @@
 .camera-button {
     background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--card-bg-color) 86%, white 14%),
-        color-mix(in srgb, var(--card-bg-color) 96%, black 4%)
+        color-mix(
+            in srgb,
+            color-mix(in srgb, var(--card-bg-color) 86%, white 14%)
+                var(--button-glass-strength, 100%),
+            transparent
+        ),
+        color-mix(
+            in srgb,
+            color-mix(in srgb, var(--card-bg-color) 96%, black 4%)
+                var(--button-glass-strength, 100%),
+            transparent
+        )
     );
     border: 1px solid var(--border-color);
     color: var(--text-color);
@@ -146,9 +156,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem; /* Ensure icon size is consistent */
+    font-size: 0.92rem; /* Ensure icon size is consistent */
     box-shadow: var(--shadow-sm);
     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.api-key-button svg,
+.camera-button svg {
+    width: 0.95em;
+    height: 0.95em;
 }
 
 .api-key-button:hover,
@@ -417,7 +433,7 @@
 .song-title-main {
     font-weight: 700;
     font-size: clamp(1.2rem, 2vw, 1.55rem);
-    color: var(--text-color-lighter);
+    color: var(--color-white-agnostic);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -426,7 +442,7 @@
 
 .song-title-artist {
     font-weight: normal;
-    color: var(--text-color-lightest);
+    color: rgba(255, 255, 255, 0.92);
     font-size: clamp(0.95rem, 1.5vw, 1.1rem);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -507,19 +523,10 @@
     gap: 1rem;
 }
 .info-right {
-        background-color: color-mix(in srgb, var(--card-hover-bg-color) 86%, black 14%);
-        border-radius: var(--radius-xs);
-        padding: 0 10px; /* balance inner spacing */
-        /* Continuous middle column background across full height of info-right */
-        background-image: linear-gradient(
-            to right,
-            transparent 0,
-            transparent 60%,
-            var(--card-bg-color) 60%,
-            var(--card-bg-color) 100%
-        );
-        background-clip: padding-box;
-
+        background: transparent;
+        border-radius: 0;
+        border: none;
+        padding: 0;
 }
 
 .stats-grid {
@@ -541,15 +548,17 @@
     display: grid;
     grid-template-columns: 28% 4% 28% 40%;
     gap: 0 0; /* remove row gap to let divider touch next row */
-    margin-top: 5px;
-    margin-bottom:5px;
-    margin-right:10px;
+    margin: 0;
     text-align: center;
     cursor: pointer;
     user-select: none;
     width: 100%;
     align-self: stretch;
     font-size: 1rem; /* match difficulty-meter */
+    border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--card-bg-color) 86%, var(--bg-color-dark));
 }
 
 
@@ -566,8 +575,14 @@
 }
 
 .bpm-row.header span
-{ font-weight: 600;
-    opacity: 0.68; }
+{ font-weight: 700;
+    color: var(--text-color-light);
+    opacity: 0.92;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--card-hover-bg-color) 84%, var(--card-bg-color));
+}
 
 
 .bpm-table .bpm-row span {
@@ -575,27 +590,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0.5rem 0.5rem 0.25rem;
-    
+    min-height: 2.55rem;
+    padding: 0.45rem 0.5rem;
+    color: var(--text-color-light);
+    background: color-mix(in srgb, var(--card-bg-color) 86%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);
 }
 
 /* Add space above non-header rows since row-gap is 0 */
-.bpm-row:not(.header) span { padding-top: 0.5rem; }
+.bpm-row:not(.header) span { padding-top: 0.55rem; }
 
 /* Separator dash column */
-.bpm-sep { color: var(--text-muted-color); pointer-events: none; font-weight: normal!important; }
+.bpm-sep {
+    color: color-mix(in srgb, var(--text-muted-color) 86%, var(--text-color-light));
+    pointer-events: none;
+    font-weight: normal!important;
+}
+
+.bpm-table .bpm-row span:last-child {
+    background: color-mix(in srgb, var(--accent-color) 14%, var(--card-bg-color));
+    border-left: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);
+    color: var(--text-color);
+    font-weight: 700;
+}
 
 /* Remove per-cell background; handled by table gradient */
 
 /* Emphasize bottom line (modifiers) */
 .bpm-table .bpm-row:last-of-type span {
     font-weight: 700;
-    font-size: 1.38rem;
+    font-size: 1.28rem;
+    color: var(--text-color);
+    border-bottom: none;
 }
 
 /* Make second-to-last row bold (adjusted speeds above multipliers) */
 .bpm-table .bpm-row:nth-last-of-type(2) span {
     font-weight: 700;
+    color: var(--text-color);
 }
 
 /* Direction indicators beside BPM values */
@@ -684,8 +716,17 @@
 .toggle-button {
     background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--button-bg) 92%, white 8%),
-        var(--button-bg)
+        color-mix(
+            in srgb,
+            color-mix(in srgb, var(--button-bg) 92%, white 8%)
+                var(--button-glass-strength, 100%),
+            transparent
+        ),
+        color-mix(
+            in srgb,
+            var(--button-bg) var(--button-glass-strength, 100%),
+            transparent
+        )
     );
     color: var(--button-icon);
     width: 32px;
@@ -849,9 +890,15 @@
 
     /* Evenly distribute BPM rows vertically on mobile */
     .bpm-table {
-        height: 160px; /* provides definite height for equal row sizing */
-        grid-auto-rows: 1fr;
+        height: 172px; /* give final modifier row enough vertical room */
+        grid-template-rows: 1fr 1fr 1fr 1.2fr;
         align-content: stretch;
+    }
+
+    .bpm-table .bpm-row:last-of-type span {
+        min-height: 3rem;
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
     }
     
 }
@@ -957,8 +1004,17 @@
 .smod-button {
     background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--button-bg) 92%, white 8%),
-        var(--button-bg)
+        color-mix(
+            in srgb,
+            color-mix(in srgb, var(--button-bg) 92%, white 8%)
+                var(--button-glass-strength, 100%),
+            transparent
+        ),
+        color-mix(
+            in srgb,
+            var(--button-bg) var(--button-glass-strength, 100%),
+            transparent
+        )
     );
     color: var(--button-icon);
     width: 40px;
@@ -1055,6 +1111,7 @@
 
 .bpm-score-badge.glow-marvelous,
 .bpm-score-badge.score-badge.glow-marvelous {
+  border-color: rgba(255, 255, 255, 0.95);
   box-shadow:
     0 0 3px #ffffff,
     inset 0 0 8px #ffffff;
@@ -1062,6 +1119,7 @@
 
 .bpm-score-badge.glow-perfect,
 .bpm-score-badge.score-badge.glow-perfect {
+  border-color: rgba(255, 224, 102, 0.95);
   box-shadow:
     0 0 3px #ffe066,
     inset 0 0 8px #ffe066;
@@ -1069,6 +1127,7 @@
 
 .bpm-score-badge.glow-great,
 .bpm-score-badge.score-badge.glow-great {
+  border-color: rgba(46, 204, 113, 0.95);
   box-shadow:
     0 0 3px #2ecc71,
     inset 0 0 8px #2ecc71;
@@ -1076,6 +1135,7 @@
 
 .bpm-score-badge.glow-good,
 .bpm-score-badge.score-badge.glow-good {
+  border-color: rgba(52, 152, 219, 0.95);
   box-shadow:
     0 0 3px #3498db,
     inset 0 0 8px #3498db;

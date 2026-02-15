@@ -199,7 +199,7 @@
     color: var(--accent-contrast, var(--text-color));
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 22px rgba(var(--accent-color-rgb), 0.26);
+    box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), 0.16);
     transition: background-color 0.2s ease, transform 0.2s ease;
     display: inline-flex;
     align-items: center;
