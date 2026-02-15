@@ -311,7 +311,7 @@
     height: calc(100dvh - var(--mobile-tabs-height, 0px));
     overflow: hidden;
     padding: 0;
-    margin-top: -1rem;
+    margin-top: 0;
     max-width: none;
     width: 100vw;
     margin-left: calc(50% - 50vw);
@@ -401,5 +401,25 @@
 
   .multiplier-result-label-desktop {
     display: block;
+  }
+}
+
+html.multiplier-mobile-lock,
+body.multiplier-mobile-lock {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.multiplier-mobile-lock #root,
+body.multiplier-mobile-lock #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  html.multiplier-mobile-lock .app-content {
+    height: calc(100dvh - var(--mobile-tabs-height, 0px));
+    overflow: hidden;
   }
 }

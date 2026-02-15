@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useContext, useCallback, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
@@ -17,6 +17,7 @@ function Multiplier() {
   const [songInput, setSongInput] = useState('150');
   const [activeField, setActiveField] = useState('song');
   const [showAlternative, setShowAlternative] = useState(false);
+  const mobileLockActiveRef = useRef(false);
 
   useEffect(() => {
     if (targetBPM === undefined || targetBPM === null) return;
@@ -28,6 +29,42 @@ function Multiplier() {
     if (!window.matchMedia('(max-width: 640px)').matches) return;
     setActiveField('song');
     setSongInput('');
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const className = 'multiplier-mobile-lock';
+    const root = document.documentElement;
+    const body = document.body;
+    const media = window.matchMedia('(max-width: 640px)');
+
+    const applyLock = (shouldLock) => {
+      if (shouldLock && !mobileLockActiveRef.current) {
+        window.scrollTo(0, 0);
+      }
+      root.classList.toggle(className, shouldLock);
+      body.classList.toggle(className, shouldLock);
+      mobileLockActiveRef.current = shouldLock;
+    };
+
+    applyLock(media.matches);
+
+    const handleChange = (event) => applyLock(event.matches);
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', handleChange);
+    } else {
+      media.addListener(handleChange);
+    }
+
+    return () => {
+      if (typeof media.removeEventListener === 'function') {
+        media.removeEventListener('change', handleChange);
+      } else {
+        media.removeListener(handleChange);
+      }
+      applyLock(false);
+    };
   }, []);
 
   const sanitizeInput = useCallback((value) => value.replace(/[^\d]/g, ''), []);
