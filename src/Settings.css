@@ -318,6 +318,13 @@
     .settings-button {
         text-align: center;
     }
+
+    .settings-changelog-card .setting-text,
+    .settings-changelog-card .setting-text h3,
+    .settings-changelog-card .settings-changelog,
+    .settings-changelog-card .settings-changelog-toggle {
+        text-align: left;
+    }
 }
 
 .license-text {

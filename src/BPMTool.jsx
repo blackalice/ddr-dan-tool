@@ -2,7 +2,14 @@ import React, { useState, useMemo, useContext, useEffect, useCallback, useRef } 
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownWideShort, faArrowUpWideShort, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowDownWideShort,
+    faArrowUpWideShort,
+    faFilter,
+    faPlus,
+    faSliders,
+    faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select, { components as RSComponents } from 'react-select';
@@ -232,6 +239,31 @@ const GAME_VERSION_ORDER = [
     '4th', '3rd', '2nd', 'DDR'
 ];
 
+const PATTERN_HIGHLIGHT_OPTIONS = [
+    { key: 'crossovers', label: 'Crossovers' },
+    { key: 'doublesteps', label: 'Doublesteps' },
+    { key: 'streams', label: 'Streams' },
+    { key: 'bursts', label: 'Bursts' },
+];
+const PATTERN_HIGHLIGHT_UI_ENABLED = false;
+
+const createDefaultPatternHighlights = () => ({
+    crossovers: false,
+    doublesteps: false,
+    streams: false,
+    bursts: false,
+});
+
+const normalizePatternHighlights = (value) => {
+    const defaults = createDefaultPatternHighlights();
+    if (!value || typeof value !== 'object') return defaults;
+    const next = { ...defaults };
+    for (const key of Object.keys(defaults)) {
+        next[key] = Boolean(value[key]);
+    }
+    return next;
+};
+
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView, selectionLoading = false }) => {
     const {
@@ -285,6 +317,19 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         const legacy = storage.getItem('bpmChartChunkLayout');
         return legacy === 'horizontal5' ? 5 : 1;
     });
+    const [chartControlsMinimized, setChartControlsMinimized] = useState(() => {
+        const saved = storage.getItem('bpmChartControlsMinimized');
+        return saved ? JSON.parse(saved) : false;
+    });
+    const [patternHighlights, setPatternHighlights] = useState(() => {
+        const saved = storage.getItem('bpmPatternHighlights');
+        if (!saved) return createDefaultPatternHighlights();
+        try {
+            return normalizePatternHighlights(JSON.parse(saved));
+        } catch {
+            return createDefaultPatternHighlights();
+        }
+    });
     const [showFilter, setShowFilter] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [overrideSongs, setOverrideSongs] = useState(null);
@@ -333,6 +378,23 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     useEffect(() => {
         storage.setItem('bpmChartChunkColumns', String(chartChunkColumns));
     }, [chartChunkColumns]);
+
+    useEffect(() => {
+        storage.setItem('bpmChartControlsMinimized', JSON.stringify(chartControlsMinimized));
+    }, [chartControlsMinimized]);
+
+    useEffect(() => {
+        storage.setItem('bpmPatternHighlights', JSON.stringify(patternHighlights));
+    }, [patternHighlights]);
+
+    const togglePatternHighlight = useCallback((patternKey) => {
+        setPatternHighlights((prev) => ({
+            ...prev,
+            [patternKey]: !prev[patternKey],
+        }));
+    }, []);
+
+    const effectivePatternHighlights = PATTERN_HIGHLIGHT_UI_ENABLED ? patternHighlights : {};
 
     const updateThemeColors = useCallback(() => {
         const style = getComputedStyle(document.documentElement);
@@ -1841,6 +1903,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                         playStyle={playStyle}
                         speedmod={speedmod}
                         chunkColumns={chartChunkColumns}
+                        highlightPatterns={effectivePatternHighlights}
                     />
                 ) : (
                     <ChartStatsPanel
@@ -1851,32 +1914,84 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                     />
                 )}
                  {view === 'chart' && (
-                    <div className="smod-controls-container">
-                        <div className="chunk-columns-stepper">
-                            <button
-                                className="smod-button"
-                                onClick={() => setChartChunkColumns((prev) => Math.max(1, prev - 1))}
-                                title="Decrease chart columns"
-                                aria-label="Decrease chart columns"
-                            >
-                                -
-                            </button>
-                            <div className="smod-value">{chartChunkColumns} col</div>
-                            <button
-                                className="smod-button"
-                                onClick={() => setChartChunkColumns((prev) => Math.min(5, prev + 1))}
-                                title="Increase chart columns"
-                                aria-label="Increase chart columns"
-                            >
-                                +
-                            </button>
+                    chartControlsMinimized ? (
+                        <button
+                            type="button"
+                            className="smod-mini-button"
+                            aria-label="Show chart settings"
+                            title="Show chart settings"
+                            onClick={() => setChartControlsMinimized(false)}
+                        >
+                            <FontAwesomeIcon icon={faSliders} />
+                        </button>
+                    ) : (
+                        <div className="smod-controls-container">
+                            <div className="smod-controls-header">
+                                <button
+                                    type="button"
+                                    className="smod-collapse-button"
+                                    aria-label="Hide chart settings"
+                                    title="Hide chart settings"
+                                    onClick={() => setChartControlsMinimized(true)}
+                                >
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                </button>
+                            </div>
+                            <div className="smod-top-row">
+                                <div className="smod-control-group">
+                                    <div className="smod-label">Columns</div>
+                                    <div className="chunk-columns-stepper">
+                                        <button
+                                            className="smod-button"
+                                            onClick={() => setChartChunkColumns((prev) => Math.max(1, prev - 1))}
+                                            title="Decrease chart columns"
+                                            aria-label="Decrease chart columns"
+                                        >
+                                            -
+                                        </button>
+                                        <div className="smod-value">{chartChunkColumns} col</div>
+                                        <button
+                                            className="smod-button"
+                                            onClick={() => setChartChunkColumns((prev) => Math.min(5, prev + 1))}
+                                            title="Increase chart columns"
+                                            aria-label="Increase chart columns"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="smod-control-group">
+                                    <div className="smod-label">Speed</div>
+                                    <div className="smod-stepper">
+                                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.max(1, prev - 0.5))}>-</button>
+                                        <div className="smod-value">{speedmod}x</div>
+                                        <button className="smod-button" onClick={() => setSpeedmod(prev => Math.min(3, prev + 0.5))}>+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {PATTERN_HIGHLIGHT_UI_ENABLED ? (
+                                <div className="pattern-highlight-group">
+                                    <div className="smod-label">Highlights</div>
+                                    <div className="pattern-highlight-controls">
+                                        {PATTERN_HIGHLIGHT_OPTIONS.map((option) => {
+                                            const active = patternHighlights[option.key];
+                                            return (
+                                                <button
+                                                    key={option.key}
+                                                    type="button"
+                                                    className={`pattern-toggle pattern-toggle-${option.key} ${active ? 'active' : ''}`}
+                                                    aria-pressed={active}
+                                                    onClick={() => togglePatternHighlight(option.key)}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
-                        <div className="smod-stepper">
-                            <button className="smod-button" onClick={() => setSpeedmod(prev => Math.max(1, prev - 0.5))}>-</button>
-                            <div className="smod-value">{speedmod}x</div>
-                            <button className="smod-button" onClick={() => setSpeedmod(prev => Math.min(3, prev + 0.5))}>+</button>
-                        </div>
-                    </div>
+                    )
                 )}
             </div>
         </div>

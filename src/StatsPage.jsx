@@ -280,6 +280,31 @@ const computeComplexityScore = (meta) => {
   return Number.isFinite(complexity) && complexity > 0 ? complexity : null;
 };
 
+const BASE_STAT_VIEW_OPTIONS = [
+  { value: 'resultsByLevel', label: 'Results by Level (Raw Breakdown included)' },
+  { value: 'bpmByLevel', label: 'BPM Ranges by Level' },
+  { value: 'crossoversByLevel', label: 'Amount of Crossovers by Level' },
+  { value: 'npsByLevel', label: 'Notes/Second by Level' },
+];
+
+const WIP_STAT_VIEW_OPTIONS = [
+  { value: 'perfectSongByLevel', label: 'Perfect Song by Level' },
+  { value: 'worstSongs', label: 'Worst Songs (Your Struggle List)' },
+  { value: 'nearUpgrades', label: 'Near-Upgrade Opportunities' },
+  { value: 'consistencyByLevel', label: 'Consistency by Level' },
+  { value: 'coverageGapHeatmap', label: 'Coverage Gap Heatmap' },
+  { value: 'overUnderperform', label: 'Overperform / Underperform' },
+  { value: 'skillSignature', label: 'Skill Signature' },
+  { value: 'techPenalty', label: 'Tech Penalty Index' },
+  { value: 'burstVsStream', label: 'Burst vs Stream Split' },
+  { value: 'crossoverTypeSplit', label: 'Crossover Type Split' },
+  { value: 'executionRisk', label: 'Execution Risk List' },
+  { value: 'topComplexCharts', label: 'Most Complex Charts (Top 20)' },
+  { value: 'efficientClears', label: 'Most Efficient Clears' },
+  { value: 'rankedDelta', label: 'Ranked Difficulty Delta' },
+  { value: 'techniqueImbalance', label: 'Technique Imbalance' },
+];
+
 const StatsPage = () => {
   const {
     playStyle,
@@ -288,6 +313,7 @@ const StatsPage = () => {
     worldRemoveChallengeCharts,
     songlistOverride,
     showTransliterationBeta,
+    showWipStats,
   } = useContext(SettingsContext);
   const { stats, scores, ensureStats, loadChartMeta } = useScores();
   const { user } = useAuth();
@@ -295,6 +321,17 @@ const StatsPage = () => {
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
   const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedStatView, setSelectedStatView] = useState('resultsByLevel');
+  const statViewOptions = useMemo(
+    () => (showWipStats ? [...BASE_STAT_VIEW_OPTIONS, ...WIP_STAT_VIEW_OPTIONS] : BASE_STAT_VIEW_OPTIONS),
+    [showWipStats],
+  );
+
+  useEffect(() => {
+    const allowedViews = new Set(statViewOptions.map((option) => option.value));
+    if (!allowedViews.has(selectedStatView)) {
+      setSelectedStatView('resultsByLevel');
+    }
+  }, [selectedStatView, statViewOptions]);
 
   const normalizedPlayStyle = playStyle === 'double' ? 'double' : 'single';
   const modeStats = stats && typeof stats === 'object' ? stats[normalizedPlayStyle] : null;
@@ -1517,25 +1554,11 @@ const StatsPage = () => {
                 value={selectedStatView}
                 onChange={(event) => setSelectedStatView(event.target.value)}
               >
-                <option value="resultsByLevel">Results by Level (Raw Breakdown included)</option>
-                <option value="bpmByLevel">BPM Ranges by Level</option>
-                <option value="crossoversByLevel">Amount of Crossovers by Level</option>
-                <option value="npsByLevel">Notes/Second by Level</option>
-                <option value="perfectSongByLevel">Perfect Song by Level</option>
-                <option value="worstSongs">Worst Songs (Your Struggle List)</option>
-                <option value="nearUpgrades">Near-Upgrade Opportunities</option>
-                <option value="consistencyByLevel">Consistency by Level</option>
-                <option value="coverageGapHeatmap">Coverage Gap Heatmap</option>
-                <option value="overUnderperform">Overperform / Underperform</option>
-                <option value="skillSignature">Skill Signature</option>
-                <option value="techPenalty">Tech Penalty Index</option>
-                <option value="burstVsStream">Burst vs Stream Split</option>
-                <option value="crossoverTypeSplit">Crossover Type Split</option>
-                <option value="executionRisk">Execution Risk List</option>
-                <option value="topComplexCharts">Most Complex Charts (Top 20)</option>
-                <option value="efficientClears">Most Efficient Clears</option>
-                <option value="rankedDelta">Ranked Difficulty Delta</option>
-                <option value="techniqueImbalance">Technique Imbalance</option>
+                {statViewOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

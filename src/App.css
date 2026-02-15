@@ -761,6 +761,19 @@ select optgroup {
   border-bottom-left-radius: var(--radius-sm);
   border-bottom-right-radius: var(--radius-sm);
 }
+
+[data-theme='light'] .dan-header {
+  color: var(--text-color);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--accent-color) 56%, white 44%),
+    color-mix(in srgb, var(--accent-color) 34%, var(--bg-color-dark) 66%)
+  );
+  box-shadow:
+    0 5px 12px rgba(16, 35, 61, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
 .song-grid {
   display: grid;
   grid-template-columns: 1fr;

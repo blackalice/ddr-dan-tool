@@ -19,6 +19,17 @@ import { useOfflineCache } from './hooks/useOfflineCache.js';
 
 const CHANGELOG_UPDATES = [
     {
+        date: 'Feb 15, 2026',
+        items: [
+            'Added a new "Turn on WIP stats" beta switch in Settings to reveal in-progress Stats views when enabled.',
+            'Refined Chart page controls with a cleaner layout and a minimize/expand quick button.',
+            'Improved mobile Chart controls with a full-width bottom panel for easier access.',
+            'Improved light-mode readability across key BPM and Dan header surfaces.',
+            'Updated Song Filter chips (Game Versions and Difficulty Names) for clearer, centered labels and better spacing.',
+            'Removed list color editing from Lists page to simplify list management controls.',
+        ],
+    },
+    {
         date: 'Feb 9, 2026',
         items: [
             'Improved page load speed.',
@@ -71,6 +82,8 @@ const Settings = () => {
         setShowCoursesBeta,
         showTransliterationBeta,
         setShowTransliterationBeta,
+        showWipStats,
+        setShowWipStats,
         songlistOverride,
         setSonglistOverride,
         showMultiplierIncrementVersion,
@@ -482,6 +495,22 @@ const Settings = () => {
 
                     <div className="setting-card setting-card-toggle">
                         <div className="setting-text">
+                            <h3>Turn on WIP stats</h3>
+                            <p>
+                                Show in-progress stats views on the Stats page.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={showWipStats}
+                                onChange={(e) => setShowWipStats(e.target.checked)}
+                                ariaLabel="Toggle WIP stats"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
                             <h3>Show Courses</h3>
                             <p>
                                 Show the courses page. May be slow and inaccurate. 
@@ -636,7 +665,7 @@ const Settings = () => {
                     )}
 
                     <h2 className="settings-sub-header">Changelog</h2>
-                    <div className="setting-card">
+                    <div className="setting-card settings-changelog-card">
                         <div className="setting-text">
                             <h3>{CHANGELOG_UPDATES[0].date}</h3>
                             <ul className="settings-changelog">

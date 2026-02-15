@@ -12,6 +12,15 @@ const BPM_RANGE_COLOR = "rgba(100, 0, 60, 0.115)";
 const TIME_LABEL_INTERVAL_MEASURES = 2;
 const BPM_TIME_COLLISION_EPSILON = 0.01;
 const TIME_LABEL_COLLISION_SHIFT = "1.5rem";
+const OFFSET_KEY_PRECISION = 5;
+const PATTERN_HIGHLIGHT_PRIORITY = [
+  ["crossovers", "patternCrossover"],
+  ["doublesteps", "patternDoublestep"],
+  ["bursts", "patternBurst"],
+  ["streams", "patternStream"],
+];
+
+const offsetKey = (offset) => Number(offset || 0).toFixed(OFFSET_KEY_PRECISION);
 
 const formatTimeLabel = (seconds) => {
   const safe = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
@@ -19,6 +28,19 @@ const formatTimeLabel = (seconds) => {
   const mins = Math.floor(whole / 60);
   const secs = whole % 60;
   return `${mins}:${String(secs).padStart(2, "0")}`;
+};
+
+const getHighlightClassName = (offset, patternByOffset, highlightPatterns) => {
+  if (!patternByOffset || !highlightPatterns) return null;
+  const patternsAtOffset = patternByOffset.get(offsetKey(offset));
+  if (!patternsAtOffset?.size) return null;
+
+  for (const [patternKey, className] of PATTERN_HIGHLIGHT_PRIORITY) {
+    if (highlightPatterns[patternKey] && patternsAtOffset.has(patternKey)) {
+      return className;
+    }
+  }
+  return null;
 };
 
 function SelfLink({
@@ -47,6 +69,8 @@ function StepchartSection({
   endOffset,
   showSideMarkers = true,
   showTimeLabels = true,
+  patternByOffset = null,
+  highlightPatterns = {},
 }) {
   const [targetedBeat, setTargetedBeat] = useState(null);
 
@@ -85,12 +109,19 @@ function StepchartSection({
 
     const isShockArrow = a.direction.indexOf("M") !== -1;
     const isFreezeArrow = a.direction.indexOf("2") > -1;
+    const highlightClassName = getHighlightClassName(
+      a.offset,
+      patternByOffset,
+      highlightPatterns,
+    );
 
     for (let i = 0; i < a.direction.length; ++i) {
       if (a.direction[i] !== "0") {
         arrowImgs.push(
           <ArrowImg
             key={`Arrow-${ai}-${i}`}
+            className={highlightClassName ? styles[highlightClassName] : null}
+            highlighted={Boolean(highlightClassName)}
             position={i}
             beat={isShockArrow ? "shock" : isFreezeArrow ? "freeze" : a.beat}
             style={{

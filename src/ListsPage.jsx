@@ -4,7 +4,7 @@ import { useGroups } from './contexts/GroupsContext.jsx';
 import { useFilters } from './contexts/FilterContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp, faTrash, faPalette, faPlus, faPen, faSort, faGripLines } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faTrash, faPlus, faPen, faSort, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import {
   DndContext,
   PointerSensor,
@@ -54,7 +54,6 @@ const GroupSection = ({
   group,
   removeChart,
   deleteGroup,
-  updateColor,
   updateName,
   resetFilters,
   onEditChart,
@@ -137,15 +136,6 @@ const GroupSection = ({
         style={{ backgroundColor: group.color }}
       >
         <div className="dan-header-title">
-          <label className="color-picker-label">
-            <FontAwesomeIcon icon={faPalette} />
-            <input
-              type="color"
-              value={group.color}
-              onChange={(e) => updateColor(group.name, e.target.value)}
-              className="color-picker"
-            />
-          </label>
           <button onClick={handleDelete} className="delete-list-button">
             <FontAwesomeIcon icon={faTrash} />
           </button>
@@ -278,7 +268,6 @@ const ListsPage = () => {
     createGroup,
     removeChartFromGroup,
     deleteGroup,
-    updateGroupColor,
     updateGroupName,
     updateChartDifficulty,
     activeGroup,
@@ -404,7 +393,6 @@ const ListsPage = () => {
                     group={g}
                     removeChart={removeChartFromGroup}
                     deleteGroup={deleteGroup}
-                    updateColor={updateGroupColor}
                     updateName={updateGroupName}
                     resetFilters={resetFilters}
                     onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}
@@ -422,7 +410,6 @@ const ListsPage = () => {
               group={g}
               removeChart={removeChartFromGroup}
               deleteGroup={deleteGroup}
-              updateColor={updateGroupColor}
               updateName={updateGroupName}
               resetFilters={resetFilters}
               onEditChart={(groupName, chart) => setEditInfo({ groupName, chart })}

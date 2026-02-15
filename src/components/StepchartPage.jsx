@@ -18,6 +18,150 @@ const sectionSizesInMeasures = {
 };
 const MIN_CHUNK_COLUMNS = 1;
 const MAX_CHUNK_COLUMNS = 5;
+const STREAM_GAP_THRESHOLD = 0.125;
+const STREAM_MIN_ROWS = 8;
+const BURST_MIN_ROWS = 4;
+const CROSSOVER_SEQUENCE_GAP_THRESHOLD = 0.5;
+const OFFSET_KEY_PRECISION = 5;
+const STEP_PATTERN_HIGHLIGHTS_ENABLED = false;
+
+const offsetKey = (offset) => Number(offset || 0).toFixed(OFFSET_KEY_PRECISION);
+
+const getTapLanes = (direction) => {
+  if (typeof direction !== "string") return [];
+  const lanes = [];
+  for (let i = 0; i < direction.length; i += 1) {
+    if (direction[i] !== "0") lanes.push(i);
+  }
+  return lanes;
+};
+
+const isRightSideLane = (lane, laneCount) => lane >= laneCount / 2;
+
+const crossoverPenalty = (foot, lane, laneCount) =>
+  (foot === "L" && isRightSideLane(lane, laneCount))
+  || (foot === "R" && !isRightSideLane(lane, laneCount))
+    ? 1
+    : 0;
+
+const getCrossoverSequenceIndices = (events) => {
+  const highlighted = new Set();
+  if (!Array.isArray(events) || events.length < 3) return highlighted;
+
+  for (let i = 1; i < events.length - 1; i += 1) {
+    const current = events[i];
+    if (!current?.crossovers) continue;
+
+    const previous = events[i - 1];
+    const next = events[i + 1];
+    if (!previous || !next) continue;
+
+    const hasTightPreviousGap =
+      (current.offset - previous.offset) <= CROSSOVER_SEQUENCE_GAP_THRESHOLD;
+    const hasTightNextGap =
+      (next.offset - current.offset) <= CROSSOVER_SEQUENCE_GAP_THRESHOLD;
+
+    if (!hasTightPreviousGap || !hasTightNextGap) continue;
+    highlighted.add(i - 1);
+    highlighted.add(i);
+    highlighted.add(i + 1);
+  }
+
+  return highlighted;
+};
+
+const classifyPatternRows = (chart) => {
+  const patternByOffset = new Map();
+  if (!chart?.arrows?.length) return patternByOffset;
+  if (!STEP_PATTERN_HIGHLIGHTS_ENABLED) return patternByOffset;
+
+  const rows = chart.arrows
+    .map((arrow) => ({
+      offset: Number(arrow?.offset ?? 0),
+      lanes: getTapLanes(arrow?.direction || ""),
+    }))
+    .filter((row) => row.lanes.length > 0)
+    .sort((a, b) => a.offset - b.offset);
+
+  const addPattern = (offset, pattern) => {
+    const key = offsetKey(offset);
+    const existing = patternByOffset.get(key);
+    if (existing) {
+      existing.add(pattern);
+      return;
+    }
+    patternByOffset.set(key, new Set([pattern]));
+  };
+
+  // Streams / bursts from dense consecutive rows.
+  let runStart = 0;
+  for (let i = 1; i <= rows.length; i += 1) {
+    const contiguous =
+      i < rows.length && (rows[i].offset - rows[i - 1].offset) <= STREAM_GAP_THRESHOLD;
+    if (contiguous) continue;
+
+    const runLength = i - runStart;
+    if (runLength >= BURST_MIN_ROWS) {
+      const pattern = runLength >= STREAM_MIN_ROWS ? "streams" : "bursts";
+      for (let k = runStart; k < i; k += 1) {
+        addPattern(rows[k].offset, pattern);
+      }
+    }
+    runStart = i;
+  }
+
+  // Crossovers / doublesteps from a lightweight foot assignment model.
+  const singleRows = rows.filter((row) => row.lanes.length === 1);
+  if (singleRows.length < 2) return patternByOffset;
+  const laneCount = Math.max(...singleRows.map((row) => row.lanes[0])) + 1;
+
+  let states = ["L", "R"].map((foot) => ({
+    foot,
+    lane: singleRows[0].lanes[0],
+    cost: crossoverPenalty(foot, singleRows[0].lanes[0], laneCount),
+    history: [{ offset: singleRows[0].offset, crossovers: false, doublesteps: false }],
+  }));
+
+  for (let i = 1; i < singleRows.length; i += 1) {
+    const row = singleRows[i];
+    const lane = row.lanes[0];
+    const nextStates = [];
+
+    for (const candidateFoot of ["L", "R"]) {
+      let best = null;
+      for (const prev of states) {
+        const doubled = candidateFoot === prev.foot && lane !== prev.lane;
+        const crossed = crossoverPenalty(candidateFoot, lane, laneCount) > 0;
+        const movement = Math.abs(lane - prev.lane) * 0.06;
+        const cost = prev.cost + (doubled ? 1.25 : 0) + (crossed ? 1 : 0) + movement;
+        if (!best || cost < best.cost) {
+          best = {
+            foot: candidateFoot,
+            lane,
+            cost,
+            history: prev.history.concat({
+              offset: row.offset,
+              crossovers: crossed,
+              doublesteps: doubled,
+            }),
+          };
+        }
+      }
+      nextStates.push(best);
+    }
+    states = nextStates;
+  }
+
+  const bestState = states[0].cost <= states[1].cost ? states[0] : states[1];
+  const crossoverSequenceIndices = getCrossoverSequenceIndices(bestState.history);
+  for (let i = 0; i < bestState.history.length; i += 1) {
+    const event = bestState.history[i];
+    if (crossoverSequenceIndices.has(i)) addPattern(event.offset, "crossovers");
+    if (event.doublesteps) addPattern(event.offset, "doublesteps");
+  }
+
+  return patternByOffset;
+};
 
 // function scrollTargetBeatJustUnderHeader(beatId, headerId) {
 //   setTimeout(() => {
@@ -37,6 +181,7 @@ export function StepchartPage({
   currentType: initialCurrentType,
   speedmod,
   chunkColumns = 1,
+  highlightPatterns = {},
 }) {
   const [currentType, setCurrentType] = useState(initialCurrentType);
   const isLoading = !simfile;
@@ -66,6 +211,7 @@ export function StepchartPage({
   );
 
   const chart = currentTypeMeta ? displaySimfile.charts[currentType] : null;
+  const patternByOffset = useMemo(() => classifyPatternRows(chart), [chart]);
 
   const chartLayout = useMemo(() => {
     if (!chart) return [];
@@ -124,12 +270,14 @@ export function StepchartPage({
               endOffset={section.endOffset}
               showSideMarkers
               showTimeLabels
+              patternByOffset={patternByOffset}
+              highlightPatterns={highlightPatterns}
               style={{ zIndex: section.zIndex }}
             />
           ))}
       </div>
     ));
-  }, [chart, chartLayout, speedmod]);
+  }, [chart, chartLayout, speedmod, patternByOffset, highlightPatterns]);
 
 
   const displayTitle = showTransliterationBeta && displaySimfile.title.translitTitleName

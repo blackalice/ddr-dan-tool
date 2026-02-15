@@ -6,6 +6,26 @@
     transform-origin: center;
 }
 
+.highlighted {
+    filter:
+        drop-shadow(0 0 2px rgba(255, 255, 255, 0.62))
+        drop-shadow(0 0 6px var(--pattern-highlight, rgba(125, 211, 252, 0.9)));
+}
+
+.arrowWhiteTint {
+    position: absolute;
+    display: block;
+    width: var(--arrow-size);
+    height: var(--arrow-size);
+    transform-origin: center;
+    pointer-events: none;
+    background-color: var(--pattern-highlight, rgba(125, 211, 252, 0.9));
+    opacity: 0.95;
+    mix-blend-mode: multiply;
+    -webkit-mask: url("../assets/arrowWhiteOverlay.svg") center / contain no-repeat;
+    mask: url("../assets/arrowWhiteOverlay.svg") center / contain no-repeat;
+}
+
 .left1 {
     left: calc(var(--arrow-size) * 0);
     transform: rotate(270deg);

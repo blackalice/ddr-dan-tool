@@ -31,20 +31,36 @@ const arrowImgs = {
   freeze: arrowFreezeSvg,
 };
 
-function ArrowImg({ className, style, position, beat }) {
+function ArrowImg({ className, style, position, beat, highlighted = false }) {
+  const canTintWhiteCore = beat !== "shock";
+
   return (
-    <img
-      className={clsx(
-        className,
-        styles.arrowSvg,
-        arrowClasses[position],
-        "pointer-events-none"
-      )}
-      style={style}
-      src={arrowImgs[beat]}
-      alt={`${beat} arrow`}
-      data-beat={beat}
-    />
+    <>
+      <img
+        className={clsx(
+          className,
+          styles.arrowSvg,
+          arrowClasses[position],
+          highlighted && styles.highlighted,
+          "pointer-events-none"
+        )}
+        style={style}
+        src={arrowImgs[beat]}
+        alt={`${beat} arrow`}
+        data-beat={beat}
+      />
+      {highlighted && canTintWhiteCore ? (
+        <span
+          aria-hidden="true"
+          className={clsx(
+            className,
+            styles.arrowWhiteTint,
+            arrowClasses[position]
+          )}
+          style={style}
+        />
+      ) : null}
+    </>
   );
 }
 

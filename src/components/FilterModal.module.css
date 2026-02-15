@@ -100,15 +100,32 @@
   border-radius: var(--radius-sm);
   padding: 0.5rem;
   background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  scrollbar-gutter: stable both-edges;
 }
 
 .checkboxLabel {
-  display: block;
-  padding: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.5rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
+  min-width: 100px;
+  min-height: 2.1rem;
   transition: background 0.2s ease, color 0.2s ease;
   font-weight: 400;
+  margin: 0.1rem;
+  text-align: center;
+  line-height: 1.2;
+  box-sizing: border-box;
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.14));
+  background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
+  color: var(--text-color);
 }
 
 .checkboxLabel:hover {
@@ -116,9 +133,10 @@
 }
 
 .checkboxLabel.selected {
-  background: linear-gradient(180deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 82%, black));
+  background: color-mix(in srgb, var(--accent-color) 24%, var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03)));
+  border-color: color-mix(in srgb, var(--accent-color) 58%, var(--modal-control-border, rgba(255, 255, 255, 0.12)));
   color: white;
-  box-shadow: 0 0 14px rgba(var(--accent-color-rgb), 0.35);
+  box-shadow: 0 0 0 1px rgba(var(--accent-color-rgb), 0.3);
 }
 
 .checkboxLabel input {

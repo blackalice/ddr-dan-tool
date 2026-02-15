@@ -479,6 +479,34 @@
     background-color: rgba(var(--accent-color-rgb), .82);
 }
 
+[data-theme='light'] .song-title-container {
+    background: linear-gradient(
+        150deg,
+        color-mix(in srgb, var(--accent-color) 20%, var(--card-hover-bg-color)),
+        color-mix(in srgb, var(--card-hover-bg-color) 90%, var(--bg-color-dark) 10%)
+    );
+    color: var(--text-color);
+}
+
+[data-theme='light'] .song-title-main {
+    color: var(--text-color);
+}
+
+[data-theme='light'] .song-title-artist {
+    color: var(--text-color-lighter);
+}
+
+[data-theme='light'] .song-info-bar .collapse-button {
+    background-color: color-mix(in srgb, var(--button-bg) 88%, white 12%);
+    border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
+    color: var(--button-icon);
+}
+
+[data-theme='light'] .song-info-bar .collapse-button:hover {
+    background-color: color-mix(in srgb, var(--button-bg) 76%, white 24%);
+    color: var(--button-icon);
+}
+
 /* Desktop: place collapse button at top-right of header */
 @media (min-width: 1025px) {
     .song-info-bar .collapse-button {
@@ -859,6 +887,13 @@
         background-color: var(--bg-color-dark);
         color: white;
     }
+
+    [data-theme='light'] .song-info-bar .bpm-title-mobile .collapse-button {
+        background-color: color-mix(in srgb, var(--button-bg) 88%, white 12%);
+        color: var(--button-icon);
+        border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
+    }
+
     .song-info-bar .collapse-button:hover {
         background-color: rgba(var(--accent-color-rgb), .85);
         color: white;
@@ -989,18 +1024,97 @@
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    display: grid;
+    gap: 0.55rem;
+    width: min(20rem, calc(100vw - 1.25rem));
     background: color-mix(in srgb, var(--bg-color-light) 90%, var(--card-bg-color));
-    padding: 10px;
-    border-radius: var(--radius-xs);
+    padding: 0.7rem;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-md);
     float: right;
+    margin-right: 0.55rem;
     margin-bottom: 20px;
-    opacity: 0.82;
+    opacity: 0.98;
+}
+
+.smod-controls-header {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.smod-collapse-button,
+.smod-mini-button {
+    background: linear-gradient(
+        180deg,
+        color-mix(
+            in srgb,
+            color-mix(in srgb, var(--button-bg) 92%, white 8%)
+                var(--button-glass-strength, 100%),
+            transparent
+        ),
+        color-mix(
+            in srgb,
+            var(--button-bg) var(--button-glass-strength, 100%),
+            transparent
+        )
+    );
+    color: var(--button-icon);
+    border: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.smod-collapse-button {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-xs);
+}
+
+.smod-mini-button {
+    position: sticky;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    float: right;
+    width: 2.65rem;
+    height: 2.65rem;
+    margin-right: 0.55rem;
+    margin-bottom: 20px;
+    border-radius: var(--radius-round);
+    box-shadow: var(--shadow-md);
+}
+
+.smod-collapse-button:hover,
+.smod-mini-button:hover {
+    background-color: var(--card-hover-bg-color-light);
+    border-color: color-mix(in srgb, var(--accent-color) 35%, var(--border-color));
+    transform: translateY(-1px);
+}
+
+.smod-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.smod-control-group,
+.pattern-highlight-group {
+    display: grid;
+    gap: 0.32rem;
+}
+
+.smod-label {
+    font-size: 0.66rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--text-muted-color) 84%, var(--text-color-light));
+    padding-left: 0.35rem;
 }
 
 .chunk-columns-stepper,
@@ -1008,7 +1122,67 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 0.35rem;
+    background: color-mix(in srgb, var(--button-bg) 50%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color) 74%, transparent);
+    border-radius: var(--radius-sm);
+    padding: 0.2rem;
+}
+
+.pattern-highlight-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+}
+
+.pattern-toggle {
+    border: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);
+    background: color-mix(in srgb, var(--button-bg) 78%, var(--bg-color-dark));
+    color: var(--text-muted-color);
+    border-radius: var(--radius-xs);
+    min-height: 1.85rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+
+.pattern-toggle:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 36%, var(--border-color));
+    color: var(--text-color-light);
+}
+
+.pattern-toggle.active {
+    background: color-mix(in srgb, var(--accent-color) 26%, var(--button-bg));
+    border-color: color-mix(in srgb, var(--accent-color) 45%, var(--border-color));
+    color: var(--text-color-light);
+}
+
+.pattern-toggle.pattern-toggle-crossovers.active {
+    background: color-mix(in srgb, rgb(52, 211, 153) 32%, var(--button-bg));
+    border-color: color-mix(in srgb, rgb(52, 211, 153) 58%, var(--border-color));
+    color: color-mix(in srgb, rgb(52, 211, 153) 72%, white);
+}
+
+.pattern-toggle.pattern-toggle-doublesteps.active {
+    background: color-mix(in srgb, rgb(251, 146, 60) 30%, var(--button-bg));
+    border-color: color-mix(in srgb, rgb(251, 146, 60) 56%, var(--border-color));
+    color: color-mix(in srgb, rgb(251, 146, 60) 72%, white);
+}
+
+.pattern-toggle.pattern-toggle-streams.active {
+    background: color-mix(in srgb, rgb(56, 189, 248) 32%, var(--button-bg));
+    border-color: color-mix(in srgb, rgb(56, 189, 248) 58%, var(--border-color));
+    color: color-mix(in srgb, rgb(56, 189, 248) 72%, white);
+}
+
+.pattern-toggle.pattern-toggle-bursts.active {
+    background: color-mix(in srgb, rgb(232, 121, 249) 28%, var(--button-bg));
+    border-color: color-mix(in srgb, rgb(232, 121, 249) 54%, var(--border-color));
+    color: color-mix(in srgb, rgb(232, 121, 249) 70%, white);
 }
 
 .smod-button {
@@ -1027,15 +1201,16 @@
         )
     );
     color: var(--button-icon);
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-round);
+    width: 2.05rem;
+    height: 2.05rem;
+    border-radius: var(--radius-xs);
     border: none;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -1045,10 +1220,10 @@
 }
 
 .smod-value {
-    font-size: 1.2rem;
+    font-size: 1.02rem;
     font-weight: bold;
-    color: var(--text-color);
-    min-width: 50px;
+    color: var(--text-color-light);
+    min-width: 3.6rem;
     text-align: center;
     display: flex;
     align-items: center;
@@ -1058,8 +1233,21 @@
 @media (max-width: 1024px) {
     .smod-controls-container {
         position: fixed;
-        flex-direction: column;
-        align-items: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+
+    .smod-mini-button {
+        position: fixed;
+        right: 0.9rem;
+        bottom: 0.6rem;
+        margin-right: 0;
+        margin-bottom: 0;
     }
         .song-info-bar.collapsed {
         border-radius: var(--radius-sm);
@@ -1068,6 +1256,12 @@
     .difficulty-meters-container {
         flex-wrap: nowrap;
         width: 100%;
+    }
+}
+
+@media (max-width: 460px) {
+    .smod-top-row {
+        grid-template-columns: 1fr;
     }
 }
 

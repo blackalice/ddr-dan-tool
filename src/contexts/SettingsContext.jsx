@@ -57,6 +57,11 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [showWipStats, setShowWipStats] = useState(() => {
+        const saved = storage.getItem('showWipStats');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     const [worldDifficultyChanges, setWorldDifficultyChanges] = useState(() => {
         const saved = storage.getItem('worldDifficultyChanges');
         return saved ? JSON.parse(saved) : false;
@@ -116,6 +121,10 @@ export const SettingsProvider = ({ children }) => {
     }, [showTransliterationBeta]);
 
     useEffect(() => {
+        storage.setItem('showWipStats', JSON.stringify(showWipStats));
+    }, [showWipStats]);
+
+    useEffect(() => {
         storage.setItem('worldDifficultyChanges', JSON.stringify(worldDifficultyChanges));
     }, [worldDifficultyChanges]);
 
@@ -144,6 +153,8 @@ export const SettingsProvider = ({ children }) => {
         setShowCoursesBeta,
         showTransliterationBeta,
         setShowTransliterationBeta,
+        showWipStats,
+        setShowWipStats,
         songlistOverride,
         setSonglistOverride,
         showMultiplierIncrementVersion,

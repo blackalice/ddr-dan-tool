@@ -89,6 +89,22 @@
     overflow: hidden;
 }
 
+.patternCrossover {
+    --pattern-highlight: rgba(52, 211, 153, 0.92);
+}
+
+.patternDoublestep {
+    --pattern-highlight: rgba(251, 146, 60, 0.92);
+}
+
+.patternStream {
+    --pattern-highlight: rgba(56, 189, 248, 0.92);
+}
+
+.patternBurst {
+    --pattern-highlight: rgba(232, 121, 249, 0.94);
+}
+
 .bpmRange {
     position: absolute;
     left: 0;
