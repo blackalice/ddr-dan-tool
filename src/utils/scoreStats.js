@@ -97,6 +97,7 @@ export function buildChartMetaLookup(songMeta) {
       const chartId = diff?.chartId;
       const builtId = buildChartId(song?.id, normalizedMode, diff?.difficulty);
       const normalizedDifficulty = String(diff?.difficulty || '').toLowerCase();
+      const tech = diff?.stepmaniaTech || {};
       const entry = {
         chartId: chartId || builtId || null,
         chartSlug: normalizedMode && normalizedDifficulty ? `${normalizedMode}-${normalizedDifficulty}` : null,
@@ -109,15 +110,38 @@ export function buildChartMetaLookup(songMeta) {
         difficulty: normalizedDifficulty,
         level,
         mode: normalizedMode,
+        rankedRating: normaliseRate(diff?.rankedRating),
         bpmMin: normaliseBpm(diff?.bpmMin ?? song?.bpmMin),
         bpmMax: normaliseBpm(diff?.bpmMax ?? song?.bpmMax),
-        crossovers: normaliseCount(diff?.stepmaniaTech?.crossovers ?? diff?.crossovers),
-        notesPerSecond: normaliseRate(diff?.stepmaniaTech?.notesPerSecond ?? diff?.notesPerSecond),
-        jumps: normaliseCount(diff?.stepmaniaTech?.jumps ?? diff?.jumps),
-        holds: normaliseCount(diff?.stepmaniaTech?.holds ?? diff?.holds),
-        footswitches: normaliseCount(diff?.stepmaniaTech?.footswitches ?? diff?.footswitches),
-        doublesteps: normaliseCount(diff?.stepmaniaTech?.doublesteps ?? diff?.doublesteps),
-        streamNotes: normaliseCount(diff?.stepmaniaTech?.streamNotes ?? diff?.streamNotes),
+        crossovers: normaliseCount(tech.crossovers ?? diff?.crossovers),
+        halfCrossovers: normaliseCount(tech.halfCrossovers),
+        fullCrossovers: normaliseCount(tech.fullCrossovers),
+        holdCrossovers: normaliseCount(tech.holdCrossovers),
+        notesPerSecond: normaliseRate(tech.notesPerSecond ?? diff?.notesPerSecond),
+        maximumNotesPerSecond: normaliseRate(tech.maximumNotesPerSecond),
+        meanNotesPerSecond: normaliseRate(tech.meanNotesPerSecond),
+        medianNotesPerSecond: normaliseRate(tech.medianNotesPerSecond),
+        stepsPerSecond: normaliseRate(tech.stepsPerSecond),
+        jumps: normaliseCount(tech.jumps ?? diff?.jumps),
+        holds: normaliseCount(tech.holds ?? diff?.holds),
+        steps: normaliseCount(tech.steps),
+        notes: normaliseCount(tech.notes),
+        footswitches: normaliseCount(tech.footswitches ?? diff?.footswitches),
+        upFootswitches: normaliseCount(tech.upFootswitches),
+        downFootswitches: normaliseCount(tech.downFootswitches),
+        doublesteps: normaliseCount(tech.doublesteps ?? diff?.doublesteps),
+        streamNotes: normaliseCount(tech.streamNotes ?? diff?.streamNotes),
+        streams: normaliseCount(tech.streams),
+        streamCount: normaliseCount(tech.streamCount),
+        bursts: normaliseCount(tech.bursts),
+        technicalMoves: normaliseCount(tech.technicalMoves),
+        jacks: normaliseCount(tech.jacks),
+        drills: normaliseCount(tech.drills),
+        stops: normaliseCount(tech.stops),
+        sideswitches: normaliseCount(tech.sideswitches),
+        brackets: normaliseCount(tech.brackets),
+        spins180: normaliseCount(tech.spins180),
+        spins360: normaliseCount(tech.spins360),
       };
 
       if (chartId) {

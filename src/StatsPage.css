@@ -201,6 +201,65 @@
   background: color-mix(in srgb, var(--accent-color) 18%, transparent);
 }
 
+.stats-heat-none {
+  background: transparent;
+}
+
+.stats-heat-low {
+  background: color-mix(in srgb, #ef4444 22%, transparent);
+}
+
+.stats-heat-mid {
+  background: color-mix(in srgb, #f59e0b 24%, transparent);
+}
+
+.stats-heat-high {
+  background: color-mix(in srgb, #22c55e 22%, transparent);
+}
+
+.stats-positive {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.stats-negative {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.stats-neutral {
+  color: var(--text-muted-color);
+  font-weight: 600;
+}
+
+.stats-skill-meter {
+  min-width: 160px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-skill-track {
+  width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-color-light) 78%, transparent);
+  overflow: hidden;
+}
+
+.stats-skill-fill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.stats-skill-positive {
+  background: linear-gradient(90deg, #22c55e, #86efac);
+}
+
+.stats-skill-negative {
+  background: linear-gradient(90deg, #ef4444, #fca5a5);
+}
+
 @media (max-width: 768px) {
   .stats-card {
     padding: 1.25rem;
