@@ -4,15 +4,23 @@ import { difficultyMap } from '../utils/difficulties.js';
 import clsx from 'clsx';
 
 export const DifficultyMeter = ({ level, difficultyName, isMissing, onClick, isSelected }) => {
-    const style = {
-        backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
-        color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? 'black' : 'white',
-        cursor: isMissing ? 'default' : 'pointer',
-        border: isSelected ? '2px solid white' : '2px solid transparent',
-        boxShadow: isSelected ? `inset 0 0 8px rgba(0,0,0,0.2)` : 'none',
-        boxSizing: 'border-box',
-       
-    };
+const baseInnerGlow = 'inset 0 0 4px rgb(255, 255, 255)';
+
+const style = {
+  backgroundColor: isMissing ? '#374151' : difficultyMap[difficultyName]?.color || '#9E9E9E',
+  color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? 'black' : 'white',
+  cursor: isMissing ? 'default' : 'pointer',
+
+  padding: '0.6rem',
+  boxSizing: 'border-box',
+
+  // no border at all
+  border: '0',
+
+  boxShadow: isSelected
+    ? `inset 0 0 0 2px white, inset 0 0 8px rgba(0,0,0,0.2), ${baseInnerGlow}`
+    : baseInnerGlow,
+};
 
     const levelStr = level == null ? '' : String(level);
     const decimalIndex = levelStr.indexOf('.');

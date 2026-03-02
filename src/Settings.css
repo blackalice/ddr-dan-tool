@@ -197,6 +197,7 @@
     border: none;
     background-color: var(--accent-color);
     color: var(--accent-contrast, var(--text-color));
+    text-decoration: none;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), 0.16);

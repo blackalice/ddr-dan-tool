@@ -30,6 +30,7 @@ const RankingsPage = lazy(() => import('./RankingsPage.jsx'));
 const CardDrawPage = lazy(() => import('./CardDrawPage.jsx'));
 const LoginPage = lazy(() => import('./LoginPage.jsx'));
 const SignupPage = lazy(() => import('./SignupPage.jsx'));
+const ThemeEditorPage = lazy(() => import('./ThemeEditorPage.jsx'));
 
 function AppRoutes() {
   const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts } = useContext(SettingsContext);
@@ -428,6 +429,7 @@ function AppRoutes() {
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
             <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
+            <Route path="/theme" element={<ThemeEditorPage />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
             <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />

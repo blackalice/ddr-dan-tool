@@ -6,6 +6,8 @@
     color: var(--text-color);
     font-weight: bold;
     font-size: 1rem;
+    
+    
 }
 
 .difficulty-meter:last-child{

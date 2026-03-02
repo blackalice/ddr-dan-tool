@@ -54,7 +54,7 @@ const LoginPage = () => {
             autoComplete="current-password"
             required
           />
-          <button type="submit" className="settings-button auth-button" disabled={loading}>
+          <button type="submit" className="auth-button" disabled={loading}>
             {loading ? 'Logging in...' : 'Log In'}
           </button>
           {enableTurnstile && (

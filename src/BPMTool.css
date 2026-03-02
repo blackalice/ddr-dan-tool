@@ -692,6 +692,7 @@
     font-weight: bold;
     font-size: 1.25rem;
     color: var(--text-color-light);
+    
 }
 
 .difficulty-label {
@@ -702,16 +703,19 @@
     display: flex;
     width: 100%;
     flex-wrap: nowrap;
+
 }
 
 .difficulty-meters-container .difficulty-meter {
     flex: 1 1 0;
     min-width: 0;
+    
 }
 
 .difficulty-meters-container.ranked .difficulty-meter {
     flex: 1 1 0;
     min-width: 0;
+   
 }
 
 
@@ -721,6 +725,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    
 }
 
 .bpm-value,

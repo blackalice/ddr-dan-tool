@@ -72,7 +72,7 @@ const SignupPage = () => {
             autoComplete="new-password"
             required
           />
-          <button type="submit" className="settings-button auth-button" disabled={loading}>
+          <button type="submit" className="auth-button" disabled={loading}>
             {loading ? 'Signing up...' : 'Sign Up'}
           </button>
           {enableTurnstile && (

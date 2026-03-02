@@ -30,6 +30,7 @@
   transition: transform 0.2s ease;
   transform: translateX(calc(var(--thumb-index, 0) * 100%));
   pointer-events: none;
+  box-shadow: inset 0px 0px 7px 3px var(--border-color);
 }
 
 .option {

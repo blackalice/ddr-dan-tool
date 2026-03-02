@@ -100,10 +100,9 @@
   border-radius: var(--radius-sm);
   padding: 0.5rem;
   background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
-  display: flex;
-
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
   align-content: flex-start;
   scrollbar-gutter: stable both-edges;
 }
@@ -115,14 +114,15 @@
   padding: 1rem 0.5rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
-  min-width: 100px;
+  min-width: 0;
   min-height: 2.1rem;
   transition: background 0.2s ease, color 0.2s ease;
   font-weight: 400;
-  margin: 0.1rem;
+  margin: 0;
   text-align: center;
   line-height: 1.2;
   box-sizing: border-box;
+  width: 100%;
   border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.14));
   background: var(--modal-control-bg-emphasis, rgba(255, 255, 255, 0.03));
   color: var(--text-color);

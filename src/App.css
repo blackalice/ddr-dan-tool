@@ -324,6 +324,91 @@ html {
   --color-link: var(--primary-color);
 }
 
+[data-theme='foy'] {
+  color-scheme: dark;
+  --bg-color: #090f1d;
+  --bg-color-light: #111a2f;
+  --bg-color-dark: #1b2742;
+  --card-bg-color: #15203a;
+  --card-hover-bg-color: #1b2a4a;
+  --card-hover-bg-color-light: #253a61;
+  --border-color: rgba(140, 170, 220, 0.28);
+  --text-color: #eef4ff;
+  --text-color-light: #d6e4ff;
+  --text-color-lighter: #c7d7f7;
+  --text-color-lightest: #afc2e2;
+  --text-muted-color: #93a8cc;
+  --accent-color: #3dd5f3;
+  --accent-color-rgb: 61, 213, 243;
+  --accent-color-light: #8de7fa;
+  --accent-contrast: #04101a;
+  --button-bg: #22365f;
+  --shadow-sm: 0 2px 8px rgba(3, 8, 20, 0.22);
+  --shadow-md: 0 8px 20px rgba(3, 8, 20, 0.28);
+  --shadow-lg: 0 14px 34px rgba(3, 8, 20, 0.34);
+  --glass-bg: rgba(8, 14, 28, 0.62);
+  --glass-border: rgba(177, 208, 255, 0.18);
+  --glass-blur: saturate(140%) blur(12px);
+  --tabs-bg-top: rgba(11, 20, 38, 0.9);
+  --tabs-bg-bottom: rgba(11, 20, 38, 0.48);
+  --mobile-menu-bg: rgba(8, 14, 28, 0.95);
+  --overlay-backdrop: rgba(2, 6, 12, 0.62);
+  --modal-bg: rgba(10, 18, 33, 0.88);
+  --modal-border: rgba(184, 209, 245, 0.2);
+  --modal-shadow: 0 12px 36px rgba(3, 8, 20, 0.4);
+  --modal-section-bg: rgba(19, 31, 54, 0.62);
+  --modal-section-border: rgba(184, 209, 245, 0.2);
+  --modal-control-bg: rgba(22, 34, 58, 0.84);
+  --modal-control-bg-hover: rgba(28, 44, 72, 0.9);
+  --modal-control-bg-emphasis: rgba(31, 50, 82, 0.95);
+  --modal-control-border: rgba(184, 209, 245, 0.24);
+  --cyan-color: #67e8f9;
+  --green-color: #34d399;
+  --pink-color: #f472b6;
+  --blue-color: #60a5fa;
+  --yellow-color: #facc15;
+  --button-icon: white;
+
+
+  --radius-2xs-default: 20px;
+  --radius-xs-default: 20px;
+  --radius-sm-default: 12px;
+  --radius-md-default: 18px;
+  --radius-lg-default: 24px;
+  --radius-pill-default: 9999px;
+  --radius-round-default: 50%;
+
+  --difficulty-beginner-color: #4a90e2;
+  --difficulty-light-color: #f5a623;
+  --difficulty-standard-color: #f44f6a;
+  --difficulty-heavy-color: #78ce53;
+  --difficulty-challenge-color: #b688f7;
+  --difficulty-edit-color: #94a3b8;
+  --difficulty-single-color: #f472b6;
+  --difficulty-double-color: #60a5fa;
+
+  --button-up-color: #22c55e;
+  --button-up-hover-color: #16a34a;
+  --button-down-color: #ef4444;
+  --button-down-hover-color: #dc2626;
+
+  /* from stepcharts-main */
+  --color-focal-50: #14213c;
+  --color-focal-100: #243354;
+  --color-focal-200: #3a4f76;
+  --color-focal-300: #647ca7;
+  --color-focal-400: #8ea7d0;
+  --color-focal-500: #bdd0f0;
+  --color-focal-600: #d7e4fb;
+  --color-focal-700: #eef4ff;
+  --color-focal: var(--color-focal-500);
+
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+
+  --color-link: var(--accent-color);
+}
+
 /* Shared UI controls */
 .collapse-button {
   background: linear-gradient(
@@ -898,8 +983,8 @@ input:focus, select:focus, textarea:focus {
 .difficulty-light { background-color: var(--difficulty-light-color); }
 .difficulty-standard { background-color: var(--difficulty-standard-color); }
 .difficulty-heavy { background-color: var(--difficulty-heavy-color); }
-.difficulty-challenge { background-color: var(--difficulty-challenge-color); }
-.difficulty-edit { background-color: var(--difficulty-edit-color); }
+.difficulty-challenge { background-color: var(--difficulty-challenge-color);  }
+.difficulty-edit { background-color: var(--difficulty-edit-color) ; }
 
 .difficulty-single { background-color: var(--difficulty-single-color); }
 .difficulty-double { background-color: var(--difficulty-double-color); }
