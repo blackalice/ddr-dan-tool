@@ -1856,6 +1856,17 @@ function approximateRadar(arrows, freezes, bpmRanges, stops, lastBeat) {
  };
 }
 
+function countDdrHoldOks(freezes) {
+ if (!Array.isArray(freezes) || freezes.length === 0) return 0;
+ const holdRanges = new Set();
+ for (const freeze of freezes) {
+   const start = Math.max(0, safeNumber(freeze?.startOffset));
+   const end = Math.max(start, safeNumber(freeze?.endOffset));
+   holdRanges.add(`${start}:${end}`);
+ }
+ return holdRanges.size;
+}
+
 // =============================================================================
 // Main Export: computeChartMetrics
 // =============================================================================
@@ -1937,7 +1948,7 @@ export function computeChartMetrics(chart) {
    .sort((a, b) => a.time - b.time || a.offset - b.offset);
 
  // Hold statistics
- const holds = freezes.length;
+ const holds = countDdrHoldOks(freezes);
  const holdDurations = freezes
    .map((freeze) => {
      const start = Math.max(0, safeNumber(freeze?.startOffset));

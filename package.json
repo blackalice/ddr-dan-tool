@@ -3,42 +3,32 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
-  "dev": "concurrently \"npm:dev:vite\" \"npm:dev:wrangler\"",
-
-  "dev:vite": "vite",
-  "dev:wrangler": "wrangler dev",
-
-  "prepare:data": "node scripts/convert-jackets-webp.mjs && node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/extract-stepmania-tech-counts.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && node scripts/generate-ddr-a3-override.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs && npm run sync:public",
-  "prepare:data:force": "node scripts/convert-jackets-webp.mjs --force && node scripts/generate-sm-list.mjs --force && node scripts/generate-processed-data.mjs --force && node scripts/extract-stepmania-tech-counts.mjs --force && node scripts/generate-song-meta.mjs --force && node scripts/generate-world-new-challenges.mjs --force && node scripts/generate-ddr-a3-override.mjs --force && npm run build:audio:force && node scripts/generate-song-lengths.mjs --force && npm run sync:public:force",
-
-  "dev:full": "npm run prepare:data && npm run dev",
-
-  "build": "vite build",
-  "prebuild:no-pwa": "npm run prepare:data",
-  "build:no-pwa": "vite build --mode no-pwa",
-  "prebuild": "npm run prepare:data",
-
-  "postinstall": "npm run prepare:data",
-
-  "lint": "eslint .",
-  "preview": "vite preview",
-
-  "cf:dev": "wrangler dev",
-
-  "deploy": "npm run build && npm run deploy:worker && npm run deploy:pages",
-  "deploy:worker": "wrangler deploy --env production",
-  "deploy:pages": "wrangler pages deploy dist",
-
-  "parse:scores": "node scripts/parse-ganymede-html.mjs",
-  "extract:stepmania-tech": "node scripts/extract-stepmania-tech-counts.mjs",
-  "extract:stepmania-tech:force": "node scripts/extract-stepmania-tech-counts.mjs --force",
-  "build:audio": "node scripts/build-audio-lengths.mjs",
-  "build:audio:force": "node scripts/build-audio-lengths.mjs --force",
-  "sync:public": "node scripts/sync-public-assets.mjs",
-  "sync:public:force": "node scripts/sync-public-assets.mjs --force"
-},
-
+  "scripts": {
+    "dev": "concurrently \"npm:dev:vite\" \"npm:dev:wrangler\"",
+    "dev:vite": "vite",
+    "dev:wrangler": "wrangler dev",
+    "prepare:data": "node scripts/convert-jackets-webp.mjs && node scripts/generate-sm-list.mjs && node scripts/generate-processed-data.mjs && node scripts/extract-stepmania-tech-counts.mjs && node scripts/generate-song-meta.mjs && node scripts/generate-world-new-challenges.mjs && node scripts/generate-ddr-a3-override.mjs && npm run build:audio && node scripts/generate-song-lengths.mjs && npm run sync:public",
+    "prepare:data:force": "node scripts/convert-jackets-webp.mjs --force && node scripts/generate-sm-list.mjs --force && node scripts/generate-processed-data.mjs --force && node scripts/extract-stepmania-tech-counts.mjs --force && node scripts/generate-song-meta.mjs --force && node scripts/generate-world-new-challenges.mjs --force && node scripts/generate-ddr-a3-override.mjs --force && npm run build:audio:force && node scripts/generate-song-lengths.mjs --force && npm run sync:public:force",
+    "dev:full": "npm run prepare:data && npm run dev",
+    "build": "vite build",
+    "prebuild:no-pwa": "npm run prepare:data",
+    "build:no-pwa": "vite build --mode no-pwa",
+    "prebuild": "npm run prepare:data",
+    "postinstall": "npm run prepare:data",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "cf:dev": "wrangler dev",
+    "deploy": "npm run build && npm run deploy:worker && npm run deploy:pages",
+    "deploy:worker": "wrangler deploy --env production",
+    "deploy:pages": "wrangler pages deploy dist",
+    "parse:scores": "node scripts/parse-ganymede-html.mjs",
+    "extract:stepmania-tech": "node scripts/extract-stepmania-tech-counts.mjs",
+    "extract:stepmania-tech:force": "node scripts/extract-stepmania-tech-counts.mjs --force",
+    "build:audio": "node scripts/build-audio-lengths.mjs",
+    "build:audio:force": "node scripts/build-audio-lengths.mjs --force",
+    "sync:public": "node scripts/sync-public-assets.mjs",
+    "sync:public:force": "node scripts/sync-public-assets.mjs --force"
+  },
   "dependencies": {
     "@dnd-kit/core": " ^6.1.0 ",
     "@dnd-kit/sortable": " ^8.0.0 ",
@@ -75,7 +65,7 @@
     "music-metadata": "^11.8.3",
     "vite": "^7.1.6",
     "vite-plugin-pwa": "^1.2.0",
-    "wrangler": "^4.36.0"
+    "wrangler": "^4.95.0"
   },
   "overrides": {
     "undici": "^7.18.2"
