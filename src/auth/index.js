@@ -157,12 +157,12 @@ async function checkRateLimit(c, key, limit, windowSeconds) {
   }
 }
 
-async function verifyTurnstile(c, token) {
+async function verifyTurnstile(c, token, { requireConfigured = false } = {}) {
   const isProd = (c.env?.ENV || '').toLowerCase() === 'production'
   // Only enforce Turnstile in production by default
   if (!isProd) return true
   const secret = c.env?.TURNSTILE_SECRET
-  if (!secret) return true
+  if (!secret) return !requireConfigured
   if (!token) return false
   try {
     const ip = c.req.header('CF-Connecting-IP') || ''
@@ -189,26 +189,27 @@ export async function authMiddleware(c, next) {
   if (!token) {
     return c.json({ error: 'Unauthorized' }, 401)
   }
+  if (!c.env.JWT_SECRET) {
+    console.error('[auth] missing JWT_SECRET in environment')
+    return c.json({ error: 'Server misconfiguration' }, 500)
+  }
 
   try {
     const secret = textEncoder.encode(c.env.JWT_SECRET)
     const origin = new URL(c.req.url).origin
-    // Prefer strict iss/aud checks; fall back once for legacy tokens
-    let payload
-    try {
-      payload = (await jwtVerify(token, secret, { issuer: origin, audience: origin })).payload
-    } catch {
-      payload = (await jwtVerify(token, secret)).payload
-    }
+    const { payload } = await jwtVerify(token, secret, { issuer: origin, audience: origin })
     // Enforce token version (logout-all)
     try {
       const row = await c.env.DB.prepare('SELECT COALESCE(token_version, 1) AS token_version FROM users WHERE id = ?')
         .bind(payload.sub).first()
-      const currentVer = row?.token_version || 1
-      if (payload.ver != null && payload.ver !== currentVer) {
+      if (!row) return c.json({ error: 'Unauthorized' }, 401)
+      const currentVer = row.token_version || 1
+      if (payload.ver !== currentVer) {
         return c.json({ error: 'Unauthorized' }, 401)
       }
-    } catch { /* default allow on read error */ }
+    } catch {
+      return c.json({ error: 'Unauthorized' }, 401)
+    }
     c.set('user', payload)
     return next()
   } catch {
@@ -233,8 +234,8 @@ authApp.post('/signup', async (c) => {
     return c.json({ error: 'Password must be at least 8 characters' }, 400)
   }
 
-  // Turnstile verification (if configured)
-  const tsOk = await verifyTurnstile(c, turnstileToken)
+  // Turnstile verification is required in production signup.
+  const tsOk = await verifyTurnstile(c, turnstileToken, { requireConfigured: true })
   if (!tsOk) return c.json({ error: 'Human verification failed' }, 400)
 
   // Rate limits: signups per IP and per email

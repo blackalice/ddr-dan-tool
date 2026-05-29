@@ -7,6 +7,8 @@ import authApp, { authMiddleware } from './src/auth/index.js'
 const app = new Hono()
 const textEncoder = new TextEncoder()
 
+const isProdEnv = (env) => (env?.ENV || '').toLowerCase() === 'production'
+
 // Global security headers (added to all responses)
 app.use('*', async (c, next) => {
   await next()
@@ -100,6 +102,36 @@ function parseStoredPayload(row) {
   return {}
 }
 
+function bytesFor(value) {
+  return textEncoder.encode(String(value || '')).length
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+const UNSAFE_JSON_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
+
+function hasUnsafeJsonKey(value) {
+  if (Array.isArray(value)) return value.some((child) => hasUnsafeJsonKey(child))
+  if (!isPlainObject(value)) return false
+  for (const [key, child] of Object.entries(value)) {
+    if (UNSAFE_JSON_KEYS.has(key)) return true
+    if (hasUnsafeJsonKey(child)) return true
+  }
+  return false
+}
+
+function validateJsonObject(value) {
+  if (!isPlainObject(value)) {
+    return { ok: false, error: 'Expected JSON object' }
+  }
+  if (hasUnsafeJsonKey(value)) {
+    return { ok: false, error: 'Invalid object key' }
+  }
+  return { ok: true }
+}
+
 // Lightweight rate limit helper for user-data endpoints
 async function checkRateLimit(c, key, limit, windowSeconds) {
   try {
@@ -128,6 +160,7 @@ app.get('/api/hello', (c) => c.json({ message: 'Hello from Hono!' }))
 
 // Minimal environment/bindings diagnostics (no secret values exposed)
 app.get('/api/env-check', (c) => {
+  if (isProdEnv(c.env)) return c.notFound()
   const env = (c.env?.ENV || '').toString()
   const hasJWT_SECRET = Boolean(c.env?.JWT_SECRET)
   const hasDATA_KEY = Boolean(c.env?.DATA_KEY)
@@ -173,26 +206,43 @@ app.post('/api/refresh', authMiddleware, async (c) => {
 })
 
 app.post('/api/parse-scores', authMiddleware, async (c) => {
+  const user = c.get('user') || {}
+  const rateOk = await checkRateLimit(c, `parse-scores:${user.sub || 'unknown'}`, 20, 60)
+  if (!rateOk) return c.json({ error: 'Too many requests' }, 429)
+
   const play = (c.req.query('playtype') || 'SP').toUpperCase();
   const playtype = play === 'DP' ? 'DP' : 'SP';
 
-  const contentType = c.req.header('content-type') || '';
+  const contentType = (c.req.header('content-type') || '').toLowerCase();
   let html = '';
 
   if (contentType.includes('multipart/form-data')) {
     const form = await c.req.formData();
     const file = form.get('file');
     if (file && typeof file.text === 'function') {
+      if (Number.isFinite(file.size) && file.size > MAX_SCORE_PARSE_BYTES) {
+        return c.json({ error: 'Payload too large' }, 413);
+      }
       html = await file.text();
     } else {
       html = (form.get('html') || '').toString();
     }
-  } else {
+  } else if (
+    contentType.includes('text/html')
+    || contentType.includes('text/plain')
+    || contentType.includes('application/octet-stream')
+    || contentType === ''
+  ) {
     html = await c.req.text();
+  } else {
+    return c.json({ error: 'Unsupported content type' }, 415);
   }
 
   if (!html) {
     return c.json({ error: 'No HTML provided' }, 400);
+  }
+  if (bytesFor(html) > MAX_SCORE_PARSE_BYTES) {
+    return c.json({ error: 'Payload too large' }, 413);
   }
 
   const data = parseGanymedeHtml(html, playtype);
@@ -200,6 +250,7 @@ app.post('/api/parse-scores', authMiddleware, async (c) => {
 })
 
 const MAX_USER_DATA_BYTES = 256 * 1024 // 256 KiB
+const MAX_SCORE_PARSE_BYTES = 2 * 1024 * 1024 // 2 MiB
 
 app.get('/api/user/data', authMiddleware, async (c) => {
   const user = c.get('user') || {}
@@ -250,6 +301,8 @@ app.get('/api/user/data', authMiddleware, async (c) => {
 app.put('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const body = await c.req.json()
+  const validation = validateJsonObject(body)
+  if (!validation.ok) return c.json({ error: validation.error }, 400)
   const db = c.env?.DB
   if (!db) {
     console.warn('[user-data] DB binding missing (PUT)')
@@ -284,6 +337,8 @@ app.put('/api/user/data', authMiddleware, async (c) => {
 app.post('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  const validation = validateJsonObject(patch)
+  if (!validation.ok) return c.json({ error: validation.error }, 400)
   const db = c.env?.DB
   if (!db) {
     console.warn('[user-data] DB binding missing (POST)')
@@ -335,6 +390,8 @@ app.post('/api/user/data', authMiddleware, async (c) => {
 app.patch('/api/user/data', authMiddleware, async (c) => {
   const userId = c.get('user').sub
   const patch = await c.req.json()
+  const validation = validateJsonObject(patch)
+  if (!validation.ok) return c.json({ error: validation.error }, 400)
   const db = c.env?.DB
   if (!db) {
     console.warn('[user-data] DB binding missing (PATCH)')
@@ -430,6 +487,7 @@ app.get('/api/song-length', async (c) => {
 
 // Minimal DB diagnostics to verify schema without exposing data
 app.get('/api/db-check', async (c) => {
+  if (isProdEnv(c.env)) return c.notFound()
   try {
     const db = c.env?.DB
     if (!db) return c.json({ hasDB: false })
