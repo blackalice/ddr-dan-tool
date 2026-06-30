@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "zivBaseUrl": "https://zenius-i-vanisher.com/v5.2",
+  "sourceRoot": "data/simfiles",
+  "downloadCacheRoot": "data/generated/.cache/ziv-packs",
+  "packs": [
+    {
+      "id": "world",
+      "displayName": "DanceDanceRevolution WORLD",
+      "folderName": "World",
+      "categoryName": "DanceDanceRevolution WORLD (AC) (International)",
+      "categoryId": 1709,
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International",
+      "aliases": ["DDR WORLD"]
+    },
+    {
+      "id": "a3",
+      "displayName": "DanceDanceRevolution A3",
+      "folderName": "A3",
+      "categoryName": "DanceDanceRevolution A3 (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "a20-plus",
+      "displayName": "DanceDanceRevolution A20 PLUS",
+      "folderName": "A20 Plus",
+      "categoryName": "DanceDanceRevolution A20 PLUS (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "a20",
+      "displayName": "DanceDanceRevolution A20",
+      "folderName": "A20",
+      "categoryName": "DanceDanceRevolution A20 (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "a",
+      "displayName": "DanceDanceRevolution A",
+      "folderName": "A",
+      "categoryName": "DanceDanceRevolution A (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "2014",
+      "displayName": "DanceDanceRevolution 2014",
+      "folderName": "2014",
+      "categoryName": "DanceDanceRevolution 2014 (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "2013",
+      "displayName": "DanceDanceRevolution 2013",
+      "folderName": "2013",
+      "categoryName": "DanceDanceRevolution 2013 (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "x3-vs-2nd",
+      "displayName": "DanceDanceRevolution X3 VS 2ndMIX",
+      "folderName": "X3 vs 2nd",
+      "categoryName": "DanceDanceRevolution X3 VS 2ndMIX (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "x2",
+      "displayName": "DanceDanceRevolution X2",
+      "folderName": "X2",
+      "categoryName": "DanceDanceRevolution X2 (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "x",
+      "displayName": "DanceDanceRevolution X",
+      "folderName": "X",
+      "categoryName": "DanceDanceRevolution X (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "sn2",
+      "displayName": "DanceDanceRevolution SuperNOVA2",
+      "folderName": "SN2",
+      "categoryName": "DanceDanceRevolution SuperNOVA2 (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "sn1",
+      "displayName": "DanceDanceRevolution SuperNOVA",
+      "folderName": "SN1",
+      "categoryName": "DanceDanceRevolution SuperNOVA (AC) (International)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "International"
+    },
+    {
+      "id": "ex",
+      "displayName": "Dance Dance Revolution EXTREME",
+      "folderName": "EX",
+      "categoryName": "Dance Dance Revolution EXTREME (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "7th",
+      "displayName": "DDRMAX2 -Dance Dance Revolution 7thMIX-",
+      "folderName": "7th",
+      "categoryName": "DDRMAX2 -Dance Dance Revolution 7thMIX- (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "6th",
+      "displayName": "DDRMAX -Dance Dance Revolution 6thMIX-",
+      "folderName": "6th",
+      "categoryName": "DDRMAX -Dance Dance Revolution 6thMIX- (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "5th",
+      "displayName": "Dance Dance Revolution 5thMIX",
+      "folderName": "5th",
+      "categoryName": "Dance Dance Revolution 5thMIX (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "4th-plus",
+      "displayName": "Dance Dance Revolution 4thMIX PLUS",
+      "folderName": "4th Plus",
+      "categoryName": "Dance Dance Revolution 4thMIX PLUS (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "4th",
+      "displayName": "Dance Dance Revolution 4thMIX",
+      "folderName": "4th",
+      "categoryName": "Dance Dance Revolution 4thMIX (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "3rd",
+      "displayName": "Dance Dance Revolution 3rdMIX",
+      "folderName": "3rd",
+      "categoryName": "Dance Dance Revolution 3rdMIX (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "2nd",
+      "displayName": "Dance Dance Revolution 2ndMIX",
+      "folderName": "2nd",
+      "categoryName": "Dance Dance Revolution 2ndMIX (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "ddr",
+      "displayName": "Dance Dance Revolution",
+      "folderName": "DDR",
+      "categoryName": "Dance Dance Revolution (AC) (Japan)",
+      "enabled": true,
+      "platform": "Arcade",
+      "region": "Japan"
+    },
+    {
+      "id": "grand-prix",
+      "displayName": "DanceDanceRevolution GRAND PRIX",
+      "folderName": "Grand Prix",
+      "categoryName": "DanceDanceRevolution GRAND PRIX (PC)",
+      "enabled": false,
+      "platform": "PC",
+      "region": "Japan"
+    },
+    {
+      "id": "dancing-stage-euromix",
+      "displayName": "Dancing Stage EuroMIX",
+      "folderName": "Dancing Stage EuroMIX",
+      "categoryName": "Dancing Stage EuroMIX (AC) (Europe)",
+      "enabled": false,
+      "platform": "Arcade",
+      "region": "Europe"
+    },
+    {
+      "id": "dancing-stage-euromix2",
+      "displayName": "Dancing Stage EuroMIX2",
+      "folderName": "Dancing Stage EuroMIX2",
+      "categoryName": "Dancing Stage EuroMIX2 (AC) (Europe)",
+      "enabled": false,
+      "platform": "Arcade",
+      "region": "Europe"
+    },
+    {
+      "id": "dancing-stage-fusion",
+      "displayName": "Dancing Stage Fusion",
+      "folderName": "Dancing Stage Fusion",
+      "categoryName": "Dancing Stage Fusion (AC) (Europe)",
+      "enabled": false,
+      "platform": "Arcade",
+      "region": "Europe"
+    },
+    {
+      "id": "ps2-supernova",
+      "displayName": "DanceDanceRevolution SuperNOVA (PS2)",
+      "folderName": "PS2 SuperNOVA",
+      "categoryName": "DanceDanceRevolution SuperNOVA (PS2) (North America)",
+      "enabled": false,
+      "platform": "PlayStation 2",
+      "region": "North America"
+    },
+    {
+      "id": "ps2-supernova2",
+      "displayName": "DanceDanceRevolution SuperNOVA2 (PS2)",
+      "folderName": "PS2 SuperNOVA2",
+      "categoryName": "DanceDanceRevolution SuperNOVA2 (PS2) (North America)",
+      "enabled": false,
+      "platform": "PlayStation 2",
+      "region": "North America"
+    },
+    {
+      "id": "xbox-ultramix",
+      "displayName": "Dance Dance Revolution ULTRAMIX",
+      "folderName": "ULTRAMIX",
+      "categoryName": "Dance Dance Revolution ULTRAMIX (Xbox) (North America)",
+      "enabled": false,
+      "platform": "Xbox",
+      "region": "North America"
+    },
+    {
+      "id": "wii-hottest-party",
+      "displayName": "DanceDanceRevolution HOTTEST PARTY",
+      "folderName": "HOTTEST PARTY",
+      "categoryName": "DanceDanceRevolution HOTTEST PARTY (Wii) (North America)",
+      "enabled": false,
+      "platform": "Wii",
+      "region": "North America"
+    },
+    {
+      "id": "mario-mix",
+      "displayName": "Dance Dance Revolution Mario Mix",
+      "folderName": "Mario Mix",
+      "categoryName": "Dance Dance Revolution Mario Mix (GameCube) (North America)",
+      "enabled": false,
+      "platform": "GameCube",
+      "region": "North America"
+    }
+  ]
+}

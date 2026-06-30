@@ -65,7 +65,7 @@ You will need [Node.js](https://nodejs.org/en/) installed on your machine.
 
 3.  Install NPM packages:
     ```sh
-    npm install
+    npm ci
     ```
 
 4.  Run the development server:
@@ -77,12 +77,35 @@ The application will now be running locally, typically at `http://localhost:5173
 
 ### Data Pipeline (Incremental Builds)
 
-Local builds generate derived data (song lists, metadata, audio lengths, courses, etc.). These scripts now track input changes and skip work when nothing changed.
+Normal frontend builds do not regenerate derived data. Run the data pipeline explicitly when simfiles, audio, rankings, or generator code changes.
 
+- `data/simfiles` is the single local source of truth for song packs. It can
+  contain full packs, including audio and source assets, and is not uploaded
+  directly.
+- `public/sm` and the JSON files in `public/` are generated live-site output.
+  Do not edit them by hand; regenerate them from `data/simfiles`.
+- ZIv pack configuration lives in `data/song-packs.config.json`. Default arcade
+  packs are enabled; optional Dancing Stage, Grand Prix, and console packs are
+  present but disabled until toggled.
+
+- List configured packs:
+  - `npm run packs:list`
+- Download/update enabled ZIv packs:
+  - `npm run packs:update`
+- Download/update a single configured pack:
+  - `npm run packs:update -- --pack world`
+- Preview pack download actions without changing `data/simfiles`:
+  - `npm run packs:update -- --dry-run`
+- Update all configured packs, including disabled optional packs:
+  - `npm run packs:update:all`
 - Incremental (default):
-  - `npm run prepare:data`
+  - `npm run data:prepare`
 - Full rebuild (force all steps):
-  - `npm run prepare:data:force`
+  - `npm run data:prepare:force`
+- Check for stale generated files without rewriting:
+  - `npm run data:validate`
+- Prepare data and build the production bundle:
+  - `npm run build:full`
 
 You can also force any individual step with `--force` or by setting `FORCE_DATA=1` (or `DDR_FORCE_DATA=1`) in your shell.
 
@@ -94,7 +117,7 @@ You can also force any individual step with `--force` or by setting `FORCE_DATA=
   - `/api/parse-scores` for parsing Ganymede HTML (requires auth)
 
 - Local development uses Cloudflare Wrangler with a local D1 DB. Ensure:
-  - Node.js 18+ installed
+  - The Node.js version from `.nvmrc` installed
   - Wrangler installed: `npm i -g wrangler` and logged in: `wrangler login`
   - A local JWT secret in `.dev.vars`:
     - `JWT_SECRET="your-super-secret-jwt-key"`

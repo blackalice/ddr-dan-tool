@@ -20,7 +20,9 @@
     "4th",
     "3rd",
     "2nd",
-    "DDR"
+    "DDR",
+    "Dancing Stage EuroMIX",
+    "Dancing Stage EuroMIX2"
   ],
   "files": [
     {
@@ -7563,6 +7565,188 @@
       "id": "001064"
     },
     {
+      "path": "sm/Dancing Stage EuroMIX/(Mucho Mambo) Sway/(Mucho Mambo) Sway.sm",
+      "title": "(Mucho Mambo) Sway",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/(Mucho Mambo) Sway/(Mucho Mambo) Sway-jacket.webp",
+      "id": "002102"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/I Will Survive/I Will Survive.sm",
+      "title": "I Will Survive",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/I Will Survive/I Will Survive-jacket.webp",
+      "id": "002103"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/Magic Alec Presents Resonance/Magic Alec Presents Resonance.sm",
+      "title": "Magic Alec Presents Resonance",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/Magic Alec Presents Resonance/Magic Alec Presents Resonance-jacket.webp",
+      "id": "002104"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/More Than This '99/More Than This '99.sm",
+      "title": "More Than This '99",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/More Than This '99/More Than This '99-jacket.webp",
+      "id": "002105"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+      "title": "PARANOiA KCET ～clean mix～",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~-jacket.webp",
+      "id": "002106"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/Rushing/Rushing.sm",
+      "title": "Rushing",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/Rushing/Rushing-jacket.webp",
+      "id": "002107"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/So Good/So Good.sm",
+      "title": "So Good",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/So Good/So Good-jacket.webp",
+      "id": "002108"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/Video Killed The Radio Star/Video Killed The Radio Star.sm",
+      "title": "Video Killed The Radio Star",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/Video Killed The Radio Star/Video Killed The Radio Star-jacket.webp",
+      "id": "002109"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX/Word Up/Word Up.sm",
+      "title": "Word Up",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX/Word Up/Word Up-jacket.webp",
+      "id": "002110"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/5, 6, 7, 8/5, 6, 7, 8.sm",
+      "title": "5, 6, 7, 8",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/5, 6, 7, 8/5, 6, 7, 8-jacket.webp",
+      "id": "002111"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/AARON'S PARTY COME GET IT/AARON'S PARTY COME GET IT.sm",
+      "title": "AARON'S PARTY/COME GET IT",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/AARON'S PARTY COME GET IT/AARON'S PARTY COME GET IT-jacket.webp",
+      "id": "002112"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/B4U (B4 ZA BEAT MIX)/B4U (B4 ZA BEAT MIX).sm",
+      "title": "B4U(B4 ZA BEAT MIX)",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/B4U (B4 ZA BEAT MIX)/B4U (B4 ZA BEAT MIX)-jacket.webp",
+      "id": "002113"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/BYE BYE BYE/BYE BYE BYE.sm",
+      "title": "BYE BYE BYE",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/BYE BYE BYE/BYE BYE BYE-jacket.webp",
+      "id": "002114"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/CARIBBEAN QUEEN/CARIBBEAN QUEEN.sm",
+      "title": "CARIBBEAN QUEEN",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/CARIBBEAN QUEEN/CARIBBEAN QUEEN-jacket.webp",
+      "id": "002115"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/COTTON-EYE JOE/COTTON-EYE JOE.sm",
+      "title": "COTTON-EYE JOE",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/COTTON-EYE JOE/COTTON-EYE JOE-jacket.webp",
+      "id": "002116"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/DON'T TRY TO STOP IT/DON'T TRY TO STOP IT.sm",
+      "title": "DON'T TRY TO STOP IT",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/DON'T TRY TO STOP IT/DON'T TRY TO STOP IT-jacket.webp",
+      "id": "002117"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/HYSTERIA 2001/HYSTERIA 2001.sm",
+      "title": "HYSTERIA 2001",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/HYSTERIA 2001/HYSTERIA 2001-jacket.webp",
+      "id": "002118"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/I WANT YOU TO WANT ME/I WANT YOU TO WANT ME.sm",
+      "title": "I WANT YOU TO WANT ME",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/I WANT YOU TO WANT ME/I WANT YOU TO WANT ME-jacket.webp",
+      "id": "002119"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/LOVE YOU LIKE A FOOL/LOVE YOU LIKE A FOOL.sm",
+      "title": "LOVE YOU LIKE A FOOL",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/LOVE YOU LIKE A FOOL/LOVE YOU LIKE A FOOL-jacket.webp",
+      "id": "002120"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/STOMP/STOMP.sm",
+      "title": "STOMP",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/STOMP/STOMP-jacket.webp",
+      "id": "002121"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/TE AMO/TE AMO.sm",
+      "title": "TE AMO",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/TE AMO/TE AMO-jacket.webp",
+      "id": "002122"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/TELL ME, TELL ME... BABY/TELL ME, TELL ME... BABY.sm",
+      "title": "TELL ME, TELL ME... BABY",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/TELL ME, TELL ME... BABY/TELL ME, TELL ME... BABY-jacket.webp",
+      "id": "002123"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/That Was Then,This Is Now/That Was Then,This Is Now.sm",
+      "title": "That Was Then,This Is Now",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/That Was Then,This Is Now/That Was Then,This Is Now-jacket.webp",
+      "id": "002124"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/THE VIBE IS RIGHT/THE VIBE IS RIGHT.sm",
+      "title": "THE VIBE IS RIGHT",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/THE VIBE IS RIGHT/THE VIBE IS RIGHT-jacket.webp",
+      "id": "002125"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+      "title": "VANITY ANGEL",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL-jacket.webp",
+      "id": "002126"
+    },
+    {
+      "path": "sm/Dancing Stage EuroMIX2/What Can I Say To You/What Can I Say To You.sm",
+      "title": "What Can I Say To You",
+      "titleTranslit": "",
+      "jacket": "sm/Dancing Stage EuroMIX2/What Can I Say To You/What Can I Say To You-jacket.webp",
+      "id": "002127"
+    },
+    {
       "path": "sm/DDR/Butterfly/Butterfly.sm",
       "title": "Butterfly",
       "titleTranslit": "",
@@ -9488,6 +9672,20 @@
       "id": "001347"
     },
     {
+      "path": "sm/World/Ashikamisama no fukkatsusai/Ashikamisama no fukkatsusai.sm",
+      "title": "足神様ノ復活祭",
+      "titleTranslit": "Ashikamisama no fukkatsusai",
+      "jacket": "sm/World/Ashikamisama no fukkatsusai/Ashikamisama no fukkatsusai-jacket.webp",
+      "id": "002054"
+    },
+    {
+      "path": "sm/World/Astra Blaze/Astra Blaze.sm",
+      "title": "Astra Blaze",
+      "titleTranslit": "",
+      "jacket": "sm/World/Astra Blaze/Astra Blaze-jacket.webp",
+      "id": "002055"
+    },
+    {
       "path": "sm/World/Autosummer/Autosummer.sm",
       "title": "Autosummer",
       "titleTranslit": "",
@@ -9537,6 +9735,20 @@
       "id": "002013"
     },
     {
+      "path": "sm/World/BILLION MONEY BAZOOKA/BILLION MONEY BAZOOKA.sm",
+      "title": "BILLION MONEY BAZOOKA",
+      "titleTranslit": "",
+      "jacket": "sm/World/BILLION MONEY BAZOOKA/BILLION MONEY BAZOOKA-jacket.webp",
+      "id": "002056"
+    },
+    {
+      "path": "sm/World/Blinding Lights/Blinding Lights.sm",
+      "title": "Blinding Lights",
+      "titleTranslit": "",
+      "jacket": "sm/World/Blinding Lights/Blinding Lights-jacket.webp",
+      "id": "002057"
+    },
+    {
       "path": "sm/World/Blizzard of Arrows/Blizzard of Arrows.sm",
       "title": "Blizzard of Arrows",
       "titleTranslit": "",
@@ -9556,6 +9768,20 @@
       "titleTranslit": "",
       "jacket": "sm/World/blue anthem/blue anthem-jacket.webp",
       "id": "001476"
+    },
+    {
+      "path": "sm/World/Boku no hikouki (cover)/Boku no hikouki (cover).sm",
+      "title": "僕の飛行機",
+      "titleTranslit": "Boku no hikouki",
+      "jacket": "sm/World/Boku no hikouki (cover)/Boku no hikouki (cover)-jacket.webp",
+      "id": "002058"
+    },
+    {
+      "path": "sm/World/Boku no kimochi wo egaku/Boku no kimochi wo egaku.sm",
+      "title": "僕の気持ちを描く",
+      "titleTranslit": "Boku no kimochi wo egaku",
+      "jacket": "sm/World/Boku no kimochi wo egaku/Boku no kimochi wo egaku-jacket.webp",
+      "id": "002059"
     },
     {
       "path": "sm/World/BRAIN-HEART/BRAIN-HEART.sm",
@@ -9591,6 +9817,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Bye or not/Bye or not-jacket.webp",
       "id": "002016"
+    },
+    {
+      "path": "sm/World/Can't Stop Running!!/Can't Stop Running!!.ssc",
+      "title": "Can't Stop Running!!",
+      "titleTranslit": "",
+      "jacket": "sm/World/Can't Stop Running!!/Can't Stop Running!!-jacket.webp",
+      "id": "002060"
     },
     {
       "path": "sm/World/Casino fire Kotomi-chan (cover)/Casino fire Kotomi-chan (cover).ssc",
@@ -9633,6 +9866,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Collapse of the Sanctuary/Collapse of the Sanctuary-jacket.webp",
       "id": "002019"
+    },
+    {
+      "path": "sm/World/COLOR BURST/COLOR BURST.sm",
+      "title": "COLOR BURST",
+      "titleTranslit": "",
+      "jacket": "sm/World/COLOR BURST/COLOR BURST-jacket.webp",
+      "id": "002061"
     },
     {
       "path": "sm/World/COSMIC V3LOCITY/COSMIC V3LOCITY.sm",
@@ -9710,6 +9950,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Deadly Dolly Dance/Deadly Dolly Dance-jacket.webp",
       "id": "002023"
+    },
+    {
+      "path": "sm/World/DENGENKEN/DENGENKEN.sm",
+      "title": "電幻圏",
+      "titleTranslit": "DENGENKEN",
+      "jacket": "sm/World/DENGENKEN/DENGENKEN-jacket.webp",
+      "id": "002062"
     },
     {
       "path": "sm/World/Dense Flyer/Dense Flyer.sm",
@@ -9803,11 +10050,32 @@
       "id": "002026"
     },
     {
+      "path": "sm/World/Firework/Firework.sm",
+      "title": "Firework",
+      "titleTranslit": "",
+      "jacket": "sm/World/Firework/Firework-jacket.webp",
+      "id": "002063"
+    },
+    {
       "path": "sm/World/First Action/First Action.sm",
       "title": "First Action",
       "titleTranslit": "",
       "jacket": "sm/World/First Action/First Action-jacket.webp",
       "id": "001376"
+    },
+    {
+      "path": "sm/World/fixer/fixer.sm",
+      "title": "fixer",
+      "titleTranslit": "",
+      "jacket": "sm/World/fixer/fixer-jacket.webp",
+      "id": "002064"
+    },
+    {
+      "path": "sm/World/Fizzing Steps/Fizzing Steps.ssc",
+      "title": "Fizzing Steps",
+      "titleTranslit": "",
+      "jacket": "sm/World/Fizzing Steps/Fizzing Steps-jacket.webp",
+      "id": "002065"
     },
     {
       "path": "sm/World/Florence/Florence.ssc",
@@ -9836,6 +10104,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Four Leaves/Four Leaves-jacket.webp",
       "id": "001379"
+    },
+    {
+      "path": "sm/World/Fragarach/Fragarach.sm",
+      "title": "Fragarach",
+      "titleTranslit": "",
+      "jacket": "sm/World/Fragarach/Fragarach-jacket.webp",
+      "id": "002066"
     },
     {
       "path": "sm/World/Funky Flux Fusion/Funky Flux Fusion.sm",
@@ -9880,6 +10155,13 @@
       "id": "001383"
     },
     {
+      "path": "sm/World/GO!/GO!.ssc",
+      "title": "GO!",
+      "titleTranslit": "",
+      "jacket": "sm/World/GO!/GO!-jacket.webp",
+      "id": "002067"
+    },
+    {
       "path": "sm/World/Gravity Collapse/Gravity Collapse.sm",
       "title": "Gravity Collapse",
       "titleTranslit": "",
@@ -9892,6 +10174,13 @@
       "titleTranslit": "Hajimari no eyes ft. Rintaru",
       "jacket": "sm/World/Hajimari no eyes ft. Rintaru/Hajimari no eyes ft. Rintaru-jacket.webp",
       "id": "001386"
+    },
+    {
+      "path": "sm/World/Haku/Haku.ssc",
+      "title": "魄",
+      "titleTranslit": "Haku",
+      "jacket": "sm/World/Haku/Haku-jacket.webp",
+      "id": "002068"
     },
     {
       "path": "sm/World/Hakujitsu to gengetsu/Hakujitsu to gengetsu.sm",
@@ -9913,6 +10202,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Happy Dance Day 2 U/Happy Dance Day 2 U-jacket.webp",
       "id": "001388"
+    },
+    {
+      "path": "sm/World/Harukaze restart!/Harukaze restart!.sm",
+      "title": "はるかぜリスタート！",
+      "titleTranslit": "Harukaze restart!",
+      "jacket": "sm/World/Harukaze restart!/Harukaze restart!-jacket.webp",
+      "id": "002069"
     },
     {
       "path": "sm/World/Heavy Rain/Heavy Rain.sm",
@@ -9943,6 +10239,13 @@
       "id": "002030"
     },
     {
+      "path": "sm/World/Hit Show Heroes/Hit Show Heroes.sm",
+      "title": "Hit Show Heroes",
+      "titleTranslit": "",
+      "jacket": "sm/World/Hit Show Heroes/Hit Show Heroes-jacket.webp",
+      "id": "002070"
+    },
+    {
       "path": "sm/World/Hito mania/Hito mania.sm",
       "title": "人マニア",
       "titleTranslit": "Hito mania",
@@ -9955,6 +10258,20 @@
       "titleTranslit": "",
       "jacket": "sm/World/Hollywood Galaxy/Hollywood Galaxy-jacket.webp",
       "id": "001393"
+    },
+    {
+      "path": "sm/World/Homesick Pt.2&3 (cover)/Homesick Pt.2&3 (cover).sm",
+      "title": "Homesick Pt.2&3",
+      "titleTranslit": "",
+      "jacket": "sm/World/Homesick Pt.2&3 (cover)/Homesick Pt.2&3 (cover)-jacket.webp",
+      "id": "002071"
+    },
+    {
+      "path": "sm/World/HORIZON BEATZ/HORIZON BEATZ.sm",
+      "title": "HORIZON BEATZ",
+      "titleTranslit": "",
+      "jacket": "sm/World/HORIZON BEATZ/HORIZON BEATZ-jacket.webp",
+      "id": "002072"
     },
     {
       "path": "sm/World/Hou (Five Flares Mix)/Hou (Five Flares Mix).ssc",
@@ -10020,11 +10337,25 @@
       "id": "002033"
     },
     {
+      "path": "sm/World/Kareinaru! Otogi tantei HinaBitter/Kareinaru! Otogi tantei HinaBitter.sm",
+      "title": "華麗なる！音戯探偵ひなビタ♫",
+      "titleTranslit": "Kareinaru! Otogi tantei HinaBitter",
+      "jacket": "sm/World/Kareinaru! Otogi tantei HinaBitter/Kareinaru! Otogi tantei HinaBitter-jacket.webp",
+      "id": "002073"
+    },
+    {
       "path": "sm/World/Kawaikute gomen/Kawaikute gomen.sm",
       "title": "可愛くてごめん",
       "titleTranslit": "Kawaikute gomen",
       "jacket": "sm/World/Kawaikute gomen/Kawaikute gomen-jacket.webp",
       "id": "002034"
+    },
+    {
+      "path": "sm/World/King of Tribe/King of Tribe.sm",
+      "title": "King of Tribe",
+      "titleTranslit": "",
+      "jacket": "sm/World/King of Tribe/King of Tribe-jacket.webp",
+      "id": "002074"
     },
     {
       "path": "sm/World/Kirakira universe/Kirakira universe.sm",
@@ -10104,6 +10435,13 @@
       "id": "001409"
     },
     {
+      "path": "sm/World/LubedeR/LubedeR.sm",
+      "title": "LubedeR",
+      "titleTranslit": "",
+      "jacket": "sm/World/LubedeR/LubedeR-jacket.webp",
+      "id": "002075"
+    },
+    {
       "path": "sm/World/Many mania--/Many mania--.sm",
       "title": "まにぃまにあ××",
       "titleTranslit": "Many mania--",
@@ -10139,6 +10477,13 @@
       "id": "001414"
     },
     {
+      "path": "sm/World/Meteor Shower/Meteor Shower.sm",
+      "title": "Meteor☆Shower",
+      "titleTranslit": "Meteor Shower",
+      "jacket": "sm/World/Meteor Shower/Meteor Shower-jacket.webp",
+      "id": "002076"
+    },
+    {
       "path": "sm/World/Meteora -meteor-/Meteora -meteor-.sm",
       "title": "メテオラ-meteor-",
       "titleTranslit": "Meteora -meteor-",
@@ -10158,6 +10503,13 @@
       "titleTranslit": "Mikazuki connect",
       "jacket": "sm/World/Mikazuki connect/Mikazuki connect-jacket.webp",
       "id": "002036"
+    },
+    {
+      "path": "sm/World/Miles on It/Miles on It.sm",
+      "title": "Miles on It",
+      "titleTranslit": "",
+      "jacket": "sm/World/Miles on It/Miles on It-jacket.webp",
+      "id": "002077"
     },
     {
       "path": "sm/World/MODEL FT2 Miracle Version/MODEL FT2 Miracle Version.sm",
@@ -10207,6 +10559,27 @@
       "titleTranslit": "",
       "jacket": "sm/World/MVP/MVP-jacket.webp",
       "id": "001410"
+    },
+    {
+      "path": "sm/World/MYSTIC CUBE/MYSTIC CUBE.sm",
+      "title": "MYSTIC CUBE",
+      "titleTranslit": "",
+      "jacket": "sm/World/MYSTIC CUBE/MYSTIC CUBE-jacket.webp",
+      "id": "002078"
+    },
+    {
+      "path": "sm/World/Nante super/Nante super.sm",
+      "title": "なんてシュペール",
+      "titleTranslit": "Nante super",
+      "jacket": "sm/World/Nante super/Nante super-jacket.webp",
+      "id": "002079"
+    },
+    {
+      "path": "sm/World/Nazotoki queen!/Nazotoki queen!.sm",
+      "title": "謎解き☆クイーン！",
+      "titleTranslit": "Nazotoki queen!",
+      "jacket": "sm/World/Nazotoki queen!/Nazotoki queen!-jacket.webp",
+      "id": "002080"
     },
     {
       "path": "sm/World/Neoki yashi no ki/Neoki yashi no ki.sm",
@@ -10300,6 +10673,20 @@
       "id": "001431"
     },
     {
+      "path": "sm/World/Polka dot dance girl/Polka dot dance girl.sm",
+      "title": "ポルカドット・ダンス・ガール",
+      "titleTranslit": "Polka dot dance girl",
+      "jacket": "sm/World/Polka dot dance girl/Polka dot dance girl-jacket.webp",
+      "id": "002081"
+    },
+    {
+      "path": "sm/World/Proof of the existence/Proof of the existence.sm",
+      "title": "Proof of the existence",
+      "titleTranslit": "",
+      "jacket": "sm/World/Proof of the existence/Proof of the existence-jacket.webp",
+      "id": "002082"
+    },
+    {
       "path": "sm/World/quaver/quaver.sm",
       "title": "quaver♪",
       "titleTranslit": "",
@@ -10312,6 +10699,20 @@
       "titleTranslit": "Rabbit hole",
       "jacket": "sm/World/Rabbit hole/Rabbit hole-jacket.webp",
       "id": "001433"
+    },
+    {
+      "path": "sm/World/Rain On Me/Rain On Me.sm",
+      "title": "Rain On Me",
+      "titleTranslit": "",
+      "jacket": "sm/World/Rain On Me/Rain On Me-jacket.webp",
+      "id": "002083"
+    },
+    {
+      "path": "sm/World/Recipe no riddle/Recipe no riddle.sm",
+      "title": "レシピのリドル",
+      "titleTranslit": "Recipe no riddle",
+      "jacket": "sm/World/Recipe no riddle/Recipe no riddle-jacket.webp",
+      "id": "002084"
     },
     {
       "path": "sm/World/Red. by Full Metal Jacket/Red. by Full Metal Jacket.sm",
@@ -10356,6 +10757,13 @@
       "id": "001434"
     },
     {
+      "path": "sm/World/RIZING-GAMERS/RIZING-GAMERS.sm",
+      "title": "RIZING-GAMERS.",
+      "titleTranslit": "RIZING-GAMERS",
+      "jacket": "sm/World/RIZING-GAMERS/RIZING-GAMERS-jacket.webp",
+      "id": "002085"
+    },
+    {
       "path": "sm/World/Robot Footwork/Robot Footwork.sm",
       "title": "Robot Footwork",
       "titleTranslit": "",
@@ -10389,6 +10797,13 @@
       "titleTranslit": "Romancing escape",
       "jacket": "sm/World/Romancing escape/Romancing escape-jacket.webp",
       "id": "001440"
+    },
+    {
+      "path": "sm/World/RUINA/RUINA.sm",
+      "title": "RUINA",
+      "titleTranslit": "",
+      "jacket": "sm/World/RUINA/RUINA-jacket.webp",
+      "id": "002086"
     },
     {
       "path": "sm/World/Ryoushi no umi no Lindwurm (STARDOM Remix)/Ryoushi no umi no Lindwurm (STARDOM Remix).sm",
@@ -10426,6 +10841,13 @@
       "id": "001446"
     },
     {
+      "path": "sm/World/SCREW owo SCREW/SCREW owo SCREW.ssc",
+      "title": "SCREW \\/\\/ owo \\/\\/ SCREW",
+      "titleTranslit": "SCREW owo SCREW",
+      "jacket": "sm/World/SCREW owo SCREW/SCREW owo SCREW-jacket.webp",
+      "id": "002087"
+    },
+    {
       "path": "sm/World/Setsujou danka/Setsujou danka.sm",
       "title": "雪上断火",
       "titleTranslit": "Setsujou danka",
@@ -10440,6 +10862,13 @@
       "id": "002045"
     },
     {
+      "path": "sm/World/Shiawase no mahou wa tokenai/Shiawase no mahou wa tokenai.sm",
+      "title": "幸せのマ法は解けなイ.*・.+ ☆",
+      "titleTranslit": "Shiawase no mahou wa tokenai",
+      "jacket": "sm/World/Shiawase no mahou wa tokenai/Shiawase no mahou wa tokenai-jacket.webp",
+      "id": "002088"
+    },
+    {
       "path": "sm/World/Shippuujinrai/Shippuujinrai.ssc",
       "title": "疾風迅雷",
       "titleTranslit": "Shippuujinrai",
@@ -10452,6 +10881,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Shooting Star/Shooting Star-jacket.webp",
       "id": "002047"
+    },
+    {
+      "path": "sm/World/Shoujo, matenrou e/Shoujo, matenrou e.sm",
+      "title": "少女、摩天楼へ",
+      "titleTranslit": "Shoujo, matenrou e",
+      "jacket": "sm/World/Shoujo, matenrou e/Shoujo, matenrou e-jacket.webp",
+      "id": "002089"
     },
     {
       "path": "sm/World/Show/Show.sm",
@@ -10475,6 +10911,20 @@
       "id": "001450"
     },
     {
+      "path": "sm/World/Silent Flame,Never Fade/Silent Flame,Never Fade.sm",
+      "title": "Silent Flame,Never Fade",
+      "titleTranslit": "",
+      "jacket": "sm/World/Silent Flame,Never Fade/Silent Flame,Never Fade-jacket.webp",
+      "id": "002090"
+    },
+    {
+      "path": "sm/World/SILKY BRAVE/SILKY BRAVE.sm",
+      "title": "SILKY BRAVE",
+      "titleTranslit": "",
+      "jacket": "sm/World/SILKY BRAVE/SILKY BRAVE-jacket.webp",
+      "id": "002091"
+    },
+    {
       "path": "sm/World/SkyDrive! (HASEKO EUROBEAT MIX)/SkyDrive! (HASEKO EUROBEAT MIX).sm",
       "title": "SkyDrive! (HASEKO EUROBEAT MIX)",
       "titleTranslit": "",
@@ -10489,11 +10939,32 @@
       "id": "001451"
     },
     {
+      "path": "sm/World/Somedays/Somedays.sm",
+      "title": "Somedays",
+      "titleTranslit": "",
+      "jacket": "sm/World/Somedays/Somedays-jacket.webp",
+      "id": "002092"
+    },
+    {
+      "path": "sm/World/Specter chaser/Specter chaser.sm",
+      "title": "スペクター・チェイサー",
+      "titleTranslit": "Specter chaser",
+      "jacket": "sm/World/Specter chaser/Specter chaser-jacket.webp",
+      "id": "002093"
+    },
+    {
       "path": "sm/World/Stand Alone Beat Masta/Stand Alone Beat Masta.ssc",
       "title": "Stand Alone Beat Masta",
       "titleTranslit": "",
       "jacket": "sm/World/Stand Alone Beat Masta/Stand Alone Beat Masta-jacket.webp",
       "id": "001452"
+    },
+    {
+      "path": "sm/World/Stars In The Sky/Stars In The Sky.sm",
+      "title": "Stars In The Sky",
+      "titleTranslit": "",
+      "jacket": "sm/World/Stars In The Sky/Stars In The Sky-jacket.webp",
+      "id": "002094"
     },
     {
       "path": "sm/World/Steps for Victory/Steps for Victory.ssc",
@@ -10508,6 +10979,13 @@
       "titleTranslit": "",
       "jacket": "sm/World/Steps to the Star/Steps to the Star-jacket.webp",
       "id": "001454"
+    },
+    {
+      "path": "sm/World/STOIC HYPOTHESIS/STOIC HYPOTHESIS.sm",
+      "title": "STOIC HYPOTHESIS",
+      "titleTranslit": "",
+      "jacket": "sm/World/STOIC HYPOTHESIS/STOIC HYPOTHESIS-jacket.webp",
+      "id": "002095"
     },
     {
       "path": "sm/World/STOMP!!/STOMP!!.sm",
@@ -10531,11 +11009,25 @@
       "id": "001444"
     },
     {
+      "path": "sm/World/Superior MAXXX/Superior MAXXX.ssc",
+      "title": "Superior MAXXX",
+      "titleTranslit": "",
+      "jacket": "sm/World/Superior MAXXX/Superior MAXXX-jacket.webp",
+      "id": "002096"
+    },
+    {
       "path": "sm/World/Sweetin' Fruity/Sweetin' Fruity.sm",
       "title": "Sweetin' Fruity",
       "titleTranslit": "",
       "jacket": "sm/World/Sweetin' Fruity/Sweetin' Fruity-jacket.webp",
       "id": "001455"
+    },
+    {
+      "path": "sm/World/Tabibito Rerun/Tabibito Rerun.sm",
+      "title": "旅人リラン",
+      "titleTranslit": "Tabibito Rerun",
+      "jacket": "sm/World/Tabibito Rerun/Tabibito Rerun-jacket.webp",
+      "id": "002097"
     },
     {
       "path": "sm/World/The 88's Instigation/The 88's Instigation.sm",
@@ -10573,6 +11065,13 @@
       "id": "001457"
     },
     {
+      "path": "sm/World/Tick-tack2 tick2 pa/Tick-tack2 tick2 pa.sm",
+      "title": "ちくたく2ちく2ぱ",
+      "titleTranslit": "Tick-tack2 tick2 pa",
+      "jacket": "sm/World/Tick-tack2 tick2 pa/Tick-tack2 tick2 pa-jacket.webp",
+      "id": "002098"
+    },
+    {
       "path": "sm/World/Time to HYPERDRIVE/Time to HYPERDRIVE.sm",
       "title": "Time to HYPERDRIVE",
       "titleTranslit": "",
@@ -10608,6 +11107,13 @@
       "id": "001465"
     },
     {
+      "path": "sm/World/tricky trick/tricky trick.sm",
+      "title": "tricky trick",
+      "titleTranslit": "",
+      "jacket": "sm/World/tricky trick/tricky trick-jacket.webp",
+      "id": "002099"
+    },
+    {
       "path": "sm/World/Tsuki ni murakumo hana ni kaze/Tsuki ni murakumo hana ni kaze.sm",
       "title": "月に叢雲華に風",
       "titleTranslit": "Tsuki ni murakumo hana ni kaze",
@@ -10627,6 +11133,20 @@
       "titleTranslit": "",
       "jacket": "sm/World/TYCOON/TYCOON-jacket.webp",
       "id": "001458"
+    },
+    {
+      "path": "sm/World/UNKNOWNZ/UNKNOWNZ.sm",
+      "title": "UИKNØWNZ",
+      "titleTranslit": "UNKNOWNZ",
+      "jacket": "sm/World/UNKNOWNZ/UNKNOWNZ-jacket.webp",
+      "id": "002100"
+    },
+    {
+      "path": "sm/World/V!LLA!N/V!LLA!N.sm",
+      "title": "V!LLA!N",
+      "titleTranslit": "VILLAIN",
+      "jacket": "sm/World/V!LLA!N/V!LLA!N-jacket.webp",
+      "id": "002101"
     },
     {
       "path": "sm/World/Vampire/Vampire.sm",

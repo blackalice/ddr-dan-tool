@@ -7545,15 +7545,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 9.35,
-          "songId": "001148",
-          "chartId": "001148#S#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -7573,7 +7573,7 @@
         "000489#S#2",
         "000490#S#2",
         "001122#S#2",
-        "001148#S#2",
+        "002126#S#4",
         "001142#S#2"
       ]
     },
@@ -7623,16 +7623,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "level": 8,
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 9.65,
-          "songId": "001148",
-          "chartId": "001148#D#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 5.35,
+          "songId": "002126",
+          "chartId": "002126#D#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -7652,7 +7652,7 @@
         "000489#D#2",
         "000490#D#2",
         "001122#D#1",
-        "001148#D#2",
+        "002126#D#4",
         "001142#D#2"
       ]
     },
@@ -17047,16 +17047,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 4,
-          "bpm": "138-140",
-          "difficulty": "basic",
+          "level": 6,
+          "bpm": "140",
+          "difficulty": "difficult",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 4.4,
-          "songId": "001148",
-          "chartId": "001148#S#1",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 3.3,
+          "songId": "002126",
+          "chartId": "002126#S#2",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "Vem brincar",
@@ -17088,7 +17088,7 @@
       "chartIds": [
         "001931#S#0",
         "001930#S#2",
-        "001148#S#1",
+        "002126#S#2",
         "001929#S#1",
         "001147#S#1"
       ]
@@ -17127,15 +17127,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 5,
-          "bpm": "138-140",
-          "difficulty": "basic",
+          "bpm": "140",
+          "difficulty": "difficult",
           "mode": "double",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 5.35,
-          "songId": "001148",
-          "chartId": "001148#D#1",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#D#2",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "Vem brincar",
@@ -17167,7 +17167,7 @@
       "chartIds": [
         "001931#D#1",
         "001930#D#2",
-        "001148#D#1",
+        "002126#D#2",
         "001929#D#1",
         "001147#D#1"
       ]
@@ -22251,15 +22251,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 9.35,
-          "songId": "001148",
-          "chartId": "001148#S#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -22279,7 +22279,7 @@
         "000489#S#2",
         "000490#S#2",
         "001122#S#2",
-        "001148#S#2",
+        "002126#S#4",
         "001142#S#2"
       ]
     },
@@ -22329,16 +22329,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "level": 8,
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 9.65,
-          "songId": "001148",
-          "chartId": "001148#D#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 5.35,
+          "songId": "002126",
+          "chartId": "002126#D#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -22358,7 +22358,7 @@
         "000489#D#2",
         "000490#D#2",
         "001122#D#1",
-        "001148#D#2",
+        "002126#D#4",
         "001142#D#2"
       ]
     },
@@ -25531,16 +25531,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 12,
-          "bpm": "138-140",
+          "level": 9,
+          "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 12.65,
-          "songId": "001148",
-          "chartId": "001148#S#4",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 9.35,
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "V ～for EXTREME～",
@@ -25559,7 +25559,7 @@
       "chartIds": [
         "001842#S#4",
         "001923#S#2",
-        "001148#S#4",
+        "002126#S#4",
         "001147#S#4"
       ]
     },
@@ -29737,16 +29737,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 12,
-          "bpm": "138-140",
+          "level": 9,
+          "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 12.65,
-          "songId": "001148",
-          "chartId": "001148#S#4",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 9.35,
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "AA",
@@ -29765,7 +29765,7 @@
       "chartIds": [
         "001804#S#4",
         "000253#S#4",
-        "001148#S#4",
+        "002126#S#4",
         "001754#S#4"
       ]
     },
