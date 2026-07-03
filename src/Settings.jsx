@@ -2,7 +2,13 @@ import React, { useState, useContext, useEffect } from 'react';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { MULTIPLIER_MODES } from './utils/multipliers';
-import { SONGLIST_OVERRIDE_OPTIONS } from './utils/songlistOverrides';
+import {
+    getSonglistOverrideGameValue,
+    getSonglistOverrideValueForGameVariant,
+    getSonglistOverrideVariantOptions,
+    getSonglistOverrideVariantValue,
+    SONGLIST_OVERRIDE_GAME_OPTIONS,
+} from './utils/songlistOverrides';
 import { similarity, normalizeString } from './utils/stringSimilarity.js';
 import { makeScoreKey } from './utils/scoreKey.js';
 import ThemeSwitcher from './components/ThemeSwitcher';
@@ -110,6 +116,9 @@ const Settings = () => {
     const offlineDownloadLabel = offlineDownloading ? 'Downloading...' : 'Download';
     const canDownloadOffline = Boolean(user);
     const offlineFeatureEnabled = import.meta.env.MODE !== 'no-pwa';
+    const selectedOverrideGame = getSonglistOverrideGameValue(songlistOverride);
+    const selectedOverrideVariant = getSonglistOverrideVariantValue(songlistOverride);
+    const songlistOverrideVariants = getSonglistOverrideVariantOptions(selectedOverrideGame);
     const [showOlderUpdates, setShowOlderUpdates] = useState(false);
 
     const [songMeta, setSongMeta] = useState([]);
@@ -319,7 +328,7 @@ const Settings = () => {
                             </div>
                         </div>
                     )}
-                    <div className="setting-card">
+                    <div className="setting-card setting-card-songlist">
                         <div className="setting-text">
                             <h3>Target Scroll Speed</h3>
                             <p>
@@ -423,15 +432,27 @@ const Settings = () => {
                             </p>
                         </div>
                         <div className="setting-control">
-                            <select
-                                value={songlistOverride}
-                                onChange={(e) => setSonglistOverride(e.target.value)}
-                                className="settings-select"
-                            >
-                                {SONGLIST_OVERRIDE_OPTIONS.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
+                            <div className="songlist-override-controls">
+                                <select
+                                    value={selectedOverrideGame}
+                                    onChange={(e) => setSonglistOverride(getSonglistOverrideValueForGameVariant(e.target.value, 'mainline'))}
+                                    className="settings-select"
+                                >
+                                    {SONGLIST_OVERRIDE_GAME_OPTIONS.map(opt => (
+                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={selectedOverrideVariant}
+                                    onChange={(e) => setSonglistOverride(getSonglistOverrideValueForGameVariant(selectedOverrideGame, e.target.value))}
+                                    className="settings-select"
+                                    disabled={songlistOverrideVariants.length <= 1}
+                                >
+                                    {songlistOverrideVariants.map(opt => (
+                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
 

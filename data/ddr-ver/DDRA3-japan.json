@@ -1,7 +1,7 @@
 {
-  "version": "A3",
-  "source": "__MUSICDB/musicdbA3.xml",
-  "generatedAt": "2026-07-03T13:46:13.985Z",
+  "version": "A3-JP",
+  "label": "DDR A3 - Japan",
+  "source": "static override data",
   "songs": [
     {
       "title": "PUT YOUR FAITH IN ME",
@@ -47801,5 +47801,6 @@
         ]
       }
     }
-  ]
+  ],
+  "generatedAt": "2026-07-03T18:08:24.253Z"
 }
