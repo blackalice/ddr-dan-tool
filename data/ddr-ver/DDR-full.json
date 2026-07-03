@@ -1,0 +1,47 @@
+{
+  "version": "DDR",
+  "label": "DDR",
+  "source": [
+    "data/remywiki/songlists/DDR.html"
+  ],
+  "generatedAt": "2026-07-03T17:46:30.404Z",
+  "songs": [
+    {
+      "title": "HAVE YOU NEVER BEEN MELLOW",
+      "artist": "THE OLIVIA PROJECT"
+    },
+    {
+      "title": "butterfly",
+      "artist": "SMiLE.dk"
+    },
+    {
+      "title": "KUNG FU FIGHTING",
+      "artist": "BUS STOP featuring CARL DOUGLAS"
+    },
+    {
+      "title": "MY FIRE",
+      "artist": "X-TREME"
+    },
+    {
+      "title": "LITTLE BITCH",
+      "artist": "THE SPECIALS"
+    },
+    {
+      "title": "LET'S GET DOWN",
+      "artist": "JT PLAYAZ"
+    },
+    {
+      "title": "THAT'S THE WAY(I LIKE IT)",
+      "artist": "KC & THE SUNSHINE BAND"
+    },
+    {
+      "title": "STRICTLY BUSINESS",
+      "artist": "MANTRONIK VS EPMD"
+    },
+    {
+      "title": "PARANOiA",
+      "artist": "180"
+    }
+  ],
+  "issues": []
+}
