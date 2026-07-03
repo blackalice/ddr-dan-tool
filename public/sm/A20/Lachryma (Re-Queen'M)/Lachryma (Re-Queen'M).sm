@@ -1,7 +1,7 @@
 //----- song ID: lach -----//
 #TITLE:Lachryma《Re\:Queen’M》;
 #ARTIST:かねこちはる;
-#ARTISTTRANSLIT:Kaneko Chiharu;
+#ARTISTTRANSLIT:Chiharu Kaneko;
 #BANNER:Lachryma (Re-Queen'M).png;
 #BACKGROUND:Lachryma (Re-Queen'M)-bg.png;
 #CDTITLE:./CDTitles/SDVX III GRAVITY WARS.png;
@@ -10,6 +10,7 @@
 #SAMPLELENGTH:15;
 #BPMS:0=236;
 #TIMESIGNATURES:0=6=8,84=4=4,264=6=8,318=4=4,390=6=8;
+#BGSTAGE:30;
 
 #NOTES:
      dance-single:

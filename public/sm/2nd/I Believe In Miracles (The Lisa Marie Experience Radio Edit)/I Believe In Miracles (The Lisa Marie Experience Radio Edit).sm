@@ -3,7 +3,7 @@
 #ARTIST:Hi-Rise;
 #BANNER:I Believe In Miracles (The Lisa Marie Experience Radio Edit).png;
 #BACKGROUND:I Believe In Miracles (The Lisa Marie Experience Radio Edit)-bg.png;
-#CDTITLE:../CDTitles/Dancemania X1.png;
+#CDTITLE:./CDTitles/Dancemania X1.png;
 #MUSIC:I Believe In Miracles (The Lisa Marie Experience Radio Edit).ogg;
 #SAMPLESTART:55.625;
 #SAMPLELENGTH:15;

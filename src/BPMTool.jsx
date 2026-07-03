@@ -264,6 +264,11 @@ const normalizePatternHighlights = (value) => {
     return next;
 };
 
+const isKeyboardEntryTarget = (target) => {
+    if (!(target instanceof Element)) return false;
+    return Boolean(target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]'));
+};
+
 
 const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView, selectionLoading = false }) => {
     const {
@@ -1405,6 +1410,36 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             titleTranslit: simfileData.title.translitTitleName,
         };
     }, [simfileData, songOptions, showTransliterationBeta]);
+
+    const navigateSongByOffset = useCallback((offset) => {
+        if (selectionLoading || songOptions.length === 0) return;
+
+        const currentIndex = selectedSongOption
+            ? songOptions.findIndex(opt => opt.value === selectedSongOption.value)
+            : -1;
+        const startIndex = currentIndex >= 0 ? currentIndex : (offset > 0 ? -1 : 0);
+        const nextIndex = (startIndex + offset + songOptions.length) % songOptions.length;
+        const nextSong = songOptions[nextIndex];
+        if (nextSong) {
+            handleSongSelectDebug(nextSong);
+        }
+    }, [handleSongSelectDebug, selectedSongOption, selectionLoading, songOptions]);
+
+    useEffect(() => {
+        if (showFilter || showAddModal || showSortModal) return undefined;
+
+        const handleKeyDown = (event) => {
+            if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            if (isKeyboardEntryTarget(event.target)) return;
+
+            event.preventDefault();
+            navigateSongByOffset(event.key === 'ArrowRight' ? 1 : -1);
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [navigateSongByOffset, showAddModal, showFilter, showSortModal]);
 
     useEffect(() => {
         if (!simfileData || songOptions.length === 0) return;

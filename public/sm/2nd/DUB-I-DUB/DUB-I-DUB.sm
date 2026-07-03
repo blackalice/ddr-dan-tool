@@ -3,7 +3,7 @@
 #ARTIST:ME & MY;
 #BANNER:DUB-I-DUB.png;
 #BACKGROUND:DUB-I-DUB-bg.png;
-#CDTITLE:../CDTitles/Dancemania EXTRA.png;
+#CDTITLE:./CDTitles/Dancemania EXTRA.png;
 #MUSIC:DUB-I-DUB.ogg;
 #SAMPLESTART:39.185;
 #SAMPLELENGTH:15;
