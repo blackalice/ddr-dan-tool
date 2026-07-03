@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faDownload,
   faFilter,
   faGear,
+  faList,
   faRotateRight,
   faTrash,
   faTrophy,
@@ -251,6 +253,25 @@ const getDisplayedCharts = (charts, actionsMap, { reorderByAction, hideVetoed })
     .map(({ chart }) => chart);
 };
 
+const csvValue = (value) => {
+  if (value == null) return "";
+  const text = String(value);
+  if (!/[",\n\r]/.test(text)) return text;
+  return `"${text.replace(/"/g, '""')}"`;
+};
+
+const downloadTextFile = (filename, content, type) => {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
 const CardDrawPage = ({ smData }) => {
   const { offline } = useOfflineMode();
   const showJacket = !offline;
@@ -302,6 +323,7 @@ const CardDrawPage = ({ smData }) => {
   });
   const [showFilter, setShowFilter] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showEligibleCharts, setShowEligibleCharts] = useState(false);
   const [drawCount, setDrawCount] = useState(() => {
     try {
       const saved = storage.getItem("cardDrawCount");
@@ -1119,6 +1141,81 @@ const CardDrawPage = ({ smData }) => {
     };
   }, []);
 
+  const eligibleChartRows = useMemo(() => {
+    const rows = [];
+    filteredEntries.forEach(({ meta, matchingCharts }) => {
+      matchingCharts.forEach((chart) => {
+        const card = buildChartData(meta, chart);
+        if (!card) return;
+        const levelValue = getDifficultyValue(chart, showRankedRatings);
+        const bucketValue = getDifficultyBucketValue(chart, showRankedRatings);
+        rows.push({
+          ...card,
+          displayTitle: showTransliterationBeta && card.titleTranslit ? card.titleTranslit : card.title,
+          displayArtist: showTransliterationBeta && card.artistTranslit ? card.artistTranslit : card.artist,
+          levelValue,
+          bucketValue,
+          length: meta.length,
+          bpmMin: meta.bpmMin,
+          bpmMax: meta.bpmMax,
+        });
+      });
+    });
+    return rows.sort((a, b) => {
+      const levelA = Number.isFinite(a.levelValue) ? a.levelValue : Number.MAX_SAFE_INTEGER;
+      const levelB = Number.isFinite(b.levelValue) ? b.levelValue : Number.MAX_SAFE_INTEGER;
+      if (levelA !== levelB) return levelA - levelB;
+      const titleCompare = a.displayTitle.localeCompare(b.displayTitle);
+      if (titleCompare !== 0) return titleCompare;
+      return a.difficulty.localeCompare(b.difficulty);
+    });
+  }, [buildChartData, filteredEntries, showRankedRatings, showTransliterationBeta]);
+
+  const eligibleHistogram = useMemo(() => {
+    const counts = new Map();
+    eligibleChartRows.forEach((row) => {
+      const value = Number.isFinite(row.bucketValue) ? row.bucketValue : Number(row.level);
+      const key = Number.isFinite(value) ? value : "Unknown";
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([level, count]) => ({ level, count }))
+      .sort((a, b) => {
+        if (a.level === "Unknown") return 1;
+        if (b.level === "Unknown") return -1;
+        return a.level - b.level;
+      });
+  }, [eligibleChartRows]);
+
+  const eligibleHistogramMax = useMemo(
+    () => Math.max(1, ...eligibleHistogram.map((row) => row.count)),
+    [eligibleHistogram],
+  );
+
+  const exportEligibleCharts = useCallback(() => {
+    const columns = [
+      ["Title", "displayTitle"],
+      ["Artist", "displayArtist"],
+      ["Game", "game"],
+      ["Mode", "mode"],
+      ["Difficulty", "difficulty"],
+      ["Level", "level"],
+      ["Ranked Rating", "rankedRating"],
+      ["BPM", "bpm"],
+      ["Length Seconds", "length"],
+      ["Song ID", "songId"],
+      ["Chart ID", "chartId"],
+      ["Path", "path"],
+    ];
+    const lines = [
+      columns.map(([label]) => csvValue(label)).join(","),
+      ...eligibleChartRows.map((row) =>
+        columns.map(([, key]) => csvValue(row[key])).join(","),
+      ),
+    ];
+    downloadTextFile("card-draw-eligible-charts.csv", `${lines.join("\n")}\n`, "text/csv;charset=utf-8");
+  }, [eligibleChartRows]);
+
   const buildChartCard = useCallback((entry) => {
     const { meta, matchingCharts } = entry;
     if (!meta || !matchingCharts.length) return null;
@@ -1806,9 +1903,65 @@ const CardDrawPage = ({ smData }) => {
             >
               <FontAwesomeIcon icon={faFilter} />
             </button>
+            <button
+              type="button"
+              className={`filter-button ${showEligibleCharts ? "active" : ""}`}
+              onClick={() => setShowEligibleCharts((prev) => !prev)}
+              title="Show eligible charts"
+              aria-label="Show eligible charts"
+              aria-pressed={showEligibleCharts}
+            >
+              <FontAwesomeIcon icon={faList} />
+            </button>
           </div>
         </div>
       </section>
+
+      {showEligibleCharts && (
+        <section className="card-draw-eligible">
+          <h2 className="card-draw-eligible-header">
+            <span className="card-draw-eligible-heading">
+              <span>Eligible charts</span>
+              <span className="card-draw-eligible-count">
+                {eligibleChartRows.length} chart{eligibleChartRows.length === 1 ? "" : "s"}
+              </span>
+            </span>
+            <button
+              type="button"
+              className="card-draw-eligible-export"
+              onClick={exportEligibleCharts}
+              disabled={eligibleChartRows.length === 0}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span>Export CSV</span>
+            </button>
+          </h2>
+          <div className="card-draw-eligible-body">
+            <p className="card-draw-eligible-note">
+              Current filter pool by level.
+            </p>
+            {eligibleHistogram.length > 0 ? (
+              <div className="card-draw-histogram" aria-label="Eligible charts by level">
+                {eligibleHistogram.map((bucket) => {
+                  const width = `${Math.max(4, (bucket.count / eligibleHistogramMax) * 100)}%`;
+                  const label = bucket.level === "Unknown" ? "Unknown" : `Lv.${bucket.level}`;
+                  return (
+                    <div key={bucket.level} className="card-draw-histogram-row">
+                      <span className="card-draw-histogram-label">{label}</span>
+                      <span className="card-draw-histogram-track">
+                        <span className="card-draw-histogram-bar" style={{ width }} />
+                      </span>
+                      <span className="card-draw-histogram-count">{bucket.count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="card-draw-empty">No charts match the current filters.</div>
+            )}
+          </div>
+        </section>
+      )}
 
       <section className="dan-section card-draw-results">
         <h2 className="dan-header" style={{ backgroundColor: "var(--accent-color)" }}>

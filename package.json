@@ -21,6 +21,8 @@
     "build:full": "npm run data:prepare && npm run build",
     "build:no-pwa": "node scripts/clean-vite-output.mjs && vite build --mode no-pwa && node scripts/stage-public-assets.mjs",
     "lint": "eslint .",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "preview": "vite preview",
     "cf:dev": "wrangler dev",
     "deploy": "npm run build:full && npm run deploy:worker && npm run deploy:pages",
@@ -62,6 +64,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@playwright/test": "^1.61.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^5.0.3",
