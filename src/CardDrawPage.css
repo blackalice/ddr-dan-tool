@@ -153,9 +153,64 @@
   );
 }
 
+.card-draw-history-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .card-draw-history-set .song-grid {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.card-draw-labels {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.35fr) repeat(2, minmax(7rem, 1fr));
+  gap: 0.75rem;
+  padding: 0.75rem 0.95rem;
+  background: color-mix(in srgb, var(--card-bg-color) 94%, var(--bg-color-light));
+  border: 1px solid var(--border-color);
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.card-draw-labels + .song-grid {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.card-draw-label-field {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.card-draw-label-field span {
+  color: var(--text-muted-color);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.card-draw-label-field input {
+  width: 100%;
+  min-width: 0;
+  height: 2.3rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg-color-light) 86%, var(--card-bg-color));
+  color: var(--text-color);
+  font: inherit;
+  font-weight: 650;
+  padding: 0 0.65rem;
+}
+
+.card-draw-label-field input:focus {
+  border-color: color-mix(in srgb, var(--accent-color) 70%, var(--border-color));
+  outline: 2px solid color-mix(in srgb, var(--accent-color) 25%, transparent);
+  outline-offset: 1px;
 }
 
 
@@ -226,11 +281,17 @@
   color: inherit;
   font-weight: 600;
   opacity: 1;
+  min-width: 0;
 }
 
 .card-draw-slice-tag {
   font-weight: 700;
   text-transform: none;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-draw-slice-winner {
@@ -238,6 +299,8 @@
   align-items: center;
   gap: 0.35rem;
   color: inherit;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .card-draw-slice-winner svg {
@@ -249,6 +312,7 @@
   align-items: center;
   justify-content: center;
   min-width: 1.4rem;
+  max-width: 5.5rem;
   height: 1rem;
   border-radius: 0;
   background: transparent;
@@ -256,6 +320,9 @@
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-draw-page .song-score-slice {
@@ -574,6 +641,16 @@
 
   .card-draw-eligible-export span {
     display: none;
+  }
+
+  .card-draw-labels {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.7rem;
+  }
+
+  .card-draw-label-round {
+    grid-column: 1 / -1;
   }
 
   .card-draw-histogram {
