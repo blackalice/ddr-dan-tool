@@ -229,6 +229,28 @@ const CARD_ACTIONS = [
   { key: "pocket-pick", label: "Pocket", requiresPlayer: true },
 ];
 
+const getActionSortRank = (chart, actionsMap) => {
+  const action = actionsMap?.[chart.uniqueKey]?.action;
+  if (action === "protect") return 0;
+  if (action === "veto") return 2;
+  return 1;
+};
+
+const getDisplayedCharts = (charts, actionsMap, { reorderByAction, hideVetoed }) => {
+  const visibleCharts = hideVetoed
+    ? charts.filter((chart) => actionsMap?.[chart.uniqueKey]?.action !== "veto")
+    : charts;
+  if (!reorderByAction) return visibleCharts;
+  return visibleCharts
+    .map((chart, index) => ({ chart, index }))
+    .sort((a, b) => {
+      const rankDiff = getActionSortRank(a.chart, actionsMap) - getActionSortRank(b.chart, actionsMap);
+      if (rankDiff !== 0) return rankDiff;
+      return a.index - b.index;
+    })
+    .map(({ chart }) => chart);
+};
+
 const CardDrawPage = ({ smData }) => {
   const { offline } = useOfflineMode();
   const showJacket = !offline;
@@ -346,6 +368,23 @@ const CardDrawPage = ({ smData }) => {
       return false;
     }
   });
+  const [reorderByAction, setReorderByAction] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawReorderByAction");
+      if (saved == null) return true;
+      return saved === "true";
+    } catch {
+      return true;
+    }
+  });
+  const [hideVetoed, setHideVetoed] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawHideVetoed");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
   const [draftDrawCount, setDraftDrawCount] = useState(drawCount);
   const [draftFreePickCount, setDraftFreePickCount] = useState(freePickCount);
   const [draftWeightedEnabled, setDraftWeightedEnabled] = useState(weightedEnabled);
@@ -357,6 +396,8 @@ const CardDrawPage = ({ smData }) => {
   );
   const [draftWeightedDistribution, setDraftWeightedDistribution] = useState(weightedDistribution);
   const [draftSortByLevel, setDraftSortByLevel] = useState(sortByLevel);
+  const [draftReorderByAction, setDraftReorderByAction] = useState(reorderByAction);
+  const [draftHideVetoed, setDraftHideVetoed] = useState(hideVetoed);
   const [activeCardContext, setActiveCardContext] = useState(null);
   const filterCountsCacheRef = useRef(new Map());
   const metricBoundsCacheRef = useRef(new Map());
@@ -394,6 +435,8 @@ const CardDrawPage = ({ smData }) => {
     setDraftWeightedBucketCountInput(weightedBucketCountInput);
     setDraftWeightedDistribution(weightedDistribution);
     setDraftSortByLevel(sortByLevel);
+    setDraftReorderByAction(reorderByAction);
+    setDraftHideVetoed(hideVetoed);
     setShowSettings(true);
   }, [
     drawCount,
@@ -405,6 +448,8 @@ const CardDrawPage = ({ smData }) => {
     weightedBucketCountInput,
     weightedDistribution,
     sortByLevel,
+    reorderByAction,
+    hideVetoed,
   ]);
   const freePickPlaceholder = useMemo(() => ({
     title: "Free pick",
@@ -517,6 +562,14 @@ const CardDrawPage = ({ smData }) => {
   useEffect(() => {
     storage.setItem("cardDrawSortByLevel", String(sortByLevel));
   }, [sortByLevel]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawReorderByAction", String(reorderByAction));
+  }, [reorderByAction]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawHideVetoed", String(hideVetoed));
+  }, [hideVetoed]);
 
   const filtersActive = Boolean(
     filters.bpmMin !== "" ||
@@ -1250,6 +1303,8 @@ const CardDrawPage = ({ smData }) => {
     setDraftWeightedBucketCountInput(String(DEFAULT_BUCKET_COUNT));
     setDraftWeightedDistribution([]);
     setDraftSortByLevel(false);
+    setDraftReorderByAction(true);
+    setDraftHideVetoed(false);
   }, []);
 
   const applyCardDrawSettings = useCallback(() => {
@@ -1266,6 +1321,8 @@ const CardDrawPage = ({ smData }) => {
       coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
     );
     setSortByLevel(draftSortByLevel);
+    setReorderByAction(draftReorderByAction);
+    setHideVetoed(draftHideVetoed);
     setShowSettings(false);
   }, [
     draftDrawCount,
@@ -1277,6 +1334,8 @@ const CardDrawPage = ({ smData }) => {
     draftWeightedBucketCountInput,
     draftWeightedDistribution,
     draftSortByLevel,
+    draftReorderByAction,
+    draftHideVetoed,
     draftBucketCountInvalid,
     draftBucketDefinitions.length,
   ]);
@@ -1683,10 +1742,27 @@ const CardDrawPage = ({ smData }) => {
   }, [cardActions, drawnCharts, currentDrawId]);
 
   const isFreePickModal = pocketPickState?.mode === "free-pick";
-  const nonFreePickCount = useMemo(
-    () => drawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
-    [drawnCharts],
+  const displayOptions = useMemo(
+    () => ({ reorderByAction, hideVetoed }),
+    [hideVetoed, reorderByAction],
   );
+  const displayedDrawnCharts = useMemo(
+    () => getDisplayedCharts(drawnCharts, cardActions, displayOptions),
+    [cardActions, displayOptions, drawnCharts],
+  );
+  const displayedDrawHistory = useMemo(
+    () =>
+      drawHistory.map((entry) => ({
+        ...entry,
+        displayCharts: getDisplayedCharts(entry.charts || [], entry.actions || {}, displayOptions),
+      })),
+    [displayOptions, drawHistory],
+  );
+  const nonFreePickCount = useMemo(
+    () => displayedDrawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
+    [displayedDrawnCharts],
+  );
+  const currentDrawHidden = drawnCharts.length > 0 && displayedDrawnCharts.length === 0;
 
   return (
     <div className="app-container card-draw-page">
@@ -1756,8 +1832,8 @@ const CardDrawPage = ({ smData }) => {
         <div
           className={`song-grid ${nonFreePickCount === DEFAULT_DRAW_COUNT ? "card-draw-five" : ""}`}
         >
-          {drawnCharts.length ? (
-            drawnCharts.map((chart) => (
+          {displayedDrawnCharts.length ? (
+            displayedDrawnCharts.map((chart) => (
               chart.isFreePickPlaceholder ? (
                 <div
                   key={chart.uniqueKey}
@@ -1805,15 +1881,17 @@ const CardDrawPage = ({ smData }) => {
             ))
           ) : (
             <div className="card-draw-empty">
-              Draw to generate a set of charts for your tournament round.
+              {currentDrawHidden
+                ? "All charts in this draw are hidden by vetoes."
+                : "Draw to generate a set of charts for your tournament round."}
             </div>
           )}
         </div>
       </section>
 
-      {drawHistory.length > 1 && (
+      {displayedDrawHistory.length > 1 && (
         <section className="card-draw-history dan-section">
-          {drawHistory.slice(1, 6).map((entry) => (
+          {displayedDrawHistory.slice(1, 6).map((entry) => (
             <div key={entry.id} className="card-draw-history-set">
               <h3 className="dan-header card-draw-history-header">
                 <span>{formatDrawTimestamp(entry.id)}</span>
@@ -1835,12 +1913,12 @@ const CardDrawPage = ({ smData }) => {
               </h3>
               <div
                 className={`song-grid card-draw-history-grid ${
-                  entry.charts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
+                  entry.displayCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
                     ? "card-draw-five"
                     : ""
                 }`}
               >
-                {entry.charts.map((chart) => (
+                {entry.displayCharts.length ? entry.displayCharts.map((chart) => (
                   chart.isFreePickPlaceholder ? (
                     <div
                       key={`${entry.id}-${chart.uniqueKey}`}
@@ -1881,7 +1959,11 @@ const CardDrawPage = ({ smData }) => {
                       scoreSliceClassName={getSliceClassName(entry.actions?.[chart.uniqueKey])}
                     />
                   )
-                ))}
+                )) : (
+                  <div className="card-draw-empty">
+                    All charts in this draw are hidden by vetoes.
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -2093,6 +2175,40 @@ const CardDrawPage = ({ smData }) => {
                   checked={draftSortByLevel}
                   onChange={() => setDraftSortByLevel((prev) => !prev)}
                   ariaLabel="Toggle sort by level"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Reorder by pick/ban</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Show protected charts first and vetoed charts last.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftReorderByAction}
+                  onChange={() => setDraftReorderByAction((prev) => !prev)}
+                  ariaLabel="Toggle pick and ban ordering"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Hide vetoed charts</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Remove vetoed cards from the visible draw instead of dimming them.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftHideVetoed}
+                  onChange={() => setDraftHideVetoed((prev) => !prev)}
+                  ariaLabel="Toggle hidden vetoes"
                 />
               </div>
             </div>
