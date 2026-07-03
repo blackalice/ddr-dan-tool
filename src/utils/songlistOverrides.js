@@ -1,5 +1,66 @@
 import { normalizeString } from './stringSimilarity.js';
 
+const RELEASE_ORDER = [
+    'DDR',
+    '2nd',
+    '3rd',
+    '4th',
+    '4th Plus',
+    '5th',
+    '6th',
+    '7th',
+    'EX',
+    'SN1',
+    'SN2',
+    'X',
+    'X2',
+    'X3 vs 2nd',
+    '2013',
+    '2014',
+    'A',
+    'A20',
+    'A20 Plus',
+    'A3',
+    'World',
+];
+
+const RELEASE_RANKS = new Map(RELEASE_ORDER.map((release, index) => [release, index]));
+const RELEASE_ALIASES = new Map([
+    ['2ND', '2nd'],
+    ['3RD', '3rd'],
+    ['4TH', '4th'],
+    ['4THPLUS', '4th Plus'],
+    ['6TH', '6th'],
+    ['7TH', '7th'],
+    ['DDRX', 'X'],
+    ['XNAEU', 'X'],
+    ['DDRX2', 'X2'],
+    ['X2NAEU', 'X2'],
+    ['DDRX3VS2ND', 'X3 vs 2nd'],
+    ['DDRA', 'A'],
+    ['DDRANA', 'A'],
+    ['DDRA20', 'A20'],
+    ['DDRA20NA', 'A20'],
+    ['DDRA20PLUS', 'A20 Plus'],
+    ['DDRA20PLUSNA', 'A20 Plus'],
+    ['DDRA3', 'A3'],
+    ['DDRWORLD', 'World'],
+    ['WORLD', 'World'],
+    ['WORLDEU', 'World'],
+]);
+
+const normalizeReleaseValue = (value) => {
+    if (!value) return null;
+    const raw = String(value).trim();
+    if (RELEASE_RANKS.has(raw)) return raw;
+    return RELEASE_ALIASES.get(raw.toUpperCase().replace(/[^A-Z0-9]/g, '')) || null;
+};
+
+const getReleaseRank = (value) => {
+    const release = normalizeReleaseValue(value);
+    return release ? RELEASE_RANKS.get(release) : null;
+};
+
 export const SONGLIST_OVERRIDE_OPTIONS = [
     { value: 'none', label: 'None', game: 'none', gameLabel: 'None', variant: 'none', variantLabel: 'Default', file: null },
     { value: 'DDR', label: 'DDR', game: 'DDR', gameLabel: 'DDR', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDR-mainline.json' },
@@ -23,11 +84,12 @@ export const SONGLIST_OVERRIDE_OPTIONS = [
     { value: 'A', label: 'DDR A', game: 'A', gameLabel: 'DDR A', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA-mainline.json' },
     { value: 'A North America', label: 'DDR A - North America', game: 'A', gameLabel: 'DDR A', variant: 'north-america', variantLabel: 'North America', file: '/ddr-ver/DDRA-north-america.json' },
     { value: 'A20', label: 'DDR A20', game: 'A20', gameLabel: 'DDR A20', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA20-mainline.json' },
-    { value: 'A20 Plus mainline', label: 'DDR A20 Plus', game: 'A20 Plus', gameLabel: 'DDR A20 Plus', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA20PLUS-mainline.json' },
-    { value: 'A3 mainline', label: 'DDR A3', game: 'A3', gameLabel: 'DDR A3', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA3-mainline.json' },
+    { value: 'A20 North America', label: 'DDR A20 - North America', game: 'A20', gameLabel: 'DDR A20', variant: 'north-america', variantLabel: 'North America', file: '/ddr-ver/DDRA20-north-america.json' },
+    { value: 'A20 Plus', label: 'DDR A20 Plus', game: 'A20 Plus', gameLabel: 'DDR A20 Plus', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA20PLUS-mainline.json' },
+    { value: 'A20 Plus North America', label: 'DDR A20 Plus - North America', game: 'A20 Plus', gameLabel: 'DDR A20 Plus', variant: 'north-america', variantLabel: 'North America', file: '/ddr-ver/DDRA20PLUS-north-america.json' },
+    { value: 'A3', label: 'DDR A3', game: 'A3', gameLabel: 'DDR A3', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRA3-mainline.json' },
     { value: 'World', label: 'DDR WORLD', game: 'World', gameLabel: 'DDR WORLD', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDRWORLD-mainline.json' },
     { value: 'WORLD-EU', label: 'DDR WORLD - Europe', game: 'World', gameLabel: 'DDR WORLD', variant: 'eu', variantLabel: 'Europe', file: '/ddr-ver/DDRWORLD-eu.json' },
-    { value: 'A3 Japan', label: 'DDR A3 - Japan', game: 'A3', gameLabel: 'DDR A3', variant: 'japan', variantLabel: 'Japan', file: '/ddr-ver/DDRA3-japan.json' },
     {
         value: 'A3-flower-no-unlocks',
         label: 'DDR A3 - Flower, No Unlocks',
@@ -37,14 +99,15 @@ export const SONGLIST_OVERRIDE_OPTIONS = [
         variantLabel: 'Flower, No Unlocks',
         file: '/ddr-ver/DDRA3-flower-no-unlocks.json',
     },
-    { value: 'A20 Plus Japan', label: 'A20 Plus - Japan', game: 'A20 Plus', gameLabel: 'DDR A20 Plus', variant: 'japan', variantLabel: 'Japan', file: '/ddr-ver/DDRA20PLUS-japan.json' },
 ];
 
 const SONGLIST_OVERRIDE_ALIASES = new Map([
-    ['A3', 'A3 Japan'],
-    ['A3 generated', 'A3 mainline'],
-    ['A20 Plus', 'A20 Plus Japan'],
-    ['A20 Plus generated', 'A20 Plus mainline'],
+    ['A3 Japan', 'A3'],
+    ['A3 mainline', 'A3'],
+    ['A3 generated', 'A3'],
+    ['A20 Plus Japan', 'A20 Plus'],
+    ['A20 Plus mainline', 'A20 Plus'],
+    ['A20 Plus generated', 'A20 Plus'],
 ]);
 
 export const normalizeSonglistOverrideValue = (value) => SONGLIST_OVERRIDE_ALIASES.get(value) || value;
@@ -82,11 +145,59 @@ export const getSonglistOverrideValueForGameVariant = (gameValue, variantValue) 
 
 const buildArtistKey = (titleKey, artistKey) => `${titleKey}|${artistKey}`;
 
-export const buildSonglistOverrideLookup = (data) => {
+const buildDuplicatePreferences = (songs = []) => {
+    const titleGroups = new Map();
+    for (const song of songs) {
+        if (!song || typeof song !== 'object') continue;
+        const rank = getReleaseRank(song.game);
+        if (!Number.isInteger(rank)) continue;
+        const titleKeys = [song.title, song.titleTranslit]
+            .filter(Boolean)
+            .map(normalizeString)
+            .filter(Boolean);
+        for (const titleKey of new Set(titleKeys)) {
+            let group = titleGroups.get(titleKey);
+            if (!group) {
+                group = new Map();
+                titleGroups.set(titleKey, group);
+            }
+            const existing = group.get(rank) || new Set();
+            existing.add(normalizeReleaseValue(song.game));
+            group.set(rank, existing);
+        }
+    }
+
+    const duplicateTitles = new Map();
+    for (const [titleKey, ranks] of titleGroups.entries()) {
+        if (ranks.size <= 1) continue;
+        duplicateTitles.set(titleKey, [...ranks.keys()].sort((a, b) => a - b));
+    }
+    return duplicateTitles;
+};
+
+const getPreferredDuplicateRank = (lookup, titleKeys, songGame) => {
+    const targetRank = lookup?.targetRank;
+    if (!Number.isInteger(targetRank)) return null;
+    const songRank = getReleaseRank(songGame);
+    if (!Number.isInteger(songRank)) return null;
+
+    for (const titleKey of titleKeys) {
+        const duplicateRanks = lookup.duplicateTitles?.get(titleKey);
+        if (!duplicateRanks?.length) continue;
+        const eligibleRanks = duplicateRanks.filter((rank) => rank <= targetRank);
+        const preferredRank = eligibleRanks.length
+            ? eligibleRanks[eligibleRanks.length - 1]
+            : duplicateRanks[0];
+        return preferredRank;
+    }
+    return null;
+};
+
+export const buildSonglistOverrideLookup = (data, songs = []) => {
     const titleOnly = new Set();
     const titleArtist = new Map();
-    const songs = Array.isArray(data?.songs) ? data.songs : [];
-    for (const entry of songs) {
+    const overrideSongs = Array.isArray(data?.songs) ? data.songs : [];
+    for (const entry of overrideSongs) {
         if (typeof entry === 'string') {
             const key = normalizeString(entry);
             if (key) titleOnly.add(key);
@@ -105,7 +216,12 @@ export const buildSonglistOverrideLookup = (data) => {
             titleOnly.add(titleKey);
         }
     }
-    return { titleOnly, titleArtist };
+    return {
+        titleOnly,
+        titleArtist,
+        targetRank: getReleaseRank(data?.version),
+        duplicateTitles: buildDuplicatePreferences(songs),
+    };
 };
 
 export const songlistOverrideHasEntries = (lookup) =>
@@ -119,7 +235,7 @@ const getModeDifficulties = (entry, mode) => {
 
 export const songlistOverrideMatches = (
     lookup,
-    { title, titleTranslit, artist, artistTranslit, mode }
+    { title, titleTranslit, artist, artistTranslit, mode, game }
 ) => {
     if (!songlistOverrideHasEntries(lookup)) return true;
     const titleKeys = [title, titleTranslit]
@@ -139,9 +255,19 @@ export const songlistOverrideMatches = (
             if (mode && Array.isArray(modeList) && modeList.length === 0) {
                 return false;
             }
+            const preferredRank = getPreferredDuplicateRank(lookup, titleKeys, game);
+            if (Number.isInteger(preferredRank) && getReleaseRank(game) !== preferredRank) {
+                return false;
+            }
             return true;
         }
-        if (lookup.titleOnly.has(titleKey)) return true;
+        if (lookup.titleOnly.has(titleKey)) {
+            const preferredRank = getPreferredDuplicateRank(lookup, titleKeys, game);
+            if (Number.isInteger(preferredRank) && getReleaseRank(game) !== preferredRank) {
+                return false;
+            }
+            return true;
+        }
     }
     return false;
 };

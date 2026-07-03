@@ -574,10 +574,10 @@ const CardDrawPage = ({ smData }) => {
     }
       getJsonCached(option.file)
         .then((data) => {
-          setOverrideSongs(buildSonglistOverrideLookup(data));
+          setOverrideSongs(buildSonglistOverrideLookup(data, songMeta));
         })
         .catch(() => setOverrideSongs(null));
-    }, [songlistOverride]);
+    }, [songlistOverride, songMeta]);
 
   useEffect(() => {
     storage.setItem("cardDrawCurrent", JSON.stringify(drawnCharts));
@@ -735,6 +735,7 @@ const CardDrawPage = ({ smData }) => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: playStyle,
         })) {
           return;
@@ -852,6 +853,7 @@ const CardDrawPage = ({ smData }) => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: playStyle,
         })) {
           return;
@@ -992,6 +994,7 @@ const CardDrawPage = ({ smData }) => {
               titleTranslit: meta.titleTranslit,
               artist: meta.artist,
               artistTranslit: meta.artistTranslit,
+              game: meta.game,
               mode: playStyle,
             })) {
               return false;

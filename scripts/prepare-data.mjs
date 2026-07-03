@@ -19,6 +19,20 @@ const files = (...names) => names.map(name => rel(...name.split('/')))
 
 const tasks = [
   {
+    id: 'sanbai-rankings',
+    command: 'update-sanbai-rankings.mjs',
+    alwaysRun: true,
+    inputs: [
+      { tree: rel('..', 'sanbai-scraper'), match: /(?:single_ranked|doubles_ranked)_\d+\.html$/i },
+    ],
+    sources: scripts('update-sanbai-rankings.mjs'),
+    outputs: files(
+      'data/rankings/combined_song_ratings.json',
+      'data/rankings/sanbai-rankings-metadata.json',
+      'src/utils/sanbaiRankingsMetadata.js',
+    ),
+  },
+  {
     id: 'jackets',
     command: 'convert-jackets-webp.mjs',
     inputs: [{ tree: rel('data', 'simfiles'), match: /\.(png|jpe?g)$/i }],
@@ -40,7 +54,7 @@ const tasks = [
   {
     id: 'processed-data',
     command: 'generate-processed-data.mjs',
-    deps: ['sm-list'],
+    deps: ['sm-list', 'sanbai-rankings'],
     inputs: [
       { file: rel('data', 'generated', 'sm-files.json') },
       { file: rel('data', 'courses', 'course-data.json') },
@@ -90,7 +104,7 @@ const tasks = [
   {
     id: 'song-meta',
     command: 'generate-song-meta.mjs',
-    deps: ['sm-list', 'tech-counts', 'song-lengths'],
+    deps: ['sm-list', 'tech-counts', 'song-lengths', 'sanbai-rankings'],
     inputs: [
       { file: rel('data', 'generated', 'sm-files.json') },
       { file: rel('data', 'generated', 'song-lengths.json') },

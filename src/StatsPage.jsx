@@ -384,12 +384,12 @@ const StatsPage = () => {
     }
     getJsonCached(option.file)
       .then((data) => {
-        setOverrideSongs(buildSonglistOverrideLookup(data));
+        setOverrideSongs(buildSonglistOverrideLookup(data, [...chartMetaLookup.values()]));
       })
       .catch(() => {
         setOverrideSongs(null);
       });
-  }, [songlistOverride]);
+  }, [songlistOverride, chartMetaLookup]);
 
   const openChartFromMeta = useCallback((meta) => {
     if (!meta) return;
@@ -728,6 +728,7 @@ const StatsPage = () => {
               titleTranslit: meta.titleTranslit,
               artist: meta.artist,
               artistTranslit: meta.artistTranslit,
+              game: meta.game,
               mode: normalizedPlayStyle,
             });
             if (!matchesOverride) continue;
@@ -806,6 +807,7 @@ const StatsPage = () => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: normalizedPlayStyle,
         });
         if (!matchesOverride) continue;
@@ -1276,6 +1278,7 @@ const StatsPage = () => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: normalizedPlayStyle,
         });
         if (!matchesOverride) continue;

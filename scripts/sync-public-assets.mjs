@@ -18,6 +18,7 @@ const files = [
   ['vega-data.json', path.join(GENERATED, 'vega-data.json')],
   ['courses-data.json', path.join(GENERATED, 'courses-data.json')],
   ['combined_song_ratings.json', path.join(DATA, 'rankings', 'combined_song_ratings.json')],
+  ['sanbai-rankings-metadata.json', path.join(DATA, 'rankings', 'sanbai-rankings-metadata.json')],
   ['vega-results.json', path.join(DATA, 'rankings', 'vega-results.json')],
 ]
 

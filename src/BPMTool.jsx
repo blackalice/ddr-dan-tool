@@ -573,6 +573,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
                     artistTranslit: meta.artistTranslit,
+                    game: meta.game,
                     mode: playStyle,
                 })) {
                     continue;
@@ -694,6 +695,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
                     artistTranslit: meta.artistTranslit,
+                    game: meta.game,
                     mode: playStyle,
                 })) {
                     continue;
@@ -942,10 +944,10 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
         getJsonCached(option.file)
             .then(data => {
-                setOverrideSongs(buildSonglistOverrideLookup(data));
+                setOverrideSongs(buildSonglistOverrideLookup(data, songMeta));
             })
             .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
-    }, [songlistOverride]);
+    }, [songlistOverride, songMeta]);
 
     useEffect(() => {
         if (!simfileWithRatings) return;
@@ -1281,6 +1283,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
                     artistTranslit: meta.artistTranslit,
+                    game: meta.game,
                     mode: playStyle,
                 })) {
                     return false;

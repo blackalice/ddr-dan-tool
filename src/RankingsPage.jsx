@@ -296,6 +296,7 @@ const RankingsPage = () => {
           titleTranslit: song.titleTranslit,
           artist: song.artist,
           artistTranslit: song.artistTranslit,
+          game: song.game,
           mode: playStyle,
         })) {
           continue;
@@ -420,10 +421,10 @@ const RankingsPage = () => {
       }
       getJsonCached(option.file)
         .then(data => {
-          setOverrideSongs(buildSonglistOverrideLookup(data));
+          setOverrideSongs(buildSonglistOverrideLookup(data, songMeta));
         })
         .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
-    }, [songlistOverride]);
+    }, [songlistOverride, songMeta]);
 
   const chartsForLevel = useMemo(() => {
     if (!selectedLevel) return [];
