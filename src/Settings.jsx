@@ -26,6 +26,17 @@ import { SANBAI_RANKINGS_METADATA } from './utils/sanbaiRankingsMetadata.js';
 
 const CHANGELOG_UPDATES = [
     {
+        date: 'Jul 4, 2026',
+        items: [
+            'Expanded Song List Override support across DDR mainline releases, with regional variants where available and separate Game / Region selectors.',
+            'Improved Song List Override matching for songs with multiple versions, so older filters prefer older chart entries and newer filters prefer newer entries.',
+            'Added Card Draw tournament tools: editable round/player labels, eligible chart previews, CSV export, action-based ordering, and an option to hide vetoed cards.',
+            'Added Chart page keyboard navigation for moving between songs with the left and right arrow keys.',
+            'Added latest DDR WORLD chart updates.',
+            'Updated to Sanbai Ice Cream Version 12 Rankings',
+        ],
+    },
+    {
         date: 'Feb 15, 2026',
         items: [
             'Added a new "Turn on WIP stats" beta switch in Settings to reveal in-progress Stats views when enabled.',
