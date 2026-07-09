@@ -9,6 +9,7 @@
 #SAMPLESTART:85.5;
 #SAMPLELENGTH:15;
 #BPMS:0=160;
+#BGSTAGE:29;
 
 //---------------dance-single - ----------------
 #NOTEDATA:;

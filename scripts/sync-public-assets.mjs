@@ -1,151 +1,77 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import {
-  collectStats,
-  collectTreeStats,
-  mergeStats,
-  shouldSkipBuild,
-  writeCache,
-} from './cache-utils.mjs';
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { syncTree } from './incremental-tree-sync.mjs'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ROOT_DIR = path.resolve(__dirname, '..');
-const DATA_DIR = path.join(ROOT_DIR, 'data');
-const GENERATED_DIR = path.join(DATA_DIR, 'generated');
-const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
-const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'sync-public-assets.json');
-const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const DATA = path.join(ROOT, 'data')
+const GENERATED = path.join(DATA, 'generated')
+const PUBLIC = path.join(ROOT, 'public')
+const CACHE = path.join(GENERATED, '.cache')
+const FILE_MANIFEST = path.join(CACHE, 'public-files-manifest.json')
 
-const SIMFILES_DIR = path.join(DATA_DIR, 'simfiles');
-const PUBLIC_SM_DIR = path.join(PUBLIC_DIR, 'sm');
+const files = [
+  ['sm-files.json', path.join(GENERATED, 'sm-files.json')],
+  ['song-meta.json', path.join(GENERATED, 'song-meta.json')],
+  ['song-lengths.json', path.join(GENERATED, 'song-lengths.json')],
+  ['dan-data.json', path.join(GENERATED, 'dan-data.json')],
+  ['vega-data.json', path.join(GENERATED, 'vega-data.json')],
+  ['courses-data.json', path.join(GENERATED, 'courses-data.json')],
+  ['combined_song_ratings.json', path.join(DATA, 'rankings', 'combined_song_ratings.json')],
+  ['sanbai-rankings-metadata.json', path.join(DATA, 'rankings', 'sanbai-rankings-metadata.json')],
+  ['vega-results.json', path.join(DATA, 'rankings', 'vega-results.json')],
+]
 
-const ensureDir = (dir) => fs.mkdir(dir, { recursive: true });
-const pathExists = async (target) => {
+await fs.mkdir(PUBLIC, { recursive: true })
+const previousFiles = await fs.readFile(FILE_MANIFEST, 'utf8')
+  .then(JSON.parse)
+  .catch(() => ({ files: {} }))
+const nextFiles = { version: 1, files: {} }
+let copied = 0
+let bytes = 0
+for (const [name, source] of files) {
+  const destination = path.join(PUBLIC, name)
   try {
-    await fs.access(target);
-    return true;
+    const sourceStat = await fs.stat(source)
+    const signature = `${sourceStat.size}:${sourceStat.mtimeMs}`
+    nextFiles.files[name] = signature
+    const destinationExists = await fs.access(destination).then(() => true).catch(() => false)
+    if (!destinationExists || previousFiles.files?.[name] !== signature) {
+      await fs.copyFile(source, destination)
+      copied += 1
+      bytes += sourceStat.size
+    }
   } catch {
-    return false;
+    console.warn(`[sync-public-assets] missing file: ${path.relative(ROOT, source)}`)
   }
-};
+}
+await fs.writeFile(FILE_MANIFEST, JSON.stringify(nextFiles, null, 2))
 
-const copyFile = async (from, to) => {
-  await ensureDir(path.dirname(to));
-  await fs.copyFile(from, to);
-};
-
-const resetDir = async (dir) => {
-  await fs.rm(dir, { recursive: true, force: true });
-  await ensureDir(dir);
-};
-
-const copyDirFiltered = async (from, to, shouldCopy) => {
-  if (!(await pathExists(from))) {
-    console.warn(`[sync-public-assets] missing directory: ${from}`);
-    return;
-  }
-  const entries = await fs.readdir(from, { withFileTypes: true });
-  await ensureDir(to);
-  for (const entry of entries) {
-    const src = path.join(from, entry.name);
-    const dest = path.join(to, entry.name);
-    if (entry.isDirectory()) {
-      await copyDirFiltered(src, dest, shouldCopy);
-      continue;
-    }
-    if (shouldCopy(src, entry.name)) {
-      await fs.copyFile(src, dest);
-    }
-  }
-};
-
-async function main() {
-  await ensureDir(PUBLIC_DIR);
-
-  const isAllowedSimfileAsset = (src) => {
-    const relative = path.relative(SIMFILES_DIR, src);
-    const parts = relative.split(path.sep).filter(Boolean);
-    const ext = path.extname(src).toLowerCase();
-    if (ext === '.sm' || ext === '.ssc') {
-      return true;
-    }
-    if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.webp') {
-      if (/-jacket\.(png|jpg|jpeg|webp)$/i.test(src)) {
-        return true;
-      }
-      // Allow one mix logo in the root of each mix folder:
-      // data/simfiles/<Mix>/<Mix>.<ext>
-      if (parts.length === 2) {
-        const mixName = parts[0];
-        const fileName = parts[1];
-        const baseName = path.basename(fileName, ext);
-        return baseName.toLowerCase() === mixName.toLowerCase();
-      }
-    }
-    return false;
-  };
-
-  const filesToCopy = [
-    { from: path.join(GENERATED_DIR, 'sm-files.json'), to: path.join(PUBLIC_DIR, 'sm-files.json') },
-    { from: path.join(GENERATED_DIR, 'song-meta.json'), to: path.join(PUBLIC_DIR, 'song-meta.json') },
-    { from: path.join(GENERATED_DIR, 'song-lengths.json'), to: path.join(PUBLIC_DIR, 'song-lengths.json') },
-    { from: path.join(GENERATED_DIR, 'dan-data.json'), to: path.join(PUBLIC_DIR, 'dan-data.json') },
-    { from: path.join(GENERATED_DIR, 'vega-data.json'), to: path.join(PUBLIC_DIR, 'vega-data.json') },
-    { from: path.join(GENERATED_DIR, 'courses-data.json'), to: path.join(PUBLIC_DIR, 'courses-data.json') },
-    { from: path.join(DATA_DIR, 'rankings', 'combined_song_ratings.json'), to: path.join(PUBLIC_DIR, 'combined_song_ratings.json') },
-    { from: path.join(DATA_DIR, 'rankings', 'vega-results.json'), to: path.join(PUBLIC_DIR, 'vega-results.json') },
-  ];
-
-  const ddrVerRoot = path.join(DATA_DIR, 'ddr-ver');
-  const ddrVerNested = path.join(ddrVerRoot, 'ddr-ver');
-  const ddrVerSrc = (await pathExists(ddrVerNested)) ? ddrVerNested : ddrVerRoot;
-  const ddrVerDest = path.join(PUBLIC_DIR, 'ddr-ver');
-
-  const outputPaths = [
-    ...filesToCopy.map(file => file.to),
-    ddrVerDest,
-    PUBLIC_SM_DIR,
-  ];
-
-  const inputStats = mergeStats(
-    await collectStats(filesToCopy.map(file => file.from), ROOT_DIR),
-    await collectTreeStats(ddrVerSrc, () => true, ROOT_DIR),
-    await collectTreeStats(SIMFILES_DIR, isAllowedSimfileAsset, ROOT_DIR),
-  );
-
-  const { skip, reason } = await shouldSkipBuild({
-    cachePath: CACHE_PATH,
-    inputStats,
-    outputPaths,
-    config: { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc) },
-    force: FORCE,
-  });
-  if (skip) {
-    console.log(`[sync-public-assets] up-to-date (${reason}) — skipping.`);
-    return;
-  }
-
-  for (const file of filesToCopy) {
-    if (await pathExists(file.from)) {
-      await copyFile(file.from, file.to);
-    } else {
-      console.warn(`[sync-public-assets] missing file: ${file.from}`);
-    }
-  }
-
-  await resetDir(ddrVerDest);
-  await copyDirFiltered(ddrVerSrc, ddrVerDest, () => true);
-
-  await resetDir(PUBLIC_SM_DIR);
-  await copyDirFiltered(SIMFILES_DIR, PUBLIC_SM_DIR, isAllowedSimfileAsset);
-
-  console.log('[sync-public-assets] completed');
-  await writeCache(CACHE_PATH, inputStats, { ddrVerSrc: path.relative(ROOT_DIR, ddrVerSrc) });
+const isSimfileAsset = (source, relative) => {
+  const ext = path.extname(source).toLowerCase()
+  if (['.ogg', '.mp3', '.wav', '.mp4', '.avi', '.mpg', '.mpeg', '.webm', '.bga'].includes(ext)) return false
+  if (ext === '.sm' || ext === '.ssc' || /-jacket\.(png|jpe?g|webp)$/i.test(source)) return true
+  const parts = relative.split('/')
+  return parts.length === 2
+    && ['.png', '.jpg', '.jpeg', '.webp'].includes(ext)
+    && path.basename(parts[1], ext).toLowerCase() === parts[0].toLowerCase()
 }
 
-main().catch((err) => {
-  console.error('[sync-public-assets] failed', err);
-  process.exit(1);
-});
+const ddrRoot = path.join(DATA, 'ddr-ver')
+const nestedDdrRoot = path.join(ddrRoot, 'ddr-ver')
+const ddrSource = await fs.stat(nestedDdrRoot).then(() => nestedDdrRoot).catch(() => ddrRoot)
+const smResult = await syncTree({
+  source: path.join(DATA, 'simfiles'),
+  destination: path.join(PUBLIC, 'sm'),
+  manifestPath: path.join(CACHE, 'public-sm-manifest.json'),
+  include: isSimfileAsset,
+})
+const ddrResult = await syncTree({
+  source: ddrSource,
+  destination: path.join(PUBLIC, 'ddr-ver'),
+  manifestPath: path.join(CACHE, 'public-ddr-ver-manifest.json'),
+})
+
+copied += smResult.copied + ddrResult.copied
+bytes += smResult.bytes + ddrResult.bytes
+console.log(`[sync-public-assets] ${copied} copied, ${smResult.removed + ddrResult.removed} removed, ${(bytes / 1024 / 1024).toFixed(1)} MiB written`)

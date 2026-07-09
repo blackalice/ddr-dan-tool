@@ -4,7 +4,7 @@
 Source lives in `src/` with React function components, utilities, and auth helpers. Preprocessing scripts are in `scripts/`, static assets sit in `public/`, and the Cloudflare Worker entry point is `_worker.js`. Config files such as `vite.config.js` and `wrangler.jsonc` stay at the repo root. Build artifacts are generated into `dist/` and remain untracked.
 
 ## Build, Test, and Development Commands
-Use `npm run dev` to start Vite and Wrangler together for local development. Run `npm run build` to execute preprocessing scripts (`prebuild`) and produce the production bundle. Check the bundle locally with `npm run preview`. Lint the codebase with `npm run lint` to catch style or import issues before committing.
+Use `npm ci` for deterministic installs. Use `npm run dev` to start Vite and Wrangler together for local development. Run `npm run build` for the frontend bundle only, `npm run data:prepare` for incremental generated-data updates, and `npm run build:full` when both are required. Use `npm run data:validate` to report stale generated files without rewriting them. Check the bundle locally with `npm run preview`. Lint the codebase with `npm run lint` before committing.
 
 ## Coding Style & Naming Conventions
 Write modern ESM with React hooks and function components; keep JSX files under `src/`. Indent with two spaces and favor named exports. Components follow `PascalCase.jsx`, utilities use `camelCase.js`, and feature styles mirror the component name. ESLint is configured with React and hooks rules, so resolve all reported warnings before pushing.

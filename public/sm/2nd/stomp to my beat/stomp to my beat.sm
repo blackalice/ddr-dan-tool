@@ -3,7 +3,7 @@
 #ARTIST:JS16;
 #BANNER:stomp to my beat.png;
 #BACKGROUND:stomp to my beat-bg.png;
-#CDTITLE:../CDTitles/Dancemania Winters.png;
+#CDTITLE:./CDTitles/Dancemania Winters.png;
 #MUSIC:stomp to my beat.ogg;
 #SAMPLESTART:7.668;
 #SAMPLELENGTH:15;

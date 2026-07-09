@@ -1,7 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
-import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides';
+import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { storage } from '../utils/remoteStorage.js';
 
 export const SettingsContext = createContext();
@@ -31,8 +31,12 @@ export const SettingsProvider = ({ children }) => {
 
     const [songlistOverride, setSonglistOverride] = useState(() => {
         const saved = storage.getItem('songlistOverride');
-        return saved || SONGLIST_OVERRIDE_OPTIONS[0].value;
+        return normalizeSonglistOverrideValue(saved) || SONGLIST_OVERRIDE_OPTIONS[0].value;
     });
+    const setNormalizedSonglistOverride = useMemo(
+        () => (value) => setSonglistOverride(normalizeSonglistOverrideValue(value)),
+        [],
+    );
 
     const [showMultiplierIncrementVersion, setShowMultiplierIncrementVersion] = useState(() => {
         const saved = storage.getItem('showMultiplierIncrementVersion');
@@ -156,7 +160,7 @@ export const SettingsProvider = ({ children }) => {
         showWipStats,
         setShowWipStats,
         songlistOverride,
-        setSonglistOverride,
+        setSonglistOverride: setNormalizedSonglistOverride,
         showMultiplierIncrementVersion,
         setShowMultiplierIncrementVersion,
         worldDifficultyChanges,

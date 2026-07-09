@@ -3,7 +3,7 @@
 #ARTIST:UZI-LAY;
 #BANNER:PUT YOUR FAITH IN ME (Jazzy Groove).png;
 #BACKGROUND:PUT YOUR FAITH IN ME (Jazzy Groove)-bg.png;
-#CDTITLE:../CDTitles/DanceDanceRevolution 2ndMIX.png;
+#CDTITLE:./CDTitles/DanceDanceRevolution 2ndMIX.png;
 #MUSIC:PUT YOUR FAITH IN ME (Jazzy Groove).ogg;
 #SAMPLESTART:47.975;
 #SAMPLELENGTH:15;

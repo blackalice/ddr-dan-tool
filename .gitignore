@@ -39,6 +39,8 @@ public/vega-data.json
 .dev.vars
 /.wrangler
 /dist
+/playwright-report
+/test-results
 /DDR bits
 /.local/
 /data/simfiles/

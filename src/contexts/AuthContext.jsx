@@ -1,7 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { MULTIPLIER_MODES } from '../utils/multipliers';
-import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides';
+import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { useNavigate } from 'react-router-dom';
 import { useScores } from './ScoresContext.jsx';
 import { useGroups } from './GroupsContext.jsx';
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
     if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
     if (data.showTransliterationBeta !== undefined) setShowTransliterationBeta(bool(data.showTransliterationBeta));
-    if (data.songlistOverride !== undefined) setSonglistOverride(data.songlistOverride);
+    if (data.songlistOverride !== undefined) setSonglistOverride(normalizeSonglistOverrideValue(data.songlistOverride));
     if (data.showMultiplierIncrementVersion !== undefined) {
       setShowMultiplierIncrementVersion(bool(data.showMultiplierIncrementVersion));
     }
@@ -275,7 +275,6 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
 
 
 

@@ -3,7 +3,7 @@
 #ARTIST:Mr.Ed Jumps The Gun;
 #BANNER:Smoke.png;
 #BACKGROUND:Smoke-bg.png;
-#CDTITLE:../CDTitles/Dancemania Winters.png;
+#CDTITLE:./CDTitles/Dancemania Winters.png;
 #MUSIC:Smoke.ogg;
 #SAMPLESTART:48.258;
 #SAMPLELENGTH:15;

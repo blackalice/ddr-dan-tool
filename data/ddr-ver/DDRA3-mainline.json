@@ -1,7 +1,7 @@
 {
   "version": "A3",
-  "source": "__MUSICDB/musicdbA3.xml",
-  "generatedAt": "2026-02-01T16:10:35.810Z",
+  "label": "DDR A3",
+  "source": "static override data",
   "songs": [
     {
       "title": "PUT YOUR FAITH IN ME",
@@ -30063,6 +30063,52 @@
       }
     },
     {
+      "title": "脳漿炸裂ガール",
+      "artist": "れるりり",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 14
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 14
+          }
+        ]
+      }
+    },
+    {
       "title": "向日葵サンセット",
       "artist": "ARM・まろん (IOSYS) × ランコ・パプリカ (豚乙女)",
       "difficulties": {
@@ -33054,6 +33100,250 @@
       }
     },
     {
+      "title": "毒占欲",
+      "artist": "DECO*27",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ]
+      }
+    },
+    {
+      "title": "ライアーダンス",
+      "artist": "DECO*27",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 4
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 7
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ]
+      }
+    },
+    {
+      "title": "妄想感傷代償連盟",
+      "artist": "DECO*27",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          }
+        ]
+      }
+    },
+    {
+      "title": "タイガーランペイジ",
+      "artist": "sasakure.UK",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ]
+      }
+    },
+    {
+      "title": "腐れ外道とチョコレゐト",
+      "artist": "ピノキオピー",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 8
+          },
+          {
+            "name": "Difficult",
+            "level": 13
+          },
+          {
+            "name": "Expert",
+            "level": 15
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 8
+          },
+          {
+            "name": "Difficult",
+            "level": 13
+          },
+          {
+            "name": "Expert",
+            "level": 16
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ]
+      }
+    },
+    {
+      "title": "すきなことだけでいいです",
+      "artist": "ピノキオピー",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ]
+      }
+    },
+    {
       "title": "F4SH10N",
       "artist": "aran",
       "difficulties": {
@@ -33466,6 +33756,44 @@
       }
     },
     {
+      "title": "No Tears Left to Cry",
+      "artist": "Ariana Grande",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          }
+        ]
+      }
+    },
+    {
       "title": "New Rules",
       "artist": "Dua Lipa",
       "difficulties": {
@@ -33575,6 +33903,44 @@
           {
             "name": "Expert",
             "level": 9
+          }
+        ]
+      }
+    },
+    {
+      "title": "Play Hard",
+      "artist": "David Guetta feat. Ne-Yo, Akon",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 11
           }
         ]
       }
@@ -33816,6 +34182,52 @@
       }
     },
     {
+      "title": "LONG TRAIN RUNNIN' (20th Anniversary Mix)",
+      "artist": "Haruki Yamada (ATTIC INC.) with Bodhi Kenyon",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 15
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          },
+          {
+            "name": "Challenge",
+            "level": 15
+          }
+        ]
+      }
+    },
+    {
       "title": "ALPACORE",
       "artist": "Cranky",
       "difficulties": {
@@ -33941,6 +34353,52 @@
           {
             "name": "Challenge",
             "level": 14
+          }
+        ]
+      }
+    },
+    {
+      "title": "BUTTERFLY (20th Anniversary Mix)",
+      "artist": "BEMANI Sound Team \"Sota F.\"",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 16
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 16
           }
         ]
       }
@@ -35427,6 +35885,52 @@
           {
             "name": "Expert",
             "level": 12
+          }
+        ]
+      }
+    },
+    {
+      "title": "令和",
+      "artist": "ゴールデンボンバー",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          },
+          {
+            "name": "Challenge",
+            "level": 18
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          },
+          {
+            "name": "Challenge",
+            "level": 18
           }
         ]
       }
@@ -37448,6 +37952,44 @@
       }
     },
     {
+      "title": "春を告げる",
+      "artist": "yama",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          }
+        ]
+      }
+    },
+    {
       "title": "Inner Spirit -GIGA HiTECH MIX-",
       "artist": "lapix (Remixed by Blacklolita)",
       "difficulties": {
@@ -38118,6 +38660,98 @@
       }
     },
     {
+      "title": "SHINY DAYS",
+      "artist": "亜咲花",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 1
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          },
+          {
+            "name": "Challenge",
+            "level": 14
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          },
+          {
+            "name": "Challenge",
+            "level": 14
+          }
+        ]
+      }
+    },
+    {
+      "title": "なだめスかし Negotiation",
+      "artist": "鹿乃と宇崎ちゃん",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          },
+          {
+            "name": "Challenge",
+            "level": 16
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          },
+          {
+            "name": "Challenge",
+            "level": 16
+          }
+        ]
+      }
+    },
+    {
       "title": "THIS IS MY LAST RESORT",
       "artist": "Numb'n'dub",
       "difficulties": {
@@ -38552,6 +39186,44 @@
       }
     },
     {
+      "title": "I believe what you said",
+      "artist": "亜咲花",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ]
+      }
+    },
+    {
       "title": "鳳",
       "artist": "かめりあ",
       "difficulties": {
@@ -38598,6 +39270,44 @@
       }
     },
     {
+      "title": "思想犯",
+      "artist": "ヨルシカ",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 10
+          },
+          {
+            "name": "Expert",
+            "level": 13
+          }
+        ]
+      }
+    },
+    {
       "title": "彼方のリフレシア",
       "artist": "DJ TOTTO feat.Annabel & 日山尚",
       "difficulties": {
@@ -38631,6 +39341,158 @@
           {
             "name": "Expert",
             "level": 14
+          }
+        ]
+      }
+    },
+    {
+      "title": "Realize",
+      "artist": "鈴木このみ",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 11
+          },
+          {
+            "name": "Expert",
+            "level": 14
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 11
+          },
+          {
+            "name": "Expert",
+            "level": 14
+          }
+        ]
+      }
+    },
+    {
+      "title": "Seize The Day",
+      "artist": "亜咲花",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 1
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          }
+        ]
+      }
+    },
+    {
+      "title": "雑草魂なめんなよ！",
+      "artist": "Taiki",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ]
+      }
+    },
+    {
+      "title": "スカイクラッドの観測者",
+      "artist": "いとうかなこ",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 3
+          },
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
           }
         ]
       }
@@ -38897,6 +39759,44 @@
           {
             "name": "Expert",
             "level": 15
+          }
+        ]
+      }
+    },
+    {
+      "title": "恋",
+      "artist": "星野 源",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 1
+          },
+          {
+            "name": "Basic",
+            "level": 3
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 3
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
           }
         ]
       }
@@ -39353,6 +40253,52 @@
           {
             "name": "Expert",
             "level": 15
+          }
+        ]
+      }
+    },
+    {
+      "title": "シル・ヴ・プレジデント",
+      "artist": "P丸様。",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 14
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 14
           }
         ]
       }
@@ -40683,6 +41629,44 @@
           {
             "name": "Expert",
             "level": 12
+          }
+        ]
+      }
+    },
+    {
+      "title": "サイカ",
+      "artist": "フレデリック",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 8
+          },
+          {
+            "name": "Expert",
+            "level": 11
           }
         ]
       }
@@ -46679,13 +47663,144 @@
         ]
       }
     },
-    "No Tears Left to Cry",
-    "恋",
-    "Play Hard",
-    "シル・ヴ・プレジデント",
-    "サイカ",
-    "ミックスナッツ",
-    "一途",
-    "春を告げる"
-  ]
+    {
+      "title": "HAVE YOU NEVER BEEN MELLOW (20th Anniversary Mix)",
+      "artist": "nc ft. Kanae Jasmine Asaba",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 11
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 4
+          },
+          {
+            "name": "Difficult",
+            "level": 7
+          },
+          {
+            "name": "Expert",
+            "level": 10
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ]
+      }
+    },
+    {
+      "title": "CARTOON HEROES (20th Anniversary Mix)",
+      "artist": "nc ft.Jasmine And DARIO TODA",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 4
+          },
+          {
+            "name": "Basic",
+            "level": 9
+          },
+          {
+            "name": "Difficult",
+            "level": 14
+          },
+          {
+            "name": "Expert",
+            "level": 16
+          },
+          {
+            "name": "Challenge",
+            "level": 18
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 10
+          },
+          {
+            "name": "Difficult",
+            "level": 13
+          },
+          {
+            "name": "Expert",
+            "level": 16
+          },
+          {
+            "name": "Challenge",
+            "level": 18
+          }
+        ]
+      }
+    },
+    {
+      "title": "SKY HIGH (20th Anniversary Mix)",
+      "artist": "Haruki Yamada (ATTIC INC.) with Martin Leroux",
+      "difficulties": {
+        "single": [
+          {
+            "name": "Beginner",
+            "level": 2
+          },
+          {
+            "name": "Basic",
+            "level": 5
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ],
+        "double": [
+          {
+            "name": "Basic",
+            "level": 6
+          },
+          {
+            "name": "Difficult",
+            "level": 9
+          },
+          {
+            "name": "Expert",
+            "level": 12
+          },
+          {
+            "name": "Challenge",
+            "level": 17
+          }
+        ]
+      }
+    }
+  ],
+  "generatedAt": "2026-07-03T18:08:24.253Z"
 }

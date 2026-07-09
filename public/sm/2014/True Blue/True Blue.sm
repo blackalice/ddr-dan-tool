@@ -9,6 +9,7 @@
 #SAMPLELENGTH:15;
 #DISPLAYBPM:164;
 #BPMS:0=164;
+#BGSTAGE:3;
 
 #NOTES:
      dance-single:

@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faDownload,
   faFilter,
   faGear,
+  faList,
   faRotateRight,
   faTrash,
   faTrophy,
@@ -38,6 +40,29 @@ const MAX_BUCKET_COUNT = 10;
 const DEFAULT_FREE_PICK_COUNT = 0;
 const MAX_FREE_PICK_COUNT = 30;
 const LOCKED_ACTIONS = new Set(["protect", "pocket-pick"]);
+const DEFAULT_TOURNAMENT_LABELS = {
+  round: "",
+  p1: "P1",
+  p2: "P2",
+};
+
+const normalizeTournamentLabels = (labels) => ({
+  round: typeof labels?.round === "string" ? labels.round : "",
+  p1: typeof labels?.p1 === "string" ? labels.p1 : DEFAULT_TOURNAMENT_LABELS.p1,
+  p2: typeof labels?.p2 === "string" ? labels.p2 : DEFAULT_TOURNAMENT_LABELS.p2,
+});
+
+const getPlayerDisplayLabel = (player, labels) => {
+  const normalized = normalizeTournamentLabels(labels);
+  if (player === "P1") return normalized.p1.trim() || "P1";
+  if (player === "P2") return normalized.p2.trim() || "P2";
+  return player || "";
+};
+
+const getRoundDisplayLabel = (labels, fallback) => {
+  const round = normalizeTournamentLabels(labels).round.trim();
+  return round || fallback;
+};
 
 const clampNumber = (value, min, max) => {
   if (Number.isNaN(value)) return min;
@@ -229,6 +254,47 @@ const CARD_ACTIONS = [
   { key: "pocket-pick", label: "Pocket", requiresPlayer: true },
 ];
 
+const getActionSortRank = (chart, actionsMap) => {
+  const action = actionsMap?.[chart.uniqueKey]?.action;
+  if (action === "protect") return 0;
+  if (action === "veto") return 2;
+  return 1;
+};
+
+const getDisplayedCharts = (charts, actionsMap, { reorderByAction, hideVetoed }) => {
+  const visibleCharts = hideVetoed
+    ? charts.filter((chart) => actionsMap?.[chart.uniqueKey]?.action !== "veto")
+    : charts;
+  if (!reorderByAction) return visibleCharts;
+  return visibleCharts
+    .map((chart, index) => ({ chart, index }))
+    .sort((a, b) => {
+      const rankDiff = getActionSortRank(a.chart, actionsMap) - getActionSortRank(b.chart, actionsMap);
+      if (rankDiff !== 0) return rankDiff;
+      return a.index - b.index;
+    })
+    .map(({ chart }) => chart);
+};
+
+const csvValue = (value) => {
+  if (value == null) return "";
+  const text = String(value);
+  if (!/[",\n\r]/.test(text)) return text;
+  return `"${text.replace(/"/g, '""')}"`;
+};
+
+const downloadTextFile = (filename, content, type) => {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
 const CardDrawPage = ({ smData }) => {
   const { offline } = useOfflineMode();
   const showJacket = !offline;
@@ -273,6 +339,7 @@ const CardDrawPage = ({ smData }) => {
       return parsed.map((entry) => ({
         ...entry,
         actions: entry?.actions && typeof entry.actions === "object" ? entry.actions : {},
+        labels: normalizeTournamentLabels(entry?.labels),
       }));
     } catch {
       return [];
@@ -280,6 +347,7 @@ const CardDrawPage = ({ smData }) => {
   });
   const [showFilter, setShowFilter] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showEligibleCharts, setShowEligibleCharts] = useState(false);
   const [drawCount, setDrawCount] = useState(() => {
     try {
       const saved = storage.getItem("cardDrawCount");
@@ -346,6 +414,40 @@ const CardDrawPage = ({ smData }) => {
       return false;
     }
   });
+  const [reorderByAction, setReorderByAction] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawReorderByAction");
+      if (saved == null) return true;
+      return saved === "true";
+    } catch {
+      return true;
+    }
+  });
+  const [hideVetoed, setHideVetoed] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawHideVetoed");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [showTournamentLabels, setShowTournamentLabels] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawShowTournamentLabels");
+      return saved === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [currentLabels, setCurrentLabels] = useState(() => {
+    try {
+      const saved = storage.getItem("cardDrawCurrentLabels");
+      const parsed = saved ? JSON.parse(saved) : DEFAULT_TOURNAMENT_LABELS;
+      return normalizeTournamentLabels(parsed);
+    } catch {
+      return DEFAULT_TOURNAMENT_LABELS;
+    }
+  });
   const [draftDrawCount, setDraftDrawCount] = useState(drawCount);
   const [draftFreePickCount, setDraftFreePickCount] = useState(freePickCount);
   const [draftWeightedEnabled, setDraftWeightedEnabled] = useState(weightedEnabled);
@@ -357,6 +459,9 @@ const CardDrawPage = ({ smData }) => {
   );
   const [draftWeightedDistribution, setDraftWeightedDistribution] = useState(weightedDistribution);
   const [draftSortByLevel, setDraftSortByLevel] = useState(sortByLevel);
+  const [draftReorderByAction, setDraftReorderByAction] = useState(reorderByAction);
+  const [draftHideVetoed, setDraftHideVetoed] = useState(hideVetoed);
+  const [draftShowTournamentLabels, setDraftShowTournamentLabels] = useState(showTournamentLabels);
   const [activeCardContext, setActiveCardContext] = useState(null);
   const filterCountsCacheRef = useRef(new Map());
   const metricBoundsCacheRef = useRef(new Map());
@@ -394,6 +499,9 @@ const CardDrawPage = ({ smData }) => {
     setDraftWeightedBucketCountInput(weightedBucketCountInput);
     setDraftWeightedDistribution(weightedDistribution);
     setDraftSortByLevel(sortByLevel);
+    setDraftReorderByAction(reorderByAction);
+    setDraftHideVetoed(hideVetoed);
+    setDraftShowTournamentLabels(showTournamentLabels);
     setShowSettings(true);
   }, [
     drawCount,
@@ -405,6 +513,9 @@ const CardDrawPage = ({ smData }) => {
     weightedBucketCountInput,
     weightedDistribution,
     sortByLevel,
+    reorderByAction,
+    hideVetoed,
+    showTournamentLabels,
   ]);
   const freePickPlaceholder = useMemo(() => ({
     title: "Free pick",
@@ -429,6 +540,11 @@ const CardDrawPage = ({ smData }) => {
   const activeActionEntry = activeCard && activeActionsMap
     ? activeActionsMap[activeCard.uniqueKey]
     : null;
+  const activeTournamentLabels = useMemo(() => {
+    if (!activeCardContext?.entryId) return currentLabels;
+    const entry = drawHistory.find((item) => item.id === activeCardContext.entryId);
+    return normalizeTournamentLabels(entry?.labels);
+  }, [activeCardContext, currentLabels, drawHistory]);
 
   useEffect(() => {
     let cancelled = false;
@@ -458,10 +574,10 @@ const CardDrawPage = ({ smData }) => {
     }
       getJsonCached(option.file)
         .then((data) => {
-          setOverrideSongs(buildSonglistOverrideLookup(data));
+          setOverrideSongs(buildSonglistOverrideLookup(data, songMeta));
         })
         .catch(() => setOverrideSongs(null));
-    }, [songlistOverride]);
+    }, [songlistOverride, songMeta]);
 
   useEffect(() => {
     storage.setItem("cardDrawCurrent", JSON.stringify(drawnCharts));
@@ -517,6 +633,22 @@ const CardDrawPage = ({ smData }) => {
   useEffect(() => {
     storage.setItem("cardDrawSortByLevel", String(sortByLevel));
   }, [sortByLevel]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawReorderByAction", String(reorderByAction));
+  }, [reorderByAction]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawHideVetoed", String(hideVetoed));
+  }, [hideVetoed]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawShowTournamentLabels", String(showTournamentLabels));
+  }, [showTournamentLabels]);
+
+  useEffect(() => {
+    storage.setItem("cardDrawCurrentLabels", JSON.stringify(currentLabels));
+  }, [currentLabels]);
 
   const filtersActive = Boolean(
     filters.bpmMin !== "" ||
@@ -603,6 +735,7 @@ const CardDrawPage = ({ smData }) => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: playStyle,
         })) {
           return;
@@ -720,6 +853,7 @@ const CardDrawPage = ({ smData }) => {
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
           artistTranslit: meta.artistTranslit,
+          game: meta.game,
           mode: playStyle,
         })) {
           return;
@@ -860,6 +994,7 @@ const CardDrawPage = ({ smData }) => {
               titleTranslit: meta.titleTranslit,
               artist: meta.artist,
               artistTranslit: meta.artistTranslit,
+              game: meta.game,
               mode: playStyle,
             })) {
               return false;
@@ -1066,6 +1201,81 @@ const CardDrawPage = ({ smData }) => {
     };
   }, []);
 
+  const eligibleChartRows = useMemo(() => {
+    const rows = [];
+    filteredEntries.forEach(({ meta, matchingCharts }) => {
+      matchingCharts.forEach((chart) => {
+        const card = buildChartData(meta, chart);
+        if (!card) return;
+        const levelValue = getDifficultyValue(chart, showRankedRatings);
+        const bucketValue = getDifficultyBucketValue(chart, showRankedRatings);
+        rows.push({
+          ...card,
+          displayTitle: showTransliterationBeta && card.titleTranslit ? card.titleTranslit : card.title,
+          displayArtist: showTransliterationBeta && card.artistTranslit ? card.artistTranslit : card.artist,
+          levelValue,
+          bucketValue,
+          length: meta.length,
+          bpmMin: meta.bpmMin,
+          bpmMax: meta.bpmMax,
+        });
+      });
+    });
+    return rows.sort((a, b) => {
+      const levelA = Number.isFinite(a.levelValue) ? a.levelValue : Number.MAX_SAFE_INTEGER;
+      const levelB = Number.isFinite(b.levelValue) ? b.levelValue : Number.MAX_SAFE_INTEGER;
+      if (levelA !== levelB) return levelA - levelB;
+      const titleCompare = a.displayTitle.localeCompare(b.displayTitle);
+      if (titleCompare !== 0) return titleCompare;
+      return a.difficulty.localeCompare(b.difficulty);
+    });
+  }, [buildChartData, filteredEntries, showRankedRatings, showTransliterationBeta]);
+
+  const eligibleHistogram = useMemo(() => {
+    const counts = new Map();
+    eligibleChartRows.forEach((row) => {
+      const value = Number.isFinite(row.bucketValue) ? row.bucketValue : Number(row.level);
+      const key = Number.isFinite(value) ? value : "Unknown";
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([level, count]) => ({ level, count }))
+      .sort((a, b) => {
+        if (a.level === "Unknown") return 1;
+        if (b.level === "Unknown") return -1;
+        return a.level - b.level;
+      });
+  }, [eligibleChartRows]);
+
+  const eligibleHistogramMax = useMemo(
+    () => Math.max(1, ...eligibleHistogram.map((row) => row.count)),
+    [eligibleHistogram],
+  );
+
+  const exportEligibleCharts = useCallback(() => {
+    const columns = [
+      ["Title", "displayTitle"],
+      ["Artist", "displayArtist"],
+      ["Game", "game"],
+      ["Mode", "mode"],
+      ["Difficulty", "difficulty"],
+      ["Level", "level"],
+      ["Ranked Rating", "rankedRating"],
+      ["BPM", "bpm"],
+      ["Length Seconds", "length"],
+      ["Song ID", "songId"],
+      ["Chart ID", "chartId"],
+      ["Path", "path"],
+    ];
+    const lines = [
+      columns.map(([label]) => csvValue(label)).join(","),
+      ...eligibleChartRows.map((row) =>
+        columns.map(([, key]) => csvValue(row[key])).join(","),
+      ),
+    ];
+    downloadTextFile("card-draw-eligible-charts.csv", `${lines.join("\n")}\n`, "text/csv;charset=utf-8");
+  }, [eligibleChartRows]);
+
   const buildChartCard = useCallback((entry) => {
     const { meta, matchingCharts } = entry;
     if (!meta || !matchingCharts.length) return null;
@@ -1150,7 +1360,7 @@ const CardDrawPage = ({ smData }) => {
     setCurrentDrawId(drawId);
     setDrawHistory((prev) => {
       if (!nextPicks.length) return prev;
-      const entry = { id: drawId, charts: nextPicks, actions: {} };
+      const entry = { id: drawId, charts: nextPicks, actions: {}, labels: currentLabels };
       const next = [entry, ...prev];
       return next.slice(0, 6);
     });
@@ -1166,6 +1376,7 @@ const CardDrawPage = ({ smData }) => {
     bucketDefinitions,
     sortChartsByLevel,
     bucketValueForChart,
+    currentLabels,
   ]);
 
   const clearDraw = useCallback(() => {
@@ -1181,6 +1392,12 @@ const CardDrawPage = ({ smData }) => {
     setCurrentDrawId(null);
     setCardActions({});
   }, [drawHistory.length, drawnCharts.length]);
+
+  const removeHistoryDraw = useCallback((entryId) => {
+    const confirmed = window.confirm("Remove this old draw?");
+    if (!confirmed) return;
+    setDrawHistory((prev) => prev.filter((entry) => entry.id !== entryId));
+  }, []);
 
   const games = useMemo(() => {
     if (smData?.games?.length) return smData.games;
@@ -1230,6 +1447,25 @@ const CardDrawPage = ({ smData }) => {
     );
   }, []);
 
+  const updateLabelsForContext = useCallback((entryId, updater) => {
+    if (!entryId) {
+      setCurrentLabels((prev) => normalizeTournamentLabels(updater(normalizeTournamentLabels(prev))));
+      return;
+    }
+    setDrawHistory((prev) =>
+      prev.map((entry) =>
+        entry.id === entryId
+          ? {
+            ...entry,
+            labels: normalizeTournamentLabels(
+              updater(normalizeTournamentLabels(entry.labels)),
+            ),
+          }
+          : entry,
+      ),
+    );
+  }, []);
+
   const removeFreePickSlot = useCallback((entryId, cardKey) => {
     if (!cardKey) return;
     updateChartsForContext(entryId, (prev) => prev.filter((chart) => chart.uniqueKey !== cardKey));
@@ -1250,6 +1486,9 @@ const CardDrawPage = ({ smData }) => {
     setDraftWeightedBucketCountInput(String(DEFAULT_BUCKET_COUNT));
     setDraftWeightedDistribution([]);
     setDraftSortByLevel(false);
+    setDraftReorderByAction(true);
+    setDraftHideVetoed(false);
+    setDraftShowTournamentLabels(false);
   }, []);
 
   const applyCardDrawSettings = useCallback(() => {
@@ -1266,6 +1505,9 @@ const CardDrawPage = ({ smData }) => {
       coerceDistribution(draftWeightedDistribution, draftBucketDefinitions.length),
     );
     setSortByLevel(draftSortByLevel);
+    setReorderByAction(draftReorderByAction);
+    setHideVetoed(draftHideVetoed);
+    setShowTournamentLabels(draftShowTournamentLabels);
     setShowSettings(false);
   }, [
     draftDrawCount,
@@ -1277,6 +1519,9 @@ const CardDrawPage = ({ smData }) => {
     draftWeightedBucketCountInput,
     draftWeightedDistribution,
     draftSortByLevel,
+    draftReorderByAction,
+    draftHideVetoed,
+    draftShowTournamentLabels,
     draftBucketCountInvalid,
     draftBucketDefinitions.length,
   ]);
@@ -1542,12 +1787,12 @@ const CardDrawPage = ({ smData }) => {
     return match ? match.label : actionKey;
   }, []);
 
-  const renderSliceTag = useCallback((entry) => {
+  const renderSliceTag = useCallback((entry, labels) => {
     if (!entry?.action) {
       return <span className="card-draw-slice-placeholder">No tag</span>;
     }
     const label = getActionLabel(entry.action);
-    const playerLabel = entry.player ? ` ${entry.player}` : "";
+    const playerLabel = entry.player ? ` ${getPlayerDisplayLabel(entry.player, labels)}` : "";
     return (
       <span className="card-draw-slice-tag">
         {label}{playerLabel}
@@ -1555,13 +1800,13 @@ const CardDrawPage = ({ smData }) => {
     );
   }, [getActionLabel]);
 
-  const renderSliceWinner = useCallback((entry) => {
+  const renderSliceWinner = useCallback((entry, labels) => {
     if (!entry?.winner) {
       return null;
     }
-    const winnerBadge = entry.winner;
+    const winnerBadge = getPlayerDisplayLabel(entry.winner, labels);
     return (
-      <span className="card-draw-slice-winner" aria-label={`Winner ${entry.winner}`}>
+      <span className="card-draw-slice-winner" aria-label={`Winner ${winnerBadge}`}>
         <FontAwesomeIcon icon={faTrophy} />
         <span className="card-draw-slice-winner-badge">{winnerBadge}</span>
       </span>
@@ -1675,18 +1920,81 @@ const CardDrawPage = ({ smData }) => {
         ...entry,
         charts: drawnCharts,
         actions: cardActions,
+        labels: currentLabels,
       };
       const next = [...prev];
       next[index] = nextEntry;
       return next;
     });
-  }, [cardActions, drawnCharts, currentDrawId]);
+  }, [cardActions, currentLabels, drawnCharts, currentDrawId]);
 
   const isFreePickModal = pocketPickState?.mode === "free-pick";
-  const nonFreePickCount = useMemo(
-    () => drawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
-    [drawnCharts],
+  const pocketPickLabels = useMemo(() => {
+    if (!pocketPickState?.entryId) return currentLabels;
+    const entry = drawHistory.find((item) => item.id === pocketPickState.entryId);
+    return normalizeTournamentLabels(entry?.labels);
+  }, [currentLabels, drawHistory, pocketPickState]);
+  const displayOptions = useMemo(
+    () => ({ reorderByAction, hideVetoed }),
+    [hideVetoed, reorderByAction],
   );
+  const displayedDrawnCharts = useMemo(
+    () => getDisplayedCharts(drawnCharts, cardActions, displayOptions),
+    [cardActions, displayOptions, drawnCharts],
+  );
+  const displayedDrawHistory = useMemo(
+    () =>
+      drawHistory.map((entry) => ({
+        ...entry,
+        displayCharts: getDisplayedCharts(entry.charts || [], entry.actions || {}, displayOptions),
+      })),
+    [displayOptions, drawHistory],
+  );
+  const nonFreePickCount = useMemo(
+    () => displayedDrawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
+    [displayedDrawnCharts],
+  );
+  const currentDrawHidden = drawnCharts.length > 0 && displayedDrawnCharts.length === 0;
+  const renderTournamentLabelEditor = useCallback((labels, entryId = null) => {
+    const normalized = normalizeTournamentLabels(labels);
+    const updateField = (field, value) => {
+      updateLabelsForContext(entryId, (prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    };
+    return (
+      <div className="card-draw-labels" aria-label="Tournament labels">
+        <label className="card-draw-label-field card-draw-label-round">
+          <span>Round</span>
+          <input
+            type="text"
+            value={normalized.round}
+            placeholder="Round name"
+            onChange={(event) => updateField("round", event.target.value)}
+          />
+        </label>
+        <label className="card-draw-label-field">
+          <span>Player 1</span>
+          <input
+            type="text"
+            value={normalized.p1}
+            placeholder="P1"
+            onChange={(event) => updateField("p1", event.target.value)}
+          />
+        </label>
+        <label className="card-draw-label-field">
+          <span>Player 2</span>
+          <input
+            type="text"
+            value={normalized.p2}
+            placeholder="P2"
+            onChange={(event) => updateField("p2", event.target.value)}
+          />
+        </label>
+      </div>
+    );
+  }, [updateLabelsForContext]);
 
   return (
     <div className="app-container card-draw-page">
@@ -1730,13 +2038,69 @@ const CardDrawPage = ({ smData }) => {
             >
               <FontAwesomeIcon icon={faFilter} />
             </button>
+            <button
+              type="button"
+              className={`filter-button ${showEligibleCharts ? "active" : ""}`}
+              onClick={() => setShowEligibleCharts((prev) => !prev)}
+              title="Show eligible charts"
+              aria-label="Show eligible charts"
+              aria-pressed={showEligibleCharts}
+            >
+              <FontAwesomeIcon icon={faList} />
+            </button>
           </div>
         </div>
       </section>
 
+      {showEligibleCharts && (
+        <section className="card-draw-eligible">
+          <h2 className="card-draw-eligible-header">
+            <span className="card-draw-eligible-heading">
+              <span>Eligible charts</span>
+              <span className="card-draw-eligible-count">
+                {eligibleChartRows.length} chart{eligibleChartRows.length === 1 ? "" : "s"}
+              </span>
+            </span>
+            <button
+              type="button"
+              className="card-draw-eligible-export"
+              onClick={exportEligibleCharts}
+              disabled={eligibleChartRows.length === 0}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span>Export CSV</span>
+            </button>
+          </h2>
+          <div className="card-draw-eligible-body">
+            <p className="card-draw-eligible-note">
+              Current filter pool by level.
+            </p>
+            {eligibleHistogram.length > 0 ? (
+              <div className="card-draw-histogram" aria-label="Eligible charts by level">
+                {eligibleHistogram.map((bucket) => {
+                  const width = `${Math.max(4, (bucket.count / eligibleHistogramMax) * 100)}%`;
+                  const label = bucket.level === "Unknown" ? "Unknown" : `Lv.${bucket.level}`;
+                  return (
+                    <div key={bucket.level} className="card-draw-histogram-row">
+                      <span className="card-draw-histogram-label">{label}</span>
+                      <span className="card-draw-histogram-track">
+                        <span className="card-draw-histogram-bar" style={{ width }} />
+                      </span>
+                      <span className="card-draw-histogram-count">{bucket.count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="card-draw-empty">No charts match the current filters.</div>
+            )}
+          </div>
+        </section>
+      )}
+
       <section className="dan-section card-draw-results">
         <h2 className="dan-header" style={{ backgroundColor: "var(--accent-color)" }}>
-          <span>Current draw</span>
+          <span>{getRoundDisplayLabel(currentLabels, "Current draw")}</span>
           <button
             type="button"
             className="collapse-button"
@@ -1753,11 +2117,12 @@ const CardDrawPage = ({ smData }) => {
             <FontAwesomeIcon icon={faRotateRight} />
           </button>
         </h2>
+        {showTournamentLabels && drawnCharts.length > 0 && renderTournamentLabelEditor(currentLabels)}
         <div
           className={`song-grid ${nonFreePickCount === DEFAULT_DRAW_COUNT ? "card-draw-five" : ""}`}
         >
-          {drawnCharts.length ? (
-            drawnCharts.map((chart) => (
+          {displayedDrawnCharts.length ? (
+            displayedDrawnCharts.map((chart) => (
               chart.isFreePickPlaceholder ? (
                 <div
                   key={chart.uniqueKey}
@@ -1796,8 +2161,8 @@ const CardDrawPage = ({ smData }) => {
                     levelInTitleBlock
                     onCardClick={() => setActiveCardContext({ card: chart, entryId: null })}
                     showScoreSlice
-                    scoreSliceLeft={renderSliceTag(cardActions[chart.uniqueKey])}
-                    scoreSliceRight={renderSliceWinner(cardActions[chart.uniqueKey])}
+                    scoreSliceLeft={renderSliceTag(cardActions[chart.uniqueKey], currentLabels)}
+                    scoreSliceRight={renderSliceWinner(cardActions[chart.uniqueKey], currentLabels)}
                     scoreSliceClassName={getSliceClassName(cardActions[chart.uniqueKey])}
                   />
                 </div>
@@ -1805,42 +2170,56 @@ const CardDrawPage = ({ smData }) => {
             ))
           ) : (
             <div className="card-draw-empty">
-              Draw to generate a set of charts for your tournament round.
+              {currentDrawHidden
+                ? "All charts in this draw are hidden by vetoes."
+                : "Draw to generate a set of charts for your tournament round."}
             </div>
           )}
         </div>
       </section>
 
-      {drawHistory.length > 1 && (
+      {displayedDrawHistory.length > 1 && (
         <section className="card-draw-history dan-section">
-          {drawHistory.slice(1, 6).map((entry) => (
+          {displayedDrawHistory.slice(1, 6).map((entry) => (
             <div key={entry.id} className="card-draw-history-set">
               <h3 className="dan-header card-draw-history-header">
-                <span>{formatDrawTimestamp(entry.id)}</span>
-                <button
-                  type="button"
-                  className="collapse-button"
-                  title="Refresh draw"
-                  aria-label="Refresh draw"
-                  onClick={() => {
-                    const confirmed = window.confirm(
-                      "Refresh this draw? Protected and pocket picks will be kept.",
-                    );
-                    if (!confirmed) return;
-                    refreshChartsForContext(entry.id);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faRotateRight} />
-                </button>
+                <span>{getRoundDisplayLabel(entry.labels, formatDrawTimestamp(entry.id))}</span>
+                <span className="card-draw-history-actions">
+                  <button
+                    type="button"
+                    className="collapse-button"
+                    title="Refresh draw"
+                    aria-label="Refresh draw"
+                    onClick={() => {
+                      const confirmed = window.confirm(
+                        "Refresh this draw? Protected and pocket picks will be kept.",
+                      );
+                      if (!confirmed) return;
+                      refreshChartsForContext(entry.id);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faRotateRight} />
+                  </button>
+                  <button
+                    type="button"
+                    className="collapse-button"
+                    title="Remove old draw"
+                    aria-label="Remove old draw"
+                    onClick={() => removeHistoryDraw(entry.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </span>
               </h3>
+              {showTournamentLabels && renderTournamentLabelEditor(entry.labels, entry.id)}
               <div
                 className={`song-grid card-draw-history-grid ${
-                  entry.charts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
+                  entry.displayCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
                     ? "card-draw-five"
                     : ""
                 }`}
               >
-                {entry.charts.map((chart) => (
+                {entry.displayCharts.length ? entry.displayCharts.map((chart) => (
                   chart.isFreePickPlaceholder ? (
                     <div
                       key={`${entry.id}-${chart.uniqueKey}`}
@@ -1876,12 +2255,16 @@ const CardDrawPage = ({ smData }) => {
                       levelInTitleBlock
                       onCardClick={() => setActiveCardContext({ card: chart, entryId: entry.id })}
                       showScoreSlice
-                      scoreSliceLeft={renderSliceTag(entry.actions?.[chart.uniqueKey])}
-                      scoreSliceRight={renderSliceWinner(entry.actions?.[chart.uniqueKey])}
+                      scoreSliceLeft={renderSliceTag(entry.actions?.[chart.uniqueKey], entry.labels)}
+                      scoreSliceRight={renderSliceWinner(entry.actions?.[chart.uniqueKey], entry.labels)}
                       scoreSliceClassName={getSliceClassName(entry.actions?.[chart.uniqueKey])}
                     />
                   )
-                ))}
+                )) : (
+                  <div className="card-draw-empty">
+                    All charts in this draw are hidden by vetoes.
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -1925,7 +2308,7 @@ const CardDrawPage = ({ smData }) => {
                     }
                     onClick={() => applyCardAction(action.key, "P1")}
                   >
-                    P1
+                    {getPlayerDisplayLabel("P1", activeTournamentLabels)}
                   </ModalShell.Button>
                   <ModalShell.Button
                     variant="secondary"
@@ -1941,7 +2324,7 @@ const CardDrawPage = ({ smData }) => {
                     }
                     onClick={() => applyCardAction(action.key, "P2")}
                   >
-                    P2
+                    {getPlayerDisplayLabel("P2", activeTournamentLabels)}
                   </ModalShell.Button>
                 </div>
               </div>
@@ -1957,7 +2340,7 @@ const CardDrawPage = ({ smData }) => {
                   aria-pressed={activeActionEntry?.winner === "P1"}
                   onClick={() => applyCardAction("winner", "P1")}
                 >
-                  P1
+                  {getPlayerDisplayLabel("P1", activeTournamentLabels)}
                 </ModalShell.Button>
                 <ModalShell.Button
                   variant="secondary"
@@ -1967,7 +2350,7 @@ const CardDrawPage = ({ smData }) => {
                   aria-pressed={activeActionEntry?.winner === "P2"}
                   onClick={() => applyCardAction("winner", "P2")}
                 >
-                  P2
+                  {getPlayerDisplayLabel("P2", activeTournamentLabels)}
                 </ModalShell.Button>
               </div>
             </div>
@@ -2093,6 +2476,57 @@ const CardDrawPage = ({ smData }) => {
                   checked={draftSortByLevel}
                   onChange={() => setDraftSortByLevel((prev) => !prev)}
                   ariaLabel="Toggle sort by level"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Reorder by pick/ban</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Show protected charts first and vetoed charts last.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftReorderByAction}
+                  onChange={() => setDraftReorderByAction((prev) => !prev)}
+                  ariaLabel="Toggle pick and ban ordering"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Hide vetoed charts</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Remove vetoed cards from the visible draw instead of dimming them.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftHideVetoed}
+                  onChange={() => setDraftHideVetoed((prev) => !prev)}
+                  ariaLabel="Toggle hidden vetoes"
+                />
+              </div>
+            </div>
+          </section>
+          <section className={settingsStyles.formSection}>
+            <div className={settingsStyles.settingRow}>
+              <div className={settingsStyles.settingText}>
+                <h4 className={settingsStyles.sectionTitle}>Tournament labels</h4>
+                <p className={settingsStyles.sectionDescription}>
+                  Add editable round and player labels to current and saved draws.
+                </p>
+              </div>
+              <div className={settingsStyles.settingControl}>
+                <Switch
+                  checked={draftShowTournamentLabels}
+                  onChange={() => setDraftShowTournamentLabels((prev) => !prev)}
+                  ariaLabel="Toggle tournament labels"
                 />
               </div>
             </div>
@@ -2244,7 +2678,7 @@ const CardDrawPage = ({ smData }) => {
                 </div>
               )}
               <div className="card-draw-modal-subtitle">
-                {pocketPickState.player} pocket pick
+                {getPlayerDisplayLabel(pocketPickState.player, pocketPickLabels)} pocket pick
               </div>
             </div>
           )}
