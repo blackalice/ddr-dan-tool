@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import os from 'node:os'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const CACHE_DIR = path.join(ROOT, 'data', 'generated', '.cache')
@@ -11,7 +12,10 @@ const PIPELINE_CACHE = path.join(CACHE_DIR, 'data-pipeline-v2.json')
 const HASH_CACHE = path.join(CACHE_DIR, 'content-hashes-v1.json')
 const FORCE = process.argv.includes('--force')
 const VALIDATE = process.argv.includes('--validate')
-const MAX_PARALLEL = Math.max(1, Number.parseInt(process.env.DATA_PREPARE_JOBS || '3', 10) || 3)
+const MAX_PARALLEL = Math.max(
+  1,
+  Number.parseInt(process.env.DATA_PREPARE_JOBS || '', 10) || os.cpus().length - 1 || 3
+)
 
 const rel = (...parts) => path.join(ROOT, ...parts)
 const scripts = (...names) => names.map(name => rel('scripts', name))

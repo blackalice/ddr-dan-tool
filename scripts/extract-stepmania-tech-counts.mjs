@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import os from 'os';
 import { parseSm } from '../src/utils/smParser.js';
 import { computeChartMetrics } from '../src/utils/chartMetrics.js';
 import { buildChartId } from '../src/utils/chartIds.js';
@@ -200,49 +201,64 @@ async function main() {
   let chartCount = 0;
   let failedSongs = 0;
 
-  for (const file of files) {
-    const songPath = normalizePathValue(file?.path);
-    if (!songPath) continue;
+  const CONCURRENCY = Math.max(2, os.cpus().length * 2);
+  let currentIndex = 0;
 
-    try {
-      const { id: songId, created } = ensureSongId(songIdMap, songPath);
-      if (created) songIdMapChanged = true;
+  const worker = async () => {
+    while (currentIndex < files.length) {
+      const file = files[currentIndex];
+      currentIndex += 1;
 
-      const fullPath = toSimfilePath(songPath);
-      const source = await fs.readFile(fullPath, 'utf8');
-      const parsed = parseSm(source);
-      const availableTypes = Array.isArray(parsed?.availableTypes) ? parsed.availableTypes : [];
-      const charts = parsed?.charts && typeof parsed.charts === 'object' ? parsed.charts : {};
+      const songPath = normalizePathValue(file?.path);
+      if (!songPath) continue;
 
-      for (const chartType of availableTypes) {
-        const mode = String(chartType?.mode || '').toLowerCase();
-        const difficulty = String(chartType?.difficulty || '').toLowerCase();
-        const slug = chartType?.slug;
-        if (!slug || !mode || !difficulty) continue;
-        const chart = charts[slug];
-        if (!chart || typeof chart !== 'object') continue;
+      try {
+        const { id: songId, created } = ensureSongId(songIdMap, songPath);
+        if (created) songIdMapChanged = true;
 
-        const metrics = computeChartMetrics(chart);
-        const itgTech = computeItgmaniaTechCounts(chart);
-        const counts = buildCounts(metrics, itgTech);
-        if (!counts) continue;
+        const fullPath = toSimfilePath(songPath);
+        const source = await fs.readFile(fullPath, 'utf8');
+        const parsed = parseSm(source);
+        const availableTypes = Array.isArray(parsed?.availableTypes) ? parsed.availableTypes : [];
+        const charts = parsed?.charts && typeof parsed.charts === 'object' ? parsed.charts : {};
 
-        const chartId = buildChartId(songId, mode, difficulty);
-        const pmdKey = buildPathModeDifficultyKey(songPath, mode, difficulty);
-        if (chartId) countsByChartId[chartId] = counts;
-        if (pmdKey) countsByPathModeDifficulty[pmdKey] = counts;
-        chartCount += 1;
+        for (const chartType of availableTypes) {
+          const mode = String(chartType?.mode || '').toLowerCase();
+          const difficulty = String(chartType?.difficulty || '').toLowerCase();
+          const slug = chartType?.slug;
+          if (!slug || !mode || !difficulty) continue;
+          const chart = charts[slug];
+          if (!chart || typeof chart !== 'object') continue;
+
+          const metrics = computeChartMetrics(chart);
+          const itgTech = computeItgmaniaTechCounts(chart);
+          const counts = buildCounts(metrics, itgTech);
+          if (!counts) continue;
+
+          const chartId = buildChartId(songId, mode, difficulty);
+          const pmdKey = buildPathModeDifficultyKey(songPath, mode, difficulty);
+          if (chartId) countsByChartId[chartId] = counts;
+          if (pmdKey) countsByPathModeDifficulty[pmdKey] = counts;
+          chartCount += 1;
+        }
+
+        songCount += 1;
+        if (songCount % 100 === 0) {
+          console.log(`[extract-stepmania-tech-counts] processed ${songCount}/${files.length} songs...`);
+        }
+      } catch (err) {
+        failedSongs += 1;
+        console.warn(`[extract-stepmania-tech-counts] failed for ${songPath}: ${err?.message || err}`);
       }
-
-      songCount += 1;
-      if (songCount % 100 === 0) {
-        console.log(`[extract-stepmania-tech-counts] processed ${songCount}/${files.length} songs...`);
-      }
-    } catch (err) {
-      failedSongs += 1;
-      console.warn(`[extract-stepmania-tech-counts] failed for ${songPath}: ${err?.message || err}`);
     }
+  };
+
+  const workers = [];
+  const actualConcurrency = Math.min(CONCURRENCY, files.length);
+  for (let i = 0; i < actualConcurrency; i += 1) {
+    workers.push(worker());
   }
+  await Promise.all(workers);
 
   if (songIdMapChanged) {
     await saveSongIdMap(songIdMap);
