@@ -388,7 +388,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -453,7 +453,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -2164,16 +2164,16 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 9,
+          "title": "CUTIE CHASER",
+          "level": 7,
           "bpm": "126",
-          "difficulty": "expert",
+          "difficulty": "difficult",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 9.25,
-          "songId": "001100",
-          "chartId": "001100#S#4",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 7.5,
+          "songId": "000248",
+          "chartId": "000248#S#2",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -2217,7 +2217,7 @@
         }
       ],
       "chartIds": [
-        "001100#S#4",
+        "000248#S#2",
         "001785#S#1",
         "001113#S#2",
         "001784#S#2"
@@ -2229,16 +2229,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 6,
+          "title": "CUTIE CHASER",
+          "level": 7,
           "bpm": "126",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 6.55,
-          "songId": "001100",
-          "chartId": "001100#D#2",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 7.7,
+          "songId": "000248",
+          "chartId": "000248#D#2",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -2282,7 +2282,7 @@
         }
       ],
       "chartIds": [
-        "001100#D#2",
+        "000248#D#2",
         "001785#D#2",
         "001113#D#2",
         "001784#D#2"
@@ -2422,7 +2422,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -2487,7 +2487,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -2706,7 +2706,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -2771,7 +2771,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -3989,7 +3989,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "single",
           "game": "EX",
@@ -4068,7 +4068,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "double",
           "game": "EX",
@@ -4437,7 +4437,7 @@
         {
           "title": "xenon",
           "level": 10,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -4516,7 +4516,7 @@
         {
           "title": "xenon",
           "level": 9,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
@@ -4580,16 +4580,16 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 7,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "single",
           "game": "6th",
           "rankedRating": 7.55,
-          "songId": "002129",
-          "chartId": "002129#S#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#S#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -4646,7 +4646,7 @@
         }
       ],
       "chartIds": [
-        "002129#S#1",
+        "000410#S#1",
         "001135#S#1",
         "001769#S#1",
         "001779#S#1",
@@ -4659,16 +4659,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 8,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
           "rankedRating": 8.55,
-          "songId": "002129",
-          "chartId": "002129#D#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#D#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -4725,7 +4725,7 @@
         }
       ],
       "chartIds": [
-        "002129#D#1",
+        "000410#D#1",
         "001135#D#1",
         "001769#D#1",
         "001779#D#1",
@@ -5910,10 +5910,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (luv mix)",
+          "title": "TRIP MACHINE～luv mix～",
+          "level": 9,
+          "bpm": "160",
+          "difficulty": "basic",
           "mode": "single",
-          "level": 8,
-          "error": "Song file not found"
+          "game": "3rd",
+          "rankedRating": 9.25,
+          "songId": "000282",
+          "chartId": "000282#S#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -5945,6 +5952,7 @@
       "chartIds": [
         "001088#S#1",
         "000235#S#1",
+        "000282#S#1",
         "000336#S#2",
         "001143#S#2"
       ]
@@ -5981,10 +5989,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (luv mix)",
-          "mode": "double",
+          "title": "TRIP MACHINE～luv mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "160",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 9.55,
+          "songId": "000282",
+          "chartId": "000282#D#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -6016,6 +6031,7 @@
       "chartIds": [
         "001088#D#1",
         "000235#D#1",
+        "000282#D#1",
         "000336#D#2",
         "001143#D#2"
       ]
@@ -6040,7 +6056,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -6131,7 +6147,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -6546,10 +6562,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET ~clean mix~",
-          "mode": "single",
+          "title": "PARANOiA KCET ～clean mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "179-180",
+          "difficulty": "difficult",
+          "mode": "single",
+          "game": "2nd",
+          "rankedRating": 9.4,
+          "songId": "000230",
+          "chartId": "000230#S#2",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -6581,6 +6604,7 @@
       "chartIds": [
         "001086#S#1",
         "000231#S#1",
+        "000230#S#2",
         "000328#S#1",
         "000276#S#1"
       ]
@@ -6617,10 +6641,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET ~clean mix~",
+          "title": "PARANOiA KCET ～clean mix～",
+          "level": 8,
+          "bpm": "179-180",
+          "difficulty": "basic",
           "mode": "double",
-          "level": 9,
-          "error": "Song file not found"
+          "game": "2nd",
+          "rankedRating": 8.6,
+          "songId": "000230",
+          "chartId": "000230#D#1",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -6652,6 +6683,7 @@
       "chartIds": [
         "001086#D#1",
         "000231#D#1",
+        "000230#D#1",
         "000328#D#2",
         "000276#D#1"
       ]
@@ -6690,7 +6722,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "single",
           "game": "5th",
@@ -6769,7 +6801,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "double",
           "game": "5th",
@@ -7513,15 +7545,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 9.35,
-          "songId": "001148",
-          "chartId": "001148#S#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -7541,7 +7573,7 @@
         "000489#S#2",
         "000490#S#2",
         "001122#S#2",
-        "001148#S#2",
+        "002126#S#4",
         "001142#S#2"
       ]
     },
@@ -7591,16 +7623,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "level": 8,
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 9.65,
-          "songId": "001148",
-          "chartId": "001148#D#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 5.35,
+          "songId": "002126",
+          "chartId": "002126#D#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -7620,7 +7652,7 @@
         "000489#D#2",
         "000490#D#2",
         "001122#D#1",
-        "001148#D#2",
+        "002126#D#4",
         "001142#D#2"
       ]
     },
@@ -7632,7 +7664,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -7657,7 +7689,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "single",
           "game": "7th",
@@ -7710,7 +7742,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -7735,7 +7767,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "double",
           "game": "7th",
@@ -11114,7 +11146,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -11179,7 +11211,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -11244,7 +11276,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -11309,7 +11341,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -14668,16 +14700,16 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 4,
+          "title": "CUTIE CHASER",
+          "level": 3,
           "bpm": "126",
-          "difficulty": "difficult",
+          "difficulty": "beginner",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 4.4,
-          "songId": "001100",
-          "chartId": "001100#S#2",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 3.4,
+          "songId": "000248",
+          "chartId": "000248#S#0",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -14721,7 +14753,7 @@
         }
       ],
       "chartIds": [
-        "001100#S#2",
+        "000248#S#0",
         "001785#S#1",
         "001113#S#1",
         "001784#S#1"
@@ -14733,16 +14765,16 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 9,
+          "title": "CUTIE CHASER",
+          "level": 7,
           "bpm": "126",
-          "difficulty": "expert",
+          "difficulty": "difficult",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 9.25,
-          "songId": "001100",
-          "chartId": "001100#S#4",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 7.5,
+          "songId": "000248",
+          "chartId": "000248#S#2",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -14786,7 +14818,7 @@
         }
       ],
       "chartIds": [
-        "001100#S#4",
+        "000248#S#2",
         "001785#S#1",
         "001113#S#2",
         "001784#S#2"
@@ -14798,16 +14830,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 4,
+          "title": "CUTIE CHASER",
+          "level": 5,
           "bpm": "126",
           "difficulty": "basic",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 4.35,
-          "songId": "001100",
-          "chartId": "001100#D#1",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 5.6,
+          "songId": "000248",
+          "chartId": "000248#D#1",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -14851,7 +14883,7 @@
         }
       ],
       "chartIds": [
-        "001100#D#1",
+        "000248#D#1",
         "001785#D#2",
         "001113#D#1",
         "001784#D#2"
@@ -14863,16 +14895,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 6,
+          "title": "CUTIE CHASER",
+          "level": 7,
           "bpm": "126",
           "difficulty": "difficult",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 6.55,
-          "songId": "001100",
-          "chartId": "001100#D#2",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 7.7,
+          "songId": "000248",
+          "chartId": "000248#D#2",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -14916,7 +14948,7 @@
         }
       ],
       "chartIds": [
-        "001100#D#2",
+        "000248#D#2",
         "001785#D#2",
         "001113#D#2",
         "001784#D#2"
@@ -15182,7 +15214,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -15247,7 +15279,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -15312,7 +15344,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -15377,7 +15409,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -15724,7 +15756,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -15789,7 +15821,7 @@
         {
           "title": "CANDY☆",
           "level": 4,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "beginner",
           "mode": "single",
           "game": "6th",
@@ -15854,7 +15886,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -15919,7 +15951,7 @@
         {
           "title": "CANDY☆",
           "level": 5,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
@@ -17015,16 +17047,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 4,
-          "bpm": "138-140",
-          "difficulty": "basic",
+          "level": 6,
+          "bpm": "140",
+          "difficulty": "difficult",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 4.4,
-          "songId": "001148",
-          "chartId": "001148#S#1",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 3.3,
+          "songId": "002126",
+          "chartId": "002126#S#2",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "Vem brincar",
@@ -17056,7 +17088,7 @@
       "chartIds": [
         "001931#S#0",
         "001930#S#2",
-        "001148#S#1",
+        "002126#S#2",
         "001929#S#1",
         "001147#S#1"
       ]
@@ -17095,15 +17127,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 5,
-          "bpm": "138-140",
-          "difficulty": "basic",
+          "bpm": "140",
+          "difficulty": "difficult",
           "mode": "double",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 5.35,
-          "songId": "001148",
-          "chartId": "001148#D#1",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#D#2",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "Vem brincar",
@@ -17135,7 +17167,7 @@
       "chartIds": [
         "001931#D#1",
         "001930#D#2",
-        "001148#D#1",
+        "002126#D#2",
         "001929#D#1",
         "001147#D#1"
       ]
@@ -18663,7 +18695,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "single",
           "game": "EX",
@@ -18742,7 +18774,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "double",
           "game": "EX",
@@ -19111,7 +19143,7 @@
         {
           "title": "xenon",
           "level": 10,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -19190,7 +19222,7 @@
         {
           "title": "xenon",
           "level": 9,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
@@ -19254,16 +19286,16 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 7,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "single",
           "game": "6th",
           "rankedRating": 7.55,
-          "songId": "002129",
-          "chartId": "002129#S#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#S#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -19320,7 +19352,7 @@
         }
       ],
       "chartIds": [
-        "002129#S#1",
+        "000410#S#1",
         "001135#S#1",
         "001769#S#1",
         "001779#S#1",
@@ -19333,16 +19365,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 8,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
           "rankedRating": 8.55,
-          "songId": "002129",
-          "chartId": "002129#D#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#D#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -19399,7 +19431,7 @@
         }
       ],
       "chartIds": [
-        "002129#D#1",
+        "000410#D#1",
         "001135#D#1",
         "001769#D#1",
         "001779#D#1",
@@ -20584,10 +20616,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (luv mix)",
+          "title": "TRIP MACHINE～luv mix～",
+          "level": 9,
+          "bpm": "160",
+          "difficulty": "basic",
           "mode": "single",
-          "level": 8,
-          "error": "Song file not found"
+          "game": "3rd",
+          "rankedRating": 9.25,
+          "songId": "000282",
+          "chartId": "000282#S#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -20619,6 +20658,7 @@
       "chartIds": [
         "001088#S#1",
         "000235#S#1",
+        "000282#S#1",
         "000336#S#2",
         "001143#S#2"
       ]
@@ -20655,10 +20695,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (luv mix)",
-          "mode": "double",
+          "title": "TRIP MACHINE～luv mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "160",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 9.55,
+          "songId": "000282",
+          "chartId": "000282#D#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -20690,6 +20737,7 @@
       "chartIds": [
         "001088#D#1",
         "000235#D#1",
+        "000282#D#1",
         "000336#D#2",
         "001143#D#2"
       ]
@@ -20714,7 +20762,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -20805,7 +20853,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -21220,10 +21268,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET ~clean mix~",
-          "mode": "single",
+          "title": "PARANOiA KCET ～clean mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "179-180",
+          "difficulty": "difficult",
+          "mode": "single",
+          "game": "2nd",
+          "rankedRating": 9.4,
+          "songId": "000230",
+          "chartId": "000230#S#2",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -21255,6 +21310,7 @@
       "chartIds": [
         "001086#S#1",
         "000231#S#1",
+        "000230#S#2",
         "000328#S#1",
         "000276#S#1"
       ]
@@ -21291,10 +21347,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET ~clean mix~",
+          "title": "PARANOiA KCET ～clean mix～",
+          "level": 8,
+          "bpm": "179-180",
+          "difficulty": "basic",
           "mode": "double",
-          "level": 9,
-          "error": "Song file not found"
+          "game": "2nd",
+          "rankedRating": 8.6,
+          "songId": "000230",
+          "chartId": "000230#D#1",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -21326,6 +21389,7 @@
       "chartIds": [
         "001086#D#1",
         "000231#D#1",
+        "000230#D#1",
         "000328#D#2",
         "000276#D#1"
       ]
@@ -21364,7 +21428,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "single",
           "game": "5th",
@@ -21443,7 +21507,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "double",
           "game": "5th",
@@ -22187,15 +22251,15 @@
         {
           "title": "VANITY ANGEL",
           "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
+          "game": "Dancing Stage EuroMIX2",
           "rankedRating": 9.35,
-          "songId": "001148",
-          "chartId": "001148#S#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -22215,7 +22279,7 @@
         "000489#S#2",
         "000490#S#2",
         "001122#S#2",
-        "001148#S#2",
+        "002126#S#4",
         "001142#S#2"
       ]
     },
@@ -22265,16 +22329,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 9,
-          "bpm": "138-140",
-          "difficulty": "difficult",
+          "level": 8,
+          "bpm": "140",
+          "difficulty": "expert",
           "mode": "double",
-          "game": "EX",
-          "rankedRating": 9.65,
-          "songId": "001148",
-          "chartId": "001148#D#2",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 5.35,
+          "songId": "002126",
+          "chartId": "002126#D#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "TEARS",
@@ -22294,7 +22358,7 @@
         "000489#D#2",
         "000490#D#2",
         "001122#D#1",
-        "001148#D#2",
+        "002126#D#4",
         "001142#D#2"
       ]
     },
@@ -22306,7 +22370,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -22331,7 +22395,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "single",
           "game": "7th",
@@ -22384,7 +22448,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -22409,7 +22473,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "double",
           "game": "7th",
@@ -25078,7 +25142,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -25208,7 +25272,7 @@
         {
           "title": "xenon",
           "level": 10,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -25375,10 +25439,17 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "TRIP MACHINE (luv mix)",
-          "mode": "double",
+          "title": "TRIP MACHINE～luv mix～",
           "level": 10,
-          "error": "Song file not found"
+          "bpm": "160",
+          "difficulty": "difficult",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 10.65,
+          "songId": "000282",
+          "chartId": "000282#D#2",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "華爛漫 -Flowers-",
@@ -25409,7 +25480,7 @@
         {
           "title": "CANDY☆",
           "level": 11,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "expert",
           "mode": "double",
           "game": "6th",
@@ -25421,6 +25492,7 @@
         }
       ],
       "chartIds": [
+        "000282#D#2",
         "001793#D#4",
         "001889#D#4",
         "000397#D#4"
@@ -25459,16 +25531,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 12,
-          "bpm": "138-140",
+          "level": 9,
+          "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 12.65,
-          "songId": "001148",
-          "chartId": "001148#S#4",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 9.35,
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "V ～for EXTREME～",
@@ -25487,7 +25559,7 @@
       "chartIds": [
         "001842#S#4",
         "001923#S#2",
-        "001148#S#4",
+        "002126#S#4",
         "001147#S#4"
       ]
     },
@@ -25512,7 +25584,7 @@
         {
           "title": "TSUGARU",
           "level": 13,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "expert",
           "mode": "double",
           "game": "7th",
@@ -25887,16 +25959,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 14,
           "bpm": "49-196",
           "difficulty": "expert",
           "mode": "double",
           "game": "6th",
           "rankedRating": 14.45,
-          "songId": "002129",
-          "chartId": "002129#D#4",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#D#4",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -25940,7 +26012,7 @@
         }
       ],
       "chartIds": [
-        "002129#D#4",
+        "000410#D#4",
         "001868#D#5",
         "001838#D#4",
         "001876#D#4"
@@ -28471,9 +28543,16 @@
       "songs": [
         {
           "title": "AFTER THE GAME OF LOVE",
-          "mode": "single",
           "level": 2,
-          "error": "Song file not found"
+          "bpm": "105",
+          "difficulty": "beginner",
+          "mode": "single",
+          "game": "3rd",
+          "rankedRating": 2.2,
+          "songId": "000242",
+          "chartId": "000242#S#0",
+          "path": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE.sm",
+          "artist": "NPD3"
         },
         {
           "title": "BABY BABY GIMME YOUR LOVE",
@@ -28516,6 +28595,7 @@
         }
       ],
       "chartIds": [
+        "000242#S#0",
         "000294#S#0",
         "001792#S#1",
         "000450#S#0"
@@ -28748,16 +28828,16 @@
           "artist": "FinalOffset"
         },
         {
-          "title": "CUTIE CHASER(MORNING MIX)",
-          "level": 4,
+          "title": "CUTIE CHASER",
+          "level": 5,
           "bpm": "126",
-          "difficulty": "difficult",
+          "difficulty": "basic",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 4.4,
-          "songId": "001100",
-          "chartId": "001100#S#2",
-          "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm",
+          "game": "3rd",
+          "rankedRating": 5.45,
+          "songId": "000248",
+          "chartId": "000248#S#1",
+          "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm",
           "artist": "CLUB SPICE"
         },
         {
@@ -28777,7 +28857,7 @@
       "chartIds": [
         "001849#S#1",
         "001807#S#1",
-        "001100#S#2",
+        "000248#S#1",
         "000233#S#1"
       ]
     },
@@ -28853,9 +28933,16 @@
       "songs": [
         {
           "title": "think ya better D",
-          "mode": "single",
           "level": 5,
-          "error": "Song file not found"
+          "bpm": "136",
+          "difficulty": "basic",
+          "mode": "single",
+          "game": "3rd",
+          "rankedRating": 5.65,
+          "songId": "000290",
+          "chartId": "000290#S#1",
+          "path": "sm/3rd/think ya better D/think ya better D.sm",
+          "artist": "sAmi"
         },
         {
           "title": "Kind Lady",
@@ -28897,6 +28984,7 @@
         }
       ],
       "chartIds": [
+        "000290#S#1",
         "001120#S#1",
         "001126#S#1",
         "000296#S#1"
@@ -29390,7 +29478,7 @@
         {
           "title": "xenon",
           "level": 10,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -29557,10 +29645,17 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "TRIP MACHINE (luv mix)",
-          "mode": "double",
+          "title": "TRIP MACHINE～luv mix～",
           "level": 10,
-          "error": "Song file not found"
+          "bpm": "160",
+          "difficulty": "difficult",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 10.65,
+          "songId": "000282",
+          "chartId": "000282#D#2",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "Electrified",
@@ -29603,6 +29698,7 @@
         }
       ],
       "chartIds": [
+        "000282#D#2",
         "001889#D#4",
         "001793#D#4",
         "001859#D#4"
@@ -29641,16 +29737,16 @@
         },
         {
           "title": "VANITY ANGEL",
-          "level": 12,
-          "bpm": "138-140",
+          "level": 9,
+          "bpm": "140",
           "difficulty": "expert",
           "mode": "single",
-          "game": "EX",
-          "rankedRating": 12.65,
-          "songId": "001148",
-          "chartId": "001148#S#4",
-          "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm",
-          "artist": "FIXX"
+          "game": "Dancing Stage EuroMIX2",
+          "rankedRating": 9.35,
+          "songId": "002126",
+          "chartId": "002126#S#4",
+          "path": "sm/Dancing Stage EuroMIX2/VANITY ANGEL/VANITY ANGEL.sm",
+          "artist": "FIX X"
         },
         {
           "title": "AA",
@@ -29669,7 +29765,7 @@
       "chartIds": [
         "001804#S#4",
         "000253#S#4",
-        "001148#S#4",
+        "002126#S#4",
         "001754#S#4"
       ]
     },
@@ -29694,7 +29790,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 12,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "expert",
           "mode": "double",
           "game": "5th",
@@ -29720,7 +29816,7 @@
         {
           "title": "AFRONOVA",
           "level": 13,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "expert",
           "mode": "double",
           "game": "3rd",
@@ -29770,16 +29866,16 @@
           "artist": "Jimmy Weckl"
         },
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 13,
           "bpm": "49-196",
           "difficulty": "expert",
           "mode": "single",
           "game": "6th",
           "rankedRating": 13.3,
-          "songId": "002129",
-          "chartId": "002129#S#4",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#S#4",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -29799,7 +29895,7 @@
       "chartIds": [
         "000364#S#4",
         "001094#S#5",
-        "002129#S#4",
+        "000410#S#4",
         "001568#S#4"
       ]
     },
@@ -30069,16 +30165,16 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 14,
           "bpm": "49-196",
           "difficulty": "expert",
           "mode": "double",
           "game": "6th",
           "rankedRating": 14.45,
-          "songId": "002129",
-          "chartId": "002129#D#4",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#D#4",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -30122,7 +30218,7 @@
         }
       ],
       "chartIds": [
-        "002129#D#4",
+        "000410#D#4",
         "001868#D#5",
         "001537#D#4",
         "001876#D#4"
@@ -33211,12 +33307,12 @@
         },
         {
           "title": "The Least 100sec",
-          "level": 11,
+          "level": 10,
           "bpm": "200-265",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
-          "rankedRating": 7.8,
+          "rankedRating": 10.9,
           "songId": "001144",
           "chartId": "001144#D#2",
           "path": "sm/EX/The Least 100sec/The Least 100sec.sm",
@@ -39875,7 +39971,7 @@
         {
           "title": "Abyss",
           "level": 10,
-          "bpm": "141-142",
+          "bpm": "142",
           "difficulty": "expert",
           "mode": "single",
           "game": "5th",
@@ -40041,16 +40137,16 @@
           "artist": "NAOKI underground"
         },
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 13,
           "bpm": "49-196",
           "difficulty": "expert",
           "mode": "single",
           "game": "6th",
           "rankedRating": 13.3,
-          "songId": "002129",
-          "chartId": "002129#S#4",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#S#4",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         },
         {
@@ -40070,7 +40166,7 @@
       "chartIds": [
         "001494#S#4",
         "001624#S#4",
-        "002129#S#4",
+        "000410#S#4",
         "000787#S#4"
       ]
     },
@@ -40737,7 +40833,7 @@
         {
           "title": "AFRONOVA",
           "level": 13,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "expert",
           "mode": "single",
           "game": "3rd",
@@ -42712,7 +42808,7 @@
         {
           "title": "Destiny lovers",
           "level": 4,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "basic",
           "mode": "single",
           "game": "EX",
@@ -42775,7 +42871,7 @@
         {
           "title": "Destiny lovers",
           "level": 7,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -42838,7 +42934,7 @@
         {
           "title": "Destiny lovers",
           "level": 4,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "basic",
           "mode": "double",
           "game": "EX",
@@ -42901,7 +42997,7 @@
         {
           "title": "Destiny lovers",
           "level": 7,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
@@ -45361,10 +45457,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (LuvMIX)",
+          "title": "TRIP MACHINE～luv mix～",
+          "level": 9,
+          "bpm": "160",
+          "difficulty": "basic",
           "mode": "single",
-          "level": 8,
-          "error": "Song file not found"
+          "game": "3rd",
+          "rankedRating": 9.25,
+          "songId": "000282",
+          "chartId": "000282#S#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -45396,6 +45499,7 @@
       "chartIds": [
         "001088#S#1",
         "000235#S#1",
+        "000282#S#1",
         "000336#S#2",
         "001143#S#2"
       ]
@@ -45432,10 +45536,17 @@
           "artist": "DE-SIRE"
         },
         {
-          "title": "TRIP MACHINE (LuvMIX)",
-          "mode": "double",
+          "title": "TRIP MACHINE～luv mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "160",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 9.55,
+          "songId": "000282",
+          "chartId": "000282#D#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "TRIP MACHINE CLIMAX",
@@ -45467,6 +45578,7 @@
       "chartIds": [
         "001088#D#1",
         "000235#D#1",
+        "000282#D#1",
         "000336#D#2",
         "001143#D#2"
       ]
@@ -45629,22 +45741,43 @@
       "color": "#46aadc",
       "songs": [
         {
-          "title": "PARANOiA KCET (clean mix)",
-          "mode": "single",
+          "title": "PARANOiA KCET ～clean mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "179-180",
+          "difficulty": "difficult",
+          "mode": "single",
+          "game": "2nd",
+          "rankedRating": 9.4,
+          "songId": "000230",
+          "chartId": "000230#S#2",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
-          "title": "TRIP MACHINE (LuvMIX)",
+          "title": "TRIP MACHINE～luv mix～",
+          "level": 9,
+          "bpm": "160",
+          "difficulty": "basic",
           "mode": "single",
-          "level": 8,
-          "error": "Song file not found"
+          "game": "3rd",
+          "rankedRating": 9.25,
+          "songId": "000282",
+          "chartId": "000282#S#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
         },
         {
-          "title": "La Senorita Virtual",
-          "mode": "single",
+          "title": "La Señorita Virtual",
           "level": 8,
-          "error": "Song file not found"
+          "bpm": "182",
+          "difficulty": "basic",
+          "mode": "single",
+          "game": "3rd",
+          "rankedRating": 8.5,
+          "songId": "000272",
+          "chartId": "000272#S#1",
+          "path": "sm/3rd/La Senorita Virtual/La Senorita Virtual.sm",
+          "artist": "2MB"
         },
         {
           "title": "ORION.78～civilization mix～",
@@ -45660,22 +45793,25 @@
           "artist": "2MB"
         },
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 7,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "single",
           "game": "6th",
           "rankedRating": 7.55,
-          "songId": "002129",
-          "chartId": "002129#S#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#S#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         }
       ],
       "chartIds": [
+        "000230#S#2",
+        "000282#S#1",
+        "000272#S#1",
         "000424#S#1",
-        "002129#S#1"
+        "000410#S#1"
       ]
     },
     {
@@ -45684,22 +45820,43 @@
       "color": "#9b59b6",
       "songs": [
         {
-          "title": "PARANOiA KCET (clean mix)",
-          "mode": "double",
-          "level": 9,
-          "error": "Song file not found"
-        },
-        {
-          "title": "TRIP MACHINE (LuvMIX)",
-          "mode": "double",
-          "level": 9,
-          "error": "Song file not found"
-        },
-        {
-          "title": "La Senorita Virtual",
-          "mode": "double",
+          "title": "PARANOiA KCET ～clean mix～",
           "level": 8,
-          "error": "Song file not found"
+          "bpm": "179-180",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "2nd",
+          "rankedRating": 8.6,
+          "songId": "000230",
+          "chartId": "000230#D#1",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
+        },
+        {
+          "title": "TRIP MACHINE～luv mix～",
+          "level": 9,
+          "bpm": "160",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 9.55,
+          "songId": "000282",
+          "chartId": "000282#D#1",
+          "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm",
+          "artist": "2MB"
+        },
+        {
+          "title": "La Señorita Virtual",
+          "level": 9,
+          "bpm": "182",
+          "difficulty": "basic",
+          "mode": "double",
+          "game": "3rd",
+          "rankedRating": 9.45,
+          "songId": "000272",
+          "chartId": "000272#D#1",
+          "path": "sm/3rd/La Senorita Virtual/La Senorita Virtual.sm",
+          "artist": "2MB"
         },
         {
           "title": "ORION.78～civilization mix～",
@@ -45715,22 +45872,25 @@
           "artist": "2MB"
         },
         {
-          "title": "Healing Vision ～Angelic mix～",
+          "title": "Healing Vision～Angelic mix～",
           "level": 8,
           "bpm": "49-196",
           "difficulty": "basic",
           "mode": "double",
           "game": "6th",
           "rankedRating": 8.55,
-          "songId": "002129",
-          "chartId": "002129#D#1",
-          "path": "sm/6th/Healing Vision ~Angelic mix~/Healing Vision ~Angelic mix~.sm",
+          "songId": "000410",
+          "chartId": "000410#D#1",
+          "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
           "artist": "2MB"
         }
       ],
       "chartIds": [
+        "000230#D#1",
+        "000282#D#1",
+        "000272#D#1",
         "000424#D#1",
-        "002129#D#1"
+        "000410#D#1"
       ]
     },
     {
@@ -45790,7 +45950,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -45921,7 +46081,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -46521,10 +46681,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET (clean mix)",
-          "mode": "single",
+          "title": "PARANOiA KCET ～clean mix～",
           "level": 9,
-          "error": "Song file not found"
+          "bpm": "179-180",
+          "difficulty": "difficult",
+          "mode": "single",
+          "game": "2nd",
+          "rankedRating": 9.4,
+          "songId": "000230",
+          "chartId": "000230#S#2",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -46556,6 +46723,7 @@
       "chartIds": [
         "001086#S#1",
         "000231#S#1",
+        "000230#S#2",
         "000328#S#1",
         "000276#S#1"
       ]
@@ -46592,10 +46760,17 @@
           "artist": "190"
         },
         {
-          "title": "PARANOiA KCET (clean mix)",
+          "title": "PARANOiA KCET ～clean mix～",
+          "level": 8,
+          "bpm": "179-180",
+          "difficulty": "basic",
           "mode": "double",
-          "level": 9,
-          "error": "Song file not found"
+          "game": "2nd",
+          "rankedRating": 8.6,
+          "songId": "000230",
+          "chartId": "000230#D#1",
+          "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm",
+          "artist": "2MB"
         },
         {
           "title": "PARANOIA EVOLUTION",
@@ -46627,6 +46802,7 @@
       "chartIds": [
         "001086#D#1",
         "000231#D#1",
+        "000230#D#1",
         "000328#D#2",
         "000276#D#1"
       ]
@@ -46665,7 +46841,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "single",
           "game": "5th",
@@ -46744,7 +46920,7 @@
         {
           "title": "BROKEN MY HEART",
           "level": 5,
-          "bpm": "159",
+          "bpm": "161",
           "difficulty": "basic",
           "mode": "double",
           "game": "5th",
@@ -47024,7 +47200,7 @@
           "artist": "ΨΦMA KΦMATSU"
         },
         {
-          "title": "BRE∀K DOWN！",
+          "title": "BRE∀K DOWN!",
           "level": 8,
           "bpm": "191",
           "difficulty": "difficult",
@@ -47039,7 +47215,7 @@
         {
           "title": "CANDY☆",
           "level": 7,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "difficult",
           "mode": "single",
           "game": "6th",
@@ -47114,7 +47290,7 @@
           "artist": "ΨΦMA KΦMATSU"
         },
         {
-          "title": "BRE∀K DOWN！",
+          "title": "BRE∀K DOWN!",
           "level": 8,
           "bpm": "191",
           "difficulty": "difficult",
@@ -47129,7 +47305,7 @@
         {
           "title": "CANDY☆",
           "level": 8,
-          "bpm": "192",
+          "bpm": "193",
           "difficulty": "difficult",
           "mode": "double",
           "game": "6th",
@@ -47807,7 +47983,7 @@
         {
           "title": "Abyss",
           "level": 7,
-          "bpm": "141-142",
+          "bpm": "142",
           "difficulty": "difficult",
           "mode": "single",
           "game": "5th",
@@ -47831,9 +48007,9 @@
           "artist": "TaQ"
         },
         {
-          "title": "BURNING HEAT！（3 Option MIX）",
+          "title": "BURNING HEAT! (3 Option MIX)",
           "level": 8,
-          "bpm": "165",
+          "bpm": "167",
           "difficulty": "difficult",
           "mode": "single",
           "game": "7th",
@@ -47886,7 +48062,7 @@
         {
           "title": "Abyss",
           "level": 6,
-          "bpm": "141-142",
+          "bpm": "142",
           "difficulty": "basic",
           "mode": "double",
           "game": "5th",
@@ -47910,9 +48086,9 @@
           "artist": "TaQ"
         },
         {
-          "title": "BURNING HEAT！（3 Option MIX）",
+          "title": "BURNING HEAT! (3 Option MIX)",
           "level": 7,
-          "bpm": "165",
+          "bpm": "167",
           "difficulty": "difficult",
           "mode": "double",
           "game": "7th",
@@ -48147,7 +48323,7 @@
           "artist": "Crystal Aliens"
         },
         {
-          "title": "BRE∀K DOWN！",
+          "title": "BRE∀K DOWN!",
           "level": 8,
           "bpm": "191",
           "difficulty": "difficult",
@@ -48173,9 +48349,9 @@
           "artist": "RevenG vs DE-SIRE"
         },
         {
-          "title": "BURNING HEAT！（3 Option MIX）",
+          "title": "BURNING HEAT! (3 Option MIX)",
           "level": 8,
-          "bpm": "165",
+          "bpm": "167",
           "difficulty": "difficult",
           "mode": "single",
           "game": "7th",
@@ -48240,7 +48416,7 @@
           "artist": "Crystal Aliens"
         },
         {
-          "title": "BRE∀K DOWN！",
+          "title": "BRE∀K DOWN!",
           "level": 8,
           "bpm": "191",
           "difficulty": "difficult",
@@ -48266,9 +48442,9 @@
           "artist": "RevenG vs DE-SIRE"
         },
         {
-          "title": "BURNING HEAT！（3 Option MIX）",
+          "title": "BURNING HEAT! (3 Option MIX)",
           "level": 7,
-          "bpm": "165",
+          "bpm": "167",
           "difficulty": "difficult",
           "mode": "double",
           "game": "7th",
@@ -48679,7 +48855,7 @@
         {
           "title": "Destiny lovers",
           "level": 7,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -48758,7 +48934,7 @@
         {
           "title": "Destiny lovers",
           "level": 7,
-          "bpm": "170",
+          "bpm": "171",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
@@ -48811,7 +48987,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "single",
           "game": "3rd",
@@ -48836,7 +49012,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "single",
           "game": "7th",
@@ -48889,7 +49065,7 @@
         {
           "title": "AFRONOVA",
           "level": 9,
-          "bpm": "199",
+          "bpm": "200",
           "difficulty": "difficult",
           "mode": "double",
           "game": "3rd",
@@ -48914,7 +49090,7 @@
         {
           "title": "TSUGARU",
           "level": 9,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "difficult",
           "mode": "double",
           "game": "7th",
@@ -49175,7 +49351,7 @@
         {
           "title": "xenon",
           "level": 10,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "single",
           "game": "EX",
@@ -49254,7 +49430,7 @@
         {
           "title": "xenon",
           "level": 9,
-          "bpm": "158",
+          "bpm": "159",
           "difficulty": "difficult",
           "mode": "double",
           "game": "EX",
@@ -49666,7 +49842,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "single",
           "game": "EX",
@@ -49745,7 +49921,7 @@
         {
           "title": "The legend of MAX",
           "level": 8,
-          "bpm": "83-667",
+          "bpm": "83-666",
           "difficulty": "basic",
           "mode": "double",
           "game": "EX",
@@ -49877,7 +50053,7 @@
         {
           "title": "TSUGARU",
           "level": 12,
-          "bpm": "99-165",
+          "bpm": "94-165",
           "difficulty": "expert",
           "mode": "single",
           "game": "7th",
@@ -49960,9 +50136,16 @@
         },
         {
           "title": "LOVE THIS FEELIN'",
+          "level": 11,
+          "bpm": "95-190",
           "difficulty": "expert",
           "mode": "single",
-          "error": "Song file not found"
+          "game": "3rd",
+          "rankedRating": 11.65,
+          "songId": "000269",
+          "chartId": "000269#S#4",
+          "path": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'.sm",
+          "artist": "Chang ma"
         },
         {
           "title": "Come Back to Me (Feel It)",
@@ -49981,6 +50164,7 @@
       "chartIds": [
         "001892#S#4",
         "000489#S#4",
+        "000269#S#4",
         "000899#S#4"
       ]
     },
@@ -51046,9 +51230,9 @@
           "mode": "single",
           "game": "4th",
           "rankedRating": 11.55,
-          "songId": "002128",
-          "chartId": "002128#S#4",
-          "path": "sm/4th/59/59.sm",
+          "songId": "000291",
+          "chartId": "000291#S#4",
+          "path": "sm/4th/.59/.59.sm",
           "artist": "dj TAKA"
         },
         {
@@ -51092,7 +51276,7 @@
         }
       ],
       "chartIds": [
-        "002128#S#4",
+        "000291#S#4",
         "000530#S#4",
         "000078#S#4",
         "001046#S#4"

@@ -89,7 +89,8 @@ const tasks = [
       { tree: rel('data', 'simfiles'), match: /\.(sm|ssc)$/i },
     ],
     sources: [
-      ...scripts('extract-stepmania-tech-counts.mjs', 'itgmania-tech-counts.mjs', 'cache-utils.mjs'),
+      ...scripts('extract-stepmania-tech-counts.mjs', 'extract-stepmania-tech-worker.mjs',
+        'stepmania-tech-counts-utils.mjs', 'itgmania-tech-counts.mjs', 'cache-utils.mjs'),
       ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartMetrics.js'),
     ],
     outputs: files('data/generated/stepmania-tech-counts.json'),

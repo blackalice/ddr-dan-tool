@@ -2,10 +2,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import os from 'os';
-import { parseSm } from '../src/utils/smParser.js';
-import { computeChartMetrics } from '../src/utils/chartMetrics.js';
+import { Worker } from 'worker_threads';
 import { buildChartId } from '../src/utils/chartIds.js';
-import { computeItgmaniaTechCounts } from './itgmania-tech-counts.mjs';
 import {
   collectStats,
   mergeStats,
@@ -24,6 +22,7 @@ const SM_FILES_PATH = path.join(GENERATED_DIR, 'sm-files.json');
 const SONG_ID_MAP_PATH = path.join(DATA_DIR, 'song-ids.json');
 const OUTPUT_PATH = path.join(GENERATED_DIR, 'stepmania-tech-counts.json');
 const CACHE_PATH = path.join(GENERATED_DIR, '.cache', 'extract-stepmania-tech-counts.json');
+const WORKER_PATH = path.join(__dirname, 'extract-stepmania-tech-worker.mjs');
 const FORCE = process.argv.includes('--force') || process.env.FORCE_DATA === '1' || process.env.DDR_FORCE_DATA === '1';
 
 function normalizePathValue(value) {
@@ -44,120 +43,76 @@ function buildPathModeDifficultyKey(songPath, mode, difficulty) {
   return `${p}|${m}|${d}`;
 }
 
-function toNonNegativeInt(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n) || n < 0) return null;
-  return Math.round(n);
-}
-
-function toNonNegativeNumber(value, precision = 3) {
-  const n = Number(value);
-  if (!Number.isFinite(n) || n < 0) return null;
-  const factor = 10 ** precision;
-  return Math.round(n * factor) / factor;
-}
-
-function putCount(target, key, value) {
-  const n = toNonNegativeInt(value);
-  if (n === null) return;
-  target[key] = n;
-}
-
-function putMeasure(target, key, value, precision = 3) {
-  const n = toNonNegativeNumber(value, precision);
-  if (n === null) return;
-  target[key] = n;
-}
-
-function buildCounts(metrics, itgTech) {
-  const debugStats = metrics?.debugStats && typeof metrics.debugStats === 'object'
-    ? metrics.debugStats
-    : {};
-  const counts = {};
-
-  // Basic counts
-  putCount(counts, 'steps', metrics?.steps);
-  putCount(counts, 'notes', metrics?.notes);
-  putCount(counts, 'jumps', metrics?.jumps);
-  putCount(counts, 'hands', metrics?.hands);
-  putCount(counts, 'quads', metrics?.quads);
-  putCount(counts, 'holds', metrics?.holds);
-  putCount(counts, 'shocks', metrics?.shocks);
-  putCount(counts, 'stops', debugStats.stops);
-
-  // Footwork patterns
-  putCount(counts, 'crossovers', debugStats.crossovers);
-  putCount(counts, 'halfCrossovers', debugStats.halfCrossovers);
-  putCount(counts, 'fullCrossovers', debugStats.fullCrossovers);
-  putCount(counts, 'holdCrossovers', debugStats.holdCrossovers);
-  putCount(counts, 'footswitches', debugStats.footswitches);
-  putCount(counts, 'upFootswitches', debugStats.upFootswitches);
-  putCount(counts, 'downFootswitches', debugStats.downFootswitches);
-  putCount(counts, 'sideswitches', debugStats.sideswitches);
-  putCount(counts, 'jacks', debugStats.jacks);
-  putCount(counts, 'doublesteps', debugStats.doublesteps);
-  putCount(counts, 'brackets', debugStats.brackets);
-  putCount(counts, 'forcedBrackets', debugStats.forcedBrackets);
-
-  // Advanced patterns
-  putCount(counts, 'anchors', debugStats.anchors);
-  putCount(counts, 'spins', debugStats.spins);
-  putCount(counts, 'spins180', debugStats.spins180);
-  putCount(counts, 'spins360', debugStats.spins360);
-  putCount(counts, 'staircases', debugStats.staircases);
-  putCount(counts, 'rolls', debugStats.rolls);
-  putCount(counts, 'candles', debugStats.candles);
-  putCount(counts, 'drills', debugStats.drills);
-  putCount(counts, 'drillNotes', debugStats.drillNotes);
-  putCount(counts, 'gallops', debugStats.gallops);
-  putCount(counts, 'monoRuns', debugStats.monoRuns);
-  putCount(counts, 'monoLeftRuns', debugStats.monoLeftRuns);
-  putCount(counts, 'monoRightRuns', debugStats.monoRightRuns);
-  putCount(counts, 'streams', debugStats.streamCount);
-  putCount(counts, 'streamCount', debugStats.streamCount);
-  putCount(counts, 'streamNotes', debugStats.streamNotes);
-  putCount(counts, 'bursts', debugStats.bursts);
-  putCount(counts, 'technicalMoves', debugStats.technicalMoves);
-
-  // Density metrics (float values)
-  putMeasure(counts, 'notesPerSecond', debugStats.notesPerSecond, 3);
-  putMeasure(counts, 'stepsPerSecond', debugStats.stepsPerSecond, 3);
-  putMeasure(counts, 'maximumNotesPerSecond', debugStats.maximumNotesPerSecond, 3);
-  putMeasure(counts, 'meanNotesPerSecond', debugStats.meanNotesPerSecond, 3);
-  putMeasure(counts, 'medianNotesPerSecond', debugStats.medianNotesPerSecond, 3);
-  putMeasure(counts, 'fastest3NoteBurst', debugStats.fastest3NoteBurst, 3);
-  putMeasure(counts, 'fastest7NoteRun', debugStats.fastest7NoteRun, 3);
-  putMeasure(counts, 'fastest15NoteRun', debugStats.fastest15NoteRun, 3);
-  putMeasure(counts, 'maxTimeBetweenNotes', debugStats.maxTimeBetweenNotes, 3);
-
-  // Prefer ITGmania StepParity/TechCounts for overlapping categories.
-  if (itgTech && typeof itgTech === 'object') {
-    putCount(counts, 'crossovers', itgTech.crossovers);
-    putCount(counts, 'halfCrossovers', itgTech.halfCrossovers);
-    putCount(counts, 'fullCrossovers', itgTech.fullCrossovers);
-    putCount(counts, 'footswitches', itgTech.footswitches);
-    putCount(counts, 'upFootswitches', itgTech.upFootswitches);
-    putCount(counts, 'downFootswitches', itgTech.downFootswitches);
-    putCount(counts, 'sideswitches', itgTech.sideswitches);
-    putCount(counts, 'jacks', itgTech.jacks);
-    putCount(counts, 'brackets', itgTech.brackets);
-    putCount(counts, 'doublesteps', itgTech.doublesteps);
-  }
-
-  // ITGmania category aliases for compatibility.
-  if (counts.crossovers != null) counts.TechCountsCategory_Crossovers = counts.crossovers;
-  if (counts.footswitches != null) counts.TechCountsCategory_Footswitches = counts.footswitches;
-  if (counts.sideswitches != null) counts.TechCountsCategory_Sideswitches = counts.sideswitches;
-  if (counts.jacks != null) counts.TechCountsCategory_Jacks = counts.jacks;
-  if (counts.brackets != null) counts.TechCountsCategory_Brackets = counts.brackets;
-  if (counts.doublesteps != null) counts.TechCountsCategory_Doublesteps = counts.doublesteps;
-
-  return Object.keys(counts).length > 0 ? counts : null;
-}
-
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
   return JSON.parse(raw);
+}
+
+function getWorkerCount(jobCount) {
+  if (jobCount <= 0) return 0;
+  const available = typeof os.availableParallelism === 'function'
+    ? os.availableParallelism()
+    : os.cpus().length;
+  const requested = Number.parseInt(process.env.DDR_STEPMANIA_WORKERS || '', 10);
+  const configured = Number.isInteger(requested) && requested > 0
+    ? requested
+    : Math.min(8, available);
+  return Math.max(1, Math.min(jobCount, configured));
+}
+
+function runWorkerPool(jobs) {
+  if (jobs.length === 0) return Promise.resolve([]);
+
+  const workerCount = getWorkerCount(jobs.length);
+  return new Promise((resolve, reject) => {
+    const workers = [];
+    const results = new Array(jobs.length);
+    let nextJob = 0;
+    let completed = 0;
+    let settled = false;
+
+    const terminateWorkers = () => Promise.all(
+      workers.map((worker) => worker.terminate()),
+    );
+    const fail = (err) => {
+      if (settled) return;
+      settled = true;
+      terminateWorkers().finally(() => reject(err));
+    };
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      terminateWorkers().then(() => resolve(results), reject);
+    };
+    const assign = (worker) => {
+      if (settled || nextJob >= jobs.length) return;
+      worker.postMessage({ type: 'process', job: jobs[nextJob] });
+      nextJob += 1;
+    };
+
+    for (let i = 0; i < workerCount; i += 1) {
+      const worker = new Worker(WORKER_PATH);
+      workers.push(worker);
+      worker.on('message', (message) => {
+        if (settled) return;
+        if (message?.type !== 'result' || !Number.isInteger(message.index)) {
+          fail(new Error('StepMania tech worker returned an invalid result.'));
+          return;
+        }
+        results[message.index] = message;
+        completed += 1;
+        if (completed >= jobs.length) finish();
+        else assign(worker);
+      });
+      worker.on('error', fail);
+      worker.on('exit', (code) => {
+        if (!settled && (code !== 0 || completed < jobs.length)) {
+          fail(new Error(`StepMania tech worker exited with code ${code}.`));
+        }
+      });
+      assign(worker);
+    }
+  });
 }
 
 async function main() {
@@ -173,6 +128,8 @@ async function main() {
         path.join(ROOT_DIR, 'src', 'utils', 'smParserUtils.js'),
         path.join(ROOT_DIR, 'src', 'utils', 'chartMetrics.js'),
         path.join(ROOT_DIR, 'scripts', 'itgmania-tech-counts.mjs'),
+        path.join(ROOT_DIR, 'scripts', 'extract-stepmania-tech-worker.mjs'),
+        path.join(ROOT_DIR, 'scripts', 'stepmania-tech-counts-utils.mjs'),
       ],
       ROOT_DIR,
     ),
@@ -201,64 +158,50 @@ async function main() {
   let chartCount = 0;
   let failedSongs = 0;
 
-  const CONCURRENCY = Math.max(2, os.cpus().length * 2);
-  let currentIndex = 0;
+  const jobs = [];
+  for (let fileIndex = 0; fileIndex < files.length; fileIndex += 1) {
+    const songPath = normalizePathValue(files[fileIndex]?.path);
+    if (!songPath) continue;
 
-  const worker = async () => {
-    while (currentIndex < files.length) {
-      const file = files[currentIndex];
-      currentIndex += 1;
-
-      const songPath = normalizePathValue(file?.path);
-      if (!songPath) continue;
-
-      try {
-        const { id: songId, created } = ensureSongId(songIdMap, songPath);
-        if (created) songIdMapChanged = true;
-
-        const fullPath = toSimfilePath(songPath);
-        const source = await fs.readFile(fullPath, 'utf8');
-        const parsed = parseSm(source);
-        const availableTypes = Array.isArray(parsed?.availableTypes) ? parsed.availableTypes : [];
-        const charts = parsed?.charts && typeof parsed.charts === 'object' ? parsed.charts : {};
-
-        for (const chartType of availableTypes) {
-          const mode = String(chartType?.mode || '').toLowerCase();
-          const difficulty = String(chartType?.difficulty || '').toLowerCase();
-          const slug = chartType?.slug;
-          if (!slug || !mode || !difficulty) continue;
-          const chart = charts[slug];
-          if (!chart || typeof chart !== 'object') continue;
-
-          const metrics = computeChartMetrics(chart);
-          const itgTech = computeItgmaniaTechCounts(chart);
-          const counts = buildCounts(metrics, itgTech);
-          if (!counts) continue;
-
-          const chartId = buildChartId(songId, mode, difficulty);
-          const pmdKey = buildPathModeDifficultyKey(songPath, mode, difficulty);
-          if (chartId) countsByChartId[chartId] = counts;
-          if (pmdKey) countsByPathModeDifficulty[pmdKey] = counts;
-          chartCount += 1;
-        }
-
-        songCount += 1;
-        if (songCount % 100 === 0) {
-          console.log(`[extract-stepmania-tech-counts] processed ${songCount}/${files.length} songs...`);
-        }
-      } catch (err) {
-        failedSongs += 1;
-        console.warn(`[extract-stepmania-tech-counts] failed for ${songPath}: ${err?.message || err}`);
-      }
-    }
-  };
-
-  const workers = [];
-  const actualConcurrency = Math.min(CONCURRENCY, files.length);
-  for (let i = 0; i < actualConcurrency; i += 1) {
-    workers.push(worker());
+    const { id: songId, created } = ensureSongId(songIdMap, songPath);
+    if (created) songIdMapChanged = true;
+    jobs.push({
+      index: jobs.length,
+      songPath,
+      songId,
+      fullPath: toSimfilePath(songPath),
+    });
   }
-  await Promise.all(workers);
+
+  const workerCount = getWorkerCount(jobs.length);
+  if (workerCount > 0) {
+    console.log(`[extract-stepmania-tech-counts] processing ${jobs.length} songs with ${workerCount} worker threads...`);
+  }
+  const results = await runWorkerPool(jobs);
+  for (const result of results) {
+    const { songPath } = result;
+    if (result.error) {
+      failedSongs += 1;
+      console.warn(`[extract-stepmania-tech-counts] failed for ${songPath}: ${result.error}`);
+      continue;
+    }
+
+    songCount += 1;
+    for (const chart of result.chartEntries || []) {
+      const counts = chart.counts;
+      if (!counts) continue;
+
+      const chartId = buildChartId(result.songId, chart.mode, chart.difficulty);
+      const pmdKey = buildPathModeDifficultyKey(songPath, chart.mode, chart.difficulty);
+      if (chartId) countsByChartId[chartId] = counts;
+      if (pmdKey) countsByPathModeDifficulty[pmdKey] = counts;
+      chartCount += 1;
+    }
+
+    if (songCount % 100 === 0) {
+      console.log(`[extract-stepmania-tech-counts] processed ${songCount}/${files.length} songs...`);
+    }
+  }
 
   if (songIdMapChanged) {
     await saveSongIdMap(songIdMap);

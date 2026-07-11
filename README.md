@@ -109,6 +109,10 @@ Normal frontend builds do not regenerate derived data. Run the data pipeline exp
 
 You can also force any individual step with `--force` or by setting `FORCE_DATA=1` (or `DDR_FORCE_DATA=1`) in your shell.
 
+Audio duration analysis uses up to eight concurrent jobs by default. Set
+`DDR_AUDIO_CONCURRENCY` to tune that pool, for example
+`DDR_AUDIO_CONCURRENCY=4 npm run build:audio:force`.
+
 ### Auth & Database
 
 - Backend endpoints live under `/api`:
