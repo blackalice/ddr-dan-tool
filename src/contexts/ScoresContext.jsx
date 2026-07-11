@@ -171,6 +171,7 @@ export const ScoresProvider = ({ children }) => {
   const [rawSongMeta, setRawSongMeta] = useState([]);
   const [songMeta, setSongMeta] = useState([]);
   const [songMetaWorldFlag, setSongMetaWorldFlag] = useState(null);
+  const [songMetaRatingsIncluded, setSongMetaRatingsIncluded] = useState(false);
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
   const rankedRatingsRef = useRef(null);
   const rankedRatingsPromiseRef = useRef(null);
@@ -254,20 +255,22 @@ export const ScoresProvider = ({ children }) => {
     return changed ? next : meta;
   }, [loadRankedRatings]);
 
-  const loadSongMeta = useCallback(async () => {
+  const loadSongMeta = useCallback(async ({ includeRankedRatings = false } = {}) => {
     if (
       Array.isArray(songMeta) &&
       songMeta.length > 0 &&
-      songMetaWorldFlag === worldMetaKey
+      songMetaWorldFlag === worldMetaKey &&
+      (!includeRankedRatings || songMetaRatingsIncluded)
     ) {
       return songMeta;
     }
     if (Array.isArray(rawSongMeta) && rawSongMeta.length > 0) {
-      const corrected = await applyRankedRatings(rawSongMeta);
+      const corrected = includeRankedRatings ? await applyRankedRatings(rawSongMeta) : rawSongMeta;
       const applied = applyWorldMetaChanges(corrected);
       setRawSongMeta(corrected);
       setSongMeta(applied);
       setSongMetaWorldFlag(worldMetaKey);
+      setSongMetaRatingsIncluded(prev => prev || includeRankedRatings);
       return applied;
     }
     if (songMetaPromiseRef.current) {
@@ -278,12 +281,14 @@ export const ScoresProvider = ({ children }) => {
         if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
           throw new Error(`[scores] song metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
         }
-        return applyRankedRatings(meta).then((corrected) => {
+        const ratingsPromise = includeRankedRatings ? applyRankedRatings(meta) : Promise.resolve(meta);
+        return ratingsPromise.then((corrected) => {
           const normalized = corrected || meta;
           setRawSongMeta(normalized);
           const applied = applyWorldMetaChanges(normalized);
           setSongMeta(applied);
           setSongMetaWorldFlag(worldMetaKey);
+          setSongMetaRatingsIncluded(includeRankedRatings);
           return applied;
         });
       })
@@ -296,7 +301,7 @@ export const ScoresProvider = ({ children }) => {
       });
     songMetaPromiseRef.current = promise;
     return promise;
-  }, [applyRankedRatings, applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, worldMetaKey]);
+  }, [applyRankedRatings, applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, songMetaRatingsIncluded, worldMetaKey]);
 
   useEffect(() => {
     if (!rawSongMeta.length) return;

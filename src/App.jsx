@@ -9,6 +9,7 @@ import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import { applyWorldNewChallengeChartsToSimfile } from './utils/worldNewChallengeCharts.js';
 import { parseSelection } from './utils/urlState.js';
 import { parseChartId } from './utils/chartIds.js';
+import { getJsonCached } from './utils/cachedFetch.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
 // import SyncBanner from './components/SyncBanner.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
@@ -90,10 +91,9 @@ function AppRoutes() {
   // Scores availability is handled within pages (e.g., StatsPage)
 
   useEffect(() => {
-    fetch('/sm-files.json')
-        .then(response => response.json())
+    getJsonCached('/song-index.json')
         .then(data => setSmData(data))
-        .catch(error => console.error('Error fetching sm-files.json:', error));
+        .catch(error => console.error('Error fetching song index:', error));
   }, []);
 
   useEffect(() => {
@@ -288,7 +288,7 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, worldRemoveChallengeCharts]);
+  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, worldRemoveChallengeCharts, debugChartSelection]);
 
   useEffect(() => {
     if (!simfileData) {
@@ -314,7 +314,7 @@ function AppRoutes() {
       return;
     }
     if (match !== currentChart) setCurrentChart(match);
-  }, [simfileData, currentChart, playStyle, pickChartForPlayStyle]);
+  }, [simfileData, currentChart, playStyle, pickChartForPlayStyle, debugChartSelection]);
 
   const handleSongSelect = useCallback((song) => {
     if (debugChartSelection) {
@@ -347,7 +347,7 @@ function AppRoutes() {
       next.delete('m');
       setSearchParams(next);
     }
-  }, [searchParams, setSearchParams, location.pathname]);
+  }, [searchParams, setSearchParams, location.pathname, location.search, debugChartSelection]);
 
   // Avoid modifying the URL or selection when songlistOverride changes to prevent flicker.
 
@@ -391,7 +391,7 @@ function AppRoutes() {
       next.delete('m');
       setSearchParams(next);
     }
-  }, [setPlayStyle, simfileData, searchParams, setSearchParams]);
+  }, [setPlayStyle, simfileData, searchParams, setSearchParams, debugChartSelection]);
 
   useEffect(() => { storage.setItem('activeDan', activeDan); }, [activeDan]);
   useEffect(() => { storage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);
@@ -428,7 +428,7 @@ function AppRoutes() {
             <Route path="/card-draw" element={<CardDrawPage smData={smData} />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
+            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
             <Route path="/theme" element={<ThemeEditorPage />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />

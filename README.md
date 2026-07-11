@@ -27,12 +27,9 @@ A modern, feature-rich web application for DanceDanceRevolution players. This to
 -   **Simple Multiplier Tool**:
     -   A quick calculator to find a multiplier for a given song BPM and target speed.
 
--   **Camera-based Song Recognition (Experimental)**:
-    -   Using your device's camera and a Google AI API key, the tool can identify the song currently on your game screen.
-
 -   **Customizable Experience**:
     -   Light and Dark themes available.
-    -   All settings, including your target BPM and API key, are saved in your browser for convenience.
+    -   Settings, including your target BPM, are saved in your browser for convenience.
 
 ## Tech Stack
 
@@ -41,7 +38,6 @@ A modern, feature-rich web application for DanceDanceRevolution players. This to
 -   **Routing**: [React Router](https://reactrouter.com/)
 -   **Charting**: [Chart.js](https://www.chartjs.org/)
 -   **Styling**: CSS with dynamic theming
--   **AI Integration**: [Google AI SDK](https://ai.google.dev/)
 
 ## How to Run Locally
 

@@ -267,7 +267,7 @@ const RankingsPage = () => {
 
   useEffect(() => {
     let cancelled = false;
-    loadSongMeta()
+    loadSongMeta({ includeRankedRatings: true })
       .then(meta => {
         if (!cancelled) setSongMeta(meta);
       })

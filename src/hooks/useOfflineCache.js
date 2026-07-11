@@ -3,7 +3,7 @@ import { SONGLIST_OVERRIDE_OPTIONS } from '../utils/songlistOverrides.js';
 
 const BASE_DATA_URLS = [
   '/song-meta.json',
-  '/sm-files.json',
+  '/song-index.json',
   '/combined_song_ratings.json',
   '/courses-data.json',
   '/dan-data.json',
@@ -36,8 +36,8 @@ async function buildOfflineUrlList() {
     .map((opt) => opt.file)
     .filter(Boolean);
 
-  const res = await fetch('/sm-files.json', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to load sm-files.json');
+  const res = await fetch('/song-index.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('Failed to load song-index.json');
   const data = await res.json();
   const smPaths = Array.isArray(data?.files)
     ? data.files

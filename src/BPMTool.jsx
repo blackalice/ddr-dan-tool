@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect, useCallback, useRef } from 'react';
+import React, { lazy, Suspense, useState, useMemo, useContext, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,6 @@ import {
     faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import Select, { components as RSComponents } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
@@ -23,15 +22,12 @@ import {
     songlistOverrideMatches,
 } from './utils/songlistOverrides';
 import { useFilters } from './contexts/FilterContext.jsx';
-import { StepchartPage } from './components/StepchartPage.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
 import FilterModal from './components/FilterModal.jsx';
-import Camera from './Camera.jsx';
 import { useGroups } from './contexts/GroupsContext.jsx';
 import AddToListModal from './components/AddToListModal.jsx';
 import SortModal from './components/SortModal.jsx';
 import { TwoOptionSwitch } from './components/TwoOptionSwitch.jsx';
-import ChartStatsPanel from './components/ChartStatsPanel.jsx';
 import { getBpmRange } from './utils/bpm.js';
 import { useScores } from './contexts/ScoresContext.jsx';
 import { storage } from './utils/remoteStorage.js';
@@ -43,6 +39,9 @@ import { getDifficultyValue, isDifficultyAllowed } from './utils/difficultyFilte
 import { ADVANCED_FILTER_METRICS, chartMatchesAdvancedFilters, hasActiveAdvancedFilters } from './utils/advancedStatsFilters.js';
 import { useOfflineMode } from './hooks/useOfflineMode.js';
 import SnowfallOverlay from './components/SnowfallOverlay.jsx';
+
+const LazyStepchartPage = lazy(() => import('./components/StepchartPage.jsx').then(({ StepchartPage }) => ({ default: StepchartPage })));
+const LazyChartStatsPanel = lazy(() => import('./components/ChartStatsPanel.jsx'));
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -270,11 +269,10 @@ const isKeyboardEntryTarget = (target) => {
 };
 
 
-const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, setSelectedGame, view, setView, selectionLoading = false }) => {
+const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSelect, selectedGame, view, setView, selectionLoading = false }) => {
     const {
         targetBPM,
         multipliers,
-        apiKey,
         playStyle,
         songlistOverride,
         showRankedRatings,
@@ -291,7 +289,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
     const [songOptions, setSongOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [isProcessing, setIsProcessing] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(() => {
         const savedState = storage.getItem('isCollapsed');
         return savedState ? JSON.parse(savedState) : false;
@@ -502,6 +499,24 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         (showRankedRatings && (filters.rankedFractionMin !== '' || filters.rankedFractionMax !== '')) ||
         hasActiveAdvancedFilters(filters)
     );
+    const metadataRequired = showFilter
+        || showRankedRatings
+        || filtersActive
+        || songlistOverride !== SONGLIST_OVERRIDE_OPTIONS[0].value;
+
+    useEffect(() => {
+        if (!metadataRequired) return undefined;
+        let cancelled = false;
+        loadSongMeta({ includeRankedRatings: showRankedRatings })
+            .catch((error) => {
+                if (!cancelled) console.error('Failed to load song metadata:', error);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [loadSongMeta, metadataRequired, showRankedRatings]);
+
+
     const buildFilterCacheKey = useCallback((currentFilters = {}) => {
         const normalized = {
             bpmMin: currentFilters?.bpmMin ?? '',
@@ -860,30 +875,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
     }, [location.state?.fromSongCard]);
 
-    useEffect(() => {
-        let idleHandle = null;
-        let timeoutHandle = null;
-
-        const run = () => {
-            loadSongMeta()
-                .catch(err => console.error('Failed to load song meta:', err));
-        };
-
-        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-            idleHandle = window.requestIdleCallback(run, { timeout: 2000 });
-        } else {
-            timeoutHandle = window.setTimeout(run, 1200);
-        }
-
-        return () => {
-            if (idleHandle != null && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-                window.cancelIdleCallback(idleHandle);
-            }
-            if (timeoutHandle != null) {
-                window.clearTimeout(timeoutHandle);
-            }
-        };
-    }, [loadSongMeta]);
 
     const chartMetrics = useMemo(() => {
         if ((!simfileWithRatings && !simfileData) || !currentChart) return null;
@@ -1083,7 +1074,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 onSongSelect(null);
             }
         }
-    }, [filters, playStyle, simfileData, scores, currentChart, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings, showRankedRatings, getRatedChart, getRawChart]);
+    }, [filters, playStyle, simfileData, scores, currentChart, onSongSelect, setCurrentChart, songOptions, songMeta, simfileWithRatings, showRankedRatings, getRatedChart, getRawChart, debugChartSelection]);
 
     const {
         songTitle,
@@ -1510,7 +1501,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
             setCurrentChart(getRawChart(newChart));
         }
-    }, [simfileData, simfileWithRatings, filters, playStyle, currentChart, setCurrentChart, showRankedRatings, getRatedChart, getRawChart, songMeta]);
+    }, [simfileData, simfileWithRatings, filters, playStyle, currentChart, setCurrentChart, showRankedRatings, getRatedChart, getRawChart, songMeta, debugChartSelection]);
 
     useEffect(() => {
         if (!simfileWithRatings || !currentChart) return;
@@ -1585,31 +1576,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         singleValue: (styles) => ({ ...styles, color: 'var(--text-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }),
         input: (styles) => ({ ...styles, color: 'var(--text-color)' }),
     };
-
-    async function sendToGemini(imageDataUrl) {
-        setIsProcessing(true);
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-        const prompt = "From the attached image of a rhythm game screen, identify the song title. Return only the song title and nothing else. If the title is not visible, return 'Unknown'.";
-        const image = { inlineData: { data: imageDataUrl.split(',')[1], mimeType: "image/jpeg" } };
-        try {
-            const result = await model.generateContent([prompt, image]);
-            const response = await result.response;
-            const text = response.text();
-            setInputValue(text);
-            const allSongOptions = smData.files.map(file => ({ value: file.path, label: file.title, title: file.title, titleTranslit: file.titleTranslit }));
-            const matchedSong = allSongOptions.find(option => option.title.toLowerCase() === text.toLowerCase() || (option.titleTranslit && option.titleTranslit.toLowerCase() === text.toLowerCase()));
-            if (matchedSong) {
-                setSelectedGame('all');
-                onSongSelect(matchedSong);
-            }
-        } catch (error) {
-            console.error("Error with Gemini API:", error);
-            setInputValue("Error identifying song.");
-        } finally {
-            setIsProcessing(false);
-        }
-    }
 
     const saveChartToGroup = (name) => {
         if (!simfileData || !currentChart) return;
@@ -1761,7 +1727,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             onChange={setView}
                         />
                         <div className="action-buttons mobile-only">
-                            {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (
                                 <button className="filter-button" onClick={handleAddToList} title="Add to list">
                                     <FontAwesomeIcon icon={faPlus} />
@@ -1807,7 +1772,6 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                             />
                         </div>
                         <div className="action-buttons desktop-only">
-                            {apiKey && <Camera onCapture={sendToGemini} isProcessing={isProcessing} />}
                             {showLists && (
                                 <button className="filter-button" onClick={handleAddToList} title="Add to list">
                                     <FontAwesomeIcon icon={faPlus} />
@@ -1941,24 +1905,28 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                         )}
                     </div>
                 ) : view === 'chart' ? (
-                    <StepchartPage
-                        simfile={simfileWithRatings}
-                        currentType={currentChart ? currentChart.slug : (simfileWithRatings?.availableTypes?.[0]?.slug)}
-                        setCurrentChart={setCurrentChart}
-                        isCollapsed={isCollapsed}
-                        setIsCollapsed={setIsCollapsed}
-                        playStyle={playStyle}
-                        speedmod={speedmod}
-                        chunkColumns={chartChunkColumns}
-                        highlightPatterns={effectivePatternHighlights}
-                    />
+                        <Suspense fallback={<div className="app-loading">Loading chart…</div>}>
+                            <LazyStepchartPage
+                                simfile={simfileWithRatings}
+                                currentType={currentChart ? currentChart.slug : (simfileWithRatings?.availableTypes?.[0]?.slug)}
+                                setCurrentChart={setCurrentChart}
+                                isCollapsed={isCollapsed}
+                                setIsCollapsed={setIsCollapsed}
+                                playStyle={playStyle}
+                                speedmod={speedmod}
+                                chunkColumns={chartChunkColumns}
+                                highlightPatterns={effectivePatternHighlights}
+                            />
+                        </Suspense>
                 ) : (
-                    <ChartStatsPanel
-                        metrics={chartMetrics}
-                        songLength={resolvedSongLength}
-                        chartLevel={currentChart?.feet}
-                        levelStatMaxima={levelStatMaxima}
-                    />
+                        <Suspense fallback={<div className="app-loading">Loading stats…</div>}>
+                            <LazyChartStatsPanel
+                                metrics={chartMetrics}
+                                songLength={resolvedSongLength}
+                                chartLevel={currentChart?.feet}
+                                levelStatMaxima={levelStatMaxima}
+                            />
+                        </Suspense>
                 )}
                  {view === 'chart' && (
                     chartControlsMinimized ? (

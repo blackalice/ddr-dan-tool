@@ -46,7 +46,6 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@google/generative-ai": "^0.24.1",
     "argon2-browser": "^1.18.0",
     "chart.js": "^4.5.0",
     "cheerio": "^1.1.2",

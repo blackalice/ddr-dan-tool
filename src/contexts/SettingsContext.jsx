@@ -12,8 +12,6 @@ export const SettingsProvider = ({ children }) => {
         return saved ? parseInt(saved, 10) : 300;
     });
 
-    const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
-
     const [multiplierMode, setMultiplierMode] = useState(() => {
         const saved = storage.getItem('multiplierMode');
         return saved || MULTIPLIER_MODES.A_A3;
@@ -86,10 +84,6 @@ export const SettingsProvider = ({ children }) => {
     }, [targetBPM]);
 
     useEffect(() => {
-        sessionStorage.setItem('geminiApiKey', apiKey);
-    }, [apiKey]);
-
-    useEffect(() => {
         storage.setItem('multiplierMode', multiplierMode);
     }, [multiplierMode]);
 
@@ -141,8 +135,6 @@ export const SettingsProvider = ({ children }) => {
     const value = {
         targetBPM,
         setTargetBPM,
-        apiKey,
-        setApiKey,
         multiplierMode,
         setMultiplierMode,
         multipliers,

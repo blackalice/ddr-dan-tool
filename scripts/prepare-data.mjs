@@ -56,6 +56,16 @@ const tasks = [
     outputs: files('data/generated/sm-files.json'),
   },
   {
+    id: 'song-index',
+    command: 'generate-song-index.mjs',
+    deps: ['sm-list'],
+    inputs: [
+      { file: rel('data', 'generated', 'sm-files.json') },
+    ],
+    sources: scripts('generate-song-index.mjs'),
+    outputs: files('data/generated/song-index.json'),
+  },
+  {
     id: 'processed-data',
     command: 'generate-processed-data.mjs',
     deps: ['sm-list', 'sanbai-rankings'],
@@ -137,12 +147,13 @@ const tasks = [
   {
     id: 'public-sync',
     command: 'sync-public-assets.mjs',
-    deps: ['processed-data', 'world-challenges'],
+    deps: ['processed-data', 'world-challenges', 'song-index'],
     alwaysRun: true,
     inputs: [],
     sources: scripts('sync-public-assets.mjs'),
     outputs: files(
       'public/sm-files.json',
+      'public/song-index.json',
       'public/song-meta.json',
       'public/song-lengths.json',
       'public/dan-data.json',

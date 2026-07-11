@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { MULTIPLIER_MODES } from '../utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +13,13 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const authRequestRef = useRef(null);
   const navigate = useNavigate();
   const { offline } = useOfflineStatus();
   const { setScores } = useScores();
   const { setGroups, setActiveGroup } = useGroups();
   const {
     setTargetBPM,
-    setApiKey,
     setMultiplierMode,
     setTheme,
     setPlayStyle,
@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     const bool = (v) => v === true || v === 'true';
     const num = (v, d) => (v !== undefined && v !== null ? Number(v) : d);
     if (data.targetBPM !== undefined) setTargetBPM(num(data.targetBPM, 300));
-    if (data.apiKey !== undefined) setApiKey(data.apiKey);
     if (data.multiplierMode !== undefined) setMultiplierMode(data.multiplierMode);
     if (data.theme !== undefined) setTheme(data.theme);
     if (data.playStyle !== undefined) setPlayStyle(data.playStyle);
@@ -56,7 +55,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [
     setTargetBPM,
-    setApiKey,
     setMultiplierMode,
     setTheme,
     setPlayStyle,
@@ -207,7 +205,14 @@ export const AuthProvider = ({ children }) => {
   }, [applySettings, refreshToken, setScores, setGroups, setActiveGroup, setUser, offline]);
 
   useEffect(() => {
-    fetchUserData();
+    if (authRequestRef.current) return undefined;
+    const request = fetchUserData();
+    authRequestRef.current = request;
+    const clearRequest = () => {
+      if (authRequestRef.current === request) authRequestRef.current = null;
+    };
+    request.then(clearRequest, clearRequest);
+    return undefined;
   }, [fetchUserData]);
 
   const login = async (email, password, turnstileToken) => {
@@ -249,7 +254,6 @@ export const AuthProvider = ({ children }) => {
     setActiveGroup('All');
     // Reset settings to defaults in-memory
     setTargetBPM(300);
-    setApiKey('');
     setMultiplierMode(MULTIPLIER_MODES.A_A3);
     setTheme('dark');
     setPlayStyle('single');

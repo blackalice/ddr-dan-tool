@@ -548,7 +548,7 @@ const CardDrawPage = ({ smData }) => {
 
   useEffect(() => {
     let cancelled = false;
-    loadSongMeta()
+    loadSongMeta({ includeRankedRatings: showRankedRatings })
       .then((meta) => {
         if (!cancelled) setSongMeta(meta);
       })
@@ -558,7 +558,7 @@ const CardDrawPage = ({ smData }) => {
     return () => {
       cancelled = true;
     };
-  }, [loadSongMeta]);
+  }, [loadSongMeta, showRankedRatings]);
 
   useEffect(() => {
     storage.removeItem("cardDrawFlowerFilter");

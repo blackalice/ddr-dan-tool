@@ -56,7 +56,7 @@ async function postToClients(msg) {
 
 const DATA_PATHS = new Set([
   '/song-meta.json',
-  '/sm-files.json',
+  '/song-index.json',
   '/combined_song_ratings.json',
   '/courses-data.json',
   '/dan-data.json',

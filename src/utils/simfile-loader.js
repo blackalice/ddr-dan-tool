@@ -4,10 +4,11 @@ import { buildChartId } from './chartIds.js';
 import { normalizeSongIdValue } from './songId.js';
 
 let smFilesCache = null;
+const SONG_INDEX_PATH = '/song-index.json';
 
 export const findSongByTitle = async (title) => {
     if (!smFilesCache) {
-        smFilesCache = await getJsonCached('/sm-files.json');
+        smFilesCache = await getJsonCached(SONG_INDEX_PATH);
     }
     if (!smFilesCache) return null;
 

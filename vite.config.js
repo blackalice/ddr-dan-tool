@@ -106,6 +106,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
+      warmup: {
+        clientFiles: ['./src/main.jsx', './src/App.jsx', './src/BPMTool.jsx'],
+      },
       proxy: {
         // This ONLY affects local dev with `vite dev`
         // Everything backend lives under /api and is proxied to Wrangler dev server
