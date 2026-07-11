@@ -77,6 +77,14 @@ html {
   transform: translateZ(0);
 }
 
+#root > [data-theme='flat2026'] {
+  background: var(--bg-color);
+}
+
+#root > [data-theme='ddr-world'] {
+  background: var(--bg-color);
+}
+
 ::selection {
   background: rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
   color: var(--text-color, #0f172a);

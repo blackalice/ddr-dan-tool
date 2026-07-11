@@ -15,6 +15,8 @@ import DebugOverlay from './components/DebugOverlay.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import './App.css';
 import './Tabs.css';
+import './Flat2026Theme.css';
+import './DdrWorldTheme.css';
 import { storage } from './utils/remoteStorage.js';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 
