@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -181,14 +180,19 @@ export const ScoresProvider = ({ children }) => {
   const statsDirtyRef = useRef(true);
 
   useEffect(() => {
-    const payload = JSON.stringify(scores);
-    storage.setItem('ddrScores', payload);
-    try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
-  }, [scores]);
-
-  useLayoutEffect(() => {
     scoresRef.current = scores;
     statsDirtyRef.current = true;
+  }, [scores]);
+
+  useEffect(() => {
+    // Keep large serialization/localStorage writes out of React's commit task.
+    const persist = () => {
+      const payload = JSON.stringify(scores);
+      storage.setItem('ddrScores', payload);
+      try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
+    };
+    const timer = window.setTimeout(persist, 150);
+    return () => window.clearTimeout(timer);
   }, [scores]);
 
   useEffect(() => {
@@ -380,6 +384,7 @@ export const ScoresProvider = ({ children }) => {
   const contextValue = useMemo(() => ({
     scores,
     setScores,
+    hasScores: Object.keys(scores.single || {}).length > 0 || Object.keys(scores.double || {}).length > 0,
     stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
     songMeta,
     ensureStats,

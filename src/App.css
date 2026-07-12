@@ -1158,6 +1158,11 @@ select optgroup {
 
 /* --- Dan Courses --- */
 .dan-section { margin-bottom: 1rem; }
+
+.rankings-page .dan-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
 .dan-header {
   display: flex;
   justify-content: space-between;

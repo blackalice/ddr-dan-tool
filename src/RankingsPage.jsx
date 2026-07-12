@@ -174,7 +174,7 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
 const RankingsPage = () => {
   const { playStyle, songlistOverride } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
-  const { scores, loadSongMeta } = useScores();
+  const { scores, hasScores, loadSongMeta } = useScores();
   const [songMeta, setSongMeta] = useState([]);
   const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(() => {
@@ -498,13 +498,6 @@ const RankingsPage = () => {
     );
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
   }, [chartsForLevel, ascendingOrder, hideTopScores, hideTopLamp, hideThresholdValue, hidePlayedMode, closeOnly, normalizedCloseRange]);
-
-  const hasScores = useMemo(() => {
-    return (
-      Object.keys(scores.single || {}).length > 0 ||
-      Object.keys(scores.double || {}).length > 0
-    );
-  }, [scores]);
 
   const topCount = useMemo(
     () => chartsForLevel.filter((c) => c.score != null && c.score > hideThresholdValue).length,

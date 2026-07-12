@@ -29,7 +29,6 @@ const ModalShell = ({
     if (activeLocks === 0) {
       const scrollY = window.scrollY || window.pageYOffset || 0;
       const scrollBarGap = window.innerWidth - html.clientWidth;
-      const fullHeight = Math.max(body.scrollHeight, html.scrollHeight);
       scrollLockRef.current = {
         scrollY,
         body: {
@@ -38,7 +37,6 @@ const ModalShell = ({
           left: body.style.left,
           right: body.style.right,
           width: body.style.width,
-          height: body.style.height,
           overflow: body.style.overflow,
           paddingRight: body.style.paddingRight,
         },
@@ -51,7 +49,6 @@ const ModalShell = ({
       body.style.left = '0';
       body.style.right = '0';
       body.style.width = '100%';
-      body.style.height = `${fullHeight}px`;
       body.style.overflow = 'hidden';
       html.style.overflow = 'hidden';
       if (scrollBarGap > 0) {
@@ -69,7 +66,6 @@ const ModalShell = ({
           body.style.left = previous.body?.left || '';
           body.style.right = previous.body?.right || '';
           body.style.width = previous.body?.width || '';
-          body.style.height = previous.body?.height || '';
           body.style.overflow = previous.body?.overflow || '';
           body.style.paddingRight = previous.body?.paddingRight || '';
           html.style.overflow = previous.html?.overflow || '';
@@ -81,7 +77,6 @@ const ModalShell = ({
           body.style.left = '';
           body.style.right = '';
           body.style.width = '';
-          body.style.height = '';
           body.style.overflow = '';
           body.style.paddingRight = '';
           html.style.overflow = '';
