@@ -259,7 +259,7 @@ const SongInfoBar = ({
         )}
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
-            {theme === 'ddr-world' && !isDesktop && showJacket && (
+            {(theme === 'ddr-world' || theme === 'new' || theme === 'ddr-a') && !isDesktop && showJacket && (
               <span className="mobile-jacket-chip">
                 <img
                   src={`/${encodeURI(jacket)}`}

@@ -85,6 +85,14 @@ html {
   background: var(--bg-color);
 }
 
+#root > [data-theme='new'] {
+  background: var(--bg-color);
+}
+
+#root > [data-theme='ddr-a'] {
+  background: #a9dff7;
+}
+
 ::selection {
   background: rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
   color: var(--text-color, #0f172a);

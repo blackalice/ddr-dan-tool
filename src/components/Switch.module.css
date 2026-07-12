@@ -62,13 +62,13 @@
 
 /* DDR World uses hard, modular selection blocks rather than soft iOS-style
    controls. Keep the switch geometry consistent with the theme's square UI. */
-:global([data-theme='ddr-world']) .switch {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch {
   --switch-height: 30px;
   --switch-width: 56px;
   --switch-padding: 4px;
 }
 
-:global([data-theme='ddr-world']) .track {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .track {
   border-radius: 2px;
   background: #252927;
   border: 2px solid #50655d;
@@ -77,7 +77,7 @@
   transition: background-color 0.12s ease, border-color 0.12s ease;
 }
 
-:global([data-theme='ddr-world']) .thumb {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .thumb {
   border-radius: 1px;
   background: #d6e7e0;
   border: 0;
@@ -85,29 +85,29 @@
   transition: transform 0.12s ease, background-color 0.12s ease;
 }
 
-:global([data-theme='ddr-world']) .switch:hover .track {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch:hover .track {
   border-color: #ffffff;
 }
 
-:global([data-theme='ddr-world']) .switch input:checked + .track {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:checked + .track {
   background: #08765f;
   border-color: var(--accent-color);
 }
 
-:global([data-theme='ddr-world']) .switch input:checked + .track .thumb {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:checked + .track .thumb {
   background: #ffffff;
   border-color: transparent;
 }
 
-:global([data-theme='ddr-world']) .switch input:focus-visible + .track {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:focus-visible + .track {
   border-color: #ffffff;
   box-shadow: 0 0 0 2px #101412, 0 0 0 4px var(--accent-color);
 }
 
-:global([data-theme='ddr-world']) .switch input:disabled + .track {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:disabled + .track {
   opacity: 0.45;
 }
 
-:global([data-theme='ddr-world']) .switch:has(input:disabled) {
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch:has(input:disabled) {
   cursor: not-allowed;
 }

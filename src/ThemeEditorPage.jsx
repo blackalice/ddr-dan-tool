@@ -8,9 +8,8 @@ const THEME_OPTIONS = [
   { value: 'light', label: 'Light' },
   { value: 'cg', label: 'CG' },
   { value: 'mhe2026', label: 'Manor House Evolved 2026' },
-  { value: 'flat2026', label: 'Flat 2026' },
   { value: 'ddr-world', label: 'DDR World' },
-  { value: 'foy', label: 'foy' },
+  { value: 'new', label: 'New' },
 ];
 
 const COLOR_FIELDS = [

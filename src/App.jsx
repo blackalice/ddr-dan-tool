@@ -17,6 +17,8 @@ import './App.css';
 import './Tabs.css';
 import './Flat2026Theme.css';
 import './DdrWorldTheme.css';
+import './NewTheme.css';
+import './DdrATheme.css';
 import { storage } from './utils/remoteStorage.js';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 

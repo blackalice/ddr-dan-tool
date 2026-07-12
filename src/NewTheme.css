@@ -1,0 +1,155 @@
+/* New uses the DDR World layout language without its neon-green palette. */
+[data-theme='new'] .tabs-container,
+[data-theme='new'] .settings-content,
+[data-theme='new'] .filter-bar,
+[data-theme='new'] .song-card,
+[data-theme='new'] .dan-select,
+[data-theme='new'] .collapse-button,
+[data-theme='new'] .filter-button,
+[data-theme='new'] .controls-container,
+[data-theme='new'] .api-key-button,
+[data-theme='new'] .camera-button,
+[data-theme='new'] .song-info-bar,
+[data-theme='new'] .song-title-container,
+[data-theme='new'] .info-content,
+[data-theme='new'] .toggle-button,
+[data-theme='new'] .smod-collapse-button,
+[data-theme='new'] .smod-mini-button,
+[data-theme='new'] .smod-button,
+[data-theme='new'] .card-draw-action,
+[data-theme='new'] .card-draw-history-header,
+[data-theme='new'] .card-draw-eligible-header,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .mobile-menu-link.active,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .theme-editor-copy-button,
+[data-theme='new'] .theme-editor-demo-card,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card,
+[data-theme='new'] [class*='buttonPrimary'],
+[data-theme='new'] [class*='buttonDanger'],
+[data-theme='new'] [class*='toggleButtonActive'],
+[data-theme='new'] [class*='presetButtonActive'] {
+  background-image: none !important;
+}
+
+[data-theme='new'] .controls-container,
+[data-theme='new'] .info-content,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .theme-editor-demo-card,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card,
+[data-theme='new'] .setting-card,
+[data-theme='new'] .song-card {
+  background-color: var(--card-bg-color);
+}
+
+[data-theme='new'] .tabs-container {
+  background-color: var(--tabs-bg-top);
+  border-bottom: 3px solid var(--accent-color);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme='new'] .settings-content,
+[data-theme='new'] .filter-bar {
+  background-color: var(--bg-color-light);
+  border-top: 4px solid var(--accent-color);
+}
+
+[data-theme='new'] .filter-button,
+[data-theme='new'] .collapse-button,
+[data-theme='new'] select,
+[data-theme='new'] .dan-select,
+[data-theme='new'] .multiplier-mode-select,
+[data-theme='new'] .settings-select,
+[data-theme='new'] .bpm-input,
+[data-theme='new'] .multiplier-result-box {
+  color: var(--text-color);
+  background-color: var(--button-bg);
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='new'] .filter-button:hover,
+[data-theme='new'] .collapse-button:hover,
+[data-theme='new'] select:hover,
+[data-theme='new'] .bpm-input:hover,
+[data-theme='new'] .multiplier-result-box:hover {
+  background-color: var(--card-hover-bg-color);
+  border-color: var(--text-color);
+}
+
+[data-theme='new'] .filter-button.active,
+[data-theme='new'] .tab.active,
+[data-theme='new'] .settings-tab.active,
+[data-theme='new'] .play-mode-toggle button.active,
+[data-theme='new'] .mobile-menu-link.active,
+[data-theme='new'] .theme-editor-copy-button,
+[data-theme='new'] [class*='buttonPrimary'],
+[data-theme='new'] [class*='toggleButtonActive'],
+[data-theme='new'] [class*='presetButtonActive'] {
+  color: var(--accent-contrast);
+  background-color: var(--accent-color);
+  border-color: var(--text-color);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme='new'] select:focus,
+[data-theme='new'] .bpm-input:focus,
+[data-theme='new'] .filter-button:focus-visible,
+[data-theme='new'] .collapse-button:focus-visible {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--bg-color-dark), 0 0 0 4px var(--accent-color);
+  outline: none;
+}
+
+[data-theme='new'] .song-card {
+  border-color: var(--border-color);
+  border-left: 4px solid var(--accent-color);
+}
+
+[data-theme='new'] .song-card-link:hover {
+  transform: translate(-2px, -2px);
+}
+
+[data-theme='new'] .song-card-link:hover .song-card {
+  border-color: var(--text-color);
+  border-left-color: var(--accent-color);
+}
+
+[data-theme='new'] .song-title-container {
+  color: var(--bg-color-dark);
+  background-color: var(--text-color);
+  border-left: 10px solid var(--accent-color);
+}
+
+[data-theme='new'] .song-title-container .song-title-main,
+[data-theme='new'] .song-title-container .song-title-artist {
+  color: inherit;
+}
+
+[data-theme='new'] .dan-header {
+  color: var(--accent-contrast);
+  background: var(--accent-color);
+  border: 0;
+  border-left: 12px solid var(--text-color);
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme='new'] .song-grid {
+  background-color: var(--bg-color-dark);
+  border-color: var(--border-color);
+}
+
+[data-theme='new'] .glow-marvelous,
+[data-theme='new'] .glow-perfect,
+[data-theme='new'] .glow-great,
+[data-theme='new'] .glow-good,
+[data-theme='new'] .score-highlight {
+  filter: none !important;
+  text-shadow: none !important;
+}
