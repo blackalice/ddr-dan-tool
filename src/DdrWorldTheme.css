@@ -193,8 +193,105 @@
   border-left: 10px solid var(--accent-color);
 }
 
-[data-theme='ddr-world'] .song-title-container .jacket-fade {
-  background: rgba(244, 248, 246, 0.82);
+[data-theme='ddr-world'] .song-info-bar .bpm-title-mobile .collapse-button {
+  position: static;
+  align-self: stretch;
+  width: 40px;
+  height: auto;
+  min-height: 40px;
+  margin: 0;
+  color: #101412;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid #9aaba4;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+[data-theme='ddr-world'] .song-info-bar .bpm-title-mobile .collapse-button:hover,
+[data-theme='ddr-world'] .song-info-bar .bpm-title-mobile .collapse-button:focus-visible {
+  color: var(--accent-contrast);
+  background: var(--accent-color);
+  border-left-color: var(--accent-color);
+  outline: none;
+  transform: none;
+}
+
+@media (min-width: 1025px) {
+  [data-theme='ddr-world'] .song-title-container {
+    padding-right: 1rem;
+  }
+
+  [data-theme='ddr-world'] .bpm-song-title {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  [data-theme='ddr-world'] .song-title-container .jacket-bg,
+  [data-theme='ddr-world'] .song-title-container .jacket-fade {
+    display: none;
+  }
+
+  [data-theme='ddr-world'] .bpm-title-mobile {
+    grid-template-areas:
+      "art chip button"
+      "art title button";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: clamp(0.75rem, 2vw, 1.15rem);
+    row-gap: 0.35rem;
+    min-height: 96px;
+  }
+
+  [data-theme='ddr-world'] .mobile-jacket-chip {
+    grid-area: art;
+    display: block;
+    width: clamp(76px, 14vw, 108px);
+    height: clamp(76px, 14vw, 108px);
+    padding: 6px;
+    background: #ffffff;
+    box-sizing: border-box;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  [data-theme='ddr-world'] .mobile-jacket-chip img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  [data-theme='ddr-world'] .bpm-title-mobile .song-game-version.mobile-only {
+    grid-area: chip;
+    justify-self: start;
+    align-self: end;
+    margin: 0;
+  }
+
+  [data-theme='ddr-world'] .bpm-title-mobile .title-artist-group {
+    grid-area: title;
+    grid-column: 2;
+    width: 100%;
+    max-width: 100%;
+    align-self: start;
+  }
+
+  [data-theme='ddr-world'] .bpm-title-mobile .song-title-main,
+  [data-theme='ddr-world'] .bpm-title-mobile .song-title-artist {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-theme='ddr-world'] .song-info-bar .bpm-title-mobile .collapse-button {
+    grid-area: button;
+    align-self: center;
+    justify-self: end;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
 }
 
 [data-theme='ddr-world'] .song-title-container .song-title-main,

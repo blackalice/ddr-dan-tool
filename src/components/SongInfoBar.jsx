@@ -57,7 +57,7 @@ const SongInfoBar = ({
   const renderedTitle = displayTitle || songTitle;
   const renderedArtist = displayArtist || artist;
   const { filters } = useFilters();
-  const { showRankedRatings } = useContext(SettingsContext);
+  const { showRankedRatings, theme } = useContext(SettingsContext);
   const { scores } = useScores();
   const isDesktop = useIsDesktop();
   const chipStyle = React.useMemo(() => (
@@ -259,6 +259,17 @@ const SongInfoBar = ({
         )}
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
+            {theme === 'ddr-world' && !isDesktop && showJacket && (
+              <span className="mobile-jacket-chip">
+                <img
+                  src={`/${encodeURI(jacket)}`}
+                  alt={`${renderedTitle} jacket`}
+                  loading="eager"
+                  decoding="sync"
+                  draggable={false}
+                />
+              </span>
+            )}
             {gameVersion && (
               <>
                 {/* Desktop: show jacket image/legacy logo chip at left */}
