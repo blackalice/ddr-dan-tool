@@ -111,3 +111,27 @@
 :global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch:has(input:disabled) {
   cursor: not-allowed;
 }
+
+/* New deliberately does not inherit DDR World's green checked state. */
+:global([data-theme='new']) .track {
+  background: var(--button-bg);
+  border-color: var(--border-color);
+}
+
+:global([data-theme='new']) .thumb {
+  background: var(--text-color-lighter);
+}
+
+:global([data-theme='new']) .switch:hover .track,
+:global([data-theme='new']) .switch input:focus-visible + .track {
+  border-color: var(--text-color);
+}
+
+:global([data-theme='new']) .switch input:checked + .track {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+:global([data-theme='new']) .switch input:focus-visible + .track {
+  box-shadow: 0 0 0 2px var(--bg-color-dark), 0 0 0 4px var(--accent-color);
+}

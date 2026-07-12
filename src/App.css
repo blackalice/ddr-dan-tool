@@ -1163,6 +1163,14 @@ select optgroup {
   content-visibility: auto;
   contain-intrinsic-size: auto 420px;
 }
+
+.rankings-load-more {
+  min-height: 3rem;
+  display: grid;
+  place-items: center;
+  color: var(--text-color-muted, var(--text-color));
+  font-size: 0.9rem;
+}
 .dan-header {
   display: flex;
   justify-content: space-between;

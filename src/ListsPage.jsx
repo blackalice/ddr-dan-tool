@@ -318,11 +318,18 @@ const ListsPage = () => {
     return meta.difficulties.filter(d => d.mode === editInfo.chart.mode);
   }, [editInfo, songMeta]);
 
-  const groupsToShow = activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup);
+  const groupsToShow = React.useMemo(
+    () => (activeGroup === 'All' ? groups : groups.filter(g => g.name === activeGroup)),
+    [activeGroup, groups],
+  );
   const visibleNames = React.useMemo(() => groupsToShow.map(g => g.name), [groupsToShow]);
 
   useEffect(() => {
-    setLocalOrder(visibleNames);
+    setLocalOrder((current) => {
+      const unchanged = current.length === visibleNames.length
+        && current.every((name, index) => name === visibleNames[index]);
+      return unchanged ? current : visibleNames;
+    });
   }, [visibleNames]);
 
   const sensors = useSensors(

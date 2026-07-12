@@ -107,7 +107,6 @@
 
 [data-theme='new'] .song-card {
   border-color: var(--border-color);
-  border-left: 4px solid var(--accent-color);
 }
 
 [data-theme='new'] .song-card-link:hover {
@@ -116,13 +115,14 @@
 
 [data-theme='new'] .song-card-link:hover .song-card {
   border-color: var(--text-color);
-  border-left-color: var(--accent-color);
 }
 
 [data-theme='new'] .song-title-container {
-  color: var(--bg-color-dark);
-  background-color: var(--text-color);
-  border-left: 10px solid var(--accent-color);
+  color: var(--text-color);
+  background-color: var(--bg-color-lighter);
+  border-left: 0;
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: none;
 }
 
 [data-theme='new'] .song-title-container .song-title-main,
@@ -130,14 +130,57 @@
   color: inherit;
 }
 
+/* The World theme keeps the mobile header deliberately compact. Do not use the
+   jacket as a full-width background image in New; it obscures the song details
+   and makes the header grow excessively on narrow screens. */
+[data-theme='new'] .song-title-container .jacket-bg,
+[data-theme='new'] .song-title-container .jacket-fade {
+  display: none;
+}
+
+[data-theme='new'] .song-info-bar .collapse-button,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+  color: var(--text-color);
+  background-color: transparent;
+  border: 0;
+  border-left: 2px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Mirror DDR World's reveal affordance: the chevron is a full-height edge
+   control rather than a detached square button. */
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+  position: static;
+  align-self: stretch;
+  width: 40px;
+  height: auto;
+  min-height: 40px;
+  margin: 0;
+  transform: none;
+}
+
+[data-theme='new'] .song-info-bar .collapse-button:hover,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:hover,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:focus-visible {
+  color: var(--accent-contrast);
+  background-color: var(--accent-color);
+  border-left-color: var(--accent-color);
+}
+
 [data-theme='new'] .dan-header {
   color: var(--accent-contrast);
   background: var(--accent-color);
   border: 0;
-  border-left: 12px solid var(--text-color);
+  border-left: 0;
   box-shadow: var(--shadow-md);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+[data-theme='new'] .collapse-button,
+[data-theme='new'] .collapse-button:hover {
+  box-shadow: none;
 }
 
 [data-theme='new'] .song-grid {
@@ -152,4 +195,77 @@
 [data-theme='new'] .score-highlight {
   filter: none !important;
   text-shadow: none !important;
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .bpm-title-mobile {
+    grid-template-areas:
+      "art chip button"
+      "art title button";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: clamp(0.75rem, 2vw, 1.15rem);
+    row-gap: 0.35rem;
+    min-height: 96px;
+  }
+
+  [data-theme='new'] .mobile-jacket-chip {
+    grid-area: art;
+    display: block;
+    width: clamp(76px, 14vw, 108px);
+    height: clamp(76px, 14vw, 108px);
+    padding: 6px;
+    background: var(--bg-color-dark);
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  [data-theme='new'] .mobile-jacket-chip img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .song-game-version.mobile-only {
+    grid-area: chip;
+    justify-self: start;
+    align-self: end;
+    margin: 0;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .title-artist-group {
+    grid-area: title;
+    grid-column: 2;
+    width: 100%;
+    max-width: 100%;
+    align-self: start;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .song-title-main,
+  [data-theme='new'] .bpm-title-mobile .song-title-artist {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+    grid-area: button;
+    align-self: center;
+    justify-self: end;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Match DDR World's tight desktop reveal-control alignment. */
+  [data-theme='new'] .song-title-container {
+    padding-right: 1rem;
+  }
+
+  [data-theme='new'] .bpm-song-title {
+    padding-right: 0;
+  }
 }
