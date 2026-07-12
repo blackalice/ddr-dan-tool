@@ -36,7 +36,7 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 const ThemeEditorPage = lazy(() => import('./ThemeEditorPage.jsx'));
 
 function AppRoutes() {
-  const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts } = useContext(SettingsContext);
+  const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts, showVegaBeta } = useContext(SettingsContext);
   const { user } = useAuth();
   const pwaEnabled = import.meta.env.MODE !== 'no-pwa';
   const [smData, setSmData] = useState({ games: [], files: [] });
@@ -423,7 +423,7 @@ function AppRoutes() {
           <Routes>
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/courses" element={<CoursesPage smData={smData} setSelectedGame={setSelectedGame} />} />
-            <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
+            <Route path="/vega" element={showVegaBeta ? <VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} /> : <Navigate to="/bpm" replace />} />
             <Route path="/multiplier" element={<Multiplier />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/rankings" element={<RankingsPage />} />

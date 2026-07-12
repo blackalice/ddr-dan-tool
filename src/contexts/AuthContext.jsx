@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
     setPlayStyle,
     setShowRankedRatings,
     setShowCoursesBeta,
+    setShowVegaBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
     setShowMultiplierIncrementVersion,
@@ -42,6 +43,7 @@ export const AuthProvider = ({ children }) => {
     // showLists is always enabled now
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
     if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
+    if (data.showVegaBeta !== undefined) setShowVegaBeta(bool(data.showVegaBeta));
     if (data.showTransliterationBeta !== undefined) setShowTransliterationBeta(bool(data.showTransliterationBeta));
     if (data.songlistOverride !== undefined) setSonglistOverride(normalizeSonglistOverrideValue(data.songlistOverride));
     if (data.showMultiplierIncrementVersion !== undefined) {
@@ -60,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     setPlayStyle,
     setShowRankedRatings,
     setShowCoursesBeta,
+    setShowVegaBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
     setShowMultiplierIncrementVersion,
@@ -172,6 +175,7 @@ export const AuthProvider = ({ children }) => {
           showLists: data.showLists,
           showRankedRatings: data.showRankedRatings,
           showCoursesBeta: data.showCoursesBeta,
+          showVegaBeta: data.showVegaBeta,
           showTransliterationBeta: data.showTransliterationBeta,
           songlistOverride: data.songlistOverride,
           showMultiplierIncrementVersion: data.showMultiplierIncrementVersion,
@@ -259,6 +263,7 @@ export const AuthProvider = ({ children }) => {
     setPlayStyle('single');
     setShowRankedRatings(false);
     setShowCoursesBeta(false);
+    setShowVegaBeta(false);
     setShowTransliterationBeta(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
     setShowMultiplierIncrementVersion(false);

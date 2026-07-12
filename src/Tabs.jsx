@@ -38,7 +38,7 @@ const Tabs = () => {
   const { user, logout } = useAuth();
   const { scores } = useScores();
   const settings = React.useContext(SettingsContext) || {};
-  const { playStyle, setPlayStyle, targetBPM, setTargetBPM, showCoursesBeta } = settings;
+  const { playStyle, setPlayStyle, targetBPM, setTargetBPM, showCoursesBeta, showVegaBeta } = settings;
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [menuNoTransition, setMenuNoTransition] = React.useState(false);
   const [targetBpmInput, setTargetBpmInput] = React.useState(() =>
@@ -190,14 +190,6 @@ const Tabs = () => {
         icon: "段",
         primary: true,
       },
-      {
-        key: "vega",
-        to: `/vega${hash}`,
-        label: "Vega Rankings",
-        shortLabel: "Vega",
-        icon: <FontAwesomeIcon icon={faTrophy} />,
-        primary: false,
-      },
     ];
 
     // Insert Courses tab after Dan (Beta toggle)
@@ -209,6 +201,17 @@ const Tabs = () => {
         shortLabel: "Courses",
         icon: <FontAwesomeIcon icon={faList} />,
         primary: true,
+      });
+    }
+
+    if (showVegaBeta) {
+      links.push({
+        key: "vega",
+        to: `/vega${hash}`,
+        label: "Vega Rankings",
+        shortLabel: "Vega",
+        icon: <FontAwesomeIcon icon={faTrophy} />,
+        primary: false,
       });
     }
 
@@ -244,7 +247,7 @@ const Tabs = () => {
     });
 
     return links;
-  }, [hash, user, hasUploadedScores, showCoursesBeta]);
+  }, [hash, user, hasUploadedScores, showCoursesBeta, showVegaBeta]);
 
   const normalizedLocation = React.useMemo(
     () => `${location.pathname}${location.search || ""}${location.hash || ""}`,

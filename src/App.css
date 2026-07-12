@@ -418,12 +418,12 @@ html {
   --card-bg-color: #171918;
   --card-hover-bg-color: #222725;
   --card-hover-bg-color-light: #2d3532;
-  --border-color: #40534c;
+  --border-color: #53685f;
   --text-color: #ffffff;
   --text-color-light: #eef8f4;
   --text-color-lighter: #d6e7e0;
-  --text-color-lightest: #b8ccc4;
-  --text-muted-color: #9eb2aa;
+  --text-color-lightest: #c2d0ca;
+  --text-muted-color: #b4c6bf;
   --primary-color: #00deae;
   --secondary-color: #00deae;
   --accent-color: #18e2b5;

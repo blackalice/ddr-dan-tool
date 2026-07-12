@@ -54,6 +54,12 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    // Beta: Toggle to show Vega Rankings (off by default)
+    const [showVegaBeta, setShowVegaBeta] = useState(() => {
+        const saved = storage.getItem('showVegaBeta');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     const [showTransliterationBeta, setShowTransliterationBeta] = useState(() => {
         const saved = storage.getItem('showTransliterationBeta');
         return saved ? JSON.parse(saved) : false;
@@ -115,6 +121,10 @@ export const SettingsProvider = ({ children }) => {
     }, [showCoursesBeta]);
 
     useEffect(() => {
+        storage.setItem('showVegaBeta', JSON.stringify(showVegaBeta));
+    }, [showVegaBeta]);
+
+    useEffect(() => {
         storage.setItem('showTransliterationBeta', JSON.stringify(showTransliterationBeta));
     }, [showTransliterationBeta]);
 
@@ -147,6 +157,8 @@ export const SettingsProvider = ({ children }) => {
         setShowRankedRatings,
         showCoursesBeta,
         setShowCoursesBeta,
+        showVegaBeta,
+        setShowVegaBeta,
         showTransliterationBeta,
         setShowTransliterationBeta,
         showWipStats,

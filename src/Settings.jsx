@@ -98,6 +98,8 @@ const Settings = () => {
         setShowRankedRatings,
         showCoursesBeta,
         setShowCoursesBeta,
+        showVegaBeta,
+        setShowVegaBeta,
         showTransliterationBeta,
         setShowTransliterationBeta,
         showWipStats,
@@ -554,6 +556,22 @@ const Settings = () => {
                                 checked={showCoursesBeta}
                                 onChange={(e) => setShowCoursesBeta(e.target.checked)}
                                 ariaLabel="Toggle courses beta"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>Show Vega Rankings</h3>
+                            <p>
+                                Show the Vega Rankings page.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={showVegaBeta}
+                                onChange={(e) => setShowVegaBeta(e.target.checked)}
+                                ariaLabel="Toggle Vega Rankings beta"
                             />
                         </div>
                     </div>
