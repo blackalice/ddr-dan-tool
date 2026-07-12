@@ -5,6 +5,21 @@ import { normalizeSongIdValue } from './songId.js';
 
 let smFilesCache = null;
 const SONG_INDEX_PATH = '/song-index.json';
+// Parsed simfiles are considerably more expensive than their cached text. Keep a
+// small working set so changing charts, navigating away, and returning to a song
+// does not parse the same .sm file again on the main thread.
+const SIMFILE_CACHE_LIMIT = 12;
+const simfileDataCache = new Map();
+const simfileLoadPromises = new Map();
+
+function cacheSimfile(key, data) {
+    simfileDataCache.delete(key);
+    simfileDataCache.set(key, data);
+    if (simfileDataCache.size > SIMFILE_CACHE_LIMIT) {
+        const oldestKey = simfileDataCache.keys().next().value;
+        simfileDataCache.delete(oldestKey);
+    }
+}
 
 export const findSongByTitle = async (title) => {
     if (!smFilesCache) {
@@ -25,7 +40,19 @@ export const loadSimfileData = async (songFile) => {
         return null;
     }
 
-    try {
+    const cacheKey = songFile.path;
+    const cached = simfileDataCache.get(cacheKey);
+    if (cached) {
+        // Refresh the entry so frequently revisited songs remain in the working set.
+        cacheSimfile(cacheKey, cached);
+        return cached;
+    }
+    if (simfileLoadPromises.has(cacheKey)) {
+        return simfileLoadPromises.get(cacheKey);
+    }
+
+    const loadPromise = (async () => {
+      try {
         const text = await getTextCached(encodeURI(`/${songFile.path}`));
         const parsed = parseSm(text);
         const songId = normalizeSongIdValue(songFile.id || songFile.songId || null);
@@ -41,7 +68,7 @@ export const loadSimfileData = async (songFile) => {
 
         const mixName = songFile.path.split('/')[1] || 'Unknown Mix';
 
-        return {
+        const data = {
             ...parsed,
             songId,
             jacket: songFile.jacket || '',
@@ -60,8 +87,15 @@ export const loadSimfileData = async (songFile) => {
                 mixDir: mixName,
             },
         };
-    } catch (error) {
+        cacheSimfile(cacheKey, data);
+        return data;
+      } catch (error) {
         console.error('Error fetching or parsing sm file:', error);
         return null;
-    }
+      } finally {
+        simfileLoadPromises.delete(cacheKey);
+      }
+    })();
+    simfileLoadPromises.set(cacheKey, loadPromise);
+    return loadPromise;
 };

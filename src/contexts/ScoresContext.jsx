@@ -185,12 +185,17 @@ export const ScoresProvider = ({ children }) => {
   }, [scores]);
 
   useEffect(() => {
-    // Keep large serialization/localStorage writes out of React's commit task.
+    // Imports can update thousands of scores. Serialize during idle time so the
+    // input and paint work immediately after an import is not blocked.
     const persist = () => {
       const payload = JSON.stringify(scores);
       storage.setItem('ddrScores', payload);
       try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
     };
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(persist, { timeout: 1000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
     const timer = window.setTimeout(persist, 150);
     return () => window.clearTimeout(timer);
   }, [scores]);
