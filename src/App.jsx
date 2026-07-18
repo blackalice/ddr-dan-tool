@@ -14,6 +14,7 @@ import DebugOverlay from './components/DebugOverlay.jsx';
 // import SyncBanner from './components/SyncBanner.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import './App.css';
+import './ThemeCore.css';
 import './Tabs.css';
 import './Flat2026Theme.css';
 import './DdrWorldTheme.css';

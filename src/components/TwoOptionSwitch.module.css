@@ -58,13 +58,18 @@
 }
 
 :global([data-theme='new']) .thumb {
-  background: var(--accent-color);
-  border-color: var(--accent-color-light);
-  box-shadow: 0 4px 14px rgba(var(--accent-color-rgb), 0.22);
+  background: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+:global([data-theme='new']) .root {
+  background: var(--bpm-control-bg, var(--theme-surface-raised));
+  border-color: var(--theme-border);
 }
 
 :global([data-theme='new']) .optionActive {
-  color: var(--accent-contrast);
+  color: var(--theme-text-primary);
 }
 
 .rootDisabled {

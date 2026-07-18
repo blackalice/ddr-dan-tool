@@ -19,7 +19,7 @@ export const SettingsProvider = ({ children }) => {
 
     const [theme, setTheme] = useState(() => {
         const saved = storage.getItem('theme');
-        return saved || 'dark';
+        return saved || 'new';
     });
 
     const [playStyle, setPlayStyle] = useState(() => {

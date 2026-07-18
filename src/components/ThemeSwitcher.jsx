@@ -15,13 +15,13 @@ const ThemeSwitcher = () => {
       </div>
       <div className="setting-control setting-control-stack">
         <select className="settings-select" value={theme} onChange={handleThemeChange}>
-          <option value="dark">Dark</option>
-          <option value="dark-pink">Dark (Pink)</option>
-          <option value="light">Light</option>
-          <option value="cg">CG</option>
-          <option value="mhe2026">Manor House Evolved 2026</option>
+          <option value="new">New (Default)</option>
           <option value="ddr-world">DDR World</option>
-          <option value="new">New</option>
+          <option value="dark">Dark (Legacy)</option>
+          <option value="dark-pink">Dark Pink (Legacy)</option>
+          <option value="light">Light (Legacy)</option>
+          <option value="cg">CG (Legacy)</option>
+          <option value="mhe2026">Manor House Evolved 2026 (Legacy)</option>
         </select>
       </div>
     </div>

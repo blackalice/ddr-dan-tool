@@ -355,34 +355,32 @@ const SongInfoBar = ({
             <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
               {renderDifficulties(playStyle)}
             </div>
-            {(songLength != null || metrics) && (
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faClock} />
-                  <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faPlay} />
-                  <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <span>{metrics?.steps?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faSnowflake} />
-                  <span>{metrics?.holds?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faBolt} />
-                  <span>{metrics?.shocks?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faArrowUp} />
-                  <span>{metrics?.jumps?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
+            <div className="stats-grid" aria-busy={metrics == null}>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faClock} />
+                <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : '--'}</span>
               </div>
-            )}
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faPlay} />
+                <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faShoePrints} />
+                <span>{metrics?.steps?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faSnowflake} />
+                <span>{metrics?.holds?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faBolt} />
+                <span>{metrics?.shocks?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faArrowUp} />
+                <span>{metrics?.jumps?.toLocaleString?.() ?? '--'}</span>
+              </div>
+            </div>
             <div className={`bpm-score-badge score-badge ${badgeGlowClasses}`}>
               <span className="score-lamp">{currentScore?.lamp ?? ''}</span>
               <span className="score-value">{currentScore ? currentScore.score.toLocaleString() : '--'}</span>

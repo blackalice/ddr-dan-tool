@@ -277,6 +277,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         songlistOverride,
         showRankedRatings,
         showTransliterationBeta,
+        theme,
     } = useContext(SettingsContext);
     const { user } = useAuth();
     const showLists = !!user;
@@ -404,7 +405,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const effectivePatternHighlights = PATTERN_HIGHLIGHT_UI_ENABLED ? patternHighlights : {};
 
     const updateThemeColors = useCallback(() => {
-        const style = getComputedStyle(document.documentElement);
+        const themeRoot = document.querySelector('#root > [data-theme]') || document.documentElement;
+        const style = getComputedStyle(themeRoot);
         const border = style.getPropertyValue('--border-color').trim();
         setThemeColors({
             accentColor: style.getPropertyValue('--accent-color').trim(),
@@ -417,10 +419,7 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     // Update colors once on mount and whenever the data-theme attribute changes
     useEffect(() => {
         updateThemeColors();
-        const observer = new MutationObserver(updateThemeColors);
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-        return () => observer.disconnect();
-    }, [updateThemeColors]);
+    }, [theme, updateThemeColors]);
 
     const simfileWithRatings = useMemo(() => {
         if (!simfileData) return null;
@@ -1548,10 +1547,12 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
     const selectStyles = {
         control: (styles) => ({
             ...styles,
-            backgroundColor: 'var(--card-bg-color)',
+            backgroundColor: 'var(--bpm-control-bg, var(--card-bg-color))',
             border: '1px solid var(--border-color)',
             color: 'var(--text-color)',
-            padding: '0.3rem',
+            height: '44px',
+            minHeight: '44px',
+            padding: 0,
             borderRadius: 'var(--radius-sm)',
         }),
         menu: (styles) => ({
@@ -1846,7 +1847,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
           rgb = `${r}, ${g}, ${b}`;
           }
           if (!rgb) rgb = '0,0,0';
-          gradient.addColorStop(0, `rgba(${rgb}, 0.4)`);
+          gradient.addColorStop(0, `rgba(${rgb}, 0.2)`);
           gradient.addColorStop(1, `rgba(${rgb}, 0.0)`);
           return gradient;
         },
@@ -1905,6 +1906,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                         )}
                     </div>
                 ) : view === 'chart' ? (
+                    <div className="stepchart-view-container">
                         <Suspense fallback={<div className="app-loading">Loading chart…</div>}>
                             <LazyStepchartPage
                                 simfile={simfileWithRatings}
@@ -1918,6 +1920,7 @@ if (!rgb && themeColors.accentColor?.startsWith('#')) {
                                 highlightPatterns={effectivePatternHighlights}
                             />
                         </Suspense>
+                    </div>
                 ) : (
                         <Suspense fallback={<div className="app-loading">Loading stats…</div>}>
                             <LazyChartStatsPanel

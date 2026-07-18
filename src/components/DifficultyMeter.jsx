@@ -18,6 +18,7 @@ const difficultyColor = difficultyColorVars[difficultyName]
   : fallbackColor;
 
 const style = {
+  '--difficulty-color': difficultyColor,
   backgroundColor: isMissing ? 'var(--card-hover-bg-color-light, #374151)' : difficultyColor,
   color: (difficultyName === 'Beginner' || difficultyName === 'Basic') && !isMissing ? 'black' : 'white',
   cursor: isMissing ? 'default' : 'pointer',

@@ -1,4 +1,5 @@
-/* New uses the DDR World layout language without its neon-green palette. */
+/* Shared modern component language. The palette and derived states live in
+   ThemeCore.css so accent and surface edits propagate across every route. */
 [data-theme='new'] .tabs-container,
 [data-theme='new'] .settings-content,
 [data-theme='new'] .filter-bar,
@@ -46,16 +47,43 @@
 }
 
 [data-theme='new'] .tabs-container {
-  background-color: var(--tabs-bg-top);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--theme-nav);
+  border-bottom: 1px solid var(--theme-border);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 [data-theme='new'] .settings-content,
 [data-theme='new'] .filter-bar {
-  background-color: var(--bg-color-light);
-  border-top: 1px solid var(--border-color);
+  background-color: var(--theme-surface-subtle);
+  border-top: 1px solid var(--theme-border);
+}
+
+[data-theme='new'] .tab,
+[data-theme='new'] .settings-tab,
+[data-theme='new'] .mobile-menu-toggle,
+[data-theme='new'] .logo-container {
+  color: var(--theme-text-muted);
+  background: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .tab:hover,
+[data-theme='new'] .settings-tab:hover,
+[data-theme='new'] .mobile-menu-toggle:hover,
+[data-theme='new'] .logo-container:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-control-hover);
+  border-color: color-mix(in srgb, var(--theme-accent) 55%, var(--theme-border));
+}
+
+[data-theme='new'] .logo-container {
+  color: var(--theme-accent);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 [data-theme='new'] .filter-button,
@@ -66,10 +94,11 @@
 [data-theme='new'] .settings-select,
 [data-theme='new'] .bpm-input,
 [data-theme='new'] .multiplier-result-box {
-  color: var(--text-color);
-  background-color: var(--button-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
 }
 
 [data-theme='new'] .filter-button:hover,
@@ -77,8 +106,8 @@
 [data-theme='new'] select:hover,
 [data-theme='new'] .bpm-input:hover,
 [data-theme='new'] .multiplier-result-box:hover {
-  background-color: var(--card-hover-bg-color);
-  border-color: var(--text-color-lightest);
+  background-color: var(--theme-control-hover);
+  border-color: var(--theme-text-muted);
 }
 
 [data-theme='new'] .filter-button.active,
@@ -90,23 +119,23 @@
 [data-theme='new'] [class*='buttonPrimary'],
 [data-theme='new'] [class*='toggleButtonActive'],
 [data-theme='new'] [class*='presetButtonActive'] {
-  color: var(--accent-contrast);
-  background-color: var(--accent-color);
-  border-color: var(--accent-color-light);
-  box-shadow: 0 4px 14px rgba(var(--accent-color-rgb), 0.22);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
 }
 
 [data-theme='new'] select:focus,
 [data-theme='new'] .bpm-input:focus,
 [data-theme='new'] .filter-button:focus-visible,
 [data-theme='new'] .collapse-button:focus-visible {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px var(--bg-color-dark), 0 0 0 4px var(--accent-color);
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 0 2px var(--theme-nav), 0 0 0 4px var(--theme-accent);
   outline: none;
 }
 
 [data-theme='new'] .song-card {
-  border-color: var(--border-color);
+  border-color: var(--theme-border);
 }
 
 [data-theme='new'] .song-card-link:hover {
@@ -114,15 +143,15 @@
 }
 
 [data-theme='new'] .song-card-link:hover .song-card {
-  border-color: var(--accent-color);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-surface);
 }
 
 [data-theme='new'] .song-title-container {
-  color: var(--text-color);
-  background-color: var(--bg-color-lighter);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surface-raised);
   border-left: 0;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-border);
   box-shadow: none;
 }
 
@@ -141,10 +170,10 @@
 
 [data-theme='new'] .song-info-bar .collapse-button,
 [data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
-  color: var(--text-color);
+  color: var(--theme-text-primary);
   background-color: transparent;
   border: 0;
-  border-left: 2px solid var(--border-color);
+  border-left: 1px solid var(--theme-border);
   border-radius: 0;
   box-shadow: none;
 }
@@ -164,19 +193,19 @@
 [data-theme='new'] .song-info-bar .collapse-button:hover,
 [data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:hover,
 [data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:focus-visible {
-  color: var(--accent-contrast);
-  background-color: var(--accent-color);
-  border-left-color: var(--accent-color);
+  color: var(--theme-text-primary);
+  background-color: var(--theme-accent-selected);
+  border-left-color: var(--theme-accent);
 }
 
 [data-theme='new'] .dan-header {
-  color: var(--text-color);
-  background: var(--bg-color-lighter);
-  background-color: var(--bg-color-lighter) !important;
+  color: var(--theme-text-primary);
+  background: var(--theme-surface-raised);
+  background-color: var(--theme-surface-raised) !important;
   border: 0;
-  border-bottom: 1px solid var(--border-color);
-  border-left: 4px solid var(--accent-color);
-  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--theme-border);
+  border-left: 4px solid var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -187,50 +216,118 @@
 }
 
 [data-theme='new'] .song-grid {
-  background-color: var(--bg-color-dark);
-  border-color: var(--border-color);
+  background-color: var(--theme-page);
+  border-color: var(--theme-border);
+}
+
+[data-theme='new'] .settings-button,
+[data-theme='new'] .card-draw-action.primary {
+  color: var(--theme-text-primary);
+  background: var(--theme-accent-selected);
+  border: 1px solid var(--theme-accent);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .settings-button:hover,
+[data-theme='new'] .card-draw-action.primary:hover {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accent) 48%, black);
+  border-color: color-mix(in srgb, var(--theme-accent) 76%, white);
 }
 
 /* Give the dense BPM summary a clearer surface hierarchy. The surrounding
    section stays charcoal, utility panels lift one step, and the data table
    recesses beneath them so its rows no longer merge into the container. */
+[data-theme='new'] .chart-section {
+  background: var(--theme-surface-subtle);
+  border-color: var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-surface);
+  overflow: hidden;
+}
+
 [data-theme='new'] .info-content {
-  background-color: #161616;
+  background-color: var(--theme-surface-subtle);
 }
 
 [data-theme='new'] .stats-grid,
-[data-theme='new'] .bpm-score-badge,
-[data-theme='new'] .bpm-score-badge.score-badge {
-  background-color: var(--bg-color-lighter);
-  border-color: #606060;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), var(--shadow-sm);
+[data-theme='new'] .bpm-score-badge:not(.glow-marvelous):not(.glow-perfect):not(.glow-great):not(.glow-good),
+[data-theme='new'] .bpm-score-badge.score-badge:not(.glow-marvelous):not(.glow-perfect):not(.glow-great):not(.glow-good) {
+  background-color: var(--theme-surface-raised);
+  border-color: var(--theme-border);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .stats-grid {
+  border-width: 1px;
+}
+
+[data-theme='new'] .controls-container .filter-button {
+  background-color: var(--bpm-control-bg);
+}
+
+[data-theme='new'] .controls-container .filter-button:hover {
+  background-color: var(--theme-surface-hover);
+}
+
+[data-theme='new'] .stat-item svg {
+  color: var(--theme-accent-icon);
+}
+
+[data-theme='new'] .bpm-score-badge.glow-great,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-great {
+  background: var(--theme-success-selected);
+  border-color: var(--theme-success);
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-perfect,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-perfect {
+  background: color-mix(in srgb, var(--yellow-color) 16%, var(--theme-surface-raised));
+  border-color: var(--yellow-color);
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-good,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-good {
+  background: color-mix(in srgb, #3498db 16%, var(--theme-surface-raised));
+  border-color: #3498db;
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-marvelous,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-marvelous {
+  background: color-mix(in srgb, white 10%, var(--theme-surface-raised));
+  border-color: var(--theme-text-primary);
+  box-shadow: none;
 }
 
 [data-theme='new'] .bpm-table {
-  background: var(--bg-color-dark);
-  border-color: #606060;
-  box-shadow: var(--shadow-sm);
+  background: var(--theme-surface-subtle);
+  border-color: var(--theme-border);
+  box-shadow: var(--theme-shadow-control);
 }
 
 [data-theme='new'] .bpm-row.header span {
-  background: #292929;
-  border-bottom-color: #606060;
+  background: var(--theme-surface-raised);
+  border-bottom-color: var(--theme-border);
 }
 
 [data-theme='new'] .bpm-table .bpm-row:not(.header) span {
-  background: #141414;
-  border-bottom-color: #484848;
+  background: var(--theme-surface-subtle);
+  border-bottom-color: var(--theme-border);
 }
 
 [data-theme='new'] .bpm-table .bpm-row span:last-child {
-  background: color-mix(in srgb, var(--accent-color) 6%, #181818);
-  border-left: 1px solid #505050;
+  background: var(--theme-surface);
+  border-left: 1px solid var(--theme-border);
 }
 
 [data-theme='new'] .bpm-table .bpm-row.header span:last-child {
-  background: color-mix(in srgb, var(--accent-color) 7%, #292929);
-  color: var(--accent-color);
-  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--accent-color) 72%, transparent);
+  background: var(--theme-surface-raised);
+  color: var(--theme-accent);
+  box-shadow: inset 0 2px 0 var(--theme-accent);
 }
 
 [data-theme='new'] .glow-marvelous,
@@ -279,7 +376,102 @@
 }
 
 [data-theme='new'] .difficulty-meter.is-selected {
-  box-shadow: inset 0 0 0 2px var(--accent-color) !important;
+  color: var(--theme-text-primary) !important;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62));
+  box-shadow: inset 0 0 0 2px var(--difficulty-color) !important;
+}
+
+@media (min-width: 1025px) {
+  [data-theme='new'] .chart-container {
+    height: 526px;
+    padding: 16px;
+    background-color: var(--theme-page);
+  }
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .chart-container {
+    background-color: var(--theme-page);
+  }
+
+}
+
+[data-theme='new'] .setting-card,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .card-draw-panel,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card {
+  border-color: var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-control);
+}
+
+/* Give the chart statistics a quieter, layered hierarchy. The page well is
+   recessed, cards sit above it, tinted headers identify each group, and rows
+   remain readable without becoming near-black bars. */
+[data-theme='new'] .chart-stats-panel {
+  background-color: var(--theme-page);
+  border-radius: 0;
+}
+
+[data-theme='new'] .stepchart-view-container {
+  min-height: 500px;
+  padding: 0 16px 16px;
+  box-sizing: border-box;
+  background-color: var(--theme-page);
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .stepchart-view-container {
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  [data-theme='new'] .smod-controls-container,
+  [data-theme='new'] .smod-mini-button {
+    position: fixed;
+    right: max(20px, calc((100vw - var(--container-max-width)) / 2 + 20px));
+    bottom: 20px;
+    float: none;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+[data-theme='new'] .chart-stats-card {
+  background-color: var(--theme-surface);
+}
+
+[data-theme='new'] .chart-stats-card-header {
+  background: var(--theme-surface-raised);
+  border-bottom-color: var(--theme-border);
+}
+
+[data-theme='new'] .chart-stats-card-grid,
+[data-theme='new'] .chart-stats-tags {
+  background-color: var(--theme-surface);
+}
+
+[data-theme='new'] .chart-stats-item {
+  background-color: color-mix(in srgb, var(--theme-surface-raised) 72%, var(--theme-surface) 28%);
+  border-color: color-mix(in srgb, var(--theme-border) 72%, transparent);
+}
+
+[data-theme='new'] .chart-stats-item-label {
+  color: var(--theme-text-secondary);
+}
+
+[data-theme='new'] input,
+[data-theme='new'] textarea {
+  color: var(--theme-text-primary);
+  caret-color: var(--theme-accent);
+}
+
+[data-theme='new'] ::selection {
+  color: var(--theme-text-primary);
+  background: var(--theme-accent-selected);
 }
 
 @media (max-width: 1024px) {
@@ -299,8 +491,8 @@
     width: clamp(76px, 14vw, 108px);
     height: clamp(76px, 14vw, 108px);
     padding: 6px;
-    background: var(--bg-color-dark);
-    border: 2px solid var(--border-color);
+  background: var(--theme-nav);
+  border: 1px solid var(--theme-border);
     box-sizing: border-box;
     align-self: center;
     flex-shrink: 0;
