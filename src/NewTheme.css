@@ -47,7 +47,7 @@
 
 [data-theme='new'] .tabs-container {
   background-color: var(--tabs-bg-top);
-  border-bottom: 3px solid var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -55,7 +55,7 @@
 [data-theme='new'] .settings-content,
 [data-theme='new'] .filter-bar {
   background-color: var(--bg-color-light);
-  border-top: 4px solid var(--accent-color);
+  border-top: 1px solid var(--border-color);
 }
 
 [data-theme='new'] .filter-button,
@@ -68,7 +68,7 @@
 [data-theme='new'] .multiplier-result-box {
   color: var(--text-color);
   background-color: var(--button-bg);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
@@ -78,7 +78,7 @@
 [data-theme='new'] .bpm-input:hover,
 [data-theme='new'] .multiplier-result-box:hover {
   background-color: var(--card-hover-bg-color);
-  border-color: var(--text-color);
+  border-color: var(--text-color-lightest);
 }
 
 [data-theme='new'] .filter-button.active,
@@ -92,8 +92,8 @@
 [data-theme='new'] [class*='presetButtonActive'] {
   color: var(--accent-contrast);
   background-color: var(--accent-color);
-  border-color: var(--text-color);
-  box-shadow: var(--shadow-md);
+  border-color: var(--accent-color-light);
+  box-shadow: 0 4px 14px rgba(var(--accent-color-rgb), 0.22);
 }
 
 [data-theme='new'] select:focus,
@@ -114,7 +114,8 @@
 }
 
 [data-theme='new'] .song-card-link:hover .song-card {
-  border-color: var(--text-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme='new'] .song-title-container {
@@ -169,11 +170,13 @@
 }
 
 [data-theme='new'] .dan-header {
-  color: var(--accent-contrast);
-  background: var(--accent-color);
+  color: var(--text-color);
+  background: var(--bg-color-lighter);
+  background-color: var(--bg-color-lighter) !important;
   border: 0;
-  border-left: 0;
-  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-color);
+  box-shadow: var(--shadow-sm);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -188,6 +191,48 @@
   border-color: var(--border-color);
 }
 
+/* Give the dense BPM summary a clearer surface hierarchy. The surrounding
+   section stays charcoal, utility panels lift one step, and the data table
+   recesses beneath them so its rows no longer merge into the container. */
+[data-theme='new'] .info-content {
+  background-color: #161616;
+}
+
+[data-theme='new'] .stats-grid,
+[data-theme='new'] .bpm-score-badge,
+[data-theme='new'] .bpm-score-badge.score-badge {
+  background-color: var(--bg-color-lighter);
+  border-color: #606060;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), var(--shadow-sm);
+}
+
+[data-theme='new'] .bpm-table {
+  background: var(--bg-color-dark);
+  border-color: #606060;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='new'] .bpm-row.header span {
+  background: #292929;
+  border-bottom-color: #606060;
+}
+
+[data-theme='new'] .bpm-table .bpm-row:not(.header) span {
+  background: #141414;
+  border-bottom-color: #484848;
+}
+
+[data-theme='new'] .bpm-table .bpm-row span:last-child {
+  background: color-mix(in srgb, var(--accent-color) 6%, #181818);
+  border-left: 1px solid #505050;
+}
+
+[data-theme='new'] .bpm-table .bpm-row.header span:last-child {
+  background: color-mix(in srgb, var(--accent-color) 7%, #292929);
+  color: var(--accent-color);
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--accent-color) 72%, transparent);
+}
+
 [data-theme='new'] .glow-marvelous,
 [data-theme='new'] .glow-perfect,
 [data-theme='new'] .glow-great,
@@ -195,6 +240,46 @@
 [data-theme='new'] .score-highlight {
   filter: none !important;
   text-shadow: none !important;
+}
+
+/* Neutral difficulty fills are intentionally light, so their labels and card
+   actions use the same dark foreground as the blue accent. */
+[data-theme='new'] .difficulty-badge,
+[data-theme='new'] .song-card-action {
+  color: var(--accent-contrast);
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='beginner'] {
+  background-color: var(--difficulty-beginner-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='basic'] {
+  background-color: var(--difficulty-light-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='difficult'] {
+  background-color: var(--difficulty-standard-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='expert'] {
+  background-color: var(--difficulty-heavy-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='challenge'] {
+  background-color: var(--difficulty-challenge-color) !important;
+}
+
+[data-theme='new'] .difficulty-meter {
+  color: var(--accent-contrast) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22) !important;
+}
+
+[data-theme='new'] .difficulty-meter.is-missing {
+  color: var(--text-color-light) !important;
+}
+
+[data-theme='new'] .difficulty-meter.is-selected {
+  box-shadow: inset 0 0 0 2px var(--accent-color) !important;
 }
 
 @media (max-width: 1024px) {

@@ -115,16 +115,19 @@
 /* New deliberately does not inherit DDR World's green checked state. */
 :global([data-theme='new']) .track {
   background: var(--button-bg);
-  border-color: var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill-theme);
+  padding: var(--switch-padding);
 }
 
 :global([data-theme='new']) .thumb {
   background: var(--text-color-lighter);
+  border-radius: 50%;
 }
 
 :global([data-theme='new']) .switch:hover .track,
 :global([data-theme='new']) .switch input:focus-visible + .track {
-  border-color: var(--text-color);
+  border-color: var(--accent-color);
 }
 
 :global([data-theme='new']) .switch input:checked + .track {

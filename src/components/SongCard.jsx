@@ -373,6 +373,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
                   <span
                     className="difficulty-badge"
                     style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                    data-difficulty={song.difficulty}
                     data-level={levelText || undefined}
                   >
                     {difficultyInfo.name}

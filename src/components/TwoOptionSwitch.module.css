@@ -57,6 +57,16 @@
   color: #ffffff;
 }
 
+:global([data-theme='new']) .thumb {
+  background: var(--accent-color);
+  border-color: var(--accent-color-light);
+  box-shadow: 0 4px 14px rgba(var(--accent-color-rgb), 0.22);
+}
+
+:global([data-theme='new']) .optionActive {
+  color: var(--accent-contrast);
+}
+
 .rootDisabled {
   opacity: 0.6;
 }
