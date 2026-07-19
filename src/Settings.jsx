@@ -26,6 +26,19 @@ import { SANBAI_RANKINGS_METADATA } from './utils/sanbaiRankingsMetadata.js';
 
 const CHANGELOG_UPDATES = [
     {
+        date: 'Jul 16, 2026',
+        items: [
+            'Added a refreshed default theme, with new DDR WORLD and other themed visual styles across the app.',
+            'Added a Theme Editor for previewing and copying custom theme colour settings.',
+            'Added WORLD settings for applying updated difficulties and showing or hiding the new WORLD Challenge charts.',
+            'Improved Card Draw with collapsible draw history, draw focus fading, clearer action and winner labels, persistent tournament labels, label locking, and CSV export.',
+            'Redesigned song filters with clearer Basic and Advanced sections, active-filter counts, and responsive controls.',
+            'Rankings now load more results as you scroll, with smoother level grouping and filtering.',
+            'Updated chart, song, Dan Course, and song-list data, including the latest DDR WORLD content and more reliable score and chart matching.',
+            'Improved loading speed and offline data handling, and refreshed the footer and About information.',
+        ],
+    },
+    {
         date: 'Jul 4, 2026',
         items: [
             'Expanded Song List Override support across DDR mainline releases, with regional variants where available and separate Game / Region selectors.',
