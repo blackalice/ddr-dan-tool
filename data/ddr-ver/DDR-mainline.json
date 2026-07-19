@@ -7,40 +7,25 @@
   "generatedAt": "2026-07-03T18:08:24.253Z",
   "songs": [
     {
-      "title": "HAVE YOU NEVER BEEN MELLOW",
-      "artist": "THE OLIVIA PROJECT"
+      "path": "sm/DDR/Have You Never Been Mellow/Have You Never Been Mellow.sm"
     },
     {
-      "title": "butterfly",
-      "artist": "SMiLE.dk"
+      "path": "sm/DDR/Butterfly/Butterfly.sm"
     },
     {
-      "title": "KUNG FU FIGHTING",
-      "artist": "BUS STOP featuring CARL DOUGLAS"
+      "path": "sm/DDR/Little Bitch/Little Bitch.sm"
     },
     {
-      "title": "MY FIRE",
-      "artist": "X-TREME"
+      "path": "sm/DDR/LET'S GET DOWN/LET'S GET DOWN.sm"
     },
     {
-      "title": "LITTLE BITCH",
-      "artist": "THE SPECIALS"
+      "path": "sm/DDR/That's The Way (I Like It)/That's The Way (I Like It).sm"
     },
     {
-      "title": "LET'S GET DOWN",
-      "artist": "JT PLAYAZ"
+      "path": "sm/DDR/STRICTLY BUSINESS/STRICTLY BUSINESS.sm"
     },
     {
-      "title": "THAT'S THE WAY(I LIKE IT)",
-      "artist": "KC & THE SUNSHINE BAND"
-    },
-    {
-      "title": "STRICTLY BUSINESS",
-      "artist": "MANTRONIK VS EPMD"
-    },
-    {
-      "title": "PARANOiA",
-      "artist": "180"
+      "path": "sm/DDR/PARANOiA/PARANOiA.sm"
     }
   ],
   "issues": []

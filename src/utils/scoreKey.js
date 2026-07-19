@@ -5,6 +5,7 @@ import {
   normalizeMode,
   upgradeChartId,
 } from './chartIds.js';
+import { buildChartKey, normalizeSongKey } from './chartIdentity.js';
 
 function makeLegacyKey({ title, difficulty, artist }) {
   if (!title || !difficulty) return null;
@@ -17,7 +18,11 @@ function makeLegacyKey({ title, difficulty, artist }) {
   return `${t}-${d}`;
 }
 
-export function makeScoreKey({ chartId, songId, mode, difficulty, title, artist }) {
+export function makeScoreKey({ chartKey, songKey, path, chartId, songId, mode, difficulty, title, artist }) {
+  if (chartKey) return String(chartKey);
+  const canonicalSongKey = normalizeSongKey(songKey || path);
+  const canonicalChartKey = buildChartKey(canonicalSongKey, mode, difficulty);
+  if (canonicalChartKey) return canonicalChartKey;
   if (chartId && isChartId(chartId)) {
     const upgraded = upgradeChartId(chartId);
     if (upgraded) return upgraded;
@@ -41,9 +46,9 @@ export function resolveScore(scores, mode, details = {}) {
   const normalizedMode = normalizeMode(mode);
   const byMode = scores[normalizedMode] || {};
   if (!details) details = {};
-  const { chartId, songId, difficulty, title, artist } = details;
+  const { chartKey, songKey, path, chartId, songId, difficulty, title, artist } = details;
 
-  const keyFromDetails = makeScoreKey({ chartId, songId, mode: normalizedMode, difficulty, title, artist });
+  const keyFromDetails = makeScoreKey({ chartKey, songKey, path, chartId, songId, mode: normalizedMode, difficulty, title, artist });
   if (keyFromDetails && byMode[keyFromDetails]) return byMode[keyFromDetails];
 
   const legacyWithArtist = makeLegacyKey({ title, difficulty, artist });

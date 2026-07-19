@@ -7,125 +7,348 @@
   ],
   "generatedAt": "2026-07-03T18:08:24.253Z",
   "songs": [
-    "A MINUTE (Extended Mix)",
-    "BABY LOVE ME",
-    "DRIFTING AWAY",
-    "FANTASY",
-    "IT'S RAINING MEN(Almighty Mix)",
-    "LITTLE BOY(BOY ON BOY MIX)",
-    "LIVING IN AMERICA",
-    "LOOK AT US (Daddy DJ Remix)",
-    "LONG TRAIN RUNNIN'",
-    "MAXIMUM OVERDRIVE (KC Club Mix)",
-    "MORE THAN I NEEDED TO KNOW",
-    "NOTHING GONNA STOP (Dance Mania Mix)",
-    "SO FABULOUS SO FIERCE (FREAK OUT)",
-    "STAY",
-    "THE REFLEX",
-    "THE WHISTLE SONG (Blow My Whistle Bitch)",
-    "THERE YOU'LL BE",
-    "TRANCE DE JANEIRO(SAMBA DE JANEIRO 2002 Epic Vocal Remix)",
-    "WAKA LAKA",
-    "Burning Heat! (3 Option Mix)",
-    "BRE∀K DOWN!",
-    "CANDY♥",
-    "D2R",
-    "DESTINY",
-    "DIVE TO THE NIGHT",
-    "ever snow",
-    "i feel ...",
-    "MAXX UNLIMITED",
-    "rain of sorrow",
-    "Secret Rendez-vous",
-    "Spin the disc",
-    "Sweet Sweet ♥ Magic",
-    "TSUGARU",
-    "革命",
-    "AFRONOVA",
-    "AM-3P",
-    "B4U",
-    "BRILLIANT 2U",
-    "BURNIN' THE FLOOR",
-    "CELEBRATE NITE",
-    "DROP OUT",
-    "DYNAMITE RAVE",
-    "ECSTASY",
-    "HIGHER",
-    "HYSTERIA",
-    "MY SUMMER LOVE",
-    "Silent Hill",
-    "SEXY PLANET",
-    "STILL IN MY HEART",
-    "SUPER STAR",
-    "WILD RUSH",
-    "祭 JAPAN",
-    "COW GIRL",
-    "DO YOU REMEMBER ME",
-    "HIGHS OFF U(Scorccio XY Mix)",
-    "I'M IN THE MOOD FOR DANCING",
-    "JUSTIFY MY LOVE",
-    "LET'S GROOVE",
-    "LOVIN' YOU(ROB SEARLE CLUB MIX)",
-    "MIRACLE",
-    "MY SWEET DARLIN'",
-    "NORI NORI NORI",
-    "ORDINARY WORLD",
-    "SO DEEP(PERFECT SPHERE REMIX)",
-    "SOMEWHERE OVER THE RAINBOW",
-    "The Centre Of The Heart(STONEBRIDGE CLUBMIX)",
-    "TWILIGHT ZONE(R-C Extended Club MIX)",
-    "WWW.BLONDE GIRL(MOMO MIX)",
-    "WITCH DOCTOR(GIANTS TOONS VERSION)",
-    "そばかす FRECKLES (KCP Re-Edit)",
-    "夜空ノムコウ",
-    "DIVE(more deep & deeper style)",
-    "Do It Right",
-    "exotic ethnic",
-    "Firefly",
-    "Groove",
-    "Groove 2001",
-    "Healing Vision (Angelic mix)",
-    "Let the beat hit em! (CLASSIC R&B STYLE)",
-    "Look To The Sky",
-    "MAX 300",
-    "Midnite Blaze",
-    "ON THE JAZZ",
-    "ORION.78(civilization mix)",
-    "Share My Love",
-    "true...(radio edit)",
-    "true...(Trance Sunrise Mix)",
-    "ABSOLUTE",
-    "Abyss",
-    "BROKEN MY HEART",
-    "CAN'T STOP FALLIN' IN LOVE (SPEED MIX)",
-    "DXY!",
-    "Healing Vision",
-    "INSERTiON",
-    "サナ・モレッテ・ネ・エンテ",
-    ".59",
-    "CAN'T STOP FALLIN' IN LOVE",
-    "era (nostalmix)",
-    "Holic",
-    "LOVE AGAIN TONIGHT (For Melissa MIX)",
-    "ORION.78 (AMeuro-MIX)",
-    "PARANOIA EVOLUTION",
-    "TRIP MACHINE CLIMAX",
-    "DROP THE BOMB",
-    "TRIP MACHINE (LuvMIX)",
-    "DEAD END",
-    "END OF THE CENTURY",
-    "La Senorita",
-    "LUV TO ME (AMD MIX)",
-    "PARANOiA Rebirth",
-    "BRILLIANT 2U (Orchestra-Groove)",
-    "PARANOiA KCET (clean mix)",
-    "PARANOiA MAX (DIRTY MIX)",
-    "PARANOiA",
-    "Song Lists",
-    "Privacy policy",
-    "About RemyWiki",
-    "Disclaimers",
-    "Mobile view"
+    {
+      "path": "sm/7th/A MINUTE (EXTENDED MIX)/A MINUTE (EXTENDED MIX).sm"
+    },
+    {
+      "path": "sm/7th/BABY LOVE ME/BABY LOVE ME.sm"
+    },
+    {
+      "path": "sm/7th/DRIFTING AWAY/DRIFTING AWAY.sm"
+    },
+    {
+      "path": "sm/7th/FANTASY/FANTASY.sm"
+    },
+    {
+      "path": "sm/7th/IT'S RAINING MEN (Almighty Mix)/IT'S RAINING MEN (Almighty Mix).sm"
+    },
+    {
+      "path": "sm/7th/LITTLE BOY (BOY ON BOY MIX)/LITTLE BOY (BOY ON BOY MIX).sm"
+    },
+    {
+      "path": "sm/7th/LIVING IN AMERICA/LIVING IN AMERICA.sm"
+    },
+    {
+      "path": "sm/7th/LOOK AT US (Daddy DJ Remix)/LOOK AT US (Daddy DJ Remix).sm"
+    },
+    {
+      "path": "sm/7th/LONG TRAIN RUNNIN'/LONG TRAIN RUNNIN'.sm"
+    },
+    {
+      "path": "sm/7th/MAXIMUM OVERDRIVE (KC Club Mix)/MAXIMUM OVERDRIVE (KC Club Mix).sm"
+    },
+    {
+      "path": "sm/7th/MORE THAN I NEEDED TO KNOW/MORE THAN I NEEDED TO KNOW.sm"
+    },
+    {
+      "path": "sm/7th/NOTHING GONNA STOP (Dance Mania Mix)/NOTHING GONNA STOP (Dance Mania Mix).sm"
+    },
+    {
+      "path": "sm/7th/SO FABULOUS SO FIERCE (FREAK OUT)/SO FABULOUS SO FIERCE (FREAK OUT).sm"
+    },
+    {
+      "path": "sm/7th/STAY/STAY.sm"
+    },
+    {
+      "path": "sm/7th/THE REFLEX/THE REFLEX.sm"
+    },
+    {
+      "path": "sm/7th/THE WHISTLE SONG (Blow My Whistle Bitch)/THE WHISTLE SONG (Blow My Whistle Bitch).sm"
+    },
+    {
+      "path": "sm/7th/THERE YOU'LL BE/THERE YOU'LL BE.sm"
+    },
+    {
+      "path": "sm/7th/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix)/TRANCE DE JANEIRO (SAMBA DE JANEIRO 2002 Epic Vocal Remix).sm"
+    },
+    {
+      "path": "sm/7th/WAKA LAKA/WAKA LAKA.sm"
+    },
+    {
+      "path": "sm/7th/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).sm"
+    },
+    {
+      "path": "sm/7th/BREAK DOWN!/BREAK DOWN!.sm"
+    },
+    {
+      "path": "sm/7th/CANDY HEART/CANDY HEART.sm"
+    },
+    {
+      "path": "sm/7th/D2R/D2R.sm"
+    },
+    {
+      "path": "sm/7th/DESTINY/DESTINY.sm"
+    },
+    {
+      "path": "sm/7th/DIVE TO THE NIGHT/DIVE TO THE NIGHT.sm"
+    },
+    {
+      "path": "sm/7th/ever snow/ever snow.sm"
+    },
+    {
+      "path": "sm/7th/i feel/i feel.sm"
+    },
+    {
+      "path": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm"
+    },
+    {
+      "path": "sm/7th/rain of sorrow/rain of sorrow.sm"
+    },
+    {
+      "path": "sm/7th/Secret Rendez-vous/Secret Rendez-vous.sm"
+    },
+    {
+      "path": "sm/7th/Spin the disc/Spin the disc.sm"
+    },
+    {
+      "path": "sm/7th/Sweet Sweet Love Magic/Sweet Sweet Love Magic.sm"
+    },
+    {
+      "path": "sm/7th/TSUGARU/TSUGARU.sm"
+    },
+    {
+      "path": "sm/7th/KAKUMEI/KAKUMEI.sm"
+    },
+    {
+      "path": "sm/3rd/AFRONOVA/AFRONOVA.sm"
+    },
+    {
+      "path": "sm/2nd/AM-3P/AM-3P.sm"
+    },
+    {
+      "path": "sm/4th/B4U/B4U.sm"
+    },
+    {
+      "path": "sm/2nd/BRILLIANT 2U/BRILLIANT 2U.sm"
+    },
+    {
+      "path": "sm/4th/BURNIN' THE FLOOR/BURNIN' THE FLOOR.sm"
+    },
+    {
+      "path": "sm/4th/CELEBRATE NITE/CELEBRATE NITE.sm"
+    },
+    {
+      "path": "sm/4th/DROP OUT/DROP OUT.sm"
+    },
+    {
+      "path": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm"
+    },
+    {
+      "path": "sm/5th/ECSTASY/ECSTASY.sm"
+    },
+    {
+      "path": "sm/4th/HIGHER/HIGHER.sm"
+    },
+    {
+      "path": "sm/4th/HYSTERIA/HYSTERIA.sm"
+    },
+    {
+      "path": "sm/4th/MY SUMMER LOVE/MY SUMMER LOVE.sm"
+    },
+    {
+      "path": "sm/3rd/Silent Hill/Silent Hill.sm"
+    },
+    {
+      "path": "sm/4th/SEXY PLANET/SEXY PLANET.sm"
+    },
+    {
+      "path": "sm/5th/STILL IN MY HEART/STILL IN MY HEART.sm"
+    },
+    {
+      "path": "sm/4th/SUPER STAR/SUPER STAR.sm"
+    },
+    {
+      "path": "sm/4th/WILD RUSH/WILD RUSH.sm"
+    },
+    {
+      "path": "sm/5th/MATSURI JAPAN/MATSURI JAPAN.sm"
+    },
+    {
+      "path": "sm/6th/COW GIRL/COW GIRL.sm"
+    },
+    {
+      "path": "sm/6th/DO YOU REMEMBER ME/DO YOU REMEMBER ME.sm"
+    },
+    {
+      "path": "sm/6th/HIGHS OFF U (Scorccio XY Mix)/HIGHS OFF U (Scorccio XY Mix).sm"
+    },
+    {
+      "path": "sm/6th/I'M IN THE MOOD FOR DANCING/I'M IN THE MOOD FOR DANCING.sm"
+    },
+    {
+      "path": "sm/6th/JUSTIFY MY LOVE/JUSTIFY MY LOVE.sm"
+    },
+    {
+      "path": "sm/6th/LET'S GROOVE/LET'S GROOVE.sm"
+    },
+    {
+      "path": "sm/6th/LOVIN' YOU (ROB SEARLE CLUB MIX)/LOVIN' YOU (ROB SEARLE CLUB MIX).sm"
+    },
+    {
+      "path": "sm/6th/MIRACLE/MIRACLE.sm"
+    },
+    {
+      "path": "sm/6th/MY SWEET DARLIN'/MY SWEET DARLIN'.sm"
+    },
+    {
+      "path": "sm/6th/NORI NORI NORI/NORI NORI NORI.sm"
+    },
+    {
+      "path": "sm/6th/ORDINARY WORLD/ORDINARY WORLD.sm"
+    },
+    {
+      "path": "sm/6th/SO DEEP (PERFECT SPHERE REMIX)/SO DEEP (PERFECT SPHERE REMIX).sm"
+    },
+    {
+      "path": "sm/6th/SOMEWHERE OVER THE RAINBOW/SOMEWHERE OVER THE RAINBOW.sm"
+    },
+    {
+      "path": "sm/6th/The Centre Of The Heart (STONEBRIDGE CLUBMIX)/The Centre Of The Heart (STONEBRIDGE CLUBMIX).sm"
+    },
+    {
+      "path": "sm/6th/TWILIGHT ZONE (R-C Extended Club MIX)/TWILIGHT ZONE (R-C Extended Club MIX).sm"
+    },
+    {
+      "path": "sm/6th/WWW.BLONDE GIRL (MOMO MIX)/WWW.BLONDE GIRL (MOMO MIX).sm"
+    },
+    {
+      "path": "sm/6th/WITCH DOCTOR (GIANTS TOONS VERSION)/WITCH DOCTOR (GIANTS TOONS VERSION).sm"
+    },
+    {
+      "path": "sm/6th/Sobakasu FRECKLES (KCP Re-Edit)/Sobakasu FRECKLES (KCP Re-Edit).sm"
+    },
+    {
+      "path": "sm/6th/YOZORA NO MUKO/YOZORA NO MUKO.sm"
+    },
+    {
+      "path": "sm/6th/DIVE(more deep & deeper style)/DIVE(more deep & deeper style).sm"
+    },
+    {
+      "path": "sm/6th/Do It Right/Do It Right.sm"
+    },
+    {
+      "path": "sm/6th/exotic ethnic/exotic ethnic.sm"
+    },
+    {
+      "path": "sm/6th/Firefly/Firefly.sm"
+    },
+    {
+      "path": "sm/6th/Groove/Groove.sm"
+    },
+    {
+      "path": "sm/6th/Groove 2001/Groove 2001.sm"
+    },
+    {
+      "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm"
+    },
+    {
+      "path": "sm/6th/Let the beat hit em!(CLASSIC R&B STYLE)/Let the beat hit em!(CLASSIC R&B STYLE).sm"
+    },
+    {
+      "path": "sm/6th/Look To The Sky/Look To The Sky.sm"
+    },
+    {
+      "path": "sm/6th/MAX 300/MAX 300.sm"
+    },
+    {
+      "path": "sm/6th/Midnite Blaze/Midnite Blaze.sm"
+    },
+    {
+      "path": "sm/6th/ON THE JAZZ/ON THE JAZZ.sm"
+    },
+    {
+      "path": "sm/6th/ORION.78~civilization mix~/ORION.78~civilization mix~.sm"
+    },
+    {
+      "path": "sm/6th/Share My Love/Share My Love.sm"
+    },
+    {
+      "path": "sm/6th/true...(radio edit)/true...(radio edit).sm"
+    },
+    {
+      "path": "sm/6th/true...(Trance Sunrise Mix)/true...(Trance Sunrise Mix).sm"
+    },
+    {
+      "path": "sm/5th/ABSOLUTE/ABSOLUTE.sm"
+    },
+    {
+      "path": "sm/5th/Abyss/Abyss.sm"
+    },
+    {
+      "path": "sm/5th/BROKEN MY HEART/BROKEN MY HEART.sm"
+    },
+    {
+      "path": "sm/5th/CAN'T STOP FALLIN' IN LOVE ~SPEED MIX~/CAN'T STOP FALLIN' IN LOVE ~SPEED MIX~.sm"
+    },
+    {
+      "path": "sm/5th/DXY!/DXY!.sm"
+    },
+    {
+      "path": "sm/5th/Healing Vision/Healing Vision.sm"
+    },
+    {
+      "path": "sm/5th/INSERTiON/INSERTiON.sm"
+    },
+    {
+      "path": "sm/5th/SANA MOLLETE NE ENTE/SANA MOLLETE NE ENTE.sm"
+    },
+    {
+      "path": "sm/4th/.59/.59.sm"
+    },
+    {
+      "path": "sm/4th/CAN'T STOP FALLIN' IN LOVE/CAN'T STOP FALLIN' IN LOVE.sm"
+    },
+    {
+      "path": "sm/4th/era (nostalmix)/era (nostalmix).sm"
+    },
+    {
+      "path": "sm/4th/Holic/Holic.sm"
+    },
+    {
+      "path": "sm/4th/LOVE AGAIN TONIGHT~For Melissa MIX~/LOVE AGAIN TONIGHT~For Melissa MIX~.sm"
+    },
+    {
+      "path": "sm/4th/ORION.78(AMeuro-MIX)/ORION.78(AMeuro-MIX).sm"
+    },
+    {
+      "path": "sm/4th/PARANOIA EVOLUTION/PARANOIA EVOLUTION.sm"
+    },
+    {
+      "path": "sm/4th/TRIP MACHINE CLIMAX/TRIP MACHINE CLIMAX.sm"
+    },
+    {
+      "path": "sm/3rd/DROP THE BOMB/DROP THE BOMB.sm"
+    },
+    {
+      "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm"
+    },
+    {
+      "path": "sm/3rd/DEAD END/DEAD END.sm"
+    },
+    {
+      "path": "sm/3rd/END OF THE CENTURY/END OF THE CENTURY.sm"
+    },
+    {
+      "path": "sm/3rd/La Senorita/La Senorita.sm"
+    },
+    {
+      "path": "sm/3rd/LUV TO ME (AMD MIX)/LUV TO ME (AMD MIX).sm"
+    },
+    {
+      "path": "sm/3rd/PARANOiA Rebirth/PARANOiA Rebirth.sm"
+    },
+    {
+      "path": "sm/2nd/BRILLIANT 2U(Orchestra Groove)/BRILLIANT 2U(Orchestra Groove).sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm"
+    },
+    {
+      "path": "sm/DDR/PARANOiA/PARANOiA.sm"
+    }
   ],
   "issues": [
     {

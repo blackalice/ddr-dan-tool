@@ -43,27 +43,41 @@ function normalizeScoresShape(data) {
   };
 }
 
-function buildLegacyLookup(meta) {
-  const map = new Map();
-  if (!Array.isArray(meta)) return map;
+function buildScoreIdentityLookup(meta) {
+  const legacyChartIds = new Map();
+  const legacyTitles = new Map();
+  if (!Array.isArray(meta)) return { legacyChartIds, legacyTitles };
   for (const song of meta) {
     const songId = song.id;
     for (const diff of song.difficulties || []) {
       const chartId = diff.chartId || buildChartId(songId, diff.mode, diff.difficulty);
       if (!chartId) continue;
+      const canonical = makeScoreKey({
+        songKey: song.songKey || song.path,
+        mode: diff.mode,
+        difficulty: diff.difficulty,
+      });
+      if (!canonical) continue;
+      legacyChartIds.set(chartId, canonical);
       const withArtist = makeScoreKey({ title: song.title, artist: song.artist, difficulty: diff.difficulty });
-      if (withArtist) map.set(withArtist, chartId);
+      if (withArtist) {
+        const existing = legacyTitles.get(withArtist);
+        legacyTitles.set(withArtist, existing && existing !== canonical ? null : canonical);
+      }
       const legacy = legacyScoreKey({ title: song.title, difficulty: diff.difficulty });
-      if (legacy) map.set(legacy, chartId);
+      if (legacy) {
+        const existing = legacyTitles.get(legacy);
+        legacyTitles.set(legacy, existing && existing !== canonical ? null : canonical);
+      }
     }
   }
-  return map;
+  return { legacyChartIds, legacyTitles };
 }
 
 function migrateScores(existing, meta) {
   if (!meta || meta.length === 0) return existing;
-  const lookup = buildLegacyLookup(meta);
-  if (lookup.size === 0) return existing;
+  const lookup = buildScoreIdentityLookup(meta);
+  if (!lookup || lookup.legacyChartIds.size === 0) return existing;
   const next = normalizeScoresShape(existing);
   let changed = false;
   for (const mode of ['single', 'double']) {
@@ -72,15 +86,10 @@ function migrateScores(existing, meta) {
     for (const key of Object.keys(source)) {
       if (isChartId(key)) {
         const upgraded = upgradeChartId(key);
-        if (upgraded && upgraded !== key) {
-          if (!source[upgraded]) {
-            const entry = source[key];
-            if (entry && typeof entry === 'object') {
-              const normalizedSongId = normalizeSongIdValue(entry.songId);
-              if (normalizedSongId) entry.songId = normalizedSongId;
-            }
-            source[upgraded] = source[key];
-          }
+        const canonical = lookup.legacyChartIds.get(upgraded || key);
+        const targetKey = canonical || (upgraded && upgraded !== key ? upgraded : null);
+        if (targetKey) {
+          if (!source[targetKey]) source[targetKey] = source[key];
           delete source[key];
           changed = true;
           continue;
@@ -92,7 +101,7 @@ function migrateScores(existing, meta) {
         }
         continue;
       }
-      const mapped = lookup.get(key);
+      const mapped = lookup.legacyTitles.get(key);
       if (!mapped) continue;
       if (!source[mapped]) {
         source[mapped] = source[key];

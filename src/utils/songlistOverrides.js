@@ -1,4 +1,5 @@
 import { normalizeString } from './stringSimilarity.js';
+import { normalizeSongKey } from './chartIdentity.js';
 
 const RELEASE_ORDER = [
     'DDR',
@@ -155,6 +156,8 @@ const buildArtistKey = (titleKey, artistKey) => `${titleKey}|${artistKey}`;
 
 const buildDuplicatePreferences = (songs = []) => {
     const titleGroups = new Map();
+    const titleReleaseCounts = new Map();
+    const titleArtistReleaseCounts = new Map();
     for (const song of songs) {
         if (!song || typeof song !== 'object') continue;
         const rank = getReleaseRank(song.game);
@@ -172,6 +175,25 @@ const buildDuplicatePreferences = (songs = []) => {
             const existing = group.get(rank) || new Set();
             existing.add(normalizeReleaseValue(song.game));
             group.set(rank, existing);
+            let counts = titleReleaseCounts.get(titleKey);
+            if (!counts) {
+                counts = new Map();
+                titleReleaseCounts.set(titleKey, counts);
+            }
+            counts.set(rank, (counts.get(rank) || 0) + 1);
+            const artistKeys = [song.artist, song.artistTranslit]
+                .filter(Boolean)
+                .map(normalizeString)
+                .filter(Boolean);
+            for (const artistKey of new Set(artistKeys)) {
+                const artistGroupKey = buildArtistKey(titleKey, artistKey);
+                let artistCounts = titleArtistReleaseCounts.get(artistGroupKey);
+                if (!artistCounts) {
+                    artistCounts = new Map();
+                    titleArtistReleaseCounts.set(artistGroupKey, artistCounts);
+                }
+                artistCounts.set(rank, (artistCounts.get(rank) || 0) + 1);
+            }
         }
     }
 
@@ -180,7 +202,21 @@ const buildDuplicatePreferences = (songs = []) => {
         if (ranks.size <= 1) continue;
         duplicateTitles.set(titleKey, [...ranks.keys()].sort((a, b) => a - b));
     }
-    return duplicateTitles;
+    const duplicateTitlesByRelease = new Map();
+    for (const [titleKey, counts] of titleReleaseCounts.entries()) {
+        const duplicateRanks = [...counts.entries()]
+            .filter(([, count]) => count > 1)
+            .map(([rank]) => rank);
+        if (duplicateRanks.length) duplicateTitlesByRelease.set(titleKey, duplicateRanks);
+    }
+    const duplicateTitleArtistsByRelease = new Map();
+    for (const [key, counts] of titleArtistReleaseCounts.entries()) {
+        const duplicateRanks = [...counts.entries()]
+            .filter(([, count]) => count > 1)
+            .map(([rank]) => rank);
+        if (duplicateRanks.length) duplicateTitleArtistsByRelease.set(key, duplicateRanks);
+    }
+    return { duplicateTitles, duplicateTitlesByRelease, duplicateTitleArtistsByRelease };
 };
 
 const getPreferredDuplicateRank = (lookup, titleKeys, songGame) => {
@@ -204,6 +240,7 @@ const getPreferredDuplicateRank = (lookup, titleKeys, songGame) => {
 export const buildSonglistOverrideLookup = (data, songs = []) => {
     const titleOnly = new Set();
     const titleArtist = new Map();
+    const pathEntries = new Map();
     const overrideSongs = Array.isArray(data?.songs) ? data.songs : [];
     for (const entry of overrideSongs) {
         if (typeof entry === 'string') {
@@ -212,6 +249,11 @@ export const buildSonglistOverrideLookup = (data, songs = []) => {
             continue;
         }
         if (!entry || typeof entry !== 'object') continue;
+        const songKey = normalizeSongKey(entry.path || entry.songKey || entry.file || entry.songPath);
+        if (songKey) {
+            pathEntries.set(songKey, entry);
+            continue;
+        }
         const title = entry.title || entry.songTitle || entry.name || entry.song;
         const artist = entry.artist || entry.songArtist || '';
         if (!title) continue;
@@ -227,13 +269,14 @@ export const buildSonglistOverrideLookup = (data, songs = []) => {
     return {
         titleOnly,
         titleArtist,
+        pathEntries,
         targetRank: getReleaseRank(data?.version),
-        duplicateTitles: buildDuplicatePreferences(songs),
+        ...buildDuplicatePreferences(songs),
     };
 };
 
 export const songlistOverrideHasEntries = (lookup) =>
-    Boolean(lookup && (lookup.titleOnly.size || lookup.titleArtist.size));
+    Boolean(lookup && (lookup.titleOnly.size || lookup.titleArtist.size || lookup.pathEntries?.size));
 
 const getModeDifficulties = (entry, mode) => {
     if (!entry || !mode) return null;
@@ -241,9 +284,23 @@ const getModeDifficulties = (entry, mode) => {
     return Array.isArray(list) ? list : null;
 };
 
+const difficultyNames = (list) => (Array.isArray(list) ? list.map((item) => {
+    if (typeof item === 'string') return item;
+    return item?.name || item?.difficulty || '';
+}).map((item) => String(item).trim().toLowerCase()).filter(Boolean) : []);
+
+const pathEntryMatches = (entry, mode, difficulty) => {
+    if (!entry || !mode) return Boolean(entry);
+    const modeList = getModeDifficulties(entry, mode);
+    if (modeList === null) return true;
+    if (modeList.length === 0) return false;
+    if (!difficulty) return true;
+    return difficultyNames(modeList).includes(String(difficulty).trim().toLowerCase());
+};
+
 export const songlistOverrideMatches = (
     lookup,
-    { title, titleTranslit, artist, artistTranslit, mode, game }
+    { path, songKey, title, titleTranslit, artist, artistTranslit, mode, difficulty, game }
 ) => {
     if (!songlistOverrideHasEntries(lookup)) return true;
     const titleKeys = [title, titleTranslit]
@@ -255,21 +312,39 @@ export const songlistOverrideMatches = (
         .map(normalizeString)
         .filter(Boolean);
 
+    const canonicalSongKey = normalizeSongKey(songKey || path);
+    if (canonicalSongKey && lookup.pathEntries?.has(canonicalSongKey)) {
+        return pathEntryMatches(lookup.pathEntries.get(canonicalSongKey), mode, difficulty);
+    }
+
+    // Do not allow a legacy title entry to match a path entry. This keeps a
+    // migrated override exact even when another file has the same title.
+    if (canonicalSongKey && lookup.pathEntries?.size) {
+        const hasAnyCanonicalEntries = [...lookup.pathEntries.values()].some((entry) => {
+            const entryTitle = entry.title || entry.songTitle || entry.name || entry.song;
+            return entryTitle && titleKeys.includes(normalizeString(entryTitle));
+        });
+        if (hasAnyCanonicalEntries) return false;
+    }
+
     for (const titleKey of titleKeys) {
         for (const artistKey of artistKeys) {
             const entry = lookup.titleArtist.get(buildArtistKey(titleKey, artistKey));
             if (!entry) continue;
+            const artistDuplicateRanks = lookup.duplicateTitleArtistsByRelease
+                ?.get(buildArtistKey(titleKey, artistKey)) || [];
+            if (artistDuplicateRanks.includes(getReleaseRank(game))) return false;
             const modeList = getModeDifficulties(entry, mode);
-            if (mode && Array.isArray(modeList) && modeList.length === 0) {
-                return false;
-            }
+            if (mode && Array.isArray(modeList) && modeList.length === 0) return false;
             const preferredRank = getPreferredDuplicateRank(lookup, titleKeys, game);
             if (Number.isInteger(preferredRank) && getReleaseRank(game) !== preferredRank) {
                 return false;
             }
-            return true;
+            return pathEntryMatches(entry, mode, difficulty);
         }
         if (lookup.titleOnly.has(titleKey)) {
+            const duplicateRanks = lookup.duplicateTitlesByRelease?.get(titleKey) || [];
+            if (duplicateRanks.includes(getReleaseRank(game))) return false;
             const preferredRank = getPreferredDuplicateRank(lookup, titleKeys, game);
             if (Number.isInteger(preferredRank) && getReleaseRank(game) !== preferredRank) {
                 return false;
@@ -279,3 +354,6 @@ export const songlistOverrideMatches = (
     }
     return false;
 };
+
+export const songlistOverrideChartMatches = (lookup, details) =>
+    songlistOverrideMatches(lookup, details);

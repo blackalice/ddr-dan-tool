@@ -9,9 +9,10 @@ const outputPath = path.join(ROOT, 'data', 'generated', 'song-index.json');
 
 const source = JSON.parse(await fs.readFile(inputPath, 'utf8'));
 const files = Array.isArray(source.files)
-  ? source.files.map(({ id, path: songPath, title, titleTranslit, jacket }) => ({
+  ? source.files.map(({ id, path: songPath, songKey, title, titleTranslit, jacket }) => ({
       id,
       path: songPath,
+      songKey: songKey || songPath,
       title,
       titleTranslit,
       jacket: jacket || null,

@@ -21,6 +21,8 @@
             "rankedRating": 9.4,
             "songId": "000570",
             "chartId": "000570#S#1",
+            "songKey": "sm/A/Love You More/Love You More.sm",
+            "chartKey": "sm/A/Love You More/Love You More.sm#single#basic",
             "path": "sm/A/Love You More/Love You More.sm",
             "artist": "BEMANI Sound Team \"Sota F.\""
           },
@@ -34,6 +36,8 @@
             "rankedRating": 9.65,
             "songId": "000728",
             "chartId": "000728#S#2",
+            "songKey": "sm/A20/Starry Sky/Starry Sky.sm",
+            "chartKey": "sm/A20/Starry Sky/Starry Sky.sm#single#difficult",
             "path": "sm/A20/Starry Sky/Starry Sky.sm",
             "artist": "DJ Genki feat. Mayumi Morinaga"
           },
@@ -47,6 +51,8 @@
             "rankedRating": 9.65,
             "songId": "000753",
             "chartId": "000753#S#2",
+            "songKey": "sm/A20 Plus/Bang Pad(Werk Mix)/Bang Pad(Werk Mix).sm",
+            "chartKey": "sm/A20 Plus/Bang Pad(Werk Mix)/Bang Pad(Werk Mix).sm#single#difficult",
             "path": "sm/A20 Plus/Bang Pad(Werk Mix)/Bang Pad(Werk Mix).sm",
             "artist": "Oyubi"
           },
@@ -60,6 +66,8 @@
             "rankedRating": 10.3,
             "songId": "000687",
             "chartId": "000687#S#2",
+            "songKey": "sm/A20/LEVEL UP/LEVEL UP.sm",
+            "chartKey": "sm/A20/LEVEL UP/LEVEL UP.sm#single#difficult",
             "path": "sm/A20/LEVEL UP/LEVEL UP.sm",
             "artist": "TORIENA"
           }
@@ -91,6 +99,8 @@
             "rankedRating": 10.55,
             "songId": "000526",
             "chartId": "000526#S#2",
+            "songKey": "sm/A/Electric Dance System Music/Electric Dance System Music.sm",
+            "chartKey": "sm/A/Electric Dance System Music/Electric Dance System Music.sm#single#difficult",
             "path": "sm/A/Electric Dance System Music/Electric Dance System Music.sm",
             "artist": "U1 overground"
           },
@@ -104,6 +114,8 @@
             "rankedRating": 10.2,
             "songId": "000557",
             "chartId": "000557#S#2",
+            "songKey": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm",
+            "chartKey": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm#single#difficult",
             "path": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm",
             "artist": "Zodiac Fall"
           },
@@ -117,6 +129,8 @@
             "rankedRating": 10.4,
             "songId": "000641",
             "chartId": "000641#S#2",
+            "songKey": "sm/A/siberite/siberite.sm",
+            "chartKey": "sm/A/siberite/siberite.sm#single#difficult",
             "path": "sm/A/siberite/siberite.sm",
             "artist": "Captain KING"
           },
@@ -130,6 +144,8 @@
             "rankedRating": 11.15,
             "songId": "000615",
             "chartId": "000615#S#4",
+            "songKey": "sm/A/Show me your moves/Show me your moves.sm",
+            "chartKey": "sm/A/Show me your moves/Show me your moves.sm#single#expert",
             "path": "sm/A/Show me your moves/Show me your moves.sm",
             "artist": "BEMANI Sound Team “TAG” feat. 柊木りお"
           }
@@ -161,6 +177,8 @@
             "rankedRating": 11.35,
             "songId": "000735",
             "chartId": "000735#S#4",
+            "songKey": "sm/A20/This Beat Is/This Beat Is.sm",
+            "chartKey": "sm/A20/This Beat Is/This Beat Is.sm#single#expert",
             "path": "sm/A20/This Beat Is/This Beat Is.sm",
             "artist": "Shoichiro Hirata"
           },
@@ -174,6 +192,8 @@
             "rankedRating": 11.2,
             "songId": "000727",
             "chartId": "000727#S#2",
+            "songKey": "sm/A20/Starlight in the Snow/Starlight in the Snow.sm",
+            "chartKey": "sm/A20/Starlight in the Snow/Starlight in the Snow.sm#single#difficult",
             "path": "sm/A20/Starlight in the Snow/Starlight in the Snow.sm",
             "artist": "BEMANI Sound Team \"劇団レコード\" ft.Lisa – paint with stars"
           },
@@ -187,6 +207,8 @@
             "rankedRating": 11.15,
             "songId": "000729",
             "chartId": "000729#S#4",
+            "songKey": "sm/A20/Stay 4 Ever/Stay 4 Ever.sm",
+            "chartKey": "sm/A20/Stay 4 Ever/Stay 4 Ever.sm#single#expert",
             "path": "sm/A20/Stay 4 Ever/Stay 4 Ever.sm",
             "artist": "CHEAP CREAM"
           },
@@ -200,6 +222,8 @@
             "rankedRating": 15.55,
             "songId": "000501",
             "chartId": "000501#S#4",
+            "songKey": "sm/A/Astrogazer/Astrogazer.sm",
+            "chartKey": "sm/A/Astrogazer/Astrogazer.sm#single#expert",
             "path": "sm/A/Astrogazer/Astrogazer.sm",
             "artist": "DJ TOTTO"
           }
@@ -231,6 +255,8 @@
             "rankedRating": 12.55,
             "songId": "000640",
             "chartId": "000640#S#2",
+            "songKey": "sm/A/out of focus/out of focus.sm",
+            "chartKey": "sm/A/out of focus/out of focus.sm#single#difficult",
             "path": "sm/A/out of focus/out of focus.sm",
             "artist": "Qrispy Joybox"
           },
@@ -244,6 +270,8 @@
             "rankedRating": 12.1,
             "songId": "000716",
             "chartId": "000716#S#4",
+            "songKey": "sm/A20/SODA GALAXY/SODA GALAXY.sm",
+            "chartKey": "sm/A20/SODA GALAXY/SODA GALAXY.sm#single#expert",
             "path": "sm/A20/SODA GALAXY/SODA GALAXY.sm",
             "artist": "KO3"
           },
@@ -257,6 +285,8 @@
             "rankedRating": 12.35,
             "songId": "000786",
             "chartId": "000786#S#2",
+            "songKey": "sm/A20 Plus/In the past/In the past.sm",
+            "chartKey": "sm/A20 Plus/In the past/In the past.sm#single#difficult",
             "path": "sm/A20 Plus/In the past/In the past.sm",
             "artist": "PSYQUI"
           },
@@ -270,6 +300,8 @@
             "rankedRating": 13.65,
             "songId": "000761",
             "chartId": "000761#S#2",
+            "songKey": "sm/A20 Plus/DEADLOCK -Out Of Reach-/DEADLOCK -Out Of Reach-.sm",
+            "chartKey": "sm/A20 Plus/DEADLOCK -Out Of Reach-/DEADLOCK -Out Of Reach-.sm#single#difficult",
             "path": "sm/A20 Plus/DEADLOCK -Out Of Reach-/DEADLOCK -Out Of Reach-.sm",
             "artist": "U1 undefined behavior"
           }
@@ -301,6 +333,8 @@
             "rankedRating": 13.55,
             "songId": "001646",
             "chartId": "001646#S#4",
+            "songKey": "sm/X2/aftershock!!/aftershock!!.sm",
+            "chartKey": "sm/X2/aftershock!!/aftershock!!.sm#single#expert",
             "path": "sm/X2/aftershock!!/aftershock!!.sm",
             "artist": "DM Ashura"
           },
@@ -314,6 +348,8 @@
             "rankedRating": 13.65,
             "songId": "000696",
             "chartId": "000696#S#4",
+            "songKey": "sm/A20/Mythomane/Mythomane.sm",
+            "chartKey": "sm/A20/Mythomane/Mythomane.sm#single#expert",
             "path": "sm/A20/Mythomane/Mythomane.sm",
             "artist": "Hylen"
           },
@@ -327,6 +363,8 @@
             "rankedRating": 13.65,
             "songId": "000763",
             "chartId": "000763#S#4",
+            "songKey": "sm/A20 Plus/DeStRuCtIvE FoRcE/DeStRuCtIvE FoRcE.sm",
+            "chartKey": "sm/A20 Plus/DeStRuCtIvE FoRcE/DeStRuCtIvE FoRcE.sm#single#expert",
             "path": "sm/A20 Plus/DeStRuCtIvE FoRcE/DeStRuCtIvE FoRcE.sm",
             "artist": "BADMYTH"
           },
@@ -340,6 +378,8 @@
             "rankedRating": 14.4,
             "songId": "001695",
             "chartId": "001695#S#4",
+            "songKey": "sm/X3 vs 2nd/London EVOLVED ver.C/London EVOLVED ver.C.sm",
+            "chartKey": "sm/X3 vs 2nd/London EVOLVED ver.C/London EVOLVED ver.C.sm#single#expert",
             "path": "sm/X3 vs 2nd/London EVOLVED ver.C/London EVOLVED ver.C.sm",
             "artist": "TAG underground"
           }
@@ -371,6 +411,8 @@
             "rankedRating": 14.2,
             "songId": "000664",
             "chartId": "000664#S#4",
+            "songKey": "sm/A20/Dead Heat/Dead Heat.sm",
+            "chartKey": "sm/A20/Dead Heat/Dead Heat.sm#single#expert",
             "path": "sm/A20/Dead Heat/Dead Heat.sm",
             "artist": "Maozon"
           },
@@ -384,6 +426,8 @@
             "rankedRating": 14.3,
             "songId": "000684",
             "chartId": "000684#S#4",
+            "songKey": "sm/A20/IRON HEART/IRON HEART.sm",
+            "chartKey": "sm/A20/IRON HEART/IRON HEART.sm#single#expert",
             "path": "sm/A20/IRON HEART/IRON HEART.sm",
             "artist": "BUNNY"
           },
@@ -397,6 +441,8 @@
             "rankedRating": 14.55,
             "songId": "000830",
             "chartId": "000830#S#4",
+            "songKey": "sm/A20 Plus/STEP MACHINE/STEP MACHINE.sm",
+            "chartKey": "sm/A20 Plus/STEP MACHINE/STEP MACHINE.sm#single#expert",
             "path": "sm/A20 Plus/STEP MACHINE/STEP MACHINE.sm",
             "artist": "Paisley Parks"
           },
@@ -410,6 +456,8 @@
             "rankedRating": 15.4,
             "songId": "000417",
             "chartId": "000417#S#4",
+            "songKey": "sm/6th/MAX 300/MAX 300.sm",
+            "chartKey": "sm/6th/MAX 300/MAX 300.sm#single#expert",
             "path": "sm/6th/MAX 300/MAX 300.sm",
             "artist": "Ω"
           }
@@ -441,6 +489,8 @@
             "rankedRating": 15.35,
             "songId": "000698",
             "chartId": "000698#S#4",
+            "songKey": "sm/A20/Neverland/Neverland.sm",
+            "chartKey": "sm/A20/Neverland/Neverland.sm#single#expert",
             "path": "sm/A20/Neverland/Neverland.sm",
             "artist": "ARM (IOSYS) feat. Nicole Curry"
           },
@@ -454,6 +504,8 @@
             "rankedRating": 15.45,
             "songId": "000809",
             "chartId": "000809#S#4",
+            "songKey": "sm/A20 Plus/Next Phase/Next Phase.sm",
+            "chartKey": "sm/A20 Plus/Next Phase/Next Phase.sm#single#expert",
             "path": "sm/A20 Plus/Next Phase/Next Phase.sm",
             "artist": "Dazsta"
           },
@@ -467,6 +519,8 @@
             "rankedRating": 15.75,
             "songId": "000800",
             "chartId": "000800#S#4",
+            "songKey": "sm/A20 Plus/Last Card/Last Card.sm",
+            "chartKey": "sm/A20 Plus/Last Card/Last Card.sm#single#expert",
             "path": "sm/A20 Plus/Last Card/Last Card.sm",
             "artist": "kors k"
           },
@@ -480,6 +534,8 @@
             "rankedRating": 16.6,
             "songId": "000516",
             "chartId": "000516#S#4",
+            "songKey": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm",
+            "chartKey": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm#single#expert",
             "path": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm",
             "artist": "SYUNN"
           }
@@ -511,6 +567,8 @@
             "rankedRating": 16.55,
             "songId": "000821",
             "chartId": "000821#S#4",
+            "songKey": "sm/A20 Plus/Rave Accelerator/Rave Accelerator.sm",
+            "chartKey": "sm/A20 Plus/Rave Accelerator/Rave Accelerator.sm#single#expert",
             "path": "sm/A20 Plus/Rave Accelerator/Rave Accelerator.sm",
             "artist": "M-Project"
           },
@@ -524,6 +582,8 @@
             "rankedRating": 16.2,
             "songId": "000675",
             "chartId": "000675#S#4",
+            "songKey": "sm/A20/Golden Arrow/Golden Arrow.sm",
+            "chartKey": "sm/A20/Golden Arrow/Golden Arrow.sm#single#expert",
             "path": "sm/A20/Golden Arrow/Golden Arrow.sm",
             "artist": "Zekk"
           },
@@ -537,6 +597,8 @@
             "rankedRating": 16.7,
             "songId": "000726",
             "chartId": "000726#S#4",
+            "songKey": "sm/A20/Splash Gold/Splash Gold.sm",
+            "chartKey": "sm/A20/Splash Gold/Splash Gold.sm#single#expert",
             "path": "sm/A20/Splash Gold/Splash Gold.sm",
             "artist": "BEMANI Sound Team \"TAG underground\""
           },
@@ -550,6 +612,8 @@
             "rankedRating": 17.7,
             "songId": "000732",
             "chartId": "000732#S#4",
+            "songKey": "sm/A20/The History of the Future/The History of the Future.sm",
+            "chartKey": "sm/A20/The History of the Future/The History of the Future.sm#single#expert",
             "path": "sm/A20/The History of the Future/The History of the Future.sm",
             "artist": "BEMANI Sound Team\"U1×TAG\""
           }
@@ -581,6 +645,8 @@
             "rankedRating": 17,
             "songId": "000762",
             "chartId": "000762#S#4",
+            "songKey": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm",
+            "chartKey": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm#single#expert",
             "path": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm",
             "artist": "BEMANI Sound Team \"Sota F.\""
           },
@@ -594,6 +660,8 @@
             "rankedRating": 17.5,
             "songId": "000850",
             "chartId": "000850#S#4",
+            "songKey": "sm/A20 Plus/Tokyo shinwa/Tokyo shinwa.sm",
+            "chartKey": "sm/A20 Plus/Tokyo shinwa/Tokyo shinwa.sm#single#expert",
             "path": "sm/A20 Plus/Tokyo shinwa/Tokyo shinwa.sm",
             "artist": "DJ TECHNORCH feat.宇宙★海月 vs BEMANI Sound Team \"U1-ASAMi\""
           },
@@ -607,6 +675,8 @@
             "rankedRating": 17.65,
             "songId": "000650",
             "chartId": "000650#S#4",
+            "songKey": "sm/A20/Avenger/Avenger.sm",
+            "chartKey": "sm/A20/Avenger/Avenger.sm#single#expert",
             "path": "sm/A20/Avenger/Avenger.sm",
             "artist": "USAO"
           },
@@ -620,6 +690,8 @@
             "rankedRating": 18.65,
             "songId": "000113",
             "chartId": "000113#S#4",
+            "songKey": "sm/2014/EGOISM 440/EGOISM 440.sm",
+            "chartKey": "sm/2014/EGOISM 440/EGOISM 440.sm#single#expert",
             "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
             "artist": "U1 High-Speed"
           }
@@ -651,6 +723,8 @@
             "rankedRating": 18.3,
             "songId": "000655",
             "chartId": "000655#S#5",
+            "songKey": "sm/A20/Bi/Bi.sm",
+            "chartKey": "sm/A20/Bi/Bi.sm#single#challenge",
             "path": "sm/A20/Bi/Bi.sm",
             "artist": "立秋 feat.ちょこ"
           },
@@ -664,6 +738,8 @@
             "rankedRating": 18.6,
             "songId": "000781",
             "chartId": "000781#S#5",
+            "songKey": "sm/A20 Plus/HyperTwist/HyperTwist.sm",
+            "chartKey": "sm/A20 Plus/HyperTwist/HyperTwist.sm#single#challenge",
             "path": "sm/A20 Plus/HyperTwist/HyperTwist.sm",
             "artist": "TANUKI"
           },
@@ -677,6 +753,8 @@
             "rankedRating": 18.75,
             "songId": "000577",
             "chartId": "000577#S#5",
+            "songKey": "sm/A/Neutrino/Neutrino.sm",
+            "chartKey": "sm/A/Neutrino/Neutrino.sm#single#challenge",
             "path": "sm/A/Neutrino/Neutrino.sm",
             "artist": "HuΣeR"
           },
@@ -690,6 +768,8 @@
             "rankedRating": 19.2,
             "songId": "001705",
             "chartId": "001705#S#5",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#single#challenge",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -721,6 +801,8 @@
             "rankedRating": 19.8,
             "songId": "000689",
             "chartId": "000689#S#5",
+            "songKey": "sm/A20/Lachryma (Re-Queen'M)/Lachryma (Re-Queen'M).sm",
+            "chartKey": "sm/A20/Lachryma (Re-Queen'M)/Lachryma (Re-Queen'M).sm#single#challenge",
             "path": "sm/A20/Lachryma (Re-Queen'M)/Lachryma (Re-Queen'M).sm",
             "artist": "かねこちはる"
           },
@@ -734,6 +816,8 @@
             "rankedRating": 19.4,
             "songId": "000165",
             "chartId": "000165#S#5",
+            "songKey": "sm/2014/Over The Period/Over The Period.sm",
+            "chartKey": "sm/2014/Over The Period/Over The Period.sm#single#challenge",
             "path": "sm/2014/Over The Period/Over The Period.sm",
             "artist": "TAG underground overlay"
           },
@@ -747,6 +831,8 @@
             "rankedRating": 19.3,
             "songId": "001640",
             "chartId": "001640#S#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#single#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -760,6 +846,8 @@
             "rankedRating": 19.9,
             "songId": "000525",
             "chartId": "000525#S#5",
+            "songKey": "sm/A/ENDYMION/ENDYMION.sm",
+            "chartKey": "sm/A/ENDYMION/ENDYMION.sm#single#challenge",
             "path": "sm/A/ENDYMION/ENDYMION.sm",
             "artist": "fallen shepherd ft. RabbiTon Strings"
           }
@@ -793,6 +881,8 @@
             "rankedRating": 9.45,
             "songId": "000608",
             "chartId": "000608#D#2",
+            "songKey": "sm/A/Sayonara trip ~Natsuhi EDM edition~/Sayonara trip ~Natsuhi EDM edition~.sm",
+            "chartKey": "sm/A/Sayonara trip ~Natsuhi EDM edition~/Sayonara trip ~Natsuhi EDM edition~.sm#double#difficult",
             "path": "sm/A/Sayonara trip ~Natsuhi EDM edition~/Sayonara trip ~Natsuhi EDM edition~.sm",
             "artist": "東雲夏陽(from ここなつ)"
           },
@@ -806,6 +896,8 @@
             "rankedRating": 9.6,
             "songId": "001628",
             "chartId": "001628#D#2",
+            "songKey": "sm/X2/Second Heaven/Second Heaven.sm",
+            "chartKey": "sm/X2/Second Heaven/Second Heaven.sm#double#difficult",
             "path": "sm/X2/Second Heaven/Second Heaven.sm",
             "artist": "Ryu☆"
           },
@@ -819,6 +911,8 @@
             "rankedRating": 9.55,
             "songId": "001748",
             "chartId": "001748#D#2",
+            "songKey": "sm/X3 vs 2nd/snow prism/snow prism.sm",
+            "chartKey": "sm/X3 vs 2nd/snow prism/snow prism.sm#double#difficult",
             "path": "sm/X3 vs 2nd/snow prism/snow prism.sm",
             "artist": "Qrispy Joybox"
           },
@@ -832,6 +926,8 @@
             "rankedRating": 10.4,
             "songId": "001088",
             "chartId": "001088#D#2",
+            "songKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
+            "chartKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm#double#difficult",
             "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
             "artist": "DE-SIRE"
           }
@@ -863,6 +959,8 @@
             "rankedRating": 10.35,
             "songId": "000638",
             "chartId": "000638#D#2",
+            "songKey": "sm/A/bass 2 bass/bass 2 bass.sm",
+            "chartKey": "sm/A/bass 2 bass/bass 2 bass.sm#double#difficult",
             "path": "sm/A/bass 2 bass/bass 2 bass.sm",
             "artist": "Ryu☆"
           },
@@ -876,6 +974,8 @@
             "rankedRating": 10.3,
             "songId": "000878",
             "chartId": "000878#D#2",
+            "songKey": "sm/A3/Anthurium/Anthurium.sm",
+            "chartKey": "sm/A3/Anthurium/Anthurium.sm#double#difficult",
             "path": "sm/A3/Anthurium/Anthurium.sm",
             "artist": "BlackY feat. Risa Yuzuki"
           },
@@ -889,6 +989,8 @@
             "rankedRating": 10.75,
             "songId": "000331",
             "chartId": "000331#D#4",
+            "songKey": "sm/4th/SEXY PLANET/SEXY PLANET.sm",
+            "chartKey": "sm/4th/SEXY PLANET/SEXY PLANET.sm#double#expert",
             "path": "sm/4th/SEXY PLANET/SEXY PLANET.sm",
             "artist": "Crystal Aliens"
           },
@@ -902,6 +1004,8 @@
             "rankedRating": 11.2,
             "songId": "001662",
             "chartId": "001662#D#4",
+            "songKey": "sm/X2/sakura storm/sakura storm.sm",
+            "chartKey": "sm/X2/sakura storm/sakura storm.sm#double#expert",
             "path": "sm/X2/sakura storm/sakura storm.sm",
             "artist": "Ryu☆"
           }
@@ -933,6 +1037,8 @@
             "rankedRating": 11.5,
             "songId": "000213",
             "chartId": "000213#D#2",
+            "songKey": "sm/2014/starmine/starmine.sm",
+            "chartKey": "sm/2014/starmine/starmine.sm#double#difficult",
             "path": "sm/2014/starmine/starmine.sm",
             "artist": "Ryu☆"
           },
@@ -946,6 +1052,8 @@
             "rankedRating": 11.5,
             "songId": "000198",
             "chartId": "000198#D#4",
+            "songKey": "sm/2014/The Lonely Streets/The Lonely Streets.sm",
+            "chartKey": "sm/2014/The Lonely Streets/The Lonely Streets.sm#double#expert",
             "path": "sm/2014/The Lonely Streets/The Lonely Streets.sm",
             "artist": "DJ Yoshitaka feat.Robert \"RAaB\" Stevenson"
           },
@@ -959,6 +1067,8 @@
             "rankedRating": 11.3,
             "songId": "001918",
             "chartId": "001918#D#4",
+            "songKey": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
+            "chartKey": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm#double#expert",
             "path": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
             "artist": "jun with Alison"
           },
@@ -972,6 +1082,8 @@
             "rankedRating": 12.45,
             "songId": "001105",
             "chartId": "001105#D#4",
+            "songKey": "sm/EX/Dance Dance Revolution/Dance Dance Revolution.sm",
+            "chartKey": "sm/EX/Dance Dance Revolution/Dance Dance Revolution.sm#double#expert",
             "path": "sm/EX/Dance Dance Revolution/Dance Dance Revolution.sm",
             "artist": "DDR ALL STARS"
           }
@@ -1003,6 +1115,8 @@
             "rankedRating": 12.25,
             "songId": "001707",
             "chartId": "001707#D#4",
+            "songKey": "sm/X3 vs 2nd/Private Eye/Private Eye.sm",
+            "chartKey": "sm/X3 vs 2nd/Private Eye/Private Eye.sm#double#expert",
             "path": "sm/X3 vs 2nd/Private Eye/Private Eye.sm",
             "artist": "atomsoak ft. cerol"
           },
@@ -1016,6 +1130,8 @@
             "rankedRating": 12.8,
             "songId": "001767",
             "chartId": "001767#D#4",
+            "songKey": "sm/SN1/CENTAUR/CENTAUR.sm",
+            "chartKey": "sm/SN1/CENTAUR/CENTAUR.sm#double#expert",
             "path": "sm/SN1/CENTAUR/CENTAUR.sm",
             "artist": "Jimmy Weckl"
           },
@@ -1029,6 +1145,8 @@
             "rankedRating": 12.5,
             "songId": "001775",
             "chartId": "001775#D#4",
+            "songKey": "sm/SN1/DoLL/DoLL.sm",
+            "chartKey": "sm/SN1/DoLL/DoLL.sm#double#expert",
             "path": "sm/SN1/DoLL/DoLL.sm",
             "artist": "TЁЯRA"
           },
@@ -1042,6 +1160,8 @@
             "rankedRating": 13.65,
             "songId": "001899",
             "chartId": "001899#D#4",
+            "songKey": "sm/SN2/MARS WAR 3/MARS WAR 3.sm",
+            "chartKey": "sm/SN2/MARS WAR 3/MARS WAR 3.sm#double#expert",
             "path": "sm/SN2/MARS WAR 3/MARS WAR 3.sm",
             "artist": "JET GIRL SPIN"
           }
@@ -1073,6 +1193,8 @@
             "rankedRating": 13.35,
             "songId": "000625",
             "chartId": "000625#D#4",
+            "songKey": "sm/A/TECH-NOID/TECH-NOID.sm",
+            "chartKey": "sm/A/TECH-NOID/TECH-NOID.sm#double#expert",
             "path": "sm/A/TECH-NOID/TECH-NOID.sm",
             "artist": "Sota F."
           },
@@ -1086,6 +1208,8 @@
             "rankedRating": 13.45,
             "songId": "000435",
             "chartId": "000435#D#4",
+            "songKey": "sm/6th/exotic ethnic/exotic ethnic.sm",
+            "chartKey": "sm/6th/exotic ethnic/exotic ethnic.sm#double#expert",
             "path": "sm/6th/exotic ethnic/exotic ethnic.sm",
             "artist": "RevenG"
           },
@@ -1099,6 +1223,8 @@
             "rankedRating": 13.8,
             "songId": "000104",
             "chartId": "000104#D#4",
+            "songKey": "sm/2014/Deadball de homerun/Deadball de homerun.sm",
+            "chartKey": "sm/2014/Deadball de homerun/Deadball de homerun.sm#double#expert",
             "path": "sm/2014/Deadball de homerun/Deadball de homerun.sm",
             "artist": "猫叉Masterβ2"
           },
@@ -1112,6 +1238,8 @@
             "rankedRating": 14.35,
             "songId": "000555",
             "chartId": "000555#D#4",
+            "songKey": "sm/A/Ishtar/Ishtar.sm",
+            "chartKey": "sm/A/Ishtar/Ishtar.sm#double#expert",
             "path": "sm/A/Ishtar/Ishtar.sm",
             "artist": "劇団レコード"
           }
@@ -1143,6 +1271,8 @@
             "rankedRating": 14.45,
             "songId": "001568",
             "chartId": "001568#D#4",
+            "songKey": "sm/X/on the bounce/on the bounce.sm",
+            "chartKey": "sm/X/on the bounce/on the bounce.sm#double#expert",
             "path": "sm/X/on the bounce/on the bounce.sm",
             "artist": "neuras"
           },
@@ -1156,6 +1286,8 @@
             "rankedRating": 14.7,
             "songId": "000964",
             "chartId": "000964#D#4",
+            "songKey": "sm/A3/Let's DANCE aROUND!!/Let's DANCE aROUND!!.ssc",
+            "chartKey": "sm/A3/Let's DANCE aROUND!!/Let's DANCE aROUND!!.ssc#double#expert",
             "path": "sm/A3/Let's DANCE aROUND!!/Let's DANCE aROUND!!.ssc",
             "artist": "kors k feat.Jaejun by NuevoStudio"
           },
@@ -1169,6 +1301,8 @@
             "rankedRating": 14.5,
             "songId": "001622",
             "chartId": "001622#D#4",
+            "songKey": "sm/X2/Pierce The Sky/Pierce The Sky.sm",
+            "chartKey": "sm/X2/Pierce The Sky/Pierce The Sky.sm#double#expert",
             "path": "sm/X2/Pierce The Sky/Pierce The Sky.sm",
             "artist": "JAKAZiD feat. K.N."
           },
@@ -1182,6 +1316,8 @@
             "rankedRating": 15.55,
             "songId": "001134",
             "chartId": "001134#D#4",
+            "songKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
+            "chartKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm#double#expert",
             "path": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
             "artist": "270"
           }
@@ -1213,6 +1349,8 @@
             "rankedRating": 15.1,
             "songId": "000770",
             "chartId": "000770#D#4",
+            "songKey": "sm/A20 Plus/Going Hypersonic/Going Hypersonic.sm",
+            "chartKey": "sm/A20 Plus/Going Hypersonic/Going Hypersonic.sm#double#expert",
             "path": "sm/A20 Plus/Going Hypersonic/Going Hypersonic.sm",
             "artist": "Mameyudoufu"
           },
@@ -1226,6 +1364,8 @@
             "rankedRating": 15.8,
             "songId": "000640",
             "chartId": "000640#D#4",
+            "songKey": "sm/A/out of focus/out of focus.sm",
+            "chartKey": "sm/A/out of focus/out of focus.sm#double#expert",
             "path": "sm/A/out of focus/out of focus.sm",
             "artist": "Qrispy Joybox"
           },
@@ -1239,6 +1379,8 @@
             "rankedRating": 15.55,
             "songId": "000723",
             "chartId": "000723#D#4",
+            "songKey": "sm/A20/Skywalking/Skywalking.sm",
+            "chartKey": "sm/A20/Skywalking/Skywalking.sm#double#expert",
             "path": "sm/A20/Skywalking/Skywalking.sm",
             "artist": "Nhato"
           },
@@ -1252,6 +1394,8 @@
             "rankedRating": 16.25,
             "songId": "001737",
             "chartId": "001737#D#4",
+            "songKey": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm",
+            "chartKey": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm#double#expert",
             "path": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm",
             "artist": "jun feat. Sarah-Jane"
           }
@@ -1283,6 +1427,8 @@
             "rankedRating": 16.25,
             "songId": "000181",
             "chartId": "000181#D#4",
+            "songKey": "sm/2014/Sand Blow/Sand Blow.sm",
+            "chartKey": "sm/2014/Sand Blow/Sand Blow.sm#double#expert",
             "path": "sm/2014/Sand Blow/Sand Blow.sm",
             "artist": "肥塚良彦"
           },
@@ -1296,6 +1442,8 @@
             "rankedRating": 16.35,
             "songId": "000678",
             "chartId": "000678#D#4",
+            "songKey": "sm/A20/Helios/Helios.sm",
+            "chartKey": "sm/A20/Helios/Helios.sm#double#expert",
             "path": "sm/A20/Helios/Helios.sm",
             "artist": "xac"
           },
@@ -1309,6 +1457,8 @@
             "rankedRating": 16.5,
             "songId": "001607",
             "chartId": "001607#D#4",
+            "songKey": "sm/X2/KIMONO PRINCESS/KIMONO PRINCESS.sm",
+            "chartKey": "sm/X2/KIMONO PRINCESS/KIMONO PRINCESS.sm#double#expert",
             "path": "sm/X2/KIMONO PRINCESS/KIMONO PRINCESS.sm",
             "artist": "jun"
           },
@@ -1322,6 +1472,8 @@
             "rankedRating": 17.8,
             "songId": "001549",
             "chartId": "001549#D#5",
+            "songKey": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm",
+            "chartKey": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm#double#challenge",
             "path": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm",
             "artist": "ZZ"
           }
@@ -1353,6 +1505,8 @@
             "rankedRating": 17.05,
             "songId": "000699",
             "chartId": "000699#D#4",
+            "songKey": "sm/A20/New Era/New Era.sm",
+            "chartKey": "sm/A20/New Era/New Era.sm#double#expert",
             "path": "sm/A20/New Era/New Era.sm",
             "artist": "BEMANI Sound Team \"Sota F.\""
           },
@@ -1366,6 +1520,8 @@
             "rankedRating": 17.7,
             "songId": "001780",
             "chartId": "001780#D#5",
+            "songKey": "sm/SN1/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm",
+            "chartKey": "sm/SN1/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm#double#challenge",
             "path": "sm/SN1/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm",
             "artist": "2MB"
           },
@@ -1379,6 +1535,8 @@
             "rankedRating": 17.55,
             "songId": "000591",
             "chartId": "000591#D#5",
+            "songKey": "sm/A/RISING FIRE HAWK/RISING FIRE HAWK.sm",
+            "chartKey": "sm/A/RISING FIRE HAWK/RISING FIRE HAWK.sm#double#challenge",
             "path": "sm/A/RISING FIRE HAWK/RISING FIRE HAWK.sm",
             "artist": "L.E.D.-G"
           },
@@ -1392,6 +1550,8 @@
             "rankedRating": 18.15,
             "songId": "001705",
             "chartId": "001705#D#4",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#double#expert",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -1423,6 +1583,8 @@
             "rankedRating": 18.2,
             "songId": "000054",
             "chartId": "000054#D#5",
+            "songKey": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm",
+            "chartKey": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm#double#challenge",
             "path": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm",
             "artist": "Mutsuhiko Izumi"
           },
@@ -1436,6 +1598,8 @@
             "rankedRating": 18.55,
             "songId": "000501",
             "chartId": "000501#D#5",
+            "songKey": "sm/A/Astrogazer/Astrogazer.sm",
+            "chartKey": "sm/A/Astrogazer/Astrogazer.sm#double#challenge",
             "path": "sm/A/Astrogazer/Astrogazer.sm",
             "artist": "DJ TOTTO"
           },
@@ -1449,6 +1613,8 @@
             "rankedRating": 18.55,
             "songId": "001620",
             "chartId": "001620#D#5",
+            "songKey": "sm/X2/New Decade/New Decade.sm",
+            "chartKey": "sm/X2/New Decade/New Decade.sm#double#challenge",
             "path": "sm/X2/New Decade/New Decade.sm",
             "artist": "Sota F."
           },
@@ -1462,6 +1628,8 @@
             "rankedRating": 18.75,
             "songId": "001906",
             "chartId": "001906#D#5",
+            "songKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+            "chartKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm#double#challenge",
             "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
             "artist": "αTYPE-300"
           }
@@ -1493,6 +1661,8 @@
             "rankedRating": 18.75,
             "songId": "000008",
             "chartId": "000008#D#5",
+            "songKey": "sm/2013/Blew My Mind/Blew My Mind.sm",
+            "chartKey": "sm/2013/Blew My Mind/Blew My Mind.sm#double#challenge",
             "path": "sm/2013/Blew My Mind/Blew My Mind.sm",
             "artist": "Sota F."
           },
@@ -1506,6 +1676,8 @@
             "rankedRating": 18.85,
             "songId": "001732",
             "chartId": "001732#D#5",
+            "songKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
+            "chartKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm#double#challenge",
             "path": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
             "artist": "2.1MB underground"
           },
@@ -1519,6 +1691,8 @@
             "rankedRating": 19,
             "songId": "001640",
             "chartId": "001640#D#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#double#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -1532,6 +1706,8 @@
             "rankedRating": 19.2,
             "songId": "001621",
             "chartId": "001621#D#5",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#double#challenge",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           }
@@ -1567,6 +1743,8 @@
             "rankedRating": 9.3,
             "songId": "000309",
             "chartId": "000309#S#4",
+            "songKey": "sm/4th/HIGHER/HIGHER.sm",
+            "chartKey": "sm/4th/HIGHER/HIGHER.sm#single#expert",
             "path": "sm/4th/HIGHER/HIGHER.sm",
             "artist": "NM feat. SUNNY"
           },
@@ -1580,6 +1758,8 @@
             "rankedRating": 9.4,
             "songId": "001630",
             "chartId": "001630#S#4",
+            "songKey": "sm/X2/Shine/Shine.sm",
+            "chartKey": "sm/X2/Shine/Shine.sm#single#expert",
             "path": "sm/X2/Shine/Shine.sm",
             "artist": "TOMOSUKE feat. Adreana"
           },
@@ -1593,6 +1773,8 @@
             "rankedRating": 9.45,
             "songId": "001686",
             "chartId": "001686#S#4",
+            "songKey": "sm/X3 vs 2nd/IN THE ZONE/IN THE ZONE.sm",
+            "chartKey": "sm/X3 vs 2nd/IN THE ZONE/IN THE ZONE.sm#single#expert",
             "path": "sm/X3 vs 2nd/IN THE ZONE/IN THE ZONE.sm",
             "artist": "U1 (NPD3 style) & KIDD KAZMEO"
           },
@@ -1606,6 +1788,8 @@
             "rankedRating": 10.4,
             "songId": "000293",
             "chartId": "000293#S#4",
+            "songKey": "sm/4th/B4U/B4U.sm",
+            "chartKey": "sm/4th/B4U/B4U.sm#single#expert",
             "path": "sm/4th/B4U/B4U.sm",
             "artist": "NAOKI"
           }
@@ -1637,6 +1821,8 @@
             "rankedRating": 10.35,
             "songId": "000108",
             "chartId": "000108#S#4",
+            "songKey": "sm/2014/Do The Evolution/Do The Evolution.sm",
+            "chartKey": "sm/2014/Do The Evolution/Do The Evolution.sm#single#expert",
             "path": "sm/2014/Do The Evolution/Do The Evolution.sm",
             "artist": "TAG feat. ERi"
           },
@@ -1650,6 +1836,8 @@
             "rankedRating": 10.45,
             "songId": "001500",
             "chartId": "001500#S#4",
+            "songKey": "sm/X/Flourish/Flourish.sm",
+            "chartKey": "sm/X/Flourish/Flourish.sm#single#expert",
             "path": "sm/X/Flourish/Flourish.sm",
             "artist": "sonic-coll. feat. frances maya"
           },
@@ -1663,6 +1851,8 @@
             "rankedRating": 10.65,
             "songId": "001601",
             "chartId": "001601#S#4",
+            "songKey": "sm/X2/Heatstroke/Heatstroke.sm",
+            "chartKey": "sm/X2/Heatstroke/Heatstroke.sm#single#expert",
             "path": "sm/X2/Heatstroke/Heatstroke.sm",
             "artist": "TAG feat. Angie Lee"
           },
@@ -1676,6 +1866,8 @@
             "rankedRating": 11.45,
             "songId": "001570",
             "chartId": "001570#S#4",
+            "songKey": "sm/X/will/will.sm",
+            "chartKey": "sm/X/will/will.sm#single#expert",
             "path": "sm/X/will/will.sm",
             "artist": "NAOKI"
           }
@@ -1707,6 +1899,8 @@
             "rankedRating": 11.2,
             "songId": "001587",
             "chartId": "001587#S#4",
+            "songKey": "sm/X2/Decade/Decade.sm",
+            "chartKey": "sm/X2/Decade/Decade.sm#single#expert",
             "path": "sm/X2/Decade/Decade.sm",
             "artist": "kors k Vs. dj TAKA"
           },
@@ -1720,6 +1914,8 @@
             "rankedRating": 11.4,
             "songId": "001480",
             "chartId": "001480#S#4",
+            "songKey": "sm/X/A Geisha's Dream/A Geisha's Dream.sm",
+            "chartKey": "sm/X/A Geisha's Dream/A Geisha's Dream.sm#single#expert",
             "path": "sm/X/A Geisha's Dream/A Geisha's Dream.sm",
             "artist": "NAOKI feat. SMiLE.dk"
           },
@@ -1733,6 +1929,8 @@
             "rankedRating": 11.75,
             "songId": "000138",
             "chartId": "000138#S#4",
+            "songKey": "sm/2014/In The Breeze/In The Breeze.sm",
+            "chartKey": "sm/2014/In The Breeze/In The Breeze.sm#single#expert",
             "path": "sm/2014/In The Breeze/In The Breeze.sm",
             "artist": "96 & Sota ft. Mayumi Morinaga"
           },
@@ -1746,6 +1944,8 @@
             "rankedRating": 12.15,
             "songId": "001637",
             "chartId": "001637#S#4",
+            "songKey": "sm/X2/Theory of Eternity/Theory of Eternity.sm",
+            "chartKey": "sm/X2/Theory of Eternity/Theory of Eternity.sm#single#expert",
             "path": "sm/X2/Theory of Eternity/Theory of Eternity.sm",
             "artist": "TAG"
           }
@@ -1777,6 +1977,8 @@
             "rankedRating": 12.15,
             "songId": "000007",
             "chartId": "000007#S#4",
+            "songKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
+            "chartKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm#single#expert",
             "path": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
             "artist": "REDALiCE feat. anporin"
           },
@@ -1790,6 +1992,8 @@
             "rankedRating": 12.55,
             "songId": "000253",
             "chartId": "000253#S#4",
+            "songKey": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm",
+            "chartKey": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm#single#expert",
             "path": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm",
             "artist": "NAOKI"
           },
@@ -1803,6 +2007,8 @@
             "rankedRating": 12.35,
             "songId": "000625",
             "chartId": "000625#S#4",
+            "songKey": "sm/A/TECH-NOID/TECH-NOID.sm",
+            "chartKey": "sm/A/TECH-NOID/TECH-NOID.sm#single#expert",
             "path": "sm/A/TECH-NOID/TECH-NOID.sm",
             "artist": "Sota F."
           },
@@ -1816,6 +2022,8 @@
             "rankedRating": 13.4,
             "songId": "001534",
             "chartId": "001534#S#4",
+            "songKey": "sm/X/SAGA/SAGA.sm",
+            "chartKey": "sm/X/SAGA/SAGA.sm#single#expert",
             "path": "sm/X/SAGA/SAGA.sm",
             "artist": "Veeton"
           }
@@ -1847,6 +2055,8 @@
             "rankedRating": 13.4,
             "songId": "001643",
             "chartId": "001643#S#5",
+            "songKey": "sm/X2/You are a Star/You are a Star.sm",
+            "chartKey": "sm/X2/You are a Star/You are a Star.sm#single#challenge",
             "path": "sm/X2/You are a Star/You are a Star.sm",
             "artist": "NAOKI feat. Anna Kaelin"
           },
@@ -1860,6 +2070,8 @@
             "rankedRating": 13.45,
             "songId": "000557",
             "chartId": "000557#S#4",
+            "songKey": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm",
+            "chartKey": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm#single#expert",
             "path": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm",
             "artist": "Zodiac Fall"
           },
@@ -1873,6 +2085,8 @@
             "rankedRating": 13.35,
             "songId": "001662",
             "chartId": "001662#S#5",
+            "songKey": "sm/X2/sakura storm/sakura storm.sm",
+            "chartKey": "sm/X2/sakura storm/sakura storm.sm#single#challenge",
             "path": "sm/X2/sakura storm/sakura storm.sm",
             "artist": "Ryu☆"
           },
@@ -1886,6 +2100,8 @@
             "rankedRating": 14.75,
             "songId": "000019",
             "chartId": "000019#S#5",
+            "songKey": "sm/2013/Diamond Night/Diamond Night.sm",
+            "chartKey": "sm/2013/Diamond Night/Diamond Night.sm#single#challenge",
             "path": "sm/2013/Diamond Night/Diamond Night.sm",
             "artist": "TOMOSUKE feat. Alexa Slaymaker"
           }
@@ -1917,6 +2133,8 @@
             "rankedRating": 14.3,
             "songId": "001568",
             "chartId": "001568#S#4",
+            "songKey": "sm/X/on the bounce/on the bounce.sm",
+            "chartKey": "sm/X/on the bounce/on the bounce.sm#single#expert",
             "path": "sm/X/on the bounce/on the bounce.sm",
             "artist": "neuras"
           },
@@ -1930,6 +2148,8 @@
             "rankedRating": 14.8,
             "songId": "001874",
             "chartId": "001874#S#5",
+            "songKey": "sm/SN2/AM-3P (CHAOS Special)/AM-3P (CHAOS Special).sm",
+            "chartKey": "sm/SN2/AM-3P (CHAOS Special)/AM-3P (CHAOS Special).sm#single#challenge",
             "path": "sm/SN2/AM-3P (CHAOS Special)/AM-3P (CHAOS Special).sm",
             "artist": "KTz"
           },
@@ -1943,6 +2163,8 @@
             "rankedRating": 14.6,
             "songId": "001622",
             "chartId": "001622#S#4",
+            "songKey": "sm/X2/Pierce The Sky/Pierce The Sky.sm",
+            "chartKey": "sm/X2/Pierce The Sky/Pierce The Sky.sm#single#expert",
             "path": "sm/X2/Pierce The Sky/Pierce The Sky.sm",
             "artist": "JAKAZiD feat. K.N."
           },
@@ -1956,6 +2178,8 @@
             "rankedRating": 15.4,
             "songId": "000417",
             "chartId": "000417#S#4",
+            "songKey": "sm/6th/MAX 300/MAX 300.sm",
+            "chartKey": "sm/6th/MAX 300/MAX 300.sm#single#expert",
             "path": "sm/6th/MAX 300/MAX 300.sm",
             "artist": "Ω"
           }
@@ -1987,6 +2211,8 @@
             "rankedRating": 15.7,
             "songId": "000159",
             "chartId": "000159#S#4",
+            "songKey": "sm/2014/Nostalgia Is Lost/Nostalgia Is Lost.sm",
+            "chartKey": "sm/2014/Nostalgia Is Lost/Nostalgia Is Lost.sm#single#expert",
             "path": "sm/2014/Nostalgia Is Lost/Nostalgia Is Lost.sm",
             "artist": "U1 overground"
           },
@@ -2000,6 +2226,8 @@
             "rankedRating": 15.4,
             "songId": "001667",
             "chartId": "001667#S#5",
+            "songKey": "sm/X3 vs 2nd/Amalgamation/Amalgamation.sm",
+            "chartKey": "sm/X3 vs 2nd/Amalgamation/Amalgamation.sm#single#challenge",
             "path": "sm/X3 vs 2nd/Amalgamation/Amalgamation.sm",
             "artist": "Mystic Moon"
           },
@@ -2013,6 +2241,8 @@
             "rankedRating": 15.65,
             "songId": "001145",
             "chartId": "001145#S#4",
+            "songKey": "sm/EX/The legend of MAX/The legend of MAX.sm",
+            "chartKey": "sm/EX/The legend of MAX/The legend of MAX.sm#single#expert",
             "path": "sm/EX/The legend of MAX/The legend of MAX.sm",
             "artist": "ZZ"
           },
@@ -2026,6 +2256,8 @@
             "rankedRating": 16.3,
             "songId": "000202",
             "chartId": "000202#S#4",
+            "songKey": "sm/2014/True Blue/True Blue.sm",
+            "chartKey": "sm/2014/True Blue/True Blue.sm#single#expert",
             "path": "sm/2014/True Blue/True Blue.sm",
             "artist": "dj TAKA feat.AiMEE"
           }
@@ -2057,6 +2289,8 @@
             "rankedRating": 16.55,
             "songId": "000037",
             "chartId": "000037#S#5",
+            "songKey": "sm/2013/Monkey Business/Monkey Business.sm",
+            "chartKey": "sm/2013/Monkey Business/Monkey Business.sm#single#challenge",
             "path": "sm/2013/Monkey Business/Monkey Business.sm",
             "artist": "kors k"
           },
@@ -2070,6 +2304,8 @@
             "rankedRating": 16.4,
             "songId": "000158",
             "chartId": "000158#S#4",
+            "songKey": "sm/2014/Nageki no ki/Nageki no ki.sm",
+            "chartKey": "sm/2014/Nageki no ki/Nageki no ki.sm#single#expert",
             "path": "sm/2014/Nageki no ki/Nageki no ki.sm",
             "artist": "金獅子"
           },
@@ -2083,6 +2319,8 @@
             "rankedRating": 16.7,
             "songId": "001135",
             "chartId": "001135#S#5",
+            "songKey": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm",
+            "chartKey": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm#single#challenge",
             "path": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm",
             "artist": "290"
           },
@@ -2096,6 +2334,8 @@
             "rankedRating": 17.05,
             "songId": "001621",
             "chartId": "001621#S#4",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#single#expert",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           }
@@ -2127,6 +2367,8 @@
             "rankedRating": 17.55,
             "songId": "001574",
             "chartId": "001574#S#4",
+            "songKey": "sm/X2/Anti-Matter/Anti-Matter.sm",
+            "chartKey": "sm/X2/Anti-Matter/Anti-Matter.sm#single#expert",
             "path": "sm/X2/Anti-Matter/Anti-Matter.sm",
             "artist": "Orbit1 & Milo"
           },
@@ -2140,6 +2382,8 @@
             "rankedRating": 17.6,
             "songId": "001779",
             "chartId": "001779#S#4",
+            "songKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
+            "chartKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm#single#expert",
             "path": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
             "artist": "100-200-400"
           },
@@ -2153,6 +2397,8 @@
             "rankedRating": 17.65,
             "songId": "000137",
             "chartId": "000137#S#5",
+            "songKey": "sm/2014/Idola/Idola.sm",
+            "chartKey": "sm/2014/Idola/Idola.sm#single#challenge",
             "path": "sm/2014/Idola/Idola.sm",
             "artist": "iconoclasm feat.GUMI"
           },
@@ -2166,6 +2412,8 @@
             "rankedRating": 18.25,
             "songId": "000501",
             "chartId": "000501#S#5",
+            "songKey": "sm/A/Astrogazer/Astrogazer.sm",
+            "chartKey": "sm/A/Astrogazer/Astrogazer.sm#single#challenge",
             "path": "sm/A/Astrogazer/Astrogazer.sm",
             "artist": "DJ TOTTO"
           }
@@ -2197,6 +2445,8 @@
             "rankedRating": 18.15,
             "songId": "000515",
             "chartId": "000515#S#5",
+            "songKey": "sm/A/Come to Life/Come to Life.sm",
+            "chartKey": "sm/A/Come to Life/Come to Life.sm#single#challenge",
             "path": "sm/A/Come to Life/Come to Life.sm",
             "artist": "ARM (IOSYS) feat. Nicole Curry"
           },
@@ -2210,6 +2460,8 @@
             "rankedRating": 18.55,
             "songId": "001620",
             "chartId": "001620#S#5",
+            "songKey": "sm/X2/New Decade/New Decade.sm",
+            "chartKey": "sm/X2/New Decade/New Decade.sm#single#challenge",
             "path": "sm/X2/New Decade/New Decade.sm",
             "artist": "Sota F."
           },
@@ -2223,6 +2475,8 @@
             "rankedRating": 18.6,
             "songId": "001732",
             "chartId": "001732#S#5",
+            "songKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
+            "chartKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm#single#challenge",
             "path": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
             "artist": "2.1MB underground"
           },
@@ -2236,6 +2490,8 @@
             "rankedRating": 19.2,
             "songId": "001705",
             "chartId": "001705#S#5",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#single#challenge",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -2267,6 +2523,8 @@
             "rankedRating": 19.1,
             "songId": "000113",
             "chartId": "000113#S#5",
+            "songKey": "sm/2014/EGOISM 440/EGOISM 440.sm",
+            "chartKey": "sm/2014/EGOISM 440/EGOISM 440.sm#single#challenge",
             "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
             "artist": "U1 High-Speed"
           },
@@ -2280,6 +2538,8 @@
             "rankedRating": 19.4,
             "songId": "000165",
             "chartId": "000165#S#5",
+            "songKey": "sm/2014/Over The Period/Over The Period.sm",
+            "chartKey": "sm/2014/Over The Period/Over The Period.sm#single#challenge",
             "path": "sm/2014/Over The Period/Over The Period.sm",
             "artist": "TAG underground overlay"
           },
@@ -2293,6 +2553,8 @@
             "rankedRating": 19.3,
             "songId": "001640",
             "chartId": "001640#S#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#single#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -2306,6 +2568,8 @@
             "rankedRating": 19.9,
             "songId": "000525",
             "chartId": "000525#S#5",
+            "songKey": "sm/A/ENDYMION/ENDYMION.sm",
+            "chartKey": "sm/A/ENDYMION/ENDYMION.sm#single#challenge",
             "path": "sm/A/ENDYMION/ENDYMION.sm",
             "artist": "fallen shepherd ft. RabbiTon Strings"
           }
@@ -2339,6 +2603,8 @@
             "rankedRating": 9.45,
             "songId": "001538",
             "chartId": "001538#D#4",
+            "songKey": "sm/X/Slip Out/Slip Out.sm",
+            "chartKey": "sm/X/Slip Out/Slip Out.sm#double#expert",
             "path": "sm/X/Slip Out/Slip Out.sm",
             "artist": "Harmony Machine"
           },
@@ -2352,6 +2618,8 @@
             "rankedRating": 9.4,
             "songId": "001677",
             "chartId": "001677#D#4",
+            "songKey": "sm/X3 vs 2nd/Fever/Fever.sm",
+            "chartKey": "sm/X3 vs 2nd/Fever/Fever.sm#double#expert",
             "path": "sm/X3 vs 2nd/Fever/Fever.sm",
             "artist": "Sota F. feat. Carol Gadsden"
           },
@@ -2365,6 +2633,8 @@
             "rankedRating": 9.6,
             "songId": "000390",
             "chartId": "000390#D#4",
+            "songKey": "sm/5th/STILL IN MY HEART/STILL IN MY HEART.sm",
+            "chartKey": "sm/5th/STILL IN MY HEART/STILL IN MY HEART.sm#double#expert",
             "path": "sm/5th/STILL IN MY HEART/STILL IN MY HEART.sm",
             "artist": "NAOKI"
           },
@@ -2378,6 +2648,8 @@
             "rankedRating": 10.55,
             "songId": "000290",
             "chartId": "000290#D#4",
+            "songKey": "sm/3rd/think ya better D/think ya better D.sm",
+            "chartKey": "sm/3rd/think ya better D/think ya better D.sm#double#expert",
             "path": "sm/3rd/think ya better D/think ya better D.sm",
             "artist": "sAmi"
           }
@@ -2409,6 +2681,8 @@
             "rankedRating": 10.45,
             "songId": "000075",
             "chartId": "000075#D#4",
+            "songKey": "sm/2013/escape/escape.sm",
+            "chartKey": "sm/2013/escape/escape.sm#double#expert",
             "path": "sm/2013/escape/escape.sm",
             "artist": "U1 & Krystal B"
           },
@@ -2422,6 +2696,8 @@
             "rankedRating": 10.35,
             "songId": "000080",
             "chartId": "000080#D#4",
+            "songKey": "sm/2013/south/south.sm",
+            "chartKey": "sm/2013/south/south.sm#double#expert",
             "path": "sm/2013/south/south.sm",
             "artist": "Wall5"
           },
@@ -2435,6 +2711,8 @@
             "rankedRating": 10.3,
             "songId": "000518",
             "chartId": "000518#D#4",
+            "songKey": "sm/A/DANCE ALL NIGHT (DDR EDITION)/DANCE ALL NIGHT (DDR EDITION).sm",
+            "chartKey": "sm/A/DANCE ALL NIGHT (DDR EDITION)/DANCE ALL NIGHT (DDR EDITION).sm#double#expert",
             "path": "sm/A/DANCE ALL NIGHT (DDR EDITION)/DANCE ALL NIGHT (DDR EDITION).sm",
             "artist": "Sota Fujimori"
           },
@@ -2448,6 +2726,8 @@
             "rankedRating": 11.35,
             "songId": "001509",
             "chartId": "001509#D#4",
+            "songKey": "sm/X/INTO YOUR HEART (Ruffage remix)/INTO YOUR HEART (Ruffage remix).sm",
+            "chartKey": "sm/X/INTO YOUR HEART (Ruffage remix)/INTO YOUR HEART (Ruffage remix).sm#double#expert",
             "path": "sm/X/INTO YOUR HEART (Ruffage remix)/INTO YOUR HEART (Ruffage remix).sm",
             "artist": "NAOKI feat.YASMINE"
           }
@@ -2479,6 +2759,8 @@
             "rankedRating": 11.55,
             "songId": "000229",
             "chartId": "000229#D#4",
+            "songKey": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm",
+            "chartKey": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm#double#expert",
             "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm",
             "artist": "mitsu-O!SUMMER"
           },
@@ -2492,6 +2774,8 @@
             "rankedRating": 11.65,
             "songId": "001654",
             "chartId": "001654#D#4",
+            "songKey": "sm/X2/oarfish/oarfish.sm",
+            "chartKey": "sm/X2/oarfish/oarfish.sm#double#expert",
             "path": "sm/X2/oarfish/oarfish.sm",
             "artist": "kors k"
           },
@@ -2505,6 +2789,8 @@
             "rankedRating": 11.65,
             "songId": "000571",
             "chartId": "000571#D#4",
+            "songKey": "sm/A/Luminous days/Luminous days.sm",
+            "chartKey": "sm/A/Luminous days/Luminous days.sm#double#expert",
             "path": "sm/A/Luminous days/Luminous days.sm",
             "artist": "ここなつ"
           },
@@ -2518,6 +2804,8 @@
             "rankedRating": 12.25,
             "songId": "000007",
             "chartId": "000007#D#4",
+            "songKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
+            "chartKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm#double#expert",
             "path": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
             "artist": "REDALiCE feat. anporin"
           }
@@ -2549,6 +2837,8 @@
             "rankedRating": 12.6,
             "songId": "000018",
             "chartId": "000018#D#4",
+            "songKey": "sm/2013/Desert Journey/Desert Journey.sm",
+            "chartKey": "sm/2013/Desert Journey/Desert Journey.sm#double#expert",
             "path": "sm/2013/Desert Journey/Desert Journey.sm",
             "artist": "dj TAKA"
           },
@@ -2562,6 +2852,8 @@
             "rankedRating": 12.5,
             "songId": "001156",
             "chartId": "001156#D#4",
+            "songKey": "sm/EX/stoic (EXTREME version)/stoic (EXTREME version).sm",
+            "chartKey": "sm/EX/stoic (EXTREME version)/stoic (EXTREME version).sm#double#expert",
             "path": "sm/EX/stoic (EXTREME version)/stoic (EXTREME version).sm",
             "artist": "TaQ"
           },
@@ -2575,6 +2867,8 @@
             "rankedRating": 12.55,
             "songId": "000076",
             "chartId": "000076#D#4",
+            "songKey": "sm/2013/heron/heron.sm",
+            "chartKey": "sm/2013/heron/heron.sm#double#expert",
             "path": "sm/2013/heron/heron.sm",
             "artist": "S-C-U"
           },
@@ -2588,6 +2882,8 @@
             "rankedRating": 13.4,
             "songId": "000328",
             "chartId": "000328#D#4",
+            "songKey": "sm/4th/PARANOIA EVOLUTION/PARANOIA EVOLUTION.sm",
+            "chartKey": "sm/4th/PARANOIA EVOLUTION/PARANOIA EVOLUTION.sm#double#expert",
             "path": "sm/4th/PARANOIA EVOLUTION/PARANOIA EVOLUTION.sm",
             "artist": "200"
           }
@@ -2619,6 +2915,8 @@
             "rankedRating": 13.4,
             "songId": "000108",
             "chartId": "000108#D#4",
+            "songKey": "sm/2014/Do The Evolution/Do The Evolution.sm",
+            "chartKey": "sm/2014/Do The Evolution/Do The Evolution.sm#double#expert",
             "path": "sm/2014/Do The Evolution/Do The Evolution.sm",
             "artist": "TAG feat. ERi"
           },
@@ -2632,6 +2930,8 @@
             "rankedRating": 13.55,
             "songId": "000301",
             "chartId": "000301#D#4",
+            "songKey": "sm/4th/DROP OUT/DROP OUT.sm",
+            "chartKey": "sm/4th/DROP OUT/DROP OUT.sm#double#expert",
             "path": "sm/4th/DROP OUT/DROP OUT.sm",
             "artist": "NW260"
           },
@@ -2645,6 +2945,8 @@
             "rankedRating": 13.45,
             "songId": "000493",
             "chartId": "000493#D#4",
+            "songKey": "sm/A/ALGORITHM/ALGORITHM.sm",
+            "chartKey": "sm/A/ALGORITHM/ALGORITHM.sm#double#expert",
             "path": "sm/A/ALGORITHM/ALGORITHM.sm",
             "artist": "SOUND HOLIC feat. Nana Takahashi"
           },
@@ -2658,6 +2960,8 @@
             "rankedRating": 14.45,
             "songId": "000410",
             "chartId": "000410#D#4",
+            "songKey": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
+            "chartKey": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm#double#expert",
             "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
             "artist": "2MB"
           }
@@ -2689,6 +2993,8 @@
             "rankedRating": 14.35,
             "songId": "000641",
             "chartId": "000641#D#4",
+            "songKey": "sm/A/siberite/siberite.sm",
+            "chartKey": "sm/A/siberite/siberite.sm#double#expert",
             "path": "sm/A/siberite/siberite.sm",
             "artist": "Captain KING"
           },
@@ -2702,6 +3008,8 @@
             "rankedRating": 14.5,
             "songId": "001508",
             "chartId": "001508#D#4",
+            "songKey": "sm/X/Horatio/Horatio.sm",
+            "chartKey": "sm/X/Horatio/Horatio.sm#double#expert",
             "path": "sm/X/Horatio/Horatio.sm",
             "artist": "OR-IF-IS"
           },
@@ -2715,6 +3023,8 @@
             "rankedRating": 14.75,
             "songId": "001144",
             "chartId": "001144#D#4",
+            "songKey": "sm/EX/The Least 100sec/The Least 100sec.sm",
+            "chartKey": "sm/EX/The Least 100sec/The Least 100sec.sm#double#expert",
             "path": "sm/EX/The Least 100sec/The Least 100sec.sm",
             "artist": "Hirofumi Sasaki"
           },
@@ -2728,6 +3038,8 @@
             "rankedRating": 15.7,
             "songId": "000116",
             "chartId": "000116#D#4",
+            "songKey": "sm/2014/Endorphin/Endorphin.sm",
+            "chartKey": "sm/2014/Endorphin/Endorphin.sm#double#expert",
             "path": "sm/2014/Endorphin/Endorphin.sm",
             "artist": "U1 overground"
           }
@@ -2759,6 +3071,8 @@
             "rankedRating": 15.4,
             "songId": "001716",
             "chartId": "001716#D#4",
+            "songKey": "sm/X3 vs 2nd/SILVER DREAM/SILVER DREAM.sm",
+            "chartKey": "sm/X3 vs 2nd/SILVER DREAM/SILVER DREAM.sm#double#expert",
             "path": "sm/X3 vs 2nd/SILVER DREAM/SILVER DREAM.sm",
             "artist": "jun"
           },
@@ -2772,6 +3086,8 @@
             "rankedRating": 15.7,
             "songId": "000135",
             "chartId": "000135#D#5",
+            "songKey": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm",
+            "chartKey": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm#double#challenge",
             "path": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm",
             "artist": "Mystic Moon"
           },
@@ -2785,6 +3101,8 @@
             "rankedRating": 15.8,
             "songId": "001135",
             "chartId": "001135#D#4",
+            "songKey": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm",
+            "chartKey": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm#double#expert",
             "path": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm",
             "artist": "290"
           },
@@ -2798,6 +3116,8 @@
             "rankedRating": 16.45,
             "songId": "001537",
             "chartId": "001537#D#4",
+            "songKey": "sm/X/SUPER SAMURAI/SUPER SAMURAI.sm",
+            "chartKey": "sm/X/SUPER SAMURAI/SUPER SAMURAI.sm#double#expert",
             "path": "sm/X/SUPER SAMURAI/SUPER SAMURAI.sm",
             "artist": "jun"
           }
@@ -2829,6 +3149,8 @@
             "rankedRating": 16.25,
             "songId": "001923",
             "chartId": "001923#D#4",
+            "songKey": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm",
+            "chartKey": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm#double#expert",
             "path": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm",
             "artist": "DE-SIRE改"
           },
@@ -2842,6 +3164,8 @@
             "rankedRating": 16.4,
             "songId": "001876",
             "chartId": "001876#D#4",
+            "songKey": "sm/SN2/Arrabbiata/Arrabbiata.sm",
+            "chartKey": "sm/SN2/Arrabbiata/Arrabbiata.sm#double#expert",
             "path": "sm/SN2/Arrabbiata/Arrabbiata.sm",
             "artist": "Reven-G改"
           },
@@ -2855,6 +3179,8 @@
             "rankedRating": 16.55,
             "songId": "000201",
             "chartId": "000201#D#4",
+            "songKey": "sm/2014/Truare!/Truare!.sm",
+            "chartKey": "sm/2014/Truare!/Truare!.sm#double#expert",
             "path": "sm/2014/Truare!/Truare!.sm",
             "artist": "Akhuta"
           },
@@ -2868,6 +3194,8 @@
             "rankedRating": 17.55,
             "songId": "000083",
             "chartId": "000083#D#4",
+            "songKey": "sm/2014/AETHER/AETHER.sm",
+            "chartKey": "sm/2014/AETHER/AETHER.sm#double#expert",
             "path": "sm/2014/AETHER/AETHER.sm",
             "artist": "TAG underground"
           }
@@ -2899,6 +3227,8 @@
             "rankedRating": 17.4,
             "songId": "000578",
             "chartId": "000578#D#4",
+            "songKey": "sm/A/New Century/New Century.sm",
+            "chartKey": "sm/A/New Century/New Century.sm#double#expert",
             "path": "sm/A/New Century/New Century.sm",
             "artist": "Sota F."
           },
@@ -2912,6 +3242,8 @@
             "rankedRating": 17.75,
             "songId": "001533",
             "chartId": "001533#D#5",
+            "songKey": "sm/X/SABER WING (Akira Ishihara Headshot mix)/SABER WING (Akira Ishihara Headshot mix).sm",
+            "chartKey": "sm/X/SABER WING (Akira Ishihara Headshot mix)/SABER WING (Akira Ishihara Headshot mix).sm#double#challenge",
             "path": "sm/X/SABER WING (Akira Ishihara Headshot mix)/SABER WING (Akira Ishihara Headshot mix).sm",
             "artist": "TAG"
           },
@@ -2925,6 +3257,8 @@
             "rankedRating": 17.65,
             "songId": "000047",
             "chartId": "000047#D#5",
+            "songKey": "sm/2013/REVOLUTION/REVOLUTION.sm",
+            "chartKey": "sm/2013/REVOLUTION/REVOLUTION.sm#double#challenge",
             "path": "sm/2013/REVOLUTION/REVOLUTION.sm",
             "artist": "TËЯRA"
           },
@@ -2938,6 +3272,8 @@
             "rankedRating": 18.4,
             "songId": "000136",
             "chartId": "000136#D#5",
+            "songKey": "sm/2014/IX/IX.sm",
+            "chartKey": "sm/2014/IX/IX.sm#double#challenge",
             "path": "sm/2014/IX/IX.sm",
             "artist": "dj TAKA VS DJ TOTTO feat.藍"
           }
@@ -2969,6 +3305,8 @@
             "rankedRating": 18.55,
             "songId": "001795",
             "chartId": "001795#D#5",
+            "songKey": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm",
+            "chartKey": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm#double#challenge",
             "path": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm",
             "artist": "DE-STRAD"
           },
@@ -2982,6 +3320,8 @@
             "rankedRating": 18.75,
             "songId": "001906",
             "chartId": "001906#D#5",
+            "songKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+            "chartKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm#double#challenge",
             "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
             "artist": "αTYPE-300"
           },
@@ -2995,6 +3335,8 @@
             "rankedRating": 18.7,
             "songId": "001571",
             "chartId": "001571#D#5",
+            "songKey": "sm/X2/888/888.sm",
+            "chartKey": "sm/X2/888/888.sm#double#challenge",
             "path": "sm/X2/888/888.sm",
             "artist": "DJ TECHNORCH"
           },
@@ -3008,6 +3350,8 @@
             "rankedRating": 19.5,
             "songId": "001705",
             "chartId": "001705#D#5",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#double#challenge",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -3039,6 +3383,8 @@
             "rankedRating": 19,
             "songId": "001640",
             "chartId": "001640#D#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#double#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -3052,6 +3398,8 @@
             "rankedRating": 19.2,
             "songId": "001621",
             "chartId": "001621#D#5",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#double#challenge",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           },
@@ -3065,6 +3413,8 @@
             "rankedRating": 19.6,
             "songId": "000165",
             "chartId": "000165#D#5",
+            "songKey": "sm/2014/Over The Period/Over The Period.sm",
+            "chartKey": "sm/2014/Over The Period/Over The Period.sm#double#challenge",
             "path": "sm/2014/Over The Period/Over The Period.sm",
             "artist": "TAG underground overlay"
           },
@@ -3078,6 +3428,8 @@
             "rankedRating": 19.7,
             "songId": "000113",
             "chartId": "000113#D#5",
+            "songKey": "sm/2014/EGOISM 440/EGOISM 440.sm",
+            "chartKey": "sm/2014/EGOISM 440/EGOISM 440.sm#double#challenge",
             "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
             "artist": "U1 High-Speed"
           }
@@ -3113,6 +3465,8 @@
             "rankedRating": 9.35,
             "songId": "000119",
             "chartId": "000119#S#2",
+            "songKey": "sm/2014/FUJIMORI -Matsuri- FESTIVAL/FUJIMORI -Matsuri- FESTIVAL.sm",
+            "chartKey": "sm/2014/FUJIMORI -Matsuri- FESTIVAL/FUJIMORI -Matsuri- FESTIVAL.sm#single#difficult",
             "path": "sm/2014/FUJIMORI -Matsuri- FESTIVAL/FUJIMORI -Matsuri- FESTIVAL.sm",
             "artist": "VENUS"
           },
@@ -3126,6 +3480,8 @@
             "rankedRating": 9.5,
             "songId": "000059",
             "chartId": "000059#S#2",
+            "songKey": "sm/2013/Sweet Rain/Sweet Rain.sm",
+            "chartKey": "sm/2013/Sweet Rain/Sweet Rain.sm#single#difficult",
             "path": "sm/2013/Sweet Rain/Sweet Rain.sm",
             "artist": "Y&Co. feat. Karin"
           },
@@ -3139,6 +3495,8 @@
             "rankedRating": 9.35,
             "songId": "001088",
             "chartId": "001088#S#2",
+            "songKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
+            "chartKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm#single#difficult",
             "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
             "artist": "DE-SIRE"
           },
@@ -3152,6 +3510,8 @@
             "rankedRating": 10.3,
             "songId": "000084",
             "chartId": "000084#S#2",
+            "songKey": "sm/2014/AWAKE/AWAKE.sm",
+            "chartKey": "sm/2014/AWAKE/AWAKE.sm#single#difficult",
             "path": "sm/2014/AWAKE/AWAKE.sm",
             "artist": "柊木りお featured by TAG"
           }
@@ -3183,6 +3543,8 @@
             "rankedRating": 10.3,
             "songId": "000296",
             "chartId": "000296#S#4",
+            "songKey": "sm/4th/BURNIN' THE FLOOR/BURNIN' THE FLOOR.sm",
+            "chartKey": "sm/4th/BURNIN' THE FLOOR/BURNIN' THE FLOOR.sm#single#expert",
             "path": "sm/4th/BURNIN' THE FLOOR/BURNIN' THE FLOOR.sm",
             "artist": "NAOKI"
           },
@@ -3196,6 +3558,8 @@
             "rankedRating": 10.55,
             "songId": "000023",
             "chartId": "000023#S#2",
+            "songKey": "sm/2013/Find The Way/Find The Way.sm",
+            "chartKey": "sm/2013/Find The Way/Find The Way.sm#single#difficult",
             "path": "sm/2013/Find The Way/Find The Way.sm",
             "artist": "nc ft. SAK."
           },
@@ -3209,6 +3573,8 @@
             "rankedRating": 10.35,
             "songId": "001573",
             "chartId": "001573#S#4",
+            "songKey": "sm/X2/All My Love/All My Love.sm",
+            "chartKey": "sm/X2/All My Love/All My Love.sm#single#expert",
             "path": "sm/X2/All My Love/All My Love.sm",
             "artist": "kors k feat. ЯIRE"
           },
@@ -3222,6 +3588,8 @@
             "rankedRating": 11.4,
             "songId": "000012",
             "chartId": "000012#S#4",
+            "songKey": "sm/2013/Children of the Beat/Children of the Beat.sm",
+            "chartKey": "sm/2013/Children of the Beat/Children of the Beat.sm#single#expert",
             "path": "sm/2013/Children of the Beat/Children of the Beat.sm",
             "artist": "Harmony Machine"
           }
@@ -3253,6 +3621,8 @@
             "rankedRating": 11.5,
             "songId": "001784",
             "chartId": "001784#S#4",
+            "songKey": "sm/SN1/Fly away/Fly away.sm",
+            "chartKey": "sm/SN1/Fly away/Fly away.sm#single#expert",
             "path": "sm/SN1/Fly away/Fly away.sm",
             "artist": "ChiyoTia"
           },
@@ -3266,6 +3636,8 @@
             "rankedRating": 11.35,
             "songId": "001666",
             "chartId": "001666#S#4",
+            "songKey": "sm/X3 vs 2nd/Alstroemeria (walk with you remix)/Alstroemeria (walk with you remix).sm",
+            "chartKey": "sm/X3 vs 2nd/Alstroemeria (walk with you remix)/Alstroemeria (walk with you remix).sm#single#expert",
             "path": "sm/X3 vs 2nd/Alstroemeria (walk with you remix)/Alstroemeria (walk with you remix).sm",
             "artist": "TAG"
           },
@@ -3279,6 +3651,8 @@
             "rankedRating": 11.5,
             "songId": "001566",
             "chartId": "001566#S#4",
+            "songKey": "sm/X/ZERO/ZERO.sm",
+            "chartKey": "sm/X/ZERO/ZERO.sm#single#expert",
             "path": "sm/X/ZERO/ZERO.sm",
             "artist": "TËЯRA"
           },
@@ -3292,6 +3666,8 @@
             "rankedRating": 12.2,
             "songId": "001608",
             "chartId": "001608#S#4",
+            "songKey": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm",
+            "chartKey": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm#single#expert",
             "path": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm",
             "artist": "Remixed by DJ Command"
           }
@@ -3323,6 +3699,8 @@
             "rankedRating": 12.4,
             "songId": "000062",
             "chartId": "000062#S#4",
+            "songKey": "sm/2013/Tell me what to do/Tell me what to do.sm",
+            "chartKey": "sm/2013/Tell me what to do/Tell me what to do.sm#single#expert",
             "path": "sm/2013/Tell me what to do/Tell me what to do.sm",
             "artist": "atomsoak ft. cerol"
           },
@@ -3336,6 +3714,8 @@
             "rankedRating": 12.65,
             "songId": "001594",
             "chartId": "001594#S#4",
+            "songKey": "sm/X2/Freeze/Freeze.sm",
+            "chartKey": "sm/X2/Freeze/Freeze.sm#single#expert",
             "path": "sm/X2/Freeze/Freeze.sm",
             "artist": "nc ft. NRG Factory"
           },
@@ -3349,6 +3729,8 @@
             "rankedRating": 12.55,
             "songId": "001157",
             "chartId": "001157#S#5",
+            "songKey": "sm/EX/sync (EXTREME version)/sync (EXTREME version).sm",
+            "chartKey": "sm/EX/sync (EXTREME version)/sync (EXTREME version).sm#single#challenge",
             "path": "sm/EX/sync (EXTREME version)/sync (EXTREME version).sm",
             "artist": "OutPhase"
           },
@@ -3362,6 +3744,8 @@
             "rankedRating": 13.35,
             "songId": "000499",
             "chartId": "000499#S#4",
+            "songKey": "sm/A/Angelic Jelly/Angelic Jelly.sm",
+            "chartKey": "sm/A/Angelic Jelly/Angelic Jelly.sm#single#expert",
             "path": "sm/A/Angelic Jelly/Angelic Jelly.sm",
             "artist": "t+pazolite"
           }
@@ -3393,6 +3777,8 @@
             "rankedRating": 13.45,
             "songId": "001754",
             "chartId": "001754#S#4",
+            "songKey": "sm/SN1/AA/AA.sm",
+            "chartKey": "sm/SN1/AA/AA.sm#single#expert",
             "path": "sm/SN1/AA/AA.sm",
             "artist": "D.J.Amuro"
           },
@@ -3406,6 +3792,8 @@
             "rankedRating": 13.5,
             "songId": "000016",
             "chartId": "000016#S#4",
+            "songKey": "sm/2013/Condor/Condor.sm",
+            "chartKey": "sm/2013/Condor/Condor.sm#single#expert",
             "path": "sm/2013/Condor/Condor.sm",
             "artist": "Remo-con"
           },
@@ -3419,6 +3807,8 @@
             "rankedRating": 13.5,
             "songId": "000052",
             "chartId": "000052#S#4",
+            "songKey": "sm/2013/Somehow You Found Me/Somehow You Found Me.sm",
+            "chartKey": "sm/2013/Somehow You Found Me/Somehow You Found Me.sm#single#expert",
             "path": "sm/2013/Somehow You Found Me/Somehow You Found Me.sm",
             "artist": "DIGI-SEQ-BAND2000"
           },
@@ -3432,6 +3822,8 @@
             "rankedRating": 14.45,
             "songId": "000102",
             "chartId": "000102#S#4",
+            "songKey": "sm/2014/Daily Lunch Special/Daily Lunch Special.sm",
+            "chartKey": "sm/2014/Daily Lunch Special/Daily Lunch Special.sm#single#expert",
             "path": "sm/2014/Daily Lunch Special/Daily Lunch Special.sm",
             "artist": "Lucky Vacuum"
           }
@@ -3463,6 +3855,8 @@
             "rankedRating": 14.25,
             "songId": "000555",
             "chartId": "000555#S#4",
+            "songKey": "sm/A/Ishtar/Ishtar.sm",
+            "chartKey": "sm/A/Ishtar/Ishtar.sm#single#expert",
             "path": "sm/A/Ishtar/Ishtar.sm",
             "artist": "劇団レコード"
           },
@@ -3476,6 +3870,8 @@
             "rankedRating": 11.25,
             "songId": "000397",
             "chartId": "000397#S#4",
+            "songKey": "sm/6th/CANDY STAR/CANDY STAR.sm",
+            "chartKey": "sm/6th/CANDY STAR/CANDY STAR.sm#single#expert",
             "path": "sm/6th/CANDY STAR/CANDY STAR.sm",
             "artist": "Luv UNLIMITED"
           },
@@ -3489,6 +3885,8 @@
             "rankedRating": 14.5,
             "songId": "000670",
             "chartId": "000670#S#4",
+            "songKey": "sm/A20/F4SH10N/F4SH10N.sm",
+            "chartKey": "sm/A20/F4SH10N/F4SH10N.sm#single#expert",
             "path": "sm/A20/F4SH10N/F4SH10N.sm",
             "artist": "aran"
           },
@@ -3502,6 +3900,8 @@
             "rankedRating": 15.4,
             "songId": "000417",
             "chartId": "000417#S#4",
+            "songKey": "sm/6th/MAX 300/MAX 300.sm",
+            "chartKey": "sm/6th/MAX 300/MAX 300.sm#single#expert",
             "path": "sm/6th/MAX 300/MAX 300.sm",
             "artist": "Ω"
           }
@@ -3533,6 +3933,8 @@
             "rankedRating": 15.65,
             "songId": "001923",
             "chartId": "001923#S#5",
+            "songKey": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm",
+            "chartKey": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm#single#challenge",
             "path": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm",
             "artist": "DE-SIRE改"
           },
@@ -3546,6 +3948,8 @@
             "rankedRating": 15.9,
             "songId": "000195",
             "chartId": "000195#S#4",
+            "songKey": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm",
+            "chartKey": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm#single#expert",
             "path": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm",
             "artist": "S-C-U × U1 overground"
           },
@@ -3559,6 +3963,8 @@
             "rankedRating": 15.25,
             "songId": "000637",
             "chartId": "000637#S#4",
+            "songKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
+            "chartKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm#single#expert",
             "path": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
             "artist": "TAG"
           },
@@ -3572,6 +3978,8 @@
             "rankedRating": 16.55,
             "songId": "000467",
             "chartId": "000467#S#4",
+            "songKey": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm",
+            "chartKey": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm#single#expert",
             "path": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm",
             "artist": "Z"
           }
@@ -3603,6 +4011,8 @@
             "rankedRating": 16.2,
             "songId": "001603",
             "chartId": "001603#S#5",
+            "songKey": "sm/X2/I'm so Happy/I'm so Happy.sm",
+            "chartKey": "sm/X2/I'm so Happy/I'm so Happy.sm#single#challenge",
             "path": "sm/X2/I'm so Happy/I'm so Happy.sm",
             "artist": "Ryu☆"
           },
@@ -3616,6 +4026,8 @@
             "rankedRating": 16.4,
             "songId": "000204",
             "chartId": "000204#S#4",
+            "songKey": "sm/2014/Wadatsumi/Wadatsumi.sm",
+            "chartKey": "sm/2014/Wadatsumi/Wadatsumi.sm#single#expert",
             "path": "sm/2014/Wadatsumi/Wadatsumi.sm",
             "artist": "兎々"
           },
@@ -3629,6 +4041,8 @@
             "rankedRating": 16.5,
             "songId": "000632",
             "chartId": "000632#S#4",
+            "songKey": "sm/A/Vanquish The Ghost/Vanquish The Ghost.sm",
+            "chartKey": "sm/A/Vanquish The Ghost/Vanquish The Ghost.sm#single#expert",
             "path": "sm/A/Vanquish The Ghost/Vanquish The Ghost.sm",
             "artist": "BEMANI Sound Team \"TAG\""
           },
@@ -3642,6 +4056,8 @@
             "rankedRating": 17.35,
             "songId": "001549",
             "chartId": "001549#S#5",
+            "songKey": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm",
+            "chartKey": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm#single#challenge",
             "path": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm",
             "artist": "ZZ"
           }
@@ -3673,6 +4089,8 @@
             "rankedRating": 17.5,
             "songId": "000560",
             "chartId": "000560#S#5",
+            "songKey": "sm/A/Koisuru uchuu sensou!!/Koisuru uchuu sensou!!.sm",
+            "chartKey": "sm/A/Koisuru uchuu sensou!!/Koisuru uchuu sensou!!.sm#single#challenge",
             "path": "sm/A/Koisuru uchuu sensou!!/Koisuru uchuu sensou!!.sm",
             "artist": "Prim"
           },
@@ -3686,6 +4104,8 @@
             "rankedRating": 17.7,
             "songId": "001620",
             "chartId": "001620#S#4",
+            "songKey": "sm/X2/New Decade/New Decade.sm",
+            "chartKey": "sm/X2/New Decade/New Decade.sm#single#expert",
             "path": "sm/X2/New Decade/New Decade.sm",
             "artist": "Sota F."
           },
@@ -3699,6 +4119,8 @@
             "rankedRating": 17.65,
             "songId": "000054",
             "chartId": "000054#S#5",
+            "songKey": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm",
+            "chartKey": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm#single#challenge",
             "path": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm",
             "artist": "Mutsuhiko Izumi"
           },
@@ -3712,6 +4134,8 @@
             "rankedRating": 18.25,
             "songId": "001779",
             "chartId": "001779#S#5",
+            "songKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
+            "chartKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm#single#challenge",
             "path": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
             "artist": "100-200-400"
           }
@@ -3743,6 +4167,8 @@
             "rankedRating": 18.6,
             "songId": "001906",
             "chartId": "001906#S#5",
+            "songKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+            "chartKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm#single#challenge",
             "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
             "artist": "αTYPE-300"
           },
@@ -3756,6 +4182,8 @@
             "rankedRating": 18.5,
             "songId": "001571",
             "chartId": "001571#S#5",
+            "songKey": "sm/X2/888/888.sm",
+            "chartKey": "sm/X2/888/888.sm#single#challenge",
             "path": "sm/X2/888/888.sm",
             "artist": "DJ TECHNORCH"
           },
@@ -3769,6 +4197,8 @@
             "rankedRating": 18.5,
             "songId": "001705",
             "chartId": "001705#S#4",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#single#expert",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           },
@@ -3782,6 +4212,8 @@
             "rankedRating": 19.1,
             "songId": "000113",
             "chartId": "000113#S#5",
+            "songKey": "sm/2014/EGOISM 440/EGOISM 440.sm",
+            "chartKey": "sm/2014/EGOISM 440/EGOISM 440.sm#single#challenge",
             "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
             "artist": "U1 High-Speed"
           }
@@ -3813,6 +4245,8 @@
             "rankedRating": 19,
             "songId": "000572",
             "chartId": "000572#S#5",
+            "songKey": "sm/A/MAX 360/MAX 360.sm",
+            "chartKey": "sm/A/MAX 360/MAX 360.sm#single#challenge",
             "path": "sm/A/MAX 360/MAX 360.sm",
             "artist": "BEMANI Sound Team \"[𝑥]\""
           },
@@ -3826,6 +4260,8 @@
             "rankedRating": 19.4,
             "songId": "000165",
             "chartId": "000165#S#5",
+            "songKey": "sm/2014/Over The Period/Over The Period.sm",
+            "chartKey": "sm/2014/Over The Period/Over The Period.sm#single#challenge",
             "path": "sm/2014/Over The Period/Over The Period.sm",
             "artist": "TAG underground overlay"
           },
@@ -3839,6 +4275,8 @@
             "rankedRating": 19.3,
             "songId": "001640",
             "chartId": "001640#S#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#single#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -3852,6 +4290,8 @@
             "rankedRating": 19.9,
             "songId": "000525",
             "chartId": "000525#S#5",
+            "songKey": "sm/A/ENDYMION/ENDYMION.sm",
+            "chartKey": "sm/A/ENDYMION/ENDYMION.sm#single#challenge",
             "path": "sm/A/ENDYMION/ENDYMION.sm",
             "artist": "fallen shepherd ft. RabbiTon Strings"
           }
@@ -3885,6 +4325,8 @@
             "rankedRating": 9.5,
             "songId": "000634",
             "chartId": "000634#D#2",
+            "songKey": "sm/A/Yeah! Yeah!/Yeah! Yeah!.sm",
+            "chartKey": "sm/A/Yeah! Yeah!/Yeah! Yeah!.sm#double#difficult",
             "path": "sm/A/Yeah! Yeah!/Yeah! Yeah!.sm",
             "artist": "CLUB SPICE"
           },
@@ -3898,6 +4340,8 @@
             "rankedRating": 9.4,
             "songId": "000537",
             "chartId": "000537#D#2",
+            "songKey": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm",
+            "chartKey": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm#double#difficult",
             "path": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm",
             "artist": "U1"
           },
@@ -3911,6 +4355,8 @@
             "rankedRating": 9.55,
             "songId": "000112",
             "chartId": "000112#D#4",
+            "songKey": "sm/2014/Dreamin'/Dreamin'.sm",
+            "chartKey": "sm/2014/Dreamin'/Dreamin'.sm#double#expert",
             "path": "sm/2014/Dreamin'/Dreamin'.sm",
             "artist": "TOMOSUKE feat. Adreana"
           },
@@ -3924,6 +4370,8 @@
             "rankedRating": 10.15,
             "songId": "000549",
             "chartId": "000549#D#2",
+            "songKey": "sm/A/Hopeful/Hopeful.sm",
+            "chartKey": "sm/A/Hopeful/Hopeful.sm#double#difficult",
             "path": "sm/A/Hopeful/Hopeful.sm",
             "artist": "柊木りお featured by SOTAG"
           }
@@ -3955,6 +4403,8 @@
             "rankedRating": 10.55,
             "songId": "001581",
             "chartId": "001581#D#4",
+            "songKey": "sm/X2/Crazy Control/Crazy Control.sm",
+            "chartKey": "sm/X2/Crazy Control/Crazy Control.sm#double#expert",
             "path": "sm/X2/Crazy Control/Crazy Control.sm",
             "artist": "D-crew with VAL TIATIA"
           },
@@ -3968,6 +4418,8 @@
             "rankedRating": 10.55,
             "songId": "001729",
             "chartId": "001729#D#2",
+            "songKey": "sm/X3 vs 2nd/Take A Step Forward/Take A Step Forward.sm",
+            "chartKey": "sm/X3 vs 2nd/Take A Step Forward/Take A Step Forward.sm#double#difficult",
             "path": "sm/X3 vs 2nd/Take A Step Forward/Take A Step Forward.sm",
             "artist": "TAG feat. Sydney Powers"
           },
@@ -3981,6 +4433,8 @@
             "rankedRating": 10.75,
             "songId": "001496",
             "chartId": "001496#D#4",
+            "songKey": "sm/X/Dance Floor/Dance Floor.sm",
+            "chartKey": "sm/X/Dance Floor/Dance Floor.sm#double#expert",
             "path": "sm/X/Dance Floor/Dance Floor.sm",
             "artist": "neuras feat. Yurai"
           },
@@ -3994,6 +4448,8 @@
             "rankedRating": 11.3,
             "songId": "001728",
             "chartId": "001728#D#4",
+            "songKey": "sm/X3 vs 2nd/TWINKLE HEART/TWINKLE HEART.sm",
+            "chartKey": "sm/X3 vs 2nd/TWINKLE HEART/TWINKLE HEART.sm#double#expert",
             "path": "sm/X3 vs 2nd/TWINKLE HEART/TWINKLE HEART.sm",
             "artist": "jun"
           }
@@ -4025,6 +4481,8 @@
             "rankedRating": 11.35,
             "songId": "000004",
             "chartId": "000004#D#2",
+            "songKey": "sm/2013/Another Phase/Another Phase.sm",
+            "chartKey": "sm/2013/Another Phase/Another Phase.sm#double#difficult",
             "path": "sm/2013/Another Phase/Another Phase.sm",
             "artist": "TAG"
           },
@@ -4038,6 +4496,8 @@
             "rankedRating": 11.65,
             "songId": "000207",
             "chartId": "000207#D#4",
+            "songKey": "sm/2014/Yamato nadenade Kaguya-hime/Yamato nadenade Kaguya-hime.sm",
+            "chartKey": "sm/2014/Yamato nadenade Kaguya-hime/Yamato nadenade Kaguya-hime.sm#double#expert",
             "path": "sm/2014/Yamato nadenade Kaguya-hime/Yamato nadenade Kaguya-hime.sm",
             "artist": "ロマンチック♡Prim姫"
           },
@@ -4051,6 +4511,8 @@
             "rankedRating": 4.25,
             "songId": "000488",
             "chartId": "000488#D#4",
+            "songKey": "sm/7th/ever snow/ever snow.sm",
+            "chartKey": "sm/7th/ever snow/ever snow.sm#double#expert",
             "path": "sm/7th/ever snow/ever snow.sm",
             "artist": "ΨΦMA KΦMATSU"
           },
@@ -4064,6 +4526,8 @@
             "rankedRating": 12.25,
             "songId": "000007",
             "chartId": "000007#D#4",
+            "songKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
+            "chartKey": "sm/2013/Beautiful Dream/Beautiful Dream.sm#double#expert",
             "path": "sm/2013/Beautiful Dream/Beautiful Dream.sm",
             "artist": "REDALiCE feat. anporin"
           }
@@ -4095,6 +4559,8 @@
             "rankedRating": 12.4,
             "songId": "001608",
             "chartId": "001608#D#4",
+            "songKey": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm",
+            "chartKey": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm#double#expert",
             "path": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm",
             "artist": "Remixed by DJ Command"
           },
@@ -4108,6 +4574,8 @@
             "rankedRating": 12.55,
             "songId": "000336",
             "chartId": "000336#D#4",
+            "songKey": "sm/4th/TRIP MACHINE CLIMAX/TRIP MACHINE CLIMAX.sm",
+            "chartKey": "sm/4th/TRIP MACHINE CLIMAX/TRIP MACHINE CLIMAX.sm#double#expert",
             "path": "sm/4th/TRIP MACHINE CLIMAX/TRIP MACHINE CLIMAX.sm",
             "artist": "DE-SIRE"
           },
@@ -4121,6 +4589,8 @@
             "rankedRating": 12.45,
             "songId": "001671",
             "chartId": "001671#D#2",
+            "songKey": "sm/X3 vs 2nd/CRAZY LOVE/CRAZY LOVE.sm",
+            "chartKey": "sm/X3 vs 2nd/CRAZY LOVE/CRAZY LOVE.sm#double#difficult",
             "path": "sm/X3 vs 2nd/CRAZY LOVE/CRAZY LOVE.sm",
             "artist": "jun"
           },
@@ -4134,6 +4604,8 @@
             "rankedRating": 13.25,
             "songId": "000117",
             "chartId": "000117#D#2",
+            "songKey": "sm/2014/Engraved Mark/Engraved Mark.sm",
+            "chartKey": "sm/2014/Engraved Mark/Engraved Mark.sm#double#difficult",
             "path": "sm/2014/Engraved Mark/Engraved Mark.sm",
             "artist": "Ryu☆ ∞ Des-ROW"
           }
@@ -4165,6 +4637,8 @@
             "rankedRating": 13.4,
             "songId": "001132",
             "chartId": "001132#D#4",
+            "songKey": "sm/EX/Mikeneko rock/Mikeneko rock.sm",
+            "chartKey": "sm/EX/Mikeneko rock/Mikeneko rock.sm#double#expert",
             "path": "sm/EX/Mikeneko rock/Mikeneko rock.sm",
             "artist": "亜熱帯マジ-SKA爆弾"
           },
@@ -4178,6 +4652,8 @@
             "rankedRating": 13.7,
             "songId": "000016",
             "chartId": "000016#D#4",
+            "songKey": "sm/2013/Condor/Condor.sm",
+            "chartKey": "sm/2013/Condor/Condor.sm#double#expert",
             "path": "sm/2013/Condor/Condor.sm",
             "artist": "Remo-con"
           },
@@ -4191,6 +4667,8 @@
             "rankedRating": 13.45,
             "songId": "001092",
             "chartId": "001092#D#5",
+            "songKey": "sm/EX/A/A.sm",
+            "chartKey": "sm/EX/A/A.sm#double#challenge",
             "path": "sm/EX/A/A.sm",
             "artist": "D.J. Amuro"
           },
@@ -4204,6 +4682,8 @@
             "rankedRating": 14.35,
             "songId": "000047",
             "chartId": "000047#D#4",
+            "songKey": "sm/2013/REVOLUTION/REVOLUTION.sm",
+            "chartKey": "sm/2013/REVOLUTION/REVOLUTION.sm#double#expert",
             "path": "sm/2013/REVOLUTION/REVOLUTION.sm",
             "artist": "TËЯRA"
           }
@@ -4235,6 +4715,8 @@
             "rankedRating": 14.75,
             "songId": "000581",
             "chartId": "000581#D#5",
+            "songKey": "sm/A/Oboro/Oboro.sm",
+            "chartKey": "sm/A/Oboro/Oboro.sm#double#challenge",
             "path": "sm/A/Oboro/Oboro.sm",
             "artist": "HHH×MM×ST"
           },
@@ -4248,6 +4730,8 @@
             "rankedRating": 14.5,
             "songId": "001508",
             "chartId": "001508#D#4",
+            "songKey": "sm/X/Horatio/Horatio.sm",
+            "chartKey": "sm/X/Horatio/Horatio.sm#double#expert",
             "path": "sm/X/Horatio/Horatio.sm",
             "artist": "OR-IF-IS"
           },
@@ -4261,6 +4745,8 @@
             "rankedRating": 14.75,
             "songId": "001102",
             "chartId": "001102#D#5",
+            "songKey": "sm/EX/DAIKENKAI/DAIKENKAI.sm",
+            "chartKey": "sm/EX/DAIKENKAI/DAIKENKAI.sm#double#challenge",
             "path": "sm/EX/DAIKENKAI/DAIKENKAI.sm",
             "artist": "Des-ROW feat. TSUBOI for ALPHA"
           },
@@ -4274,6 +4760,8 @@
             "rankedRating": 15.55,
             "songId": "001134",
             "chartId": "001134#D#4",
+            "songKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
+            "chartKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm#double#expert",
             "path": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
             "artist": "270"
           }
@@ -4305,6 +4793,8 @@
             "rankedRating": 15.5,
             "songId": "000637",
             "chartId": "000637#D#4",
+            "songKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
+            "chartKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm#double#expert",
             "path": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
             "artist": "TAG"
           },
@@ -4318,6 +4808,8 @@
             "rankedRating": 15.5,
             "songId": "000071",
             "chartId": "000071#D#4",
+            "songKey": "sm/2013/Windy Fairy/Windy Fairy.sm",
+            "chartKey": "sm/2013/Windy Fairy/Windy Fairy.sm#double#expert",
             "path": "sm/2013/Windy Fairy/Windy Fairy.sm",
             "artist": "DJ TOTTO"
           },
@@ -4331,6 +4823,8 @@
             "rankedRating": 15.8,
             "songId": "001795",
             "chartId": "001795#D#4",
+            "songKey": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm",
+            "chartKey": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm#double#expert",
             "path": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm",
             "artist": "DE-STRAD"
           },
@@ -4344,6 +4838,8 @@
             "rankedRating": 16.55,
             "songId": "000516",
             "chartId": "000516#D#4",
+            "songKey": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm",
+            "chartKey": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm#double#expert",
             "path": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm",
             "artist": "SYUNN"
           }
@@ -4375,6 +4871,8 @@
             "rankedRating": 16.65,
             "songId": "001724",
             "chartId": "001724#D#5",
+            "songKey": "sm/X3 vs 2nd/Sumidagawa karenka/Sumidagawa karenka.sm",
+            "chartKey": "sm/X3 vs 2nd/Sumidagawa karenka/Sumidagawa karenka.sm#double#challenge",
             "path": "sm/X3 vs 2nd/Sumidagawa karenka/Sumidagawa karenka.sm",
             "artist": "seiya-murai feat.ALT"
           },
@@ -4388,6 +4886,8 @@
             "rankedRating": 16.65,
             "songId": "000050",
             "chartId": "000050#D#4",
+            "songKey": "sm/2013/STULTI/STULTI.sm",
+            "chartKey": "sm/2013/STULTI/STULTI.sm#double#expert",
             "path": "sm/2013/STULTI/STULTI.sm",
             "artist": "MAX MAXIMIZER VS DJ TOTTO"
           },
@@ -4401,6 +4901,8 @@
             "rankedRating": 16.4,
             "songId": "000567",
             "chartId": "000567#D#4",
+            "songKey": "sm/A/Life is beautiful/Life is beautiful.sm",
+            "chartKey": "sm/A/Life is beautiful/Life is beautiful.sm#double#expert",
             "path": "sm/A/Life is beautiful/Life is beautiful.sm",
             "artist": "BEMANI Sound Team \"猫叉Master\""
           },
@@ -4414,6 +4916,8 @@
             "rankedRating": 17.45,
             "songId": "001823",
             "chartId": "001823#D#5",
+            "songKey": "sm/SN1/MAX 300 (Super-Max-Me Mix)/MAX 300 (Super-Max-Me Mix).sm",
+            "chartKey": "sm/SN1/MAX 300 (Super-Max-Me Mix)/MAX 300 (Super-Max-Me Mix).sm#double#challenge",
             "path": "sm/SN1/MAX 300 (Super-Max-Me Mix)/MAX 300 (Super-Max-Me Mix).sm",
             "artist": "Jondi & Spesh"
           }
@@ -4445,6 +4949,8 @@
             "rankedRating": 17.45,
             "songId": "000033",
             "chartId": "000033#D#5",
+            "songKey": "sm/2013/Magnetic/Magnetic.sm",
+            "chartKey": "sm/2013/Magnetic/Magnetic.sm#double#challenge",
             "path": "sm/2013/Magnetic/Magnetic.sm",
             "artist": "Sota Fujimori"
           },
@@ -4458,6 +4964,8 @@
             "rankedRating": 17.5,
             "songId": "000630",
             "chartId": "000630#D#4",
+            "songKey": "sm/A/Triple Counter/Triple Counter.sm",
+            "chartKey": "sm/A/Triple Counter/Triple Counter.sm#double#expert",
             "path": "sm/A/Triple Counter/Triple Counter.sm",
             "artist": "DJ YOSHITAKA meets dj TAKA"
           },
@@ -4471,6 +4979,8 @@
             "rankedRating": 17.5,
             "songId": "001620",
             "chartId": "001620#D#4",
+            "songKey": "sm/X2/New Decade/New Decade.sm",
+            "chartKey": "sm/X2/New Decade/New Decade.sm#double#expert",
             "path": "sm/X2/New Decade/New Decade.sm",
             "artist": "Sota F."
           },
@@ -4484,6 +4994,8 @@
             "rankedRating": 18.15,
             "songId": "001705",
             "chartId": "001705#D#4",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#double#expert",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -4515,6 +5027,8 @@
             "rankedRating": 18.3,
             "songId": "000609",
             "chartId": "000609#D#5",
+            "songKey": "sm/A/Schrodinger no neko/Schrodinger no neko.sm",
+            "chartKey": "sm/A/Schrodinger no neko/Schrodinger no neko.sm#double#challenge",
             "path": "sm/A/Schrodinger no neko/Schrodinger no neko.sm",
             "artist": "Cait Sith"
           },
@@ -4528,6 +5042,8 @@
             "rankedRating": 18.5,
             "songId": "001647",
             "chartId": "001647#D#5",
+            "songKey": "sm/X2/deltaMAX/deltaMAX.sm",
+            "chartKey": "sm/X2/deltaMAX/deltaMAX.sm#double#challenge",
             "path": "sm/X2/deltaMAX/deltaMAX.sm",
             "artist": "DM Ashura"
           },
@@ -4541,6 +5057,8 @@
             "rankedRating": 18.45,
             "songId": "000515",
             "chartId": "000515#D#5",
+            "songKey": "sm/A/Come to Life/Come to Life.sm",
+            "chartKey": "sm/A/Come to Life/Come to Life.sm#double#challenge",
             "path": "sm/A/Come to Life/Come to Life.sm",
             "artist": "ARM (IOSYS) feat. Nicole Curry"
           },
@@ -4554,6 +5072,8 @@
             "rankedRating": 18.55,
             "songId": "001908",
             "chartId": "001908#D#4",
+            "songKey": "sm/SN2/Pluto Relinquish/Pluto Relinquish.sm",
+            "chartKey": "sm/SN2/Pluto Relinquish/Pluto Relinquish.sm#double#expert",
             "path": "sm/SN2/Pluto Relinquish/Pluto Relinquish.sm",
             "artist": "2MB"
           }
@@ -4585,6 +5105,8 @@
             "rankedRating": 18.3,
             "songId": "001727",
             "chartId": "001727#D#5",
+            "songKey": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm",
+            "chartKey": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm#double#challenge",
             "path": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm",
             "artist": "DE-JAVU"
           },
@@ -4598,6 +5120,8 @@
             "rankedRating": 18.85,
             "songId": "000525",
             "chartId": "000525#D#4",
+            "songKey": "sm/A/ENDYMION/ENDYMION.sm",
+            "chartKey": "sm/A/ENDYMION/ENDYMION.sm#double#expert",
             "path": "sm/A/ENDYMION/ENDYMION.sm",
             "artist": "fallen shepherd ft. RabbiTon Strings"
           },
@@ -4611,6 +5135,8 @@
             "rankedRating": 19,
             "songId": "001640",
             "chartId": "001640#D#5",
+            "songKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
+            "chartKey": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm#double#challenge",
             "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm",
             "artist": "Spriggan"
           },
@@ -4624,6 +5150,8 @@
             "rankedRating": 19.2,
             "songId": "001621",
             "chartId": "001621#D#5",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#double#challenge",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           }
@@ -4658,6 +5186,8 @@
             "rankedRating": 3.4,
             "songId": "001531",
             "chartId": "001531#S#0",
+            "songKey": "sm/X/Rin To Shite Saku Hana No Gotoku/Rin To Shite Saku Hana No Gotoku.sm",
+            "chartKey": "sm/X/Rin To Shite Saku Hana No Gotoku/Rin To Shite Saku Hana No Gotoku.sm#single#beginner",
             "path": "sm/X/Rin To Shite Saku Hana No Gotoku/Rin To Shite Saku Hana No Gotoku.sm",
             "artist": "紅色リトマス"
           },
@@ -4671,6 +5201,8 @@
             "rankedRating": 4.4,
             "songId": "001848",
             "chartId": "001848#S#0",
+            "songKey": "sm/SN1/RED ZONE/RED ZONE.sm",
+            "chartKey": "sm/SN1/RED ZONE/RED ZONE.sm#single#beginner",
             "path": "sm/SN1/RED ZONE/RED ZONE.sm",
             "artist": "Tatsh&NAOKI"
           },
@@ -4684,6 +5216,8 @@
             "rankedRating": 5.25,
             "songId": "001596",
             "chartId": "001596#S#1",
+            "songKey": "sm/X2/GOLD RUSH/GOLD RUSH.sm",
+            "chartKey": "sm/X2/GOLD RUSH/GOLD RUSH.sm#single#basic",
             "path": "sm/X2/GOLD RUSH/GOLD RUSH.sm",
             "artist": "DJ YOSHITAKA-G feat.Michael a la Mode"
           }
@@ -4713,6 +5247,8 @@
             "rankedRating": 5.5,
             "songId": "001628",
             "chartId": "001628#S#1",
+            "songKey": "sm/X2/Second Heaven/Second Heaven.sm",
+            "chartKey": "sm/X2/Second Heaven/Second Heaven.sm#single#basic",
             "path": "sm/X2/Second Heaven/Second Heaven.sm",
             "artist": "Ryu☆"
           },
@@ -4726,6 +5262,8 @@
             "rankedRating": 5.4,
             "songId": "000538",
             "chartId": "000538#S#1",
+            "songKey": "sm/A/Ha-lle-lu-jah/Ha-lle-lu-jah.sm",
+            "chartKey": "sm/A/Ha-lle-lu-jah/Ha-lle-lu-jah.sm#single#basic",
             "path": "sm/A/Ha-lle-lu-jah/Ha-lle-lu-jah.sm",
             "artist": "SOUND HOLIC feat. Nana Takahashi"
           },
@@ -4739,6 +5277,8 @@
             "rankedRating": 6.25,
             "songId": "000581",
             "chartId": "000581#S#1",
+            "songKey": "sm/A/Oboro/Oboro.sm",
+            "chartKey": "sm/A/Oboro/Oboro.sm#single#basic",
             "path": "sm/A/Oboro/Oboro.sm",
             "artist": "HHH×MM×ST"
           }
@@ -4768,6 +5308,8 @@
             "rankedRating": 6.4,
             "songId": "001636",
             "chartId": "001636#S#2",
+            "songKey": "sm/X2/Taking It To The Sky/Taking It To The Sky.sm",
+            "chartKey": "sm/X2/Taking It To The Sky/Taking It To The Sky.sm#single#difficult",
             "path": "sm/X2/Taking It To The Sky/Taking It To The Sky.sm",
             "artist": "U1 feat. Tammy S. Hansen"
           },
@@ -4781,6 +5323,8 @@
             "rankedRating": 6.25,
             "songId": "000864",
             "chartId": "000864#S#1",
+            "songKey": "sm/A20 Plus/Yuni's Nocturnal Days/Yuni's Nocturnal Days.sm",
+            "chartKey": "sm/A20 Plus/Yuni's Nocturnal Days/Yuni's Nocturnal Days.sm#single#basic",
             "path": "sm/A20 Plus/Yuni's Nocturnal Days/Yuni's Nocturnal Days.sm",
             "artist": "かめりあ"
           },
@@ -4794,6 +5338,8 @@
             "rankedRating": 7.4,
             "songId": "000916",
             "chartId": "000916#S#1",
+            "songKey": "sm/A3/Deep tenDon Reflex/Deep tenDon Reflex.sm",
+            "chartKey": "sm/A3/Deep tenDon Reflex/Deep tenDon Reflex.sm#single#basic",
             "path": "sm/A3/Deep tenDon Reflex/Deep tenDon Reflex.sm",
             "artist": "BEMANI Sound Team \"Coyaan\""
           }
@@ -4823,6 +5369,8 @@
             "rankedRating": 7.4,
             "songId": "001676",
             "chartId": "001676#S#1",
+            "songKey": "sm/X3 vs 2nd/FLOWER/FLOWER.sm",
+            "chartKey": "sm/X3 vs 2nd/FLOWER/FLOWER.sm#single#basic",
             "path": "sm/X3 vs 2nd/FLOWER/FLOWER.sm",
             "artist": "DJ YOSHITAKA"
           },
@@ -4836,6 +5384,8 @@
             "rankedRating": 7.2,
             "songId": "000048",
             "chartId": "000048#S#1",
+            "songKey": "sm/2013/Right on time (Ryu Remix)/Right on time (Ryu Remix).sm",
+            "chartKey": "sm/2013/Right on time (Ryu Remix)/Right on time (Ryu Remix).sm#single#basic",
             "path": "sm/2013/Right on time (Ryu Remix)/Right on time (Ryu Remix).sm",
             "artist": "Ryu☆"
           },
@@ -4849,6 +5399,8 @@
             "rankedRating": 8,
             "songId": "000675",
             "chartId": "000675#S#1",
+            "songKey": "sm/A20/Golden Arrow/Golden Arrow.sm",
+            "chartKey": "sm/A20/Golden Arrow/Golden Arrow.sm#single#basic",
             "path": "sm/A20/Golden Arrow/Golden Arrow.sm",
             "artist": "Zekk"
           }
@@ -4878,6 +5430,8 @@
             "rankedRating": 8.1,
             "songId": "001026",
             "chartId": "001026#S#1",
+            "songKey": "sm/A3/Snow Garland Fairy/Snow Garland Fairy.sm",
+            "chartKey": "sm/A3/Snow Garland Fairy/Snow Garland Fairy.sm#single#basic",
             "path": "sm/A3/Snow Garland Fairy/Snow Garland Fairy.sm",
             "artist": "BEMANI Sound Team \"KE!JU\""
           },
@@ -4891,6 +5445,8 @@
             "rankedRating": 8.3,
             "songId": "000698",
             "chartId": "000698#S#1",
+            "songKey": "sm/A20/Neverland/Neverland.sm",
+            "chartKey": "sm/A20/Neverland/Neverland.sm#single#basic",
             "path": "sm/A20/Neverland/Neverland.sm",
             "artist": "ARM (IOSYS) feat. Nicole Curry"
           },
@@ -4904,6 +5460,8 @@
             "rankedRating": 9.15,
             "songId": "000710",
             "chartId": "000710#S#1",
+            "songKey": "sm/A20/Rampage Hero/Rampage Hero.sm",
+            "chartKey": "sm/A20/Rampage Hero/Rampage Hero.sm#single#basic",
             "path": "sm/A20/Rampage Hero/Rampage Hero.sm",
             "artist": "DJ Shimamura"
           }
@@ -4933,6 +5491,8 @@
             "rankedRating": 9.1,
             "songId": "000771",
             "chartId": "000771#S#1",
+            "songKey": "sm/A20 Plus/Good Looking/Good Looking.sm",
+            "chartKey": "sm/A20 Plus/Good Looking/Good Looking.sm#single#basic",
             "path": "sm/A20 Plus/Good Looking/Good Looking.sm",
             "artist": "JAKAZiD"
           },
@@ -4946,6 +5506,8 @@
             "rankedRating": 9.1,
             "songId": "001067",
             "chartId": "001067#S#1",
+            "songKey": "sm/A3/glacia/glacia.sm",
+            "chartKey": "sm/A3/glacia/glacia.sm#single#basic",
             "path": "sm/A3/glacia/glacia.sm",
             "artist": "DJ TOTTO"
           },
@@ -4959,6 +5521,8 @@
             "rankedRating": 10.2,
             "songId": "001088",
             "chartId": "001088#S#4",
+            "songKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
+            "chartKey": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm#single#expert",
             "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm",
             "artist": "DE-SIRE"
           }
@@ -4988,6 +5552,8 @@
             "rankedRating": 10.25,
             "songId": "001364",
             "chartId": "001364#S#2",
+            "songKey": "sm/World/Dance and Death/Dance and Death.sm",
+            "chartKey": "sm/World/Dance and Death/Dance and Death.sm#single#difficult",
             "path": "sm/World/Dance and Death/Dance and Death.sm",
             "artist": "ikaruga_nex"
           },
@@ -5001,6 +5567,8 @@
             "rankedRating": 10.55,
             "songId": "001013",
             "chartId": "001013#S#1",
+            "songKey": "sm/A3/SISYPHUS/SISYPHUS.sm",
+            "chartKey": "sm/A3/SISYPHUS/SISYPHUS.sm#single#basic",
             "path": "sm/A3/SISYPHUS/SISYPHUS.sm",
             "artist": "BEMANI Sound Team \"Paoon\""
           },
@@ -5014,6 +5582,8 @@
             "rankedRating": 11.45,
             "songId": "001086",
             "chartId": "001086#S#4",
+            "songKey": "sm/DDR/PARANOiA/PARANOiA.sm",
+            "chartKey": "sm/DDR/PARANOiA/PARANOiA.sm#single#expert",
             "path": "sm/DDR/PARANOiA/PARANOiA.sm",
             "artist": "180"
           }
@@ -5043,6 +5613,8 @@
             "rankedRating": 11.35,
             "songId": "000999",
             "chartId": "000999#S#2",
+            "songKey": "sm/A3/Pump Pump Pump/Pump Pump Pump.sm",
+            "chartKey": "sm/A3/Pump Pump Pump/Pump Pump Pump.sm#single#difficult",
             "path": "sm/A3/Pump Pump Pump/Pump Pump Pump.sm",
             "artist": "kors k"
           },
@@ -5056,6 +5628,8 @@
             "rankedRating": 11.65,
             "songId": "000970",
             "chartId": "000970#S#2",
+            "songKey": "sm/A3/MANA/MANA.sm",
+            "chartKey": "sm/A3/MANA/MANA.sm#single#difficult",
             "path": "sm/A3/MANA/MANA.sm",
             "artist": "DJ YOSHITAKA"
           },
@@ -5069,6 +5643,8 @@
             "rankedRating": 12.45,
             "songId": "000231",
             "chartId": "000231#S#4",
+            "songKey": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm",
+            "chartKey": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm#single#expert",
             "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm",
             "artist": "190"
           }
@@ -5098,6 +5674,8 @@
             "rankedRating": 12.35,
             "songId": "001376",
             "chartId": "001376#S#4",
+            "songKey": "sm/World/First Action/First Action.sm",
+            "chartKey": "sm/World/First Action/First Action.sm#single#expert",
             "path": "sm/World/First Action/First Action.sm",
             "artist": "setu-O"
           },
@@ -5111,6 +5689,8 @@
             "rankedRating": 12.2,
             "songId": "000905",
             "chartId": "000905#S#2",
+            "songKey": "sm/A3/Continue to the real world/Continue to the real world.sm",
+            "chartKey": "sm/A3/Continue to the real world/Continue to the real world.sm#single#difficult",
             "path": "sm/A3/Continue to the real world/Continue to the real world.sm",
             "artist": "NUU$HI"
           },
@@ -5124,6 +5704,8 @@
             "rankedRating": 13.35,
             "songId": "000241",
             "chartId": "000241#S#4",
+            "songKey": "sm/3rd/AFRONOVA/AFRONOVA.sm",
+            "chartKey": "sm/3rd/AFRONOVA/AFRONOVA.sm#single#expert",
             "path": "sm/3rd/AFRONOVA/AFRONOVA.sm",
             "artist": "RE-VENGE"
           }
@@ -5153,6 +5735,8 @@
             "rankedRating": 13.6,
             "songId": "001911",
             "chartId": "001911#S#4",
+            "songKey": "sm/SN2/Saturn/Saturn.sm",
+            "chartKey": "sm/SN2/Saturn/Saturn.sm#single#expert",
             "path": "sm/SN2/Saturn/Saturn.sm",
             "artist": "Mr.Saturn"
           },
@@ -5166,6 +5750,8 @@
             "rankedRating": 13.7,
             "songId": "001928",
             "chartId": "001928#S#5",
+            "songKey": "sm/SN2/Uranus/Uranus.sm",
+            "chartKey": "sm/SN2/Uranus/Uranus.sm#single#challenge",
             "path": "sm/SN2/Uranus/Uranus.sm",
             "artist": "Tatsh SN 2 Style"
           },
@@ -5179,6 +5765,8 @@
             "rankedRating": 14.9,
             "songId": "001907",
             "chartId": "001907#S#4",
+            "songKey": "sm/SN2/Pluto/Pluto.sm",
+            "chartKey": "sm/SN2/Pluto/Pluto.sm#single#expert",
             "path": "sm/SN2/Pluto/Pluto.sm",
             "artist": "Black∞Hole"
           }
@@ -5208,6 +5796,8 @@
             "rankedRating": 14.3,
             "songId": "000684",
             "chartId": "000684#S#4",
+            "songKey": "sm/A20/IRON HEART/IRON HEART.sm",
+            "chartKey": "sm/A20/IRON HEART/IRON HEART.sm#single#expert",
             "path": "sm/A20/IRON HEART/IRON HEART.sm",
             "artist": "BUNNY"
           },
@@ -5221,6 +5811,8 @@
             "rankedRating": 14.35,
             "songId": "000120",
             "chartId": "000120#S#4",
+            "songKey": "sm/2014/FUNKY SUMMER BEACH/FUNKY SUMMER BEACH.sm",
+            "chartKey": "sm/2014/FUNKY SUMMER BEACH/FUNKY SUMMER BEACH.sm#single#expert",
             "path": "sm/2014/FUNKY SUMMER BEACH/FUNKY SUMMER BEACH.sm",
             "artist": "P*Light"
           },
@@ -5234,6 +5826,8 @@
             "rankedRating": 15.4,
             "songId": "000417",
             "chartId": "000417#S#4",
+            "songKey": "sm/6th/MAX 300/MAX 300.sm",
+            "chartKey": "sm/6th/MAX 300/MAX 300.sm#single#expert",
             "path": "sm/6th/MAX 300/MAX 300.sm",
             "artist": "Ω"
           }
@@ -5263,6 +5857,8 @@
             "rankedRating": 15.9,
             "songId": "000195",
             "chartId": "000195#S#4",
+            "songKey": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm",
+            "chartKey": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm#single#expert",
             "path": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm",
             "artist": "S-C-U × U1 overground"
           },
@@ -5276,6 +5872,8 @@
             "rankedRating": 15.75,
             "songId": "000745",
             "chartId": "000745#S#4",
+            "songKey": "sm/A20 Plus/ANTI ANTHEM/ANTI ANTHEM.sm",
+            "chartKey": "sm/A20 Plus/ANTI ANTHEM/ANTI ANTHEM.sm#single#expert",
             "path": "sm/A20 Plus/ANTI ANTHEM/ANTI ANTHEM.sm",
             "artist": "BEMANI Sound Team \"ZAQUVA\""
           },
@@ -5289,6 +5887,8 @@
             "rankedRating": 16.55,
             "songId": "000467",
             "chartId": "000467#S#4",
+            "songKey": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm",
+            "chartKey": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm#single#expert",
             "path": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm",
             "artist": "Z"
           }
@@ -5318,6 +5918,8 @@
             "rankedRating": 16.8,
             "songId": "001727",
             "chartId": "001727#S#4",
+            "songKey": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm",
+            "chartKey": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm#single#expert",
             "path": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm",
             "artist": "DE-JAVU"
           },
@@ -5331,6 +5933,8 @@
             "rankedRating": 17.05,
             "songId": "001621",
             "chartId": "001621#S#4",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#single#expert",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           },
@@ -5344,6 +5948,8 @@
             "rankedRating": 17.6,
             "songId": "001779",
             "chartId": "001779#S#4",
+            "songKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
+            "chartKey": "sm/SN1/Fascination MAXX/Fascination MAXX.sm#single#expert",
             "path": "sm/SN1/Fascination MAXX/Fascination MAXX.sm",
             "artist": "100-200-400"
           }
@@ -5373,6 +5979,8 @@
             "rankedRating": 17.55,
             "songId": "000693",
             "chartId": "000693#S#4",
+            "songKey": "sm/A20/Mikansei no jouki kudou otome (DDR Edition)/Mikansei no jouki kudou otome (DDR Edition).sm",
+            "chartKey": "sm/A20/Mikansei no jouki kudou otome (DDR Edition)/Mikansei no jouki kudou otome (DDR Edition).sm#single#expert",
             "path": "sm/A20/Mikansei no jouki kudou otome (DDR Edition)/Mikansei no jouki kudou otome (DDR Edition).sm",
             "artist": "U1 overground"
           },
@@ -5386,6 +5994,8 @@
             "rankedRating": 18.2,
             "songId": "000900",
             "chartId": "000900#S#5",
+            "songKey": "sm/A3/Come To m1dy/Come To m1dy.sm",
+            "chartKey": "sm/A3/Come To m1dy/Come To m1dy.sm#single#challenge",
             "path": "sm/A3/Come To m1dy/Come To m1dy.sm",
             "artist": "m1dy"
           },
@@ -5399,6 +6009,8 @@
             "rankedRating": 18.5,
             "songId": "001705",
             "chartId": "001705#S#4",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#single#expert",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }
@@ -5428,6 +6040,8 @@
             "rankedRating": 18.65,
             "songId": "000762",
             "chartId": "000762#S#5",
+            "songKey": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm",
+            "chartKey": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm#single#challenge",
             "path": "sm/A20 Plus/DIGITALIZER/DIGITALIZER.sm",
             "artist": "BEMANI Sound Team \"Sota F.\""
           },
@@ -5441,6 +6055,8 @@
             "rankedRating": 18.85,
             "songId": "000984",
             "chartId": "000984#S#5",
+            "songKey": "sm/A3/New Millennium/New Millennium.sm",
+            "chartKey": "sm/A3/New Millennium/New Millennium.sm#single#challenge",
             "path": "sm/A3/New Millennium/New Millennium.sm",
             "artist": "BEMANI Sound Team \"Sota F.\""
           },
@@ -5454,6 +6070,8 @@
             "rankedRating": 19.1,
             "songId": "000113",
             "chartId": "000113#S#5",
+            "songKey": "sm/2014/EGOISM 440/EGOISM 440.sm",
+            "chartKey": "sm/2014/EGOISM 440/EGOISM 440.sm#single#challenge",
             "path": "sm/2014/EGOISM 440/EGOISM 440.sm",
             "artist": "U1 High-Speed"
           }
@@ -5483,6 +6101,8 @@
             "rankedRating": 19,
             "songId": "000572",
             "chartId": "000572#S#5",
+            "songKey": "sm/A/MAX 360/MAX 360.sm",
+            "chartKey": "sm/A/MAX 360/MAX 360.sm#single#challenge",
             "path": "sm/A/MAX 360/MAX 360.sm",
             "artist": "BEMANI Sound Team \"[𝑥]\""
           },
@@ -5496,6 +6116,8 @@
             "rankedRating": 19.5,
             "songId": "000944",
             "chartId": "000944#S#5",
+            "songKey": "sm/A3/Hou/Hou.sm",
+            "chartKey": "sm/A3/Hou/Hou.sm#single#challenge",
             "path": "sm/A3/Hou/Hou.sm",
             "artist": "かめりあ"
           },
@@ -5509,6 +6131,8 @@
             "rankedRating": 19.9,
             "songId": "000525",
             "chartId": "000525#S#5",
+            "songKey": "sm/A/ENDYMION/ENDYMION.sm",
+            "chartKey": "sm/A/ENDYMION/ENDYMION.sm#single#challenge",
             "path": "sm/A/ENDYMION/ENDYMION.sm",
             "artist": "fallen shepherd ft. RabbiTon Strings"
           }
@@ -5540,6 +6164,8 @@
             "rankedRating": 3.5,
             "songId": "001846",
             "chartId": "001846#D#1",
+            "songKey": "sm/SN1/rainbow flyer/rainbow flyer.sm",
+            "chartKey": "sm/SN1/rainbow flyer/rainbow flyer.sm#double#basic",
             "path": "sm/SN1/rainbow flyer/rainbow flyer.sm",
             "artist": "dj TAKA"
           },
@@ -5553,6 +6179,8 @@
             "rankedRating": 4.65,
             "songId": "000898",
             "chartId": "000898#D#1",
+            "songKey": "sm/A3/Colorful minutes/Colorful minutes.sm",
+            "chartKey": "sm/A3/Colorful minutes/Colorful minutes.sm#double#basic",
             "path": "sm/A3/Colorful minutes/Colorful minutes.sm",
             "artist": "Qrispy Joybox feat.mao"
           },
@@ -5566,6 +6194,8 @@
             "rankedRating": 5.1,
             "songId": "000908",
             "chartId": "000908#D#1",
+            "songKey": "sm/A3/DDR System Songs+Replicant Mix/DDR System Songs+Replicant Mix.sm",
+            "chartKey": "sm/A3/DDR System Songs+Replicant Mix/DDR System Songs+Replicant Mix.sm#double#basic",
             "path": "sm/A3/DDR System Songs+Replicant Mix/DDR System Songs+Replicant Mix.sm",
             "artist": "BEMANI Sound Team"
           }
@@ -5595,6 +6225,8 @@
             "rankedRating": 5.3,
             "songId": "001002",
             "chartId": "001002#D#1",
+            "songKey": "sm/A3/ROCK THE PARTY/ROCK THE PARTY.sm",
+            "chartKey": "sm/A3/ROCK THE PARTY/ROCK THE PARTY.sm#double#basic",
             "path": "sm/A3/ROCK THE PARTY/ROCK THE PARTY.sm",
             "artist": "BEMANI Sound Team \"KE!JU\""
           },
@@ -5608,6 +6240,8 @@
             "rankedRating": 5.35,
             "songId": "000138",
             "chartId": "000138#D#1",
+            "songKey": "sm/2014/In The Breeze/In The Breeze.sm",
+            "chartKey": "sm/2014/In The Breeze/In The Breeze.sm#double#basic",
             "path": "sm/2014/In The Breeze/In The Breeze.sm",
             "artist": "96 & Sota ft. Mayumi Morinaga"
           },
@@ -5621,6 +6255,8 @@
             "rankedRating": 6.3,
             "songId": "000177",
             "chartId": "000177#D#1",
+            "songKey": "sm/2014/SUMMER DIARY -DDR mix-/SUMMER DIARY -DDR mix-.sm",
+            "chartKey": "sm/2014/SUMMER DIARY -DDR mix-/SUMMER DIARY -DDR mix-.sm#double#basic",
             "path": "sm/2014/SUMMER DIARY -DDR mix-/SUMMER DIARY -DDR mix-.sm",
             "artist": "猫叉王子 feat. TAG"
           }
@@ -5650,6 +6286,8 @@
             "rankedRating": 6.2,
             "songId": "000982",
             "chartId": "000982#D#1",
+            "songKey": "sm/A3/Nanahoshi/Nanahoshi.sm",
+            "chartKey": "sm/A3/Nanahoshi/Nanahoshi.sm#double#basic",
             "path": "sm/A3/Nanahoshi/Nanahoshi.sm",
             "artist": "S-C-U"
           },
@@ -5663,6 +6301,8 @@
             "rankedRating": 6.15,
             "songId": "001367",
             "chartId": "001367#D#1",
+            "songKey": "sm/World/Dense Flyer/Dense Flyer.sm",
+            "chartKey": "sm/World/Dense Flyer/Dense Flyer.sm#double#basic",
             "path": "sm/World/Dense Flyer/Dense Flyer.sm",
             "artist": "seatrus"
           },
@@ -5676,6 +6316,8 @@
             "rankedRating": 7.2,
             "songId": "000963",
             "chartId": "000963#D#1",
+            "songKey": "sm/A3/Let Me Show You/Let Me Show You.sm",
+            "chartKey": "sm/A3/Let Me Show You/Let Me Show You.sm#double#basic",
             "path": "sm/A3/Let Me Show You/Let Me Show You.sm",
             "artist": "Whac-A-Me"
           }
@@ -5705,6 +6347,8 @@
             "rankedRating": 7.2,
             "songId": "000637",
             "chartId": "000637#D#1",
+            "songKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
+            "chartKey": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm#double#basic",
             "path": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm",
             "artist": "TAG"
           },
@@ -5718,6 +6362,8 @@
             "rankedRating": 7.25,
             "songId": "000965",
             "chartId": "000965#D#1",
+            "songKey": "sm/A3/Like A Star/Like A Star.sm",
+            "chartKey": "sm/A3/Like A Star/Like A Star.sm#double#basic",
             "path": "sm/A3/Like A Star/Like A Star.sm",
             "artist": "nora2r feat. 和鳴るせ"
           },
@@ -5731,6 +6377,8 @@
             "rankedRating": 8.15,
             "songId": "000065",
             "chartId": "000065#D#2",
+            "songKey": "sm/2013/Top The Charts/Top The Charts.sm",
+            "chartKey": "sm/2013/Top The Charts/Top The Charts.sm#double#difficult",
             "path": "sm/2013/Top The Charts/Top The Charts.sm",
             "artist": "J-Mi & Midi-D feat. Hanna Stockzell"
           }
@@ -5760,6 +6408,8 @@
             "rankedRating": 8.05,
             "songId": "000918",
             "chartId": "000918#D#2",
+            "songKey": "sm/A3/Drive My Heart/Drive My Heart.sm",
+            "chartKey": "sm/A3/Drive My Heart/Drive My Heart.sm#double#difficult",
             "path": "sm/A3/Drive My Heart/Drive My Heart.sm",
             "artist": "CHEAP CREAM"
           },
@@ -5773,6 +6423,8 @@
             "rankedRating": 8.1,
             "songId": "000815",
             "chartId": "000815#D#1",
+            "songKey": "sm/A20 Plus/Our Love/Our Love.sm",
+            "chartKey": "sm/A20 Plus/Our Love/Our Love.sm#double#basic",
             "path": "sm/A20 Plus/Our Love/Our Love.sm",
             "artist": "lapix"
           },
@@ -5786,6 +6438,8 @@
             "rankedRating": 9.15,
             "songId": "000669",
             "chartId": "000669#D#2",
+            "songKey": "sm/A20/ENDLESS/ENDLESS.sm",
+            "chartKey": "sm/A20/ENDLESS/ENDLESS.sm#double#difficult",
             "path": "sm/A20/ENDLESS/ENDLESS.sm",
             "artist": "FN2(Eurobeat Union)"
           }
@@ -5815,6 +6469,8 @@
             "rankedRating": 9.15,
             "songId": "000907",
             "chartId": "000907#D#2",
+            "songKey": "sm/A3/Curry Up/Curry Up.sm",
+            "chartKey": "sm/A3/Curry Up/Curry Up.sm#double#difficult",
             "path": "sm/A3/Curry Up/Curry Up.sm",
             "artist": "OR-IF-IS"
           },
@@ -5828,6 +6484,8 @@
             "rankedRating": 9.4,
             "songId": "000537",
             "chartId": "000537#D#2",
+            "songKey": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm",
+            "chartKey": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm#double#difficult",
             "path": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm",
             "artist": "U1"
           },
@@ -5841,6 +6499,8 @@
             "rankedRating": 10.35,
             "songId": "000510",
             "chartId": "000510#D#4",
+            "songKey": "sm/A/CHOCOLATE PHILOSOPHY/CHOCOLATE PHILOSOPHY.sm",
+            "chartKey": "sm/A/CHOCOLATE PHILOSOPHY/CHOCOLATE PHILOSOPHY.sm#double#expert",
             "path": "sm/A/CHOCOLATE PHILOSOPHY/CHOCOLATE PHILOSOPHY.sm",
             "artist": "常盤ゆう"
           }
@@ -5870,6 +6530,8 @@
             "rankedRating": 10.25,
             "songId": "000961",
             "chartId": "000961#D#2",
+            "songKey": "sm/A3/Last Summer/Last Summer.sm",
+            "chartKey": "sm/A3/Last Summer/Last Summer.sm#double#difficult",
             "path": "sm/A3/Last Summer/Last Summer.sm",
             "artist": "BEMANI Sound Team \"Monolith vs. Nautilus\""
           },
@@ -5883,6 +6545,8 @@
             "rankedRating": 10.45,
             "songId": "000921",
             "chartId": "000921#D#1",
+            "songKey": "sm/A3/Electronic Sports Complex/Electronic Sports Complex.sm",
+            "chartKey": "sm/A3/Electronic Sports Complex/Electronic Sports Complex.sm#double#basic",
             "path": "sm/A3/Electronic Sports Complex/Electronic Sports Complex.sm",
             "artist": "栄免建設"
           },
@@ -5896,6 +6560,8 @@
             "rankedRating": 11.3,
             "songId": "001918",
             "chartId": "001918#D#4",
+            "songKey": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
+            "chartKey": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm#double#expert",
             "path": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm",
             "artist": "jun with Alison"
           }
@@ -5925,6 +6591,8 @@
             "rankedRating": 11.65,
             "songId": "000679",
             "chartId": "000679#D#4",
+            "songKey": "sm/A20/Hikari eureka/Hikari eureka.sm",
+            "chartKey": "sm/A20/Hikari eureka/Hikari eureka.sm#double#expert",
             "path": "sm/A20/Hikari eureka/Hikari eureka.sm",
             "artist": "ここなつ"
           },
@@ -5938,6 +6606,8 @@
             "rankedRating": 11.6,
             "songId": "000875",
             "chartId": "000875#D#2",
+            "songKey": "sm/A3/Acid,Tribal & Dance (DDR EDITION)/Acid,Tribal & Dance (DDR EDITION).sm",
+            "chartKey": "sm/A3/Acid,Tribal & Dance (DDR EDITION)/Acid,Tribal & Dance (DDR EDITION).sm#double#difficult",
             "path": "sm/A3/Acid,Tribal & Dance (DDR EDITION)/Acid,Tribal & Dance (DDR EDITION).sm",
             "artist": "Relect"
           },
@@ -5951,6 +6621,8 @@
             "rankedRating": 12.5,
             "songId": "000924",
             "chartId": "000924#D#2",
+            "songKey": "sm/A3/Euphoric Fragmentation/Euphoric Fragmentation.sm",
+            "chartKey": "sm/A3/Euphoric Fragmentation/Euphoric Fragmentation.sm#double#difficult",
             "path": "sm/A3/Euphoric Fragmentation/Euphoric Fragmentation.sm",
             "artist": "DC Mizey"
           }
@@ -5980,6 +6652,8 @@
             "rankedRating": 12.55,
             "songId": "000803",
             "chartId": "000803#D#4",
+            "songKey": "sm/A20 Plus/MOVE! (We Keep It Movin')/MOVE! (We Keep It Movin').sm",
+            "chartKey": "sm/A20 Plus/MOVE! (We Keep It Movin')/MOVE! (We Keep It Movin').sm#double#expert",
             "path": "sm/A20 Plus/MOVE! (We Keep It Movin')/MOVE! (We Keep It Movin').sm",
             "artist": "Jonny Dynamite!,Lisa - paint with stars -,Rio Hiiragi by BEMANI Sound Team \"U1-ASAMi\""
           },
@@ -5993,6 +6667,8 @@
             "rankedRating": 12.9,
             "songId": "000008",
             "chartId": "000008#D#2",
+            "songKey": "sm/2013/Blew My Mind/Blew My Mind.sm",
+            "chartKey": "sm/2013/Blew My Mind/Blew My Mind.sm#double#difficult",
             "path": "sm/2013/Blew My Mind/Blew My Mind.sm",
             "artist": "Sota F."
           },
@@ -6006,6 +6682,8 @@
             "rankedRating": 13.35,
             "songId": "001754",
             "chartId": "001754#D#4",
+            "songKey": "sm/SN1/AA/AA.sm",
+            "chartKey": "sm/SN1/AA/AA.sm#double#expert",
             "path": "sm/SN1/AA/AA.sm",
             "artist": "D.J.Amuro"
           }
@@ -6035,6 +6713,8 @@
             "rankedRating": 13.05,
             "songId": "001373",
             "chartId": "001373#D#2",
+            "songKey": "sm/World/ESPRIT ONE/ESPRIT ONE.sm",
+            "chartKey": "sm/World/ESPRIT ONE/ESPRIT ONE.sm#double#difficult",
             "path": "sm/World/ESPRIT ONE/ESPRIT ONE.sm",
             "artist": "SOUND HOLIC feat. STEVIE(44MAGNUM)"
           },
@@ -6048,6 +6728,8 @@
             "rankedRating": 13.4,
             "songId": "001137",
             "chartId": "001137#D#4",
+            "songKey": "sm/EX/SAKURA/SAKURA.sm",
+            "chartKey": "sm/EX/SAKURA/SAKURA.sm#double#expert",
             "path": "sm/EX/SAKURA/SAKURA.sm",
             "artist": "RevenG"
           },
@@ -6061,6 +6743,8 @@
             "rankedRating": 14.45,
             "songId": "000410",
             "chartId": "000410#D#4",
+            "songKey": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
+            "chartKey": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm#double#expert",
             "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm",
             "artist": "2MB"
           }
@@ -6090,6 +6774,8 @@
             "rankedRating": 14.7,
             "songId": "000064",
             "chartId": "000064#D#4",
+            "songKey": "sm/2013/The Wind of Gold/The Wind of Gold.sm",
+            "chartKey": "sm/2013/The Wind of Gold/The Wind of Gold.sm#double#expert",
             "path": "sm/2013/The Wind of Gold/The Wind of Gold.sm",
             "artist": "kors k"
           },
@@ -6103,6 +6789,8 @@
             "rankedRating": 14.7,
             "songId": "000703",
             "chartId": "000703#D#2",
+            "songKey": "sm/A20/ORCA/ORCA.sm",
+            "chartKey": "sm/A20/ORCA/ORCA.sm#double#difficult",
             "path": "sm/A20/ORCA/ORCA.sm",
             "artist": "かめりあ"
           },
@@ -6116,6 +6804,8 @@
             "rankedRating": 15.55,
             "songId": "001134",
             "chartId": "001134#D#4",
+            "songKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
+            "chartKey": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm#double#expert",
             "path": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm",
             "artist": "270"
           }
@@ -6145,6 +6835,8 @@
             "rankedRating": 15.7,
             "songId": "000135",
             "chartId": "000135#D#5",
+            "songKey": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm",
+            "chartKey": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm#double#challenge",
             "path": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm",
             "artist": "Mystic Moon"
           },
@@ -6158,6 +6850,8 @@
             "rankedRating": 15.8,
             "songId": "000189",
             "chartId": "000189#D#4",
+            "songKey": "sm/2014/Starlight Fantasia (Endorphins Mix)/Starlight Fantasia (Endorphins Mix).sm",
+            "chartKey": "sm/2014/Starlight Fantasia (Endorphins Mix)/Starlight Fantasia (Endorphins Mix).sm#double#expert",
             "path": "sm/2014/Starlight Fantasia (Endorphins Mix)/Starlight Fantasia (Endorphins Mix).sm",
             "artist": "U1 overground feat.TAG"
           },
@@ -6171,6 +6865,8 @@
             "rankedRating": 16.25,
             "songId": "001737",
             "chartId": "001737#D#4",
+            "songKey": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm",
+            "chartKey": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm#double#expert",
             "path": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm",
             "artist": "jun feat. Sarah-Jane"
           }
@@ -6200,6 +6896,8 @@
             "rankedRating": 16.5,
             "songId": "001710",
             "chartId": "001710#D#5",
+            "songKey": "sm/X3 vs 2nd/REVOLUTIONARY ADDICT/REVOLUTIONARY ADDICT.sm",
+            "chartKey": "sm/X3 vs 2nd/REVOLUTIONARY ADDICT/REVOLUTIONARY ADDICT.sm#double#challenge",
             "path": "sm/X3 vs 2nd/REVOLUTIONARY ADDICT/REVOLUTIONARY ADDICT.sm",
             "artist": "TAG underground"
           },
@@ -6213,6 +6911,8 @@
             "rankedRating": 17.5,
             "songId": "000718",
             "chartId": "000718#D#4",
+            "songKey": "sm/A20/Saishou sanbai kanzensuu/Saishou sanbai kanzensuu.sm",
+            "chartKey": "sm/A20/Saishou sanbai kanzensuu/Saishou sanbai kanzensuu.sm#double#expert",
             "path": "sm/A20/Saishou sanbai kanzensuu/Saishou sanbai kanzensuu.sm",
             "artist": "DJ TECHNORCH"
           },
@@ -6226,6 +6926,8 @@
             "rankedRating": 17.8,
             "songId": "001732",
             "chartId": "001732#D#4",
+            "songKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
+            "chartKey": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm#double#expert",
             "path": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm",
             "artist": "2.1MB underground"
           }
@@ -6255,6 +6957,8 @@
             "rankedRating": 17.75,
             "songId": "000003",
             "chartId": "000003#D#5",
+            "songKey": "sm/2013/Air Heroes/Air Heroes.sm",
+            "chartKey": "sm/2013/Air Heroes/Air Heroes.sm#double#challenge",
             "path": "sm/2013/Air Heroes/Air Heroes.sm",
             "artist": "Darwin"
           },
@@ -6268,6 +6972,8 @@
             "rankedRating": 18.35,
             "songId": "000781",
             "chartId": "000781#D#5",
+            "songKey": "sm/A20 Plus/HyperTwist/HyperTwist.sm",
+            "chartKey": "sm/A20 Plus/HyperTwist/HyperTwist.sm#double#challenge",
             "path": "sm/A20 Plus/HyperTwist/HyperTwist.sm",
             "artist": "TANUKI"
           },
@@ -6281,6 +6987,8 @@
             "rankedRating": 18.4,
             "songId": "000492",
             "chartId": "000492#D#5",
+            "songKey": "sm/A/ACE FOR ACES/ACE FOR ACES.ssc",
+            "chartKey": "sm/A/ACE FOR ACES/ACE FOR ACES.ssc#double#challenge",
             "path": "sm/A/ACE FOR ACES/ACE FOR ACES.ssc",
             "artist": "TAG×U1"
           }
@@ -6310,6 +7018,8 @@
             "rankedRating": 18.8,
             "songId": "000734",
             "chartId": "000734#D#5",
+            "songKey": "sm/A20/The World Ends Now/The World Ends Now.sm",
+            "chartKey": "sm/A20/The World Ends Now/The World Ends Now.sm#double#challenge",
             "path": "sm/A20/The World Ends Now/The World Ends Now.sm",
             "artist": "Akira Complex"
           },
@@ -6323,6 +7033,8 @@
             "rankedRating": 18.75,
             "songId": "001906",
             "chartId": "001906#D#5",
+            "songKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
+            "chartKey": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm#double#challenge",
             "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm",
             "artist": "αTYPE-300"
           },
@@ -6336,6 +7048,8 @@
             "rankedRating": 19.2,
             "songId": "001621",
             "chartId": "001621#D#5",
+            "songKey": "sm/X2/POSSESSION/POSSESSION.sm",
+            "chartKey": "sm/X2/POSSESSION/POSSESSION.sm#double#challenge",
             "path": "sm/X2/POSSESSION/POSSESSION.sm",
             "artist": "TAG underground"
           }
@@ -6365,6 +7079,8 @@
             "rankedRating": 19.1,
             "songId": "001049",
             "chartId": "001049#D#5",
+            "songKey": "sm/A3/VOLAQUAS/VOLAQUAS.sm",
+            "chartKey": "sm/A3/VOLAQUAS/VOLAQUAS.sm#double#challenge",
             "path": "sm/A3/VOLAQUAS/VOLAQUAS.sm",
             "artist": "BEMANI Sound Team \"DJ TOTTO VS 兎々\""
           },
@@ -6378,6 +7094,8 @@
             "rankedRating": 19.5,
             "songId": "001453",
             "chartId": "001453#D#5",
+            "songKey": "sm/World/Steps for Victory/Steps for Victory.ssc",
+            "chartKey": "sm/World/Steps for Victory/Steps for Victory.ssc#double#challenge",
             "path": "sm/World/Steps for Victory/Steps for Victory.ssc",
             "artist": "kors k×nagomu tamaki×BEMANI Sound Team \"U1\" with taru"
           },
@@ -6391,6 +7109,8 @@
             "rankedRating": 19.5,
             "songId": "001705",
             "chartId": "001705#D#5",
+            "songKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
+            "chartKey": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm#double#challenge",
             "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm",
             "artist": "CLIMAX of MAXX 360"
           }

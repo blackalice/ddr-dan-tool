@@ -85,6 +85,7 @@ function findSongFiles(dir, baseDir) {
             }
             files.push({
                 path: toPublicSmPath(relativePath),
+                songKey: toPublicSmPath(relativePath),
                 title: unescapeTitle(title.trim()),
                 titleTranslit: unescapeTitle(titleTranslit.trim()),
                 jacket: jacket ? toPublicSmPath(jacket) : null,

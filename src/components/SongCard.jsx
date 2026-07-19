@@ -147,6 +147,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     if (!song || !song.difficulty || !song.mode) return null;
     const artist = song.artist || derivedArtist || undefined;
     return resolveScore(scores, song.mode, {
+      songKey: song.songKey || song.path,
+      path: song.path,
       chartId: song.chartId,
       songId: song.songId || song.id,
       title: song.title,

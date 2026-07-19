@@ -442,7 +442,7 @@ function AppRoutes() {
           </Suspense>
         </div>
         <footer className={`footer${hideFooterOnMobile ? ' footer-hide-mobile' : ''}`}>
-            <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+            <p>A <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> project</p>
         </footer>
       </div>
     </div>

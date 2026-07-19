@@ -3,6 +3,7 @@ import path from 'path';
 import Fraction from "fraction.js";
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 import { buildChartId } from '../src/utils/chartIds.js';
+import { buildChartKey } from '../src/utils/chartIdentity.js';
 import {
     collectStats,
     collectTreeStats,
@@ -691,6 +692,8 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
                 rankedRating,
                 songId,
                 chartId,
+                songKey: songFile.path,
+                chartKey: buildChartKey(songFile.path, chart.mode, chart.difficulty),
                 path: songFile.path,
                 artist: simfileData.artist,
             });
@@ -1070,6 +1073,8 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
                 rankedRating,
                 songId,
                 chartId,
+                songKey: songFile.path,
+                chartKey: buildChartKey(songFile.path, chart.mode, chart.difficulty),
                 path: songFile.path,
                 artist: simfileData.artist,
             });

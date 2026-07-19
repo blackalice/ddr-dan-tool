@@ -76,7 +76,7 @@ const tasks = [
       { file: rel('data', 'rankings', 'combined_song_ratings.json') },
       { file: rel('data', 'song-ids.json') },
     ],
-    sources: scripts('generate-processed-data.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'),
+    sources: [...scripts('generate-processed-data.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'), ...files('src/utils/chartIdentity.js')],
     outputs: files('data/generated/dan-data.json', 'data/generated/vega-data.json', 'data/generated/courses-data.json'),
   },
   {
@@ -129,7 +129,7 @@ const tasks = [
     ],
     sources: [
       ...scripts('generate-song-meta.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'),
-      ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartIds.js'),
+      ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartIds.js', 'src/utils/chartIdentity.js'),
     ],
     outputs: files('data/generated/song-meta.json'),
   },
@@ -145,9 +145,24 @@ const tasks = [
     outputs: files('src/utils/worldNewChallengeChartsData.js'),
   },
   {
+    id: 'song-identities',
+    command: 'validate-song-identities.mjs',
+    deps: ['song-meta'],
+    inputs: [
+      { tree: rel('data', 'ddr-ver'), match: /\.json$/i },
+      { file: rel('data', 'generated', 'sm-files.json') },
+      { file: rel('data', 'generated', 'song-meta.json') },
+    ],
+    sources: [
+      ...scripts('validate-song-identities.mjs'),
+      ...files('src/utils/chartIdentity.js', 'src/utils/stringSimilarity.js'),
+    ],
+    outputs: [],
+  },
+  {
     id: 'public-sync',
     command: 'sync-public-assets.mjs',
-    deps: ['processed-data', 'world-challenges', 'song-index'],
+    deps: ['processed-data', 'world-challenges', 'song-index', 'song-identities'],
     alwaysRun: true,
     inputs: [],
     sources: scripts('sync-public-assets.mjs'),

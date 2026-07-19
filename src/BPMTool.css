@@ -774,9 +774,15 @@
     margin-top: 0;
 }
 
-.toggle-button:hover {
+.toggle-button:not(.multiplier-result-toggle):hover {
     background-color: var(--card-hover-bg-color-light);
     transform: translateY(-1px);
+}
+
+/* The mobile calculator control is vertically centered with its own
+   transform. Keep that positioning when touch browsers retain :hover. */
+.toggle-button.multiplier-result-toggle:hover {
+    transform: translateY(-50%);
 }
 
 .toggle-button.up {

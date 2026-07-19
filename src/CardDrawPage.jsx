@@ -28,6 +28,7 @@ import {
   buildSonglistOverrideLookup,
   songlistOverrideHasEntries,
   songlistOverrideMatches,
+  songlistOverrideChartMatches,
 } from "./utils/songlistOverrides.js";
 import { getJsonCached } from "./utils/cachedFetch.js";
 import { storage } from "./utils/remoteStorage.js";
@@ -736,6 +737,8 @@ const CardDrawPage = ({ smData }) => {
       if (!meta) return;
       if (songlistOverrideHasEntries(overrideSongs)) {
         if (!songlistOverrideMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
           title: meta.title,
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
@@ -747,7 +750,19 @@ const CardDrawPage = ({ smData }) => {
         }
       }
 
-      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle);
+      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle && (
+        !songlistOverrideHasEntries(overrideSongs) || songlistOverrideChartMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
+          title: meta.title,
+          titleTranslit: meta.titleTranslit,
+          artist: meta.artist,
+          artistTranslit: meta.artistTranslit,
+          game: meta.game,
+          mode: d.mode,
+          difficulty: d.difficulty,
+        })
+      ));
       if (!chartsInMode.length) return;
       total += 1;
       chartsTotal += chartsInMode.length;
@@ -771,6 +786,8 @@ const CardDrawPage = ({ smData }) => {
       if (playedStatusFilter !== "all") {
         const hasPlayed = chartsInMode.some((d) => {
           const scoreHit = resolveScore(scores, d.mode, {
+            songKey: meta.songKey || meta.path,
+            path: meta.path,
             chartId: d.chartId,
             songId: meta.id,
             title: meta.title,
@@ -854,6 +871,8 @@ const CardDrawPage = ({ smData }) => {
       }
       if (songlistOverrideHasEntries(overrideSongs)) {
         if (!songlistOverrideMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
           title: meta.title,
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
@@ -873,12 +892,26 @@ const CardDrawPage = ({ smData }) => {
       if (lengthMinFilter !== "" && meta.length < Number(lengthMinFilter)) return;
       if (lengthMaxFilter !== "" && meta.length > Number(lengthMaxFilter)) return;
 
-      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle);
+      const chartsInMode = (meta.difficulties || []).filter((d) => d.mode === playStyle && (
+        !songlistOverrideHasEntries(overrideSongs) || songlistOverrideChartMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
+          title: meta.title,
+          titleTranslit: meta.titleTranslit,
+          artist: meta.artist,
+          artistTranslit: meta.artistTranslit,
+          game: meta.game,
+          mode: d.mode,
+          difficulty: d.difficulty,
+        })
+      ));
       if (!chartsInMode.length) return;
 
       if (playedStatusFilter !== "all") {
         const hasPlayed = chartsInMode.some((d) => {
           const scoreHit = resolveScore(scores, d.mode, {
+            songKey: meta.songKey || meta.path,
+            path: meta.path,
             chartId: d.chartId,
             songId: meta.id,
             title: meta.title,
@@ -908,6 +941,8 @@ const CardDrawPage = ({ smData }) => {
         }
         if (playedStatusFilter !== "all") {
           const scoreHit = resolveScore(scores, d.mode, {
+            songKey: meta.songKey || meta.path,
+            path: meta.path,
             chartId: d.chartId,
             songId: meta.id,
             title: meta.title,
@@ -995,6 +1030,8 @@ const CardDrawPage = ({ smData }) => {
         }
           if (songlistOverrideHasEntries(overrideSongs)) {
             if (!songlistOverrideMatches(overrideSongs, {
+              path: meta.path,
+              songKey: meta.songKey,
               title: meta.title,
               titleTranslit: meta.titleTranslit,
               artist: meta.artist,
@@ -1026,6 +1063,8 @@ const CardDrawPage = ({ smData }) => {
           const hasPlayed = meta.difficulties?.some((d) => {
             if (d.mode !== playStyle) return false;
             const scoreHit = resolveScore(scores, d.mode, {
+              songKey: meta.songKey || meta.path,
+              path: meta.path,
               chartId: d.chartId,
               songId: meta.id,
               title: meta.title,

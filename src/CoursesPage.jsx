@@ -44,6 +44,8 @@ const CourseSection = ({ course, setSelectedGame, resetFilters, titleToPath }) =
         <div className="dan-song-grid song-grid">
           {course.songs.map((song, index) => {
             const hit = resolveScore(scores, song.mode, {
+              songKey: song.songKey || song.path,
+              path: song.path,
               chartId: song.chartId,
               songId: song.songId,
               title: song.title,

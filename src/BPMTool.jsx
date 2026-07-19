@@ -20,6 +20,7 @@ import {
     buildSonglistOverrideLookup,
     songlistOverrideHasEntries,
     songlistOverrideMatches,
+    songlistOverrideChartMatches,
 } from './utils/songlistOverrides';
 import { useFilters } from './contexts/FilterContext.jsx';
 import SongInfoBar from './components/SongInfoBar.jsx';
@@ -423,7 +424,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
 
     const simfileWithRatings = useMemo(() => {
         if (!simfileData) return null;
-        const meta = songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
+        const meta = songMeta.find(m => m.path === simfileData.path)
+            || songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
         if (!meta) return simfileData;
         const diffMetaByModeDifficulty = new Map(
             (meta.difficulties || []).map(d => [`${d.mode}|${d.difficulty}`, d]),
@@ -583,6 +585,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!meta) continue;
             if (songlistOverrideHasEntries(overrideSongs)) {
                 if (!songlistOverrideMatches(overrideSongs, {
+                    path: meta.path,
+                    songKey: meta.songKey,
                     title: meta.title,
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
@@ -594,7 +598,19 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 }
             }
 
-            const chartsInMode = (meta.difficulties || []).filter(d => d.mode === playStyle);
+            const chartsInMode = (meta.difficulties || []).filter(d => d.mode === playStyle && (
+                !songlistOverrideHasEntries(overrideSongs) || songlistOverrideChartMatches(overrideSongs, {
+                    path: meta.path,
+                    songKey: meta.songKey,
+                    title: meta.title,
+                    titleTranslit: meta.titleTranslit,
+                    artist: meta.artist,
+                    artistTranslit: meta.artistTranslit,
+                    game: meta.game,
+                    mode: d.mode,
+                    difficulty: d.difficulty,
+                })
+            ));
             if (!chartsInMode.length) continue;
 
             total += 1;
@@ -619,6 +635,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
                     const scoreHit = resolveScore(scores, d.mode, {
+                        songKey: meta.songKey || meta.path,
+                        path: meta.path,
                         chartId: d.chartId,
                         songId: meta.id,
                         title: meta.title,
@@ -647,6 +665,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 if (advancedFiltersActive && !chartMatchesAdvancedFilters(d, currentFilters)) return false;
                 if (playedStatusFilter !== 'all') {
                     const scoreHit = resolveScore(scores, d.mode, {
+                        songKey: meta.songKey || meta.path,
+                        path: meta.path,
                         chartId: d.chartId,
                         songId: meta.id,
                         title: meta.title,
@@ -705,6 +725,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!meta) continue;
             if (songlistOverrideHasEntries(overrideSongs)) {
                 if (!songlistOverrideMatches(overrideSongs, {
+                    path: meta.path,
+                    songKey: meta.songKey,
                     title: meta.title,
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
@@ -716,7 +738,19 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 }
             }
 
-            const chartsInMode = (meta.difficulties || []).filter(d => d.mode === playStyle);
+            const chartsInMode = (meta.difficulties || []).filter(d => d.mode === playStyle && (
+                !songlistOverrideHasEntries(overrideSongs) || songlistOverrideChartMatches(overrideSongs, {
+                    path: meta.path,
+                    songKey: meta.songKey,
+                    title: meta.title,
+                    titleTranslit: meta.titleTranslit,
+                    artist: meta.artist,
+                    artistTranslit: meta.artistTranslit,
+                    game: meta.game,
+                    mode: d.mode,
+                    difficulty: d.difficulty,
+                })
+            ));
             if (!chartsInMode.length) continue;
 
             if (gamesFilter.length && !gamesFilter.includes(meta.game)) continue;
@@ -738,6 +772,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false;
                     const scoreHit = resolveScore(scores, d.mode, {
+                        songKey: meta.songKey || meta.path,
+                        path: meta.path,
                         chartId: d.chartId,
                         songId: meta.id,
                         title: meta.title,
@@ -767,6 +803,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 }
                 if (playedStatusFilter !== 'all') {
                     const scoreHit = resolveScore(scores, d.mode, {
+                        songKey: meta.songKey || meta.path,
+                        path: meta.path,
                         chartId: d.chartId,
                         songId: meta.id,
                         title: meta.title,
@@ -987,6 +1025,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             }
             // Check played status filter
             const scoreHit = resolveScore(scores, chartForFilter.mode, {
+                songKey: simfileWithRatings.songKey || simfileWithRatings.path,
+                path: simfileWithRatings.path,
                 chartId: chartForFilter.chartId,
                 songId: simfileWithRatings.songId,
                 title: simfileWithRatings.title.titleName,
@@ -1051,7 +1091,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 for (let i = 0; i < songOptions.length; i++) {
                     nextSongIndex = (currentSongIndex + 1 + i) % songOptions.length;
                     const nextSongOption = songOptions[nextSongIndex];
-                    const nextSongMeta = songMeta.find(m => m.title === nextSongOption.title && m.game === nextSongOption.game);
+                    const nextSongMeta = songMeta.find(m => m.path === nextSongOption.value)
+                        || songMeta.find(m => m.title === nextSongOption.title && m.game === nextSongOption.game);
 
                     if (nextSongMeta) {
                         const nextSongChartsInMode = nextSongMeta.difficulties.filter(d => d.mode === playStyle);
@@ -1107,7 +1148,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         }
 
         const diffs = { singles: {}, doubles: {} };
-        const metaEntry = songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
+        const metaEntry = songMeta.find(m => m.path === simfileWithRatings.path)
+            || songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
         simfileWithRatings.availableTypes.forEach(chart => {
             const diffMeta = metaEntry?.difficulties.find(d => d.mode === chart.mode && d.difficulty === chart.difficulty);
             const info = { feet: chart.feet, rankedRating: diffMeta?.rankedRating };
@@ -1145,7 +1187,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
                 data = calculateChartData(bpmChanges, lastBeat);
                 // Prefer canonical length from songMeta when present (ogg-based),
                 // then BPM+stops fallback
-                const metaEntry = songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
+                const metaEntry = songMeta.find(m => m.path === simfileWithRatings.path)
+                    || songMeta.find(m => m.title === simfileWithRatings.title.titleName && m.game === simfileWithRatings.mix.mixName);
                 if (metaEntry && typeof metaEntry.length === 'number' && metaEntry.length > 0) {
                     length = metaEntry.length;
                 } else {
@@ -1269,6 +1312,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (!meta) return false;
             if (songlistOverrideHasEntries(overrideSongs)) {
                 if (!songlistOverrideMatches(overrideSongs, {
+                    path: meta.path,
+                    songKey: meta.songKey,
                     title: meta.title,
                     titleTranslit: meta.titleTranslit,
                     artist: meta.artist,
@@ -1313,7 +1358,9 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
             if (filters.playedStatus !== 'all') {
             const hasPlayedInCurrentPlaystyle = meta.difficulties.some(d => {
                     if (d.mode !== playStyle) return false; // Only consider charts of the current playStyle
-                    const scoreHit = resolveScore(scores, d.mode, {
+                const scoreHit = resolveScore(scores, d.mode, {
+                    songKey: meta.songKey || meta.path,
+                    path: meta.path,
                         chartId: d.chartId,
                         songId: meta.id,
                         title: meta.title,
@@ -1583,7 +1630,8 @@ const BPMTool = ({ smData, simfileData, currentChart, setCurrentChart, onSongSel
         if (!groups.some(g => g.name === name)) {
             createGroup(name);
         }
-        const metaEntry = songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
+        const metaEntry = songMeta.find(m => m.path === simfileData.path)
+            || songMeta.find(m => m.title === simfileData.title.titleName && m.game === simfileData.mix.mixName);
         const diffMeta = metaEntry?.difficulties.find(d => d.mode === currentChart.mode && d.difficulty === currentChart.difficulty);
         const chart = {
             title: simfileData.title.titleName,

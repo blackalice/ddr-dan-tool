@@ -70,13 +70,15 @@ const SongInfoBar = ({
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
     return resolveScore(scores, currentChart.mode, {
+      songKey: simfileData?.songKey || simfileData?.path,
+      path: simfileData?.path,
       chartId: currentChart.chartId,
       songId: simfileData?.songId,
       title: songTitle,
       artist,
       difficulty: currentChart.difficulty,
     });
-  }, [scores, currentChart, songTitle, artist, simfileData?.songId]);
+  }, [scores, currentChart, songTitle, artist, simfileData?.songId, simfileData?.songKey, simfileData?.path]);
 
   const badgeGlowClasses = React.useMemo(() => {
     return getScoreGlowClasses({ lamp: currentScore?.lamp });
@@ -161,6 +163,8 @@ const SongInfoBar = ({
 
             // Check played status filter
             const scoreHit = resolveScore(scores, chartType.mode, {
+              songKey: simfileData?.songKey || simfileData?.path,
+              path: simfileData?.path,
               chartId: chartType.chartId,
               songId: simfileData?.songId,
               title: songTitle,

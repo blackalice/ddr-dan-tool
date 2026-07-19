@@ -100,9 +100,11 @@ export function buildChartMetaLookup(songMeta) {
       const tech = diff?.stepmaniaTech || {};
       const entry = {
         chartId: chartId || builtId || null,
+        chartKey: diff?.chartKey || null,
         chartSlug: normalizedMode && normalizedDifficulty ? `${normalizedMode}-${normalizedDifficulty}` : null,
         songId: song?.id || null,
         path: song?.path || null,
+        songKey: song?.songKey || song?.path || null,
         title: song?.title || '',
         titleTranslit: song?.titleTranslit || '',
         artist: song?.artist || '',
@@ -149,6 +151,13 @@ export function buildChartMetaLookup(songMeta) {
         const upgraded = upgradeChartId(chartId);
         if (upgraded) addKey(map, upgraded, entry);
       }
+
+      const canonical = makeScoreKey({
+        songKey: song?.songKey || song?.path,
+        mode: normalizedMode,
+        difficulty: diff?.difficulty,
+      });
+      if (canonical) addKey(map, canonical, entry);
 
       if (builtId) addKey(map, builtId, entry);
 

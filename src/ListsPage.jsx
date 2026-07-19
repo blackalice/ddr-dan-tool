@@ -198,6 +198,8 @@ const GroupSection = ({
                   if (!chart) return null;
                   const highlightId = `${group.name}-${chartIdFor(chart)}`;
                   const hit = resolveScore(scores, chart.mode, {
+                    songKey: chart.songKey || chart.path,
+                    path: chart.path,
                     chartId: chart.chartId,
                     songId: chart.songId,
                     title: chart.title,
@@ -228,6 +230,8 @@ const GroupSection = ({
           group.charts.map((chart, idx) => {
             const highlightId = `${group.name}-${chart.chartId || `${chart.title}-${chart.mode}-${chart.difficulty}`}`;
             const hit = resolveScore(scores, chart.mode, {
+              songKey: chart.songKey || chart.path,
+              path: chart.path,
               chartId: chart.chartId,
               songId: chart.songId,
               title: chart.title,

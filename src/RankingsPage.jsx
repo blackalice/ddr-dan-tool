@@ -300,6 +300,8 @@ const RankingsPage = () => {
 
       if (hasOverride) {
         if (!songlistOverrideMatches(overrideSongs, {
+          path: song.path,
+          songKey: song.songKey,
           title: song.title,
           titleTranslit: song.titleTranslit,
           artist: song.artist,
@@ -329,6 +331,8 @@ const RankingsPage = () => {
         const bucket = buckets.get(levelFloor);
 
         const scoreKey = makeScoreKey({
+          songKey: song.songKey || song.path,
+          path: song.path,
           chartId: diff.chartId,
           songId: song.id,
           mode: normalizedMode,

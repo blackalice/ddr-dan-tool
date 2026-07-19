@@ -724,6 +724,8 @@ const StatsPage = () => {
         } else {
           if (songlistOverrideHasEntries(overrideSongs)) {
             const matchesOverride = songlistOverrideMatches(overrideSongs, {
+              path: meta.path,
+              songKey: meta.songKey,
               title: meta.title,
               titleTranslit: meta.titleTranslit,
               artist: meta.artist,
@@ -803,6 +805,8 @@ const StatsPage = () => {
     for (const { meta, result } of scoredChartEntries) {
       if (songlistOverrideHasEntries(overrideSongs)) {
         const matchesOverride = songlistOverrideMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
           title: meta.title,
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,
@@ -1274,6 +1278,8 @@ const StatsPage = () => {
     for (const meta of allModeCharts) {
       if (songlistOverrideHasEntries(overrideSongs)) {
         const matchesOverride = songlistOverrideMatches(overrideSongs, {
+          path: meta.path,
+          songKey: meta.songKey,
           title: meta.title,
           titleTranslit: meta.titleTranslit,
           artist: meta.artist,

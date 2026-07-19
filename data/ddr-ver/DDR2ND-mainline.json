@@ -6,49 +6,105 @@
   ],
   "generatedAt": "2026-07-03T18:08:24.253Z",
   "songs": [
-    "BAD GIRLS",
-    "BOOM BOOM DOLLAR",
-    "BOYS",
-    "DUB-I-DUB",
-    "EL RITMO TROPICAL",
-    "GET UP'N MOVE",
-    "HERO",
-    "I believe in miracles",
-    "IF YOU WERE HERE",
-    "LOVE",
-    "SMOKE",
-    "stomp to my beat",
-    "TUBTHUMPING",
-    "20,november～DDR VERSION～",
-    "AM-3P",
-    "BRILLIANT 2U",
-    "BRILLIANT 2U (Orchestra-Groov)",
-    "KEEP ON MOVIN'",
-    "LET THEM MOVE",
-    "MAKE A JAM!",
-    "MAKE IT BETTER (So-REAL Mix)",
-    "PARANOiA KCET ～clean mix～",
-    "PARANOiA MAX～DIRTY MIX～",
-    "PARANOiA MAX～DIRTY MIX～ (in roulette)",
-    "PUT YOUR FAITH IN ME",
-    "PUT YOUR FAITH IN ME (Jazz Groov)",
-    "SP-TRIP MACHINE～JUNGLE MIX～",
-    "BUTTERFLY",
-    "HAVE YOU NEVER BEEN MELLOW",
-    "KUNG FU FIGHTING",
-    "LITTLE BITCH",
-    "LET'S GET DOWN",
-    "MY FIRE",
-    "STRICTLY BUSINESS",
-    "THAT'S THE WAY(I LIKE IT)",
-    "MAKE IT BETTER",
-    "PARANOiA",
-    "TRIP MACHINE",
-    "Song Lists",
-    "Privacy policy",
-    "About RemyWiki",
-    "Disclaimers",
-    "Mobile view"
+    {
+      "path": "sm/2nd/BAD GIRLS/BAD GIRLS.sm"
+    },
+    {
+      "path": "sm/2nd/Boys/Boys.sm"
+    },
+    {
+      "path": "sm/2nd/DUB-I-DUB/DUB-I-DUB.sm"
+    },
+    {
+      "path": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL.sm"
+    },
+    {
+      "path": "sm/2nd/GET UP'N MOVE/GET UP'N MOVE.sm"
+    },
+    {
+      "path": "sm/2nd/HERO/HERO.sm"
+    },
+    {
+      "path": "sm/2nd/IF YOU WERE HERE/IF YOU WERE HERE.sm"
+    },
+    {
+      "path": "sm/2nd/LOVE/LOVE.sm"
+    },
+    {
+      "path": "sm/2nd/Smoke/Smoke.sm"
+    },
+    {
+      "path": "sm/2nd/stomp to my beat/stomp to my beat.sm"
+    },
+    {
+      "path": "sm/2nd/TUBTHUMPING/TUBTHUMPING.sm"
+    },
+    {
+      "path": "sm/3rd/20,NOVEMBER (D.D.R. version)/20,NOVEMBER (D.D.R. version).sm"
+    },
+    {
+      "path": "sm/2nd/AM-3P/AM-3P.sm"
+    },
+    {
+      "path": "sm/2nd/BRILLIANT 2U/BRILLIANT 2U.sm"
+    },
+    {
+      "path": "sm/3rd/KEEP ON MOVIN'/KEEP ON MOVIN'.sm"
+    },
+    {
+      "path": "sm/3rd/LET THEM MOVE/LET THEM MOVE.sm"
+    },
+    {
+      "path": "sm/2nd/MAKE A JAM!/MAKE A JAM!.sm"
+    },
+    {
+      "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~ (in roulette)/PARANOiA MAX~DIRTY MIX~ (in roulette).sm"
+    },
+    {
+      "path": "sm/2nd/PUT YOUR FAITH IN ME/PUT YOUR FAITH IN ME.sm"
+    },
+    {
+      "path": "sm/2nd/SP-TRIP MACHINE~JUNGLE MIX~/SP-TRIP MACHINE~JUNGLE MIX~.sm"
+    },
+    {
+      "path": "sm/DDR/Butterfly/Butterfly.sm"
+    },
+    {
+      "path": "sm/DDR/Have You Never Been Mellow/Have You Never Been Mellow.sm"
+    },
+    {
+      "path": "sm/DDR/KUNG FU FIGHTING/KUNG FU FIGHTING.sm"
+    },
+    {
+      "path": "sm/DDR/Little Bitch/Little Bitch.sm"
+    },
+    {
+      "path": "sm/DDR/LET'S GET DOWN/LET'S GET DOWN.sm"
+    },
+    {
+      "path": "sm/DDR/STRICTLY BUSINESS/STRICTLY BUSINESS.sm"
+    },
+    {
+      "path": "sm/DDR/That's The Way (I Like It)/That's The Way (I Like It).sm"
+    },
+    {
+      "path": "sm/DDR/MAKE IT BETTER/MAKE IT BETTER.sm"
+    },
+    {
+      "path": "sm/DDR/PARANOiA/PARANOiA.sm"
+    },
+    {
+      "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm"
+    }
   ],
   "issues": []
 }

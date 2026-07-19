@@ -47,6 +47,8 @@ const DanSection = ({ danCourse, danVersion, playMode, setSelectedGame, resetFil
         <div className={`dan-song-grid song-grid${danVersion === 'WORLD' ? ' world-dan-song-grid' : ''}`}>
           {danCourse.songs.map((song, index) => {
             const hit = resolveScore(scores, song.mode, {
+              songKey: song.songKey || song.path,
+              path: song.path,
               chartId: song.chartId,
               songId: song.songId,
               title: song.title,

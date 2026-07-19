@@ -19,6 +19,8 @@
           "rankedRating": 10.6,
           "songId": "000106",
           "chartId": "000106#S#4",
+          "songKey": "sm/2014/Din Don Dan/Din Don Dan.sm",
+          "chartKey": "sm/2014/Din Don Dan/Din Don Dan.sm#single#expert",
           "path": "sm/2014/Din Don Dan/Din Don Dan.sm",
           "artist": "Ryu☆ feat.Mayumi Morinaga"
         },
@@ -32,6 +34,8 @@
           "rankedRating": 11.55,
           "songId": "001836",
           "chartId": "001836#S#4",
+          "songKey": "sm/SN1/NIJIIRO/NIJIIRO.sm",
+          "chartKey": "sm/SN1/NIJIIRO/NIJIIRO.sm#single#expert",
           "path": "sm/SN1/NIJIIRO/NIJIIRO.sm",
           "artist": "DJ YOSHITAKA feat G.S.C license"
         },
@@ -45,6 +49,8 @@
           "rankedRating": 12.2,
           "songId": "001794",
           "chartId": "001794#S#4",
+          "songKey": "sm/SN1/HAPPY ANGEL/HAPPY ANGEL.sm",
+          "chartKey": "sm/SN1/HAPPY ANGEL/HAPPY ANGEL.sm#single#expert",
           "path": "sm/SN1/HAPPY ANGEL/HAPPY ANGEL.sm",
           "artist": "jun with TAHIRIH"
         }
@@ -74,6 +80,8 @@
           "rankedRating": 14.35,
           "songId": "000174",
           "chartId": "000174#S#4",
+          "songKey": "sm/2014/Romancing Layer/Romancing Layer.sm",
+          "chartKey": "sm/2014/Romancing Layer/Romancing Layer.sm#single#expert",
           "path": "sm/2014/Romancing Layer/Romancing Layer.sm",
           "artist": "TAG"
         },
@@ -87,6 +95,8 @@
           "rankedRating": 15.35,
           "songId": "000915",
           "chartId": "000915#S#4",
+          "songKey": "sm/A3/Debug Dance/Debug Dance.sm",
+          "chartKey": "sm/A3/Debug Dance/Debug Dance.sm#single#expert",
           "path": "sm/A3/Debug Dance/Debug Dance.sm",
           "artist": "lapix"
         },
@@ -100,6 +110,8 @@
           "rankedRating": 16.05,
           "songId": "000933",
           "chartId": "000933#S#4",
+          "songKey": "sm/A3/GROOVE 04/GROOVE 04.sm",
+          "chartKey": "sm/A3/GROOVE 04/GROOVE 04.sm#single#expert",
           "path": "sm/A3/GROOVE 04/GROOVE 04.sm",
           "artist": "android52"
         }
@@ -127,6 +139,8 @@
           "rankedRating": 18,
           "songId": "000572",
           "chartId": "000572#S#4",
+          "songKey": "sm/A/MAX 360/MAX 360.sm",
+          "chartKey": "sm/A/MAX 360/MAX 360.sm#single#expert",
           "path": "sm/A/MAX 360/MAX 360.sm",
           "artist": "BEMANI Sound Team \"[𝑥]\""
         }

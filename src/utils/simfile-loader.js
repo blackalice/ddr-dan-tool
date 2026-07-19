@@ -28,10 +28,11 @@ export const findSongByTitle = async (title) => {
     if (!smFilesCache) return null;
 
     const normalizedTitle = title.toLowerCase();
-    return smFilesCache.files.find(file =>
+    const matches = smFilesCache.files.filter(file =>
         file.title.toLowerCase() === normalizedTitle ||
         (file.titleTranslit && file.titleTranslit.toLowerCase() === normalizedTitle)
     );
+    return matches.length === 1 ? matches[0] : null;
 };
 
 export const loadSimfileData = async (songFile) => {
@@ -75,6 +76,7 @@ export const loadSimfileData = async (songFile) => {
             availableTypes,
             charts,
             path: songFile.path,
+            songKey: songFile.songKey || songFile.path,
             artistTranslit: parsed.artisttranslit || '',
             title: {
                 titleName: parsed.title,
