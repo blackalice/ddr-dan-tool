@@ -104,6 +104,8 @@ const Settings = () => {
         setShowTransliterationBeta,
         showWipStats,
         setShowWipStats,
+        showDrawFocusBeta,
+        setShowDrawFocusBeta,
         songlistOverride,
         setSonglistOverride,
         showMultiplierIncrementVersion,
@@ -556,6 +558,22 @@ const Settings = () => {
                                 checked={showCoursesBeta}
                                 onChange={(e) => setShowCoursesBeta(e.target.checked)}
                                 ariaLabel="Toggle courses beta"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="setting-card setting-card-toggle">
+                        <div className="setting-text">
+                            <h3>Draw focus fading (Beta)</h3>
+                            <p>
+                                Darken draws outside the current viewport focus on desktop and tablet.
+                            </p>
+                        </div>
+                        <div className="setting-control">
+                            <Switch
+                                checked={showDrawFocusBeta}
+                                onChange={(e) => setShowDrawFocusBeta(e.target.checked)}
+                                ariaLabel="Toggle draw focus fading beta"
                             />
                         </div>
                     </div>

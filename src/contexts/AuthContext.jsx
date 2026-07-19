@@ -31,11 +31,23 @@ export const AuthProvider = ({ children }) => {
     setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
+    setCardDrawTournamentLabels,
+    setCardDrawTournamentLabelLocks,
   } = useContext(SettingsContext);
 
   const applySettings = useCallback((data = {}) => {
     const bool = (v) => v === true || v === 'true';
     const num = (v, d) => (v !== undefined && v !== null ? Number(v) : d);
+    const object = (v) => {
+      if (v && typeof v === 'object') return v;
+      if (typeof v !== 'string') return null;
+      try {
+        const parsed = JSON.parse(v);
+        return parsed && typeof parsed === 'object' ? parsed : null;
+      } catch {
+        return null;
+      }
+    };
     if (data.targetBPM !== undefined) setTargetBPM(num(data.targetBPM, 300));
     if (data.multiplierMode !== undefined) setMultiplierMode(data.multiplierMode);
     if (data.theme !== undefined) setTheme(data.theme);
@@ -55,6 +67,20 @@ export const AuthProvider = ({ children }) => {
     } else if (data.worldNewChallengeCharts !== undefined) {
       setWorldRemoveChallengeCharts(!bool(data.worldNewChallengeCharts));
     }
+    if (data.cardDrawCurrentLabels !== undefined) {
+      const labels = object(data.cardDrawCurrentLabels);
+      if (labels) setCardDrawTournamentLabels(labels);
+    }
+    if (data.cardDrawTournamentLabelLocks !== undefined) {
+      const locks = object(data.cardDrawTournamentLabelLocks);
+      if (locks) {
+        setCardDrawTournamentLabelLocks({
+          round: locks.round === true,
+          p1: locks.p1 === true || locks.players === true,
+          p2: locks.p2 === true || locks.players === true,
+        });
+      }
+    }
   }, [
     setTargetBPM,
     setMultiplierMode,
@@ -68,6 +94,8 @@ export const AuthProvider = ({ children }) => {
     setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
+    setCardDrawTournamentLabels,
+    setCardDrawTournamentLabelLocks,
   ]);
 
   const refreshToken = useCallback(async () => {

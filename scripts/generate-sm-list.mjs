@@ -53,6 +53,11 @@ function toPublicSmPath(relativePath) {
     return `sm/${normalized}`;
 }
 
+function unescapeTitle(value) {
+    // StepMania simfiles use \# for a literal hash in tag values.
+    return value.replace(/\\#/g, '#');
+}
+
 function findSongFiles(dir, baseDir) {
     let files = [];
     const items = fs.readdirSync(dir);
@@ -80,8 +85,8 @@ function findSongFiles(dir, baseDir) {
             }
             files.push({
                 path: toPublicSmPath(relativePath),
-                title: title.trim(),
-                titleTranslit: titleTranslit.trim(),
+                title: unescapeTitle(title.trim()),
+                titleTranslit: unescapeTitle(titleTranslit.trim()),
                 jacket: jacket ? toPublicSmPath(jacket) : null,
             });
         }

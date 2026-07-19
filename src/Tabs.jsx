@@ -324,62 +324,76 @@ const Tabs = () => {
         className={`mobile-menu${menuOpen ? " open" : ""}${menuNoTransition ? " no-transition" : ""}`}
       >
         <div className="mobile-menu-inner">
+          <div className="mobile-menu-header">
+            <div className="mobile-menu-title">Menu</div>
+            <button
+              className="mobile-menu-close"
+              onClick={handleMenuToggle}
+              aria-label="Close navigation menu"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
           <div className="mobile-menu-scroll">
-            <div className="mobile-menu-header">
-              <div className="mobile-menu-title">Menu</div>
-              <button
-                className="mobile-menu-close"
-                onClick={handleMenuToggle}
-                aria-label="Close navigation menu"
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-            <div className="mobile-menu-links">
-              {[...primaryLinks, ...secondaryLinks].map((link) => (
-                <NavLink
-                  key={`mobile-${link.key}`}
-                  to={link.to}
-                  aria-label={link.label}
-                  className={({ isActive }) =>
-                    isActive ? "mobile-menu-link active" : "mobile-menu-link"
-                  }
-                  onClick={(event) => handleMenuLinkClick(event, link.to)}
-                >
-                  <span className="mobile-menu-icon">{link.icon}</span>
-                  <span className="mobile-menu-label">{link.label}</span>
-                </NavLink>
+            <nav className="mobile-menu-nav" aria-label="Main navigation">
+              {[
+                { key: "explore", label: "Explore", links: primaryLinks },
+                { key: "personal", label: "Your space", links: secondaryLinks },
+              ].filter((group) => group.links.length > 0).map((group) => (
+                <div className="mobile-menu-nav-group" key={group.key}>
+                  <div className="mobile-section-title">{group.label}</div>
+                  <div className="mobile-menu-links">
+                    {group.links.map((link) => (
+                      <NavLink
+                        key={`mobile-${link.key}`}
+                        to={link.to}
+                        aria-label={link.label}
+                        className={({ isActive }) =>
+                          isActive ? "mobile-menu-link active" : "mobile-menu-link"
+                        }
+                        onClick={(event) => handleMenuLinkClick(event, link.to)}
+                      >
+                        <span className="mobile-menu-icon">{link.icon}</span>
+                        <span className="mobile-menu-label">{link.label}</span>
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </div>
-            <div className="mobile-menu-section">
-              <div className="mobile-section-title">Play Style</div>
-              <TwoOptionSwitch
-                ariaLabel="Play style"
-                className="mobile-playstyle-toggle"
-                options={[
-                  { label: "Single", value: "single" },
-                  { label: "Double", value: "double" },
-                ]}
-                value={playStyle || "single"}
-                onChange={handlePlayStyleToggle}
-              />
-            </div>
-            <div className="mobile-menu-section">
-              <div className="mobile-section-title">Target Scroll Speed</div>
-              <div className="mobile-target-input">
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  min="50"
-                  max="900"
-                  step="5"
-                  value={targetBpmInput}
-                  onChange={handleTargetBpmInputChange}
-                  onBlur={handleTargetBpmCommit}
-                  onKeyDown={handleTargetBpmKeyDown}
-                  aria-label="Target scroll speed"
+            </nav>
+            <div className="mobile-menu-preferences">
+              <div className="mobile-section-title">Quick settings</div>
+              <div className="mobile-menu-section">
+                <div className="mobile-control-label">Play Style</div>
+                <TwoOptionSwitch
+                  ariaLabel="Play style"
+                  className="mobile-playstyle-toggle"
+                  options={[
+                    { label: "Single", value: "single" },
+                    { label: "Double", value: "double" },
+                  ]}
+                  value={playStyle || "single"}
+                  onChange={handlePlayStyleToggle}
                 />
-                <span className="mobile-target-suffix">BPM</span>
+              </div>
+              <div className="mobile-menu-section">
+                <div className="mobile-control-label">Target Scroll Speed</div>
+                <div className="mobile-target-input">
+                  <input
+                    className="mobile-target-value"
+                    type="number"
+                    inputMode="numeric"
+                    min="50"
+                    max="900"
+                    step="5"
+                    value={targetBpmInput}
+                    onChange={handleTargetBpmInputChange}
+                    onBlur={handleTargetBpmCommit}
+                    onKeyDown={handleTargetBpmKeyDown}
+                    aria-label="Target scroll speed"
+                  />
+                  <span className="mobile-target-suffix">BPM</span>
+                </div>
               </div>
             </div>
           </div>

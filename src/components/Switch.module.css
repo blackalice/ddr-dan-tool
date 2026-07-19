@@ -112,29 +112,49 @@
   cursor: not-allowed;
 }
 
-/* New deliberately does not inherit DDR World's green checked state. */
+/* New uses the same compact, outlined control language as the rest of the
+   theme. The thumb is softly squared so it belongs to the track geometry. */
+:global([data-theme='new']) .switch {
+  --switch-height: 32px;
+  --switch-width: 58px;
+  --switch-padding: 3px;
+  --thumb-size: calc(var(--switch-height) - (var(--switch-padding) * 2) - 2px);
+}
+
 :global([data-theme='new']) .track {
-  background: var(--button-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-pill-theme);
+  box-sizing: border-box;
+  background: var(--theme-field);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
   padding: var(--switch-padding);
+  box-shadow: var(--theme-shadow-control);
 }
 
 :global([data-theme='new']) .thumb {
-  background: var(--text-color-lighter);
-  border-radius: 50%;
+  background: var(--theme-text-secondary);
+  border: 1px solid color-mix(in srgb, var(--theme-text-primary) 24%, transparent);
+  border-radius: calc(var(--theme-radius-control) - 2px);
+  box-shadow: var(--theme-shadow-control);
 }
 
-:global([data-theme='new']) .switch:hover .track,
-:global([data-theme='new']) .switch input:focus-visible + .track {
-  border-color: var(--accent-color);
+:global([data-theme='new']) .switch:hover .track {
+  border-color: var(--theme-text-muted);
 }
 
 :global([data-theme='new']) .switch input:checked + .track {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
+  background: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+}
+
+:global([data-theme='new']) .switch input:checked + .track .thumb {
+  transform: translateX(
+    calc(var(--switch-width) - var(--thumb-size) - (var(--switch-padding) * 2) - 2px)
+  );
+  background: var(--theme-text-primary);
+  border-color: color-mix(in srgb, var(--theme-accent) 42%, var(--theme-text-primary));
 }
 
 :global([data-theme='new']) .switch input:focus-visible + .track {
-  box-shadow: 0 0 0 2px var(--bg-color-dark), 0 0 0 4px var(--accent-color);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
 }

@@ -61,7 +61,7 @@ const getReleaseRank = (value) => {
     return release ? RELEASE_RANKS.get(release) : null;
 };
 
-export const SONGLIST_OVERRIDE_OPTIONS = [
+const SONGLIST_OVERRIDE_OPTIONS_BY_RELEASE = [
     { value: 'none', label: 'None', game: 'none', gameLabel: 'None', variant: 'none', variantLabel: 'Default', file: null },
     { value: 'DDR', label: 'DDR', game: 'DDR', gameLabel: 'DDR', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDR-mainline.json' },
     { value: '2nd', label: 'DDR 2ndMix', game: '2nd', gameLabel: 'DDR 2ndMix', variant: 'mainline', variantLabel: 'Mainline', file: '/ddr-ver/DDR2ND-mainline.json' },
@@ -99,6 +99,14 @@ export const SONGLIST_OVERRIDE_OPTIONS = [
         variantLabel: 'Flower, No Unlocks',
         file: '/ddr-ver/DDRA3-flower-no-unlocks.json',
     },
+];
+
+// Keep the neutral default first, then present releases newest-to-oldest.
+export const SONGLIST_OVERRIDE_OPTIONS = [
+    SONGLIST_OVERRIDE_OPTIONS_BY_RELEASE[0],
+    ...SONGLIST_OVERRIDE_OPTIONS_BY_RELEASE
+        .slice(1)
+        .sort((a, b) => getReleaseRank(b.game) - getReleaseRank(a.game)),
 ];
 
 const SONGLIST_OVERRIDE_ALIASES = new Map([

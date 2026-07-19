@@ -1159,6 +1159,11 @@ select optgroup {
 /* --- Dan Courses --- */
 .dan-section { margin-bottom: 1rem; }
 
+.course-filter-selects {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .rankings-page .dan-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 420px;
@@ -1243,6 +1248,9 @@ select optgroup {
   }
     .dan-song-grid {
         grid-template-columns: repeat(4, 1fr)!important;
+  }
+    .dan-song-grid.world-dan-song-grid {
+        grid-template-columns: repeat(3, 1fr)!important;
   }
     .dan-song-grid .song-card {
       container-type: inline-size;

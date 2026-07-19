@@ -70,6 +70,42 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [cardDrawTournamentLabels, setCardDrawTournamentLabels] = useState(() => {
+        const saved = storage.getItem('cardDrawCurrentLabels');
+        if (!saved) return { round: '', p1: 'P1', p2: 'P2' };
+        try {
+            const parsed = JSON.parse(saved);
+            return parsed && typeof parsed === 'object'
+                ? parsed
+                : { round: '', p1: 'P1', p2: 'P2' };
+        } catch {
+            return { round: '', p1: 'P1', p2: 'P2' };
+        }
+    });
+
+    const [cardDrawTournamentLabelLocks, setCardDrawTournamentLabelLocks] = useState(() => {
+        const saved = storage.getItem('cardDrawTournamentLabelLocks');
+        if (!saved) return { round: false, p1: false, p2: false };
+        try {
+            const parsed = JSON.parse(saved);
+            return parsed && typeof parsed === 'object'
+                ? {
+                    round: parsed.round === true,
+                    p1: parsed.p1 === true || parsed.players === true,
+                    p2: parsed.p2 === true || parsed.players === true,
+                }
+                : { round: false, p1: false, p2: false };
+        } catch {
+            return { round: false, p1: false, p2: false };
+        }
+    });
+
+    // Beta: Dim draws outside the current viewport focus (off by default)
+    const [showDrawFocusBeta, setShowDrawFocusBeta] = useState(() => {
+        const saved = storage.getItem('showDrawFocusBeta');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     const [worldDifficultyChanges, setWorldDifficultyChanges] = useState(() => {
         const saved = storage.getItem('worldDifficultyChanges');
         return saved ? JSON.parse(saved) : false;
@@ -133,6 +169,18 @@ export const SettingsProvider = ({ children }) => {
     }, [showWipStats]);
 
     useEffect(() => {
+        storage.setItem('showDrawFocusBeta', JSON.stringify(showDrawFocusBeta));
+    }, [showDrawFocusBeta]);
+
+    useEffect(() => {
+        storage.setItem('cardDrawCurrentLabels', JSON.stringify(cardDrawTournamentLabels));
+    }, [cardDrawTournamentLabels]);
+
+    useEffect(() => {
+        storage.setItem('cardDrawTournamentLabelLocks', JSON.stringify(cardDrawTournamentLabelLocks));
+    }, [cardDrawTournamentLabelLocks]);
+
+    useEffect(() => {
         storage.setItem('worldDifficultyChanges', JSON.stringify(worldDifficultyChanges));
     }, [worldDifficultyChanges]);
 
@@ -163,6 +211,12 @@ export const SettingsProvider = ({ children }) => {
         setShowTransliterationBeta,
         showWipStats,
         setShowWipStats,
+        showDrawFocusBeta,
+        setShowDrawFocusBeta,
+        cardDrawTournamentLabels,
+        setCardDrawTournamentLabels,
+        cardDrawTournamentLabelLocks,
+        setCardDrawTournamentLabelLocks,
         songlistOverride,
         setSonglistOverride: setNormalizedSonglistOverride,
         showMultiplierIncrementVersion,

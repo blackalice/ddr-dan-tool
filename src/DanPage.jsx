@@ -13,12 +13,12 @@ import './App.css';
 import './components/SongCard.css';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
 
-const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleLookup }) => {
+const DanSection = ({ danCourse, danVersion, playMode, setSelectedGame, resetFilters, titleLookup }) => {
   const { scores } = useScores();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
-      const keyNew = `collapsed:dan:${danCourse.name}`;
-      const keyOld = `dan-header-collapsed-${danCourse.name}`;
+      const keyNew = `collapsed:dan:${danVersion}:${danCourse.name}`;
+      const keyOld = `dan-header-collapsed-${danVersion}-${danCourse.name}`;
       const vNew = storage.getItem(keyNew);
       const vOld = storage.getItem(keyOld);
       const parsed = vNew != null ? JSON.parse(vNew) : (vOld != null ? JSON.parse(vOld) : false);
@@ -29,11 +29,11 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleL
   });
 
   useEffect(() => {
-    const keyNew = `collapsed:dan:${danCourse.name}`;
-    const keyOld = `dan-header-collapsed-${danCourse.name}`; // legacy
+    const keyNew = `collapsed:dan:${danVersion}:${danCourse.name}`;
+    const keyOld = `dan-header-collapsed-${danVersion}-${danCourse.name}`; // legacy
     storage.setItem(keyNew, JSON.stringify(isCollapsed));
     storage.setItem(keyOld, JSON.stringify(isCollapsed));
-  }, [isCollapsed, danCourse.name]);
+  }, [isCollapsed, danCourse.name, danVersion]);
 
   return (
     <section className="dan-section">
@@ -44,7 +44,7 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleL
         </button>
       </h2>
       {!isCollapsed && (
-        <div className="dan-song-grid song-grid">
+        <div className={`dan-song-grid song-grid${danVersion === 'WORLD' ? ' world-dan-song-grid' : ''}`}>
           {danCourse.songs.map((song, index) => {
             const hit = resolveScore(scores, song.mode, {
               chartId: song.chartId,
@@ -69,7 +69,7 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleL
             const songForCard = lamp ? { ...songWithMeta, lamp } : songWithMeta;
             return (
               <SongCard
-                key={`${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
+                key={`${danVersion}-${danCourse.name}-${song.chartId || `${song.title}-${index}`}`}
                 song={songForCard}
                 playMode={playMode}
                 setSelectedGame={setSelectedGame}
@@ -85,14 +85,28 @@ const DanSection = ({ danCourse, playMode, setSelectedGame, resetFilters, titleL
   );
 };
 
-const FilterBar = ({ activeDan, setDan, danLevels }) => (
+const FilterBar = ({ activeVersion, setVersion, activeDan, setDan, danLevels }) => (
     <div className="filter-bar">
         <div className="filter-group">
+            <div className="dan-select-wrapper">
+                <select
+                    value={activeVersion}
+                    onChange={(e) => setVersion(e.target.value)}
+                    className="dan-select"
+                    aria-label="Dan course version"
+                >
+                    <option value="WORLD">DDR WORLD</option>
+                    <option value="A3">DDR A3</option>
+                    <option value="A20 Plus">DDR A20 PLUS</option>
+                    <option value="A20">DDR A20</option>
+                </select>
+            </div>
             <div className="dan-select-wrapper">
                 <select
                     value={activeDan}
                     onChange={(e) => setDan(e.target.value)}
                     className="dan-select"
+                    aria-label="Dan level"
                 >
                     <option value="All">All Dan Levels</option>
                     {danLevels.map(dan => (
@@ -105,9 +119,10 @@ const FilterBar = ({ activeDan, setDan, danLevels }) => (
 );
 
 const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
-  const [danCourses, setDanCourses] = useState({ single: [], double: [] });
+  const [danCourses, setDanCourses] = useState({ A20: { single: [], double: [] }, 'A20 Plus': { single: [], double: [] }, A3: { single: [], double: [] }, WORLD: { single: [], double: [] } });
+  const [activeVersion, setActiveVersion] = useState(() => storage.getItem('dan:version') || 'WORLD');
   const [isLoading, setIsLoading] = useState(true);
-  const { playStyle, setPlayStyle } = useContext(SettingsContext);
+  const { playStyle } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
 
   useEffect(() => {
@@ -123,16 +138,20 @@ const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
   }, []);
 
   const coursesToShow = useMemo(() => {
-    const courses = danCourses[playStyle] || [];
+    const courses = danCourses[activeVersion]?.[playStyle] || [];
     if (activeDan === 'All') return courses;
     return courses.filter(course => course.name === activeDan);
-  }, [playStyle, activeDan, danCourses]);
+  }, [playStyle, activeDan, activeVersion, danCourses]);
   
-  const danLevels = useMemo(() => (danCourses[playStyle] || []).map(d => d.name), [playStyle, danCourses]);
+  const danLevels = useMemo(() => (danCourses[activeVersion]?.[playStyle] || []).map(d => d.name), [activeVersion, playStyle, danCourses]);
 
   useEffect(() => {
     setActiveDan('All');
-  }, [playStyle, setActiveDan]);
+  }, [playStyle, activeVersion, setActiveDan]);
+
+  useEffect(() => {
+    storage.setItem('dan:version', activeVersion);
+  }, [activeVersion]);
 
   const titleLookup = useMemo(() => {
     const map = new Map();
@@ -149,8 +168,8 @@ const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
       <div className="app-container">
         <main>
           <FilterBar 
-            activeMode={playStyle}
-            setMode={setPlayStyle}
+            activeVersion={activeVersion}
+            setVersion={setActiveVersion}
             activeDan={activeDan}
             setDan={setActiveDan}
             danLevels={danLevels}
@@ -163,8 +182,9 @@ const DanPage = ({ smData, activeDan, setActiveDan, setSelectedGame }) => {
           ) : coursesToShow.length > 0 ? (
              coursesToShow.map((course) => (
                 <DanSection
-                  key={course.name}
+                  key={`${activeVersion}:${course.name}`}
                   danCourse={course}
+                  danVersion={activeVersion}
                   playMode={playStyle}
                   setSelectedGame={setSelectedGame}
                   resetFilters={resetFilters}

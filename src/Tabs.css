@@ -247,6 +247,19 @@
   scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0) + 1rem);
 }
 
+.mobile-menu-nav,
+.mobile-menu-preferences {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobile-menu-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .mobile-menu-header {
   display: flex;
   align-items: center;
@@ -348,6 +361,12 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: var(--text-muted-color);
+  font-weight: 600;
+}
+
+.mobile-control-label {
+  font-size: 0.8rem;
   color: var(--text-muted-color);
   font-weight: 600;
 }

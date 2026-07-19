@@ -1119,12 +1119,13 @@ async function main() {
         const songIdMapState = { map: songIdMap, changed: false };
 
         // Process Dan data
-        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap, songIdMapState);
-        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles, singleRankMap, doubleRankMap, songIdMapState);
-        const danResult = {
-            single: processedDanSingle,
-            double: processedDanDouble,
-        };
+        const danResult = {};
+        for (const [version, courses] of Object.entries(courseData.dan)) {
+            danResult[version] = {
+                single: await processCourseList(courses.single, smFiles, singleRankMap, doubleRankMap, songIdMapState),
+                double: await processCourseList(courses.double, smFiles, singleRankMap, doubleRankMap, songIdMapState),
+            };
+        }
         await fs.writeFile(DAN_OUTPUT_PATH, JSON.stringify(danResult, null, 2));
         console.log(`Successfully generated Dan data at ${DAN_OUTPUT_PATH}`);
 

@@ -31,6 +31,42 @@
   --theme-space-3: 0.75rem;
   --theme-space-4: 1rem;
   --theme-space-6: 1.5rem;
+  --theme-toolbar-control-height: 44px;
+  --theme-toolbar-padding: 16px;
+  --theme-toolbar-gap: 12px;
+  --theme-toolbar-height: calc(var(--theme-toolbar-control-height) + (var(--theme-toolbar-padding) * 2) + 2px);
+  --theme-page-section-gap: 16px;
+  --theme-section-bar-height: 64px;
+  --theme-section-control-height: 32px;
+
+  /* Reusable component roles. Themes only need to define the palette above;
+     these derived roles keep page layouts and shared components in sync. */
+  --theme-well: var(--theme-page);
+  --theme-panel: var(--theme-surface);
+  --theme-panel-header: var(--theme-surface-raised);
+  --theme-panel-row: color-mix(in srgb, var(--theme-surface-raised) 72%, var(--theme-surface) 28%);
+  --theme-field: var(--theme-surface-raised);
+  --theme-border-subtle: color-mix(in srgb, var(--theme-border) 72%, transparent);
+  --theme-selected: color-mix(in srgb, var(--theme-accent) 38%, black);
+  --theme-focus-ring: 0 0 0 2px var(--theme-nav), 0 0 0 4px var(--theme-accent);
+  --theme-score-marvelous: var(--theme-text-primary);
+  --theme-score-perfect: var(--yellow-color, #facc15);
+  --theme-score-great: var(--theme-success);
+  --theme-score-good: var(--blue-color, #3498db);
+  --theme-score-marvelous-surface: color-mix(in srgb, var(--theme-score-marvelous) 10%, var(--theme-surface-raised));
+  --theme-score-perfect-surface: color-mix(in srgb, var(--theme-score-perfect) 16%, var(--theme-surface-raised));
+  --theme-score-great-surface: color-mix(in srgb, var(--theme-score-great) 18%, var(--theme-surface-raised));
+  --theme-score-good-surface: color-mix(in srgb, var(--theme-score-good) 16%, var(--theme-surface-raised));
+  --theme-draw-protect: var(--theme-success);
+  --theme-draw-veto: var(--theme-danger, var(--button-down-color, #ef5262));
+  --theme-draw-pocket: var(--cyan-color, var(--blue-color, #58a6ff));
+  --theme-draw-redraw: var(--theme-accent);
+  --theme-draw-winner: var(--yellow-color, #facc15);
+  --theme-draw-protect-surface: color-mix(in srgb, var(--theme-draw-protect) 18%, var(--theme-surface-raised));
+  --theme-draw-veto-surface: color-mix(in srgb, var(--theme-draw-veto) 18%, var(--theme-surface-raised));
+  --theme-draw-pocket-surface: color-mix(in srgb, var(--theme-draw-pocket) 18%, var(--theme-surface-raised));
+  --theme-draw-redraw-surface: color-mix(in srgb, var(--theme-draw-redraw) 18%, var(--theme-surface-raised));
+  --theme-draw-winner-surface: color-mix(in srgb, var(--theme-draw-winner) 16%, var(--theme-surface-raised));
 }
 
 [data-theme='new'] {
@@ -49,14 +85,17 @@
   --theme-accent-rgb: 241, 122, 44;
   --theme-on-accent: #07111f;
   --theme-success: #2ecc71;
+  --theme-danger: #ef5262;
+  --theme-positive: var(--theme-success);
+  --theme-negative: var(--theme-danger);
   --theme-success-selected: color-mix(in srgb, var(--theme-success) 18%, var(--theme-surface-raised));
   --theme-accent-icon: color-mix(in srgb, var(--theme-accent) 70%, white);
-  --theme-control: #1c2126;
+  --theme-control: var(--theme-surface-raised);
   --theme-control-hover: #2d353d;
   --theme-control-border: #434f5b;
   --bpm-control-bg: var(--theme-surface-raised);
   --theme-disabled: #14181c;
-  --theme-accent-selected: color-mix(in srgb, var(--theme-accent) 38%, black);
+  --theme-accent-selected: var(--theme-selected);
   --theme-accent-soft: color-mix(in srgb, var(--theme-accent) 12%, var(--theme-surface));
   --theme-accent-fade: rgba(var(--theme-accent-rgb), 0);
   --theme-shadow-control: 0 1px 2px rgba(0, 0, 0, 0.45);
@@ -100,9 +139,9 @@
   --mobile-menu-bg: var(--theme-nav);
   --modal-bg: var(--theme-surface);
   --modal-border: var(--theme-border);
-  --modal-section-bg: var(--theme-surface-subtle);
+  --modal-section-bg: var(--theme-panel-header);
   --modal-section-border: var(--theme-border);
-  --modal-control-bg: var(--theme-control);
+  --modal-control-bg: var(--theme-field);
   --modal-control-bg-hover: var(--theme-control-hover);
   --modal-control-bg-emphasis: var(--theme-surface-raised);
   --modal-control-border: var(--theme-control-border);
@@ -111,7 +150,7 @@
   --radius-md-theme: var(--theme-radius-surface);
   --radius-lg-theme: var(--theme-radius-surface);
   --radius-pill-theme: var(--theme-radius-control);
-  --focus-ring: 0 0 0 3px rgba(var(--theme-accent-rgb), 0.34);
+  --focus-ring: var(--theme-focus-ring);
 }
 
 [data-theme='ddr-world'] {

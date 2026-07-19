@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faChevronDown,
+  faChevronUp,
+  faChartColumn,
   faDownload,
   faFilter,
   faGear,
-  faList,
+  faLock,
+  faLockOpen,
   faRotateRight,
   faTrash,
   faTrophy,
@@ -299,7 +303,18 @@ const CardDrawPage = ({ smData }) => {
   const { offline } = useOfflineMode();
   const showJacket = !offline;
   const jacketFull = !offline;
-  const { playStyle, songlistOverride, setPlayStyle, showTransliterationBeta, showRankedRatings } = useContext(SettingsContext);
+  const {
+    playStyle,
+    songlistOverride,
+    setPlayStyle,
+    showTransliterationBeta,
+    showRankedRatings,
+    showDrawFocusBeta,
+    cardDrawTournamentLabels: currentLabels,
+    setCardDrawTournamentLabels: setCurrentLabels,
+    cardDrawTournamentLabelLocks: tournamentLabelLocks,
+    setCardDrawTournamentLabelLocks: setTournamentLabelLocks,
+  } = useContext(SettingsContext);
   const { filters } = useFilters();
   const { scores, loadSongMeta } = useScores();
   const navigate = useNavigate();
@@ -439,15 +454,6 @@ const CardDrawPage = ({ smData }) => {
       return false;
     }
   });
-  const [currentLabels, setCurrentLabels] = useState(() => {
-    try {
-      const saved = storage.getItem("cardDrawCurrentLabels");
-      const parsed = saved ? JSON.parse(saved) : DEFAULT_TOURNAMENT_LABELS;
-      return normalizeTournamentLabels(parsed);
-    } catch {
-      return DEFAULT_TOURNAMENT_LABELS;
-    }
-  });
   const [draftDrawCount, setDraftDrawCount] = useState(drawCount);
   const [draftFreePickCount, setDraftFreePickCount] = useState(freePickCount);
   const [draftWeightedEnabled, setDraftWeightedEnabled] = useState(weightedEnabled);
@@ -463,6 +469,9 @@ const CardDrawPage = ({ smData }) => {
   const [draftHideVetoed, setDraftHideVetoed] = useState(hideVetoed);
   const [draftShowTournamentLabels, setDraftShowTournamentLabels] = useState(showTournamentLabels);
   const [activeCardContext, setActiveCardContext] = useState(null);
+  const [viewedDrawKey, setViewedDrawKey] = useState("current");
+  const [collapsedDrawKeys, setCollapsedDrawKeys] = useState(() => new Set());
+  const drawPageRef = useRef(null);
   const filterCountsCacheRef = useRef(new Map());
   const metricBoundsCacheRef = useRef(new Map());
   const [pocketPickState, setPocketPickState] = useState(null);
@@ -645,10 +654,6 @@ const CardDrawPage = ({ smData }) => {
   useEffect(() => {
     storage.setItem("cardDrawShowTournamentLabels", String(showTournamentLabels));
   }, [showTournamentLabels]);
-
-  useEffect(() => {
-    storage.setItem("cardDrawCurrentLabels", JSON.stringify(currentLabels));
-  }, [currentLabels]);
 
   const filtersActive = Boolean(
     filters.bpmMin !== "" ||
@@ -1355,15 +1360,42 @@ const CardDrawPage = ({ smData }) => {
       isFreePickPlaceholder: true,
     }));
     const nextPicks = sortChartsByLevel([...picks, ...freePickSlots]);
+    setCollapsedDrawKeys((currentKeys) => {
+      if (!currentKeys.has("current")) return currentKeys;
+      const nextKeys = new Set(currentKeys);
+      nextKeys.delete("current");
+      return nextKeys;
+    });
+    const nextLabels = drawnCharts.length > 0
+      ? normalizeTournamentLabels({
+          round: tournamentLabelLocks.round
+            ? currentLabels.round
+            : DEFAULT_TOURNAMENT_LABELS.round,
+          p1: tournamentLabelLocks.p1
+            ? currentLabels.p1
+            : DEFAULT_TOURNAMENT_LABELS.p1,
+          p2: tournamentLabelLocks.p2
+            ? currentLabels.p2
+            : DEFAULT_TOURNAMENT_LABELS.p2,
+        })
+      : currentLabels;
     setDrawnCharts(nextPicks);
     setCardActions({});
     setCurrentDrawId(drawId);
     setDrawHistory((prev) => {
       if (!nextPicks.length) return prev;
-      const entry = { id: drawId, charts: nextPicks, actions: {}, labels: currentLabels };
-      const next = [entry, ...prev];
+      const archived = currentDrawId == null
+        ? prev
+        : prev.map((entry) => (
+            entry.id === currentDrawId
+              ? { ...entry, labels: normalizeTournamentLabels(currentLabels) }
+              : entry
+          ));
+      const entry = { id: drawId, charts: nextPicks, actions: {}, labels: nextLabels };
+      const next = [entry, ...archived];
       return next.slice(0, 6);
     });
+    setCurrentLabels(nextLabels);
   }, [
     filteredEntries,
     buildChartCard,
@@ -1377,6 +1409,10 @@ const CardDrawPage = ({ smData }) => {
     sortChartsByLevel,
     bucketValueForChart,
     currentLabels,
+    currentDrawId,
+    drawnCharts.length,
+    setCurrentLabels,
+    tournamentLabelLocks,
   ]);
 
   const clearDraw = useCallback(() => {
@@ -1391,6 +1427,7 @@ const CardDrawPage = ({ smData }) => {
     setDrawHistory([]);
     setCurrentDrawId(null);
     setCardActions({});
+    setCollapsedDrawKeys(new Set());
   }, [drawHistory.length, drawnCharts.length]);
 
   const removeHistoryDraw = useCallback((entryId) => {
@@ -1464,7 +1501,7 @@ const CardDrawPage = ({ smData }) => {
           : entry,
       ),
     );
-  }, []);
+  }, [setCurrentLabels]);
 
   const removeFreePickSlot = useCallback((entryId, cardKey) => {
     if (!cardKey) return;
@@ -1784,18 +1821,97 @@ const CardDrawPage = ({ smData }) => {
 
   const getActionLabel = useCallback((actionKey) => {
     const match = CARD_ACTIONS.find((action) => action.key === actionKey);
-    return match ? match.label : actionKey;
+    if (match) return match.label;
+    return String(actionKey || "")
+      .replace(/[-_]+/g, " ")
+      .replace(/^./, (character) => character.toUpperCase());
   }, []);
+
+  const toggleDrawCollapsed = useCallback((drawKey) => {
+    setCollapsedDrawKeys((currentKeys) => {
+      const nextKeys = new Set(currentKeys);
+      if (nextKeys.has(drawKey)) nextKeys.delete(drawKey);
+      else nextKeys.add(drawKey);
+      return nextKeys;
+    });
+  }, []);
+
+  const exportDrawCsv = useCallback(({ charts, actions, labels, drawId }) => {
+    const normalizedLabels = normalizeTournamentLabels(labels);
+    const roundLabel = getRoundDisplayLabel(
+      normalizedLabels,
+      drawId ? formatDrawTimestamp(drawId) : "Current draw",
+    );
+    const columns = [
+      ["Draw", () => roundLabel],
+      ["Draw Time", () => formatDrawTimestamp(drawId)],
+      ["Player 1", () => getPlayerDisplayLabel("P1", normalizedLabels)],
+      ["Player 2", () => getPlayerDisplayLabel("P2", normalizedLabels)],
+      ["Position", (_, index) => index + 1],
+      ["Title", (row) => displayTitleFor(row)],
+      ["Artist", (row) => displayArtistFor(row)],
+      ["Game", (row) => row.game],
+      ["Mode", (row) => row.mode],
+      ["Difficulty", (row) => row.difficulty],
+      ["Level", (row) => row.level],
+      ["Ranked Rating", (row) => row.rankedRating],
+      ["BPM", (row) => row.bpm],
+      ["Song ID", (row) => row.songId],
+      ["Chart ID", (row) => row.chartId],
+      ["Path", (row) => row.path],
+      ["Action", (row) => {
+        const action = actions?.[row.uniqueKey]?.action;
+        return action ? getActionLabel(action) : "";
+      }],
+      ["Action Player", (row) => {
+        const player = actions?.[row.uniqueKey]?.player;
+        return player ? getPlayerDisplayLabel(player, normalizedLabels) : "";
+      }],
+      ["Winner", (row) => {
+        const winner = actions?.[row.uniqueKey]?.winner;
+        return winner ? getPlayerDisplayLabel(winner, normalizedLabels) : "";
+      }],
+      ["Free Pick", (row) => (
+        row.freePickSlot || row.isFreePickPlaceholder ? "Yes" : "No"
+      )],
+    ];
+    const rows = Array.isArray(charts) ? charts : [];
+    const lines = [
+      columns.map(([label]) => csvValue(label)).join(","),
+      ...rows.map((row, index) => (
+        columns.map(([, getValue]) => csvValue(getValue(row, index))).join(",")
+      )),
+    ];
+    const filenameLabel = roundLabel
+      .trim()
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || String(drawId || "current");
+    downloadTextFile(
+      `card-draw-${filenameLabel}.csv`,
+      `${lines.join("\n")}\n`,
+      "text/csv;charset=utf-8",
+    );
+  }, [displayArtistFor, displayTitleFor, getActionLabel]);
 
   const renderSliceTag = useCallback((entry, labels) => {
     if (!entry?.action) {
+      if (entry?.winner) {
+        return (
+          <span className="card-draw-slice-tag">
+            <span className="card-draw-slice-action">Winner</span>
+          </span>
+        );
+      }
       return <span className="card-draw-slice-placeholder">No tag</span>;
     }
     const label = getActionLabel(entry.action);
-    const playerLabel = entry.player ? ` ${getPlayerDisplayLabel(entry.player, labels)}` : "";
+    const playerLabel = entry.player ? getPlayerDisplayLabel(entry.player, labels) : "";
     return (
-      <span className="card-draw-slice-tag">
-        {label}{playerLabel}
+      <span className={`card-draw-slice-tag${playerLabel ? " has-player" : ""}`}>
+        <span className="card-draw-slice-action">{label}</span>
+        {playerLabel && <span className="card-draw-slice-player">{playerLabel}</span>}
       </span>
     );
   }, [getActionLabel]);
@@ -1814,9 +1930,12 @@ const CardDrawPage = ({ smData }) => {
   }, []);
 
   const getSliceClassName = useCallback((entry) => {
-    if (entry?.winner) return "card-draw-slice-winner";
-    if (entry?.action) return `card-draw-slice-${entry.action}`;
-    return "card-draw-slice-none";
+    const classes = [];
+    if (entry?.action) classes.push(`card-draw-slice-${entry.action}`);
+    else if (entry?.winner) classes.push("card-draw-slice-winner");
+    else classes.push("card-draw-slice-none");
+    if (entry?.winner) classes.push("has-winner");
+    return classes.join(" ");
   }, []);
 
   const pocketPickSongOptions = useMemo(() => {
@@ -1950,6 +2069,79 @@ const CardDrawPage = ({ smData }) => {
       })),
     [displayOptions, drawHistory],
   );
+  useEffect(() => {
+    if (!showDrawFocusBeta) {
+      setViewedDrawKey("current");
+      return undefined;
+    }
+
+    const page = drawPageRef.current;
+    if (!page || typeof window === "undefined") return undefined;
+
+    const desktopQuery = window.matchMedia("(min-width: 641px)");
+    let animationFrame = null;
+
+    const updateViewedDraw = () => {
+      animationFrame = null;
+      if (!desktopQuery.matches) {
+        setViewedDrawKey("current");
+        return;
+      }
+
+      const drawSections = Array.from(
+        page.querySelectorAll("[data-draw-viewport-key]"),
+      );
+      if (!drawSections.length) return;
+
+      const pageBottom = document.documentElement.scrollHeight;
+      const atPageBottom = window.scrollY + window.innerHeight >= pageBottom - 2;
+      if (atPageBottom) {
+        const lastKey = drawSections[drawSections.length - 1].dataset.drawViewportKey;
+        setViewedDrawKey((currentKey) => (
+          currentKey === lastKey ? currentKey : lastKey
+        ));
+        return;
+      }
+
+      const focusLine = window.innerHeight * 0.45;
+      let closestKey = drawSections[0].dataset.drawViewportKey;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      drawSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const distance = focusLine < rect.top
+          ? rect.top - focusLine
+          : focusLine > rect.bottom
+            ? focusLine - rect.bottom
+            : 0;
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestKey = section.dataset.drawViewportKey;
+        }
+      });
+
+      setViewedDrawKey((currentKey) => (
+        currentKey === closestKey ? currentKey : closestKey
+      ));
+    };
+
+    const scheduleUpdate = () => {
+      if (animationFrame !== null) return;
+      animationFrame = window.requestAnimationFrame(updateViewedDraw);
+    };
+
+    updateViewedDraw();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    desktopQuery.addEventListener("change", scheduleUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      desktopQuery.removeEventListener("change", scheduleUpdate);
+      if (animationFrame !== null) window.cancelAnimationFrame(animationFrame);
+    };
+  }, [displayedDrawHistory, drawnCharts.length, showDrawFocusBeta, showTournamentLabels]);
   const nonFreePickCount = useMemo(
     () => displayedDrawnCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length,
     [displayedDrawnCharts],
@@ -1963,41 +2155,71 @@ const CardDrawPage = ({ smData }) => {
         [field]: value,
       }));
     };
+    const renderLockButton = (lockKey, label) => {
+      if (entryId !== null) return null;
+      const locked = tournamentLabelLocks[lockKey];
+      const stateLabel = locked ? "locked" : "unlocked";
+      const actionLabel = locked ? "Unlock" : "Lock";
+      return (
+        <button
+          type="button"
+          className={`card-draw-label-lock${locked ? " is-locked" : ""}`}
+          title={`${actionLabel} ${label}. ${locked ? "It will currently be kept for the next draw." : "It will currently reset for the next draw."}`}
+          aria-label={`${actionLabel} ${label}; currently ${stateLabel}`}
+          aria-pressed={locked}
+          onClick={() => setTournamentLabelLocks((current) => ({
+            ...current,
+            [lockKey]: !current[lockKey],
+          }))}
+        >
+          <FontAwesomeIcon icon={locked ? faLock : faLockOpen} />
+        </button>
+      );
+    };
     return (
       <div className="card-draw-labels" aria-label="Tournament labels">
         <label className="card-draw-label-field card-draw-label-round">
           <span>Round</span>
-          <input
-            type="text"
-            value={normalized.round}
-            placeholder="Round name"
-            onChange={(event) => updateField("round", event.target.value)}
-          />
+          <span className="card-draw-label-input-wrap">
+            <input
+              type="text"
+              value={normalized.round}
+              placeholder="Round name"
+              onChange={(event) => updateField("round", event.target.value)}
+            />
+            {renderLockButton("round", "round label")}
+          </span>
         </label>
         <label className="card-draw-label-field">
           <span>Player 1</span>
-          <input
-            type="text"
-            value={normalized.p1}
-            placeholder="P1"
-            onChange={(event) => updateField("p1", event.target.value)}
-          />
+          <span className="card-draw-label-input-wrap">
+            <input
+              type="text"
+              value={normalized.p1}
+              placeholder="P1"
+              onChange={(event) => updateField("p1", event.target.value)}
+            />
+            {renderLockButton("p1", "Player 1 label")}
+          </span>
         </label>
         <label className="card-draw-label-field">
           <span>Player 2</span>
-          <input
-            type="text"
-            value={normalized.p2}
-            placeholder="P2"
-            onChange={(event) => updateField("p2", event.target.value)}
-          />
+          <span className="card-draw-label-input-wrap">
+            <input
+              type="text"
+              value={normalized.p2}
+              placeholder="P2"
+              onChange={(event) => updateField("p2", event.target.value)}
+            />
+            {renderLockButton("p2", "Player 2 label")}
+          </span>
         </label>
       </div>
     );
-  }, [updateLabelsForContext]);
+  }, [setTournamentLabelLocks, tournamentLabelLocks, updateLabelsForContext]);
 
   return (
-    <div className="app-container card-draw-page">
+    <div className="app-container card-draw-page" ref={drawPageRef}>
       <section className="filter-bar card-draw-bar">
         <div className="filter-group card-draw-controls">
           <div className="card-draw-summary">
@@ -2046,7 +2268,7 @@ const CardDrawPage = ({ smData }) => {
               aria-label="Show eligible charts"
               aria-pressed={showEligibleCharts}
             >
-              <FontAwesomeIcon icon={faList} />
+              <FontAwesomeIcon icon={faChartColumn} />
             </button>
           </div>
         </div>
@@ -2098,93 +2320,146 @@ const CardDrawPage = ({ smData }) => {
         </section>
       )}
 
-      <section className="dan-section card-draw-results">
-        <h2 className="dan-header" style={{ backgroundColor: "var(--accent-color)" }}>
-          <span>{getRoundDisplayLabel(currentLabels, "Current draw")}</span>
-          <button
-            type="button"
-            className="collapse-button"
-            title="Refresh draw"
-            aria-label="Refresh draw"
-            onClick={() => {
-              const confirmed = window.confirm(
-                "Refresh this draw? Protected and pocket picks will be kept.",
-              );
-              if (!confirmed) return;
-              refreshChartsForContext(null);
-            }}
-          >
-            <FontAwesomeIcon icon={faRotateRight} />
-          </button>
-        </h2>
-        {showTournamentLabels && drawnCharts.length > 0 && renderTournamentLabelEditor(currentLabels)}
-        <div
-          className={`song-grid ${nonFreePickCount === DEFAULT_DRAW_COUNT ? "card-draw-five" : ""}`}
+      <section
+        className={`dan-section card-draw-results card-draw-focus-group${
+          showDrawFocusBeta
+            ? viewedDrawKey === "current" ? " is-draw-viewed" : " is-draw-muted"
+            : ""
+        }`}
+        data-draw-viewport-key="current"
+      >
+        <h2
+          className={`dan-header${collapsedDrawKeys.has("current") ? " is-collapsed" : ""}`}
+          style={{ backgroundColor: "var(--accent-color)" }}
         >
-          {displayedDrawnCharts.length ? (
-            displayedDrawnCharts.map((chart) => (
-              chart.isFreePickPlaceholder ? (
-                <div
-                  key={chart.uniqueKey}
-                  className="card-draw-card card-draw-free-pick"
-                >
-                  <SongCard
-                    song={freePickPlaceholder}
-                    skipScoreLookup
-                    bpmOnly
-                    showArtist
-                    showJacket={showJacket}
-                    jacketFull={jacketFull}
-                    showGameLogo={offline}
-                    showGameWithDifficulty
-                    levelInTitleBlock
-                    onCardClick={() => openFreePickModal(chart, null)}
-                    showScoreSlice
-                    scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
-                    scoreSliceClassName="card-draw-slice-none"
-                  />
-                </div>
-              ) : (
-                <div
-                  key={chart.uniqueKey}
-                  className={`card-draw-card${cardActions[chart.uniqueKey] ? ` is-${cardActions[chart.uniqueKey].action}${cardActions[chart.uniqueKey].player ? ` is-${cardActions[chart.uniqueKey].player.toLowerCase()}` : ""}` : ""}`}
-                >
-                  <SongCard
-                    song={chart}
-                    skipScoreLookup
-                    bpmOnly
-                    showArtist
-                    showJacket={showJacket}
-                    jacketFull={jacketFull}
-                    showGameLogo={offline}
-                    showGameWithDifficulty
-                    levelInTitleBlock
-                    onCardClick={() => setActiveCardContext({ card: chart, entryId: null })}
-                    showScoreSlice
-                    scoreSliceLeft={renderSliceTag(cardActions[chart.uniqueKey], currentLabels)}
-                    scoreSliceRight={renderSliceWinner(cardActions[chart.uniqueKey], currentLabels)}
-                    scoreSliceClassName={getSliceClassName(cardActions[chart.uniqueKey])}
-                  />
-                </div>
-              )
-            ))
-          ) : (
-            <div className="card-draw-empty">
-              {currentDrawHidden
-                ? "All charts in this draw are hidden by vetoes."
-                : "Draw to generate a set of charts for your tournament round."}
-            </div>
-          )}
+          <span>{getRoundDisplayLabel(currentLabels, "Current draw")}</span>
+          <span className="card-draw-header-actions">
+            <button
+              type="button"
+              className="collapse-button"
+              title="Refresh draw"
+              aria-label="Refresh draw"
+              onClick={() => {
+                const confirmed = window.confirm(
+                  "Refresh this draw? Protected and pocket picks will be kept.",
+                );
+                if (!confirmed) return;
+                refreshChartsForContext(null);
+              }}
+            >
+              <FontAwesomeIcon icon={faRotateRight} />
+            </button>
+            <button
+              type="button"
+              className="collapse-button"
+              title="Download draw CSV"
+              aria-label="Download current draw CSV"
+              onClick={() => exportDrawCsv({
+                charts: drawnCharts,
+                actions: cardActions,
+                labels: currentLabels,
+                drawId: currentDrawId,
+              })}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+            </button>
+            <button
+              type="button"
+              className="collapse-button"
+              title={collapsedDrawKeys.has("current") ? "Expand draw" : "Collapse draw"}
+              aria-label={collapsedDrawKeys.has("current") ? "Expand current draw" : "Collapse current draw"}
+              aria-expanded={!collapsedDrawKeys.has("current")}
+              aria-controls="card-draw-current-content"
+              onClick={() => toggleDrawCollapsed("current")}
+            >
+              <FontAwesomeIcon icon={collapsedDrawKeys.has("current") ? faChevronDown : faChevronUp} />
+            </button>
+          </span>
+        </h2>
+        <div
+          id="card-draw-current-content"
+          className="card-draw-collapsible"
+          hidden={collapsedDrawKeys.has("current")}
+        >
+          {showTournamentLabels && drawnCharts.length > 0 && renderTournamentLabelEditor(currentLabels)}
+          <div
+            className={`song-grid ${nonFreePickCount === DEFAULT_DRAW_COUNT ? "card-draw-five" : ""}`}
+          >
+            {displayedDrawnCharts.length ? (
+              displayedDrawnCharts.map((chart) => (
+                chart.isFreePickPlaceholder ? (
+                  <div
+                    key={chart.uniqueKey}
+                    className="card-draw-card card-draw-free-pick"
+                  >
+                    <SongCard
+                      song={freePickPlaceholder}
+                      skipScoreLookup
+                      bpmOnly
+                      showArtist
+                      showJacket={showJacket}
+                      jacketFull={jacketFull}
+                      showGameLogo={offline}
+                      showGameWithDifficulty
+                      levelInTitleBlock
+                      onCardClick={() => openFreePickModal(chart, null)}
+                      showScoreSlice
+                      scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
+                      scoreSliceClassName="card-draw-slice-none"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    key={chart.uniqueKey}
+                    className={`card-draw-card${cardActions[chart.uniqueKey] ? ` is-${cardActions[chart.uniqueKey].action}${cardActions[chart.uniqueKey].player ? ` is-${cardActions[chart.uniqueKey].player.toLowerCase()}` : ""}` : ""}`}
+                  >
+                    <SongCard
+                      song={chart}
+                      skipScoreLookup
+                      bpmOnly
+                      showArtist
+                      showJacket={showJacket}
+                      jacketFull={jacketFull}
+                      showGameLogo={offline}
+                      showGameWithDifficulty
+                      levelInTitleBlock
+                      onCardClick={() => setActiveCardContext({ card: chart, entryId: null })}
+                      showScoreSlice
+                      scoreSliceLeft={renderSliceTag(cardActions[chart.uniqueKey], currentLabels)}
+                      scoreSliceRight={renderSliceWinner(cardActions[chart.uniqueKey], currentLabels)}
+                      scoreSliceClassName={getSliceClassName(cardActions[chart.uniqueKey])}
+                    />
+                  </div>
+                )
+              ))
+            ) : (
+              <div className="card-draw-empty">
+                {currentDrawHidden
+                  ? "All charts in this draw are hidden by vetoes."
+                  : "Draw to generate a set of charts for your tournament round."}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {displayedDrawHistory.length > 1 && (
         <section className="card-draw-history dan-section">
           {displayedDrawHistory.slice(1, 6).map((entry) => (
-            <div key={entry.id} className="card-draw-history-set">
-              <h3 className="dan-header card-draw-history-header">
+            <div
+              key={entry.id}
+              className={`card-draw-history-set card-draw-focus-group${
+                showDrawFocusBeta
+                  ? viewedDrawKey === `history-${entry.id}` ? " is-draw-viewed" : " is-draw-muted"
+                  : ""
+              }`}
+              data-draw-viewport-key={`history-${entry.id}`}
+            >
+              <h3 className={`dan-header card-draw-history-header${
+                collapsedDrawKeys.has(`history-${entry.id}`) ? " is-collapsed" : ""
+              }`}>
                 <span>{getRoundDisplayLabel(entry.labels, formatDrawTimestamp(entry.id))}</span>
-                <span className="card-draw-history-actions">
+                <span className="card-draw-header-actions">
                   <button
                     type="button"
                     className="collapse-button"
@@ -2203,30 +2478,78 @@ const CardDrawPage = ({ smData }) => {
                   <button
                     type="button"
                     className="collapse-button"
+                    title="Download draw CSV"
+                    aria-label={`Download ${getRoundDisplayLabel(entry.labels, "saved draw")} CSV`}
+                    onClick={() => exportDrawCsv({
+                      charts: entry.charts,
+                      actions: entry.actions,
+                      labels: entry.labels,
+                      drawId: entry.id,
+                    })}
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                  </button>
+                  <button
+                    type="button"
+                    className="collapse-button"
                     title="Remove old draw"
                     aria-label="Remove old draw"
                     onClick={() => removeHistoryDraw(entry.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
+                  <button
+                    type="button"
+                    className="collapse-button"
+                    title={collapsedDrawKeys.has(`history-${entry.id}`) ? "Expand draw" : "Collapse draw"}
+                    aria-label={collapsedDrawKeys.has(`history-${entry.id}`) ? "Expand saved draw" : "Collapse saved draw"}
+                    aria-expanded={!collapsedDrawKeys.has(`history-${entry.id}`)}
+                    aria-controls={`card-draw-history-${entry.id}-content`}
+                    onClick={() => toggleDrawCollapsed(`history-${entry.id}`)}
+                  >
+                    <FontAwesomeIcon icon={collapsedDrawKeys.has(`history-${entry.id}`) ? faChevronDown : faChevronUp} />
+                  </button>
                 </span>
               </h3>
-              {showTournamentLabels && renderTournamentLabelEditor(entry.labels, entry.id)}
               <div
-                className={`song-grid card-draw-history-grid ${
-                  entry.displayCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
-                    ? "card-draw-five"
-                    : ""
-                }`}
+                id={`card-draw-history-${entry.id}-content`}
+                className="card-draw-collapsible"
+                hidden={collapsedDrawKeys.has(`history-${entry.id}`)}
               >
-                {entry.displayCharts.length ? entry.displayCharts.map((chart) => (
-                  chart.isFreePickPlaceholder ? (
-                    <div
-                      key={`${entry.id}-${chart.uniqueKey}`}
-                      className="card-draw-card card-draw-free-pick"
-                    >
+                {showTournamentLabels && renderTournamentLabelEditor(entry.labels, entry.id)}
+                <div
+                  className={`song-grid card-draw-history-grid ${
+                    entry.displayCharts.filter((chart) => !chart.freePickSlot && !chart.isFreePickPlaceholder).length === DEFAULT_DRAW_COUNT
+                      ? "card-draw-five"
+                      : ""
+                  }`}
+                >
+                  {entry.displayCharts.length ? entry.displayCharts.map((chart) => (
+                    chart.isFreePickPlaceholder ? (
+                      <div
+                        key={`${entry.id}-${chart.uniqueKey}`}
+                        className="card-draw-card card-draw-free-pick"
+                      >
+                        <SongCard
+                          song={freePickPlaceholder}
+                          skipScoreLookup
+                          bpmOnly
+                          showArtist
+                          showJacket={showJacket}
+                          jacketFull={jacketFull}
+                          showGameLogo={offline}
+                          showGameWithDifficulty
+                          levelInTitleBlock
+                          onCardClick={() => openFreePickModal(chart, entry.id)}
+                          showScoreSlice
+                          scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
+                          scoreSliceClassName="card-draw-slice-none"
+                        />
+                      </div>
+                    ) : (
                       <SongCard
-                        song={freePickPlaceholder}
+                        key={`${entry.id}-${chart.uniqueKey}`}
+                        song={chart}
                         skipScoreLookup
                         bpmOnly
                         showArtist
@@ -2235,36 +2558,19 @@ const CardDrawPage = ({ smData }) => {
                         showGameLogo={offline}
                         showGameWithDifficulty
                         levelInTitleBlock
-                        onCardClick={() => openFreePickModal(chart, entry.id)}
+                        onCardClick={() => setActiveCardContext({ card: chart, entryId: entry.id })}
                         showScoreSlice
-                        scoreSliceLeft={<span className="card-draw-slice-placeholder">Free pick</span>}
-                        scoreSliceClassName="card-draw-slice-none"
+                        scoreSliceLeft={renderSliceTag(entry.actions?.[chart.uniqueKey], entry.labels)}
+                        scoreSliceRight={renderSliceWinner(entry.actions?.[chart.uniqueKey], entry.labels)}
+                        scoreSliceClassName={getSliceClassName(entry.actions?.[chart.uniqueKey])}
                       />
+                    )
+                  )) : (
+                    <div className="card-draw-empty">
+                      All charts in this draw are hidden by vetoes.
                     </div>
-                  ) : (
-                    <SongCard
-                      key={`${entry.id}-${chart.uniqueKey}`}
-                      song={chart}
-                      skipScoreLookup
-                      bpmOnly
-                      showArtist
-                      showJacket={showJacket}
-                      jacketFull={jacketFull}
-                      showGameLogo={offline}
-                      showGameWithDifficulty
-                      levelInTitleBlock
-                      onCardClick={() => setActiveCardContext({ card: chart, entryId: entry.id })}
-                      showScoreSlice
-                      scoreSliceLeft={renderSliceTag(entry.actions?.[chart.uniqueKey], entry.labels)}
-                      scoreSliceRight={renderSliceWinner(entry.actions?.[chart.uniqueKey], entry.labels)}
-                      scoreSliceClassName={getSliceClassName(entry.actions?.[chart.uniqueKey])}
-                    />
-                  )
-                )) : (
-                  <div className="card-draw-empty">
-                    All charts in this draw are hidden by vetoes.
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           ))}

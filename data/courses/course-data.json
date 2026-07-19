@@ -1,6 +1,7 @@
 {
   "dan": {
-    "single": [
+    "A3": {
+      "single": [
       {
         "name": "1st Dan (初段)",
         "color": "#6fbe44",
@@ -223,7 +224,102 @@
           "POSSESSION:challenge:double"
         ]
       }
-    ]
+      ]
+    },
+    "A20": {
+      "single": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["HIGHER:expert:single", "Shine:expert:single", "IN THE ZONE:expert:single", "B4U:expert:single"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["Do The Evolution:expert:single", "Flourish:expert:single", "Heatstroke:expert:single", "will:expert:single"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["Decade:expert:single", "A Geisha's Dream:expert:single", "In The Breeze:expert:single", "Theory of Eternity:expert:single"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["Beautiful Dream:expert:single", "DYNAMITE RAVE:expert:single", "TECH-NOID:expert:single", "S・A・G・A:expert:single"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["You are a Star:challenge:single", "十二星座の聖域:expert:single", "sakura storm:challenge:single", "Diamond Night:challenge:single"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["on the bounce:expert:single", "AM-3P (\"CHAOS\" Special):challenge:single", "Pierce The Sky:expert:single", "MAX 300:expert:single"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["Nostalgia Is Lost:expert:single", "Amalgamation:challenge:single", "The legend of MAX:expert:single", "True Blue:expert:single"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["Monkey Business:challenge:single", "嘆きの樹:expert:single", "PARANOIA survivor MAX:challenge:single", "POSSESSION:expert:single"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["Anti-Matter:expert:single", "Fascination MAXX:expert:single", "Idola:challenge:single", "Astrogazer:challenge:single"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["Come to Life:challenge:single", "New Decade:challenge:single", "Tohoku EVOLVED:challenge:single", "PARANOiA Revolution:challenge:single"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["EGOISM 440:challenge:single", "Over The \"Period\":challenge:single", "Valkyrie dimension:challenge:single", "ENDYMION:challenge:single"] }
+      ],
+      "double": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["Slip Out:expert:double", "Fever:expert:double", "STILL IN MY HEART:expert:double", "think ya better D:expert:double"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["escape:expert:double", "south:expert:double", "DANCE ALL NIGHT (DDR EDITION):expert:double", "INTO YOUR HEART (Ruffage remix):expert:double"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["MAKE IT BETTER (So-REAL Mix):expert:double", "oarfish:expert:double", "ルミナスデイズ:expert:double", "Beautiful Dream:expert:double"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["Desert Journey:expert:double", "stoic (EXTREME version):expert:double", "heron:expert:double", "PARANOIA EVOLUTION:expert:double"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["Do The Evolution:expert:double", "DROP OUT:expert:double", "ALGORITHM:expert:double", "Healing Vision ～Angelic mix～:expert:double"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["siberite:expert:double", "Horatio:expert:double", "The Least 100sec:expert:double", "エンドルフィン:expert:double"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["SILVER☆DREAM:expert:double", "IMANOGUILTS:challenge:double", "PARANOIA survivor MAX:expert:double", "SUPER SAMURAI:expert:double"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["TRIP MACHINE PhoeniX:expert:double", "Arrabbiata:expert:double", "Truare!:expert:double", "ÆTHER:expert:double"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["New Century:expert:double", "SABER WING (Akira Ishihara Headshot mix):challenge:double", "RЁVOLUTIФN:challenge:double", "IX:challenge:double"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["Healing-D-Vision:challenge:double", "PARANOiA ～HADES～:challenge:double", "888:challenge:double", "PARANOiA Revolution:challenge:double"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["Valkyrie dimension:challenge:double", "POSSESSION:challenge:double", "Over The \"Period\":challenge:double", "EGOISM 440:challenge:double"] }
+      ]
+    },
+    "A20 Plus": {
+      "single": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["FUJIMORI -祭- FESTIVAL:difficult:single", "Sweet Rain:difficult:single", "TRIP MACHINE:difficult:single", "AWAKE:difficult:single"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["BURNIN' THE FLOOR:expert:single", "Find The Way:difficult:single", "All My Love:expert:single", "Children of the Beat:expert:single"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["Fly away:expert:single", "アルストロメリア (walk with you remix):expert:single", "零 - ZERO -:expert:single", "KISS KISS KISS 秋葉工房 MIX:expert:single"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["Tell me what to do:expert:single", "Freeze:expert:single", "sync (EXTREME version):challenge:single", "Angelic Jelly:expert:single"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["AA:expert:single", "Condor:expert:single", "Somehow You Found Me:expert:single", "Daily Lunch Special:expert:single"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["Ishtar:expert:single", "不沈艦CANDY:expert:single", "F4SH10N:expert:single", "MAX 300:expert:single"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["TRIP MACHINE PhoeniX:challenge:single", "天空の華:expert:single", "ZEPHYRANTHES:expert:single", "MAXX UNLIMITED:expert:single"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["I'm so Happy:challenge:single", "海神:expert:single", "Vanquish The Ghost:expert:single", "The legend of MAX(X-Special):challenge:single"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["恋する☆宇宙戦争っ!!:challenge:single", "New Decade:expert:single", "Spanish Snowy Dance:challenge:single", "Fascination MAXX:challenge:single"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["PARANOiA ～HADES～:challenge:single", "888:challenge:single", "PARANOiA Revolution:expert:single", "EGOISM 440:challenge:single"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["MAX 360:challenge:single", "Over The \"Period\":challenge:single", "Valkyrie dimension:challenge:single", "ENDYMION:challenge:single"] }
+      ],
+      "double": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["Yeah! Yeah!:difficult:double", "HANDS UP IN THE AIR:difficult:double", "Dreamin':expert:double", "Hopeful:difficult:double"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["Crazy Control:expert:double", "Take A Step Forward:difficult:double", "Dance Floor:expert:double", "TWINKLE♡HEART:expert:double"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["Another Phase:difficult:double", "ヤマトなでなで♡かぐや姫:expert:double", "ever snow:expert:double", "Beautiful Dream:expert:double"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["KISS KISS KISS 秋葉工房 MIX:expert:double", "TRIP MACHINE CLIMAX:expert:double", "CRAZY♥LOVE:difficult:double", "Engraved Mark:difficult:double"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["三毛猫ロック:expert:double", "Condor:expert:double", "A:challenge:double", "RЁVOLUTIФN:expert:double"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["朧:challenge:double", "Horatio:expert:double", "大見解:challenge:double", "PARANOIA survivor:expert:double"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["ZEPHYRANTHES:expert:double", "Windy Fairy:expert:double", "Healing-D-Vision:expert:double", "Cosy Catastrophe:expert:double"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["隅田川夏恋歌:challenge:double", "STULTI:expert:double", "Life is beautiful:expert:double", "MAX 300 (Super-Max-Me Mix):challenge:double"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["Magnetic:challenge:double", "Triple Counter:expert:double", "New Decade:expert:double", "PARANOiA Revolution:expert:double"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["シュレーディンガーの猫:challenge:double", "ΔMAX:challenge:double", "Come to Life:challenge:double", "Pluto Relinquish:expert:double"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["TRIP MACHINE EVOLUTION:challenge:double", "ENDYMION:expert:double", "Valkyrie dimension:challenge:double", "POSSESSION:challenge:double"] }
+      ]
+    },
+    "WORLD": {
+      "single": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["凛として咲く花の如く:beginner:single", "RED ZONE:beginner:single", "GOLD RUSH:basic:single"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["Second Heaven:basic:single", "Ha・lle・lu・jah:basic:single", "朧:basic:single"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["Taking It To The Sky:difficult:single", "Yuni's Nocturnal Days:basic:single", "Deep tenDon Reflex:basic:single"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["FLOWER:basic:single", "Right on time (Ryu☆Remix):basic:single", "Golden Arrow:basic:single"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["Snow Garland Fairy:basic:single", "Neverland:basic:single", "Rampage Hero:basic:single"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["Good Looking:basic:single", "glacia:basic:single", "TRIP MACHINE:expert:single"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["Dance and Death:difficult:single", "SISYPHUS:basic:single", "PARANOiA:expert:single"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["Pump Pump Pump:difficult:single", "MANA:difficult:single", "PARANOiA MAX ~DIRTY MIX~:expert:single"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["First Action:expert:single", "Continue to the real world?:difficult:single", "AFRONOVA:expert:single"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["Saturn:expert:single", "Uranus:challenge:single", "Pluto:expert:single"] },
+        { "name": "Chuuden (中伝)", "color": "#c846a6", "charts": ["IRON HEART:expert:single", "FUNKY SUMMER BEACH:expert:single", "MAX 300:expert:single"] },
+        { "name": "Okuden (奥伝)", "color": "#c846a6", "charts": ["天空の華:expert:single", "ANTI ANTHEM:expert:single", "MAXX UNLIMITED:expert:single"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["TRIP MACHINE EVOLUTION:expert:single", "POSSESSION:expert:single", "Fascination MAXX:expert:single"] },
+        { "name": "Step Dragon (足龍)", "color": "#f8d45a", "charts": ["未完成ノ蒸氣驅動乙女 (DDR Edition):expert:single", "Come To m1dy:challenge:single", "PARANOiA Revolution:expert:single"] },
+        { "name": "Step Master (足神)", "color": "#f8d45a", "charts": ["DIGITALIZER:challenge:single", "New Millennium:challenge:single", "EGOISM 440:challenge:single"] },
+        { "name": "True Step Legend (真・足神)", "color": "#f8d45a", "charts": ["MAX 360:challenge:single", "鳳:challenge:single", "ENDYMION:challenge:single"] }
+      ],
+      "double": [
+        { "name": "1st Dan (初段)", "color": "#6fbe44", "charts": ["rainbow flyer:basic:double", "Colorful Minutes:basic:double", "DDR System Songs+Replicant Mix:basic:double"] },
+        { "name": "2nd Dan (二段)", "color": "#6fbe44", "charts": ["ROCK THE PARTY:basic:double", "In The Breeze:basic:double", "夏色DIARY -DDR mix-:basic:double"] },
+        { "name": "3rd Dan (三段)", "color": "#6fbe44", "charts": ["ナナホシ:basic:double", "Dense Flyer:basic:double", "Let Me Show You:basic:double"] },
+        { "name": "4th Dan (四段)", "color": "#46aadc", "charts": ["ZEPHYRANTHES:basic:double", "Like A Star:basic:double", "Top The Charts:difficult:double"] },
+        { "name": "5th Dan (五段)", "color": "#46aadc", "charts": ["♡Drive My Heart♡:difficult:double", "Our Love:basic:double", "ENDLESS:difficult:double"] },
+        { "name": "6th Dan (六段)", "color": "#e6413a", "charts": ["Curry Up:difficult:double", "HANDS UP IN THE AIR:difficult:double", "CHOCOLATE PHILOSOPHY:expert:double"] },
+        { "name": "7th Dan (七段)", "color": "#e6413a", "charts": ["Last Summer:difficult:double", "Electronic Sports Complex:basic:double", "SUNKiSS♥DROP:expert:double"] },
+        { "name": "8th Dan (八段)", "color": "#e6413a", "charts": ["ヒカリユリイカ:expert:double", "Acid,Tribal & Dance (DDR EDITION):difficult:double", "Euphoric Fragmentation:difficult:double"] },
+        { "name": "9th Dan (九段)", "color": "#c846a6", "charts": ["MOVE! (We Keep It Movin'):expert:double", "Blew My Mind:difficult:double", "AA:expert:double"] },
+        { "name": "10th Dan (十段)", "color": "#c846a6", "charts": ["ESPRIT ONE:difficult:double", "桜:expert:double", "Healing Vision ～Angelic mix～:expert:double"] },
+        { "name": "Chuuden (中伝)", "color": "#c846a6", "charts": ["The Wind of Gold:expert:double", "ORCA:difficult:double", "PARANOIA survivor:expert:double"] },
+        { "name": "Okuden (奥伝)", "color": "#c846a6", "charts": ["IMANOGUILTS:challenge:double", "Starlight Fantasia (Endorphins Mix):expert:double", "UNBELIEVABLE (Sparky remix):expert:double"] },
+        { "name": "Kaiden (皆伝)", "color": "#f8d45a", "charts": ["REVOLUTIONARY ADDICT:challenge:double", "最小三倍完全数:expert:double", "Tohoku EVOLVED:expert:double"] },
+        { "name": "Step Dragon (足龍)", "color": "#f8d45a", "charts": ["Air Heroes:challenge:double", "HyperTwist:challenge:double", "ACE FOR ACES:challenge:double"] },
+        { "name": "Step Master (足神)", "color": "#f8d45a", "charts": ["The World Ends Now:challenge:double", "PARANOiA ～HADES～:challenge:double", "POSSESSION:challenge:double"] },
+        { "name": "True Step Legend (真・足神)", "color": "#f8d45a", "charts": ["VOLAQUAS:challenge:double", "Steps for Victory:challenge:double", "PARANOiA Revolution:challenge:double"] }
+      ]
+    }
   },
   "vega": {
     "2025-07": [
