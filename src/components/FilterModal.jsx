@@ -132,24 +132,30 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
     });
   };
 
+  const sectionActiveCount = (section) => section.metrics.filter((metric) => {
+    const minKey = `${metric.key}Min`;
+    const maxKey = `${metric.key}Max`;
+    return localFilters[minKey] !== '' || localFilters[maxKey] !== '';
+  }).length;
+
   const countContent = showCounts ? (
-    <div className={styles.formGroup}>
-      <div className={styles.countGrid}>
-        <div className={styles.countHeader}>
-          <span className={styles.countHeaderSpacer}></span>
-          <span className={styles.countHeaderLabel}>Filtered</span>
-          <span className={styles.countHeaderLabel}>Total</span>
-        </div>
-        <div className={styles.countRow}>
-          <span className={styles.countLabelCell}>Songs</span>
-          <span className={styles.countValue}>{counts.filtered}</span>
-          <span className={styles.countValue}>{counts.total}</span>
+    <div className={styles.countSummary} aria-live="polite">
+      <span className={styles.countSummaryLabel}>Matching library</span>
+      <div className={styles.countMetrics}>
+        <div className={styles.countMetric}>
+          <span className={styles.countMetricLabel}>Songs</span>
+          <strong>{counts.filtered.toLocaleString()}</strong>
+          {counts.filtered !== counts.total && (
+            <span className={styles.countMetricTotal}>of {counts.total.toLocaleString()}</span>
+          )}
         </div>
         {showCharts && (
-          <div className={styles.countRow}>
-            <span className={styles.countLabelCell}>Charts</span>
-            <span className={styles.countValue}>{counts.chartsFiltered}</span>
-            <span className={styles.countValue}>{counts.chartsTotal}</span>
+          <div className={styles.countMetric}>
+            <span className={styles.countMetricLabel}>Charts</span>
+            <strong>{counts.chartsFiltered.toLocaleString()}</strong>
+            {counts.chartsFiltered !== counts.chartsTotal && (
+              <span className={styles.countMetricTotal}>of {counts.chartsTotal.toLocaleString()}</span>
+            )}
           </div>
         )}
       </div>
@@ -157,7 +163,7 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
   ) : null;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} title="Song Filters" size="lg">
+    <ModalShell isOpen={isOpen} onClose={onClose} title="Song Filters" size="xl">
       <ModalShell.Body className={styles.body}>
         <div className={styles.pageTabs}>
           <button
@@ -175,6 +181,8 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
             Advanced Filters
           </button>
         </div>
+
+        {countContent}
 
         {activePage === 'basic' ? (
           <div className={styles.columns}>
@@ -301,42 +309,6 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
                   />
                 </div>
               </div>
-            </div>
-            <div className={styles.column}>
-              <div className={styles.formGroup}>
-                <label>Artist</label>
-                <input
-                  type="text"
-                  value={localFilters.artist}
-                  onChange={(e) => setLocalFilters((f) => ({ ...f, artist: e.target.value }))}
-                  className={`${styles.input} ${artistActive ? styles.activeInput : ''}`}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>Song</label>
-                <input
-                  type="text"
-                  value={localFilters.title}
-                  onChange={(e) => setLocalFilters((f) => ({ ...f, title: e.target.value }))}
-                  className={`${styles.input} ${titleActive ? styles.activeInput : ''}`}
-                />
-              </div>
-              <div className={`${styles.formGroup} ${gamesActive ? styles.activeGroup : ''}`}>
-                <label>Game Versions</label>
-                <div className={styles.gameCheckboxes}>
-                  {games.map((game) => {
-                    const isSelected = localFilters.games.includes(game);
-                    return (
-                      <label
-                        key={game}
-                        className={`${styles.checkboxLabel} ${isSelected ? styles.selected : ''}`}
-                      >
-                        <input type="checkbox" checked={isSelected} onChange={() => toggleGame(game)} /> {game}
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
               <div className={styles.halfWidthContainer}>
                 <div className={`${styles.formGroup} ${multiBpmActive ? styles.activeGroup : ''}`}>
                   <label>Multiple BPMs</label>
@@ -363,7 +335,53 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
                   </select>
                 </div>
               </div>
-              {countContent}
+            </div>
+            <div className={styles.column}>
+              <div className={styles.formGroup}>
+                <label>Artist</label>
+                <input
+                  type="text"
+                  value={localFilters.artist}
+                  onChange={(e) => setLocalFilters((f) => ({ ...f, artist: e.target.value }))}
+                  className={`${styles.input} ${artistActive ? styles.activeInput : ''}`}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Song</label>
+                <input
+                  type="text"
+                  value={localFilters.title}
+                  onChange={(e) => setLocalFilters((f) => ({ ...f, title: e.target.value }))}
+                  className={`${styles.input} ${titleActive ? styles.activeInput : ''}`}
+                />
+              </div>
+              <div className={`${styles.formGroup} ${gamesActive ? styles.activeGroup : ''}`}>
+                <div className={styles.selectionLabelRow}>
+                  <label>Game Versions</label>
+                  {gamesActive && (
+                    <button
+                      type="button"
+                      className={styles.clearSelectionButton}
+                      onClick={() => setLocalFilters((f) => ({ ...f, games: [] }))}
+                    >
+                      Clear ({localFilters.games.length})
+                    </button>
+                  )}
+                </div>
+                <div className={`${styles.gameCheckboxes} ${styles.gameVersionCheckboxes}`}>
+                  {games.map((game) => {
+                    const isSelected = localFilters.games.includes(game);
+                    return (
+                      <label
+                        key={game}
+                        className={`${styles.checkboxLabel} ${isSelected ? styles.selected : ''}`}
+                      >
+                        <input type="checkbox" checked={isSelected} onChange={() => toggleGame(game)} /> {game}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         ) : (
@@ -374,7 +392,17 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
                   key={section.key}
                   className={`${styles.advancedSection} ${sectionIsActive(section) ? styles.activeGroup : ''}`}
                 >
-                  <h3>{section.title}</h3>
+                  <div className={styles.advancedSectionHeader}>
+                    <div>
+                      <h3>{section.title}</h3>
+                      <p>{section.subtitle}</p>
+                    </div>
+                    {sectionActiveCount(section) > 0 && (
+                      <span className={styles.advancedSectionCount}>
+                        {sectionActiveCount(section)} active
+                      </span>
+                    )}
+                  </div>
                   <div className={styles.advancedMetricGrid}>
                     {section.metrics.map((metric) => {
                       const minKey = `${metric.key}Min`;
@@ -390,7 +418,10 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
 
                       return (
                         <div key={metric.key} className={`${styles.advancedMetric} ${metricActive ? styles.activeGroup : ''}`}>
-                          <label>{metric.label}</label>
+                          <div className={styles.advancedMetricHeader}>
+                            <label>{metric.label}</label>
+                            <p className={styles.metricHint}>{boundsText}</p>
+                          </div>
                           <div className={styles.inputGroup}>
                             <input
                               type="number"
@@ -415,7 +446,6 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
                               className={`${styles.input} ${maxValue !== '' ? styles.activeInput : ''}`}
                             />
                           </div>
-                          <p className={styles.metricHint}>{boundsText}</p>
                         </div>
                       );
                     })}
@@ -423,7 +453,6 @@ const FilterModal = ({ isOpen, onClose, games, showLists, onCreateList, getCount
                 </section>
               ))}
             </div>
-            {countContent}
           </div>
         )}
       </ModalShell.Body>

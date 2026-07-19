@@ -1,0 +1,1453 @@
+/* Shared modern component language. The palette and derived states live in
+   ThemeCore.css so accent and surface edits propagate across every route. */
+[data-theme='new'] .tabs-container,
+[data-theme='new'] .settings-content,
+[data-theme='new'] .filter-bar,
+[data-theme='new'] .song-card,
+[data-theme='new'] .collapse-button,
+[data-theme='new'] .filter-button,
+[data-theme='new'] .controls-container,
+[data-theme='new'] .api-key-button,
+[data-theme='new'] .camera-button,
+[data-theme='new'] .song-info-bar,
+[data-theme='new'] .song-title-container,
+[data-theme='new'] .info-content,
+[data-theme='new'] .toggle-button,
+[data-theme='new'] .smod-collapse-button,
+[data-theme='new'] .smod-mini-button,
+[data-theme='new'] .smod-button,
+[data-theme='new'] .card-draw-action,
+[data-theme='new'] .card-draw-history-header,
+[data-theme='new'] .card-draw-eligible-header,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .mobile-menu-link.active,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .theme-editor-copy-button,
+[data-theme='new'] .theme-editor-demo-card,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card,
+[data-theme='new'] .play-mode-toggle button.active,
+[data-theme='new'] .auth-button,
+[data-theme='new'] .multiplier-keypad-button,
+[data-theme='new'] .settings-button:not(.settings-button-danger),
+[data-theme='new'] .vega-button,
+[data-theme='new'] .record-button,
+[data-theme='new'] [class*='buttonPrimary'],
+[data-theme='new'] [class*='buttonDanger'],
+[data-theme='new'] [class*='buttonSecondary'],
+[data-theme='new'] [class*='buttonGhost'],
+[data-theme='new'] [class*='presetButton'],
+[data-theme='new'] [class*='toggleButton'],
+[data-theme='new'] [class*='stepperButton'],
+[data-theme='new'] [class*='toggleButtonActive'],
+[data-theme='new'] [class*='presetButtonActive'] {
+  background-image: none !important;
+}
+
+/* Native selects use one shared chevron. Custom comboboxes, such as the BPM
+   song picker, render their own indicator and are unaffected by this rule. */
+[data-theme='new'] select:not([multiple]) {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 6 4.5 4.5L12.5 6' fill='none' stroke='%23c7c7c7' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 1rem 1rem;
+}
+
+[data-theme='new'] .controls-container,
+[data-theme='new'] .info-content,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .theme-editor-demo-card,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card,
+[data-theme='new'] .setting-card,
+[data-theme='new'] .song-card {
+  background-color: var(--card-bg-color);
+}
+
+[data-theme='new'] .tabs-container {
+  background-color: var(--theme-nav);
+  border-bottom: 1px solid var(--theme-border);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme='new'] .settings-content {
+  background-color: var(--theme-surface-subtle);
+  border: 0;
+  box-shadow: none;
+}
+
+[data-theme='new'] .filter-bar {
+  background-color: var(--theme-surface-subtle);
+  border-top: 1px solid var(--theme-border);
+}
+
+[data-theme='new'] .tab,
+[data-theme='new'] .settings-tab,
+[data-theme='new'] .mobile-menu-toggle,
+[data-theme='new'] .logo-container {
+  color: var(--theme-text-muted);
+  background: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .tab:hover,
+[data-theme='new'] .settings-tab:hover,
+[data-theme='new'] .mobile-menu-toggle:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-control-hover);
+  border-color: color-mix(in srgb, var(--theme-accent) 55%, var(--theme-border));
+}
+
+[data-theme='new'] .logo-container {
+  color: var(--theme-accent);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Mobile navigation uses the same layered surfaces and outlined controls as
+   the desktop app. Explicit theme tokens are required because the drawer is
+   rendered in the overlay root, outside .tabs-container. */
+[data-theme='new'] .mobile-menu-inner {
+  gap: var(--theme-space-3);
+  background: var(--theme-nav);
+  border-left: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-elevated);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme='new'] .mobile-menu-header {
+  flex: 0 0 auto;
+  min-height: 48px;
+  margin: 0;
+  padding-bottom: var(--theme-space-3);
+  border-bottom: 1px solid var(--theme-border);
+}
+
+[data-theme='new'] .mobile-menu-title {
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+}
+
+[data-theme='new'] .mobile-menu-close {
+  width: 40px;
+  height: 40px;
+  color: var(--theme-text-secondary);
+  background: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .mobile-menu-close:hover,
+[data-theme='new'] .mobile-menu-close:focus-visible {
+  color: var(--theme-text-primary);
+  background: var(--theme-control-hover);
+  border-color: var(--theme-accent);
+}
+
+[data-theme='new'] .mobile-menu-scroll {
+  gap: var(--theme-space-4);
+  padding-right: var(--theme-space-1);
+  padding-bottom: var(--theme-space-2);
+}
+
+[data-theme='new'] .mobile-menu-nav {
+  gap: var(--theme-space-3);
+}
+
+[data-theme='new'] .mobile-menu-nav-group,
+[data-theme='new'] .mobile-menu-preferences {
+  padding: var(--theme-space-2);
+  background: var(--theme-surface-subtle);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .mobile-menu-nav-group,
+[data-theme='new'] .mobile-menu-preferences {
+  gap: var(--theme-space-2);
+}
+
+[data-theme='new'] .mobile-section-title {
+  padding: var(--theme-space-1) var(--theme-space-2);
+  color: var(--theme-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+[data-theme='new'] .mobile-menu-links {
+  gap: 2px;
+  padding: 0;
+}
+
+[data-theme='new'] .mobile-menu-link,
+[data-theme='new'] button.mobile-menu-link {
+  min-height: 48px;
+  padding: 0 var(--theme-space-3);
+  color: var(--theme-text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--theme-radius-control);
+  box-shadow: none;
+}
+
+[data-theme='new'] .mobile-menu-link:hover,
+[data-theme='new'] button.mobile-menu-link:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-surface-hover);
+  border-color: var(--theme-control-border);
+}
+
+[data-theme='new'] .mobile-menu-link.active {
+  color: var(--theme-text-primary);
+  background: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .mobile-menu-icon {
+  width: 24px;
+  color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .mobile-menu-link.active .mobile-menu-icon {
+  color: var(--theme-accent-icon);
+}
+
+[data-theme='new'] .mobile-menu-preferences > .mobile-section-title {
+  padding-bottom: var(--theme-space-2);
+  border-bottom: 1px solid var(--theme-border-subtle);
+}
+
+[data-theme='new'] .mobile-menu-section {
+  gap: var(--theme-space-2);
+  padding: var(--theme-space-1) var(--theme-space-2);
+}
+
+[data-theme='new'] .mobile-menu-section + .mobile-menu-section {
+  padding-top: var(--theme-space-3);
+  border-top: 1px solid var(--theme-border-subtle);
+}
+
+[data-theme='new'] .mobile-control-label,
+[data-theme='new'] .mobile-account-label,
+[data-theme='new'] .mobile-target-suffix {
+  color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .mobile-target-input {
+  min-height: 44px;
+  padding: 0 var(--theme-space-3);
+  background: var(--theme-field);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+}
+
+[data-theme='new'] .mobile-menu-footer {
+  flex: 0 0 auto;
+  margin:
+    calc(-1 * var(--theme-space-3))
+    calc(-1.25rem - env(safe-area-inset-right, 0px))
+    calc(-1.5rem - env(safe-area-inset-bottom, 0px))
+    calc(-1.25rem - env(safe-area-inset-left, 0px));
+  padding:
+    var(--theme-space-3)
+    calc(1.25rem + env(safe-area-inset-right, 0px))
+    calc(1.5rem + env(safe-area-inset-bottom, 0px))
+    calc(1.25rem + env(safe-area-inset-left, 0px));
+  gap: var(--theme-space-3);
+  background: var(--theme-surface-subtle);
+  border: 0;
+  border-top: 1px solid var(--theme-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+[data-theme='new'] .mobile-account-info {
+  padding: 0;
+}
+
+[data-theme='new'] .mobile-account-email {
+  color: var(--theme-text-primary);
+}
+
+[data-theme='new'] .mobile-menu-footer .mobile-menu-action {
+  color: var(--theme-text-primary);
+  background: var(--theme-control);
+  border-color: var(--theme-control-border);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .mobile-menu-footer .mobile-menu-action:hover {
+  background: var(--theme-control-hover);
+  border-color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .mobile-menu-backdrop {
+  background: rgba(9, 10, 12, 0.72);
+}
+
+[data-theme='new'] .filter-button,
+[data-theme='new'] .collapse-button,
+[data-theme='new'] select,
+[data-theme='new'] .dan-select,
+[data-theme='new'] .multiplier-mode-select,
+[data-theme='new'] .settings-select,
+[data-theme='new'] .bpm-input,
+[data-theme='new'] .multiplier-result-box,
+[data-theme='new'] [class*='buttonSecondary'],
+[data-theme='new'] [class*='buttonGhost'],
+[data-theme='new'] [class*='presetButton'],
+[data-theme='new'] [class*='toggleButton'],
+[data-theme='new'] [class*='stepperButton'] {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+  appearance: none;
+}
+
+[data-theme='new'] .filter-button:hover,
+[data-theme='new'] .collapse-button:hover,
+[data-theme='new'] select:hover,
+[data-theme='new'] .bpm-input:hover,
+[data-theme='new'] .multiplier-result-box:hover,
+[data-theme='new'] [class*='buttonSecondary']:hover,
+[data-theme='new'] [class*='buttonGhost']:hover,
+[data-theme='new'] [class*='presetButton']:hover,
+[data-theme='new'] [class*='toggleButton']:hover,
+[data-theme='new'] [class*='stepperButton']:hover {
+  background-color: var(--theme-control-hover);
+  border-color: var(--theme-text-muted);
+  transform: none;
+}
+
+[data-theme='new'] .filter-button.active,
+[data-theme='new'] .tab.active,
+[data-theme='new'] .settings-tab.active,
+[data-theme='new'] .play-mode-toggle button.active,
+[data-theme='new'] .mobile-menu-link.active,
+[data-theme='new'] .theme-editor-copy-button,
+[data-theme='new'] [class*='buttonPrimary'],
+[data-theme='new'] [class*='toggleButtonActive'],
+[data-theme='new'] [class*='presetButtonActive'] {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] select:focus,
+[data-theme='new'] .bpm-input:focus,
+[data-theme='new'] .filter-button:focus-visible,
+[data-theme='new'] .collapse-button:focus-visible,
+[data-theme='new'] [class*='buttonSecondary']:focus-visible,
+[data-theme='new'] [class*='buttonGhost']:focus-visible,
+[data-theme='new'] [class*='presetButton']:focus-visible,
+[data-theme='new'] [class*='toggleButton']:focus-visible,
+[data-theme='new'] [class*='stepperButton']:focus-visible {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+/* App-wide layout roles. These are deliberately expressed through the
+   semantic aliases in ThemeCore so a future theme can change the palette
+   without rebuilding every route independently. */
+[data-theme='new'] .settings-content,
+[data-theme='new'] .multiplier-content,
+[data-theme='new'] .stats-page,
+[data-theme='new'] .theme-editor-page,
+[data-theme='new'] .auth-container {
+  background-color: var(--theme-well);
+}
+
+[data-theme='new'] .filter-bar,
+[data-theme='new'] .controls-container {
+  min-height: var(--theme-toolbar-height);
+  padding: var(--theme-toolbar-padding);
+  gap: var(--theme-toolbar-gap);
+  background-color: var(--theme-panel);
+  border-color: var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-surface);
+  box-sizing: border-box;
+}
+
+@media (min-width: 641px) {
+  [data-theme='new'] .filter-bar {
+    height: var(--theme-toolbar-height);
+    margin-bottom: var(--theme-page-section-gap);
+  }
+}
+
+[data-theme='new'] .filter-group,
+[data-theme='new'] .controls-container .top-row,
+[data-theme='new'] .controls-container .song-search-row,
+[data-theme='new'] .controls-container .action-buttons,
+[data-theme='new'] .card-draw-actions {
+  gap: var(--theme-toolbar-gap);
+}
+
+[data-theme='new'] .course-filter-selects {
+  gap: var(--theme-toolbar-gap);
+}
+
+[data-theme='new'] .filter-group,
+[data-theme='new'] .controls-container .top-row,
+[data-theme='new'] .controls-container .song-search-row {
+  min-height: var(--theme-toolbar-control-height);
+}
+
+[data-theme='new'] .filter-bar .dan-select,
+[data-theme='new'] .filter-bar .filter-button,
+[data-theme='new'] .controls-container .filter-button,
+[data-theme='new'] .controls-container .api-key-button,
+[data-theme='new'] .controls-container .camera-button,
+[data-theme='new'] .card-draw-action {
+  height: var(--theme-toolbar-control-height);
+  min-height: var(--theme-toolbar-control-height);
+  box-sizing: border-box;
+}
+
+[data-theme='new'] .filter-bar .dan-select {
+  padding-block: 0;
+}
+
+[data-theme='new'] .filter-bar .filter-button,
+[data-theme='new'] .controls-container .filter-button,
+[data-theme='new'] .controls-container .api-key-button,
+[data-theme='new'] .controls-container .camera-button {
+  width: var(--theme-toolbar-control-height);
+  min-width: var(--theme-toolbar-control-height);
+  padding: 0;
+}
+
+/* Toolbar icon buttons share one visual contract. Page styles should only
+   control placement, never replace these border, hover, active or focus states. */
+[data-theme='new'] .list-page-filter-group > .filter-button {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-control);
+  background-image: none;
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .list-page-filter-group > .filter-button:hover {
+  background-color: var(--theme-control-hover);
+  border-color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .list-page-filter-group > .filter-button.active {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .list-page-filter-group > .filter-button:focus-visible {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+/* The multiplier's direction toggle is intentionally compact and circular,
+   but it still belongs to the same outlined control family. */
+[data-theme='new'] .multiplier-result-toggle {
+  border: 1px solid var(--theme-control-border);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .multiplier-result-toggle:hover {
+  border-color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .multiplier-result-toggle:focus-visible {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+[data-theme='new'] .ranking-counter,
+[data-theme='new'] .card-draw-summary {
+  min-height: var(--theme-toolbar-control-height);
+  display: flex;
+  align-items: center;
+  margin-block: 0;
+  white-space: nowrap;
+}
+
+[data-theme='new'] .dan-header,
+[data-theme='new'] .card-draw-eligible-header,
+[data-theme='new'] .card-draw-history-header {
+  min-height: var(--theme-section-bar-height);
+  padding: 0 var(--theme-toolbar-padding);
+  box-sizing: border-box;
+}
+
+[data-theme='new'] .dan-header .collapse-button,
+[data-theme='new'] .dan-header .drag-handle,
+[data-theme='new'] .dan-header .delete-list-button,
+[data-theme='new'] .dan-header .edit-charts-button {
+  width: var(--theme-section-control-height);
+  min-width: var(--theme-section-control-height);
+  height: var(--theme-section-control-height);
+  min-height: var(--theme-section-control-height);
+  padding: 0;
+}
+
+[data-theme='new'] .card-draw-page .filter-bar {
+  margin-bottom: var(--theme-page-section-gap);
+}
+
+[data-theme='new'] .card-draw-bar + .card-draw-eligible,
+[data-theme='new'] .card-draw-bar + .card-draw-results {
+  margin-top: 0;
+}
+
+[data-theme='new'] .setting-card,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .theme-editor-demo-card,
+[data-theme='new'] .auth-card,
+[data-theme='new'] .card-draw-eligible {
+  background-color: var(--theme-panel);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .card-draw-eligible-header,
+[data-theme='new'] [class*='modal'] [class*='header'] {
+  background-color: var(--theme-panel-header);
+  border-color: var(--theme-border);
+}
+
+[data-theme='new'] .card-draw-eligible-body,
+[data-theme='new'] .song-grid {
+  background-color: var(--theme-well);
+}
+
+[data-theme='new'] .theme-editor-control-row,
+[data-theme='new'] .card-draw-empty,
+[data-theme='new'] .stats-empty,
+[data-theme='new'] .multiplier-display-row,
+[data-theme='new'] .multiplier-result-box {
+  background-color: var(--theme-panel-row);
+  border-color: var(--theme-border-subtle);
+}
+
+/* Draw actions follow the same tinted-surface + coloured-outline pattern as
+   score badges. The action is an eyebrow label; the player is the value. */
+[data-theme='new'] .card-draw-page .song-score-slice[class*='card-draw-slice-'] {
+  --draw-slice-accent: var(--theme-border);
+  --draw-slice-surface: var(--theme-surface-raised);
+  min-height: 52px;
+  padding: var(--theme-space-2) var(--theme-space-3);
+  color: var(--theme-text-primary);
+  background: var(--draw-slice-surface);
+  border: 1px solid var(--draw-slice-accent);
+  border-top-color: var(--draw-slice-accent);
+  box-shadow: none;
+}
+
+[data-theme='new'] .card-draw-card.is-veto .song-card {
+  opacity: 1;
+}
+
+[data-theme='new'] .card-draw-card.is-veto .song-card > :not(.song-score-slice) {
+  opacity: 0.55;
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice.card-draw-slice-protect {
+  --draw-slice-accent: var(--theme-draw-protect);
+  --draw-slice-surface: var(--theme-draw-protect-surface);
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice.card-draw-slice-veto {
+  --draw-slice-accent: var(--theme-draw-veto);
+  --draw-slice-surface: var(--theme-draw-veto-surface);
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice.card-draw-slice-pocket-pick {
+  --draw-slice-accent: var(--theme-draw-pocket);
+  --draw-slice-surface: var(--theme-draw-pocket-surface);
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice.card-draw-slice-redraw {
+  --draw-slice-accent: var(--theme-draw-redraw);
+  --draw-slice-surface: var(--theme-draw-redraw-surface);
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice.card-draw-slice-winner {
+  --draw-slice-accent: var(--theme-draw-winner);
+  --draw-slice-surface: var(--theme-draw-winner-surface);
+}
+
+[data-theme='new'] .card-draw-page .song-score-slice .score-value,
+[data-theme='new'] .card-draw-page .song-score-slice .score-extra {
+  color: var(--theme-text-primary);
+}
+
+[data-theme='new'] .card-draw-slice-tag.has-player {
+  gap: var(--theme-space-2);
+}
+
+[data-theme='new'] .card-draw-slice-action {
+  flex: 0 0 auto;
+  color: var(--draw-slice-accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+[data-theme='new'] .card-draw-slice-tag:not(.has-player) .card-draw-slice-action {
+  color: var(--theme-text-primary);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+[data-theme='new'] .song-score-slice.card-draw-slice-winner .card-draw-slice-action {
+  color: var(--theme-draw-winner);
+}
+
+[data-theme='new'] .card-draw-slice-player {
+  min-width: 0;
+  color: var(--theme-text-primary);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+[data-theme='new'] .card-draw-page .card-draw-slice-placeholder {
+  color: var(--theme-text-muted);
+  font-weight: 600;
+}
+
+[data-theme='new'] .card-draw-page .card-draw-slice-winner {
+  flex: 0 1 auto;
+  padding-left: var(--theme-space-2);
+  border-left: 1px solid color-mix(in srgb, var(--theme-draw-winner) 58%, transparent);
+}
+
+[data-theme='new'] .card-draw-page .card-draw-slice-winner svg {
+  color: var(--theme-draw-winner);
+}
+
+[data-theme='new'] .card-draw-page .card-draw-slice-winner-badge {
+  color: var(--theme-text-primary);
+  font-weight: 750;
+}
+
+[data-theme='new'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.mobile-target-value),
+[data-theme='new'] textarea,
+[data-theme='new'] select,
+[data-theme='new'] .settings-input,
+[data-theme='new'] .settings-select,
+[data-theme='new'] .list-name-input,
+[data-theme='new'] .card-draw-label-field input,
+[data-theme='new'] .card-draw-pocket-select {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-field);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: none;
+}
+
+[data-theme='new'] input:not([type='checkbox']):not([type='radio']):not([type='range']):not(.mobile-target-value):focus,
+[data-theme='new'] textarea:focus,
+[data-theme='new'] select:focus {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
+  outline: none;
+}
+
+[data-theme='new'] .theme-editor-reset-all,
+[data-theme='new'] .theme-editor-reset-button,
+[data-theme='new'] .multiplier-keypad-button,
+[data-theme='new'] .drag-handle,
+[data-theme='new'] .delete-list-button,
+[data-theme='new'] .edit-charts-button {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-control);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .theme-editor-reset-all:hover,
+[data-theme='new'] .theme-editor-reset-button:hover,
+[data-theme='new'] .multiplier-keypad-button:hover,
+[data-theme='new'] .drag-handle:hover,
+[data-theme='new'] .delete-list-button:hover,
+[data-theme='new'] .edit-charts-button:hover {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-control-hover);
+  border-color: var(--theme-text-muted);
+}
+
+[data-theme='new'] .auth-button,
+[data-theme='new'] .theme-editor-copy-button,
+[data-theme='new'] .settings-button:not(.settings-button-danger),
+[data-theme='new'] .vega-button,
+[data-theme='new'] .record-button,
+[data-theme='new'] [class*='buttonPrimary'] {
+  color: var(--theme-text-primary);
+  background: var(--theme-selected);
+  border: 1px solid var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .auth-button:hover,
+[data-theme='new'] .theme-editor-copy-button:hover,
+[data-theme='new'] .settings-button:not(.settings-button-danger):hover,
+[data-theme='new'] .vega-button:hover,
+[data-theme='new'] .record-button:hover,
+[data-theme='new'] [class*='buttonPrimary']:hover {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accent) 48%, black);
+  border-color: color-mix(in srgb, var(--theme-accent) 76%, white);
+  filter: none;
+}
+
+[data-theme='new'] [class*='buttonDanger'] {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-danger) 62%, black);
+  border-color: var(--theme-danger);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .settings-button-danger {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-danger) 62%, black);
+  border: 1px solid var(--theme-danger);
+  box-shadow: var(--theme-shadow-control);
+  filter: none;
+}
+
+[data-theme='new'] .settings-button-danger:hover {
+  background: color-mix(in srgb, var(--theme-danger) 72%, black);
+  border-color: color-mix(in srgb, var(--theme-danger) 76%, white);
+  box-shadow: var(--theme-shadow-control);
+  filter: none;
+}
+
+[data-theme='new'] .stats-table-wrapper {
+  overflow: hidden auto;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-control);
+  background-color: var(--theme-well);
+}
+
+[data-theme='new'] .stats-table th {
+  background-color: var(--theme-panel-header);
+}
+
+[data-theme='new'] .stats-table tbody tr:nth-child(even) {
+  background-color: var(--theme-panel-row);
+}
+
+[data-theme='new'] .stats-table tbody tr:hover {
+  background-color: var(--theme-surface-hover);
+}
+
+[data-theme='new'] .stats-skill-positive {
+  background: var(--theme-positive);
+}
+
+[data-theme='new'] .stats-skill-negative {
+  background: var(--theme-negative);
+}
+
+@media (min-width: 641px) {
+  [data-theme='new'] .multiplier-content {
+    background-color: var(--theme-well);
+    border: 0;
+    box-shadow: none;
+  }
+
+  [data-theme='new'] .multiplier-inner-container {
+    max-width: 920px;
+    padding: 1.75rem;
+    box-sizing: border-box;
+    background-color: var(--theme-panel);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--theme-radius-surface);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-desktop-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--theme-space-3);
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+
+  [data-theme='new'] .multiplier-desktop-inputs .input-group {
+    margin: 0;
+  }
+
+  [data-theme='new'] .multiplier-desktop-inputs .input-group label {
+    margin-bottom: var(--theme-space-2);
+    color: var(--theme-text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  [data-theme='new'] .multiplier-desktop-inputs .bpm-input {
+    min-height: 64px;
+    background-color: var(--theme-field);
+    border-color: var(--theme-control-border);
+    border-radius: var(--theme-radius-control);
+    box-shadow: var(--theme-shadow-control);
+    text-align: center;
+  }
+
+  [data-theme='new'] .multiplier-result-desktop {
+    margin-top: var(--theme-space-4);
+  }
+
+  [data-theme='new'] .multiplier-result-label-desktop {
+    margin-bottom: var(--theme-space-3);
+    color: var(--theme-text-primary);
+    font-size: 1rem;
+    font-weight: 750;
+    letter-spacing: 0.02em;
+  }
+
+  [data-theme='new'] .multiplier-option {
+    color: var(--theme-text-primary);
+    background-color: var(--theme-panel-row);
+    border: 1px solid var(--theme-border-subtle);
+    border-radius: var(--theme-radius-control);
+  }
+
+  [data-theme='new'] .multiplier-option-recommended {
+    background-color: var(--theme-accent-selected);
+    border-color: var(--theme-accent);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-option-label {
+    color: var(--theme-text-muted);
+  }
+
+  [data-theme='new'] .multiplier-option-secondary .multiplier-option-speed {
+    color: var(--theme-text-secondary);
+  }
+
+  [data-theme='new'] .multiplier-option-recommended .multiplier-option-label,
+  [data-theme='new'] .multiplier-option-recommended .multiplier-option-modifier {
+    color: var(--theme-accent-icon);
+  }
+
+  [data-theme='new'] .multiplier-option-recommended .multiplier-option-speed {
+    color: var(--theme-text-primary);
+  }
+}
+
+/* The compact multiplier is a calculator, so its controls read as one
+   instrument instead of a stack of equally weighted cards. */
+@media (max-width: 640px) {
+  [data-theme='new'] .multiplier-content {
+    background-color: var(--theme-well);
+  }
+
+  [data-theme='new'] .multiplier-mobile-calc {
+    gap: 0;
+  }
+
+  [data-theme='new'] .multiplier-display {
+    gap: 0.5rem;
+  }
+
+  [data-theme='new'] .multiplier-display-row {
+    min-height: 5.5rem;
+    padding: 0.75rem;
+    background-color: var(--theme-panel);
+    border: 1px solid var(--theme-border-subtle);
+    border-radius: var(--theme-radius-control);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-display-row.active {
+    background-color: var(--theme-accent-selected);
+    border-color: var(--theme-accent);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-display-row.active .multiplier-display-label {
+    color: var(--theme-accent-icon);
+  }
+
+  [data-theme='new'] .multiplier-display-label,
+  [data-theme='new'] .multiplier-result-label {
+    color: var(--theme-text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+  }
+
+  [data-theme='new'] .multiplier-display-value {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  [data-theme='new'] .multiplier-result-box {
+    min-height: 6.5rem;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    background-color: var(--theme-panel-header);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--theme-radius-surface);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-result-calculation .song-speed {
+    color: var(--theme-text-primary);
+  }
+
+  [data-theme='new'] .multiplier-result-calculation .song-modifier {
+    color: var(--theme-accent-icon);
+  }
+
+  [data-theme='new'] .multiplier-mode-select {
+    background-color: var(--theme-field);
+    border-color: var(--theme-control-border);
+    border-radius: var(--theme-radius-control);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-keypad {
+    overflow: hidden;
+    background-color: var(--theme-control-border);
+    border: 1px solid var(--theme-control-border);
+    border-radius: var(--theme-radius-surface);
+    box-shadow: var(--theme-shadow-control);
+  }
+
+  [data-theme='new'] .multiplier-keypad-button,
+  [data-theme='new'] .multiplier-keypad-button.keypad-corner-tl,
+  [data-theme='new'] .multiplier-keypad-button.keypad-corner-tr,
+  [data-theme='new'] .multiplier-keypad-button.keypad-corner-bl,
+  [data-theme='new'] .multiplier-keypad-button.keypad-corner-br {
+    margin: 0;
+    color: var(--theme-text-primary);
+    background-color: var(--theme-control);
+    border: 0;
+    border-right: 1px solid var(--theme-control-border);
+    border-bottom: 1px solid var(--theme-control-border);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  [data-theme='new'] .multiplier-keypad-button:nth-child(3n) {
+    border-right: 0;
+  }
+
+  [data-theme='new'] .multiplier-keypad-button:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+
+  [data-theme='new'] .multiplier-keypad-button:hover {
+    background-color: var(--theme-control-hover);
+    border-color: var(--theme-control-border);
+  }
+
+  [data-theme='new'] .multiplier-keypad-button:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 2px solid var(--theme-accent);
+    outline-offset: -3px;
+  }
+
+  [data-theme='new'] .multiplier-keypad-action {
+    color: var(--theme-text-secondary);
+    background-color: var(--theme-panel);
+    font-size: 1rem;
+  }
+}
+
+[data-theme='new'] .song-card {
+  border-color: var(--theme-border);
+}
+
+[data-theme='new'] .song-card-link:hover {
+  transform: translate(-2px, -2px);
+}
+
+[data-theme='new'] .song-card-link:hover .song-card {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-surface);
+}
+
+[data-theme='new'] .song-title-container {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-surface-raised);
+  border-left: 0;
+  border-bottom: 1px solid var(--theme-border);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-title-container .song-title-main,
+[data-theme='new'] .song-title-container .song-title-artist {
+  color: inherit;
+}
+
+/* The World theme keeps the mobile header deliberately compact. Do not use the
+   jacket as a full-width background image in New; it obscures the song details
+   and makes the header grow excessively on narrow screens. */
+[data-theme='new'] .song-title-container .jacket-bg,
+[data-theme='new'] .song-title-container .jacket-fade {
+  display: none;
+}
+
+[data-theme='new'] .song-info-bar .collapse-button,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+  color: var(--theme-text-primary);
+  background-color: transparent;
+  border: 0;
+  border-left: 1px solid var(--theme-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Mirror DDR World's reveal affordance: the chevron is a full-height edge
+   control rather than a detached square button. */
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+  position: static;
+  align-self: stretch;
+  width: 40px;
+  height: auto;
+  min-height: 40px;
+  margin: 0;
+  transform: none;
+}
+
+[data-theme='new'] .song-info-bar .collapse-button:hover,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:hover,
+[data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button:focus-visible {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-accent-selected);
+  border-left-color: var(--theme-accent);
+}
+
+[data-theme='new'] .dan-header {
+  color: var(--theme-text-primary);
+  background: var(--theme-surface-raised);
+  background-color: var(--theme-surface-raised) !important;
+  border: 0;
+  border-bottom: 1px solid var(--theme-border);
+  border-left: 4px solid var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme='new'] .collapse-button,
+[data-theme='new'] .collapse-button:hover {
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-grid {
+  background-color: var(--theme-page);
+  border-color: var(--theme-border);
+}
+
+[data-theme='new'] .settings-button:not(.settings-button-danger),
+[data-theme='new'] .card-draw-action.primary {
+  color: var(--theme-text-primary);
+  background: var(--theme-accent-selected);
+  border: 1px solid var(--theme-accent);
+  border-radius: var(--theme-radius-control);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .settings-button:not(.settings-button-danger):hover,
+[data-theme='new'] .card-draw-action.primary:hover {
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accent) 48%, black);
+  border-color: color-mix(in srgb, var(--theme-accent) 76%, white);
+}
+
+/* Give the dense BPM summary a clearer surface hierarchy. The surrounding
+   section stays charcoal, utility panels lift one step, and the data table
+   recesses beneath them so its rows no longer merge into the container. */
+[data-theme='new'] .chart-section {
+  background: var(--theme-surface-subtle);
+  border-color: var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-surface);
+  overflow: hidden;
+}
+
+[data-theme='new'] .info-content {
+  background-color: var(--theme-surface-subtle);
+}
+
+[data-theme='new'] .stats-grid,
+[data-theme='new'] .bpm-score-badge:not(.glow-marvelous):not(.glow-perfect):not(.glow-great):not(.glow-good),
+[data-theme='new'] .bpm-score-badge.score-badge:not(.glow-marvelous):not(.glow-perfect):not(.glow-great):not(.glow-good) {
+  background-color: var(--theme-surface-raised);
+  border-color: var(--theme-border);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .stats-grid {
+  border-width: 1px;
+}
+
+[data-theme='new'] .controls-container .filter-button {
+  background-color: var(--bpm-control-bg);
+}
+
+[data-theme='new'] .controls-container .filter-button:hover {
+  background-color: var(--theme-surface-hover);
+}
+
+[data-theme='new'] .stat-item svg {
+  color: var(--theme-accent-icon);
+}
+
+[data-theme='new'] .bpm-score-badge.glow-great,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-great {
+  background: var(--theme-score-great-surface);
+  border-color: var(--theme-score-great);
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-perfect,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-perfect {
+  background: var(--theme-score-perfect-surface);
+  border-color: var(--theme-score-perfect);
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-good,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-good {
+  background: var(--theme-score-good-surface);
+  border-color: var(--theme-score-good);
+  box-shadow: none;
+}
+
+[data-theme='new'] .bpm-score-badge.glow-marvelous,
+[data-theme='new'] .bpm-score-badge.score-badge.glow-marvelous {
+  background: var(--theme-score-marvelous-surface);
+  border-color: var(--theme-score-marvelous);
+  box-shadow: none;
+}
+
+/* Score emphasis belongs to the score row, not the entire song card. This
+   mirrors the BPM score badge and avoids the legacy neon-card treatment. */
+[data-theme='new'] .song-card-link.score-highlight {
+  border: 1px solid var(--theme-score-outline, var(--theme-border));
+  border-radius: var(--theme-radius-control);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight.glow-marvelous {
+  --theme-score-outline: var(--theme-score-marvelous);
+  --theme-score-surface: var(--theme-score-marvelous-surface);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight.glow-perfect {
+  --theme-score-outline: var(--theme-score-perfect);
+  --theme-score-surface: var(--theme-score-perfect-surface);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight.glow-great {
+  --theme-score-outline: var(--theme-score-great);
+  --theme-score-surface: var(--theme-score-great-surface);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight.glow-good {
+  --theme-score-outline: var(--theme-score-good);
+  --theme-score-surface: var(--theme-score-good-surface);
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight::after {
+  display: none;
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight .song-score-slice {
+  margin-top: -1px;
+  background: var(--theme-score-surface, var(--theme-surface-raised));
+  border: 0;
+  border-top: 1px solid var(--theme-score-outline, var(--theme-border));
+  box-shadow: none;
+}
+
+[data-theme='new'] .song-card-link.score-highlight .song-score-slice .score-extra,
+[data-theme='new'] .bpm-score-badge.glow-marvelous .score-extra,
+[data-theme='new'] .bpm-score-badge.glow-perfect .score-extra,
+[data-theme='new'] .bpm-score-badge.glow-great .score-extra,
+[data-theme='new'] .bpm-score-badge.glow-good .score-extra {
+  color: var(--theme-text-primary);
+}
+
+[data-theme='new'] .bpm-table {
+  background: var(--theme-surface-subtle);
+  border-color: var(--theme-border);
+  box-shadow: var(--theme-shadow-control);
+}
+
+[data-theme='new'] .bpm-row.header span {
+  background: var(--theme-surface-raised);
+  border-bottom-color: var(--theme-border);
+}
+
+[data-theme='new'] .bpm-table .bpm-row:not(.header) span {
+  background: var(--theme-surface-subtle);
+  border-bottom-color: var(--theme-border);
+}
+
+[data-theme='new'] .bpm-table .bpm-row span:last-child {
+  background: var(--theme-surface);
+  border-left: 1px solid var(--theme-border);
+}
+
+[data-theme='new'] .bpm-table .bpm-row.header span:last-child {
+  background: var(--theme-surface-raised);
+  color: var(--theme-accent);
+  box-shadow: inset 0 2px 0 var(--theme-accent);
+}
+
+[data-theme='new'] .glow-marvelous,
+[data-theme='new'] .glow-perfect,
+[data-theme='new'] .glow-great,
+[data-theme='new'] .glow-good,
+[data-theme='new'] .score-highlight {
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Difficulty fills are meaningful data colours, so their labels use the
+   shared dark foreground rather than inheriting the theme accent colour. */
+[data-theme='new'] .difficulty-badge,
+[data-theme='new'] .song-card-action {
+  color: var(--accent-contrast);
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='beginner'] {
+  background-color: var(--difficulty-beginner-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='basic'] {
+  background-color: var(--difficulty-light-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='difficult'] {
+  background-color: var(--difficulty-standard-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='expert'] {
+  background-color: var(--difficulty-heavy-color) !important;
+}
+
+[data-theme='new'] .difficulty-badge[data-difficulty='challenge'] {
+  background-color: var(--difficulty-challenge-color) !important;
+}
+
+[data-theme='new'] .difficulty-meter {
+  color: var(--accent-contrast) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22) !important;
+}
+
+[data-theme='new'] .difficulty-meter.is-missing {
+  color: var(--text-color-light) !important;
+}
+
+[data-theme='new'] .difficulty-meter.is-selected {
+  color: var(--theme-text-primary) !important;
+  background: color-mix(in srgb, var(--difficulty-color) 38%, var(--theme-well)) !important;
+  box-shadow: inset 0 0 0 2px var(--difficulty-color) !important;
+}
+
+@media (min-width: 1025px) {
+  [data-theme='new'] .chart-container {
+    height: 526px;
+    padding: 16px;
+    background-color: var(--theme-page);
+  }
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .chart-container {
+    background-color: var(--theme-page);
+  }
+
+}
+
+[data-theme='new'] .setting-card,
+[data-theme='new'] .stats-card,
+[data-theme='new'] .card-draw-panel,
+[data-theme='new'] .theme-editor-panel,
+[data-theme='new'] .chart-stats-panel,
+[data-theme='new'] .chart-stats-card {
+  border-color: var(--theme-border);
+  border-radius: var(--theme-radius-surface);
+  box-shadow: var(--theme-shadow-control);
+}
+
+/* Give the chart statistics a quieter, layered hierarchy. The page well is
+   recessed, cards sit above it, flat headers identify each group, and rows
+   remain readable without becoming near-black bars. */
+[data-theme='new'] .chart-stats-panel {
+  background-color: var(--theme-page);
+  border-radius: 0;
+}
+
+[data-theme='new'] .stepchart-view-container {
+  min-height: 500px;
+  padding: 0 16px 16px;
+  box-sizing: border-box;
+  background-color: var(--theme-page);
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .stepchart-view-container {
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  [data-theme='new'] .smod-controls-container,
+  [data-theme='new'] .smod-mini-button {
+    position: fixed;
+    right: max(20px, calc((100vw - var(--container-max-width)) / 2 + 20px));
+    bottom: 20px;
+    float: none;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+[data-theme='new'] .chart-stats-card {
+  background-color: var(--theme-surface);
+}
+
+[data-theme='new'] .chart-stats-card-header {
+  background: var(--theme-surface-raised);
+  border-bottom-color: var(--theme-border);
+}
+
+[data-theme='new'] .chart-stats-card-grid,
+[data-theme='new'] .chart-stats-tags {
+  background-color: var(--theme-surface);
+}
+
+[data-theme='new'] .chart-stats-item {
+  background-color: color-mix(in srgb, var(--theme-surface-raised) 72%, var(--theme-surface) 28%);
+  border-color: color-mix(in srgb, var(--theme-border) 72%, transparent);
+}
+
+[data-theme='new'] .chart-stats-item-label {
+  color: var(--theme-text-secondary);
+}
+
+[data-theme='new'] input,
+[data-theme='new'] textarea {
+  color: var(--theme-text-primary);
+  caret-color: var(--theme-accent);
+}
+
+[data-theme='new'] ::selection {
+  color: var(--theme-text-primary);
+  background: var(--theme-accent-selected);
+}
+
+@media (max-width: 1024px) {
+  [data-theme='new'] .bpm-title-mobile {
+    grid-template-areas:
+      "art chip button"
+      "art title button";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: clamp(0.75rem, 2vw, 1.15rem);
+    row-gap: 0.35rem;
+    min-height: 96px;
+  }
+
+  [data-theme='new'] .mobile-jacket-chip {
+    grid-area: art;
+    display: block;
+    width: clamp(76px, 14vw, 108px);
+    height: clamp(76px, 14vw, 108px);
+    padding: 6px;
+  background: var(--theme-nav);
+  border: 1px solid var(--theme-border);
+    box-sizing: border-box;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  [data-theme='new'] .mobile-jacket-chip img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .song-game-version.mobile-only {
+    grid-area: chip;
+    justify-self: start;
+    align-self: end;
+    margin: 0;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .title-artist-group {
+    grid-area: title;
+    grid-column: 2;
+    width: 100%;
+    max-width: 100%;
+    align-self: start;
+  }
+
+  [data-theme='new'] .bpm-title-mobile .song-title-main,
+  [data-theme='new'] .bpm-title-mobile .song-title-artist {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-theme='new'] .song-info-bar .bpm-title-mobile .collapse-button {
+    grid-area: button;
+    align-self: center;
+    justify-self: end;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Match DDR World's tight desktop reveal-control alignment. */
+  [data-theme='new'] .song-title-container {
+    padding-right: 1rem;
+  }
+
+  [data-theme='new'] .bpm-song-title {
+    padding-right: 0;
+  }
+}

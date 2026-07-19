@@ -7,188 +7,200 @@
   ],
   "generatedAt": "2026-07-03T18:08:24.253Z",
   "songs": [
-    "BAD GIRLS",
-    "BOOM BOOM DOLLAR",
-    "BOYS",
-    "DUB-I-DUB",
-    "EL RITMO TROPICAL",
-    "GET UP'N MOVE",
-    "HERO",
-    "I believe in miracles",
-    "IF YOU WERE HERE",
-    "LOVE",
-    "SMOKE",
-    "stomp to my beat",
-    "TUBTHUMPING",
-    "20,november～DDR VERSION～",
-    "AM-3P",
-    "BRILLIANT 2U",
-    "BRILLIANT 2U (Orchestra-Groov)",
-    "KEEP ON MOVIN'",
-    "LET THEM MOVE",
-    "MAKE A JAM!",
-    "MAKE IT BETTER (So-REAL Mix)",
-    "PARANOiA KCET ～clean mix～",
-    "PARANOiA MAX～DIRTY MIX～",
-    "PARANOiA MAX～DIRTY MIX～ (in roulette)",
-    "PUT YOUR FAITH IN ME",
-    "PUT YOUR FAITH IN ME (Jazz Groov)",
-    "SP-TRIP MACHINE～JUNGLE MIX～",
-    "BUTTERFLY",
-    "HAVE YOU NEVER BEEN MELLOW",
-    "KUNG FU FIGHTING",
-    "LITTLE BITCH",
-    "LET'S GET DOWN",
-    "MY FIRE",
-    "STRICTLY BUSINESS",
-    "THAT'S THE WAY(I LIKE IT)",
-    "MAKE IT BETTER",
-    "PARANOiA",
-    "TRIP MACHINE",
-    "Song Lists",
-    "Privacy policy",
-    "About RemyWiki",
-    "Disclaimers",
-    "Mobile view",
     {
-      "title": "XANADU",
-      "artist": "OLIVIA PROJECT"
+      "path": "sm/2nd/BAD GIRLS/BAD GIRLS.sm"
     },
     {
-      "title": "GET UP AND DANCE",
-      "artist": "FREEDOM"
+      "path": "sm/2nd/Boys/Boys.sm"
     },
     {
-      "title": "Silent Hill",
-      "artist": "THOMAS HOWARD"
+      "path": "sm/2nd/DUB-I-DUB/DUB-I-DUB.sm"
     },
     {
-      "title": "UPSIDE DOWN",
-      "artist": "COO COO"
+      "path": "sm/2nd/EL RITMO TROPICAL/EL RITMO TROPICAL.sm"
     },
     {
-      "title": "IT ONLY TAKES A MINUTE(Extended Remix)",
-      "artist": "TAVARES"
+      "path": "sm/2nd/GET UP'N MOVE/GET UP'N MOVE.sm"
     },
     {
-      "title": "SO MANY MEN",
-      "artist": "ME & MY"
+      "path": "sm/2nd/HERO/HERO.sm"
     },
     {
-      "title": "DO IT ALL NIGHT",
-      "artist": "E-ROTIC"
+      "path": "sm/2nd/IF YOU WERE HERE/IF YOU WERE HERE.sm"
     },
     {
-      "title": "THE RACE",
-      "artist": "CAPTAIN JACK"
+      "path": "sm/2nd/LOVE/LOVE.sm"
     },
     {
-      "title": "OPERATOR(Two Gees Mix)",
-      "artist": "PAPAYA"
+      "path": "sm/2nd/Smoke/Smoke.sm"
     },
     {
-      "title": "HOLIDAY",
-      "artist": "WHO'S THAT GIRL!"
+      "path": "sm/2nd/stomp to my beat/stomp to my beat.sm"
     },
     {
-      "title": "OH NICK PLEASE NOT SO QUICK",
-      "artist": "E-ROTIC"
+      "path": "sm/2nd/TUBTHUMPING/TUBTHUMPING.sm"
     },
     {
-      "title": "IF YOU CAN SAY GOODBYE",
-      "artist": "KATE PROJECT"
+      "path": "sm/3rd/20,NOVEMBER (D.D.R. version)/20,NOVEMBER (D.D.R. version).sm"
     },
     {
-      "title": "MR.WONDERFUL",
-      "artist": "SMiLE.dk"
+      "path": "sm/2nd/AM-3P/AM-3P.sm"
     },
     {
-      "title": "WONDERLAND(UKS MIX)",
-      "artist": "X-TREME"
+      "path": "sm/2nd/BRILLIANT 2U/BRILLIANT 2U.sm"
     },
     {
-      "title": "GET UP(BEFORE THE NIGHT IS OVER)",
-      "artist": "TECHNOTRONIC feat.YA KID K"
+      "path": "sm/3rd/KEEP ON MOVIN'/KEEP ON MOVIN'.sm"
     },
     {
-      "title": "butterfly(UPSWING MIX)",
-      "artist": "SMiLE.dk"
+      "path": "sm/3rd/LET THEM MOVE/LET THEM MOVE.sm"
     },
     {
-      "title": "DAM DARIRAM",
-      "artist": "JOGA"
+      "path": "sm/2nd/MAKE A JAM!/MAKE A JAM!.sm"
     },
     {
-      "title": "IN THE NAVY '99(XXL Disaster Remix)",
-      "artist": "CAPTAIN JACK"
+      "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm"
     },
     {
-      "title": "La Senorita",
-      "artist": "CAPTAIN.T"
+      "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm"
     },
     {
-      "title": "FOLLOW THE SUN(90 IN THE SHADE MIX)",
-      "artist": "TRIPLE J"
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm"
     },
     {
-      "title": "VOL.4",
-      "artist": "RAVERS CHOICE"
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~ (in roulette)/PARANOiA MAX~DIRTY MIX~ (in roulette).sm"
     },
     {
-      "title": "ROCK BEAT",
-      "artist": "LOUD FORCE"
+      "path": "sm/2nd/PUT YOUR FAITH IN ME/PUT YOUR FAITH IN ME.sm"
     },
     {
-      "title": "CAPTAIN JACK(GRANDALE REMIX)",
-      "artist": "CAPTAIN JACK"
+      "path": "sm/2nd/SP-TRIP MACHINE~JUNGLE MIX~/SP-TRIP MACHINE~JUNGLE MIX~.sm"
     },
     {
-      "title": "END OF THE CENTURY",
-      "artist": "NO.9"
+      "path": "sm/DDR/Butterfly/Butterfly.sm"
     },
     {
-      "title": "FLASHDANCE(WHAT A FEELING)",
-      "artist": "MAGIKA"
+      "path": "sm/DDR/Have You Never Been Mellow/Have You Never Been Mellow.sm"
     },
     {
-      "title": "TURN ME ON(HEAVENLY MIX)",
-      "artist": "E-ROTIC"
+      "path": "sm/DDR/KUNG FU FIGHTING/KUNG FU FIGHTING.sm"
     },
     {
-      "title": "BOOM BOOM DOLLAR(K.O.G G3 MIX)",
-      "artist": "King Kong & D.Jungle Girls"
+      "path": "sm/DDR/Little Bitch/Little Bitch.sm"
     },
     {
-      "title": "DYNAMITE RAVE",
-      "artist": "NAOKI"
+      "path": "sm/DDR/LET'S GET DOWN/LET'S GET DOWN.sm"
     },
     {
-      "title": "AFRONOVA",
-      "artist": "RE-VENGE"
+      "path": "sm/DDR/STRICTLY BUSINESS/STRICTLY BUSINESS.sm"
     },
     {
-      "title": "DEAD END",
-      "artist": "N&S"
+      "path": "sm/DDR/That's The Way (I Like It)/That's The Way (I Like It).sm"
     },
     {
-      "title": "PARANOiA Rebirth",
-      "artist": "190'"
+      "path": "sm/DDR/MAKE IT BETTER/MAKE IT BETTER.sm"
     },
     {
-      "title": "gentle stress (AMD SEXUAL MIX)",
-      "artist": "MR.DOG feat. DJ SWAN"
+      "path": "sm/DDR/PARANOiA/PARANOiA.sm"
     },
     {
-      "title": "GRADIUSIC CYBER (AMD G5 MIX)",
-      "artist": "BIG-O feat. TAKA"
+      "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm"
     },
     {
-      "title": "Jam Jam Reggae (AMD SWING MIX)",
-      "artist": "RICE.C feat. jam master '73"
+      "path": "sm/3rd/GET UP AND DANCE/GET UP AND DANCE.sm"
     },
     {
-      "title": "LUV TO ME (AMD MIX)",
-      "artist": "DJ KAZU feat. tiger YAMATO"
+      "path": "sm/3rd/Silent Hill/Silent Hill.sm"
+    },
+    {
+      "path": "sm/3rd/UPSIDE DOWN/UPSIDE DOWN.sm"
+    },
+    {
+      "path": "sm/3rd/IT ONLY TAKES A MINUTE (Extended Remix)/IT ONLY TAKES A MINUTE (Extended Remix).sm"
+    },
+    {
+      "path": "sm/3rd/SO MANY MEN/SO MANY MEN.sm"
+    },
+    {
+      "path": "sm/3rd/DO IT ALL NIGHT/DO IT ALL NIGHT.sm"
+    },
+    {
+      "path": "sm/3rd/THE RACE/THE RACE.sm"
+    },
+    {
+      "path": "sm/3rd/HOLIDAY/HOLIDAY.sm"
+    },
+    {
+      "path": "sm/3rd/OH NICK PLEASE NOT SO QUICK/OH NICK PLEASE NOT SO QUICK.sm"
+    },
+    {
+      "path": "sm/3rd/IF YOU CAN SAY GOODBYE/IF YOU CAN SAY GOODBYE.sm"
+    },
+    {
+      "path": "sm/3rd/MR. WONDERFUL/MR. WONDERFUL.sm"
+    },
+    {
+      "path": "sm/3rd/WONDERLAND (UKS MIX)/WONDERLAND (UKS MIX).sm"
+    },
+    {
+      "path": "sm/3rd/GET UP (BEFORE THE NIGHT IS OVER)/GET UP (BEFORE THE NIGHT IS OVER).sm"
+    },
+    {
+      "path": "sm/3rd/butterfly (UPSWING MIX)/butterfly (UPSWING MIX).sm"
+    },
+    {
+      "path": "sm/3rd/DAM DARIRAM/DAM DARIRAM.sm"
+    },
+    {
+      "path": "sm/3rd/IN THE NAVY '99 (XXL Disaster Remix)/IN THE NAVY '99 (XXL Disaster Remix).sm"
+    },
+    {
+      "path": "sm/3rd/La Senorita/La Senorita.sm"
+    },
+    {
+      "path": "sm/3rd/FOLLOW THE SUN (90 IN THE SHADE MIX)/FOLLOW THE SUN (90 IN THE SHADE MIX).sm"
+    },
+    {
+      "path": "sm/3rd/VOL.4/VOL.4.sm"
+    },
+    {
+      "path": "sm/3rd/ROCK BEAT/ROCK BEAT.sm"
+    },
+    {
+      "path": "sm/3rd/CAPTAIN JACK (GRANDALE REMIX)/CAPTAIN JACK (GRANDALE REMIX).sm"
+    },
+    {
+      "path": "sm/3rd/END OF THE CENTURY/END OF THE CENTURY.sm"
+    },
+    {
+      "path": "sm/3rd/FLASHDANCE (WHAT A FEELING)/FLASHDANCE (WHAT A FEELING).sm"
+    },
+    {
+      "path": "sm/3rd/TURN ME ON (HEAVENLY MIX)/TURN ME ON (HEAVENLY MIX).sm"
+    },
+    {
+      "path": "sm/3rd/BOOM BOOM DOLLAR (K.O.G G3 MIX)/BOOM BOOM DOLLAR (K.O.G G3 MIX).sm"
+    },
+    {
+      "path": "sm/3rd/DYNAMITE RAVE/DYNAMITE RAVE.sm"
+    },
+    {
+      "path": "sm/3rd/AFRONOVA/AFRONOVA.sm"
+    },
+    {
+      "path": "sm/3rd/DEAD END/DEAD END.sm"
+    },
+    {
+      "path": "sm/3rd/PARANOiA Rebirth/PARANOiA Rebirth.sm"
+    },
+    {
+      "path": "sm/3rd/gentle stress (AMD SEXUAL MIX)/gentle stress (AMD SEXUAL MIX).sm"
+    },
+    {
+      "path": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~.sm"
+    },
+    {
+      "path": "sm/3rd/LUV TO ME (AMD MIX)/LUV TO ME (AMD MIX).sm"
     }
   ],
   "issues": []

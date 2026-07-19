@@ -31,16 +31,21 @@ export default function TurnstileWidget({ siteKey, onVerify, theme = 'auto' }) {
       script.src = src;
       script.async = true;
       script.defer = true;
-      script.onload = render;
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        render();
+      };
       document.head.appendChild(script);
     } else if (script.dataset.loaded) {
       render();
     } else {
-      script.addEventListener('load', render, { once: true });
+      script.addEventListener('load', () => {
+        script.dataset.loaded = 'true';
+        render();
+      }, { once: true });
     }
   }, [siteKey, onVerify, theme]);
 
   if (!siteKey) return null;
   return <div ref={ref} />;
 }
-

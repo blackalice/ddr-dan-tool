@@ -14,6 +14,21 @@ import { getScoreGlowClasses } from '../utils/scoreHighlight.js';
 import { formatRankedRating } from '../utils/formatRankedRating.js';
 import GameLogo from './GameLogo.jsx';
 
+let songMetaByPathPromise;
+
+const getSongMetaByPath = () => {
+  if (!songMetaByPathPromise) {
+    songMetaByPathPromise = getSongMeta().then(
+      (meta) => new Map(meta.map((entry) => [entry.path, entry])),
+      (error) => {
+        songMetaByPathPromise = null;
+        throw error;
+      },
+    );
+  }
+  return songMetaByPathPromise;
+};
+
 const difficultyDisplayMap = {
     single: {
         beginner: { name: "bSP", color: "#4DB6AC", textColor: "#000000" },
@@ -83,7 +98,7 @@ const formatLevelText = (level) => {
 
 const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, score, scoreHighlight = false, forceShowRankedRating = false, dragAttributes = {}, dragListeners = {}, showDragHandle = false, skipScoreLookup = false, bpmOnly = false, showArtist = false, showJacket = false, jacketFull = false, showGameLogo = false, showGameWithDifficulty = false, levelInTitleBlock = false, onCardClick, cardTag = null, showScoreSlice = false, scoreSliceLeft = null, scoreSliceRight = null, scoreSliceClassName = "" }) => {
   const { targetBPM, multipliers, setPlayStyle, showRankedRatings, showTransliterationBeta } = useContext(SettingsContext);
-  const { scores } = useScores();
+  const { scores, hasScores } = useScores();
   const navigate = useNavigate();
   const [derivedArtist, setDerivedArtist] = React.useState(null);
   const [derivedTitleTranslit, setDerivedTitleTranslit] = React.useState(null);
@@ -105,8 +120,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
         return;
       }
       try {
-        const meta = await getSongMeta();
-        const m = meta.find(x => x.path === song.path);
+        const metaByPath = await getSongMetaByPath();
+        const m = metaByPath.get(song.path);
         if (cancelled) return;
         if (needsArtist) setDerivedArtist(m?.artist || null);
         if (needsTranslit) {
@@ -132,6 +147,8 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     if (!song || !song.difficulty || !song.mode) return null;
     const artist = song.artist || derivedArtist || undefined;
     return resolveScore(scores, song.mode, {
+      songKey: song.songKey || song.path,
+      path: song.path,
       chartId: song.chartId,
       songId: song.songId || song.id,
       title: song.title,
@@ -156,12 +173,6 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
     : rawArtist;
   const jacketPath = song?.jacket || "";
 
-  const hasScores = React.useMemo(
-    () =>
-      Object.keys(scores.single || {}).length > 0 ||
-      Object.keys(scores.double || {}).length > 0,
-    [scores]
-  );
   const showSlice = hasScores;
   const shouldShowSlice = showSlice || showScoreSlice;
 
@@ -364,6 +375,7 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
                   <span
                     className="difficulty-badge"
                     style={{ backgroundColor: difficultyInfo.color, color: difficultyInfo.textColor }}
+                    data-difficulty={song.difficulty}
                     data-level={levelText || undefined}
                   >
                     {difficultyInfo.name}
@@ -404,4 +416,4 @@ const SongCard = ({ song, resetFilters, onRemove, onEdit, highlight = false, sco
   );
 };
 
-export default SongCard;
+export default React.memo(SongCard);

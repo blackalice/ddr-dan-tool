@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { parseSm } from '../src/utils/smParser.js';
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 import { buildChartId } from '../src/utils/chartIds.js';
+import { buildChartKey } from '../src/utils/chartIdentity.js';
 import {
   collectStats,
   mergeStats,
@@ -366,6 +367,7 @@ async function main() {
               feet: c.feet,
               rankedRating: rating,
               chartId,
+              chartKey: buildChartKey(file.path, c.mode, c.difficulty),
               hasShock,
               ...(stepmaniaTech ? { stepmaniaTech } : {}),
             };
@@ -389,6 +391,7 @@ async function main() {
         results.push({
           id: songId,
           path: file.path,
+          songKey: file.path,
           title: simfile.title,
           titleTranslit: simfile.titletranslit,
           artist: simfile.artist,

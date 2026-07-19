@@ -139,6 +139,35 @@
   gap: 0;
 }
 
+.card-draw-focus-group {
+  position: relative;
+  isolation: isolate;
+}
+
+@media (min-width: 641px) {
+  .card-draw-focus-group::after {
+    position: absolute;
+    z-index: 20;
+    inset: 0;
+    border-radius: var(--radius-md);
+    background: rgba(6, 8, 10, 0.18);
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .card-draw-focus-group.is-draw-muted::after {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-draw-focus-group::after {
+    transition: none;
+  }
+}
+
 .card-draw-history-grid {
   border-top-left-radius: var(--radius-sm);
   border-top-right-radius: var(--radius-sm);
@@ -153,10 +182,18 @@
   );
 }
 
-.card-draw-history-actions {
+.card-draw-header-actions {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 0.4rem;
+}
+
+.card-draw-focus-group > .dan-header > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card-draw-history-set .song-grid {
@@ -186,7 +223,7 @@
   min-width: 0;
 }
 
-.card-draw-label-field span {
+.card-draw-label-field > span:first-child {
   color: var(--text-muted-color);
   font-size: 0.72rem;
   font-weight: 700;
@@ -285,10 +322,66 @@
 }
 
 .card-draw-slice-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 700;
   text-transform: none;
   min-width: 0;
   max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-draw-label-input-wrap {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.card-draw-label-lock {
+  position: absolute;
+  top: 50%;
+  right: 0.3rem;
+  z-index: 1;
+  width: 1.7rem;
+  height: 1.7rem;
+  transform: translateY(-50%);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted-color);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.card-draw-label-lock:hover {
+  color: var(--text-color);
+  background: var(--button-bg);
+  border-color: var(--border-color);
+}
+
+.card-draw-label-lock.is-locked {
+  color: var(--accent-color-light);
+  background: color-mix(in srgb, var(--accent-color) 18%, var(--button-bg));
+  border-color: var(--accent-color);
+}
+
+.card-draw-label-lock:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.card-draw-label-input-wrap input {
+  padding-right: 2.45rem;
+}
+
+.card-draw-slice-action,
+.card-draw-slice-player {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

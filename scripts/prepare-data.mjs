@@ -4,6 +4,7 @@ import { spawn } from 'node:child_process'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import os from 'node:os'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const CACHE_DIR = path.join(ROOT, 'data', 'generated', '.cache')
@@ -11,7 +12,10 @@ const PIPELINE_CACHE = path.join(CACHE_DIR, 'data-pipeline-v2.json')
 const HASH_CACHE = path.join(CACHE_DIR, 'content-hashes-v1.json')
 const FORCE = process.argv.includes('--force')
 const VALIDATE = process.argv.includes('--validate')
-const MAX_PARALLEL = Math.max(1, Number.parseInt(process.env.DATA_PREPARE_JOBS || '3', 10) || 3)
+const MAX_PARALLEL = Math.max(
+  1,
+  Number.parseInt(process.env.DATA_PREPARE_JOBS || '', 10) || os.cpus().length - 1 || 3
+)
 
 const rel = (...parts) => path.join(ROOT, ...parts)
 const scripts = (...names) => names.map(name => rel('scripts', name))
@@ -52,6 +56,16 @@ const tasks = [
     outputs: files('data/generated/sm-files.json'),
   },
   {
+    id: 'song-index',
+    command: 'generate-song-index.mjs',
+    deps: ['sm-list'],
+    inputs: [
+      { file: rel('data', 'generated', 'sm-files.json') },
+    ],
+    sources: scripts('generate-song-index.mjs'),
+    outputs: files('data/generated/song-index.json'),
+  },
+  {
     id: 'processed-data',
     command: 'generate-processed-data.mjs',
     deps: ['sm-list', 'sanbai-rankings'],
@@ -62,7 +76,7 @@ const tasks = [
       { file: rel('data', 'rankings', 'combined_song_ratings.json') },
       { file: rel('data', 'song-ids.json') },
     ],
-    sources: scripts('generate-processed-data.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'),
+    sources: [...scripts('generate-processed-data.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'), ...files('src/utils/chartIdentity.js')],
     outputs: files('data/generated/dan-data.json', 'data/generated/vega-data.json', 'data/generated/courses-data.json'),
   },
   {
@@ -85,7 +99,8 @@ const tasks = [
       { tree: rel('data', 'simfiles'), match: /\.(sm|ssc)$/i },
     ],
     sources: [
-      ...scripts('extract-stepmania-tech-counts.mjs', 'itgmania-tech-counts.mjs', 'cache-utils.mjs'),
+      ...scripts('extract-stepmania-tech-counts.mjs', 'extract-stepmania-tech-worker.mjs',
+        'stepmania-tech-counts-utils.mjs', 'itgmania-tech-counts.mjs', 'cache-utils.mjs'),
       ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartMetrics.js'),
     ],
     outputs: files('data/generated/stepmania-tech-counts.json'),
@@ -114,7 +129,7 @@ const tasks = [
     ],
     sources: [
       ...scripts('generate-song-meta.mjs', 'songIdUtils.mjs', 'cache-utils.mjs'),
-      ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartIds.js'),
+      ...files('src/utils/smParser.js', 'src/utils/smParserUtils.js', 'src/utils/chartIds.js', 'src/utils/chartIdentity.js'),
     ],
     outputs: files('data/generated/song-meta.json'),
   },
@@ -130,14 +145,30 @@ const tasks = [
     outputs: files('src/utils/worldNewChallengeChartsData.js'),
   },
   {
+    id: 'song-identities',
+    command: 'validate-song-identities.mjs',
+    deps: ['song-meta'],
+    inputs: [
+      { tree: rel('data', 'ddr-ver'), match: /\.json$/i },
+      { file: rel('data', 'generated', 'sm-files.json') },
+      { file: rel('data', 'generated', 'song-meta.json') },
+    ],
+    sources: [
+      ...scripts('validate-song-identities.mjs'),
+      ...files('src/utils/chartIdentity.js', 'src/utils/stringSimilarity.js'),
+    ],
+    outputs: [],
+  },
+  {
     id: 'public-sync',
     command: 'sync-public-assets.mjs',
-    deps: ['processed-data', 'world-challenges'],
+    deps: ['processed-data', 'world-challenges', 'song-index', 'song-identities'],
     alwaysRun: true,
     inputs: [],
     sources: scripts('sync-public-assets.mjs'),
     outputs: files(
       'public/sm-files.json',
+      'public/song-index.json',
       'public/song-meta.json',
       'public/song-lengths.json',
       'public/dan-data.json',

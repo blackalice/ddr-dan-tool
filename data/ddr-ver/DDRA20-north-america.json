@@ -9,887 +9,2651 @@
   "basedOn": "DDRA20-mainline.json",
   "removedSongCount": 19,
   "songs": [
-    "Alone",
-    "Clarity",
-    "I'm an Albatraoz",
-    "New Rules",
-    "No Tears Left to Cry",
-    "Party Rock Anthem",
-    "Play Hard",
-    "Something Just Like This (Alesso Remix)",
-    "毒占欲",
-    "腐れ外道とチョコレゐト",
-    "妄想感傷代償連盟",
-    "ライアーダンス",
-    "すきなことだけでいいです",
-    "タイガーランペイジ",
-    "50th Memorial Songs -Beginning Story-",
-    "50th Memorial Songs -Flagship medley-",
-    "50th Memorial Songs -The BEMANI History-",
-    "50th Memorial Songs -二人の時 ～under the cherry blossoms～-",
-    "Afterimage d'automne",
-    "BLACK JACKAL",
-    "BLSTR",
-    "Bounce Trippy",
-    "Crazy Shuffle",
-    "CROSS",
-    "Dead Heat",
-    "DIGITAL LUV",
-    "District of the Shadows",
-    "DOWNER & UPPER",
-    "Drop The Bounce",
-    "ENDLESS",
-    "F4SH10N",
-    "Firestorm",
-    "Get On Da Floor",
-    "Helios",
-    "Hunny Bunny",
-    "I Love You",
-    "IRON HEART",
-    "Lachryma《Re:Queen’M》",
-    "LEVEL UP",
-    "Mythomane",
-    "Neverland",
-    "ORCA",
-    "Our Soul",
-    "ΩVERSOUL",
-    "Procyon",
-    "Re:GENERATION",
-    "Right Time Right Way",
-    "Seta Para Cima↑↑",
-    "Silly Love",
-    "Six String Proof",
-    "Skywalking",
-    "Small Steps",
-    "SODA GALAXY",
-    "Splash Gold",
-    "Starry Sky",
-    "Stay 4 Ever",
-    "SWEET HOME PARTY",
-    "The History of the Future",
-    "This Beat Is.....",
-    "Toy Box Factory",
-    "toy boxer",
-    "Trill auf G",
-    "Une mage blanche",
-    "voltississimo",
-    "Waiting",
-    "ベビーステップ",
-    "び",
-    "どきドキ バレンタイン",
-    "ホーンテッド★メイドランチ",
-    "ヒカリユリイカ",
-    "星屑の夜果て",
-    "革命パッショネイト",
-    "ラブキラ☆スプラッシュ",
-    "ミッドナイト☆WAR",
-    "未完成ノ蒸氣驅動乙女 (DDR Edition)",
-    "未来（ダ）FUTURE",
-    "熱情のサパデアード",
-    "おーまい！らぶりー！すうぃーてぃ！だーりん！",
-    "ランカーキラーガール",
-    "最小三倍完全数",
-    "スイーツはとまらない♪",
-    "39",
-    "Believe",
-    "Break Free",
-    "Grip & Break down !!",
-    "Happy",
-    "Help me, ERINNNNNN!!",
-    "Hillbilly Shoes",
-    "I Want You To Know",
-    "More One Night",
-    "Shut Up and Dance",
-    "Time Of Our Lives",
-    "Wake Me Up",
-    "愛言葉",
-    "エイリアンエイリアン",
-    "天ノ弱",
-    "ありふれたせかいせいふく",
-    "無頼ック自己ライザー",
-    "チルノのパーフェクトさんすう教室",
-    "ハッピーシンセサイザ",
-    "向日葵サンセット",
-    "放課後ストライド",
-    "色は匂へど散りぬるを",
-    "君氏危うくも近うよれ",
-    "魔理沙は大変なものを盗んでいきました",
-    "妄想税",
-    "ナイト・オブ・ナイツ",
-    "おねがいダーリン",
-    "プレインエイジア -PHQ remix-",
-    "輪廻転生",
-    "六兆年と一夜物語",
-    "ロールプレイングゲーム",
-    "炉心融解",
-    "千年ノ理",
-    "すろぉもぉしょん",
-    "いーあるふぁんくらぶ",
-    "ようこそジャパリパークへ",
-    "*ハロー、プラネット。",
-    "ACE FOR ACES",
-    "ALGORITHM",
-    "ALL MY HEART -この恋に、わたしの全てを賭ける-",
-    "Angelic Jelly",
-    "ANNIVERSARY ∴∵∴ ←↓↑→",
-    "Astrogazer",
-    "Be a Hero!",
-    "Boss Rush",
-    "Catch Our Fire!",
-    "CHAOS Terror-Tech Mix",
-    "CHOCOLATE PHILOSOPHY",
-    "Chronos (walk with you remix)",
-    "Come to Life",
-    "Cosy Catastrophe",
-    "Cytokinesis",
-    "DANCE ALL NIGHT (DDR EDITION)",
-    "Dancer in the flare",
-    "DDR MEGAMIX",
-    "DREAMING-ING!!",
-    "Electric Dance System Music",
-    "Emera",
-    "ENDYMION",
-    "Eternal Summer",
-    "Far east nightbird",
-    "Far east nightbird kors k Remix -DDR edit ver-",
-    "First Time",
-    "Fly far bounce",
-    "Grand Chariot",
-    "Ha・lle・lu・jah",
-    "HANDS UP IN THE AIR",
-    "High School Love",
-    "Hopeful",
-    "Illegal Function Call",
-    "IN BETWEEN",
-    "invisible rain",
-    "Ishtar",
-    "Jewelry days",
-    "Lesson by DJ",
-    "Life is beautiful",
-    "Love♡Shine わんだふるmix",
-    "Love You More",
-    "MAX 360",
-    "Neutrino",
-    "New Century",
-    "#OurMemories",
-    "out of focus",
-    "POSSESSION (20th Anniversary Mix)",
-    "Prey",
-    "Puberty Dysthymia",
-    "Pursuer",
-    "Reach The Sky, Without you",
-    "Rejoin",
-    "RISING FIRE HAWK",
-    "Sakura Reflection",
-    "Sephirot",
-    "SHION",
-    "Show me your moves",
-    "siberite",
-    "S!ck",
-    "Smiling Passion",
-    "Special One",
-    "Star Trail",
-    "Start a New Day",
-    "STERLING SILVER",
-    "STERLING SILVER (U1 overground mix)",
-    "Strawberry Chu♡Chu♡",
-    "StrayedCatz",
-    "SUN² SUMMER STEP!",
-    "SUPER SUMMER SALE",
-    "TECH-NOID",
-    "Towards the TOWER",
-    "Triple Counter",
-    "Twin memories W",
-    "Vanquish The Ghost",
-    "Yeah! Yeah!",
-    "ZEPHYRANTHES",
-    "ベィスドロップ・フリークス",
-    "打打打打打打打打打打",
-    "エキサイティング！！も・ちゃ・ちゃ☆",
-    "風鈴花火",
-    "ハピ恋☆らぶりぃタイム!!",
-    "ハルイチバン",
-    "十二星座の聖域",
-    "恋のパズルマジック",
-    "恋時雨",
-    "恋する☆宇宙戦争っ!!",
-    "倉野川音頭",
-    "黒髪乱れし修羅となりて～凛 edition～",
-    "ルミナスデイズ",
-    "魔法のたまご ～心菜 ELECTRO POP edition～",
-    "朧",
-    "朧 (dj TAKA Remix)",
-    "恋愛観測",
-    "ロンロンへ ライライライ！",
-    "さよならトリップ ～夏陽 EDM edition～",
-    "シュレーディンガーの猫",
-    "星座が恋した瞬間を。",
-    "しゃかりきリレーション",
-    "春風ブローインウィンド",
-    "宇宙(ソラ)への片道切符",
-    "闘え！ダダンダーンＶ",
-    "Bad Apple!! feat. nomico",
-    "Determination",
-    "M.A.Y.U.",
-    "Scarlet Moon",
-    "Struggle",
-    "The Night Away (MK Remix)",
-    "朝色の紙飛行機",
-    "妖隠し -あやかしかくし-",
-    "バンブーソード・ガール",
-    "チルノのパーフェクトさんすう教室 (EDM REMIX)",
-    "イーディーエム・ジャンパーズ",
-    "幻想系世界修復少女",
-    "はなまるぴっぴはよいこだけ",
-    "ホメ猫☆センセーション",
-    "ラクガキスト",
-    "セツナトリップ",
-    "8000000",
-    "Adularia",
-    "AWAKE",
-    "bass 2 bass",
-    "chaos eater",
-    "Cleopatrysm",
-    "Dance Partay",
-    "Destination",
-    "Din Don Dan",
-    "Dreamin'",
-    "EGOISM 440",
-    "Electronic or Treat!",
-    "Elysium",
-    "Follow Tomorrow",
-    "FUJIMORI -祭- FESTIVAL",
-    "FUNKY SUMMER BEACH",
-    "Go↓Go↑Girls&Boys!",
-    "Habibe (Antuh muhleke)",
-    "HAPPY☆LUCKY☆YEAPPY",
-    "HEART BEAT FORMULA (Vinyl Mix)",
-    "Idola",
-    "IMANOGUILTS",
-    "In The Breeze",
-    "JOMANDA",
-    "KHAMEN BREAK",
-    "LoveLove DokiDoki",
-    "MAX.(period)",
-    "MITOれて！いばらきっしゅだ～りん",
-    "neko＊neko",
-    "Nostalgia Is Lost",
-    "One Sided Love",
-    "Over The “Period”",
-    "Party Lights (Tommie Sunshine's Brooklyn Fire Remix)",
-    "Plan 8",
-    "Poochie",
-    "POSSESSION(EDP Live Mix)",
-    "PRANA＋REVOLUTIONARY ADDICT (U1 DJ Mix)",
-    "Remain",
-    "Sakura Mirage",
-    "Samurai Shogun vs. Master Ninja",
-    "Sand Blow",
-    "second spring storm",
-    "SPECIAL SUMMER CAMPAIGN!",
-    "Starlight Fantasia",
-    "Starlight Fantasia (Endorphins Mix)",
-    "starmine",
-    "Summer fantasy (Darwin remix)",
-    "SUPER HERO",
-    "Thank You Merry Christmas",
-    "The Lonely Streets",
-    "Truare!",
-    "TSUBASA",
-    "阿波おどり -Awaodori- やっぱり踊りはやめられない",
-    "爆なな☆てすとロイヤー",
-    "ビビットストリーム",
-    "地方創生☆チクワクティクス",
-    "チョコレートスマイル",
-    "ちゅ～いん☆バニー",
-    "クリムゾンゲイト",
-    "ドキドキ☆流星トラップガール!!",
-    "ドーパミン",
-    "エンドルフィン",
-    "激アツ☆マジヤバ☆チアガール",
-    "この青空の下で",
-    "きゅん×きゅんばっきゅん☆LOVE",
-    "滅亡天使 † にこきゅっぴん",
-    "ミライプリズム",
-    "嘆きの樹",
-    "夏色DIARY -DDR mix-",
-    "女言葉の消失",
-    "御千手メディテーション",
-    "乙女繚乱 舞い咲き誇れ",
-    "パ→ピ→プ→Yeah!",
-    "灼熱Beach Side Bunny",
-    "漆黒のスペシャルプリンセスサンデー",
-    "天空の華",
-    "突撃! ガラスのニーソ姫!",
-    "海神",
-    "ヤマトなでなで♡かぐや姫",
-    "ACROSS WORLD",
-    "JOKER",
-    "Starry HEAVEN",
-    "回レ! 雪月花",
-    "ずっとみつめていて (Ryu☆Remix)",
-    "IX",
-    "ÆTHER",
-    "Ah La La La",
-    "Air Heroes",
-    "Another Phase",
-    "Back In Your Arms",
-    "Beautiful Dream",
-    "Blew My Mind",
-    "Bombay Bomb",
-    "Children of the Beat",
-    "Chinese Snowy Dance",
-    "Condor",
-    "Confession",
-    "Daily Lunch Special",
-    "Desert Journey",
-    "Diamond Night",
-    "Dispersion Star",
-    "Do The Evolution",
-    "Elemental Creation",
-    "Empathetic",
-    "Engraved Mark",
-    "escape",
-    "esrev:eR",
-    "Everything I Need",
-    "Find The Way",
-    "GAIA",
-    "heron",
-    "Hoping To Be Good",
-    "HYENA",
-    "Magnetic",
-    "Monkey Business",
-    "New Generation",
-    "New Gravity",
-    "nightbird lost wing",
-    "PRANA",
-    "printemps",
-    "PUNISHER",
-    "Qipchāq",
-    "RЁVOLUTIΦN",
-    "Right on time (Ryu☆Remix)",
-    "Romancing Layer",
-    "SABER WING (satellite silhouette remix)",
-    "sola",
-    "Somehow You Found Me",
-    "south",
-    "Spanish Snowy Dance",
-    "Squeeze",
-    "Stella Sinistra",
-    "Straight Oath",
-    "STULTI",
-    "Sucka Luva",
-    "Summer Fairytale",
-    "Sweet Rain",
-    "Synergy For Angels",
-    "Tell me what to do",
-    "The Island Song",
-    "THE REASON",
-    "The Wind of Gold",
-    "Top The Charts",
-    "Triple Journey -TAG EDITION-",
-    "True Blue",
-    "VEGA",
-    "WILD SIDE",
-    "Windy Fairy",
-    "Wow Wow VENUS",
-    "You",
-    "ちくわパフェだよ☆ＣＫＰ",
-    "からふるぱすてる",
-    "デッドボヲルdeホームラン",
-    "星屑のキロク",
-    "キケンな果実",
-    "恋はどう？モロ◎波動OK☆方程式！！",
-    "ラキラキ",
-    "めうめうぺったんたん！！",
-    "マインド・ゲーム",
-    "†渚の小悪魔ラヴリィ～レイディオ†",
-    "虹色の花",
-    "お米の美味しい炊き方、そしてお米を食べることによるその効果。",
-    "凛として咲く花の如く ～ひなビタ♪ edition～",
-    "晴天Bon Voyage",
-    "創世ノート",
-    "轟け！恋のビーンボール！！",
-    "フー・フローツ",
-    "野球の遊び方 そしてその歴史 ～決定版～",
-    "COME BACK TO MY HEART",
-    "Amalgamation",
-    "Chronos",
-    "Cosmic Hurricane",
-    "CRAZY♥LOVE",
-    "Diamond Dust",
-    "dreaming can make a wish come true",
-    "ever snow",
-    "Fever",
-    "Find You Again",
-    "FLOWER",
-    "Get Back Up!",
-    "Go For The Top",
-    "Haunted Rhapsody",
-    "HEART BEAT FORMULA",
-    "HEARTBREAK (Sound Selektaz remix)",
-    "In The Air",
-    "IN THE ZONE",
-    "I/O",
-    "Let's Get Away",
-    "London EVOLVED ver.A",
-    "London EVOLVED ver.B",
-    "London EVOLVED ver.C",
-    "LOVE IS THE POWER -Re:born-",
-    "MAGIC PARADE",
-    "Mermaid girl",
-    "message",
-    "NEPHILIM DELTA",
-    "New Beginning",
-    "New York EVOLVED (Type A)",
-    "New York EVOLVED (Type B)",
-    "New York EVOLVED (Type C)",
-    "osaka EVOLVED -毎度、おおきに！- (TYPE1)",
-    "osaka EVOLVED -毎度、おおきに！- (TYPE2)",
-    "osaka EVOLVED -毎度、おおきに！- (TYPE3)",
-    "PARANOiA Revolution",
-    "Private Eye",
-    "Programmed Universe",
-    "REBORN MAGIC",
-    "Rescue Me",
-    "Resurrection",
-    "REVOLUTIONARY ADDICT",
-    "Rhythms Inside",
-    "Seasons",
-    "Seule",
-    "Share The Love",
-    "SigSig",
-    "SILVER☆DREAM",
-    "snow prism",
-    "Something Special",
-    "Take A Step Forward",
-    "The Heavens Above",
-    "TIME",
-    "Tohoku EVOLVED",
-    "tokyoEVOLVED (TYPE1)",
-    "tokyoEVOLVED (TYPE2)",
-    "tokyoEVOLVED (TYPE3)",
-    "Tribe",
-    "TRIP MACHINE EVOLUTION",
-    "TWINKLE♡HEART",
-    "UNBELIEVABLE (Sparky remix)",
-    "Until the End",
-    "Wicked Plastik",
-    "Wings of an Angel (Fly With Me)",
-    "アルストロメリア (walk with you remix)",
-    "ビューティフル レシート",
-    "紅焔",
-    "恋閃繚乱",
-    "繚乱ヒットチャート",
-    "雫",
-    "隅田川夏恋歌",
-    "天上の星～黎明記～",
-    "only my railgun",
-    "resonance",
-    "888",
-    "A Brighter Day",
-    "aftershock!!",
-    "All My Love",
-    "Anti-Matter",
-    "BALLAD THE FEATHERS",
-    "CG Project",
-    "Crazy Control",
-    "Dazzlin' Darlin",
-    "Dazzlin' Darlin-秋葉工房mix-",
-    "Decade",
-    "ΔMAX",
-    "dirty digital",
-    "DROP",
-    "Dummy",
-    "FIRE FIRE",
-    "Freeze",
-    "going up",
-    "GOLD RUSH",
-    "Gotta Dance",
-    "Heatstroke",
-    "I'm so Happy",
-    "in love wit you",
-    "KIMONO♥PRINCESS",
-    "KISS KISS KISS 秋葉工房 MIX",
-    "La libertad",
-    "La receta",
-    "Leaving...",
-    "Love Again",
-    "MAX LOVE",
-    "Melody Life",
-    "New Decade",
-    "oarfish",
-    "Pierce The Sky",
-    "Pluto The First",
-    "Poseidon(kors k mix)",
-    "POSSESSION",
-    "real-high-SPEED",
-    "roppongi EVOLVED ver.A",
-    "roppongi EVOLVED ver.B",
-    "roppongi EVOLVED ver.C",
-    "roppongi EVOLVED ver.D",
-    "Sacred Oath",
-    "sakura storm",
-    "Sakura Sunrise",
-    "Second Heaven",
-    "She is my wife",
-    "Shine",
-    "☆shining☆",
-    "Shiny World",
-    "Sky Is The Limit",
-    "smooooch ・∀・",
-    "someday...",
-    "Taking It To The Sky",
-    "Theory of Eternity",
-    "THIS NIGHT",
-    "Valkyrie dimension",
-    "VANESSA",
-    "What Will Come of Me",
-    "WH1TE RO5E",
-    "You are a Star",
-    "Your Angel",
-    "ZETA～素数の世界と超越者～",
-    "不沈艦CANDY",
-    "冥",
-    "30 Lives (Up-Up-Down-Dance Mix)",
-    "Till the lonely's gone",
-    "A Geisha's Dream",
-    "Beautiful Inside (Cube::Hard Mix)",
-    "Blue Rain",
-    "Chance and Dice",
-    "Dance Celebration",
-    "Dance Celebration (System 7 Remix)",
-    "Dance Floor",
-    "dazzle",
-    "Dream Machine",
-    "Flight of the Phoenix",
-    "Flourish",
-    "Horatio",
-    "Inspiration",
-    "INTO YOUR HEART (Ruffage remix)",
-    "Lift You Up",
-    "LOVING YOU (Epidemik remix)",
-    "Malacca",
-    "on the bounce",
-    "On The Break",
-    "Party Lights",
-    "Playa (Original Mix)",
-    "puzzle",
-    "SABER WING",
-    "SABER WING (Akira Ishihara Headshot mix)",
-    "S・A・G・A",
-    "Slip Out",
-    "Slip Out (bounce in beat mix)",
-    "SUPER SAMURAI",
-    "Taj He Spitz",
-    "Taj He Spitz (Tommie Sunshine's Brooklyn Fire Re-Touch)",
-    "Take A Chance",
-    "The flower in your smile",
-    "Ticket to Bombay",
-    "TimeHollow",
-    "Tracers (4Beat Remix)",
-    "Trigger",
-    "Übertreffen",
-    "Waiting 4 u",
-    "will",
-    "凛として咲く花の如く",
-    "零 - ZERO -",
-    "AFRONOVA(X-Special)",
-    "CANDY☆(X-Special)",
-    "Dance Dance Revolution(X-Special)",
-    "Healing Vision(X-Special)",
-    "MAX 300(X-Special)",
-    "MAXX UNLIMITED(X-Special)",
-    "PARANOiA(X-Special)",
-    "PARANOiA ETERNAL(X-Special)",
-    "PARANOIA EVOLUTION(X-Special)",
-    "PARANOiA MAX～DIRTY MIX～(X-Special)",
-    "PARANOiA Rebirth(X-Special)",
-    "SP-TRIP MACHINE～JUNGLE MIX～(X-Special)",
-    "The legend of MAX(X-Special)",
-    "TRIP MACHINE(X-Special)",
-    "TRIP MACHINE CLIMAX(X-Special)",
-    "革命(X-Special)",
-    "A thing called LOVE",
-    "Arrabbiata",
-    "Blind Justice ～Torn souls, Hurt Faiths～",
-    "Bloody Tears(IIDX EDITION)",
-    "CaptivAte～誓い～",
-    "dream of love",
-    "Electrified",
-    "Every Day, Every Night(NM STYLE)",
-    "Feelings Won't Fade(Extend Trance Mix)",
-    "FIRE",
-    "Flow (Jammin' Ragga Mix)",
-    "Fly away -mix del matador-",
-    "Freeway Shuffle",
-    "GIRIGILI門前雀羅",
-    "L'amour et la liberté(Darwin & DJ Silver remix)",
-    "MARS WAR 3",
-    "MOONSTER",
-    "Music In The Rhythm",
-    "NGO",
-    "PARANOiA ～HADES～",
-    "Pluto",
-    "Pluto Relinquish",
-    "Poseidon",
-    "Raspberry♥Heart (English version)",
-    "Saturn",
-    "Shades of Grey",
-    "Silver Platform - I wanna get your heart -",
-    "SOUL CRASH",
-    "Star Gate Heaven (FUTURE LOVE Mix)",
-    "STARS☆☆☆（Re-tuned by HΛL） - DDR EDITION -",
-    "stealth",
-    "SUNKiSS♥DROP",
-    "switch",
-    "Trim",
-    "TRIP MACHINE PhoeniX",
-    "Trust -DanceDanceRevolution mix-",
-    "Unreal",
-    "Uranus",
-    "Vem brincar",
-    "Venus",
-    "volcano",
-    "Votum stellarum -forest #25 DDR RMX-",
-    "Why not",
-    "AM-3P (\"CHAOS\" Special)",
-    "B4U (\"VOLTAGE\" Special)",
-    "BRILLIANT 2U (\"STREAM\" Special)",
-    "D2R (\"FREEZE\" Special)",
-    "DEAD END (\"GROOVE RADAR\" Special)",
-    "DYNAMITE RAVE (\"AIR\" Special)",
-    "A Stupid Barber",
-    "AA",
-    "Bad Routine",
-    "Baile Le Samba",
-    "BALLAD FOR YOU～想いの雨～",
-    "Brazilian Anthem",
-    "cachaca",
-    "Can Be Real",
-    "CAN'T STOP FALLIN' IN LOVE -super euro version-",
-    "CENTAUR",
-    "CHAOS",
-    "CURUS",
-    "DoLL",
-    "Dragon Blade",
-    "Fascination ～eternal love mix～",
-    "Fascination MAXX",
-    "Flow",
-    "Flow (True Style)",
-    "Fly away",
-    "Forever Sunshine",
-    "Freedom",
-    "Funk Boogie",
-    "GORGEOUS 2012",
-    "HAPPY☆ANGEL",
-    "Healing-D-Vision",
-    "I Need You",
-    "iFUTURELIST(DDR VERSION)",
-    "INNOCENCE OF SILENCE",
-    "INSIDE YOUR HEART",
-    "Jam & Marmalade",
-    "KEEP ON MOVIN' ～DMX MIX～",
-    "La Bamba",
-    "LOGICAL DASH",
-    "LOVE IS ORANGE",
-    "Make A Difference",
-    "MARIA(I believe...)",
-    "MAX 300 (Super-Max-Me Mix)",
-    "MAXIMIZER",
-    "MIDNIGHT SPECIAL",
-    "Mind Parasite",
-    "Monkey Punk",
-    "MOON",
-    "murmur twins",
-    "My Only Shining Star",
-    "No.13",
-    "PARANOiA-Respect-",
-    "PASSION OF LOVE",
-    "Polovtsian Dances And Chorus",
-    "PUT YOUR FAITH IN ME ～SATURDAY NIGHT MIX～",
-    "Quickening",
-    "Quick Master",
-    "rainbow flyer",
-    "rainbow rainbow",
-    "RED ZONE",
-    "Saturday Night Love",
-    "Scorching Moon",
-    "SEDUCTION",
-    "SEDUCTION(Vocal Remix)",
-    "Ska Ska No.3",
-    "Star Gate Heaven",
-    "STARS☆☆☆(2nd NAOKI's style)",
-    "THE SHINING POLARIS",
-    "TIERRA BUENA",
-    "TOMORROW",
-    "Tomorrow Perfume",
-    "TRUE♥LOVE",
-    "Try 2 Luv. U",
-    "un deux trois",
-    "Under the Sky",
-    "Xepher",
-    "You gotta move it (feat. Julie Rugaard)",
-    "チカラ",
-    "男々道",
-    "月光蝶",
-    "華爛漫 -Flowers-",
-    "ヒマワリ",
-    "怒れる大きな白い馬",
-    "カゲロウ",
-    "この子の七つのお祝いに",
-    "夢幻ノ光",
-    "虹色",
-    "1998",
-    "321STARS",
-    "A",
-    "Across the nightmare",
-    "air",
-    "AM-3P -303 BASS MIX-",
-    "bag",
-    "BE LOVIN",
-    "Colors ～for EXTREME～",
-    "CUTIE CHASER(MORNING MIX)",
-    "Dance Dance Revolution",
-    "Destiny lovers",
-    "DROP THE BOMB(SyS.F. Mix)",
-    "Frozen Ray 〜for EXTREME〜",
-    "Gamelan de Couple",
-    "GRADUATION ～それぞれの明日～",
-    "Happy Wedding",
-    "Heaven is a '57 metallic gray ～gimmix～",
-    "HYPER EUROBEAT",
-    "I'm gonna get you!",
-    "jane jana",
-    "JET WORLD",
-    "KISS KISS KISS",
-    "Kiss me all night long",
-    "L'amour et la liberté(DDR Ver.)",
-    "♥Love²シュガ→♥",
-    "LOVE♥SHINE",
-    "Miracle Moon ～L.E.D.LIGHT STYLE MIX～‎",
-    "PARANOIA survivor",
-    "PARANOIA survivor MAX",
-    "Pink Rose",
-    "SO IN LOVE",
-    "STAY (Organic house Version)",
-    "stoic (EXTREME version)",
-    "sync (EXTREME version)",
-    "TEARS",
-    "The Least 100sec",
-    "The legend of MAX",
-    "TRIP MACHINE survivor",
-    "Twin Bee -Generation X-",
-    "V ～for EXTREME～",
-    "VANITY ANGEL",
-    "xenon",
-    "蒼い衝動 ～for EXTREME～",
-    "大見解",
-    "三毛猫ロック",
-    "桜",
-    "BRE∀K DOWN!",
-    "BURNING HEAT！（3 Option MIX）",
-    "CANDY♥",
-    "D2R",
-    "DESTINY",
-    "DIVE TO THE NIGHT",
-    "i feel ...",
-    "MAXX UNLIMITED",
-    "rain of sorrow",
-    "Secret Rendez-vous",
-    "Sweet Sweet ♥ Magic",
-    "TSUGARU",
-    "革命",
-    "AFRONOVA(FROM NONSTOP MEGAMIX)",
-    "AM-3P(AM EAST mix)",
-    "B4U(B4 ZA BEAT MIX)",
-    "BRILLIANT 2U(K.O.G G3 MIX)",
-    "BURNIN' THE FLOOR(BLUE FIRE mix)",
-    "CELEBRATE NITE(EURO TRANCE STYLE)",
-    "DROP OUT(FROM NONSTOP MEGAMIX)",
-    "ECSTASY (midnight blue mix)",
-    "HIGHER(next morning mix)",
-    "HYSTERIA 2001",
-    "MY SUMMER LOVE(TOMMY'S SMILE MIX)",
-    "Silent Hill (3rd christmas mix)",
-    "SEXY PLANET(FROM NONSTOP MEGAMIX)",
-    "STILL IN MY HEART(MOMO MIX)",
-    "SUPER STAR(FROM NONSTOP MEGAMIX)",
-    "TSUGARU (APPLE MIX)",
-    "WILD RUSH(FROM NONSTOP MEGAMIX)",
-    "exotic ethnic",
-    "Healing Vision ～Angelic mix～",
-    "Let the beat hit em!(CLASSIC R&B STYLE)",
-    "MAX 300",
-    "ORION.78～civilization mix～",
-    "ABSOLUTE",
-    "Abyss",
-    "AFRONOVA PRIMEVAL",
-    "BROKEN MY HEART",
-    "CAN'T STOP FALLIN' IN LOVE ～SPEED MIX～",
-    "DXY!",
-    "ECSTASY",
-    "Electro Tuned ( the SubS mix )",
-    "Healing Vision",
-    "INSERTiON",
-    "PARANOiA ETERNAL",
-    "STILL IN MY HEART",
-    "サナ・モレッテ・ネ・エンテ",
-    ".59",
-    "B4U",
-    "BABY BABY GIMME YOUR LOVE",
-    "BURNIN' THE FLOOR",
-    "CAN'T STOP FALLIN' IN LOVE",
-    "CELEBRATE NITE",
-    "Don't Stop!～AMD 2nd MIX～",
-    "DROP OUT",
-    "era (nostalmix)",
-    "HIGHER",
-    "Holic",
-    "HYSTERIA",
-    "LEADING CYBER",
-    "LOVE AGAIN TONIGHT～For Melissa MIX～",
-    "MY SUMMER LOVE",
-    "ORION.78(AMeuro-MIX)",
-    "PARANOIA EVOLUTION",
-    "SEXY PLANET",
-    "SUPER STAR",
-    "TRIP MACHINE CLIMAX",
-    "WILD RUSH",
-    "AFRONOVA",
-    "AFTER THE GAME OF LOVE",
-    "CUTIE CHASER",
-    "DEAD END",
-    "DROP THE BOMB",
-    "DYNAMITE RAVE",
-    "GRADIUSIC CYBER ～AMD G5 MIX～",
-    "La Señorita",
-    "La Señorita Virtual",
-    "LOVE THIS FEELIN'",
-    "PARANOiA Rebirth",
-    "Silent Hill",
-    "think ya better D",
-    "TRIP MACHINE～luv mix～",
-    "AM-3P",
-    "BRILLIANT 2U",
-    "BRILLIANT 2U(Orchestra Groove)",
-    "e-motion",
-    "GENOM SCREAMS",
-    "KEEP ON MOVIN'",
-    "MAKE A JAM!",
-    "MAKE IT BETTER (So-REAL Mix)",
-    "PARANOiA KCET ～clean mix～",
-    "PARANOiA MAX～DIRTY MIX～",
-    "PUT YOUR FAITH IN ME",
-    "PUT YOUR FAITH IN ME (Jazzy Groove)",
-    "SP-TRIP MACHINE～JUNGLE MIX～",
-    "MAKE IT BETTER",
-    "PARANOiA",
-    "TRIP MACHINE",
-    "Song Lists",
-    "Privacy policy",
-    "About RemyWiki",
-    "Disclaimers",
-    "Mobile view"
+    {
+      "path": "sm/A20/Alone/Alone.sm"
+    },
+    {
+      "path": "sm/A20/Clarity/Clarity.sm"
+    },
+    {
+      "path": "sm/A20/I'm an Albatraoz/I'm an Albatraoz.sm"
+    },
+    {
+      "path": "sm/A20/New Rules/New Rules.sm"
+    },
+    {
+      "path": "sm/A20/No Tears Left to Cry/No Tears Left to Cry.sm"
+    },
+    {
+      "path": "sm/A20/Party Rock Anthem/Party Rock Anthem.sm"
+    },
+    {
+      "path": "sm/A20/Play Hard/Play Hard.sm"
+    },
+    {
+      "path": "sm/A20/Something Just Like This (Alesso Remix)/Something Just Like This (Alesso Remix).sm"
+    },
+    {
+      "path": "sm/A20/Dokusenyoku/Dokusenyoku.sm"
+    },
+    {
+      "path": "sm/A20/Kusare gedou to chocolate/Kusare gedou to chocolate.sm"
+    },
+    {
+      "path": "sm/A20/Mousou kanshou daishou renmei/Mousou kanshou daishou renmei.sm"
+    },
+    {
+      "path": "sm/A20/Liar dance/Liar dance.sm"
+    },
+    {
+      "path": "sm/A20/Sukina koto dakede ii desu/Sukina koto dakede ii desu.sm"
+    },
+    {
+      "path": "sm/A20/Tiger rampage/Tiger rampage.sm"
+    },
+    {
+      "path": "sm/A20/50th Memorial Songs -Beginning Story-/50th Memorial Songs -Beginning Story-.sm"
+    },
+    {
+      "path": "sm/A20/50th Memorial Songs -Flagship medley-/50th Memorial Songs -Flagship medley-.sm"
+    },
+    {
+      "path": "sm/A20/50th Memorial Songs -The BEMANI History-/50th Memorial Songs -The BEMANI History-.sm"
+    },
+    {
+      "path": "sm/A20/50th Memorial Songs -futari no toki ~under the cherry blossoms~-/50th Memorial Songs -futari no toki ~under the cherry blossoms~-.sm"
+    },
+    {
+      "path": "sm/A20/Afterimage d'automne/Afterimage d'automne.sm"
+    },
+    {
+      "path": "sm/A20/BLACK JACKAL/BLACK JACKAL.sm"
+    },
+    {
+      "path": "sm/A20/BLSTR/BLSTR.sm"
+    },
+    {
+      "path": "sm/A20/Bounce Trippy/Bounce Trippy.sm"
+    },
+    {
+      "path": "sm/A20/Crazy Shuffle/Crazy Shuffle.sm"
+    },
+    {
+      "path": "sm/A20/CROSS/CROSS.sm"
+    },
+    {
+      "path": "sm/A20/Dead Heat/Dead Heat.sm"
+    },
+    {
+      "path": "sm/A20/DIGITAL LUV/DIGITAL LUV.sm"
+    },
+    {
+      "path": "sm/A20/District of the Shadows/District of the Shadows.sm"
+    },
+    {
+      "path": "sm/A20/DOWNER & UPPER/DOWNER & UPPER.sm"
+    },
+    {
+      "path": "sm/A20/Drop The Bounce/Drop The Bounce.sm"
+    },
+    {
+      "path": "sm/A20/ENDLESS/ENDLESS.sm"
+    },
+    {
+      "path": "sm/A20/F4SH10N/F4SH10N.sm"
+    },
+    {
+      "path": "sm/A20/Firestorm/Firestorm.sm"
+    },
+    {
+      "path": "sm/A20/Get On Da Floor/Get On Da Floor.sm"
+    },
+    {
+      "path": "sm/A20/Helios/Helios.sm"
+    },
+    {
+      "path": "sm/A20/Hunny Bunny/Hunny Bunny.sm"
+    },
+    {
+      "path": "sm/A20/I Love You/I Love You.sm"
+    },
+    {
+      "path": "sm/A20/IRON HEART/IRON HEART.sm"
+    },
+    {
+      "path": "sm/A20/Lachryma (Re-Queen'M)/Lachryma (Re-Queen'M).sm"
+    },
+    {
+      "path": "sm/A20/LEVEL UP/LEVEL UP.sm"
+    },
+    {
+      "path": "sm/A20/Mythomane/Mythomane.sm"
+    },
+    {
+      "path": "sm/A20/Neverland/Neverland.sm"
+    },
+    {
+      "path": "sm/A20/ORCA/ORCA.sm"
+    },
+    {
+      "path": "sm/A20/Our Soul/Our Soul.sm"
+    },
+    {
+      "path": "sm/A20/OVERSOUL/OVERSOUL.sm"
+    },
+    {
+      "path": "sm/A20/Procyon/Procyon.sm"
+    },
+    {
+      "path": "sm/A20/Re-GENERATION/Re-GENERATION.sm"
+    },
+    {
+      "path": "sm/A20/Right Time Right Way/Right Time Right Way.sm"
+    },
+    {
+      "path": "sm/A20/Seta Para Cima/Seta Para Cima.sm"
+    },
+    {
+      "path": "sm/A20/Silly Love/Silly Love.sm"
+    },
+    {
+      "path": "sm/A20/Six String Proof/Six String Proof.sm"
+    },
+    {
+      "path": "sm/A20/Skywalking/Skywalking.sm"
+    },
+    {
+      "path": "sm/A20/Small Steps/Small Steps.sm"
+    },
+    {
+      "path": "sm/A20/SODA GALAXY/SODA GALAXY.sm"
+    },
+    {
+      "path": "sm/A20/Splash Gold/Splash Gold.sm"
+    },
+    {
+      "path": "sm/A20/Starry Sky/Starry Sky.sm"
+    },
+    {
+      "path": "sm/A20/Stay 4 Ever/Stay 4 Ever.sm"
+    },
+    {
+      "path": "sm/A20/SWEET HOME PARTY/SWEET HOME PARTY.sm"
+    },
+    {
+      "path": "sm/A20/The History of the Future/The History of the Future.sm"
+    },
+    {
+      "path": "sm/A20/This Beat Is/This Beat Is.sm"
+    },
+    {
+      "path": "sm/A20/Toy Box Factory/Toy Box Factory.sm"
+    },
+    {
+      "path": "sm/A20/toy boxer/toy boxer.sm"
+    },
+    {
+      "path": "sm/A20/Trill auf G/Trill auf G.sm"
+    },
+    {
+      "path": "sm/A20/Une mage blanche/Une mage blanche.sm"
+    },
+    {
+      "path": "sm/A20/voltississimo/voltississimo.sm"
+    },
+    {
+      "path": "sm/A20/Waiting/Waiting.sm"
+    },
+    {
+      "path": "sm/A20/Baby step/Baby step.sm"
+    },
+    {
+      "path": "sm/A20/Bi/Bi.sm"
+    },
+    {
+      "path": "sm/A20/Dokidoki Valentine/Dokidoki Valentine.sm"
+    },
+    {
+      "path": "sm/A20/Haunted maid lunch/Haunted maid lunch.sm"
+    },
+    {
+      "path": "sm/A20/Hikari eureka/Hikari eureka.sm"
+    },
+    {
+      "path": "sm/A20/Hoshikuzu no yo hate/Hoshikuzu no yo hate.sm"
+    },
+    {
+      "path": "sm/A20/Kakumei passionate/Kakumei passionate.sm"
+    },
+    {
+      "path": "sm/A20/Love kira splash/Love kira splash.sm"
+    },
+    {
+      "path": "sm/A20/Midnight WAR/Midnight WAR.sm"
+    },
+    {
+      "path": "sm/A20/Mikansei no jouki kudou otome (DDR Edition)/Mikansei no jouki kudou otome (DDR Edition).sm"
+    },
+    {
+      "path": "sm/A20/Mirai (da) FUTURE/Mirai (da) FUTURE.sm"
+    },
+    {
+      "path": "sm/A20/Netsujou no zapadeado/Netsujou no zapadeado.sm"
+    },
+    {
+      "path": "sm/A20/Oh my! lovely! sweety! darling!/Oh my! lovely! sweety! darling!.sm"
+    },
+    {
+      "path": "sm/A20/Ranker killer girl/Ranker killer girl.sm"
+    },
+    {
+      "path": "sm/A20/Saishou sanbai kanzensuu/Saishou sanbai kanzensuu.sm"
+    },
+    {
+      "path": "sm/A20/Sweets wa tomaranai/Sweets wa tomaranai.sm"
+    },
+    {
+      "path": "sm/A/39/39.sm"
+    },
+    {
+      "path": "sm/A/Believe/Believe.sm"
+    },
+    {
+      "path": "sm/A/Break Free/Break Free.sm"
+    },
+    {
+      "path": "sm/A/Grip & Break down !!/Grip & Break down !!.sm"
+    },
+    {
+      "path": "sm/A/Happy/Happy.sm"
+    },
+    {
+      "path": "sm/A/Help me, ERINNNNNN!!/Help me, ERINNNNNN!!.sm"
+    },
+    {
+      "path": "sm/A/Hillbilly Shoes/Hillbilly Shoes.sm"
+    },
+    {
+      "path": "sm/A/I Want You To Know/I Want You To Know.sm"
+    },
+    {
+      "path": "sm/A/More One Night/More One Night.sm"
+    },
+    {
+      "path": "sm/A/Shut Up and Dance/Shut Up and Dance.sm"
+    },
+    {
+      "path": "sm/A/Time Of Our Lives/Time Of Our Lives.sm"
+    },
+    {
+      "path": "sm/A/Wake Me Up/Wake Me Up.sm"
+    },
+    {
+      "path": "sm/A/Ai kotoba/Ai kotoba.sm"
+    },
+    {
+      "path": "sm/A/Alien Alien/Alien Alien.sm"
+    },
+    {
+      "path": "sm/A/Ama no jyaku/Ama no jyaku.sm"
+    },
+    {
+      "path": "sm/A/Arifureta sekai seifuku/Arifureta sekai seifuku.sm"
+    },
+    {
+      "path": "sm/A/Buraikku jikorizer/Buraikku jikorizer.sm"
+    },
+    {
+      "path": "sm/A/Cirno's Perfect Math Class/Cirno's Perfect Math Class.sm"
+    },
+    {
+      "path": "sm/A/Happy synthesizer/Happy synthesizer.sm"
+    },
+    {
+      "path": "sm/A/Himawari sunset/Himawari sunset.sm"
+    },
+    {
+      "path": "sm/A/Houkago stride/Houkago stride.sm"
+    },
+    {
+      "path": "sm/A/Iro wa nioedo chirinuru wo/Iro wa nioedo chirinuru wo.sm"
+    },
+    {
+      "path": "sm/A/Kunshi ayauku mo chikou yore/Kunshi ayauku mo chikou yore.sm"
+    },
+    {
+      "path": "sm/A/Marisa wa taihen na mono wo nusunde ikimashita/Marisa wa taihen na mono wo nusunde ikimashita.sm"
+    },
+    {
+      "path": "sm/A/Mousou zei/Mousou zei.sm"
+    },
+    {
+      "path": "sm/A/Night of knights/Night of knights.sm"
+    },
+    {
+      "path": "sm/A/Onegai darling/Onegai darling.sm"
+    },
+    {
+      "path": "sm/A/Plain Asia -PHQ remix-/Plain Asia -PHQ remix-.sm"
+    },
+    {
+      "path": "sm/A/Rinnetensei/Rinnetensei.sm"
+    },
+    {
+      "path": "sm/A/Rokuchounen to ichiya monogatari/Rokuchounen to ichiya monogatari.sm"
+    },
+    {
+      "path": "sm/A/Role-playing game/Role-playing game.sm"
+    },
+    {
+      "path": "sm/A/Roshin yuukai/Roshin yuukai.sm"
+    },
+    {
+      "path": "sm/A/Sennen no kotowari/Sennen no kotowari.sm"
+    },
+    {
+      "path": "sm/A/SLoWMoTIoN/SLoWMoTIoN.sm"
+    },
+    {
+      "path": "sm/A/Yi-er fanclub/Yi-er fanclub.sm"
+    },
+    {
+      "path": "sm/A/Youkoso Japari Park e/Youkoso Japari Park e.sm"
+    },
+    {
+      "path": "sm/A/Hello, planet/Hello, planet.sm"
+    },
+    {
+      "path": "sm/A/ACE FOR ACES/ACE FOR ACES.ssc"
+    },
+    {
+      "path": "sm/A/ALGORITHM/ALGORITHM.sm"
+    },
+    {
+      "path": "sm/A/ALL MY HEART -kono koi ni, watashi no subete wo kakeru-/ALL MY HEART -kono koi ni, watashi no subete wo kakeru-.sm"
+    },
+    {
+      "path": "sm/A/Angelic Jelly/Angelic Jelly.sm"
+    },
+    {
+      "path": "sm/A/ANNIVERSARY/ANNIVERSARY.sm"
+    },
+    {
+      "path": "sm/A/Astrogazer/Astrogazer.sm"
+    },
+    {
+      "path": "sm/A/Be a Hero!/Be a Hero!.sm"
+    },
+    {
+      "path": "sm/A/Boss Rush/Boss Rush.sm"
+    },
+    {
+      "path": "sm/A/Catch Our Fire!/Catch Our Fire!.sm"
+    },
+    {
+      "path": "sm/A/CHAOS Terror-Tech Mix/CHAOS Terror-Tech Mix.ssc"
+    },
+    {
+      "path": "sm/A/CHOCOLATE PHILOSOPHY/CHOCOLATE PHILOSOPHY.sm"
+    },
+    {
+      "path": "sm/A/Chronos (walk with you remix)/Chronos (walk with you remix).sm"
+    },
+    {
+      "path": "sm/A/Come to Life/Come to Life.sm"
+    },
+    {
+      "path": "sm/A/Cosy Catastrophe/Cosy Catastrophe.sm"
+    },
+    {
+      "path": "sm/A/Cytokinesis/Cytokinesis.sm"
+    },
+    {
+      "path": "sm/A/DANCE ALL NIGHT (DDR EDITION)/DANCE ALL NIGHT (DDR EDITION).sm"
+    },
+    {
+      "path": "sm/A/Dancer in the flare/Dancer in the flare.sm"
+    },
+    {
+      "path": "sm/A/DDR MEGAMIX/DDR MEGAMIX.sm"
+    },
+    {
+      "path": "sm/A/DREAMING-ING!!/DREAMING-ING!!.sm"
+    },
+    {
+      "path": "sm/A/Electric Dance System Music/Electric Dance System Music.sm"
+    },
+    {
+      "path": "sm/A/Emera/Emera.sm"
+    },
+    {
+      "path": "sm/A/ENDYMION/ENDYMION.sm"
+    },
+    {
+      "path": "sm/A/Eternal Summer/Eternal Summer.sm"
+    },
+    {
+      "path": "sm/A/Far east nightbird/Far east nightbird.sm"
+    },
+    {
+      "path": "sm/A/Far east nightbird kors k Remix -DDR edit ver-/Far east nightbird kors k Remix -DDR edit ver-.sm"
+    },
+    {
+      "path": "sm/A/First Time/First Time.sm"
+    },
+    {
+      "path": "sm/A/Fly far bounce/Fly far bounce.sm"
+    },
+    {
+      "path": "sm/A/Grand Chariot/Grand Chariot.sm"
+    },
+    {
+      "path": "sm/A/Ha-lle-lu-jah/Ha-lle-lu-jah.sm"
+    },
+    {
+      "path": "sm/A/HANDS UP IN THE AIR/HANDS UP IN THE AIR.sm"
+    },
+    {
+      "path": "sm/A/High School Love/High School Love.sm"
+    },
+    {
+      "path": "sm/A/Hopeful/Hopeful.sm"
+    },
+    {
+      "path": "sm/A/Illegal Function Call/Illegal Function Call.sm"
+    },
+    {
+      "path": "sm/A/IN BETWEEN/IN BETWEEN.sm"
+    },
+    {
+      "path": "sm/A/invisible rain/invisible rain.sm"
+    },
+    {
+      "path": "sm/A/Ishtar/Ishtar.sm"
+    },
+    {
+      "path": "sm/A/Jewelry days/Jewelry days.sm"
+    },
+    {
+      "path": "sm/A/Lesson by DJ/Lesson by DJ.sm"
+    },
+    {
+      "path": "sm/A/Life is beautiful/Life is beautiful.sm"
+    },
+    {
+      "path": "sm/A/Love Shine wonderful mix/Love Shine wonderful mix.sm"
+    },
+    {
+      "path": "sm/A/Love You More/Love You More.sm"
+    },
+    {
+      "path": "sm/A/MAX 360/MAX 360.sm"
+    },
+    {
+      "path": "sm/A/Neutrino/Neutrino.sm"
+    },
+    {
+      "path": "sm/A/New Century/New Century.sm"
+    },
+    {
+      "path": "sm/A/OurMemories/OurMemories.sm"
+    },
+    {
+      "path": "sm/A/out of focus/out of focus.sm"
+    },
+    {
+      "path": "sm/A/POSSESSION (20th Anniversary Mix)/POSSESSION (20th Anniversary Mix).sm"
+    },
+    {
+      "path": "sm/A/Prey/Prey.sm"
+    },
+    {
+      "path": "sm/A/Puberty Dysthymia/Puberty Dysthymia.sm"
+    },
+    {
+      "path": "sm/A/Pursuer/Pursuer.sm"
+    },
+    {
+      "path": "sm/A/Reach The Sky, Without you/Reach The Sky, Without you.sm"
+    },
+    {
+      "path": "sm/A/Rejoin/Rejoin.sm"
+    },
+    {
+      "path": "sm/A/RISING FIRE HAWK/RISING FIRE HAWK.sm"
+    },
+    {
+      "path": "sm/A/Sakura Reflection/Sakura Reflection.sm"
+    },
+    {
+      "path": "sm/A/Sephirot/Sephirot.sm"
+    },
+    {
+      "path": "sm/A/SHION/SHION.sm"
+    },
+    {
+      "path": "sm/A/Show me your moves/Show me your moves.sm"
+    },
+    {
+      "path": "sm/A/siberite/siberite.sm"
+    },
+    {
+      "path": "sm/A/S!ck/S!ck.sm"
+    },
+    {
+      "path": "sm/A/Smiling Passion/Smiling Passion.sm"
+    },
+    {
+      "path": "sm/A/Special One/Special One.sm"
+    },
+    {
+      "path": "sm/A/Star Trail/Star Trail.sm"
+    },
+    {
+      "path": "sm/A/Start a New Day/Start a New Day.sm"
+    },
+    {
+      "path": "sm/A/STERLING SILVER/STERLING SILVER.sm"
+    },
+    {
+      "path": "sm/A/STERLING SILVER (U1 overground mix)/STERLING SILVER (U1 overground mix).sm"
+    },
+    {
+      "path": "sm/A/Strawberry Chu Chu/Strawberry Chu Chu.sm"
+    },
+    {
+      "path": "sm/A/StrayedCatz/StrayedCatz.sm"
+    },
+    {
+      "path": "sm/A/SUN2 SUMMER STEP!/SUN2 SUMMER STEP!.sm"
+    },
+    {
+      "path": "sm/A/SUPER SUMMER SALE/SUPER SUMMER SALE.sm"
+    },
+    {
+      "path": "sm/A/TECH-NOID/TECH-NOID.sm"
+    },
+    {
+      "path": "sm/A/Towards The TOWER/Towards The TOWER.sm"
+    },
+    {
+      "path": "sm/A/Triple Counter/Triple Counter.sm"
+    },
+    {
+      "path": "sm/A/Twin memories W/Twin memories W.sm"
+    },
+    {
+      "path": "sm/A/Vanquish The Ghost/Vanquish The Ghost.sm"
+    },
+    {
+      "path": "sm/A/Yeah! Yeah!/Yeah! Yeah!.sm"
+    },
+    {
+      "path": "sm/A/ZEPHYRANTHES/ZEPHYRANTHES.sm"
+    },
+    {
+      "path": "sm/A/Bassdrop freaks/Bassdrop freaks.sm"
+    },
+    {
+      "path": "sm/A/Dadadadadadadadadada/Dadadadadadadadadada.sm"
+    },
+    {
+      "path": "sm/A/Exciting!! Mo-cha-cha/Exciting!! Mo-cha-cha.sm"
+    },
+    {
+      "path": "sm/A/Fuurin hanabi/Fuurin hanabi.sm"
+    },
+    {
+      "path": "sm/A/Happy koi lovely time!!/Happy koi lovely time!!.sm"
+    },
+    {
+      "path": "sm/A/Haru ichiban/Haru ichiban.sm"
+    },
+    {
+      "path": "sm/A/Juuniseiza no seiiki/Juuniseiza no seiiki.sm"
+    },
+    {
+      "path": "sm/A/Koi no puzzle magic/Koi no puzzle magic.sm"
+    },
+    {
+      "path": "sm/A/Koishigure/Koishigure.sm"
+    },
+    {
+      "path": "sm/A/Koisuru uchuu sensou!!/Koisuru uchuu sensou!!.sm"
+    },
+    {
+      "path": "sm/A/Kuranogawa ondo/Kuranogawa ondo.sm"
+    },
+    {
+      "path": "sm/A/Kurokami midareshi shura to narite ~Rin edition~/Kurokami midareshi shura to narite ~Rin edition~.sm"
+    },
+    {
+      "path": "sm/A/Luminous days/Luminous days.sm"
+    },
+    {
+      "path": "sm/A/Mahou no tamago ~Cocona ELECTRO POP edition~/Mahou no tamago ~Cocona ELECTRO POP edition~.sm"
+    },
+    {
+      "path": "sm/A/Oboro/Oboro.sm"
+    },
+    {
+      "path": "sm/A/Oboro (dj TAKA Remix)/Oboro (dj TAKA Remix).sm"
+    },
+    {
+      "path": "sm/A/Renaikansoku/Renaikansoku.sm"
+    },
+    {
+      "path": "sm/A/Ronron e rairairai!/Ronron e rairairai!.sm"
+    },
+    {
+      "path": "sm/A/Sayonara trip ~Natsuhi EDM edition~/Sayonara trip ~Natsuhi EDM edition~.sm"
+    },
+    {
+      "path": "sm/A/Schrodinger no neko/Schrodinger no neko.sm"
+    },
+    {
+      "path": "sm/A/Seiza ga koishita shunkan wo/Seiza ga koishita shunkan wo.sm"
+    },
+    {
+      "path": "sm/A/Shakariki relation/Shakariki relation.sm"
+    },
+    {
+      "path": "sm/A/Shunpuu blowing wind/Shunpuu blowing wind.sm"
+    },
+    {
+      "path": "sm/A/Sora e no katamichi kippu/Sora e no katamichi kippu.sm"
+    },
+    {
+      "path": "sm/A/Tatakae! Dadandarn V/Tatakae! Dadandarn V.sm"
+    },
+    {
+      "path": "sm/A/Bad Apple!! feat. nomico/Bad Apple!! feat. nomico.sm"
+    },
+    {
+      "path": "sm/A/Determination/Determination.sm"
+    },
+    {
+      "path": "sm/2014/M.A.Y.U/M.A.Y.U.sm"
+    },
+    {
+      "path": "sm/2014/Scarlet Moon/Scarlet Moon.sm"
+    },
+    {
+      "path": "sm/2014/Struggle/Struggle.sm"
+    },
+    {
+      "path": "sm/A/The Night Away (MK Remix)/The Night Away (MK Remix).sm"
+    },
+    {
+      "path": "sm/2014/Asa-iro no kami hikouki/Asa-iro no kami hikouki.sm"
+    },
+    {
+      "path": "sm/2014/Ayakashi kakushi/Ayakashi kakushi.sm"
+    },
+    {
+      "path": "sm/2014/BambooSword Girl/BambooSword Girl.sm"
+    },
+    {
+      "path": "sm/A/Cirno's Perfect Math Class (EDM REMIX)/Cirno's Perfect Math Class (EDM REMIX).sm"
+    },
+    {
+      "path": "sm/A/EDM jumpers/EDM jumpers.sm"
+    },
+    {
+      "path": "sm/2014/Gensoukei sekai shuufuku shoujo/Gensoukei sekai shuufuku shoujo.sm"
+    },
+    {
+      "path": "sm/2014/Hanamaru pippi wa yoiko dake/Hanamaru pippi wa yoiko dake.sm"
+    },
+    {
+      "path": "sm/2014/Homeneko sensation/Homeneko sensation.sm"
+    },
+    {
+      "path": "sm/2014/Luckgakist/Luckgakist.sm"
+    },
+    {
+      "path": "sm/2014/Setsuna Trip/Setsuna Trip.sm"
+    },
+    {
+      "path": "sm/2014/8000000/8000000.sm"
+    },
+    {
+      "path": "sm/2014/Adularia/Adularia.sm"
+    },
+    {
+      "path": "sm/2014/AWAKE/AWAKE.sm"
+    },
+    {
+      "path": "sm/A/bass 2 bass/bass 2 bass.sm"
+    },
+    {
+      "path": "sm/2014/chaos eater/chaos eater.sm"
+    },
+    {
+      "path": "sm/2014/Cleopatrysm/Cleopatrysm.sm"
+    },
+    {
+      "path": "sm/2014/Dance Partay/Dance Partay.sm"
+    },
+    {
+      "path": "sm/2014/Destination/Destination.sm"
+    },
+    {
+      "path": "sm/2014/Din Don Dan/Din Don Dan.sm"
+    },
+    {
+      "path": "sm/2014/Dreamin'/Dreamin'.sm"
+    },
+    {
+      "path": "sm/2014/EGOISM 440/EGOISM 440.sm"
+    },
+    {
+      "path": "sm/2014/Electronic or Treat!/Electronic or Treat!.sm"
+    },
+    {
+      "path": "sm/2014/Elysium/Elysium.sm"
+    },
+    {
+      "path": "sm/2014/Follow Tomorrow/Follow Tomorrow.sm"
+    },
+    {
+      "path": "sm/2014/FUJIMORI -Matsuri- FESTIVAL/FUJIMORI -Matsuri- FESTIVAL.sm"
+    },
+    {
+      "path": "sm/2014/FUNKY SUMMER BEACH/FUNKY SUMMER BEACH.sm"
+    },
+    {
+      "path": "sm/2014/Go Go Girls&Boys!/Go Go Girls&Boys!.sm"
+    },
+    {
+      "path": "sm/2014/Habibe(Antuh muhleke)/Habibe(Antuh muhleke).sm"
+    },
+    {
+      "path": "sm/2014/HAPPY LUCKY YEAPPY/HAPPY LUCKY YEAPPY.sm"
+    },
+    {
+      "path": "sm/2014/HEART BEAT FORMULA (Vinyl Mix)/HEART BEAT FORMULA (Vinyl Mix).sm"
+    },
+    {
+      "path": "sm/2014/Idola/Idola.sm"
+    },
+    {
+      "path": "sm/2014/IMANOGUILTS/IMANOGUILTS.sm"
+    },
+    {
+      "path": "sm/2014/In The Breeze/In The Breeze.sm"
+    },
+    {
+      "path": "sm/2014/JOMANDA/JOMANDA.sm"
+    },
+    {
+      "path": "sm/2014/KHAMEN BREAK/KHAMEN BREAK.sm"
+    },
+    {
+      "path": "sm/2014/LoveLove DokiDoki/LoveLove DokiDoki.sm"
+    },
+    {
+      "path": "sm/2014/MAX.(period)/MAX.(period).sm"
+    },
+    {
+      "path": "sm/2014/MITOrete! Ibarakisshuda~rin/MITOrete! Ibarakisshuda~rin.sm"
+    },
+    {
+      "path": "sm/2014/neko neko/neko neko.sm"
+    },
+    {
+      "path": "sm/2014/Nostalgia Is Lost/Nostalgia Is Lost.sm"
+    },
+    {
+      "path": "sm/2014/One Sided Love/One Sided Love.sm"
+    },
+    {
+      "path": "sm/2014/Over The Period/Over The Period.sm"
+    },
+    {
+      "path": "sm/2014/Party Lights (Tommie Sunshine's Brooklyn Fire Remix)/Party Lights (Tommie Sunshine's Brooklyn Fire Remix).sm"
+    },
+    {
+      "path": "sm/2014/Plan 8/Plan 8.sm"
+    },
+    {
+      "path": "sm/A/Poochie/Poochie.sm"
+    },
+    {
+      "path": "sm/2014/POSSESSION(EDP Live Mix)/POSSESSION(EDP Live Mix).sm"
+    },
+    {
+      "path": "sm/2014/PRANA+REVOLUTIONARY ADDICT (U1 DJ Mix)/PRANA+REVOLUTIONARY ADDICT (U1 DJ Mix).sm"
+    },
+    {
+      "path": "sm/2014/Remain/Remain.sm"
+    },
+    {
+      "path": "sm/2014/Sakura Mirage/Sakura Mirage.sm"
+    },
+    {
+      "path": "sm/2014/Samurai Shogun vs. Master Ninja/Samurai Shogun vs. Master Ninja.sm"
+    },
+    {
+      "path": "sm/2014/Sand Blow/Sand Blow.sm"
+    },
+    {
+      "path": "sm/2014/second spring storm/second spring storm.sm"
+    },
+    {
+      "path": "sm/2014/SPECIAL SUMMER CAMPAIGN!/SPECIAL SUMMER CAMPAIGN!.sm"
+    },
+    {
+      "path": "sm/2014/Starlight Fantasia/Starlight Fantasia.sm"
+    },
+    {
+      "path": "sm/2014/Starlight Fantasia (Endorphins Mix)/Starlight Fantasia (Endorphins Mix).sm"
+    },
+    {
+      "path": "sm/2014/starmine/starmine.sm"
+    },
+    {
+      "path": "sm/2014/Summer fantasy (Darwin remix)/Summer fantasy (Darwin remix).sm"
+    },
+    {
+      "path": "sm/2014/SUPER HERO/SUPER HERO.sm"
+    },
+    {
+      "path": "sm/2014/Thank You Merry Christmas/Thank You Merry Christmas.sm"
+    },
+    {
+      "path": "sm/2014/The Lonely Streets/The Lonely Streets.sm"
+    },
+    {
+      "path": "sm/2014/Truare!/Truare!.sm"
+    },
+    {
+      "path": "sm/2014/TSUBASA/TSUBASA.sm"
+    },
+    {
+      "path": "sm/2014/Awa odori -Awaodori- yappari odori wa yame rarenai/Awa odori -Awaodori- yappari odori wa yame rarenai.sm"
+    },
+    {
+      "path": "sm/2014/Bakunana Testroyer/Bakunana Testroyer.sm"
+    },
+    {
+      "path": "sm/2014/BeBeatStream/BeBeatStream.sm"
+    },
+    {
+      "path": "sm/2014/Chihou sousei chikuwactics/Chihou sousei chikuwactics.sm"
+    },
+    {
+      "path": "sm/2014/Chocolate Smile/Chocolate Smile.sm"
+    },
+    {
+      "path": "sm/2014/Chewin' Bunny/Chewin' Bunny.sm"
+    },
+    {
+      "path": "sm/2014/Crimson Gate/Crimson Gate.sm"
+    },
+    {
+      "path": "sm/2014/Dokidoki ryuusei trap girl!!/Dokidoki ryuusei trap girl!!.sm"
+    },
+    {
+      "path": "sm/2014/Dopamine/Dopamine.sm"
+    },
+    {
+      "path": "sm/2014/Endorphin/Endorphin.sm"
+    },
+    {
+      "path": "sm/2014/Gekiatsu majiyaba cheer girl/Gekiatsu majiyaba cheer girl.sm"
+    },
+    {
+      "path": "sm/A/Kono aozora no shita de/Kono aozora no shita de.sm"
+    },
+    {
+      "path": "sm/A/Kyun kyun bakkyun LOVE/Kyun kyun bakkyun LOVE.sm"
+    },
+    {
+      "path": "sm/2014/Metsubou tenshi nikokyuppin/Metsubou tenshi nikokyuppin.sm"
+    },
+    {
+      "path": "sm/2014/Mirai prism/Mirai prism.sm"
+    },
+    {
+      "path": "sm/2014/Nageki no ki/Nageki no ki.sm"
+    },
+    {
+      "path": "sm/2014/SUMMER DIARY -DDR mix-/SUMMER DIARY -DDR mix-.sm"
+    },
+    {
+      "path": "sm/2014/Onna kotoba no shoushitsu/Onna kotoba no shoushitsu.sm"
+    },
+    {
+      "path": "sm/2014/Osenju meditation/Osenju meditation.sm"
+    },
+    {
+      "path": "sm/2014/Otome ryouran mai sakihokore/Otome ryouran mai sakihokore.sm"
+    },
+    {
+      "path": "sm/2014/Pa pi pu Yeah!/Pa pi pu Yeah!.sm"
+    },
+    {
+      "path": "sm/2014/Shakunetsu Beach Side Bunny/Shakunetsu Beach Side Bunny.sm"
+    },
+    {
+      "path": "sm/2014/Shikkoku no special princess sundae/Shikkoku no special princess sundae.sm"
+    },
+    {
+      "path": "sm/2014/Tenkuu no hana/Tenkuu no hana.sm"
+    },
+    {
+      "path": "sm/2014/Totsugeki! Glass no kneeso hime!/Totsugeki! Glass no kneeso hime!.sm"
+    },
+    {
+      "path": "sm/2014/Wadatsumi/Wadatsumi.sm"
+    },
+    {
+      "path": "sm/2014/Yamato nadenade Kaguya-hime/Yamato nadenade Kaguya-hime.sm"
+    },
+    {
+      "path": "sm/2013/ACROSS WORLD/ACROSS WORLD.sm"
+    },
+    {
+      "path": "sm/2013/JOKER/JOKER.sm"
+    },
+    {
+      "path": "sm/2013/Starry HEAVEN/Starry HEAVEN.sm"
+    },
+    {
+      "path": "sm/2014/Maware! Setsugetsuka/Maware! Setsugetsuka.sm"
+    },
+    {
+      "path": "sm/2013/Zutto Mitsu Meteite (Ryu Remix)/Zutto Mitsu Meteite (Ryu Remix).sm"
+    },
+    {
+      "path": "sm/2014/IX/IX.sm"
+    },
+    {
+      "path": "sm/2014/AETHER/AETHER.sm"
+    },
+    {
+      "path": "sm/2013/Ah La La La/Ah La La La.sm"
+    },
+    {
+      "path": "sm/2013/Air Heroes/Air Heroes.sm"
+    },
+    {
+      "path": "sm/2013/Another Phase/Another Phase.sm"
+    },
+    {
+      "path": "sm/2013/Back In Your Arms/Back In Your Arms.sm"
+    },
+    {
+      "path": "sm/2013/Beautiful Dream/Beautiful Dream.sm"
+    },
+    {
+      "path": "sm/2013/Blew My Mind/Blew My Mind.sm"
+    },
+    {
+      "path": "sm/2013/Bombay Bomb/Bombay Bomb.sm"
+    },
+    {
+      "path": "sm/2013/Children of the Beat/Children of the Beat.sm"
+    },
+    {
+      "path": "sm/2013/Chinese Snowy Dance/Chinese Snowy Dance.sm"
+    },
+    {
+      "path": "sm/2013/Condor/Condor.sm"
+    },
+    {
+      "path": "sm/2013/Confession/Confession.sm"
+    },
+    {
+      "path": "sm/2014/Daily Lunch Special/Daily Lunch Special.sm"
+    },
+    {
+      "path": "sm/2013/Desert Journey/Desert Journey.sm"
+    },
+    {
+      "path": "sm/2013/Diamond Night/Diamond Night.sm"
+    },
+    {
+      "path": "sm/2014/Dispersion Star/Dispersion Star.sm"
+    },
+    {
+      "path": "sm/2014/Do The Evolution/Do The Evolution.sm"
+    },
+    {
+      "path": "sm/2013/Elemental Creation/Elemental Creation.sm"
+    },
+    {
+      "path": "sm/2013/Empathetic/Empathetic.sm"
+    },
+    {
+      "path": "sm/2014/Engraved Mark/Engraved Mark.sm"
+    },
+    {
+      "path": "sm/2013/escape/escape.sm"
+    },
+    {
+      "path": "sm/2014/esreveR/esreveR.sm"
+    },
+    {
+      "path": "sm/2013/Everything I Need/Everything I Need.sm"
+    },
+    {
+      "path": "sm/2013/Find The Way/Find The Way.sm"
+    },
+    {
+      "path": "sm/2013/GAIA/GAIA.sm"
+    },
+    {
+      "path": "sm/2013/heron/heron.sm"
+    },
+    {
+      "path": "sm/2013/Hoping To Be Good/Hoping To Be Good.sm"
+    },
+    {
+      "path": "sm/2014/HYENA/HYENA.sm"
+    },
+    {
+      "path": "sm/2013/Magnetic/Magnetic.sm"
+    },
+    {
+      "path": "sm/2013/Monkey Business/Monkey Business.sm"
+    },
+    {
+      "path": "sm/2013/New Generation/New Generation.sm"
+    },
+    {
+      "path": "sm/2013/New Gravity/New Gravity.sm"
+    },
+    {
+      "path": "sm/2013/nightbird lost wing/nightbird lost wing.sm"
+    },
+    {
+      "path": "sm/2013/PRANA/PRANA.sm"
+    },
+    {
+      "path": "sm/2013/printemps/printemps.sm"
+    },
+    {
+      "path": "sm/2014/PUNISHER/PUNISHER.sm"
+    },
+    {
+      "path": "sm/2013/Qipchaq/Qipchaq.sm"
+    },
+    {
+      "path": "sm/2013/REVOLUTION/REVOLUTION.sm"
+    },
+    {
+      "path": "sm/2013/Right on time (Ryu Remix)/Right on time (Ryu Remix).sm"
+    },
+    {
+      "path": "sm/2014/Romancing Layer/Romancing Layer.sm"
+    },
+    {
+      "path": "sm/2014/SABER WING (satellite silhouette remix)/SABER WING (satellite silhouette remix).sm"
+    },
+    {
+      "path": "sm/2013/sola/sola.sm"
+    },
+    {
+      "path": "sm/2013/Somehow You Found Me/Somehow You Found Me.sm"
+    },
+    {
+      "path": "sm/2013/south/south.sm"
+    },
+    {
+      "path": "sm/2013/Spanish Snowy Dance/Spanish Snowy Dance.sm"
+    },
+    {
+      "path": "sm/2014/Squeeze/Squeeze.sm"
+    },
+    {
+      "path": "sm/2014/Stella Sinistra/Stella Sinistra.sm"
+    },
+    {
+      "path": "sm/2013/Straight Oath/Straight Oath.sm"
+    },
+    {
+      "path": "sm/2013/STULTI/STULTI.sm"
+    },
+    {
+      "path": "sm/2013/Sucka Luva/Sucka Luva.sm"
+    },
+    {
+      "path": "sm/2013/Summer Fairytale/Summer Fairytale.sm"
+    },
+    {
+      "path": "sm/2013/Sweet Rain/Sweet Rain.sm"
+    },
+    {
+      "path": "sm/2013/Synergy For Angels/Synergy For Angels.sm"
+    },
+    {
+      "path": "sm/2013/Tell me what to do/Tell me what to do.sm"
+    },
+    {
+      "path": "sm/2013/The Island Song/The Island Song.sm"
+    },
+    {
+      "path": "sm/2013/THE REASON/THE REASON.sm"
+    },
+    {
+      "path": "sm/2013/The Wind of Gold/The Wind of Gold.sm"
+    },
+    {
+      "path": "sm/2013/Top The Charts/Top The Charts.sm"
+    },
+    {
+      "path": "sm/2013/Triple Journey -TAG EDITION-/Triple Journey -TAG EDITION-.sm"
+    },
+    {
+      "path": "sm/2014/True Blue/True Blue.sm"
+    },
+    {
+      "path": "sm/2014/VEGA/VEGA.sm"
+    },
+    {
+      "path": "sm/2013/WILD SIDE/WILD SIDE.sm"
+    },
+    {
+      "path": "sm/2013/Windy Fairy/Windy Fairy.sm"
+    },
+    {
+      "path": "sm/2013/Wow Wow VENUS/Wow Wow VENUS.sm"
+    },
+    {
+      "path": "sm/2013/You/You.sm"
+    },
+    {
+      "path": "sm/2013/Chikuwa parfait da yo CKP/Chikuwa parfait da yo CKP.sm"
+    },
+    {
+      "path": "sm/2013/Colorful Pastel/Colorful Pastel.sm"
+    },
+    {
+      "path": "sm/2014/Deadball de homerun/Deadball de homerun.sm"
+    },
+    {
+      "path": "sm/2014/Hoshikuzu no kiroku/Hoshikuzu no kiroku.sm"
+    },
+    {
+      "path": "sm/2013/Kiken na kajitsu/Kiken na kajitsu.sm"
+    },
+    {
+      "path": "sm/2014/Koi hadou Moro Hadou OK Houteishiki!!/Koi hadou Moro Hadou OK Houteishiki!!.sm"
+    },
+    {
+      "path": "sm/2013/Lucky Lucky/Lucky Lucky.sm"
+    },
+    {
+      "path": "sm/2013/Meumeupettantan!!/Meumeupettantan!!.sm"
+    },
+    {
+      "path": "sm/2014/Mind Game/Mind Game.sm"
+    },
+    {
+      "path": "sm/2013/Nagisa no koakuma lovely~radio/Nagisa no koakuma lovely~radio.sm"
+    },
+    {
+      "path": "sm/2013/Nijiiro no hana/Nijiiro no hana.sm"
+    },
+    {
+      "path": "sm/2013/Okome no oishii takikata, soshite okome wo taberu koto ni yoru sono kouka/Okome no oishii takikata, soshite okome wo taberu koto ni yoru sono kouka.sm"
+    },
+    {
+      "path": "sm/2013/Rin to shite saku hana no gotoku ~HinaBitter edition~/Rin to shite saku hana no gotoku ~HinaBitter edition~.sm"
+    },
+    {
+      "path": "sm/2013/Seiten Bon Voyage/Seiten Bon Voyage.sm"
+    },
+    {
+      "path": "sm/2013/Sousei Note/Sousei Note.sm"
+    },
+    {
+      "path": "sm/2014/Todoroke! Koi no beanball!!/Todoroke! Koi no beanball!!.sm"
+    },
+    {
+      "path": "sm/2013/Who Floats/Who Floats.sm"
+    },
+    {
+      "path": "sm/2014/Yakyuu no asobikata soshite sono rekishi ~ketteiban~/Yakyuu no asobikata soshite sono rekishi ~ketteiban~.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/COME BACK TO MY HEART/COME BACK TO MY HEART.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Amalgamation/Amalgamation.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Chronos/Chronos.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Cosmic Hurricane/Cosmic Hurricane.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/CRAZY LOVE/CRAZY LOVE.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Diamond Dust/Diamond Dust.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/dreaming can make a wish come true/dreaming can make a wish come true.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/ever snow/ever snow.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Fever/Fever.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Find You Again/Find You Again.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/FLOWER/FLOWER.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Get Back Up!/Get Back Up!.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Go For The Top/Go For The Top.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Haunted Rhapsody/Haunted Rhapsody.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/HEART BEAT FORMULA/HEART BEAT FORMULA.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/HEARTBREAK (Sound Selektaz remix)/HEARTBREAK (Sound Selektaz remix).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/In The Air/In The Air.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/IN THE ZONE/IN THE ZONE.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/I-O/I-O.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Let's Get Away/Let's Get Away.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/London EVOLVED ver.A/London EVOLVED ver.A.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/London EVOLVED ver.B/London EVOLVED ver.B.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/London EVOLVED ver.C/London EVOLVED ver.C.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/LOVE IS THE POWER -Reborn-/LOVE IS THE POWER -Reborn-.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/MAGIC PARADE/MAGIC PARADE.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Mermaid girl/Mermaid girl.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/message/message.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/NEPHILIM DELTA/NEPHILIM DELTA.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/New Beginning/New Beginning.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/New York EVOLVED (Type A)/New York EVOLVED (Type A).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/New York EVOLVED (Type B)/New York EVOLVED (Type B).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/New York EVOLVED (Type C)/New York EVOLVED (Type C).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/osaka EVOLVED -MAIDO, OHKINI!- (TYPE1)/osaka EVOLVED -MAIDO, OHKINI!- (TYPE1).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/osaka EVOLVED -MAIDO, OHKINI!- (TYPE2)/osaka EVOLVED -MAIDO, OHKINI!- (TYPE2).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/osaka EVOLVED -MAIDO, OHKINI!- (TYPE3)/osaka EVOLVED -MAIDO, OHKINI!- (TYPE3).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/PARANOiA Revolution/PARANOiA Revolution.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Private Eye/Private Eye.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Programmed Universe/Programmed Universe.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/REBORN MAGIC/REBORN MAGIC.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Rescue Me/Rescue Me.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Resurrection/Resurrection.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/REVOLUTIONARY ADDICT/REVOLUTIONARY ADDICT.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Rhythms Inside/Rhythms Inside.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Seasons/Seasons.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Seule/Seule.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Share The Love/Share The Love.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/SigSig/SigSig.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/SILVER DREAM/SILVER DREAM.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/snow prism/snow prism.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Something Special/Something Special.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Take A Step Forward/Take A Step Forward.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/The Heavens Above/The Heavens Above.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/TIME/TIME.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Tohoku EVOLVED (TYPE1)/Tohoku EVOLVED (TYPE1).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/tokyoEVOLVED (TYPE1)/tokyoEVOLVED (TYPE1).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/tokyoEVOLVED (TYPE2)/tokyoEVOLVED (TYPE2).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/tokyoEVOLVED (TYPE3)/tokyoEVOLVED (TYPE3).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Tribe/Tribe.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/TRIP MACHINE EVOLUTION/TRIP MACHINE EVOLUTION.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/TWINKLE HEART/TWINKLE HEART.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/UNBELIEVABLE (Sparky remix)/UNBELIEVABLE (Sparky remix).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Until the End/Until the End.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Wicked Plastik/Wicked Plastik.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Wings of an Angel (Fly With Me)/Wings of an Angel (Fly With Me).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Alstroemeria (walk with you remix)/Alstroemeria (walk with you remix).sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Beautiful Receipt/Beautiful Receipt.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Kouen/Kouen.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Rensen ryouran/Rensen ryouran.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Ryouran Hit Chart/Ryouran Hit Chart.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Shizuku/Shizuku.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Sumidagawa karenka/Sumidagawa karenka.sm"
+    },
+    {
+      "path": "sm/X3 vs 2nd/Tenjou no Hoshi -Reimeiki-/Tenjou no Hoshi -Reimeiki-.sm"
+    },
+    {
+      "path": "sm/X2/only my railgun/only my railgun.sm"
+    },
+    {
+      "path": "sm/X2/resonance/resonance.sm"
+    },
+    {
+      "path": "sm/X2/888/888.sm"
+    },
+    {
+      "path": "sm/X2/A Brighter Day/A Brighter Day.sm"
+    },
+    {
+      "path": "sm/X2/aftershock!!/aftershock!!.sm"
+    },
+    {
+      "path": "sm/X2/All My Love/All My Love.sm"
+    },
+    {
+      "path": "sm/X2/Anti-Matter/Anti-Matter.sm"
+    },
+    {
+      "path": "sm/X2/BALLAD THE FEATHERS/BALLAD THE FEATHERS.sm"
+    },
+    {
+      "path": "sm/X2/BALLAD THE FEATHERS (Chinese)/BALLAD THE FEATHERS (Chinese).sm"
+    },
+    {
+      "path": "sm/X2/CG Project/CG Project.sm"
+    },
+    {
+      "path": "sm/X2/Crazy Control/Crazy Control.sm"
+    },
+    {
+      "path": "sm/X2/Dazzlin' Darlin/Dazzlin' Darlin.sm"
+    },
+    {
+      "path": "sm/X2/Dazzlin' Darlin-Akiba koubou mix-/Dazzlin' Darlin-Akiba koubou mix-.sm"
+    },
+    {
+      "path": "sm/X2/Decade/Decade.sm"
+    },
+    {
+      "path": "sm/X2/deltaMAX/deltaMAX.sm"
+    },
+    {
+      "path": "sm/X2/dirty digital/dirty digital.sm"
+    },
+    {
+      "path": "sm/X2/DROP/DROP.sm"
+    },
+    {
+      "path": "sm/X2/Dummy/Dummy.sm"
+    },
+    {
+      "path": "sm/X2/FIRE FIRE/FIRE FIRE.sm"
+    },
+    {
+      "path": "sm/X2/Freeze/Freeze.sm"
+    },
+    {
+      "path": "sm/X2/going up/going up.sm"
+    },
+    {
+      "path": "sm/X2/GOLD RUSH/GOLD RUSH.sm"
+    },
+    {
+      "path": "sm/X2/Gotta Dance/Gotta Dance.sm"
+    },
+    {
+      "path": "sm/X2/Heatstroke/Heatstroke.sm"
+    },
+    {
+      "path": "sm/X2/I'm so Happy/I'm so Happy.sm"
+    },
+    {
+      "path": "sm/X2/in love wit you/in love wit you.sm"
+    },
+    {
+      "path": "sm/X2/KIMONO PRINCESS/KIMONO PRINCESS.sm"
+    },
+    {
+      "path": "sm/X2/KISS KISS KISS Akiba koubou MIX/KISS KISS KISS Akiba koubou MIX.sm"
+    },
+    {
+      "path": "sm/X2/La libertad/La libertad.sm"
+    },
+    {
+      "path": "sm/X2/La receta/La receta.sm"
+    },
+    {
+      "path": "sm/X2/Leaving/Leaving.sm"
+    },
+    {
+      "path": "sm/X2/Leaving... (Chinese)/Leaving... (Chinese).sm"
+    },
+    {
+      "path": "sm/X2/Love Again/Love Again.sm"
+    },
+    {
+      "path": "sm/X2/MAX LOVE/MAX LOVE.sm"
+    },
+    {
+      "path": "sm/X2/Melody Life/Melody Life.sm"
+    },
+    {
+      "path": "sm/X2/Melody Life (Chinese)/Melody Life (Chinese).sm"
+    },
+    {
+      "path": "sm/X2/New Decade/New Decade.sm"
+    },
+    {
+      "path": "sm/X2/oarfish/oarfish.sm"
+    },
+    {
+      "path": "sm/X2/Pierce The Sky/Pierce The Sky.sm"
+    },
+    {
+      "path": "sm/X2/Pluto The First/Pluto The First.sm"
+    },
+    {
+      "path": "sm/X2/Poseidon(kors k mix)/Poseidon(kors k mix).sm"
+    },
+    {
+      "path": "sm/X2/POSSESSION/POSSESSION.sm"
+    },
+    {
+      "path": "sm/X2/real-high-SPEED/real-high-SPEED.sm"
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. A/roppongi EVOLVED ver. A.sm"
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. B/roppongi EVOLVED ver. B.sm"
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. C/roppongi EVOLVED ver. C.sm"
+    },
+    {
+      "path": "sm/X2/roppongi EVOLVED ver. D/roppongi EVOLVED ver. D.sm"
+    },
+    {
+      "path": "sm/X2/Sacred Oath/Sacred Oath.sm"
+    },
+    {
+      "path": "sm/X2/sakura storm/sakura storm.sm"
+    },
+    {
+      "path": "sm/X2/Sakura Sunrise/Sakura Sunrise.sm"
+    },
+    {
+      "path": "sm/X2/Second Heaven/Second Heaven.sm"
+    },
+    {
+      "path": "sm/X2/She is my wife/She is my wife.sm"
+    },
+    {
+      "path": "sm/X2/Shine/Shine.sm"
+    },
+    {
+      "path": "sm/X2/shining/shining.sm"
+    },
+    {
+      "path": "sm/X2/Shiny World/Shiny World.sm"
+    },
+    {
+      "path": "sm/X2/Sky Is The Limit/Sky Is The Limit.sm"
+    },
+    {
+      "path": "sm/X2/smooooch/smooooch.sm"
+    },
+    {
+      "path": "sm/X2/someday/someday.sm"
+    },
+    {
+      "path": "sm/X2/Taking It To The Sky/Taking It To The Sky.sm"
+    },
+    {
+      "path": "sm/X2/Theory of Eternity/Theory of Eternity.sm"
+    },
+    {
+      "path": "sm/X2/THIS NIGHT/THIS NIGHT.sm"
+    },
+    {
+      "path": "sm/X2/Valkyrie dimension/Valkyrie dimension.sm"
+    },
+    {
+      "path": "sm/X2/VANESSA/VANESSA.sm"
+    },
+    {
+      "path": "sm/X2/What Will Come of Me/What Will Come of Me.sm"
+    },
+    {
+      "path": "sm/X2/WH1TE RO5E/WH1TE RO5E.sm"
+    },
+    {
+      "path": "sm/X2/You are a Star/You are a Star.sm"
+    },
+    {
+      "path": "sm/X2/Your Angel/Your Angel.sm"
+    },
+    {
+      "path": "sm/X2/ZETA~sosuu no sekai to chouetsusha~/ZETA~sosuu no sekai to chouetsusha~.sm"
+    },
+    {
+      "path": "sm/X2/Fuchinkan CANDY/Fuchinkan CANDY.sm"
+    },
+    {
+      "path": "sm/X2/Mei/Mei.sm"
+    },
+    {
+      "path": "sm/X/30 Lives (Up-Up-Down-Dance Mix)/30 Lives (Up-Up-Down-Dance Mix).sm"
+    },
+    {
+      "path": "sm/X/Till the lonely's gone/Till the lonely's gone.sm"
+    },
+    {
+      "path": "sm/X/A Geisha's Dream/A Geisha's Dream.sm"
+    },
+    {
+      "path": "sm/X/Beautiful Inside (Cube Hard Mix)/Beautiful Inside (Cube Hard Mix).sm"
+    },
+    {
+      "path": "sm/X/Blue Rain/Blue Rain.sm"
+    },
+    {
+      "path": "sm/X/Chance and Dice/Chance and Dice.sm"
+    },
+    {
+      "path": "sm/X/Dance Celebration/Dance Celebration.sm"
+    },
+    {
+      "path": "sm/X/Dance Celebration (System 7 Remix)/Dance Celebration (System 7 Remix).sm"
+    },
+    {
+      "path": "sm/X/Dance Floor/Dance Floor.sm"
+    },
+    {
+      "path": "sm/X/dazzle/dazzle.sm"
+    },
+    {
+      "path": "sm/X/Dream Machine/Dream Machine.sm"
+    },
+    {
+      "path": "sm/X/Flight of the Phoenix/Flight of the Phoenix.sm"
+    },
+    {
+      "path": "sm/X/Flourish/Flourish.sm"
+    },
+    {
+      "path": "sm/X/Horatio/Horatio.sm"
+    },
+    {
+      "path": "sm/X/Inspiration/Inspiration.sm"
+    },
+    {
+      "path": "sm/X/INTO YOUR HEART (Ruffage remix)/INTO YOUR HEART (Ruffage remix).sm"
+    },
+    {
+      "path": "sm/X/Lift You Up/Lift You Up.sm"
+    },
+    {
+      "path": "sm/X/LOVING YOU (Epidemik remix)/LOVING YOU (Epidemik remix).sm"
+    },
+    {
+      "path": "sm/X/Malacca/Malacca.sm"
+    },
+    {
+      "path": "sm/X/on the bounce/on the bounce.sm"
+    },
+    {
+      "path": "sm/X/On The Break/On The Break.sm"
+    },
+    {
+      "path": "sm/X/Party Lights/Party Lights.sm"
+    },
+    {
+      "path": "sm/X/Playa (Original Mix)/Playa (Original Mix).sm"
+    },
+    {
+      "path": "sm/X/puzzle/puzzle.sm"
+    },
+    {
+      "path": "sm/X/SABER WING/SABER WING.sm"
+    },
+    {
+      "path": "sm/X/SABER WING (Akira Ishihara Headshot mix)/SABER WING (Akira Ishihara Headshot mix).sm"
+    },
+    {
+      "path": "sm/X/SAGA/SAGA.sm"
+    },
+    {
+      "path": "sm/X/Slip Out/Slip Out.sm"
+    },
+    {
+      "path": "sm/X/Slip Out (bounce in beat mix)/Slip Out (bounce in beat mix).sm"
+    },
+    {
+      "path": "sm/X/SUPER SAMURAI/SUPER SAMURAI.sm"
+    },
+    {
+      "path": "sm/X/Taj He Spitz/Taj He Spitz.sm"
+    },
+    {
+      "path": "sm/X/Taj He Spitz (Tommie Sunshine's Brooklyn Fire Re-Touch)/Taj He Spitz (Tommie Sunshine's Brooklyn Fire Re-Touch).sm"
+    },
+    {
+      "path": "sm/X/Take A Chance/Take A Chance.sm"
+    },
+    {
+      "path": "sm/X/The flower in your smile/The flower in your smile.sm"
+    },
+    {
+      "path": "sm/X/Ticket To Bombay/Ticket To Bombay.sm"
+    },
+    {
+      "path": "sm/X/TimeHollow/TimeHollow.sm"
+    },
+    {
+      "path": "sm/X/Tracers (4Beat Remix)/Tracers (4Beat Remix).sm"
+    },
+    {
+      "path": "sm/X/Trigger/Trigger.sm"
+    },
+    {
+      "path": "sm/X/Ubertreffen/Ubertreffen.sm"
+    },
+    {
+      "path": "sm/X/Waiting 4 u/Waiting 4 u.sm"
+    },
+    {
+      "path": "sm/X/will/will.sm"
+    },
+    {
+      "path": "sm/X/Rin To Shite Saku Hana No Gotoku/Rin To Shite Saku Hana No Gotoku.sm"
+    },
+    {
+      "path": "sm/X/ZERO/ZERO.sm"
+    },
+    {
+      "path": "sm/X/AFRONOVA(X-Special)/AFRONOVA(X-Special).sm"
+    },
+    {
+      "path": "sm/X/CANDY(X-Special)/CANDY(X-Special).sm"
+    },
+    {
+      "path": "sm/X/Dance Dance Revolution(X-Special)/Dance Dance Revolution(X-Special).sm"
+    },
+    {
+      "path": "sm/X/Healing Vision(X-Special)/Healing Vision(X-Special).sm"
+    },
+    {
+      "path": "sm/X/MAX 300(X-Special)/MAX 300(X-Special).sm"
+    },
+    {
+      "path": "sm/X/MAXX UNLIMITED(X-Special)/MAXX UNLIMITED(X-Special).sm"
+    },
+    {
+      "path": "sm/X/PARANOiA(X-Special)/PARANOiA(X-Special).sm"
+    },
+    {
+      "path": "sm/X/PARANOiA ETERNAL(X-Special)/PARANOiA ETERNAL(X-Special).sm"
+    },
+    {
+      "path": "sm/X/PARANOiA EVOLUTION(X-Special)/PARANOiA EVOLUTION(X-Special).sm"
+    },
+    {
+      "path": "sm/X/PARANOiA MAX~DIRTY MIX~(X-Special)/PARANOiA MAX~DIRTY MIX~(X-Special).sm"
+    },
+    {
+      "path": "sm/X/PARANOiA Rebirth(X-Special)/PARANOiA Rebirth(X-Special).sm"
+    },
+    {
+      "path": "sm/X/SP-TRIP MACHINE~JUNGLE MIX~(X-Special)/SP-TRIP MACHINE~JUNGLE MIX~(X-Special).sm"
+    },
+    {
+      "path": "sm/X/The legend of MAX(X-Special)/The legend of MAX(X-Special).sm"
+    },
+    {
+      "path": "sm/X/TRIP MACHINE(X-Special)/TRIP MACHINE(X-Special).sm"
+    },
+    {
+      "path": "sm/X/TRIP MACHINE CLIMAX(X-Special)/TRIP MACHINE CLIMAX(X-Special).sm"
+    },
+    {
+      "path": "sm/X/KAKUMEI(X-Special)/KAKUMEI(X-Special).sm"
+    },
+    {
+      "path": "sm/SN2/A thing called LOVE/A thing called LOVE.sm"
+    },
+    {
+      "path": "sm/SN2/Arrabbiata/Arrabbiata.sm"
+    },
+    {
+      "path": "sm/SN2/Blind Justice ~Torn souls Hurt Faiths~/Blind Justice ~Torn souls Hurt Faiths~.sm"
+    },
+    {
+      "path": "sm/SN2/Bloody Tears(IIDX EDITION)/Bloody Tears(IIDX EDITION).sm"
+    },
+    {
+      "path": "sm/SN2/CaptivAte~CHIKAI~/CaptivAte~CHIKAI~.sm"
+    },
+    {
+      "path": "sm/SN2/dream of love/dream of love.sm"
+    },
+    {
+      "path": "sm/SN2/Electrified/Electrified.sm"
+    },
+    {
+      "path": "sm/SN2/Every Day, Every Night (NM STYLE)/Every Day, Every Night (NM STYLE).sm"
+    },
+    {
+      "path": "sm/SN2/Feelings Won't Fade(Extend Trance Mix)/Feelings Won't Fade(Extend Trance Mix).sm"
+    },
+    {
+      "path": "sm/SN2/FIRE/FIRE.sm"
+    },
+    {
+      "path": "sm/SN2/Flow (Jammin' Ragga Mix)/Flow (Jammin' Ragga Mix).sm"
+    },
+    {
+      "path": "sm/SN2/Fly away -mix del matador-/Fly away -mix del matador-.sm"
+    },
+    {
+      "path": "sm/SN2/Freeway Shuffle/Freeway Shuffle.sm"
+    },
+    {
+      "path": "sm/SN2/GIRIGILI monzen jakura/GIRIGILI monzen jakura.sm"
+    },
+    {
+      "path": "sm/SN2/L'amour et la liberte(Darwin & DJ Silver remix)/L'amour et la liberte(Darwin & DJ Silver remix).sm"
+    },
+    {
+      "path": "sm/SN2/MARS WAR 3/MARS WAR 3.sm"
+    },
+    {
+      "path": "sm/SN2/MOONSTER/MOONSTER.sm"
+    },
+    {
+      "path": "sm/SN2/Music In The Rhythm/Music In The Rhythm.sm"
+    },
+    {
+      "path": "sm/SN2/NGO/NGO.sm"
+    },
+    {
+      "path": "sm/SN2/PARANOiA ~HADES~/PARANOiA ~HADES~.sm"
+    },
+    {
+      "path": "sm/SN2/Pluto/Pluto.sm"
+    },
+    {
+      "path": "sm/SN2/Pluto Relinquish/Pluto Relinquish.sm"
+    },
+    {
+      "path": "sm/SN2/Poseidon/Poseidon.sm"
+    },
+    {
+      "path": "sm/SN2/Raspberry Heart (English version)/Raspberry Heart (English version).sm"
+    },
+    {
+      "path": "sm/SN2/Saturn/Saturn.sm"
+    },
+    {
+      "path": "sm/SN2/Shades of Grey/Shades of Grey.sm"
+    },
+    {
+      "path": "sm/SN2/Silver Platform - I wanna get your heart -/Silver Platform - I wanna get your heart -.sm"
+    },
+    {
+      "path": "sm/SN2/SOUL CRASH/SOUL CRASH.sm"
+    },
+    {
+      "path": "sm/SN2/Star Gate Heaven (FUTURE LOVE Mix)/Star Gate Heaven (FUTURE LOVE Mix).sm"
+    },
+    {
+      "path": "sm/SN2/STARS (Re-tuned by HAL) - DDR EDITION -/STARS (Re-tuned by HAL) - DDR EDITION -.sm"
+    },
+    {
+      "path": "sm/SN2/stealth/stealth.sm"
+    },
+    {
+      "path": "sm/SN2/SUNKiSS DROP~Alison Side~/SUNKiSS DROP~Alison Side~.sm"
+    },
+    {
+      "path": "sm/SN2/SUNKiSS DROP~jun Side~/SUNKiSS DROP~jun Side~.sm"
+    },
+    {
+      "path": "sm/SN2/switch/switch.sm"
+    },
+    {
+      "path": "sm/SN2/Trim/Trim.sm"
+    },
+    {
+      "path": "sm/SN2/TRIP MACHINE PhoeniX/TRIP MACHINE PhoeniX.sm"
+    },
+    {
+      "path": "sm/SN2/Trust -DanceDanceRevolution mix-/Trust -DanceDanceRevolution mix-.sm"
+    },
+    {
+      "path": "sm/SN2/Unreal/Unreal.sm"
+    },
+    {
+      "path": "sm/SN2/Uranus/Uranus.sm"
+    },
+    {
+      "path": "sm/SN2/Vem brincar/Vem brincar.sm"
+    },
+    {
+      "path": "sm/SN2/Venus/Venus.sm"
+    },
+    {
+      "path": "sm/SN2/volcano/volcano.sm"
+    },
+    {
+      "path": "sm/SN2/Votum stellarum -forest #25 DDR RMX-/Votum stellarum -forest #25 DDR RMX-.sm"
+    },
+    {
+      "path": "sm/SN2/Why not/Why not.sm"
+    },
+    {
+      "path": "sm/SN2/AM-3P (CHAOS Special)/AM-3P (CHAOS Special).sm"
+    },
+    {
+      "path": "sm/SN2/B4U (VOLTAGE Special)/B4U (VOLTAGE Special).sm"
+    },
+    {
+      "path": "sm/SN2/BRILLIANT 2U (STREAM Special)/BRILLIANT 2U (STREAM Special).sm"
+    },
+    {
+      "path": "sm/SN2/D2R (FREEZE Special)/D2R (FREEZE Special).sm"
+    },
+    {
+      "path": "sm/SN2/DEAD END (GROOVE RADAR Special)/DEAD END (GROOVE RADAR Special).sm"
+    },
+    {
+      "path": "sm/X/DYNAMITE RAVE (AIR Special)/DYNAMITE RAVE (AIR Special).sm"
+    },
+    {
+      "path": "sm/SN1/A Stupid Barber/A Stupid Barber.sm"
+    },
+    {
+      "path": "sm/SN1/AA/AA.sm"
+    },
+    {
+      "path": "sm/SN1/Bad Routine/Bad Routine.sm"
+    },
+    {
+      "path": "sm/SN1/Baile Le Samba/Baile Le Samba.sm"
+    },
+    {
+      "path": "sm/SN1/BALLAD FOR YOU~omoi no ame~/BALLAD FOR YOU~omoi no ame~.sm"
+    },
+    {
+      "path": "sm/SN1/Brazilian Anthem/Brazilian Anthem.sm"
+    },
+    {
+      "path": "sm/SN1/cachaca/cachaca.sm"
+    },
+    {
+      "path": "sm/SN1/Can Be Real/Can Be Real.sm"
+    },
+    {
+      "path": "sm/SN1/CAN'T STOP FALLIN' IN LOVE -super euro version-/CAN'T STOP FALLIN' IN LOVE -super euro version-.sm"
+    },
+    {
+      "path": "sm/SN1/CENTAUR/CENTAUR.sm"
+    },
+    {
+      "path": "sm/SN1/CHAOS/CHAOS.sm"
+    },
+    {
+      "path": "sm/SN1/CURUS/CURUS.sm"
+    },
+    {
+      "path": "sm/SN1/DoLL/DoLL.sm"
+    },
+    {
+      "path": "sm/SN1/Dragon Blade/Dragon Blade.sm"
+    },
+    {
+      "path": "sm/SN1/Fascination ~eternal love mix~/Fascination ~eternal love mix~.sm"
+    },
+    {
+      "path": "sm/SN1/Fascination MAXX/Fascination MAXX.sm"
+    },
+    {
+      "path": "sm/SN1/Flow/Flow.sm"
+    },
+    {
+      "path": "sm/SN1/Flow (True Style)/Flow (True Style).sm"
+    },
+    {
+      "path": "sm/SN1/Fly away/Fly away.sm"
+    },
+    {
+      "path": "sm/SN1/Forever Sunshine/Forever Sunshine.sm"
+    },
+    {
+      "path": "sm/SN1/Freedom/Freedom.sm"
+    },
+    {
+      "path": "sm/SN1/Funk Boogie/Funk Boogie.sm"
+    },
+    {
+      "path": "sm/SN1/GORGEOUS 2012/GORGEOUS 2012.sm"
+    },
+    {
+      "path": "sm/SN1/HAPPY ANGEL/HAPPY ANGEL.sm"
+    },
+    {
+      "path": "sm/SN1/Healing-D-Vision/Healing-D-Vision.sm"
+    },
+    {
+      "path": "sm/SN1/I Need You/I Need You.sm"
+    },
+    {
+      "path": "sm/SN1/iFUTURELIST(DDR VERSION)/iFUTURELIST(DDR VERSION).sm"
+    },
+    {
+      "path": "sm/SN1/INNOCENCE OF SILENCE/INNOCENCE OF SILENCE.sm"
+    },
+    {
+      "path": "sm/SN1/INSIDE YOUR HEART/INSIDE YOUR HEART.sm"
+    },
+    {
+      "path": "sm/SN1/Jam & Marmalade/Jam & Marmalade.sm"
+    },
+    {
+      "path": "sm/SN1/KEEP ON MOVIN' ~DMX MIX~/KEEP ON MOVIN' ~DMX MIX~.sm"
+    },
+    {
+      "path": "sm/SN1/LOGICAL DASH/LOGICAL DASH.sm"
+    },
+    {
+      "path": "sm/SN1/LOVE IS ORANGE/LOVE IS ORANGE.sm"
+    },
+    {
+      "path": "sm/SN1/Make A Difference/Make A Difference.sm"
+    },
+    {
+      "path": "sm/SN1/MARIA(I believe...)/MARIA(I believe...).sm"
+    },
+    {
+      "path": "sm/SN1/MAX 300 (Super-Max-Me Mix)/MAX 300 (Super-Max-Me Mix).sm"
+    },
+    {
+      "path": "sm/SN1/MAXIMIZER/MAXIMIZER.sm"
+    },
+    {
+      "path": "sm/SN1/MIDNIGHT SPECIAL/MIDNIGHT SPECIAL.sm"
+    },
+    {
+      "path": "sm/SN1/Mind Parasite/Mind Parasite.sm"
+    },
+    {
+      "path": "sm/SN1/Monkey Punk/Monkey Punk.sm"
+    },
+    {
+      "path": "sm/SN1/MOON/MOON.sm"
+    },
+    {
+      "path": "sm/SN1/murmur twins/murmur twins.sm"
+    },
+    {
+      "path": "sm/SN1/My Only Shining Star/My Only Shining Star.sm"
+    },
+    {
+      "path": "sm/SN1/No.13/No.13.sm"
+    },
+    {
+      "path": "sm/SN1/PARANOiA-Respect-/PARANOiA-Respect-.sm"
+    },
+    {
+      "path": "sm/SN1/PASSION OF LOVE/PASSION OF LOVE.sm"
+    },
+    {
+      "path": "sm/SN1/Polovtsian Dances And Chorus/Polovtsian Dances And Chorus.sm"
+    },
+    {
+      "path": "sm/SN1/PUT YOUR FAITH IN ME ~SATURDAY NIGHT MIX~/PUT YOUR FAITH IN ME ~SATURDAY NIGHT MIX~.sm"
+    },
+    {
+      "path": "sm/SN1/Quickening/Quickening.sm"
+    },
+    {
+      "path": "sm/SN1/Quick Master/Quick Master.sm"
+    },
+    {
+      "path": "sm/SN1/rainbow flyer/rainbow flyer.sm"
+    },
+    {
+      "path": "sm/SN1/rainbow rainbow/rainbow rainbow.sm"
+    },
+    {
+      "path": "sm/SN1/RED ZONE/RED ZONE.sm"
+    },
+    {
+      "path": "sm/SN1/Saturday Night Love/Saturday Night Love.sm"
+    },
+    {
+      "path": "sm/SN1/Scorching Moon/Scorching Moon.sm"
+    },
+    {
+      "path": "sm/SN1/SEDUCTION/SEDUCTION.sm"
+    },
+    {
+      "path": "sm/SN1/SEDUCTION(Vocal Remix)/SEDUCTION(Vocal Remix).sm"
+    },
+    {
+      "path": "sm/SN1/Ska Ska No.3/Ska Ska No.3.sm"
+    },
+    {
+      "path": "sm/SN1/Star Gate Heaven/Star Gate Heaven.sm"
+    },
+    {
+      "path": "sm/SN1/STARS (2nd NAOKI's style)/STARS (2nd NAOKI's style).sm"
+    },
+    {
+      "path": "sm/SN1/THE SHINING POLARIS/THE SHINING POLARIS.sm"
+    },
+    {
+      "path": "sm/SN1/TIERRA BUENA/TIERRA BUENA.sm"
+    },
+    {
+      "path": "sm/SN1/TOMORROW/TOMORROW.sm"
+    },
+    {
+      "path": "sm/SN1/Tomorrow Perfume/Tomorrow Perfume.sm"
+    },
+    {
+      "path": "sm/SN1/TRUE LOVE/TRUE LOVE.sm"
+    },
+    {
+      "path": "sm/SN1/Try 2 Luv. U/Try 2 Luv. U.sm"
+    },
+    {
+      "path": "sm/SN1/un deux trois/un deux trois.sm"
+    },
+    {
+      "path": "sm/SN1/Under the Sky/Under the Sky.sm"
+    },
+    {
+      "path": "sm/SN1/Xepher/Xepher.sm"
+    },
+    {
+      "path": "sm/SN1/You gotta move it (feat. Julie Rugaard)/You gotta move it (feat. Julie Rugaard).sm"
+    },
+    {
+      "path": "sm/SN1/CHIKARA/CHIKARA.sm"
+    },
+    {
+      "path": "sm/SN1/Dandandou/Dandandou.sm"
+    },
+    {
+      "path": "sm/SN1/Gekkou chou/Gekkou chou.sm"
+    },
+    {
+      "path": "sm/SN1/Hana Ranman -Flowers-/Hana Ranman -Flowers-.sm"
+    },
+    {
+      "path": "sm/SN1/Himawari/Himawari.sm"
+    },
+    {
+      "path": "sm/SN1/Ikareru ookina shiroi uma/Ikareru ookina shiroi uma.sm"
+    },
+    {
+      "path": "sm/SN1/Kagerou/Kagerou.sm"
+    },
+    {
+      "path": "sm/SN1/Konoko no nanatsu no oiwaini/Konoko no nanatsu no oiwaini.sm"
+    },
+    {
+      "path": "sm/SN1/Mugen/Mugen.sm"
+    },
+    {
+      "path": "sm/X2/NIJIIRO (Chinese)/NIJIIRO (Chinese).sm"
+    },
+    {
+      "path": "sm/EX/1998/1998.sm"
+    },
+    {
+      "path": "sm/EX/321STARS/321STARS.sm"
+    },
+    {
+      "path": "sm/EX/A/A.sm"
+    },
+    {
+      "path": "sm/EX/Across the nightmare/Across the nightmare.sm"
+    },
+    {
+      "path": "sm/EX/air/air.sm"
+    },
+    {
+      "path": "sm/EX/AM-3P -303 BASS MIX-/AM-3P -303 BASS MIX-.sm"
+    },
+    {
+      "path": "sm/EX/bag/bag.sm"
+    },
+    {
+      "path": "sm/EX/BE LOVIN/BE LOVIN.sm"
+    },
+    {
+      "path": "sm/EX/Colors ~for EXTREME~/Colors ~for EXTREME~.sm"
+    },
+    {
+      "path": "sm/EX/CUTIE CHASER(MORNING MIX)/CUTIE CHASER(MORNING MIX).sm"
+    },
+    {
+      "path": "sm/EX/Dance Dance Revolution/Dance Dance Revolution.sm"
+    },
+    {
+      "path": "sm/EX/Destiny lovers/Destiny lovers.sm"
+    },
+    {
+      "path": "sm/EX/DROP THE BOMB(SyS.F. Mix)/DROP THE BOMB(SyS.F. Mix).sm"
+    },
+    {
+      "path": "sm/EX/Frozen Ray(for EXTREME)/Frozen Ray(for EXTREME).sm"
+    },
+    {
+      "path": "sm/EX/Gamelan de Couple/Gamelan de Couple.sm"
+    },
+    {
+      "path": "sm/EX/GRADUATION/GRADUATION.sm"
+    },
+    {
+      "path": "sm/EX/Happy Wedding/Happy Wedding.sm"
+    },
+    {
+      "path": "sm/EX/Heaven is a '57 metallic gray ~gimmix~/Heaven is a '57 metallic gray ~gimmix~.sm"
+    },
+    {
+      "path": "sm/EX/HYPER EUROBEAT/HYPER EUROBEAT.sm"
+    },
+    {
+      "path": "sm/EX/I'm gonna get you!/I'm gonna get you!.sm"
+    },
+    {
+      "path": "sm/EX/jane jana/jane jana.sm"
+    },
+    {
+      "path": "sm/EX/JET WORLD/JET WORLD.sm"
+    },
+    {
+      "path": "sm/EX/KISS KISS KISS/KISS KISS KISS.sm"
+    },
+    {
+      "path": "sm/EX/Kiss me all night long/Kiss me all night long.sm"
+    },
+    {
+      "path": "sm/EX/L'amour et la liberte(DDR Ver.)/L'amour et la liberte(DDR Ver.).sm"
+    },
+    {
+      "path": "sm/EX/LOVE LOVE SUGAR/LOVE LOVE SUGAR.sm"
+    },
+    {
+      "path": "sm/EX/LOVE LOVE SHINE/LOVE LOVE SHINE.sm"
+    },
+    {
+      "path": "sm/EX/Miracle Moon ~L.E.D.LIGHT STYLE MIX~/Miracle Moon ~L.E.D.LIGHT STYLE MIX~.sm"
+    },
+    {
+      "path": "sm/EX/PARANOIA survivor/PARANOIA survivor.sm"
+    },
+    {
+      "path": "sm/EX/PARANOIA survivor MAX/PARANOIA survivor MAX.sm"
+    },
+    {
+      "path": "sm/EX/Pink Rose/Pink Rose.sm"
+    },
+    {
+      "path": "sm/EX/SO IN LOVE/SO IN LOVE.sm"
+    },
+    {
+      "path": "sm/EX/STAY (Organic house Version)/STAY (Organic house Version).sm"
+    },
+    {
+      "path": "sm/EX/stoic (EXTREME version)/stoic (EXTREME version).sm"
+    },
+    {
+      "path": "sm/EX/sync (EXTREME version)/sync (EXTREME version).sm"
+    },
+    {
+      "path": "sm/EX/TEARS/TEARS.sm"
+    },
+    {
+      "path": "sm/EX/The Least 100sec/The Least 100sec.sm"
+    },
+    {
+      "path": "sm/EX/The legend of MAX/The legend of MAX.sm"
+    },
+    {
+      "path": "sm/EX/TRIP MACHINE survivor/TRIP MACHINE survivor.sm"
+    },
+    {
+      "path": "sm/EX/Twin Bee -Generation X-/Twin Bee -Generation X-.sm"
+    },
+    {
+      "path": "sm/EX/V ~for EXTREME~/V ~for EXTREME~.sm"
+    },
+    {
+      "path": "sm/EX/VANITY ANGEL/VANITY ANGEL.sm"
+    },
+    {
+      "path": "sm/EX/xenon/xenon.sm"
+    },
+    {
+      "path": "sm/EX/Aoi shoudou ~for EXTREME~/Aoi shoudou ~for EXTREME~.sm"
+    },
+    {
+      "path": "sm/EX/DAIKENKAI/DAIKENKAI.sm"
+    },
+    {
+      "path": "sm/EX/Mikeneko rock/Mikeneko rock.sm"
+    },
+    {
+      "path": "sm/EX/SAKURA/SAKURA.sm"
+    },
+    {
+      "path": "sm/7th/BREAK DOWN!/BREAK DOWN!.sm"
+    },
+    {
+      "path": "sm/7th/BURNING HEAT! (3 Option MIX)/BURNING HEAT! (3 Option MIX).sm"
+    },
+    {
+      "path": "sm/7th/CANDY HEART/CANDY HEART.sm"
+    },
+    {
+      "path": "sm/7th/D2R/D2R.sm"
+    },
+    {
+      "path": "sm/7th/DESTINY/DESTINY.sm"
+    },
+    {
+      "path": "sm/7th/DIVE TO THE NIGHT/DIVE TO THE NIGHT.sm"
+    },
+    {
+      "path": "sm/7th/i feel/i feel.sm"
+    },
+    {
+      "path": "sm/7th/MAXX UNLIMITED/MAXX UNLIMITED.sm"
+    },
+    {
+      "path": "sm/7th/rain of sorrow/rain of sorrow.sm"
+    },
+    {
+      "path": "sm/7th/Secret Rendez-vous/Secret Rendez-vous.sm"
+    },
+    {
+      "path": "sm/7th/Sweet Sweet Love Magic/Sweet Sweet Love Magic.sm"
+    },
+    {
+      "path": "sm/7th/TSUGARU/TSUGARU.sm"
+    },
+    {
+      "path": "sm/7th/KAKUMEI/KAKUMEI.sm"
+    },
+    {
+      "path": "sm/7th/AFRONOVA(FROM NONSTOP MEGAMIX)/AFRONOVA(FROM NONSTOP MEGAMIX).sm"
+    },
+    {
+      "path": "sm/7th/AM-3P (AM EAST mix)/AM-3P (AM EAST mix).sm"
+    },
+    {
+      "path": "sm/7th/B4U(B4 ZA BEAT MIX)/B4U(B4 ZA BEAT MIX).sm"
+    },
+    {
+      "path": "sm/7th/BRILLIANT 2U(K.O.G G3 MIX)/BRILLIANT 2U(K.O.G G3 MIX).sm"
+    },
+    {
+      "path": "sm/7th/BURNIN' THE FLOOR (BLUE FIRE mix)/BURNIN' THE FLOOR (BLUE FIRE mix).sm"
+    },
+    {
+      "path": "sm/7th/CELEBRATE NITE(EURO TRANCE STYLE)/CELEBRATE NITE(EURO TRANCE STYLE).sm"
+    },
+    {
+      "path": "sm/7th/DROP OUT(FROM NONSTOP MEGAMIX)/DROP OUT(FROM NONSTOP MEGAMIX).sm"
+    },
+    {
+      "path": "sm/7th/ECSTASY (midnight blue mix)/ECSTASY (midnight blue mix).sm"
+    },
+    {
+      "path": "sm/7th/HIGHER (next morning mix)/HIGHER (next morning mix).sm"
+    },
+    {
+      "path": "sm/7th/HYSTERIA 2001/HYSTERIA 2001.sm"
+    },
+    {
+      "path": "sm/7th/MY SUMMER LOVE(TOMMY'S SMILE MIX)/MY SUMMER LOVE(TOMMY'S SMILE MIX).sm"
+    },
+    {
+      "path": "sm/7th/Silent Hill (3rd christmas mix)/Silent Hill (3rd christmas mix).sm"
+    },
+    {
+      "path": "sm/7th/SEXY PLANET(FROM NONSTOP MEGAMIX)/SEXY PLANET(FROM NONSTOP MEGAMIX).sm"
+    },
+    {
+      "path": "sm/7th/STILL IN MY HEART (MOMO MIX)/STILL IN MY HEART (MOMO MIX).sm"
+    },
+    {
+      "path": "sm/7th/SUPER STAR(FROM NONSTOP MEGAMIX)/SUPER STAR(FROM NONSTOP MEGAMIX).sm"
+    },
+    {
+      "path": "sm/7th/TSUGARU(APPLE MIX)/TSUGARU(APPLE MIX).sm"
+    },
+    {
+      "path": "sm/7th/WILD RUSH(FROM NONSTOP MEGAMIX)/WILD RUSH(FROM NONSTOP MEGAMIX).sm"
+    },
+    {
+      "path": "sm/6th/exotic ethnic/exotic ethnic.sm"
+    },
+    {
+      "path": "sm/6th/Healing Vision~Angelic mix~/Healing Vision~Angelic mix~.sm"
+    },
+    {
+      "path": "sm/6th/Let the beat hit em!(CLASSIC R&B STYLE)/Let the beat hit em!(CLASSIC R&B STYLE).sm"
+    },
+    {
+      "path": "sm/6th/MAX 300/MAX 300.sm"
+    },
+    {
+      "path": "sm/6th/ORION.78~civilization mix~/ORION.78~civilization mix~.sm"
+    },
+    {
+      "path": "sm/5th/ABSOLUTE/ABSOLUTE.sm"
+    },
+    {
+      "path": "sm/5th/Abyss/Abyss.sm"
+    },
+    {
+      "path": "sm/5th/AFRONOVA PRIMEVAL/AFRONOVA PRIMEVAL.sm"
+    },
+    {
+      "path": "sm/5th/BROKEN MY HEART/BROKEN MY HEART.sm"
+    },
+    {
+      "path": "sm/5th/CAN'T STOP FALLIN' IN LOVE ~SPEED MIX~/CAN'T STOP FALLIN' IN LOVE ~SPEED MIX~.sm"
+    },
+    {
+      "path": "sm/5th/DXY!/DXY!.sm"
+    },
+    {
+      "path": "sm/5th/ECSTASY/ECSTASY.sm"
+    },
+    {
+      "path": "sm/5th/Electro Tuned ( the SubS Mix )/Electro Tuned ( the SubS Mix ).sm"
+    },
+    {
+      "path": "sm/5th/Healing Vision/Healing Vision.sm"
+    },
+    {
+      "path": "sm/5th/INSERTiON/INSERTiON.sm"
+    },
+    {
+      "path": "sm/5th/PARANOiA ETERNAL/PARANOiA ETERNAL.sm"
+    },
+    {
+      "path": "sm/5th/STILL IN MY HEART/STILL IN MY HEART.sm"
+    },
+    {
+      "path": "sm/5th/SANA MOLLETE NE ENTE/SANA MOLLETE NE ENTE.sm"
+    },
+    {
+      "path": "sm/4th/.59/.59.sm"
+    },
+    {
+      "path": "sm/4th/B4U/B4U.sm"
+    },
+    {
+      "path": "sm/4th/BABY BABY GIMME YOUR LOVE/BABY BABY GIMME YOUR LOVE.sm"
+    },
+    {
+      "path": "sm/4th/BURNIN' THE FLOOR/BURNIN' THE FLOOR.sm"
+    },
+    {
+      "path": "sm/4th/CAN'T STOP FALLIN' IN LOVE/CAN'T STOP FALLIN' IN LOVE.sm"
+    },
+    {
+      "path": "sm/4th/CELEBRATE NITE/CELEBRATE NITE.sm"
+    },
+    {
+      "path": "sm/4th/Don't Stop!~AMD 2nd MIX~/Don't Stop!~AMD 2nd MIX~.sm"
+    },
+    {
+      "path": "sm/4th/DROP OUT/DROP OUT.sm"
+    },
+    {
+      "path": "sm/4th/era (nostalmix)/era (nostalmix).sm"
+    },
+    {
+      "path": "sm/4th/HIGHER/HIGHER.sm"
+    },
+    {
+      "path": "sm/4th/Holic/Holic.sm"
+    },
+    {
+      "path": "sm/4th/HYSTERIA/HYSTERIA.sm"
+    },
+    {
+      "path": "sm/4th/LEADING CYBER/LEADING CYBER.sm"
+    },
+    {
+      "path": "sm/4th/LOVE AGAIN TONIGHT~For Melissa MIX~/LOVE AGAIN TONIGHT~For Melissa MIX~.sm"
+    },
+    {
+      "path": "sm/4th/MY SUMMER LOVE/MY SUMMER LOVE.sm"
+    },
+    {
+      "path": "sm/4th/ORION.78(AMeuro-MIX)/ORION.78(AMeuro-MIX).sm"
+    },
+    {
+      "path": "sm/4th/PARANOIA EVOLUTION/PARANOIA EVOLUTION.sm"
+    },
+    {
+      "path": "sm/4th/SEXY PLANET/SEXY PLANET.sm"
+    },
+    {
+      "path": "sm/4th/SUPER STAR/SUPER STAR.sm"
+    },
+    {
+      "path": "sm/4th/TRIP MACHINE CLIMAX/TRIP MACHINE CLIMAX.sm"
+    },
+    {
+      "path": "sm/4th/WILD RUSH/WILD RUSH.sm"
+    },
+    {
+      "path": "sm/3rd/AFRONOVA/AFRONOVA.sm"
+    },
+    {
+      "path": "sm/3rd/AFTER THE GAME OF LOVE/AFTER THE GAME OF LOVE.sm"
+    },
+    {
+      "path": "sm/3rd/CUTIE CHASER/CUTIE CHASER.sm"
+    },
+    {
+      "path": "sm/3rd/DEAD END/DEAD END.sm"
+    },
+    {
+      "path": "sm/3rd/DROP THE BOMB/DROP THE BOMB.sm"
+    },
+    {
+      "path": "sm/X/DYNAMITE RAVE/DYNAMITE RAVE.sm"
+    },
+    {
+      "path": "sm/3rd/GRADIUSIC CYBER ~AMD G5 MIX~/GRADIUSIC CYBER ~AMD G5 MIX~.sm"
+    },
+    {
+      "path": "sm/3rd/La Senorita/La Senorita.sm"
+    },
+    {
+      "path": "sm/3rd/La Senorita Virtual/La Senorita Virtual.sm"
+    },
+    {
+      "path": "sm/3rd/LOVE THIS FEELIN'/LOVE THIS FEELIN'.sm"
+    },
+    {
+      "path": "sm/3rd/PARANOiA Rebirth/PARANOiA Rebirth.sm"
+    },
+    {
+      "path": "sm/3rd/Silent Hill/Silent Hill.sm"
+    },
+    {
+      "path": "sm/3rd/think ya better D/think ya better D.sm"
+    },
+    {
+      "path": "sm/3rd/TRIP MACHINE~luv mix~/TRIP MACHINE~luv mix~.sm"
+    },
+    {
+      "path": "sm/2nd/AM-3P/AM-3P.sm"
+    },
+    {
+      "path": "sm/2nd/BRILLIANT 2U/BRILLIANT 2U.sm"
+    },
+    {
+      "path": "sm/2nd/BRILLIANT 2U(Orchestra Groove)/BRILLIANT 2U(Orchestra Groove).sm"
+    },
+    {
+      "path": "sm/2nd/e-motion/e-motion.sm"
+    },
+    {
+      "path": "sm/2nd/GENOM SCREAMS/GENOM SCREAMS.sm"
+    },
+    {
+      "path": "sm/3rd/KEEP ON MOVIN'/KEEP ON MOVIN'.sm"
+    },
+    {
+      "path": "sm/2nd/MAKE A JAM!/MAKE A JAM!.sm"
+    },
+    {
+      "path": "sm/2nd/MAKE IT BETTER (So-REAL Mix)/MAKE IT BETTER (So-REAL Mix).sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA KCET ~clean mix~/PARANOiA KCET ~clean mix~.sm"
+    },
+    {
+      "path": "sm/2nd/PARANOiA MAX~DIRTY MIX~/PARANOiA MAX~DIRTY MIX~.sm"
+    },
+    {
+      "path": "sm/2nd/PUT YOUR FAITH IN ME/PUT YOUR FAITH IN ME.sm"
+    },
+    {
+      "path": "sm/2nd/PUT YOUR FAITH IN ME (Jazzy Groove)/PUT YOUR FAITH IN ME (Jazzy Groove).sm"
+    },
+    {
+      "path": "sm/2nd/SP-TRIP MACHINE~JUNGLE MIX~/SP-TRIP MACHINE~JUNGLE MIX~.sm"
+    },
+    {
+      "path": "sm/DDR/MAKE IT BETTER/MAKE IT BETTER.sm"
+    },
+    {
+      "path": "sm/DDR/PARANOiA/PARANOiA.sm"
+    },
+    {
+      "path": "sm/DDR/TRIP MACHINE/TRIP MACHINE.sm"
+    },
+    {
+      "path": "sm/EX/LA BAMBA/LA BAMBA.sm"
+    },
+    {
+      "path": "sm/SN1/La Bamba/La Bamba.sm"
+    }
   ]
 }

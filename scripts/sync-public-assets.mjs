@@ -12,6 +12,7 @@ const FILE_MANIFEST = path.join(CACHE, 'public-files-manifest.json')
 
 const files = [
   ['sm-files.json', path.join(GENERATED, 'sm-files.json')],
+  ['song-index.json', path.join(GENERATED, 'song-index.json')],
   ['song-meta.json', path.join(GENERATED, 'song-meta.json')],
   ['song-lengths.json', path.join(GENERATED, 'song-lengths.json')],
   ['dan-data.json', path.join(GENERATED, 'dan-data.json')],

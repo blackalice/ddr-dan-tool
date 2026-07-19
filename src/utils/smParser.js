@@ -148,7 +148,9 @@ export function parseSm(sm) {
   const getTagValue = (content, tagName) => {
     const regex = new RegExp(`#${tagName}:([^;]+);`, 'i');
     const match = content.match(regex);
-    return match ? match[1].trim() : '';
+    // Simfiles escape a leading # as \# so it is treated as title text rather
+    // than a tag marker. Do not expose that parser escape in the UI.
+    return match ? match[1].trim().replace(/\\#/g, '#') : '';
   };
 
   const parseChartNotes = (notesLines, mode, difficulty, title) => {
@@ -286,7 +288,7 @@ export function parseSm(sm) {
 
         if (result) {
           const tag = result[1].toLowerCase();
-          const value = result[2];
+          const value = result[2].replace(/\\#/g, '#');
 
           if (metaTagsToConsume.includes(tag)) {
             sc[tag] = value;

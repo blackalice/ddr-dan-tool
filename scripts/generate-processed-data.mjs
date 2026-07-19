@@ -3,6 +3,7 @@ import path from 'path';
 import Fraction from "fraction.js";
 import { loadSongIdMap, ensureSongId, saveSongIdMap } from './songIdUtils.mjs';
 import { buildChartId } from '../src/utils/chartIds.js';
+import { buildChartKey } from '../src/utils/chartIdentity.js';
 import {
     collectStats,
     collectTreeStats,
@@ -691,6 +692,8 @@ const processCourseList = async (courses, smFiles, singleRankMap, doubleRankMap,
                 rankedRating,
                 songId,
                 chartId,
+                songKey: songFile.path,
+                chartKey: buildChartKey(songFile.path, chart.mode, chart.difficulty),
                 path: songFile.path,
                 artist: simfileData.artist,
             });
@@ -1070,6 +1073,8 @@ const processCourseListByLevel = async (courses, smFiles, singleRankMap, doubleR
                 rankedRating,
                 songId,
                 chartId,
+                songKey: songFile.path,
+                chartKey: buildChartKey(songFile.path, chart.mode, chart.difficulty),
                 path: songFile.path,
                 artist: simfileData.artist,
             });
@@ -1119,12 +1124,13 @@ async function main() {
         const songIdMapState = { map: songIdMap, changed: false };
 
         // Process Dan data
-        const processedDanSingle = await processCourseList(courseData.dan.single, smFiles, singleRankMap, doubleRankMap, songIdMapState);
-        const processedDanDouble = await processCourseList(courseData.dan.double, smFiles, singleRankMap, doubleRankMap, songIdMapState);
-        const danResult = {
-            single: processedDanSingle,
-            double: processedDanDouble,
-        };
+        const danResult = {};
+        for (const [version, courses] of Object.entries(courseData.dan)) {
+            danResult[version] = {
+                single: await processCourseList(courses.single, smFiles, singleRankMap, doubleRankMap, songIdMapState),
+                double: await processCourseList(courses.double, smFiles, singleRankMap, doubleRankMap, songIdMapState),
+            };
+        }
         await fs.writeFile(DAN_OUTPUT_PATH, JSON.stringify(danResult, null, 2));
         console.log(`Successfully generated Dan data at ${DAN_OUTPUT_PATH}`);
 

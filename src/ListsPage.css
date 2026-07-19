@@ -20,8 +20,6 @@
 }
 
 .list-page-filter-group > .filter-button {
-  border: none;
-  cursor: pointer;
   flex-shrink: 0;
 }
 
@@ -47,12 +45,6 @@
 .reorder-mode .dan-section .dan-header {
   border-bottom-left-radius: var(--radius-sm);
   border-bottom-right-radius: var(--radius-sm);
-}
-
-/* Highlight the edit (reorder) button when active */
-.list-page-filter-group > .filter-button.active {
-  background: var(--accent-color);
-  color: var(--text-color);
 }
 
 /* Drag handle button styles */

@@ -8,6 +8,11 @@ This repo now generates chart tech counts at build time from local simfiles.
 
 - `node scripts/extract-stepmania-tech-counts.mjs`
 
+The extractor processes simfiles in a bounded native `worker_threads` pool. It
+defaults to at most eight workers (or the available parallelism when lower).
+Set `DDR_STEPMANIA_WORKERS` to tune the pool for a particular build machine,
+for example `DDR_STEPMANIA_WORKERS=4`.
+
 It parses every chart via `parseSm()`, computes:
 
 - ITGmania-style StepParity tech categories via `scripts/itgmania-tech-counts.mjs`

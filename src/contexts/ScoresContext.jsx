@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -44,27 +43,41 @@ function normalizeScoresShape(data) {
   };
 }
 
-function buildLegacyLookup(meta) {
-  const map = new Map();
-  if (!Array.isArray(meta)) return map;
+function buildScoreIdentityLookup(meta) {
+  const legacyChartIds = new Map();
+  const legacyTitles = new Map();
+  if (!Array.isArray(meta)) return { legacyChartIds, legacyTitles };
   for (const song of meta) {
     const songId = song.id;
     for (const diff of song.difficulties || []) {
       const chartId = diff.chartId || buildChartId(songId, diff.mode, diff.difficulty);
       if (!chartId) continue;
+      const canonical = makeScoreKey({
+        songKey: song.songKey || song.path,
+        mode: diff.mode,
+        difficulty: diff.difficulty,
+      });
+      if (!canonical) continue;
+      legacyChartIds.set(chartId, canonical);
       const withArtist = makeScoreKey({ title: song.title, artist: song.artist, difficulty: diff.difficulty });
-      if (withArtist) map.set(withArtist, chartId);
+      if (withArtist) {
+        const existing = legacyTitles.get(withArtist);
+        legacyTitles.set(withArtist, existing && existing !== canonical ? null : canonical);
+      }
       const legacy = legacyScoreKey({ title: song.title, difficulty: diff.difficulty });
-      if (legacy) map.set(legacy, chartId);
+      if (legacy) {
+        const existing = legacyTitles.get(legacy);
+        legacyTitles.set(legacy, existing && existing !== canonical ? null : canonical);
+      }
     }
   }
-  return map;
+  return { legacyChartIds, legacyTitles };
 }
 
 function migrateScores(existing, meta) {
   if (!meta || meta.length === 0) return existing;
-  const lookup = buildLegacyLookup(meta);
-  if (lookup.size === 0) return existing;
+  const lookup = buildScoreIdentityLookup(meta);
+  if (!lookup || lookup.legacyChartIds.size === 0) return existing;
   const next = normalizeScoresShape(existing);
   let changed = false;
   for (const mode of ['single', 'double']) {
@@ -73,15 +86,10 @@ function migrateScores(existing, meta) {
     for (const key of Object.keys(source)) {
       if (isChartId(key)) {
         const upgraded = upgradeChartId(key);
-        if (upgraded && upgraded !== key) {
-          if (!source[upgraded]) {
-            const entry = source[key];
-            if (entry && typeof entry === 'object') {
-              const normalizedSongId = normalizeSongIdValue(entry.songId);
-              if (normalizedSongId) entry.songId = normalizedSongId;
-            }
-            source[upgraded] = source[key];
-          }
+        const canonical = lookup.legacyChartIds.get(upgraded || key);
+        const targetKey = canonical || (upgraded && upgraded !== key ? upgraded : null);
+        if (targetKey) {
+          if (!source[targetKey]) source[targetKey] = source[key];
           delete source[key];
           changed = true;
           continue;
@@ -93,7 +101,7 @@ function migrateScores(existing, meta) {
         }
         continue;
       }
-      const mapped = lookup.get(key);
+      const mapped = lookup.legacyTitles.get(key);
       if (!mapped) continue;
       if (!source[mapped]) {
         source[mapped] = source[key];
@@ -146,8 +154,10 @@ function pickRatingForLevel(ratings, level) {
 export const ScoresProvider = ({ children }) => {
   const settings = useContext(SettingsContext) || {};
   const worldDifficultyChanges = Boolean(settings.worldDifficultyChanges);
-  const worldRemoveChallengeCharts = Boolean(settings.worldRemoveChallengeCharts);
-  const worldMetaKey = `${worldDifficultyChanges ? 1 : 0}:${worldRemoveChallengeCharts ? 1 : 0}`;
+  const showWorldChallengeCharts = settings.showWorldChallengeCharts !== undefined
+    ? Boolean(settings.showWorldChallengeCharts)
+    : !settings.worldRemoveChallengeCharts;
+  const worldMetaKey = `${worldDifficultyChanges ? 1 : 0}:${showWorldChallengeCharts ? 1 : 0}`;
 
   const [scores, setScores] = useState(() => {
     const saved = storage.getItem('ddrScores');
@@ -171,6 +181,7 @@ export const ScoresProvider = ({ children }) => {
   const [rawSongMeta, setRawSongMeta] = useState([]);
   const [songMeta, setSongMeta] = useState([]);
   const [songMetaWorldFlag, setSongMetaWorldFlag] = useState(null);
+  const [songMetaRatingsIncluded, setSongMetaRatingsIncluded] = useState(false);
   const [chartMetaLookup, setChartMetaLookup] = useState(() => new Map());
   const rankedRatingsRef = useRef(null);
   const rankedRatingsPromiseRef = useRef(null);
@@ -180,14 +191,24 @@ export const ScoresProvider = ({ children }) => {
   const statsDirtyRef = useRef(true);
 
   useEffect(() => {
-    const payload = JSON.stringify(scores);
-    storage.setItem('ddrScores', payload);
-    try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
-  }, [scores]);
-
-  useLayoutEffect(() => {
     scoresRef.current = scores;
     statsDirtyRef.current = true;
+  }, [scores]);
+
+  useEffect(() => {
+    // Imports can update thousands of scores. Serialize during idle time so the
+    // input and paint work immediately after an import is not blocked.
+    const persist = () => {
+      const payload = JSON.stringify(scores);
+      storage.setItem('ddrScores', payload);
+      try { storage.setItem('ddrScoresUpdatedAt', String(Date.now())); } catch { /* noop */ }
+    };
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleId = window.requestIdleCallback(persist, { timeout: 1000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+    const timer = window.setTimeout(persist, 150);
+    return () => window.clearTimeout(timer);
   }, [scores]);
 
   useEffect(() => {
@@ -197,8 +218,8 @@ export const ScoresProvider = ({ children }) => {
 
   const applyWorldMetaChanges = useCallback((meta) => {
     const withWorldChanges = applyWorldDifficultyChanges(meta, worldDifficultyChanges);
-    return applyWorldNewChallengeCharts(withWorldChanges, !worldRemoveChallengeCharts);
-  }, [worldDifficultyChanges, worldRemoveChallengeCharts]);
+    return applyWorldNewChallengeCharts(withWorldChanges, showWorldChallengeCharts);
+  }, [showWorldChallengeCharts, worldDifficultyChanges]);
 
   const loadRankedRatings = useCallback(async () => {
     if (rankedRatingsRef.current) return rankedRatingsRef.current;
@@ -254,20 +275,22 @@ export const ScoresProvider = ({ children }) => {
     return changed ? next : meta;
   }, [loadRankedRatings]);
 
-  const loadSongMeta = useCallback(async () => {
+  const loadSongMeta = useCallback(async ({ includeRankedRatings = false } = {}) => {
     if (
       Array.isArray(songMeta) &&
       songMeta.length > 0 &&
-      songMetaWorldFlag === worldMetaKey
+      songMetaWorldFlag === worldMetaKey &&
+      (!includeRankedRatings || songMetaRatingsIncluded)
     ) {
       return songMeta;
     }
     if (Array.isArray(rawSongMeta) && rawSongMeta.length > 0) {
-      const corrected = await applyRankedRatings(rawSongMeta);
+      const corrected = includeRankedRatings ? await applyRankedRatings(rawSongMeta) : rawSongMeta;
       const applied = applyWorldMetaChanges(corrected);
       setRawSongMeta(corrected);
       setSongMeta(applied);
       setSongMetaWorldFlag(worldMetaKey);
+      setSongMetaRatingsIncluded(prev => prev || includeRankedRatings);
       return applied;
     }
     if (songMetaPromiseRef.current) {
@@ -278,12 +301,14 @@ export const ScoresProvider = ({ children }) => {
         if (!Array.isArray(meta) || meta.length < MIN_CHART_META_ENTRIES) {
           throw new Error(`[scores] song metadata incomplete (length=${Array.isArray(meta) ? meta.length : 'unknown'})`);
         }
-        return applyRankedRatings(meta).then((corrected) => {
+        const ratingsPromise = includeRankedRatings ? applyRankedRatings(meta) : Promise.resolve(meta);
+        return ratingsPromise.then((corrected) => {
           const normalized = corrected || meta;
           setRawSongMeta(normalized);
           const applied = applyWorldMetaChanges(normalized);
           setSongMeta(applied);
           setSongMetaWorldFlag(worldMetaKey);
+          setSongMetaRatingsIncluded(includeRankedRatings);
           return applied;
         });
       })
@@ -296,7 +321,7 @@ export const ScoresProvider = ({ children }) => {
       });
     songMetaPromiseRef.current = promise;
     return promise;
-  }, [applyRankedRatings, applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, worldMetaKey]);
+  }, [applyRankedRatings, applyWorldMetaChanges, rawSongMeta, songMeta, songMetaWorldFlag, songMetaRatingsIncluded, worldMetaKey]);
 
   useEffect(() => {
     if (!rawSongMeta.length) return;
@@ -375,6 +400,7 @@ export const ScoresProvider = ({ children }) => {
   const contextValue = useMemo(() => ({
     scores,
     setScores,
+    hasScores: Object.keys(scores.single || {}).length > 0 || Object.keys(scores.double || {}).length > 0,
     stats: stats && typeof stats === 'object' ? stats : { ...EMPTY_STATS_STATE },
     songMeta,
     ensureStats,

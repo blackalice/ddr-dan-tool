@@ -27,12 +27,9 @@ A modern, feature-rich web application for DanceDanceRevolution players. This to
 -   **Simple Multiplier Tool**:
     -   A quick calculator to find a multiplier for a given song BPM and target speed.
 
--   **Camera-based Song Recognition (Experimental)**:
-    -   Using your device's camera and a Google AI API key, the tool can identify the song currently on your game screen.
-
 -   **Customizable Experience**:
     -   Light and Dark themes available.
-    -   All settings, including your target BPM and API key, are saved in your browser for convenience.
+    -   Settings, including your target BPM, are saved in your browser for convenience.
 
 ## Tech Stack
 
@@ -41,7 +38,6 @@ A modern, feature-rich web application for DanceDanceRevolution players. This to
 -   **Routing**: [React Router](https://reactrouter.com/)
 -   **Charting**: [Chart.js](https://www.chartjs.org/)
 -   **Styling**: CSS with dynamic theming
--   **AI Integration**: [Google AI SDK](https://ai.google.dev/)
 
 ## How to Run Locally
 
@@ -108,6 +104,10 @@ Normal frontend builds do not regenerate derived data. Run the data pipeline exp
   - `npm run build:full`
 
 You can also force any individual step with `--force` or by setting `FORCE_DATA=1` (or `DDR_FORCE_DATA=1`) in your shell.
+
+Audio duration analysis uses up to eight concurrent jobs by default. Set
+`DDR_AUDIO_CONCURRENCY` to tune that pool, for example
+`DDR_AUDIO_CONCURRENCY=4 npm run build:audio:force`.
 
 ### Auth & Database
 

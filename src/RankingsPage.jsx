@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback, useRef, useTransition } from 'react';
 import SongCard from './components/SongCard.jsx';
 import RankingsSettingsModal from './components/RankingsSettingsModal.jsx';
 import { SettingsContext } from './contexts/SettingsContext.jsx';
@@ -25,13 +25,15 @@ import './App.css';
 import './VegaPage.css';
 import './ListsPage.css';
 import { getJsonCached } from './utils/cachedFetch.js';
-import { resolveScore, makeScoreKey } from './utils/scoreKey.js';
+import { makeScoreKey } from './utils/scoreKey.js';
 import { shouldHighlightScore } from './utils/scoreHighlight.js';
-import { normalizeMode } from './utils/chartIds.js';
+import { normalizeDifficultyName, normalizeMode, upgradeChartId } from './utils/chartIds.js';
 import { formatRankedRating } from './utils/formatRankedRating.js';
 
 const CLOSE_FILTER_DEFAULT = { min: 980000, max: 989999 };
 const SCORE_FORMATTER = new Intl.NumberFormat('en-US');
+const INITIAL_VISIBLE_CHARTS = 48;
+const VISIBLE_CHART_INCREMENT = 48;
 
 const loadCloseRange = () => {
   try {
@@ -141,7 +143,7 @@ const loadHidePlayedMode = () => {
   }
 };
 
-const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
+const RatingSection = React.memo(({ rating, charts, collapsed, onToggle }) => {
   return (
     <section className="dan-section">
       <h2 className={`dan-header ${collapsed ? 'is-collapsed' : ''}`} style={{ backgroundColor: 'var(--accent-color)' }}>
@@ -169,12 +171,14 @@ const RatingSection = ({ rating, charts, collapsed, onToggle }) => {
       )}
     </section>
   );
-};
+});
+
+RatingSection.displayName = 'RatingSection';
 
 const RankingsPage = () => {
   const { playStyle, songlistOverride } = useContext(SettingsContext);
   const { resetFilters } = useFilters();
-  const { scores, loadSongMeta } = useScores();
+  const { scores, hasScores, loadSongMeta } = useScores();
   const [songMeta, setSongMeta] = useState([]);
   const [overrideSongs, setOverrideSongs] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState(() => {
@@ -231,8 +235,12 @@ const RankingsPage = () => {
   }, [hideTopScores, hideClearedDescription]);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [visibleChartLimit, setVisibleChartLimit] = useState(INITIAL_VISIBLE_CHARTS);
+  const loadMoreRef = useRef(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleSettingsSave = (settings) => {
+    setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
     if (settings?.closeRange) {
       const parseScore = (value, fallback) => {
         const numeric = Math.round(Number(value));
@@ -267,7 +275,7 @@ const RankingsPage = () => {
 
   useEffect(() => {
     let cancelled = false;
-    loadSongMeta()
+    loadSongMeta({ includeRankedRatings: true })
       .then(meta => {
         if (!cancelled) setSongMeta(meta);
       })
@@ -292,6 +300,8 @@ const RankingsPage = () => {
 
       if (hasOverride) {
         if (!songlistOverrideMatches(overrideSongs, {
+          path: song.path,
+          songKey: song.songKey,
           title: song.title,
           titleTranslit: song.titleTranslit,
           artist: song.artist,
@@ -321,6 +331,8 @@ const RankingsPage = () => {
         const bucket = buckets.get(levelFloor);
 
         const scoreKey = makeScoreKey({
+          songKey: song.songKey || song.path,
+          path: song.path,
           chartId: diff.chartId,
           songId: song.id,
           mode: normalizedMode,
@@ -405,13 +417,13 @@ const RankingsPage = () => {
     }
   });
 
-  const toggleCollapse = (rating) => {
+  const toggleCollapse = useCallback((rating) => {
     setCollapsed(prev => {
       const newState = { ...prev, [rating]: !prev[rating] };
       storage.setItem('rankingsCollapsed', JSON.stringify(newState));
       return newState;
     });
-  };
+  }, []);
 
     useEffect(() => {
       const option = SONGLIST_OVERRIDE_OPTIONS.find(o => o.value === songlistOverride);
@@ -426,28 +438,41 @@ const RankingsPage = () => {
         .catch(err => { console.error('Failed to load songlist override:', err); setOverrideSongs(null); });
     }, [songlistOverride, songMeta]);
 
+  const scoreLookups = useMemo(() => {
+    const result = { single: new Map(), double: new Map() };
+    for (const mode of ['single', 'double']) {
+      for (const [key, value] of Object.entries(scores?.[mode] || {})) {
+        result[mode].set(key, value);
+        const upgraded = upgradeChartId(key);
+        if (upgraded) result[mode].set(upgraded, value);
+      }
+    }
+    return result;
+  }, [scores]);
+
   const chartsForLevel = useMemo(() => {
     if (!selectedLevel) return [];
     const bucket = chartsByLevel.get(selectedLevel);
     if (!bucket || bucket.length === 0) return [];
 
     return bucket.map((chart) => {
-      const modeScores = chart.mode && scores ? scores[chart.mode] || {} : {};
+      const lookup = scoreLookups[chart.mode] || scoreLookups.single;
+      const difficulty = normalizeDifficultyName(chart.difficulty);
+      const title = String(chart.title || '').toLowerCase();
+      const artist = String(chart.artist || '').toLowerCase();
+      const candidates = [
+        chart.scoreKey,
+        chart.chartId,
+        chart.chartId ? upgradeChartId(chart.chartId) : null,
+        title && artist && difficulty ? `${title}::${artist}::${difficulty}` : null,
+        title && difficulty ? `${title}-${difficulty}` : null,
+      ];
       let hit = null;
-      if (chart.scoreKey && modeScores[chart.scoreKey]) {
-        hit = modeScores[chart.scoreKey];
-      } else if (chart.chartId && modeScores[chart.chartId]) {
-        hit = modeScores[chart.chartId];
-      }
-
-      if (!hit) {
-        hit = resolveScore(scores, chart.mode, {
-          chartId: chart.chartId,
-          songId: chart.songId,
-          title: chart.title,
-          artist: chart.artist,
-          difficulty: chart.difficulty,
-        });
+      for (const candidate of candidates) {
+        if (candidate && lookup.has(candidate)) {
+          hit = lookup.get(candidate);
+          break;
+        }
       }
 
       if (!hit) {
@@ -460,7 +485,7 @@ const RankingsPage = () => {
       if (hit.flare != null) enriched.flare = hit.flare;
       return enriched;
     });
-  }, [chartsByLevel, selectedLevel, scores, resetFilters]);
+  }, [chartsByLevel, selectedLevel, scoreLookups, resetFilters]);
 
   const groupedCharts = useMemo(() => {
     let visibleCharts = chartsForLevel;
@@ -499,12 +524,48 @@ const RankingsPage = () => {
     return keys.map(k => ({ rating: k, charts: map.get(k) }));
   }, [chartsForLevel, ascendingOrder, hideTopScores, hideTopLamp, hideThresholdValue, hidePlayedMode, closeOnly, normalizedCloseRange]);
 
-  const hasScores = useMemo(() => {
-    return (
-      Object.keys(scores.single || {}).length > 0 ||
-      Object.keys(scores.double || {}).length > 0
-    );
-  }, [scores]);
+  useEffect(() => {
+    setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
+  }, [selectedLevel, playStyle, songlistOverride, ascendingOrder, hideTopScores, hideTopLamp, hideThresholdValue, hidePlayedMode, closeOnly, normalizedCloseRange]);
+
+  const visibleGroupedCharts = useMemo(() => {
+    let remaining = visibleChartLimit;
+    const visible = [];
+    for (const group of groupedCharts) {
+      if (collapsed[group.rating]) {
+        visible.push(group);
+        continue;
+      }
+      if (remaining <= 0) break;
+      const charts = group.charts.slice(0, remaining);
+      visible.push(charts.length === group.charts.length ? group : { ...group, charts });
+      remaining -= charts.length;
+      if (charts.length < group.charts.length) break;
+    }
+    return visible;
+  }, [collapsed, groupedCharts, visibleChartLimit]);
+
+  const visibleChartCount = useMemo(
+    () => visibleGroupedCharts.reduce((total, group) => total + (collapsed[group.rating] ? 0 : group.charts.length), 0),
+    [collapsed, visibleGroupedCharts],
+  );
+  const totalVisibleChartCount = useMemo(
+    () => groupedCharts.reduce((total, group) => total + (collapsed[group.rating] ? 0 : group.charts.length), 0),
+    [collapsed, groupedCharts],
+  );
+  const hasMoreCharts = visibleChartCount < totalVisibleChartCount;
+
+  useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target || !hasMoreCharts || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setVisibleChartLimit((limit) => limit + VISIBLE_CHART_INCREMENT);
+      }
+    }, { rootMargin: '500px 0px' });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMoreCharts, visibleChartCount]);
 
   const topCount = useMemo(
     () => chartsForLevel.filter((c) => c.score != null && c.score > hideThresholdValue).length,
@@ -524,7 +585,17 @@ const RankingsPage = () => {
         <div className="filter-bar">
           <div className="filter-group list-page-filter-group">
             <div className="dan-select-wrapper">
-              <select value={selectedLevel} onChange={e => setSelectedLevel(Number(e.target.value))} className="dan-select">
+              <select
+                value={selectedLevel}
+                onChange={(event) => {
+                  const level = Number(event.target.value);
+                  startTransition(() => {
+                    setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
+                    setSelectedLevel(level);
+                  });
+                }}
+                className="dan-select"
+              >
                 {availableLevels.map(level => (
                   <option key={level} value={level}>Level {level}</option>
                 ))}
@@ -532,14 +603,24 @@ const RankingsPage = () => {
             </div>
           <button
             className="filter-button"
-            onClick={() => setAscendingOrder(a => !a)}
+            onClick={() => {
+              startTransition(() => {
+                setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
+                setAscendingOrder(a => !a);
+              });
+            }}
             title="Flip order"
           >
             <FontAwesomeIcon icon={ascendingOrder ? faArrowUpWideShort : faArrowDownWideShort} />
           </button>
           <button
             className={`filter-button ${hideTopScores ? 'active' : ''}`}
-            onClick={() => setHideTopScores(h => !h)}
+            onClick={() => {
+              startTransition(() => {
+                setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
+                setHideTopScores(h => !h);
+              });
+            }}
             title={hideClearedTitle}
             aria-label={hideClearedTitle}
             aria-pressed={hideTopScores}
@@ -548,7 +629,12 @@ const RankingsPage = () => {
           </button>
           <button
             className={`filter-button ${closeOnly ? 'active' : ''}`}
-            onClick={() => setCloseOnly(c => !c)}
+            onClick={() => {
+              startTransition(() => {
+                setVisibleChartLimit(INITIAL_VISIBLE_CHARTS);
+                setCloseOnly(c => !c);
+              });
+            }}
             title={closeOnly ? 'Show all scores' : 'Filter close (' + closeRangeLabel + ')'}
             aria-pressed={closeOnly}
           >
@@ -569,9 +655,10 @@ const RankingsPage = () => {
               {topCount}/{chartsForLevel.length} ({topPercent}%)
             </div>
           )}
+          {isPending && <div className="ranking-counter" role="status">Updating…</div>}
         </div>
       </div>
-      {groupedCharts.map(group => (
+      {visibleGroupedCharts.map(group => (
           <RatingSection
             key={group.rating}
             rating={group.rating}
@@ -580,6 +667,11 @@ const RankingsPage = () => {
             onToggle={toggleCollapse}
           />
       ))}
+      {hasMoreCharts && (
+        <div ref={loadMoreRef} className="rankings-load-more" aria-live="polite">
+          Loading more rankings…
+        </div>
+      )}
       </main>
       <RankingsSettingsModal
         isOpen={settingsOpen}

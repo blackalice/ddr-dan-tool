@@ -1,7 +1,8 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, spawn } from 'node:child_process';
+import os from 'node:os';
 import {
   collectTreeStats,
   normalizePath,
@@ -27,21 +28,36 @@ const isJacketAsset = (filePath) => JACKET_REGEX.test(filePath);
 
 const toWebpPath = (sourcePath) => sourcePath.replace(/\.(png|jpg|jpeg|webp)$/i, '.webp');
 
-const runMagick = (inputPath, outputPath) => {
-  const args = [
-    inputPath,
-    '-strip',
-    '-quality', String(QUALITY),
-    '-define', `webp:method=${WEBP_METHOD}`,
-    outputPath,
-  ];
-  const result = spawnSync('magick', args, { stdio: 'pipe' });
-  if (result.status !== 0) {
-    const stderr = (result.stderr || Buffer.from('')).toString('utf8').trim();
-    const stdout = (result.stdout || Buffer.from('')).toString('utf8').trim();
-    const details = stderr || stdout || `exit code ${result.status}`;
-    throw new Error(details);
-  }
+const runMagickAsync = (inputPath, outputPath) => {
+  return new Promise((resolve, reject) => {
+    const args = [
+      inputPath,
+      '-strip',
+      '-quality', String(QUALITY),
+      '-define', `webp:method=${WEBP_METHOD}`,
+      outputPath,
+    ];
+    const child = spawn('magick', args, { stdio: 'pipe' });
+    let stderr = '';
+    let stdout = '';
+    child.stderr?.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+    child.stdout?.on('data', (chunk) => {
+      stdout += chunk.toString();
+    });
+    child.on('error', (err) => {
+      reject(err);
+    });
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        const details = stderr.trim() || stdout.trim() || `exit code ${code}`;
+        reject(new Error(details));
+      }
+    });
+  });
 };
 
 const getMagickAvailability = () => {
@@ -65,7 +81,26 @@ async function statOrNull(filePath) {
 }
 
 async function main() {
-  const jacketFiles = (await walkFiles(SIMFILES_DIR, (p) => isJacketAsset(p))).sort((a, b) => a.localeCompare(b));
+  const rawJacketFiles = (await walkFiles(SIMFILES_DIR, (p) => isJacketAsset(p))).sort((a, b) => a.localeCompare(b));
+  
+  // Group source files by their target webp output path to prevent concurrent file-system collisions
+  const sourceByOutput = new Map();
+  for (const sourcePath of rawJacketFiles) {
+    const outputPath = toWebpPath(sourcePath);
+    const ext = path.extname(sourcePath).toLowerCase();
+    if (!sourceByOutput.has(outputPath)) {
+      sourceByOutput.set(outputPath, sourcePath);
+    } else {
+      const existing = sourceByOutput.get(outputPath);
+      const existingExt = path.extname(existing).toLowerCase();
+      // Prefer original source formats over pre-existing webps
+      if (existingExt === '.webp' && ext !== '.webp') {
+        sourceByOutput.set(outputPath, sourcePath);
+      }
+    }
+  }
+  const jacketFiles = Array.from(sourceByOutput.values()).sort((a, b) => a.localeCompare(b));
+
   const expectedWebpOutputs = Array.from(new Set(jacketFiles.map(toWebpPath)));
 
   const inputStats = await collectTreeStats(SIMFILES_DIR, (p) => isJacketAsset(p), ROOT_DIR);
@@ -102,44 +137,59 @@ async function main() {
   let skipped = 0;
   const failures = [];
 
-  for (const sourcePath of jacketFiles) {
-    const ext = path.extname(sourcePath).toLowerCase();
-    const outputPath = toWebpPath(sourcePath);
-    const sourceStat = await statOrNull(sourcePath);
-    if (!sourceStat) {
-      skipped += 1;
-      continue;
-    }
+  const CONCURRENCY = Math.max(1, os.cpus().length - 1);
+  let currentIndex = 0;
 
-    if (!FORCE && ext !== '.webp') {
-      const outStat = await statOrNull(outputPath);
-      if (outStat && outStat.mtimeMs >= sourceStat.mtimeMs) {
+  const worker = async () => {
+    while (currentIndex < jacketFiles.length) {
+      const sourcePath = jacketFiles[currentIndex];
+      currentIndex += 1;
+
+      const ext = path.extname(sourcePath).toLowerCase();
+      const outputPath = toWebpPath(sourcePath);
+      const sourceStat = await statOrNull(sourcePath);
+      if (!sourceStat) {
         skipped += 1;
         continue;
       }
-    }
 
-    if (!FORCE && ext === '.webp') {
-      skipped += 1;
-      continue;
-    }
-
-    try {
-      if (ext === '.webp') {
-        const tempPath = `${sourcePath}.tmp-${process.pid}.webp`;
-        runMagick(sourcePath, tempPath);
-        await fs.rename(tempPath, sourcePath);
-      } else {
-        runMagick(sourcePath, outputPath);
+      if (!FORCE && ext !== '.webp') {
+        const outStat = await statOrNull(outputPath);
+        if (outStat && outStat.mtimeMs >= sourceStat.mtimeMs) {
+          skipped += 1;
+          continue;
+        }
       }
-      converted += 1;
-    } catch (err) {
-      failures.push({
-        source: normalizePath(path.relative(ROOT_DIR, sourcePath)),
-        error: err?.message || String(err),
-      });
+
+      if (!FORCE && ext === '.webp') {
+        skipped += 1;
+        continue;
+      }
+
+      try {
+        if (ext === '.webp') {
+          const tempPath = `${sourcePath}.tmp-${process.pid}-${Math.random().toString(36).slice(2, 9)}.webp`;
+          await runMagickAsync(sourcePath, tempPath);
+          await fs.rename(tempPath, sourcePath);
+        } else {
+          await runMagickAsync(sourcePath, outputPath);
+        }
+        converted += 1;
+      } catch (err) {
+        failures.push({
+          source: normalizePath(path.relative(ROOT_DIR, sourcePath)),
+          error: err?.message || String(err),
+        });
+      }
     }
+  };
+
+  const workers = [];
+  const actualConcurrency = Math.min(CONCURRENCY, jacketFiles.length);
+  for (let i = 0; i < actualConcurrency; i += 1) {
+    workers.push(worker());
   }
+  await Promise.all(workers);
 
   if (failures.length > 0) {
     console.error(`[convert-jackets-webp] failed for ${failures.length} file(s).`);

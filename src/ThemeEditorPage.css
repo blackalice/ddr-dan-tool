@@ -289,12 +289,12 @@
   padding: 0.22rem 0.55rem;
 }
 
-.theme-editor-tag.accent { background: var(--accent-color); color: var(--accent-contrast, #ffffff); }
-.theme-editor-tag.cyan { background: var(--cyan-color); color: #032631; }
-.theme-editor-tag.green { background: var(--green-color); color: #072717; }
-.theme-editor-tag.pink { background: var(--pink-color); color: #2e0920; }
-.theme-editor-tag.blue { background: var(--blue-color); color: #06182f; }
-.theme-editor-tag.yellow { background: var(--yellow-color); color: #2e2403; }
+.theme-editor-tag.accent { background: var(--theme-accent); color: var(--theme-on-accent, #ffffff); }
+.theme-editor-tag.beginner { background: var(--difficulty-beginner-color); color: #07111f; }
+.theme-editor-tag.basic { background: var(--difficulty-light-color); color: #07111f; }
+.theme-editor-tag.difficult { background: var(--difficulty-standard-color); color: #07111f; }
+.theme-editor-tag.expert { background: var(--difficulty-heavy-color); color: #07111f; }
+.theme-editor-tag.challenge { background: var(--difficulty-challenge-color); color: #07111f; }
 
 .theme-editor-demo-card ul {
   margin: 0;

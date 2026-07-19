@@ -324,6 +324,346 @@ html {
   --color-link: var(--primary-color);
 }
 
+[data-theme='flat2026'] {
+  color-scheme: dark;
+  --bg-color: #0b0f0e;
+  --bg-color-light: #111715;
+  --bg-color-dark: #1b2421;
+  --bg-color-lighter: #25302c;
+  --card-bg-color: #151c1a;
+  --card-hover-bg-color: #1c2622;
+  --card-hover-bg-color-light: #25322d;
+  --border-color: #2b3733;
+  --text-color: #f2f8f5;
+  --text-color-light: #dce8e3;
+  --text-color-lighter: #c5d3cd;
+  --text-color-lightest: #aebeb7;
+  --text-muted-color: #8c9d96;
+  --primary-color: #00de91;
+  --secondary-color: #65a8ff;
+  --accent-color: #00de91;
+  --accent-color-rgb: 0, 222, 145;
+  --accent-color-light: #5af0bb;
+  --accent-contrast: #001f14;
+  --cyan-color: #34d5e8;
+  --green-color: #00de91;
+  --pink-color: #f279b2;
+  --blue-color: #65a8ff;
+  --yellow-color: #e8c95a;
+  --button-bg: #202b27;
+  --button-icon: #f2f8f5;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.22);
+  --glass-strength: 100%;
+  --surface-glass-strength: 100%;
+  --button-glass-strength: 100%;
+  --glass-bg: #111715;
+  --glass-border: #2b3733;
+  --glass-blur: none;
+  --tabs-bg-top: #0f1412;
+  --tabs-bg-bottom: #0f1412;
+  --mobile-menu-bg: #0f1412;
+  --overlay-backdrop: rgba(0, 0, 0, 0.7);
+  --modal-bg: #151c1a;
+  --modal-border: #2b3733;
+  --modal-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  --modal-section-bg: #111715;
+  --modal-section-border: #2b3733;
+  --modal-control-bg: #1b2421;
+  --modal-control-bg-hover: #25302c;
+  --modal-control-bg-emphasis: #202b27;
+  --modal-control-border: #35433e;
+  --radius-2xs-theme: 3px;
+  --radius-xs-theme: 6px;
+  --radius-sm-theme: 8px;
+  --radius-md-theme: 12px;
+  --radius-lg-theme: 16px;
+  --radius-pill-theme: 8px;
+
+  --difficulty-beginner-color: #36bdda;
+  --difficulty-light-color: #e8b94f;
+  --difficulty-standard-color: #ee6470;
+  --difficulty-heavy-color: #63d475;
+  --difficulty-challenge-color: #a98aff;
+  --difficulty-edit-color: #93a39d;
+  --difficulty-single-color: #f279b2;
+  --difficulty-double-color: #65a8ff;
+  --button-up-color: #00c982;
+  --button-up-hover-color: #00b474;
+  --button-down-color: #e65d68;
+  --button-down-hover-color: #d14d58;
+
+  --color-focal-50: #151c1a;
+  --color-focal-100: #202b27;
+  --color-focal-200: #35433e;
+  --color-focal-300: #60716a;
+  --color-focal-400: #8c9d96;
+  --color-focal-500: #b7c6c0;
+  --color-focal-600: #dce8e3;
+  --color-focal-700: #f2f8f5;
+  --color-focal: var(--color-focal-500);
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+  --color-link: var(--accent-color);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-color-rgb), 0.2);
+}
+
+[data-theme='ddr-world'] {
+  color-scheme: dark;
+  --bg-color: #00a982;
+  --bg-color-light: #101513;
+  --bg-color-dark: #19231f;
+  --bg-color-lighter: #1c3831;
+  --card-bg-color: #171918;
+  --card-hover-bg-color: #222725;
+  --card-hover-bg-color-light: #2d3532;
+  --border-color: #53685f;
+  --text-color: #ffffff;
+  --text-color-light: #eef8f4;
+  --text-color-lighter: #d6e7e0;
+  --text-color-lightest: #c2d0ca;
+  --text-muted-color: #b4c6bf;
+  --primary-color: #00deae;
+  --secondary-color: #00deae;
+  --accent-color: #18e2b5;
+  --accent-color-rgb: 24, 226, 181;
+  --accent-color-light: #7af2d5;
+  --accent-contrast: #03120d;
+  --cyan-color: #25e4ee;
+  --green-color: #00deae;
+  --pink-color: #ff62a5;
+  --blue-color: #58aaff;
+  --yellow-color: #f6dd44;
+  --button-bg: #252927;
+  --button-icon: #ffffff;
+  --shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.42);
+  --shadow-md: 4px 4px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lg: 6px 6px 0 rgba(0, 0, 0, 0.4);
+  --glass-strength: 100%;
+  --surface-glass-strength: 100%;
+  --button-glass-strength: 100%;
+  --glass-bg: #171918;
+  --glass-border: #40534c;
+  --glass-blur: none;
+  --tabs-bg-top: #101412;
+  --tabs-bg-bottom: #101412;
+  --mobile-menu-bg: #101412;
+  --overlay-backdrop: rgba(0, 0, 0, 0.78);
+  --modal-bg: #171918;
+  --modal-border: #00deae;
+  --modal-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+  --modal-section-bg: #0f1412;
+  --modal-section-border: #40534c;
+  --modal-control-bg: #252927;
+  --modal-control-bg-hover: #303633;
+  --modal-control-bg-emphasis: #37413d;
+  --modal-control-border: #50655d;
+  --radius-2xs-theme: 0;
+  --radius-xs-theme: 2px;
+  --radius-sm-theme: 3px;
+  --radius-md-theme: 4px;
+  --radius-lg-theme: 6px;
+  --radius-pill-theme: 2px;
+
+  --difficulty-beginner-color: #37bdf2;
+  --difficulty-light-color: #f4d531;
+  --difficulty-standard-color: #ee5656;
+  --difficulty-heavy-color: #54dc64;
+  --difficulty-challenge-color: #9a78ff;
+  --difficulty-edit-color: #a4aea9;
+  --difficulty-single-color: #ff62a5;
+  --difficulty-double-color: #25cfe2;
+  --button-up-color: #00deae;
+  --button-up-hover-color: #00c79c;
+  --button-down-color: #ef5262;
+  --button-down-hover-color: #d94252;
+
+  --color-focal-50: #171918;
+  --color-focal-100: #252927;
+  --color-focal-200: #40534c;
+  --color-focal-300: #6b7f77;
+  --color-focal-400: #9eb2aa;
+  --color-focal-500: #c1d2cb;
+  --color-focal-600: #e1eee9;
+  --color-focal-700: #ffffff;
+  --color-focal: var(--color-focal-500);
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+  --color-link: var(--accent-color);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-color-rgb), 0.34);
+}
+
+/* "New" keeps DDR World's crisp, modular treatment with neutral charcoal
+   surfaces. Blue is deliberately reserved for selected and interactive states. */
+[data-theme='new'] {
+  color-scheme: dark;
+  --bg-color: #111111;
+  --bg-color-light: #181818;
+  --bg-color-dark: #0a0a0a;
+  --bg-color-lighter: #242424;
+  --card-bg-color: #1c1c1c;
+  --card-hover-bg-color: #292929;
+  --card-hover-bg-color-light: #343434;
+  --border-color: #505050;
+  --text-color: #f5f5f5;
+  --text-color-light: #dedede;
+  --text-color-lighter: #c7c7c7;
+  --text-color-lightest: #a8a8a8;
+  --text-muted-color: #a8a8a8;
+  --primary-color: #58a6ff;
+  --secondary-color: #58a6ff;
+  --accent-color: #58a6ff;
+  --accent-color-rgb: 88, 166, 255;
+  --accent-color-light: #9ac8ff;
+  --accent-contrast: #07111f;
+  --cyan-color: #67e8f9;
+  --green-color: #4ade80;
+  --pink-color: #f472b6;
+  --blue-color: #58a6ff;
+  --yellow-color: #facc15;
+  --button-bg: #242424;
+  --button-icon: #f5f5f5;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.4);
+  --glass-strength: 100%;
+  --surface-glass-strength: 100%;
+  --button-glass-strength: 100%;
+  --glass-bg: #1c1c1c;
+  --glass-border: #505050;
+  --glass-blur: none;
+  --tabs-bg-top: #0a0a0a;
+  --tabs-bg-bottom: #0a0a0a;
+  --mobile-menu-bg: #0a0a0a;
+  --overlay-backdrop: rgba(0, 0, 0, 0.8);
+  --modal-bg: #1c1c1c;
+  --modal-border: #5f5f5f;
+  --modal-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --modal-section-bg: #111111;
+  --modal-section-border: #505050;
+  --modal-control-bg: #242424;
+  --modal-control-bg-hover: #343434;
+  --modal-control-bg-emphasis: #3d3d3d;
+  --modal-control-border: #5f5f5f;
+  --radius-2xs-theme: 0;
+  --radius-xs-theme: 4px;
+  --radius-sm-theme: 6px;
+  --radius-md-theme: 8px;
+  --radius-lg-theme: 12px;
+  --radius-pill-theme: 999px;
+  --difficulty-beginner-color: #38bdf8;
+  --difficulty-light-color: #facc15;
+  --difficulty-standard-color: #f87171;
+  --difficulty-heavy-color: #4ade80;
+  --difficulty-challenge-color: #a78bfa;
+  --difficulty-edit-color: #94a3b8;
+  --difficulty-single-color: #f472b6;
+  --difficulty-double-color: #67e8f9;
+  --button-up-color: #4ade80;
+  --button-up-hover-color: #22c55e;
+  --button-down-color: #f87171;
+  --button-down-hover-color: #ef4444;
+  --color-focal-50: #1c1c1c;
+  --color-focal-100: #242424;
+  --color-focal-200: #505050;
+  --color-focal-300: #5f5f5f;
+  --color-focal-400: #a8a8a8;
+  --color-focal-500: #c7c7c7;
+  --color-focal-600: #dedede;
+  --color-focal-700: #f5f5f5;
+  --color-focal: var(--color-focal-500);
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+  --color-link: var(--accent-color);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-color-rgb), 0.34);
+}
+
+[data-theme='ddr-a'] {
+  color-scheme: dark;
+  --bg-color: #168be5;
+  --bg-color-light: #111722;
+  --bg-color-dark: #202a38;
+  --bg-color-lighter: #303d4d;
+  --card-bg-color: #151a23;
+  --card-hover-bg-color: #202833;
+  --card-hover-bg-color-light: #2d3846;
+  --border-color: #88cbe3;
+  --text-color: #ffffff;
+  --text-color-light: #eaf8ff;
+  --text-color-lighter: #d1effc;
+  --text-color-lightest: #b2d9ea;
+  --text-muted-color: #b8d9e7;
+  --primary-color: #20d9ff;
+  --secondary-color: #ff4f9a;
+  --accent-color: #20d9ff;
+  --accent-color-rgb: 32, 217, 255;
+  --accent-color-light: #81edff;
+  --accent-contrast: #061526;
+  --cyan-color: #20d9ff;
+  --green-color: #66eb8f;
+  --pink-color: #ff4f9a;
+  --blue-color: #4d8dff;
+  --yellow-color: #ffe43b;
+  --button-bg: #202a38;
+  --button-icon: #ffffff;
+  --shadow-sm: 0 2px 5px rgba(0, 10, 30, 0.34);
+  --shadow-md: 0 6px 16px rgba(0, 10, 30, 0.4);
+  --shadow-lg: 0 10px 28px rgba(0, 10, 30, 0.46);
+  --glass-strength: 100%;
+  --surface-glass-strength: 100%;
+  --button-glass-strength: 100%;
+  --glass-bg: rgba(5, 19, 43, 0.94);
+  --glass-border: rgba(94, 213, 255, 0.68);
+  --glass-blur: none;
+  --tabs-bg-top: #06152d;
+  --tabs-bg-bottom: #09254a;
+  --mobile-menu-bg: #071a36;
+  --overlay-backdrop: rgba(0, 8, 25, 0.78);
+  --modal-bg: #121923;
+  --modal-border: #20d9ff;
+  --modal-shadow: 0 10px 30px rgba(0, 8, 30, 0.55);
+  --modal-section-bg: #1a222d;
+  --modal-section-border: #668fa2;
+  --modal-control-bg: #202a38;
+  --modal-control-bg-hover: #303d4d;
+  --modal-control-bg-emphasis: #283545;
+  --modal-control-border: #47bce9;
+  --radius-2xs-theme: 2px;
+  --radius-xs-theme: 2px;
+  --radius-sm-theme: 3px;
+  --radius-md-theme: 4px;
+  --radius-lg-theme: 5px;
+  --radius-pill-theme: 3px;
+
+  --difficulty-beginner-color: #38c8ff;
+  --difficulty-light-color: #f5d536;
+  --difficulty-standard-color: #ef4d62;
+  --difficulty-heavy-color: #62da63;
+  --difficulty-challenge-color: #a96cff;
+  --difficulty-edit-color: #aebdca;
+  --difficulty-single-color: #ff4f9a;
+  --difficulty-double-color: #20d9ff;
+  --button-up-color: #28d982;
+  --button-up-hover-color: #1cba6d;
+  --button-down-color: #ef4d62;
+  --button-down-hover-color: #d83c51;
+
+  --color-focal-50: #0b1d3a;
+  --color-focal-100: #12315c;
+  --color-focal-200: #1e4f80;
+  --color-focal-300: #4f7ea2;
+  --color-focal-400: #82abc4;
+  --color-focal-500: #b8d9e7;
+  --color-focal-600: #dff3fb;
+  --color-focal-700: #ffffff;
+  --color-focal: var(--color-focal-500);
+  --color-heading: var(--color-focal-50);
+  --color-subheading: var(--color-focal-200);
+  --color-link: var(--accent-color);
+  --focus-ring: 0 0 0 3px rgba(var(--accent-color-rgb), 0.32);
+}
+
 [data-theme='foy'] {
   color-scheme: dark;
   --bg-color: #090f1d;
@@ -818,6 +1158,24 @@ select optgroup {
 
 /* --- Dan Courses --- */
 .dan-section { margin-bottom: 1rem; }
+
+.course-filter-selects {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.rankings-page .dan-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
+
+.rankings-load-more {
+  min-height: 3rem;
+  display: grid;
+  place-items: center;
+  color: var(--text-color-muted, var(--text-color));
+  font-size: 0.9rem;
+}
 .dan-header {
   display: flex;
   justify-content: space-between;
@@ -890,6 +1248,9 @@ select optgroup {
   }
     .dan-song-grid {
         grid-template-columns: repeat(4, 1fr)!important;
+  }
+    .dan-song-grid.world-dan-song-grid {
+        grid-template-columns: repeat(3, 1fr)!important;
   }
     .dan-song-grid .song-card {
       container-type: inline-size;

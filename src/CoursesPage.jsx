@@ -44,6 +44,8 @@ const CourseSection = ({ course, setSelectedGame, resetFilters, titleToPath }) =
         <div className="dan-song-grid song-grid">
           {course.songs.map((song, index) => {
             const hit = resolveScore(scores, song.mode, {
+              songKey: song.songKey || song.path,
+              path: song.path,
               chartId: song.chartId,
               songId: song.songId,
               title: song.title,
@@ -78,7 +80,7 @@ const FilterBar = ({ activeGame, setGame, gameOptions, activeCourse, setCourse, 
     <div className="filter-group">
       <h2 className="target-bpm-label vega-header-title">DDR Courses</h2>
       <div className="dan-select-wrapper vega-header-selector">
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="course-filter-selects">
           <select
             value={activeGame}
             onChange={(e) => setGame(e.target.value)}

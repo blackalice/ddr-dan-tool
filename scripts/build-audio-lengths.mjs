@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { parseFile } from 'music-metadata'
 import { spawn } from 'child_process'
+import os from 'os'
 import {
   collectStats,
   collectTreeStats,
@@ -106,6 +107,7 @@ async function main() {
 
   await fs.mkdir(GENERATED_DIR, { recursive: true })
   const bitsIdx = await indexBits(sourceRoot)
+  // Promise-valued entries deduplicate concurrent requests for the same audio path.
   const durationCache = new Map()
   async function probeWithFfprobe(p, fallback = 0) {
     const ffprobe = process.env.FFPROBE || 'ffprobe'
@@ -123,35 +125,38 @@ async function main() {
 
   async function getDuration(p) {
     if (durationCache.has(p)) return durationCache.get(p)
-    try {
-      const meta = await parseFile(p)
-      let sec = Number(meta.format.duration || 0)
-      if (!isReasonableAudioSeconds(sec)) {
-        sec = await probeWithFfprobe(p, sec)
+    const pending = (async () => {
+      try {
+        const meta = await parseFile(p)
+        let sec = Number(meta.format.duration || 0)
+        if (!isReasonableAudioSeconds(sec)) {
+          sec = await probeWithFfprobe(p, sec)
+        }
+        if (!isReasonableAudioSeconds(sec)) sec = 0
+        return sec
+      } catch {
+        return 0
       }
-      if (!isReasonableAudioSeconds(sec)) sec = 0
-      durationCache.set(p, sec)
-      return sec
-    } catch {
-      durationCache.set(p, 0)
-      return 0
-    }
+    })()
+    durationCache.set(p, pending)
+    return pending
   }
 
-  const out = {}
-  for await (const smPath of walk(SIMFILES_DIR)) {
-    if (!smPath.toLowerCase().endsWith('.sm') && !smPath.toLowerCase().endsWith('.ssc')) continue
+  const processSimfile = async (smPath) => {
     const rel = path.posix.join('sm', path.relative(SIMFILES_DIR, smPath).replace(/\\/g, '/')) // e.g., sm/Folder/Song.sm
     let text
     try {
       text = await fs.readFile(smPath, 'utf-8')
-    } catch { continue }
+    } catch {
+      return null
+    }
     const musicFile = parseMusicFilename(text)
     const titleMatch = text.match(/#TITLE:([^;]+);/i)
     const titleTranslitMatch = text.match(/#TITLETRANSLIT:([^;]+);/i)
     const titleNorm = titleMatch ? normalizeName(titleMatch[1]) : null
     const titleTransNorm = titleTranslitMatch ? normalizeName(titleTranslitMatch[1]) : null
     const base = musicFile ? path.basename(musicFile).toLowerCase() : null
+    const messages = []
 
     // Attempt direct match using ddrbits SM path (same SM/SSC name inside a song folder)
     const relParts = rel.split('/') // ['sm','2013','Song.sm']
@@ -183,10 +188,15 @@ async function main() {
       if (directAudio) {
         const sec = await getDuration(directAudio)
         if (sec > 0) {
-          out[rel] = { lengthSeconds: Number(sec.toFixed(3)), audioPath: directAudio }
-          const note = sec < 10 ? ' (short?)' : ''
-          console.log(`OK ${rel} -> ${path.basename(directAudio)} = ${sec.toFixed(3)}s${note}`)
-          continue
+          messages.push({
+            level: 'log',
+            text: `OK ${rel} -> ${path.basename(directAudio)} = ${sec.toFixed(3)}s${sec < 10 ? ' (short?)' : ''}`,
+          })
+          return {
+            rel,
+            entry: { lengthSeconds: Number(sec.toFixed(3)), audioPath: directAudio },
+            messages,
+          }
         }
       }
     }
@@ -218,19 +228,70 @@ async function main() {
       }
     }
     const candidates = Array.from(candSet)
-    if (!candidates || candidates.length === 0) continue
+    if (!candidates || candidates.length === 0) return { rel, entry: null, messages }
     let best = { path: null, sec: 0 }
     for (const cand of candidates) {
       const sec = await getDuration(cand)
       if (sec > best.sec) best = { path: cand, sec }
     }
     if (best.path && best.sec > 0) {
-      out[rel] = { lengthSeconds: Number(best.sec.toFixed(3)), audioPath: best.path }
-      const note = best.sec < 10 ? ' (short?)' : ''
-      console.log(`OK ${rel} -> ${path.basename(best.path)} = ${best.sec.toFixed(3)}s${note}`)
-    } else {
-      console.warn(`No valid duration for ${rel} (candidates: ${candidates.length})`)
+      messages.push({
+        level: 'log',
+        text: `OK ${rel} -> ${path.basename(best.path)} = ${best.sec.toFixed(3)}s${best.sec < 10 ? ' (short?)' : ''}`,
+      })
+      return {
+        rel,
+        entry: { lengthSeconds: Number(best.sec.toFixed(3)), audioPath: best.path },
+        messages,
+      }
     }
+    messages.push({
+      level: 'warn',
+      text: `No valid duration for ${rel} (candidates: ${candidates.length})`,
+    })
+    return { rel, entry: null, messages }
+  }
+
+  const simfilePaths = []
+  for await (const smPath of walk(SIMFILES_DIR)) {
+    if (smPath.toLowerCase().endsWith('.sm') || smPath.toLowerCase().endsWith('.ssc')) {
+      simfilePaths.push(smPath)
+    }
+  }
+  const requestedConcurrency = Number.parseInt(process.env.DDR_AUDIO_CONCURRENCY || '', 10)
+  const availableConcurrency = typeof os.availableParallelism === 'function'
+    ? os.availableParallelism()
+    : os.cpus().length
+  const configuredConcurrency = Number.isInteger(requestedConcurrency) && requestedConcurrency > 0
+    ? requestedConcurrency
+    : Math.min(8, availableConcurrency)
+  const concurrency = simfilePaths.length > 0
+    ? Math.max(1, Math.min(simfilePaths.length, configuredConcurrency))
+    : 0
+  if (concurrency > 0) {
+    console.log(`[build-audio-lengths] processing ${simfilePaths.length} simfiles with ${concurrency} concurrent jobs...`)
+  }
+
+  const results = new Array(simfilePaths.length)
+  let currentIndex = 0
+  const processWorker = async () => {
+    while (true) {
+      const index = currentIndex
+      currentIndex += 1
+      if (index >= simfilePaths.length) return
+      results[index] = await processSimfile(simfilePaths[index])
+    }
+  }
+  await Promise.all(Array.from({ length: concurrency }, () => processWorker()))
+
+  const out = {}
+  for (const result of results) {
+    if (!result) continue
+    for (const message of result.messages) {
+      if (message.level === 'warn') console.warn(message.text)
+      else console.log(message.text)
+    }
+    if (result.entry) out[result.rel] = result.entry
   }
   await fs.writeFile(OUT_PATH, JSON.stringify(out, null, 2))
   console.log(`Wrote ${OUT_PATH} (${Object.keys(out).length} entries)`) 

@@ -1,0 +1,76 @@
+/* Theme-specific structural polish: deliberately flat, with depth expressed by
+   surface contrast and borders rather than atmospheric gradients or glow. */
+[data-theme='flat2026'] .tabs-container,
+[data-theme='flat2026'] .settings-content,
+[data-theme='flat2026'] .filter-bar,
+[data-theme='flat2026'] .song-card,
+[data-theme='flat2026'] .dan-select,
+[data-theme='flat2026'] .collapse-button,
+[data-theme='flat2026'] .filter-button,
+[data-theme='flat2026'] .theme-editor-panel,
+[data-theme='flat2026'] .theme-editor-demo-card,
+[data-theme='flat2026'] .chart-stats-panel {
+  background-image: none;
+}
+
+[data-theme='flat2026'] .tabs-container {
+  background-color: var(--tabs-bg-top);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme='flat2026'] .settings-content,
+[data-theme='flat2026'] .filter-bar {
+  background-color: var(--bg-color-light);
+}
+
+[data-theme='flat2026'] .song-card,
+[data-theme='flat2026'] .theme-editor-panel,
+[data-theme='flat2026'] .theme-editor-demo-card,
+[data-theme='flat2026'] .chart-stats-panel {
+  background-color: var(--card-bg-color);
+}
+
+[data-theme='flat2026'] .collapse-button,
+[data-theme='flat2026'] .filter-button,
+[data-theme='flat2026'] .dan-select {
+  background-color: var(--button-bg);
+}
+
+[data-theme='flat2026'] .tab.active,
+[data-theme='flat2026'] .settings-tab.active,
+[data-theme='flat2026'] .play-mode-toggle button.active,
+[data-theme='flat2026'] .theme-editor-copy-button,
+[data-theme='flat2026'] .theme-editor-demo-button-primary {
+  background: var(--accent-color);
+  box-shadow: none;
+}
+
+[data-theme='flat2026'] .dan-header {
+  color: var(--accent-contrast);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: none;
+}
+
+[data-theme='flat2026'] .tab:hover,
+[data-theme='flat2026'] .settings-tab:hover,
+[data-theme='flat2026'] .mobile-menu-toggle:hover,
+[data-theme='flat2026'] .song-card-link:hover {
+  transform: none;
+}
+
+[data-theme='flat2026'] .filter-button.active,
+[data-theme='flat2026'] .nav-link:hover,
+[data-theme='flat2026'] .song-card-link:hover,
+[data-theme='flat2026'] .song-card-link.score-highlight {
+  box-shadow: none;
+}
+
+[data-theme='flat2026'] .glow-marvelous,
+[data-theme='flat2026'] .glow-perfect,
+[data-theme='flat2026'] .glow-great,
+[data-theme='flat2026'] .glow-good {
+  filter: none;
+  text-shadow: none;
+}

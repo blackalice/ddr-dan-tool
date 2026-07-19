@@ -94,7 +94,6 @@
 }
 
 .gameCheckboxes {
-  max-height: 200px;
   overflow-y: auto;
   border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
   border-radius: var(--radius-sm);
@@ -104,18 +103,53 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
   align-content: flex-start;
-  scrollbar-gutter: stable both-edges;
+  /* Keep room for the scrollbar without adding a matching blank gutter on the left. */
+  scrollbar-gutter: stable;
+}
+
+.gameVersionCheckboxes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: min(19rem, 40vh);
+  padding: 0.4rem;
+}
+
+.selectionLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.selectionLabelRow > label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.clearSelectionButton {
+  appearance: none;
+  border: 0;
+  padding: 0.2rem 0;
+  background: transparent;
+  color: var(--accent-color);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.clearSelectionButton:hover {
+  color: var(--text-color);
+  text-decoration: underline;
 }
 
 .checkboxLabel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.5rem;
+  padding: 0.65rem 0.75rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
   min-width: 0;
-  min-height: 2.1rem;
+  min-height: 2.75rem;
   transition: background 0.2s ease, color 0.2s ease;
   font-weight: 400;
   margin: 0;
@@ -168,40 +202,79 @@
   border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
   border-radius: var(--radius-md);
   background: var(--modal-control-bg, rgba(255, 255, 255, 0.02));
-  padding: 0.9rem;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
 }
 
-.advancedSection > h3 {
+.advancedSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: var(--theme-panel-header, var(--modal-control-bg-emphasis));
+  border-bottom: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  border-left: 3px solid var(--accent-color);
+}
+
+.advancedSectionHeader h3 {
   margin: 0;
   font-size: 1rem;
   color: var(--text-color);
 }
 
+.advancedSectionHeader p {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted-color, var(--text-muted));
+  font-size: 0.78rem;
+}
+
+.advancedSectionCount {
+  flex: none;
+  padding: 0.25rem 0.5rem;
+  color: var(--text-color);
+  background: var(--theme-accent-soft, color-mix(in srgb, var(--accent-color) 16%, transparent));
+  border: 1px solid color-mix(in srgb, var(--accent-color) 55%, transparent);
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .advancedMetricGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
+  gap: 1rem 0.9rem;
+  padding: 1rem;
 }
 
 .advancedMetric {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
-.advancedMetric > label {
-  color: var(--text-muted);
-  font-weight: 600;
+.advancedMetricHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.2rem;
+}
+
+.advancedMetricHeader > label {
+  color: var(--text-color);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .metricHint {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   color: var(--text-muted-color, var(--text-muted));
-  opacity: 0.72;
+  opacity: 0.78;
+  white-space: nowrap;
 }
 
 .halfWidthContainer {
@@ -300,5 +373,170 @@
 
   .advancedMetricGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Filter workspace hierarchy: one modal surface, a compact view switcher,
+   calm field groups, and a persistent-at-the-top result summary. */
+.body {
+  gap: 1rem;
+  background: var(--theme-well, var(--modal-bg));
+}
+
+.pageTabs {
+  gap: 0;
+  padding: 0.25rem;
+  background: var(--theme-surface-subtle, var(--modal-control-bg));
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--theme-radius-surface, var(--radius-md));
+}
+
+.pageTab {
+  border-color: transparent;
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+}
+
+.pageTabActive {
+  color: var(--text-color);
+  background: var(--theme-accent-selected, color-mix(in srgb, var(--accent-color) 24%, black));
+  border-color: var(--accent-color);
+}
+
+.pageTabHasActive {
+  border-color: color-mix(in srgb, var(--accent-color) 55%, var(--modal-control-border));
+  box-shadow: none;
+}
+
+.column {
+  gap: 1.1rem;
+}
+
+.formGroup > label,
+.selectionLabelRow > label {
+  color: var(--text-muted-color, var(--text-muted));
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.input,
+.select {
+  min-height: 3rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+}
+
+.gameCheckboxes {
+  border-radius: var(--theme-radius-surface, var(--radius-sm));
+  scrollbar-gutter: auto;
+}
+
+.gameVersionCheckboxes {
+  max-height: none;
+}
+
+.clearSelectionButton {
+  padding: 0.25rem 0.5rem;
+  background: var(--theme-accent-soft, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 45%, transparent);
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+}
+
+.checkboxLabel {
+  border-radius: var(--theme-radius-control, var(--radius-xs));
+}
+
+.checkboxLabel.selected {
+  color: var(--text-color);
+  background: var(--theme-accent-selected, color-mix(in srgb, var(--accent-color) 24%, black));
+  border-color: var(--accent-color);
+  box-shadow: none;
+}
+
+.activeInput {
+  background: var(--theme-accent-soft, var(--modal-control-bg-emphasis));
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+.countSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--theme-panel-row, var(--modal-control-bg));
+  border: 1px solid var(--modal-control-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+}
+
+.countSummaryLabel {
+  color: var(--text-color);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.countMetrics {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.countMetric {
+  min-width: 8rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: baseline;
+  gap: 0.1rem 0.5rem;
+  padding: 0.45rem 0.65rem;
+  background: var(--theme-surface-subtle, var(--modal-control-bg));
+  border: 1px solid var(--theme-border-subtle, var(--modal-control-border));
+  border-radius: var(--theme-radius-control, var(--radius-sm));
+}
+
+.countMetricLabel {
+  color: var(--text-muted-color, var(--text-muted));
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.countMetric strong {
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.countMetricTotal {
+  color: var(--text-muted-color, var(--text-muted));
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 1025px) {
+  .columns {
+    gap: 2rem;
+  }
+
+  .gameVersionCheckboxes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .countSummary {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .countMetrics {
+    width: 100%;
+  }
+
+  .countMetric {
+    min-width: 0;
+    flex: 1;
   }
 }

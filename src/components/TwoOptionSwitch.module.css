@@ -57,6 +57,21 @@
   color: #ffffff;
 }
 
+:global([data-theme='new']) .thumb {
+  background: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-control);
+}
+
+:global([data-theme='new']) .root {
+  background: var(--bpm-control-bg, var(--theme-surface-raised));
+  border-color: var(--theme-border);
+}
+
+:global([data-theme='new']) .optionActive {
+  color: var(--theme-text-primary);
+}
+
 .rootDisabled {
   opacity: 0.6;
 }

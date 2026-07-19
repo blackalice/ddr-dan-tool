@@ -1,7 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
-import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
+import { SONGLIST_OVERRIDE_OPTIONS, getSonglistOverrideGameValue, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { storage } from '../utils/remoteStorage.js';
 
 export const SettingsContext = createContext();
@@ -12,8 +12,6 @@ export const SettingsProvider = ({ children }) => {
         return saved ? parseInt(saved, 10) : 300;
     });
 
-    const [apiKey, setApiKey] = useState(() => sessionStorage.getItem('geminiApiKey') || '');
-
     const [multiplierMode, setMultiplierMode] = useState(() => {
         const saved = storage.getItem('multiplierMode');
         return saved || MULTIPLIER_MODES.A_A3;
@@ -21,7 +19,7 @@ export const SettingsProvider = ({ children }) => {
 
     const [theme, setTheme] = useState(() => {
         const saved = storage.getItem('theme');
-        return saved || 'dark';
+        return saved || 'new';
     });
 
     const [playStyle, setPlayStyle] = useState(() => {
@@ -40,19 +38,25 @@ export const SettingsProvider = ({ children }) => {
 
     const [showMultiplierIncrementVersion, setShowMultiplierIncrementVersion] = useState(() => {
         const saved = storage.getItem('showMultiplierIncrementVersion');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     const [showLists] = useState(true);
 
     const [showRankedRatings, setShowRankedRatings] = useState(() => {
         const saved = storage.getItem('showRankedRatings');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     // Beta: Toggle to show Courses tab (off by default)
     const [showCoursesBeta, setShowCoursesBeta] = useState(() => {
         const saved = storage.getItem('showCoursesBeta');
+        return saved ? JSON.parse(saved) : false;
+    });
+
+    // Beta: Toggle to show Vega Rankings (off by default)
+    const [showVegaBeta, setShowVegaBeta] = useState(() => {
+        const saved = storage.getItem('showVegaBeta');
         return saved ? JSON.parse(saved) : false;
     });
 
@@ -66,9 +70,45 @@ export const SettingsProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : false;
     });
 
+    const [cardDrawTournamentLabels, setCardDrawTournamentLabels] = useState(() => {
+        const saved = storage.getItem('cardDrawCurrentLabels');
+        if (!saved) return { round: '', p1: 'P1', p2: 'P2' };
+        try {
+            const parsed = JSON.parse(saved);
+            return parsed && typeof parsed === 'object'
+                ? parsed
+                : { round: '', p1: 'P1', p2: 'P2' };
+        } catch {
+            return { round: '', p1: 'P1', p2: 'P2' };
+        }
+    });
+
+    const [cardDrawTournamentLabelLocks, setCardDrawTournamentLabelLocks] = useState(() => {
+        const saved = storage.getItem('cardDrawTournamentLabelLocks');
+        if (!saved) return { round: false, p1: false, p2: false };
+        try {
+            const parsed = JSON.parse(saved);
+            return parsed && typeof parsed === 'object'
+                ? {
+                    round: parsed.round === true,
+                    p1: parsed.p1 === true || parsed.players === true,
+                    p2: parsed.p2 === true || parsed.players === true,
+                }
+                : { round: false, p1: false, p2: false };
+        } catch {
+            return { round: false, p1: false, p2: false };
+        }
+    });
+
+    // Beta: Dim draws outside the current viewport focus (off by default)
+    const [showDrawFocusBeta, setShowDrawFocusBeta] = useState(() => {
+        const saved = storage.getItem('showDrawFocusBeta');
+        return saved ? JSON.parse(saved) : false;
+    });
+
     const [worldDifficultyChanges, setWorldDifficultyChanges] = useState(() => {
         const saved = storage.getItem('worldDifficultyChanges');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     const [worldRemoveChallengeCharts, setWorldRemoveChallengeCharts] = useState(() => {
@@ -80,14 +120,12 @@ export const SettingsProvider = ({ children }) => {
         }
         return false;
     });
+    const worldOverrideActive = getSonglistOverrideGameValue(songlistOverride) === 'World';
+    const showWorldChallengeCharts = worldOverrideActive || !worldRemoveChallengeCharts;
 
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
     }, [targetBPM]);
-
-    useEffect(() => {
-        sessionStorage.setItem('geminiApiKey', apiKey);
-    }, [apiKey]);
 
     useEffect(() => {
         storage.setItem('multiplierMode', multiplierMode);
@@ -121,12 +159,28 @@ export const SettingsProvider = ({ children }) => {
     }, [showCoursesBeta]);
 
     useEffect(() => {
+        storage.setItem('showVegaBeta', JSON.stringify(showVegaBeta));
+    }, [showVegaBeta]);
+
+    useEffect(() => {
         storage.setItem('showTransliterationBeta', JSON.stringify(showTransliterationBeta));
     }, [showTransliterationBeta]);
 
     useEffect(() => {
         storage.setItem('showWipStats', JSON.stringify(showWipStats));
     }, [showWipStats]);
+
+    useEffect(() => {
+        storage.setItem('showDrawFocusBeta', JSON.stringify(showDrawFocusBeta));
+    }, [showDrawFocusBeta]);
+
+    useEffect(() => {
+        storage.setItem('cardDrawCurrentLabels', JSON.stringify(cardDrawTournamentLabels));
+    }, [cardDrawTournamentLabels]);
+
+    useEffect(() => {
+        storage.setItem('cardDrawTournamentLabelLocks', JSON.stringify(cardDrawTournamentLabelLocks));
+    }, [cardDrawTournamentLabelLocks]);
 
     useEffect(() => {
         storage.setItem('worldDifficultyChanges', JSON.stringify(worldDifficultyChanges));
@@ -141,8 +195,6 @@ export const SettingsProvider = ({ children }) => {
     const value = {
         targetBPM,
         setTargetBPM,
-        apiKey,
-        setApiKey,
         multiplierMode,
         setMultiplierMode,
         multipliers,
@@ -155,10 +207,18 @@ export const SettingsProvider = ({ children }) => {
         setShowRankedRatings,
         showCoursesBeta,
         setShowCoursesBeta,
+        showVegaBeta,
+        setShowVegaBeta,
         showTransliterationBeta,
         setShowTransliterationBeta,
         showWipStats,
         setShowWipStats,
+        showDrawFocusBeta,
+        setShowDrawFocusBeta,
+        cardDrawTournamentLabels,
+        setCardDrawTournamentLabels,
+        cardDrawTournamentLabelLocks,
+        setCardDrawTournamentLabelLocks,
         songlistOverride,
         setSonglistOverride: setNormalizedSonglistOverride,
         showMultiplierIncrementVersion,
@@ -167,6 +227,8 @@ export const SettingsProvider = ({ children }) => {
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
         setWorldRemoveChallengeCharts,
+        worldOverrideActive,
+        showWorldChallengeCharts,
     };
 
     return (

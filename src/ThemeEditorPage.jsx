@@ -3,32 +3,55 @@ import { SettingsContext } from './contexts/SettingsContext.jsx';
 import './ThemeEditorPage.css';
 
 const THEME_OPTIONS = [
-  { value: 'dark', label: 'Dark' },
-  { value: 'dark-pink', label: 'Dark (Pink)' },
-  { value: 'light', label: 'Light' },
-  { value: 'cg', label: 'CG' },
-  { value: 'mhe2026', label: 'Manor House Evolved 2026' },
-  { value: 'foy', label: 'foy' },
+  { value: 'new', label: 'New (Default)' },
+  { value: 'ddr-world', label: 'DDR World' },
+  { value: 'dark', label: 'Dark (Legacy)' },
+  { value: 'dark-pink', label: 'Dark Pink (Legacy)' },
+  { value: 'light', label: 'Light (Legacy)' },
+  { value: 'cg', label: 'CG (Legacy)' },
+  { value: 'mhe2026', label: 'Manor House Evolved 2026 (Legacy)' },
 ];
 
 const COLOR_FIELDS = [
-  { cssVar: '--bg-color', label: 'Background' },
-  { cssVar: '--bg-color-light', label: 'Background Light' },
-  { cssVar: '--bg-color-dark', label: 'Background Dark' },
-  { cssVar: '--card-bg-color', label: 'Card Background' },
-  { cssVar: '--card-hover-bg-color', label: 'Card Hover' },
-  { cssVar: '--border-color', label: 'Border' },
-  { cssVar: '--text-color', label: 'Text' },
-  { cssVar: '--text-muted-color', label: 'Muted Text' },
-  { cssVar: '--accent-color', label: 'Accent' },
-  { cssVar: '--accent-color-light', label: 'Accent Light' },
-  { cssVar: '--button-bg', label: 'Button Background' },
-  { cssVar: '--cyan-color', label: 'Cyan' },
-  { cssVar: '--green-color', label: 'Green' },
-  { cssVar: '--pink-color', label: 'Pink' },
-  { cssVar: '--blue-color', label: 'Blue' },
-  { cssVar: '--yellow-color', label: 'Yellow' },
+  { cssVar: '--theme-page', label: 'Page' },
+  { cssVar: '--theme-nav', label: 'Navigation' },
+  { cssVar: '--theme-surface', label: 'Surface' },
+  { cssVar: '--theme-surface-subtle', label: 'Subtle Surface' },
+  { cssVar: '--theme-surface-raised', label: 'Raised Surface' },
+  { cssVar: '--theme-surface-hover', label: 'Hover Surface' },
+  { cssVar: '--theme-border', label: 'Border' },
+  { cssVar: '--theme-text-primary', label: 'Primary Text' },
+  { cssVar: '--theme-text-secondary', label: 'Secondary Text' },
+  { cssVar: '--theme-text-muted', label: 'Muted Text' },
+  { cssVar: '--theme-accent', label: 'Accent' },
+  { cssVar: '--theme-on-accent', label: 'On Accent' },
+  { cssVar: '--theme-success', label: 'Success' },
+  { cssVar: '--theme-control', label: 'Control' },
+  { cssVar: '--theme-control-hover', label: 'Control Hover' },
+  { cssVar: '--theme-control-border', label: 'Control Border' },
+  { cssVar: '--difficulty-beginner-color', label: 'Beginner Difficulty' },
+  { cssVar: '--difficulty-light-color', label: 'Basic Difficulty' },
+  { cssVar: '--difficulty-standard-color', label: 'Difficult Difficulty' },
+  { cssVar: '--difficulty-heavy-color', label: 'Expert Difficulty' },
+  { cssVar: '--difficulty-challenge-color', label: 'Challenge Difficulty' },
 ];
+
+const LEGACY_PREVIEW_ALIASES = {
+  '--theme-page': '--bg-color',
+  '--theme-nav': '--tabs-bg-top',
+  '--theme-surface': '--card-bg-color',
+  '--theme-surface-subtle': '--bg-color-light',
+  '--theme-surface-raised': '--bg-color-lighter',
+  '--theme-surface-hover': '--card-hover-bg-color',
+  '--theme-border': '--border-color',
+  '--theme-text-primary': '--text-color',
+  '--theme-text-secondary': '--text-color-lighter',
+  '--theme-text-muted': '--text-muted-color',
+  '--theme-accent': '--accent-color',
+  '--theme-on-accent': '--accent-contrast',
+  '--theme-success': '--green-color',
+  '--theme-control': '--button-bg',
+};
 
 const FALLBACK_COLOR = '#000000';
 
@@ -171,7 +194,7 @@ function normalizeHexForCompare(value) {
 
 function ThemeEditorPage() {
   const settings = useContext(SettingsContext) || {};
-  const { theme = 'dark' } = settings;
+  const { theme = 'new' } = settings;
   const [targetTheme, setTargetTheme] = useState(theme);
   const [baseColors, setBaseColors] = useState({});
   const [editedColors, setEditedColors] = useState({});
@@ -221,10 +244,13 @@ function ThemeEditorPage() {
     COLOR_FIELDS.forEach(({ cssVar }) => {
       if (editedColors[cssVar]) {
         style[cssVar] = editedColors[cssVar];
+        const legacyAlias = LEGACY_PREVIEW_ALIASES[cssVar];
+        if (legacyAlias) style[legacyAlias] = editedColors[cssVar];
       }
     });
-    if (editedColors['--accent-color']) {
-      const accentRgb = hexToRgb(editedColors['--accent-color']);
+    if (editedColors['--theme-accent']) {
+      const accentRgb = hexToRgb(editedColors['--theme-accent']);
+      style['--theme-accent-rgb'] = `${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}`;
       style['--accent-color-rgb'] = `${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}`;
     }
     return style;
@@ -234,11 +260,11 @@ function ThemeEditorPage() {
     if (!targetTheme) return '';
     const lines = changedFields.map(({ cssVar }) => `  ${cssVar}: ${editedColors[cssVar]};`);
     if (
-      changedFields.some(({ cssVar }) => cssVar === '--accent-color') &&
-      normalizeHex(editedColors['--accent-color'])
+      changedFields.some(({ cssVar }) => cssVar === '--theme-accent') &&
+      normalizeHex(editedColors['--theme-accent'])
     ) {
-      const accentRgb = hexToRgb(editedColors['--accent-color']);
-      lines.push(`  --accent-color-rgb: ${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b};`);
+      const accentRgb = hexToRgb(editedColors['--theme-accent']);
+      lines.push(`  --theme-accent-rgb: ${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b};`);
     }
     const body = lines.length > 0 ? lines.join('\n') : '  /* No changes yet */';
     return `[data-theme='${targetTheme}'] {\n${body}\n}`;
@@ -324,7 +350,7 @@ function ThemeEditorPage() {
           <div>
             <h1>Theme Editor</h1>
             <p>
-              Tune multiple theme colors at once with HSB sliders, preview the result, then copy the generated CSS.
+              Tune the shared semantic theme tokens, preview the result, then copy the generated CSS.
             </p>
           </div>
           <div className="theme-editor-header-controls">
@@ -454,7 +480,7 @@ function ThemeEditorPage() {
           <div className="theme-editor-demo-grid">
             <article className="theme-editor-demo-card">
               <h3>Panel Surface</h3>
-              <p>Body copy using <code>--text-color</code> and muted copy using <code>--text-muted-color</code>.</p>
+              <p>Body copy using <code>--theme-text-primary</code> and muted copy using <code>--theme-text-muted</code>.</p>
               <p className="theme-editor-demo-muted">This line mirrors secondary text contrast.</p>
             </article>
             <article className="theme-editor-demo-card">
@@ -469,11 +495,11 @@ function ThemeEditorPage() {
               </div>
               <div className="theme-editor-demo-tags">
                 <span className="theme-editor-tag accent">Accent</span>
-                <span className="theme-editor-tag cyan">Cyan</span>
-                <span className="theme-editor-tag green">Green</span>
-                <span className="theme-editor-tag pink">Pink</span>
-                <span className="theme-editor-tag blue">Blue</span>
-                <span className="theme-editor-tag yellow">Yellow</span>
+                <span className="theme-editor-tag beginner">Beginner</span>
+                <span className="theme-editor-tag basic">Basic</span>
+                <span className="theme-editor-tag difficult">Difficult</span>
+                <span className="theme-editor-tag expert">Expert</span>
+                <span className="theme-editor-tag challenge">Challenge</span>
               </div>
             </article>
             <article className="theme-editor-demo-card">

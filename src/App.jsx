@@ -9,11 +9,17 @@ import { findSongByTitle, loadSimfileData } from './utils/simfile-loader.js';
 import { applyWorldNewChallengeChartsToSimfile } from './utils/worldNewChallengeCharts.js';
 import { parseSelection } from './utils/urlState.js';
 import { parseChartId } from './utils/chartIds.js';
+import { getJsonCached } from './utils/cachedFetch.js';
 import DebugOverlay from './components/DebugOverlay.jsx';
 // import SyncBanner from './components/SyncBanner.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import './App.css';
+import './ThemeCore.css';
 import './Tabs.css';
+import './Flat2026Theme.css';
+import './DdrWorldTheme.css';
+import './NewTheme.css';
+import './DdrATheme.css';
 import { storage } from './utils/remoteStorage.js';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 
@@ -33,14 +39,14 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 const ThemeEditorPage = lazy(() => import('./ThemeEditorPage.jsx'));
 
 function AppRoutes() {
-  const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts } = useContext(SettingsContext);
+  const { theme, setPlayStyle, playStyle, showWorldChallengeCharts, showVegaBeta } = useContext(SettingsContext);
   const { user } = useAuth();
   const pwaEnabled = import.meta.env.MODE !== 'no-pwa';
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [rawSimfileData, setRawSimfileData] = useState(null);
   const simfileData = useMemo(
-    () => applyWorldNewChallengeChartsToSimfile(rawSimfileData, !worldRemoveChallengeCharts),
-    [rawSimfileData, worldRemoveChallengeCharts],
+    () => applyWorldNewChallengeChartsToSimfile(rawSimfileData, showWorldChallengeCharts),
+    [rawSimfileData, showWorldChallengeCharts],
   );
   const [currentChart, setCurrentChart] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
@@ -90,10 +96,9 @@ function AppRoutes() {
   // Scores availability is handled within pages (e.g., StatsPage)
 
   useEffect(() => {
-    fetch('/sm-files.json')
-        .then(response => response.json())
+    getJsonCached('/song-index.json')
         .then(data => setSmData(data))
-        .catch(error => console.error('Error fetching sm-files.json:', error));
+        .catch(error => console.error('Error fetching song index:', error));
   }, []);
 
   useEffect(() => {
@@ -139,7 +144,7 @@ function AppRoutes() {
           setCurrentChart(null);
         }
         const data = await loadSimfileData(songFile);
-        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, showWorldChallengeCharts);
         if (debugChartSelection) {
           console.debug('[Route] loaded simfile', {
             title: data?.title?.titleName,
@@ -220,7 +225,7 @@ function AppRoutes() {
           setCurrentChart(null);
         }
         const data = await loadSimfileData(songFile);
-        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, showWorldChallengeCharts);
         setRawSimfileData(data);
         let chart = null;
         if (sel.legacy.difficulty && sel.legacy.mode) {
@@ -288,7 +293,7 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, worldRemoveChallengeCharts]);
+  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, showWorldChallengeCharts, debugChartSelection]);
 
   useEffect(() => {
     if (!simfileData) {
@@ -314,7 +319,7 @@ function AppRoutes() {
       return;
     }
     if (match !== currentChart) setCurrentChart(match);
-  }, [simfileData, currentChart, playStyle, pickChartForPlayStyle]);
+  }, [simfileData, currentChart, playStyle, pickChartForPlayStyle, debugChartSelection]);
 
   const handleSongSelect = useCallback((song) => {
     if (debugChartSelection) {
@@ -347,7 +352,7 @@ function AppRoutes() {
       next.delete('m');
       setSearchParams(next);
     }
-  }, [searchParams, setSearchParams, location.pathname]);
+  }, [searchParams, setSearchParams, location.pathname, location.search, debugChartSelection]);
 
   // Avoid modifying the URL or selection when songlistOverride changes to prevent flicker.
 
@@ -391,7 +396,7 @@ function AppRoutes() {
       next.delete('m');
       setSearchParams(next);
     }
-  }, [setPlayStyle, simfileData, searchParams, setSearchParams]);
+  }, [setPlayStyle, simfileData, searchParams, setSearchParams, debugChartSelection]);
 
   useEffect(() => { storage.setItem('activeDan', activeDan); }, [activeDan]);
   useEffect(() => { storage.setItem('activeVegaCourse', activeVegaCourse); }, [activeVegaCourse]);
@@ -421,14 +426,14 @@ function AppRoutes() {
           <Routes>
             <Route path="/dan" element={<DanPage smData={smData} activeDan={activeDan} setActiveDan={setActiveDan} setSelectedGame={setSelectedGame} />} />
             <Route path="/courses" element={<CoursesPage smData={smData} setSelectedGame={setSelectedGame} />} />
-            <Route path="/vega" element={<VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} />} />
+            <Route path="/vega" element={showVegaBeta ? <VegaPage smData={smData} activeVegaCourse={activeVegaCourse} setActiveVegaCourse={setActiveVegaCourse} setSelectedGame={setSelectedGame} /> : <Navigate to="/bpm" replace />} />
             <Route path="/multiplier" element={<Multiplier />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/rankings" element={<RankingsPage />} />
             <Route path="/card-draw" element={<CardDrawPage smData={smData} />} />
             {user && <Route path="/lists" element={<ListsPage />} />}
             <Route path="/" element={<Navigate to="/bpm" replace />} />
-            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} setSelectedGame={setSelectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
+            <Route path="/bpm" element={<BPMTool smData={smData} simfileData={bpmSimfileData} currentChart={bpmCurrentChart} setCurrentChart={handleChartSelect} onSongSelect={handleSongSelect} selectedGame={selectedGame} view={view} setView={setView} selectionLoading={shouldMaskStaleBpmSelection} />} />
             <Route path="/theme" element={<ThemeEditorPage />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
@@ -437,7 +442,7 @@ function AppRoutes() {
           </Suspense>
         </div>
         <footer className={`footer${hideFooterOnMobile ? ' footer-hide-mobile' : ''}`}>
-            <p>Built by <a className="footer-link" href="https://stua.rtfoy.co.uk">stu :)</a> • Inspired by the work of <a className="footer-link" href="https://halninethousand.neocities.org/">hal nine thousand</a> </p>
+            <p>A <a className="footer-link" href="https://stua.rtfoy.co.uk">Stuart Foy</a> project</p>
         </footer>
       </div>
     </div>

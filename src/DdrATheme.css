@@ -1,0 +1,300 @@
+/* DDR A-inspired presentation: sky blue framing, dark angular modules,
+   white information cards, cyan/magenta energy, and yellow selection cues. */
+[data-theme='ddr-a'] .tabs-container {
+  background: #071a36;
+  border-bottom: 3px solid var(--accent-color);
+  box-shadow: 0 5px 0 rgba(1, 13, 37, 0.5);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-theme='ddr-a'] .tab,
+[data-theme='ddr-a'] .settings-tab,
+[data-theme='ddr-a'] .mobile-menu-toggle,
+[data-theme='ddr-a'] .logo-container {
+  color: #d8f3ff;
+  background: #172331;
+  border: 1px solid #82cfe9;
+  border-bottom: 3px solid #20d9ff;
+  box-shadow: none;
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+
+[data-theme='ddr-a'] .tab:hover,
+[data-theme='ddr-a'] .settings-tab:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+[data-theme='ddr-a'] .tab.active,
+[data-theme='ddr-a'] .settings-tab.active,
+[data-theme='ddr-a'] .mobile-menu-link.active,
+[data-theme='ddr-a'] .filter-button.active,
+[data-theme='ddr-a'] .play-mode-toggle button.active {
+  color: #09172a;
+  background: #ffe43b;
+  border-color: #ffffff;
+  outline: 2px solid #06152d;
+  outline-offset: 1px;
+}
+
+[data-theme='ddr-a'] .controls-container,
+[data-theme='ddr-a'] .settings-content,
+[data-theme='ddr-a'] .filter-bar,
+[data-theme='ddr-a'] .multiplier-content {
+  background: #151a23;
+  border: 2px solid #8ad7ee;
+  border-top-color: #ffffff;
+  box-shadow: 0 7px 0 rgba(1, 15, 42, 0.58);
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+}
+
+[data-theme='ddr-a'] .setting-card,
+[data-theme='ddr-a'] .song-card,
+[data-theme='ddr-a'] .stats-card,
+[data-theme='ddr-a'] .chart-stats-panel,
+[data-theme='ddr-a'] .chart-stats-card,
+[data-theme='ddr-a'] .theme-editor-panel,
+[data-theme='ddr-a'] .theme-editor-demo-card,
+[data-theme='ddr-a'] .info-content {
+  background: #151a23;
+  border-color: #78bdd5;
+}
+
+[data-theme='ddr-a'] .song-card {
+  border-left: 5px solid var(--accent-color);
+  box-shadow: 0 5px 0 rgba(0, 12, 34, 0.48);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+
+[data-theme='ddr-a'] .song-card-link:hover {
+  transform: translateY(-2px);
+}
+
+[data-theme='ddr-a'] .song-card-link:hover .song-card {
+  border-color: #ffffff;
+  border-left-color: var(--pink-color);
+}
+
+[data-theme='ddr-a'] .collapse-button,
+[data-theme='ddr-a'] .filter-button,
+[data-theme='ddr-a'] .api-key-button,
+[data-theme='ddr-a'] .camera-button,
+[data-theme='ddr-a'] .toggle-button,
+[data-theme='ddr-a'] .smod-collapse-button,
+[data-theme='ddr-a'] .smod-mini-button,
+[data-theme='ddr-a'] .smod-button,
+[data-theme='ddr-a'] .card-draw-action {
+  color: #ffffff;
+  background: #202a38;
+  border: 2px solid #88cbe3;
+  box-shadow: none;
+}
+
+[data-theme='ddr-a'] .collapse-button:hover,
+[data-theme='ddr-a'] .filter-button:hover,
+[data-theme='ddr-a'] .api-key-button:hover,
+[data-theme='ddr-a'] .camera-button:hover,
+[data-theme='ddr-a'] .toggle-button:hover {
+  color: #061526;
+  background: #20d9ff;
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+[data-theme='ddr-a'] select,
+[data-theme='ddr-a'] .dan-select,
+[data-theme='ddr-a'] .multiplier-mode-select,
+[data-theme='ddr-a'] .settings-select {
+  appearance: none;
+  -webkit-appearance: none;
+  color: #ffffff;
+  background-color: #171e28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m3 6 5 5 5-5' fill='none' stroke='%23ffe43b' stroke-width='2.2'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 16px 16px;
+  border: 2px solid #88cbe3;
+  padding-right: 3rem;
+  box-shadow: none;
+}
+
+[data-theme='ddr-a'] select:hover {
+  border-color: #ffffff;
+}
+
+[data-theme='ddr-a'] select:focus,
+[data-theme='ddr-a'] input:focus,
+[data-theme='ddr-a'] textarea:focus {
+  border-color: #ffe43b;
+  box-shadow: none;
+  outline: 3px solid #ffe43b;
+  outline-offset: 2px;
+}
+
+[data-theme='ddr-a'] select option,
+[data-theme='ddr-a'] select optgroup {
+  color: #ffffff;
+  background: #081a35;
+}
+
+[data-theme='ddr-a'] .bpm-input,
+[data-theme='ddr-a'] .multiplier-result-box,
+[data-theme='ddr-a'] .target-bpm-input {
+  color: #ffffff;
+  background: #171e28;
+  border: 2px solid #78bdd5;
+}
+
+[data-theme='ddr-a'] .input-group label,
+[data-theme='ddr-a'] .result h2,
+[data-theme='ddr-a'] .multiplier-result-label,
+[data-theme='ddr-a'] .multiplier-result-label-desktop {
+  color: #d1effc;
+}
+
+[data-theme='ddr-a'] .song-title-container {
+  color: #07162b;
+  background: #f5fbff;
+  border-left: 10px solid #20d9ff;
+  border-top: 3px solid #ff4f9a;
+}
+
+[data-theme='ddr-a'] .song-title-container .song-title-main,
+[data-theme='ddr-a'] .song-title-container .song-title-artist {
+  color: inherit;
+}
+
+[data-theme='ddr-a'] .song-info-bar .bpm-title-mobile .collapse-button {
+  position: static;
+  align-self: stretch;
+  width: 40px;
+  height: auto;
+  min-height: 40px;
+  margin: 0;
+  color: #07162b;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid #74a7bd;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+[data-theme='ddr-a'] .song-info-bar .bpm-title-mobile .collapse-button:hover,
+[data-theme='ddr-a'] .song-info-bar .bpm-title-mobile .collapse-button:focus-visible {
+  color: #07162b;
+  background: #ffe43b;
+  border-left-color: #ffe43b;
+  outline: none;
+}
+
+[data-theme='ddr-a'] .dan-header,
+[data-theme='ddr-a'] .card-draw-history-header,
+[data-theme='ddr-a'] .card-draw-eligible-header {
+  color: #ffffff;
+  background: #1b3150;
+  border: 1px solid #ffffff;
+  border-left: 10px solid #20d9ff;
+  border-right: 8px solid #ff4f9a;
+  box-shadow: 0 5px 0 rgba(0, 10, 35, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme='ddr-a'] .song-grid {
+  background: rgba(5, 20, 45, 0.94);
+  border-color: #47bce9;
+}
+
+[data-theme='ddr-a'] [class*='buttonPrimary'],
+[data-theme='ddr-a'] [class*='toggleButtonActive'],
+[data-theme='ddr-a'] [class*='presetButtonActive'],
+[data-theme='ddr-a'] .theme-editor-copy-button {
+  color: #07162b;
+  background: #ffe43b;
+  border-color: #ffffff;
+  box-shadow: none;
+}
+
+@media (min-width: 1025px) {
+  [data-theme='ddr-a'] .song-title-container {
+    padding-right: 1rem;
+  }
+
+  [data-theme='ddr-a'] .bpm-song-title {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  [data-theme='ddr-a'] .song-title-container .jacket-bg,
+  [data-theme='ddr-a'] .song-title-container .jacket-fade {
+    display: none;
+  }
+
+  [data-theme='ddr-a'] .bpm-title-mobile {
+    grid-template-areas:
+      "art chip button"
+      "art title button";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: clamp(0.75rem, 2vw, 1.15rem);
+    row-gap: 0.35rem;
+    min-height: 96px;
+  }
+
+  [data-theme='ddr-a'] .mobile-jacket-chip {
+    grid-area: art;
+    display: block;
+    width: clamp(76px, 14vw, 108px);
+    height: clamp(76px, 14vw, 108px);
+    padding: 5px;
+    background: #ffffff;
+    outline: 2px solid #173a69;
+    box-sizing: border-box;
+    align-self: center;
+  }
+
+  [data-theme='ddr-a'] .mobile-jacket-chip img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  [data-theme='ddr-a'] .bpm-title-mobile .song-game-version.mobile-only {
+    grid-area: chip;
+    justify-self: start;
+    align-self: end;
+    margin: 0;
+  }
+
+  [data-theme='ddr-a'] .bpm-title-mobile .title-artist-group {
+    grid-area: title;
+    grid-column: 2;
+    width: 100%;
+    max-width: 100%;
+    align-self: start;
+  }
+
+  [data-theme='ddr-a'] .bpm-title-mobile .song-title-main,
+  [data-theme='ddr-a'] .bpm-title-mobile .song-title-artist {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-theme='ddr-a'] .song-info-bar .bpm-title-mobile .collapse-button {
+    grid-area: button;
+    align-self: center;
+    justify-self: end;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+[data-theme='ddr-a'] ::selection {
+  color: #07162b;
+  background: #ffe43b;
+}

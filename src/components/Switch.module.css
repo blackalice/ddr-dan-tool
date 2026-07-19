@@ -59,3 +59,102 @@
 .switch input:focus-visible + .track {
   box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.18);
 }
+
+/* DDR World uses hard, modular selection blocks rather than soft iOS-style
+   controls. Keep the switch geometry consistent with the theme's square UI. */
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch {
+  --switch-height: 30px;
+  --switch-width: 56px;
+  --switch-padding: 4px;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .track {
+  border-radius: 2px;
+  background: #252927;
+  border: 2px solid #50655d;
+  padding: calc(var(--switch-padding) - 1px);
+  box-shadow: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .thumb {
+  border-radius: 1px;
+  background: #d6e7e0;
+  border: 0;
+  box-shadow: none;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch:hover .track {
+  border-color: #ffffff;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:checked + .track {
+  background: #08765f;
+  border-color: var(--accent-color);
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:checked + .track .thumb {
+  background: #ffffff;
+  border-color: transparent;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:focus-visible + .track {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #101412, 0 0 0 4px var(--accent-color);
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch input:disabled + .track {
+  opacity: 0.45;
+}
+
+:global(:is([data-theme='ddr-world'], [data-theme='new'])) .switch:has(input:disabled) {
+  cursor: not-allowed;
+}
+
+/* New uses the same compact, outlined control language as the rest of the
+   theme. The thumb is softly squared so it belongs to the track geometry. */
+:global([data-theme='new']) .switch {
+  --switch-height: 32px;
+  --switch-width: 58px;
+  --switch-padding: 3px;
+  --thumb-size: calc(var(--switch-height) - (var(--switch-padding) * 2) - 2px);
+}
+
+:global([data-theme='new']) .track {
+  box-sizing: border-box;
+  background: var(--theme-field);
+  border: 1px solid var(--theme-control-border);
+  border-radius: var(--theme-radius-control);
+  padding: var(--switch-padding);
+  box-shadow: var(--theme-shadow-control);
+}
+
+:global([data-theme='new']) .thumb {
+  background: var(--theme-text-secondary);
+  border: 1px solid color-mix(in srgb, var(--theme-text-primary) 24%, transparent);
+  border-radius: calc(var(--theme-radius-control) - 2px);
+  box-shadow: var(--theme-shadow-control);
+}
+
+:global([data-theme='new']) .switch:hover .track {
+  border-color: var(--theme-text-muted);
+}
+
+:global([data-theme='new']) .switch input:checked + .track {
+  background: var(--theme-accent-selected);
+  border-color: var(--theme-accent);
+}
+
+:global([data-theme='new']) .switch input:checked + .track .thumb {
+  transform: translateX(
+    calc(var(--switch-width) - var(--thumb-size) - (var(--switch-padding) * 2) - 2px)
+  );
+  background: var(--theme-text-primary);
+  border-color: color-mix(in srgb, var(--theme-accent) 42%, var(--theme-text-primary));
+}
+
+:global([data-theme='new']) .switch input:focus-visible + .track {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-focus-ring);
+}

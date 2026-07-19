@@ -1,5 +1,5 @@
 /* eslint react-refresh/only-export-components: off */
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { MULTIPLIER_MODES } from '../utils/multipliers';
 import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { useNavigate } from 'react-router-dom';
@@ -13,36 +13,49 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const authRequestRef = useRef(null);
   const navigate = useNavigate();
   const { offline } = useOfflineStatus();
   const { setScores } = useScores();
   const { setGroups, setActiveGroup } = useGroups();
   const {
     setTargetBPM,
-    setApiKey,
     setMultiplierMode,
     setTheme,
     setPlayStyle,
     setShowRankedRatings,
     setShowCoursesBeta,
+    setShowVegaBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
     setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
+    setCardDrawTournamentLabels,
+    setCardDrawTournamentLabelLocks,
   } = useContext(SettingsContext);
 
   const applySettings = useCallback((data = {}) => {
     const bool = (v) => v === true || v === 'true';
     const num = (v, d) => (v !== undefined && v !== null ? Number(v) : d);
+    const object = (v) => {
+      if (v && typeof v === 'object') return v;
+      if (typeof v !== 'string') return null;
+      try {
+        const parsed = JSON.parse(v);
+        return parsed && typeof parsed === 'object' ? parsed : null;
+      } catch {
+        return null;
+      }
+    };
     if (data.targetBPM !== undefined) setTargetBPM(num(data.targetBPM, 300));
-    if (data.apiKey !== undefined) setApiKey(data.apiKey);
     if (data.multiplierMode !== undefined) setMultiplierMode(data.multiplierMode);
     if (data.theme !== undefined) setTheme(data.theme);
     if (data.playStyle !== undefined) setPlayStyle(data.playStyle);
     // showLists is always enabled now
     if (data.showRankedRatings !== undefined) setShowRankedRatings(bool(data.showRankedRatings));
     if (data.showCoursesBeta !== undefined) setShowCoursesBeta(bool(data.showCoursesBeta));
+    if (data.showVegaBeta !== undefined) setShowVegaBeta(bool(data.showVegaBeta));
     if (data.showTransliterationBeta !== undefined) setShowTransliterationBeta(bool(data.showTransliterationBeta));
     if (data.songlistOverride !== undefined) setSonglistOverride(normalizeSonglistOverrideValue(data.songlistOverride));
     if (data.showMultiplierIncrementVersion !== undefined) {
@@ -54,19 +67,35 @@ export const AuthProvider = ({ children }) => {
     } else if (data.worldNewChallengeCharts !== undefined) {
       setWorldRemoveChallengeCharts(!bool(data.worldNewChallengeCharts));
     }
+    if (data.cardDrawCurrentLabels !== undefined) {
+      const labels = object(data.cardDrawCurrentLabels);
+      if (labels) setCardDrawTournamentLabels(labels);
+    }
+    if (data.cardDrawTournamentLabelLocks !== undefined) {
+      const locks = object(data.cardDrawTournamentLabelLocks);
+      if (locks) {
+        setCardDrawTournamentLabelLocks({
+          round: locks.round === true,
+          p1: locks.p1 === true || locks.players === true,
+          p2: locks.p2 === true || locks.players === true,
+        });
+      }
+    }
   }, [
     setTargetBPM,
-    setApiKey,
     setMultiplierMode,
     setTheme,
     setPlayStyle,
     setShowRankedRatings,
     setShowCoursesBeta,
+    setShowVegaBeta,
     setShowTransliterationBeta,
     setSonglistOverride,
     setShowMultiplierIncrementVersion,
     setWorldDifficultyChanges,
     setWorldRemoveChallengeCharts,
+    setCardDrawTournamentLabels,
+    setCardDrawTournamentLabelLocks,
   ]);
 
   const refreshToken = useCallback(async () => {
@@ -174,6 +203,7 @@ export const AuthProvider = ({ children }) => {
           showLists: data.showLists,
           showRankedRatings: data.showRankedRatings,
           showCoursesBeta: data.showCoursesBeta,
+          showVegaBeta: data.showVegaBeta,
           showTransliterationBeta: data.showTransliterationBeta,
           songlistOverride: data.songlistOverride,
           showMultiplierIncrementVersion: data.showMultiplierIncrementVersion,
@@ -207,7 +237,14 @@ export const AuthProvider = ({ children }) => {
   }, [applySettings, refreshToken, setScores, setGroups, setActiveGroup, setUser, offline]);
 
   useEffect(() => {
-    fetchUserData();
+    if (authRequestRef.current) return undefined;
+    const request = fetchUserData();
+    authRequestRef.current = request;
+    const clearRequest = () => {
+      if (authRequestRef.current === request) authRequestRef.current = null;
+    };
+    request.then(clearRequest, clearRequest);
+    return undefined;
   }, [fetchUserData]);
 
   const login = async (email, password, turnstileToken) => {
@@ -249,16 +286,16 @@ export const AuthProvider = ({ children }) => {
     setActiveGroup('All');
     // Reset settings to defaults in-memory
     setTargetBPM(300);
-    setApiKey('');
     setMultiplierMode(MULTIPLIER_MODES.A_A3);
     setTheme('dark');
     setPlayStyle('single');
-    setShowRankedRatings(false);
+    setShowRankedRatings(true);
     setShowCoursesBeta(false);
+    setShowVegaBeta(false);
     setShowTransliterationBeta(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
-    setShowMultiplierIncrementVersion(false);
-    setWorldDifficultyChanges(false);
+    setShowMultiplierIncrementVersion(true);
+    setWorldDifficultyChanges(true);
     setWorldRemoveChallengeCharts(false);
     // Clear persisted storage (remote + local + session)
     try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch { /* noop */ }

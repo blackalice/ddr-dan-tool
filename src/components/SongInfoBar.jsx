@@ -57,7 +57,7 @@ const SongInfoBar = ({
   const renderedTitle = displayTitle || songTitle;
   const renderedArtist = displayArtist || artist;
   const { filters } = useFilters();
-  const { showRankedRatings } = useContext(SettingsContext);
+  const { showRankedRatings, theme } = useContext(SettingsContext);
   const { scores } = useScores();
   const isDesktop = useIsDesktop();
   const chipStyle = React.useMemo(() => (
@@ -70,13 +70,15 @@ const SongInfoBar = ({
   const currentScore = React.useMemo(() => {
     if (!currentChart) return null;
     return resolveScore(scores, currentChart.mode, {
+      songKey: simfileData?.songKey || simfileData?.path,
+      path: simfileData?.path,
       chartId: currentChart.chartId,
       songId: simfileData?.songId,
       title: songTitle,
       artist,
       difficulty: currentChart.difficulty,
     });
-  }, [scores, currentChart, songTitle, artist, simfileData?.songId]);
+  }, [scores, currentChart, songTitle, artist, simfileData?.songId, simfileData?.songKey, simfileData?.path]);
 
   const badgeGlowClasses = React.useMemo(() => {
     return getScoreGlowClasses({ lamp: currentScore?.lamp });
@@ -161,6 +163,8 @@ const SongInfoBar = ({
 
             // Check played status filter
             const scoreHit = resolveScore(scores, chartType.mode, {
+              songKey: simfileData?.songKey || simfileData?.path,
+              path: simfileData?.path,
               chartId: chartType.chartId,
               songId: simfileData?.songId,
               title: songTitle,
@@ -259,6 +263,17 @@ const SongInfoBar = ({
         )}
         <h2 className="bpm-song-title bpm-title-mobile">
           <div className="title-content-wrapper">
+            {(theme === 'ddr-world' || theme === 'new' || theme === 'ddr-a') && !isDesktop && showJacket && (
+              <span className="mobile-jacket-chip">
+                <img
+                  src={`/${encodeURI(jacket)}`}
+                  alt={`${renderedTitle} jacket`}
+                  loading="eager"
+                  decoding="sync"
+                  draggable={false}
+                />
+              </span>
+            )}
             {gameVersion && (
               <>
                 {/* Desktop: show jacket image/legacy logo chip at left */}
@@ -344,34 +359,32 @@ const SongInfoBar = ({
             <div className={`difficulty-meters-container${showRankedRatings ? ' ranked' : ''}`}>
               {renderDifficulties(playStyle)}
             </div>
-            {(songLength != null || metrics) && (
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faClock} />
-                  <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faPlay} />
-                  <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faShoePrints} />
-                  <span>{metrics?.steps?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faSnowflake} />
-                  <span>{metrics?.holds?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faBolt} />
-                  <span>{metrics?.shocks?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
-                <div className="stat-item">
-                  <FontAwesomeIcon icon={faArrowUp} />
-                  <span>{metrics?.jumps?.toLocaleString?.() ?? 'N/A'}</span>
-                </div>
+            <div className="stats-grid" aria-busy={metrics == null}>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faClock} />
+                <span>{songLength != null ? `${Math.floor(songLength / 60)}:${String(Math.round(songLength % 60)).padStart(2, '0')}` : '--'}</span>
               </div>
-            )}
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faPlay} />
+                <span>{metrics?.firstNoteSeconds != null ? `${Number(metrics.firstNoteSeconds).toFixed(2)}s` : '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faShoePrints} />
+                <span>{metrics?.steps?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faSnowflake} />
+                <span>{metrics?.holds?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faBolt} />
+                <span>{metrics?.shocks?.toLocaleString?.() ?? '--'}</span>
+              </div>
+              <div className="stat-item">
+                <FontAwesomeIcon icon={faArrowUp} />
+                <span>{metrics?.jumps?.toLocaleString?.() ?? '--'}</span>
+              </div>
+            </div>
             <div className={`bpm-score-badge score-badge ${badgeGlowClasses}`}>
               <span className="score-lamp">{currentScore?.lamp ?? ''}</span>
               <span className="score-value">{currentScore ? currentScore.score.toLocaleString() : '--'}</span>

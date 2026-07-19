@@ -144,6 +144,14 @@ function Multiplier() {
         modifier: closestMultiplier,
         speed: Math.round(primarySpeed),
       },
+      previous: closestIndex > 0 ? {
+        modifier: multipliers[closestIndex - 1],
+        speed: Math.round(numericSongBPM * multipliers[closestIndex - 1]),
+      } : null,
+      next: closestIndex < multipliers.length - 1 ? {
+        modifier: multipliers[closestIndex + 1],
+        speed: Math.round(numericSongBPM * multipliers[closestIndex + 1]),
+      } : null,
       alternative: null,
     };
 
@@ -171,7 +179,7 @@ function Multiplier() {
           <div className="multiplier-inner-container">
             <div className="multiplier-desktop-inputs">
               <div className="input-group">
-                <label htmlFor="targetBPM">Your Target Scroll Speed</label>
+                <label htmlFor="targetBPM">Target BPM</label>
                 <input
                   id="targetBPM"
                   type="number"
@@ -291,23 +299,33 @@ function Multiplier() {
             </div>
             <div className="result multiplier-result-compact multiplier-result-desktop">
               <span className="multiplier-result-label-desktop">Recommended Multiplier</span>
-              <div className="multiplier-result-box">
-                <span className="multiplier-result-label">Recommended Multiplier</span>
-                <div className="multiplier-result-grid">
-                  <div className="multiplier-result-calculation">
-                    <span className="song-speed">{currentDisplay.speed}</span>
-                    <span className="song-separator">@</span>
-                    <span className="song-modifier">{currentDisplay.modifier}x</span>
-                  </div>
-                  {calculation && calculation.alternative && (
-                    <button 
-                      className={`toggle-button multiplier-result-toggle ${showAlternative && calculation.alternative ? (calculation.alternative.direction === 'up' ? 'up' : 'down') : ''}`}
-                      onClick={() => setShowAlternative(!showAlternative)}
-                      aria-label="Toggle alternative multiplier"
-                    >
-                      <FontAwesomeIcon icon={calculation.alternative.direction === 'up' ? faArrowUp : faArrowDown} />
-                    </button>
-                  )}
+              <div className="multiplier-desktop-options" aria-live="polite">
+                <div className="multiplier-option multiplier-option-secondary">
+                  <span className="multiplier-option-label">Lower</span>
+                  <strong className="multiplier-option-modifier">
+                    {calculation?.previous ? `${calculation.previous.modifier}x` : '—'}
+                  </strong>
+                  <span className="multiplier-option-speed">
+                    {calculation?.previous ? `${calculation.previous.speed} BPM` : 'No lower option'}
+                  </span>
+                </div>
+                <div className="multiplier-option multiplier-option-recommended">
+                  <span className="multiplier-option-label">Recommended</span>
+                  <strong className="multiplier-option-modifier">
+                    {calculation ? `${calculation.primary.modifier}x` : 'N/A'}
+                  </strong>
+                  <span className="multiplier-option-speed">
+                    {calculation ? `${calculation.primary.speed} BPM` : 'Enter a song BPM'}
+                  </span>
+                </div>
+                <div className="multiplier-option multiplier-option-secondary">
+                  <span className="multiplier-option-label">Higher</span>
+                  <strong className="multiplier-option-modifier">
+                    {calculation?.next ? `${calculation.next.modifier}x` : '—'}
+                  </strong>
+                  <span className="multiplier-option-speed">
+                    {calculation?.next ? `${calculation.next.speed} BPM` : 'No higher option'}
+                  </span>
                 </div>
               </div>
               {showMultiplierIncrementVersion && (
