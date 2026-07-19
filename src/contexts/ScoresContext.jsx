@@ -145,8 +145,10 @@ function pickRatingForLevel(ratings, level) {
 export const ScoresProvider = ({ children }) => {
   const settings = useContext(SettingsContext) || {};
   const worldDifficultyChanges = Boolean(settings.worldDifficultyChanges);
-  const worldRemoveChallengeCharts = Boolean(settings.worldRemoveChallengeCharts);
-  const worldMetaKey = `${worldDifficultyChanges ? 1 : 0}:${worldRemoveChallengeCharts ? 1 : 0}`;
+  const showWorldChallengeCharts = settings.showWorldChallengeCharts !== undefined
+    ? Boolean(settings.showWorldChallengeCharts)
+    : !settings.worldRemoveChallengeCharts;
+  const worldMetaKey = `${worldDifficultyChanges ? 1 : 0}:${showWorldChallengeCharts ? 1 : 0}`;
 
   const [scores, setScores] = useState(() => {
     const saved = storage.getItem('ddrScores');
@@ -207,8 +209,8 @@ export const ScoresProvider = ({ children }) => {
 
   const applyWorldMetaChanges = useCallback((meta) => {
     const withWorldChanges = applyWorldDifficultyChanges(meta, worldDifficultyChanges);
-    return applyWorldNewChallengeCharts(withWorldChanges, !worldRemoveChallengeCharts);
-  }, [worldDifficultyChanges, worldRemoveChallengeCharts]);
+    return applyWorldNewChallengeCharts(withWorldChanges, showWorldChallengeCharts);
+  }, [showWorldChallengeCharts, worldDifficultyChanges]);
 
   const loadRankedRatings = useCallback(async () => {
     if (rankedRatingsRef.current) return rankedRatingsRef.current;

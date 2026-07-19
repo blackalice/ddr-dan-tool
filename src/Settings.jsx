@@ -112,8 +112,9 @@ const Settings = () => {
         setShowMultiplierIncrementVersion,
         worldDifficultyChanges,
         setWorldDifficultyChanges,
-        worldRemoveChallengeCharts,
         setWorldRemoveChallengeCharts,
+        worldOverrideActive,
+        showWorldChallengeCharts,
     } = useContext(SettingsContext);
 
     const { scores, setScores, loadSongMeta } = useScores();
@@ -344,11 +345,12 @@ const Settings = () => {
                             </div>
                         </div>
                     )}
+                    <div className="settings-preference-grid">
                     <div className="setting-card setting-card-songlist">
                         <div className="setting-text">
-                            <h3>Target Scroll Speed</h3>
+                            <h3>Target BPM</h3>
                             <p>
-                                Set your preferred scroll speed (e.g., 300) to calculate the best multiplier for each song. This is used across the app to determine the best speed multiplier for your playstyle.
+                                This is used across the app to determine the best speed multiplier for your playstyle.
                             </p>
                         </div>
                         <div className="setting-control">
@@ -412,6 +414,7 @@ const Settings = () => {
                             />
                         </div>
                     </div>
+                    </div>
                     <div className="setting-card">
                         <div className="setting-text">
                             <h3>Multiplier Increment Version</h3>
@@ -472,7 +475,41 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <ThemeSwitcher />
+                    <div className="settings-world-grid">
+                        <div className="setting-card setting-card-toggle">
+                            <div className="setting-text">
+                                <h3>WORLD Difficulty Changes</h3>
+                                <p>
+                                    Apply DDR WORLD difficulty updates when filtering and viewing charts.
+                                </p>
+                            </div>
+                            <div className="setting-control">
+                                <Switch
+                                    checked={worldOverrideActive || worldDifficultyChanges}
+                                    onChange={(e) => setWorldDifficultyChanges(e.target.checked)}
+                                    disabled={worldOverrideActive}
+                                    ariaLabel="Toggle WORLD difficulty changes"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="setting-card setting-card-toggle">
+                            <div className="setting-text">
+                                <h3>WORLD Challenge Charts</h3>
+                                <p>
+                                    Show the Challenge charts added in DDR WORLD throughout the app.
+                                </p>
+                            </div>
+                            <div className="setting-control">
+                                <Switch
+                                    checked={showWorldChallengeCharts}
+                                    onChange={(e) => setWorldRemoveChallengeCharts(!e.target.checked)}
+                                    disabled={worldOverrideActive}
+                                    ariaLabel="Toggle WORLD challenge charts"
+                                />
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="setting-card setting-card-toggle">
                         <div className="setting-text">
@@ -490,8 +527,11 @@ const Settings = () => {
                         </div>
                     </div>
 
+                    <ThemeSwitcher />
+
                     <h2 className="settings-sub-header">Beta Features</h2>
 
+                    <div className="settings-beta-grid">
                     {offlineFeatureEnabled && (
                         <div className="setting-card setting-card-toggle">
                             <div className="setting-text">
@@ -610,38 +650,6 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    {/* Custom List Function is always enabled; toggle removed */}
-
-                    <div className="setting-card setting-card-toggle">
-                        <div className="setting-text">
-                            <h3>WORLD Difficulty Changes</h3>
-                            <p>
-                                Apply DDR WORLD difficulty updates when filtering and viewing charts.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <Switch
-                                checked={worldDifficultyChanges}
-                                onChange={(e) => setWorldDifficultyChanges(e.target.checked)}
-                                ariaLabel="Toggle WORLD difficulty changes"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="setting-card setting-card-toggle">
-                        <div className="setting-text">
-                            <h3>Remove WORLD Challenge Charts</h3>
-                            <p>
-                                Hide the Challenge charts added in DDR WORLD from the app.
-                            </p>
-                        </div>
-                        <div className="setting-control">
-                            <Switch
-                                checked={worldRemoveChallengeCharts}
-                                onChange={(e) => setWorldRemoveChallengeCharts(e.target.checked)}
-                                ariaLabel="Toggle removing WORLD challenge charts"
-                            />
-                        </div>
                     </div>
 
                     {user ? (

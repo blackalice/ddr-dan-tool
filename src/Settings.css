@@ -144,6 +144,36 @@
     text-align: center;
 }
 
+.settings-preference-grid,
+.settings-world-grid,
+.settings-beta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-preference-grid .setting-card,
+.settings-world-grid .setting-card,
+.settings-beta-grid .setting-card {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.settings-preference-grid .setting-card-playstyle {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.settings-preference-grid .setting-card-playstyle .setting-control {
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.settings-preference-grid .settings-playstyle-toggle {
+    width: 100%;
+}
+
 .setting-control {
     display: flex;
     width: 100%;
@@ -242,6 +272,12 @@
     }
     .settings-inner-container {
         padding: 0;
+    }
+
+    .settings-preference-grid,
+    .settings-world-grid,
+    .settings-beta-grid {
+        grid-template-columns: 1fr;
     }
 
     .setting-card {

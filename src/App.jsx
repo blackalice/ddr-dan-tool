@@ -39,14 +39,14 @@ const SignupPage = lazy(() => import('./SignupPage.jsx'));
 const ThemeEditorPage = lazy(() => import('./ThemeEditorPage.jsx'));
 
 function AppRoutes() {
-  const { theme, setPlayStyle, playStyle, worldRemoveChallengeCharts, showVegaBeta } = useContext(SettingsContext);
+  const { theme, setPlayStyle, playStyle, showWorldChallengeCharts, showVegaBeta } = useContext(SettingsContext);
   const { user } = useAuth();
   const pwaEnabled = import.meta.env.MODE !== 'no-pwa';
   const [smData, setSmData] = useState({ games: [], files: [] });
   const [rawSimfileData, setRawSimfileData] = useState(null);
   const simfileData = useMemo(
-    () => applyWorldNewChallengeChartsToSimfile(rawSimfileData, !worldRemoveChallengeCharts),
-    [rawSimfileData, worldRemoveChallengeCharts],
+    () => applyWorldNewChallengeChartsToSimfile(rawSimfileData, showWorldChallengeCharts),
+    [rawSimfileData, showWorldChallengeCharts],
   );
   const [currentChart, setCurrentChart] = useState(null);
   const [selectedGame, setSelectedGame] = useState('all');
@@ -144,7 +144,7 @@ function AppRoutes() {
           setCurrentChart(null);
         }
         const data = await loadSimfileData(songFile);
-        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, showWorldChallengeCharts);
         if (debugChartSelection) {
           console.debug('[Route] loaded simfile', {
             title: data?.title?.titleName,
@@ -225,7 +225,7 @@ function AppRoutes() {
           setCurrentChart(null);
         }
         const data = await loadSimfileData(songFile);
-        const filteredData = applyWorldNewChallengeChartsToSimfile(data, !worldRemoveChallengeCharts);
+        const filteredData = applyWorldNewChallengeChartsToSimfile(data, showWorldChallengeCharts);
         setRawSimfileData(data);
         let chart = null;
         if (sel.legacy.difficulty && sel.legacy.mode) {
@@ -293,7 +293,7 @@ function AppRoutes() {
       }
     };
     if (smData.files.length > 0) loadFromUrl();
-  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, worldRemoveChallengeCharts, debugChartSelection]);
+  }, [location.search, location.hash, location.pathname, smData, playStyle, searchParams, setPlayStyle, setSearchParams, debugEnabled, navigate, pickChartForPlayStyle, showWorldChallengeCharts, debugChartSelection]);
 
   useEffect(() => {
     if (!simfileData) {

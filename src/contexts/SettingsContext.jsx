@@ -1,7 +1,7 @@
 /* eslint react-refresh/only-export-components: off */
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getMultipliers, MULTIPLIER_MODES } from '../utils/multipliers';
-import { SONGLIST_OVERRIDE_OPTIONS, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
+import { SONGLIST_OVERRIDE_OPTIONS, getSonglistOverrideGameValue, normalizeSonglistOverrideValue } from '../utils/songlistOverrides';
 import { storage } from '../utils/remoteStorage.js';
 
 export const SettingsContext = createContext();
@@ -38,14 +38,14 @@ export const SettingsProvider = ({ children }) => {
 
     const [showMultiplierIncrementVersion, setShowMultiplierIncrementVersion] = useState(() => {
         const saved = storage.getItem('showMultiplierIncrementVersion');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     const [showLists] = useState(true);
 
     const [showRankedRatings, setShowRankedRatings] = useState(() => {
         const saved = storage.getItem('showRankedRatings');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     // Beta: Toggle to show Courses tab (off by default)
@@ -108,7 +108,7 @@ export const SettingsProvider = ({ children }) => {
 
     const [worldDifficultyChanges, setWorldDifficultyChanges] = useState(() => {
         const saved = storage.getItem('worldDifficultyChanges');
-        return saved ? JSON.parse(saved) : false;
+        return saved ? JSON.parse(saved) : true;
     });
 
     const [worldRemoveChallengeCharts, setWorldRemoveChallengeCharts] = useState(() => {
@@ -120,6 +120,8 @@ export const SettingsProvider = ({ children }) => {
         }
         return false;
     });
+    const worldOverrideActive = getSonglistOverrideGameValue(songlistOverride) === 'World';
+    const showWorldChallengeCharts = worldOverrideActive || !worldRemoveChallengeCharts;
 
     useEffect(() => {
         storage.setItem('targetBPM', targetBPM);
@@ -225,6 +227,8 @@ export const SettingsProvider = ({ children }) => {
         setWorldDifficultyChanges,
         worldRemoveChallengeCharts,
         setWorldRemoveChallengeCharts,
+        worldOverrideActive,
+        showWorldChallengeCharts,
     };
 
     return (

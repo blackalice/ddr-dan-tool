@@ -289,13 +289,13 @@ export const AuthProvider = ({ children }) => {
     setMultiplierMode(MULTIPLIER_MODES.A_A3);
     setTheme('dark');
     setPlayStyle('single');
-    setShowRankedRatings(false);
+    setShowRankedRatings(true);
     setShowCoursesBeta(false);
     setShowVegaBeta(false);
     setShowTransliterationBeta(false);
     setSonglistOverride(SONGLIST_OVERRIDE_OPTIONS[0].value);
-    setShowMultiplierIncrementVersion(false);
-    setWorldDifficultyChanges(false);
+    setShowMultiplierIncrementVersion(true);
+    setWorldDifficultyChanges(true);
     setWorldRemoveChallengeCharts(false);
     // Clear persisted storage (remote + local + session)
     try { if (typeof window !== 'undefined') window.sessionStorage.clear(); } catch { /* noop */ }
